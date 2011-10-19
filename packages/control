@@ -1,0 +1,16 @@
+Package: ovoplayer
+Version: 1.0.0beta
+Section: sound
+Priority: optional
+Architecture: i386
+Essential: no
+Depends: libgtk2.0-0 (>= 2.6), mplayer(>= 1.0) | libvlc5
+Pre-Depends: 
+Recommends: vlc
+Suggests: 
+Installed-Size: 8765999
+Maintainer: marco caselli <marcocas@gmail.com>
+Conflicts: 
+Replaces: 
+Provides: ovoplayer
+Description: OvoPlayer, a free audio player and music organizer.

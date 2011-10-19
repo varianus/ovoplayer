@@ -1,0 +1,408 @@
+object fConfig: TfConfig
+  Left = 435
+  Height = 492
+  Top = 284
+  Width = 647
+  Caption = 'Config'
+  ClientHeight = 492
+  ClientWidth = 647
+  OnCreate = FormCreate
+  OnShow = FormShow
+  LCLVersion = '0.9.31'
+  object pcConfig: TPageControl
+    Left = 153
+    Height = 446
+    Top = 0
+    Width = 494
+    ActivePage = tsEngine
+    Align = alClient
+    TabIndex = 1
+    TabOrder = 0
+    object tsInterface: TTabSheet
+      Caption = 'Interface'
+      ClientHeight = 418
+      ClientWidth = 486
+      object cbMinimizeOnClose: TCheckBox
+        Left = 11
+        Height = 19
+        Top = 50
+        Width = 118
+        Caption = 'Minimize on Close'
+        Checked = True
+        State = cbChecked
+        TabOrder = 1
+      end
+      object cbTrayVisible: TCheckBox
+        Left = 11
+        Height = 19
+        Top = 18
+        Width = 101
+        Caption = 'Show Tray Icon'
+        Checked = True
+        State = cbChecked
+        TabOrder = 0
+      end
+    end
+    object tsEngine: TTabSheet
+      Caption = 'Engine'
+      ClientHeight = 418
+      ClientWidth = 486
+      object rgAudioEngine: TRadioGroup
+        Left = 3
+        Height = 162
+        Top = 8
+        Width = 137
+        AutoFill = True
+        Caption = 'Audio Engine'
+        ChildSizing.LeftRightSpacing = 6
+        ChildSizing.TopBottomSpacing = 6
+        ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+        ChildSizing.EnlargeVertical = crsHomogenousChildResize
+        ChildSizing.ShrinkHorizontal = crsScaleChilds
+        ChildSizing.ShrinkVertical = crsScaleChilds
+        ChildSizing.Layout = cclLeftToRightThenTopToBottom
+        ChildSizing.ControlsPerLine = 1
+        ClientHeight = 144
+        ClientWidth = 133
+        Items.Strings = (
+          'VLC Engine'
+          'MPlayer'
+          'XINE'
+          'BASS'
+        )
+        OnClick = rgOSDKindClick
+        TabOrder = 0
+      end
+      object PageControl1: TPageControl
+        Left = 3
+        Height = 104
+        Top = 184
+        Width = 472
+        ActivePage = tsMPlayer
+        TabIndex = 0
+        TabOrder = 1
+        object tsMPlayer: TTabSheet
+          Caption = 'tsMPlayer'
+          ClientHeight = 76
+          ClientWidth = 464
+          object MPlayerPath: TFileNameEdit
+            Left = 3
+            Height = 23
+            Top = 25
+            Width = 424
+            FileName = 'mplayer'
+            DialogOptions = [ofReadOnly, ofPathMustExist, ofFileMustExist, ofNoTestFileCreate, ofViewDetail]
+            FilterIndex = 0
+            HideDirectories = False
+            ButtonWidth = 23
+            NumGlyphs = 0
+            MaxLength = 0
+            TabOrder = 0
+          end
+          object Label6: TLabel
+            Left = 4
+            Height = 16
+            Top = 5
+            Width = 71
+            AutoSize = False
+            Caption = 'Mplayer Path'
+            ParentColor = False
+            OptimalFill = True
+          end
+        end
+        object tsNone: TTabSheet
+          Caption = 'tsNone'
+        end
+      end
+    end
+    object tsMediaLibrary: TTabSheet
+      Caption = 'Media Library'
+      ClientHeight = 418
+      ClientWidth = 486
+      object lbMLPath: TListBox
+        Left = 3
+        Height = 128
+        Top = 34
+        Width = 384
+        ItemHeight = 0
+        TabOrder = 0
+      end
+      object Label1: TLabel
+        Left = 11
+        Height = 16
+        Top = 9
+        Width = 57
+        Caption = 'Directories'
+        ParentColor = False
+      end
+      object bAddDir: TButton
+        Left = 395
+        Height = 25
+        Top = 39
+        Width = 75
+        Caption = 'Add ...'
+        OnClick = bAddDirClick
+        TabOrder = 1
+      end
+      object bRemoveDir: TButton
+        Left = 395
+        Height = 25
+        Top = 74
+        Width = 75
+        Caption = 'Remove'
+        TabOrder = 2
+      end
+      object bRescanLibrary: TButton
+        Left = 3
+        Height = 25
+        Top = 178
+        Width = 75
+        Caption = 'Scan Now'
+        OnClick = bRescanLibraryClick
+        TabOrder = 3
+      end
+      object cbScanOnStart: TCheckBox
+        Left = 3
+        Height = 19
+        Top = 218
+        Width = 139
+        Caption = 'Scan On program start'
+        TabOrder = 4
+      end
+    end
+    object tsPlaylist: TTabSheet
+      Caption = 'Play List'
+      ClientHeight = 418
+      ClientWidth = 486
+      object Label5: TLabel
+        Left = 11
+        Height = 13
+        Top = 23
+        Width = 192
+        AutoSize = False
+        Caption = 'Track to extract for quick playlist'
+        Font.Height = 13
+        ParentColor = False
+        ParentFont = False
+        OptimalFill = True
+      end
+      object seLimit: TSpinEdit
+        Left = 211
+        Height = 23
+        Top = 18
+        Width = 58
+        MaxValue = 9999
+        TabOrder = 0
+        Value = 50
+      end
+      object cbRestart: TCheckBox
+        Left = 11
+        Height = 19
+        Top = 56
+        Width = 152
+        Caption = 'Restart from last position'
+        TabOrder = 1
+      end
+    end
+    object tsOSD: TTabSheet
+      Caption = 'OSD'
+      ClientHeight = 418
+      ClientWidth = 486
+      OnHide = tsOSDHide
+      OnShow = tsOSDShow
+      object colorBackground: TColorBox
+        Left = 187
+        Height = 22
+        Top = 154
+        Width = 176
+        DefaultColorColor = 11955992
+        NoneColorColor = clGray
+        Selected = 11955992
+        Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbCustomColor, cbCustomColors]
+        ItemHeight = 16
+        OnChange = colorBackgroundChange
+        TabOrder = 0
+      end
+      object Label2: TLabel
+        Left = 27
+        Height = 16
+        Top = 157
+        Width = 98
+        Caption = 'BackGround Color'
+        ParentColor = False
+      end
+      object rgOSDKind: TRadioGroup
+        Left = 3
+        Height = 105
+        Top = 2
+        Width = 185
+        AutoFill = True
+        Caption = 'Notification Kind'
+        ChildSizing.LeftRightSpacing = 6
+        ChildSizing.TopBottomSpacing = 6
+        ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+        ChildSizing.EnlargeVertical = crsHomogenousChildResize
+        ChildSizing.ShrinkHorizontal = crsScaleChilds
+        ChildSizing.ShrinkVertical = crsScaleChilds
+        ChildSizing.Layout = cclLeftToRightThenTopToBottom
+        ChildSizing.ControlsPerLine = 1
+        ClientHeight = 87
+        ClientWidth = 181
+        Items.Strings = (
+          'None'
+          'System Notification'
+          'Pretty OSD'
+        )
+        OnClick = rgOSDKindClick
+        TabOrder = 1
+      end
+      object Label3: TLabel
+        Left = 27
+        Height = 16
+        Top = 199
+        Width = 57
+        Caption = 'Font Color'
+        ParentColor = False
+      end
+      object ColorFont: TColorBox
+        Left = 187
+        Height = 22
+        Top = 191
+        Width = 176
+        DefaultColorColor = 11955992
+        NoneColorColor = clGray
+        Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbCustomColor, cbCustomColors]
+        ItemHeight = 16
+        OnChange = ColorFontChange
+        TabOrder = 2
+      end
+      object tbTransparency: TTrackBar
+        Left = 187
+        Height = 24
+        Top = 232
+        Width = 176
+        Frequency = 15
+        Max = 255
+        OnChange = tbTransparencyChange
+        PageSize = 100
+        Position = 0
+        ScalePos = trRight
+        TickStyle = tsNone
+        TabOrder = 3
+      end
+      object Label4: TLabel
+        Left = 27
+        Height = 16
+        Top = 236
+        Width = 67
+        Caption = 'Tranparency'
+        ParentColor = False
+      end
+    end
+  end
+  object ButtonPanel: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 452
+    Width = 635
+    OKButton.Name = 'OKButton'
+    OKButton.Caption = '&OK'
+    OKButton.OnClick = OKButtonClick
+    HelpButton.Name = 'HelpButton'
+    HelpButton.Caption = '&Aiuto'
+    HelpButton.Enabled = False
+    CloseButton.Name = 'CloseButton'
+    CloseButton.Caption = '&Chiudi'
+    CloseButton.Enabled = False
+    CancelButton.Name = 'CancelButton'
+    CancelButton.Caption = 'Annulla'
+    CancelButton.OnClick = CancelButtonClick
+    TabOrder = 1
+    ShowButtons = [pbOK, pbCancel]
+  end
+  object GroupBox1: TGroupBox
+    Left = 0
+    Height = 446
+    Top = 0
+    Width = 153
+    Align = alLeft
+    Caption = 'Categories'
+    ClientHeight = 428
+    ClientWidth = 149
+    Color = clWindow
+    ParentColor = False
+    TabOrder = 2
+    object sbEngine: TSpeedButton
+      Left = 0
+      Height = 48
+      Top = 48
+      Width = 149
+      Align = alTop
+      Caption = 'Engine'
+      Color = clWindow
+      Flat = True
+      GroupIndex = 1
+      NumGlyphs = 0
+      OnClick = sbEngineClick
+    end
+    object SpeedButton2: TSpeedButton
+      Left = 0
+      Height = 48
+      Top = 192
+      Width = 149
+      Align = alTop
+      Caption = 'Notification'
+      Color = clWindow
+      Flat = True
+      GroupIndex = 1
+      NumGlyphs = 0
+      OnClick = SpeedButton2Click
+    end
+    object sbPlayList: TSpeedButton
+      Left = 0
+      Height = 48
+      Top = 144
+      Width = 149
+      Align = alTop
+      Caption = 'Play List'
+      Color = clWindow
+      Flat = True
+      GroupIndex = 1
+      NumGlyphs = 0
+      OnClick = sbPlayListClick
+    end
+    object sbLibrary: TSpeedButton
+      Left = 0
+      Height = 48
+      Top = 96
+      Width = 149
+      Align = alTop
+      Caption = 'Media Library'
+      Color = clWindow
+      Flat = True
+      GroupIndex = 1
+      NumGlyphs = 0
+      OnClick = sbLibraryClick
+    end
+    object sbInterface: TSpeedButton
+      Left = 0
+      Height = 48
+      Top = 0
+      Width = 149
+      Align = alTop
+      Caption = 'Interface'
+      Color = clWindow
+      Down = True
+      Flat = True
+      GroupIndex = 1
+      NumGlyphs = 0
+      OnClick = sbInterfaceClick
+    end
+  end
+  object FontDialog1: TFontDialog
+    MinFontSize = 0
+    MaxFontSize = 0
+    left = 496
+    top = 96
+  end
+end

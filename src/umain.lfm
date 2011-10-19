@@ -1,0 +1,907 @@
+object fMainForm: TfMainForm
+  Left = 398
+  Height = 657
+  Top = 181
+  Width = 811
+  Caption = 'OVO Player'
+  ClientHeight = 637
+  ClientWidth = 811
+  Constraints.MinHeight = 400
+  Constraints.MinWidth = 600
+  Menu = MainMenu
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnHide = FormHide
+  OnResize = FormResize
+  OnShow = FormShow
+  LCLVersion = '0.9.31'
+  object pcMain: TPageControl
+    Left = 0
+    Height = 637
+    Top = 0
+    Width = 234
+    ActivePage = tsCollection
+    Align = alLeft
+    MultiLine = True
+    TabIndex = 0
+    TabOrder = 0
+    TabPosition = tpBottom
+    Options = [nboMultiLine, nboHidePageListPopup]
+    object tsCollection: TTabSheet
+      Caption = 'Collection'
+      ClientHeight = 609
+      ClientWidth = 226
+      object pnlCollection: TPanel
+        Left = 0
+        Height = 70
+        Top = 0
+        Width = 226
+        Align = alTop
+        BevelOuter = bvNone
+        ClientHeight = 70
+        ClientWidth = 226
+        TabOrder = 0
+        object cbGroupBy: TComboBox
+          Left = 6
+          Height = 23
+          Top = 6
+          Width = 217
+          Anchors = [akTop, akLeft, akRight]
+          ItemHeight = 15
+          ItemIndex = 0
+          Items.Strings = (
+            'AlbumArtist / Album'
+            'Artist / Album'
+            'Year / Album'
+            'Genre / Album'
+          )
+          OnChange = cbGroupByChange
+          Style = csDropDownList
+          TabOrder = 0
+          Text = 'AlbumArtist / Album'
+        end
+        object edtFilter: TLabeledEdit
+          Left = 49
+          Height = 23
+          Top = 38
+          Width = 174
+          Anchors = [akTop, akLeft, akRight]
+          EditLabel.AnchorSideTop.Control = edtFilter
+          EditLabel.AnchorSideTop.Side = asrCenter
+          EditLabel.AnchorSideRight.Control = edtFilter
+          EditLabel.AnchorSideBottom.Control = edtFilter
+          EditLabel.AnchorSideBottom.Side = asrBottom
+          EditLabel.Left = 19
+          EditLabel.Height = 16
+          EditLabel.Top = 41
+          EditLabel.Width = 27
+          EditLabel.Caption = 'Filter'
+          EditLabel.ParentColor = False
+          LabelPosition = lpLeft
+          TabOrder = 1
+          OnChange = edtFilterChange
+        end
+      end
+      object CollectionTree: TVirtualStringTree
+        Left = 0
+        Height = 430
+        Top = 70
+        Width = 226
+        Align = alClient
+        Color = clWindow
+        DefaultText = 'Node'
+        Header.AutoSizeIndex = 0
+        Header.Columns = <>
+        Header.DefaultHeight = 17
+        Header.MainColumn = -1
+        Images = BackEnd.ilSmall
+        PopupMenu = pnCollection
+        TabOrder = 1
+        TreeOptions.MiscOptions = [toFullRepaintOnResize, toGridExtensions, toInitOnSave, toToggleOnDblClick, toWheelPanning, toEditOnClick]
+        TreeOptions.SelectionOptions = [toFullRowSelect, toMultiSelect]
+        OnDblClick = CollectionTreeDblClick
+        OnGetText = CollectionTreeGetText
+        OnGetImageIndex = CollectionTreeGetImageIndex
+      end
+      object gbStats: TGroupBox
+        Left = 0
+        Height = 109
+        Top = 500
+        Width = 226
+        Align = alBottom
+        Caption = 'Stats'
+        ClientHeight = 91
+        ClientWidth = 222
+        ParentFont = False
+        TabOrder = 2
+        Visible = False
+        object SpeedButton1: TSpeedButton
+          Left = 200
+          Height = 22
+          Top = 0
+          Width = 22
+          Align = alRight
+          Constraints.MaxHeight = 22
+          Constraints.MaxWidth = 22
+          Flat = True
+          Glyph.Data = {
+            36040000424D3604000000000000360000002800000010000000100000000100
+            20000000000000040000640000006400000000000000000000009B9B9B16A0A0
+            A0AE9D9D9DF99E9E9EF89E9E9EF89E9E9EF89E9E9EF89E9E9EF89E9E9EF89E9E
+            9EF89E9E9EF89E9E9EF89E9E9EF89D9D9DFBA0A0A0C99B9B9B319F9F9F95B9B9
+            B9FBEAEAEAFFF2F2F2FFF5F5F5FFF7F7F7FFF9F9F9FFFBFBFBFFFCFCFCFFFBFB
+            FBFFF9F9F9FFF7F7F7FFF5F5F5FFF1F1F1FFCACACAFFA0A0A0D39E9E9EF0E3E3
+            E3FF6E6EE4FF1717DBFF1616D9FF1414D8FF1313D7FF1212D6FF1111D6FF1212
+            D6FF1212D7FF1414D8FF1515D9FF5454E1FFF0F0F0FFA0A0A0F69D9D9DF7E9E9
+            E9FF2929DFFF1313DCFF1111DAFF1010D9FF0E0ED8FF0E0ED8FF0E0ED8FF0E0E
+            D8FF0E0ED8FF0F0FD9FF1111DAFF1212DCFFF1F1F1FFA4A4A4F29D9D9DF7E9E9
+            E9FF2B2BE1FF1515DEFF1717DDFF7F80E5FF6566E3FF1111DAFF1111DAFF3838
+            DEFF898AE6FF3031DFFF1313DDFF1515DEFFF1F1F1FFA4A4A4F29D9D9DF7E8E8
+            E8FF2D2DE3FF1818E0FF4E4FE3FFECEEEEFFECEEEEFF7B7CE5FF4444E0FFE0E2
+            EDFFECEEEEFF8E8FE7FF1616DFFF1818E0FFF0F0F0FFA4A4A4F29D9D9DF7E7E7
+            E7FF2E2EE4FF1A1AE3FF2020E2FFC6C8ECFFECEEEEFFECEEEEFFE6E8EDFFECEE
+            EEFFE4E6EEFF4949E4FF1919E1FF1A1AE2FFEFEFEFFFA4A4A4F29D9D9DF7E6E6
+            E6FF3131E6FF1D1DE5FF1C1CE4FF2C2DE4FFD0D2EDFFECEEEEFFECEEEEFFE9EB
+            EEFF5152E6FF1B1BE3FF1C1CE4FF1D1DE5FFEDEDEDFFA4A4A4F29D9D9DF7E5E5
+            E5FF3333E8FF2020E7FF1F1FE7FF4F4FE8FFE2E4EEFFECEEEEFFECEEEEFFECEE
+            EEFF8485EAFF1E1EE6FF1F1FE6FF2020E7FFECECECFFA3A3A3F29D9D9DF7E3E3
+            E3FF3636EBFF2323EAFF3F40EAFFE3E5EEFFECEEEEFFE4E7EEFFD1D3EDFFECEE
+            EEFFECEEEEFF696AEAFF2222E9FF2323EAFFEAEAEAFFA3A3A3F29D9D9DF7E1E1
+            E1FF3838EDFF2626ECFF5252ECFFECEEEEFFE4E6EEFF5859ECFF3435ECFFC8CA
+            EDFFECEEEEFF8E8FEDFF2525ECFF2626ECFFE8E8E8FFA3A3A3F29D9D9DF7E0E0
+            E0FF3939EEFF2828EEFF2828EEFF5657EEFF3E3EEEFF2727EDFF2727EDFF3434
+            EDFF5F5FEDFF3030EEFF2828EEFF2828EEFFE6E6E6FFA3A3A3F29D9D9DF7DEDE
+            DEFF3D3DEDFF2828EEFF2828EEFF2828EEFF2828EEFF2828EEFF2828EEFF2828
+            EEFF2828EEFF2828EEFF2828EEFF2B2BEEFFE4E4E4FFA3A3A3F29F9F9FE4D2D2
+            D2FF9D9DE7FF5D5DEBFF5C5CEBFF5D5DECFF5D5DECFF5D5DECFF5D5DECFF5D5D
+            ECFF5D5DECFF5D5DECFF5C5CEBFF8D8DE8FFDFDFDFFF9E9E9EF79C9C9C74A6A6
+            A6F6CBCBCBFFD4D4D4FFD5D5D5FFD5D5D5FFD5D5D5FFD5D5D5FFD5D5D5FFD5D5
+            D5FFD5D5D5FFD5D5D5FFD5D5D5FFD0D0D0FFB0B0B0F89F9F9FB59B9B9B039B9B
+            9B5CA0A0A0CCA0A0A0DFA0A0A0DFA0A0A0DFA0A0A0DFA0A0A0DFA0A0A0DFA0A0
+            A0DFA0A0A0DFA0A0A0DFA0A0A0DFA0A0A0D79D9D9D779B9B9B0E
+          }
+          NumGlyphs = 0
+          OnClick = SpeedButton1Click
+          ShowCaption = False
+        end
+        object sgStats: TStringGrid
+          Left = 0
+          Height = 91
+          Top = 0
+          Width = 200
+          Align = alClient
+          AutoEdit = False
+          ColCount = 2
+          Columns = <          
+            item
+              MaxSize = 400
+              Title.Caption = 'Title'
+              Title.PrefixOption = poNone
+              Width = 143
+            end          
+            item
+              Alignment = taRightJustify
+              MaxSize = 400
+              SizePriority = 2
+              Title.Caption = 'Title'
+              Title.PrefixOption = poNone
+              Width = 54
+            end>
+          DefaultRowHeight = 18
+          FixedCols = 0
+          FixedRows = 0
+          Options = [goRangeSelect, goSmoothScroll]
+          RowCount = 1
+          ScrollBars = ssAutoVertical
+          TabOrder = 0
+          TitleStyle = tsNative
+          ColWidths = (
+            143
+            54
+          )
+        end
+      end
+    end
+    object tsDirectory: TTabSheet
+      Caption = 'Directory'
+      ClientHeight = 609
+      ClientWidth = 226
+      OnShow = tsDirectoryShow
+      object FilesTree: TVirtualStringTree
+        Left = 0
+        Height = 560
+        Top = 49
+        Width = 226
+        Align = alClient
+        Color = clWindow
+        DefaultText = 'Node'
+        Header.AutoSizeIndex = 0
+        Header.Columns = <>
+        Header.DefaultHeight = 17
+        Header.MainColumn = -1
+        Images = BackEnd.ilSmall
+        PopupMenu = pmdirectories
+        TabOrder = 0
+        TreeOptions.PaintOptions = [toShowButtons, toThemeAware, toUseBlendedImages]
+        OnDblClick = FilesTreeDblClick
+        OnGetText = FilesTreeGetText
+        OnGetImageIndex = FilesTreeGetImageIndex
+      end
+      object ToolBar1: TToolBar
+        Left = 0
+        Height = 49
+        Top = 0
+        Width = 226
+        Caption = 'ToolBar1'
+        Flat = False
+        Images = BackEnd.ilButtons
+        TabOrder = 1
+        object btnBackDir: TToolButton
+          Left = 1
+          Top = 2
+          Caption = 'Back'
+          ImageIndex = 16
+          OnClick = btnBackDirClick
+        end
+        object btnForwardDir: TToolButton
+          Left = 27
+          Top = 2
+          Caption = 'Forward'
+          ImageIndex = 15
+          OnClick = btnForwardDirClick
+        end
+        object btnUpDir: TToolButton
+          Left = 53
+          Top = 2
+          Caption = 'Up'
+          ImageIndex = 17
+          OnClick = btnUpDirClick
+        end
+        object btnHomeDir: TToolButton
+          Left = 79
+          Top = 2
+          Caption = 'Home'
+          ImageIndex = 14
+          OnClick = btnHomeDirClick
+        end
+        object ePath: TDirectoryEdit
+          Left = 1
+          Height = 23
+          Top = 24
+          Width = 202
+          OnAcceptDirectory = ePathAcceptDirectory
+          ShowHidden = False
+          ButtonWidth = 23
+          NumGlyphs = 0
+          MaxLength = 0
+          TabOrder = 0
+          OnEditingDone = ePathEditingDone
+        end
+        object ToolButton14: TToolButton
+          Left = 105
+          Top = 2
+          Caption = 'ToolButton14'
+          OnClick = ToolButton14Click
+        end
+      end
+    end
+    object tsPlayList: TTabSheet
+      Caption = 'PlayList'
+      ClientHeight = 609
+      ClientWidth = 232
+      object PlaylistTree: TTreeView
+        Left = 0
+        Height = 609
+        Top = 0
+        Width = 232
+        Align = alClient
+        DefaultItemHeight = 18
+        ReadOnly = True
+        ScrollBars = ssAutoBoth
+        TabOrder = 0
+        OnDblClick = PlaylistTreeDblClick
+        Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+        Items.Data = {
+          F9FFFFFF020002000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF050000000000
+          0000011100000044656661756C7420506C61796C69737473FFFFFFFFFFFFFFFF
+          01000000FFFFFFFF0000000000000000000C0000004E6576657220706C617965
+          64FFFFFFFFFFFFFFFF02000000FFFFFFFF0000000000000000000A0000004C61
+          7374206164646564FFFFFFFFFFFFFFFF03000000FFFFFFFF0000000000000000
+          000B0000004D6F737420706C61796564FFFFFFFFFFFFFFFF04000000FFFFFFFF
+          0000000000000000000600000052616E646F6DFFFFFFFFFFFFFFFF05000000FF
+          FFFFFF00000000000000000003000000416C6CFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFF00000000000000000006000000437573746F6D
+        }
+      end
+    end
+  end
+  object pnlMain: TPanel
+    Left = 240
+    Height = 637
+    Top = 0
+    Width = 571
+    Align = alClient
+    BevelOuter = bvNone
+    ClientHeight = 637
+    ClientWidth = 571
+    Constraints.MinWidth = 439
+    TabOrder = 1
+    object pnlControl: TPanel
+      Left = 0
+      Height = 50
+      Top = 587
+      Width = 571
+      Align = alBottom
+      Anchors = [akLeft, akRight]
+      BevelOuter = bvNone
+      ClientHeight = 50
+      ClientWidth = 571
+      TabOrder = 0
+      object tbMediaControl: TToolBar
+        Left = 0
+        Height = 22
+        Top = 3
+        Width = 571
+        BorderSpacing.Top = 3
+        Constraints.MaxHeight = 25
+        EdgeBorders = []
+        EdgeInner = esNone
+        EdgeOuter = esNone
+        Images = BackEnd.ilButtons
+        TabOrder = 0
+        Transparent = True
+        Wrapable = False
+        object ToolButton1: TToolButton
+          Left = 1
+          Top = 0
+          Action = BackEnd.actPrevious
+        end
+        object ToolButton2: TToolButton
+          Left = 63
+          Top = 0
+          Action = BackEnd.actPlay
+        end
+        object ToolButton3: TToolButton
+          Left = 125
+          Top = 0
+          Action = BackEnd.actStop
+        end
+        object ToolButton4: TToolButton
+          Left = 177
+          Top = 0
+          Action = BackEnd.actNext
+        end
+        object ToolButton5: TToolButton
+          Left = 99
+          Top = 0
+          Action = BackEnd.actPause
+        end
+        object ToolButton6: TToolButton
+          Left = 27
+          Top = 0
+          Action = BackEnd.actSkipBackward
+        end
+        object ToolButton7: TToolButton
+          Left = 151
+          Top = 0
+          Action = BackEnd.actSkipForward
+        end
+        object ToolButton8: TToolButton
+          Left = 89
+          Top = 0
+          Width = 10
+          Style = tbsSeparator
+        end
+        object ToolButton9: TToolButton
+          Left = 53
+          Top = 0
+          Width = 10
+          Style = tbsSeparator
+        end
+        object ToolButton10: TToolButton
+          Left = 251
+          Top = 0
+          Action = BackEnd.actPlayListShuffle
+        end
+        object tbRepeat: TToolButton
+          Left = 213
+          Top = 0
+          Caption = '     '
+          DropdownMenu = RepeatMenu
+          Grouped = True
+          ImageIndex = 10
+          OnClick = tbRepeatClick
+          Style = tbsDropDown
+        end
+        object ToolButton16: TToolButton
+          Left = 313
+          Top = 0
+          Action = BackEnd.actPlaylistLoad
+        end
+        object ToolButton17: TToolButton
+          Left = 287
+          Top = 0
+          Action = BackEnd.actPlaylistSave
+        end
+        object ToolButton18: TToolButton
+          Left = 203
+          Top = 0
+          Width = 10
+          AutoSize = True
+          Enabled = False
+          Style = tbsSeparator
+        end
+        object ToolButton12: TToolButton
+          Left = 277
+          Top = 0
+          Width = 10
+          Caption = 'ToolButton12'
+          Style = tbsSeparator
+        end
+        object ToolButton13: TToolButton
+          Left = 339
+          Top = 0
+          Caption = 'ToolButton13'
+          Enabled = False
+          ShowCaption = False
+        end
+        object ToolButton11: TToolButton
+          Left = 362
+          Top = 0
+          Action = BackEnd.actMute
+        end
+        object slVolume: TThemedSlider
+          Left = 388
+          Height = 22
+          Top = 0
+          Width = 84
+          BorderWidth = 2
+          Step = 10
+          Max = 255
+          Min = 1
+          Position = 50
+          Sliderwidth = 8
+          OnChange = slVolumeChange
+        end
+      end
+      object Panel1: TPanel
+        Left = 0
+        Height = 24
+        Top = 26
+        Width = 571
+        Align = alBottom
+        Caption = 'Panel1'
+        ClientHeight = 24
+        ClientWidth = 571
+        TabOrder = 1
+        object TrackBar: TThemedSlider
+          Left = 1
+          Height = 22
+          Top = 1
+          Width = 474
+          Align = alClient
+          BorderWidth = 2
+          Step = 10000
+          Max = 100
+          Min = 0
+          Position = 50
+          Sliderwidth = 12
+          OnChange = TrackBarChange
+        end
+        object lbTime: TLabel
+          Left = 475
+          Height = 22
+          Top = 1
+          Width = 95
+          Align = alRight
+          Alignment = taCenter
+          Anchors = [akRight, akBottom]
+          AutoSize = False
+          Caption = '00:00:00'
+          Font.Height = 22
+          ParentColor = False
+          ParentFont = False
+          OptimalFill = True
+        end
+      end
+    end
+    object pnlPlaylist: TPanel
+      Left = 0
+      Height = 463
+      Top = 124
+      Width = 571
+      Align = alClient
+      ClientHeight = 463
+      ClientWidth = 571
+      Constraints.MinWidth = 494
+      TabOrder = 1
+      object lvPlayList: TVirtualStringTree
+        Left = 1
+        Height = 461
+        Top = 1
+        Width = 569
+        Align = alClient
+        Color = clWindow
+        DefaultPasteMode = amNoWhere
+        DefaultText = 'Node'
+        DragType = dtVCL
+        Header.AutoSizeIndex = 2
+        Header.Columns = <        
+          item
+            Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coAllowFocus]
+            Position = 0
+            Text = 'Maincolumn'
+          end        
+          item
+            Alignment = taRightJustify
+            Options = [coAllowClick, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coFixed, coSmartResize, coAllowFocus, coUseCaptionAlignment]
+            Position = 1
+            Text = 'No.'
+            Width = 80
+          end        
+          item
+            Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coFixed, coSmartResize, coAllowFocus]
+            Position = 2
+            Text = 'Title'
+            Width = 239
+          end        
+          item
+            Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coSmartResize, coAllowFocus]
+            Position = 3
+            Text = 'Album'
+            Width = 61
+          end        
+          item
+            Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coSmartResize, coAllowFocus]
+            Position = 4
+            Text = 'Time'
+            Width = 80
+          end        
+          item
+            Alignment = taRightJustify
+            Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coSmartResize, coAllowFocus]
+            Position = 5
+            Text = 'Track'
+            Width = 55
+          end        
+          item
+            Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coSmartResize, coAllowFocus]
+            Position = 6
+            Text = 'Genre'
+          end        
+          item
+            Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coSmartResize, coAllowFocus]
+            Position = 7
+            Text = 'Year'
+          end        
+          item
+            Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coSmartResize, coAllowFocus]
+            Position = 8
+            Text = 'Album Artist'
+            Width = 10
+          end        
+          item
+            Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coAllowFocus]
+            Position = 9
+            Text = 'File Name'
+          end        
+          item
+            Position = 10
+            Style = vsOwnerDraw
+            Text = 'Rating'
+          end>
+        Header.DefaultHeight = 18
+        Header.Height = 18
+        Header.MinHeight = 18
+        Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoRestrictDrag, hoShowSortGlyphs, hoVisible, hoAutoSpring]
+        Header.Style = hsFlatButtons
+        Images = BackEnd.ilSmall
+        RootNodeCount = 1
+        TabOrder = 0
+        TreeOptions.MiscOptions = [toFullRepaintOnResize, toGridExtensions, toInitOnSave, toToggleOnDblClick, toWheelPanning, toFullRowDrag, toEditOnClick]
+        TreeOptions.PaintOptions = [toShowRoot, toThemeAware, toUseBlendedImages]
+        TreeOptions.SelectionOptions = [toFullRowSelect, toMultiSelect, toRightClickSelect]
+        OnBeforeCellPaint = lvPlayListBeforeCellPaint
+        OnDblClick = lvPlayListDblClick
+        OnGetText = lvPlayListGetText
+        OnPaintText = lvPlayListPaintText
+        OnGetImageIndex = lvPlayListGetImageIndex
+        OnGetPopupMenu = lvPlayListGetPopupMenu
+        OnHeaderClick = lvPlayListHeaderClick
+        OnKeyDown = lvPlayListKeyDown
+        OnMouseDown = lvPlayListMouseDown
+        OnMouseMove = lvPlayListMouseMove
+        OnMouseUp = lvPlayListMouseUp
+      end
+    end
+    object pnlPlayInfo: TPanel
+      Left = 0
+      Height = 124
+      Top = 0
+      Width = 571
+      Align = alTop
+      ClientHeight = 124
+      ClientWidth = 571
+      TabOrder = 2
+      object imgCover: TImage
+        Left = 0
+        Height = 107
+        Top = 4
+        Width = 124
+        Stretch = True
+      end
+      object Title: TLabel
+        Left = 132
+        Height = 24
+        Top = 6
+        Width = 429
+        Anchors = [akTop, akLeft, akRight]
+        AutoSize = False
+        Caption = 'Title'
+        Font.Height = 21
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        OptimalFill = True
+      end
+      object Album: TLabel
+        Left = 132
+        Height = 21
+        Top = 36
+        Width = 429
+        Anchors = [akTop, akLeft, akRight]
+        AutoSize = False
+        Caption = 'Album'
+        Font.Height = 18
+        ParentColor = False
+        ParentFont = False
+        OptimalFill = True
+      end
+      object Artist: TLabel
+        Left = 132
+        Height = 21
+        Top = 65
+        Width = 429
+        Anchors = [akTop, akLeft, akRight]
+        AutoSize = False
+        Caption = 'Artist'
+        Font.Height = 18
+        ParentColor = False
+        ParentFont = False
+        OptimalFill = True
+      end
+      object Track: TLabel
+        Left = 130
+        Height = 16
+        Top = 94
+        Width = 112
+        AutoSize = False
+        ParentColor = False
+        OptimalFill = True
+      end
+    end
+  end
+  object Splitter1: TSplitter
+    Left = 234
+    Height = 637
+    Top = 0
+    Width = 6
+  end
+  object MainMenu: TMainMenu
+    Images = BackEnd.ilSmall
+    left = 304
+    top = 160
+    object mnuFile: TMenuItem
+      Caption = '&File'
+      object mnuLoadPlaylist: TMenuItem
+        Action = BackEnd.actPlaylistLoad
+      end
+      object mnuSavePlaylist: TMenuItem
+        Action = BackEnd.actPlaylistSave
+      end
+      object MenuItem21: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem23: TMenuItem
+        Action = BackEnd.actPlayListAddFiles
+      end
+      object MenuItem2: TMenuItem
+        Action = BackEnd.actImportDirectory
+      end
+      object MenuItem15: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem16: TMenuItem
+        Action = BackEnd.actExit
+      end
+    end
+    object mnuCollection: TMenuItem
+      Caption = 'Collection'
+      object MenuItem22: TMenuItem
+        Action = BackEnd.actRescanCollection
+      end
+      object MenuItem1: TMenuItem
+        Action = BackEnd.actRemoveMissing
+      end
+    end
+    object MenuItem14: TMenuItem
+      Caption = 'Tools'
+      object MenuItem20: TMenuItem
+        Caption = 'Preferences'
+        OnClick = MenuItem20Click
+      end
+    end
+    object MenuItem25: TMenuItem
+      Caption = 'Help'
+      object MenuItem31: TMenuItem
+        Caption = 'About ...'
+        OnClick = MenuItem31Click
+      end
+    end
+  end
+  object Timer: TTimer
+    Interval = 333
+    OnTimer = TimerTimer
+    left = 320
+    top = 408
+  end
+  object TrayIcon: TTrayIcon
+    BalloonFlags = bfInfo
+    BalloonTitle = 'Now Playing'
+    PopUpMenu = TrayMenu
+    Visible = True
+    OnDblClick = TrayIconDblClick
+    OnMouseDown = TrayIconMouseDown
+    left = 616
+    top = 256
+  end
+  object TrayMenu: TPopupMenu
+    Images = BackEnd.ilButtons
+    left = 680
+    top = 256
+    object MenuItem6: TMenuItem
+      Action = BackEnd.actPlay
+    end
+    object MenuItem5: TMenuItem
+      Action = BackEnd.actPause
+    end
+    object MenuItem4: TMenuItem
+      Action = BackEnd.actStop
+    end
+    object MenuItem7: TMenuItem
+      Action = BackEnd.actNext
+    end
+    object MenuItem8: TMenuItem
+      Action = BackEnd.actPrevious
+    end
+    object MenuItem9: TMenuItem
+      Caption = '-'
+    end
+    object mnuRestore: TMenuItem
+      Caption = 'Restore'
+      OnClick = mnuRestoreClick
+    end
+    object MenuItem34: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem10: TMenuItem
+      Action = BackEnd.actExit
+    end
+  end
+  object PlaylistMenu: TPopupMenu
+    Images = BackEnd.ilSmall
+    OnPopup = PlaylistMenuPopup
+    left = 336
+    top = 248
+    object MenuItem17: TMenuItem
+      Action = BackEnd.actPlayListAddFiles
+    end
+    object mnuRemovePlaylist: TMenuItem
+      Caption = 'Remove from Playlist'
+      OnClick = mnuRemovePlaylistClick
+    end
+    object MenuItem26: TMenuItem
+      Caption = 'Sort'
+      object MenuItem27: TMenuItem
+        Caption = 'Title'
+      end
+      object MenuItem28: TMenuItem
+        Caption = 'Track'
+      end
+      object MenuItem29: TMenuItem
+        Caption = 'Duration'
+      end
+    end
+    object MenuItem13: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem30: TMenuItem
+      Caption = 'Info Media'
+      OnClick = MenuItem30Click
+    end
+    object MenuItem11: TMenuItem
+      Action = BackEnd.actPlaylistSave
+    end
+    object MenuItem12: TMenuItem
+      Action = BackEnd.actPlaylistLoad
+    end
+    object MenuItem24: TMenuItem
+      Action = BackEnd.actImportDirectory
+    end
+    object MenuItem18: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem19: TMenuItem
+      Action = BackEnd.actPlayListClear
+    end
+  end
+  object pmdirectories: TPopupMenu
+    OnPopup = pmdirectoriesPopup
+    left = 152
+    top = 184
+    object mnuFileInfo: TMenuItem
+      Caption = 'Media Info'
+      OnClick = mnuFileInfoClick
+    end
+  end
+  object pnCollection: TPopupMenu
+    Images = BackEnd.ilButtons
+    OnPopup = pnCollectionPopup
+    left = 59
+    top = 248
+    object mnuEnqueueItems: TMenuItem
+      Caption = 'Enqueue'
+      Default = True
+      OnClick = mnuEnqueueItemsClick
+    end
+    object mnuPlayItems: TMenuItem
+      Caption = 'Play'
+      OnClick = mnuPlayItemsClick
+    end
+    object MenuItem3: TMenuItem
+      Caption = '-'
+    end
+    object mnuRefreshItems: TMenuItem
+      Caption = 'Refresh'
+      Visible = False
+    end
+    object mnuInfo: TMenuItem
+      Caption = 'Media Info'
+      Visible = False
+      OnClick = mnuInfoClick
+    end
+  end
+  object pnHeaderPlaylist: TPopupMenu
+    OnPopup = pnHeaderPlaylistPopup
+    left = 448
+    top = 160
+    object MenuItem32: TMenuItem
+      Caption = 'New Item1'
+    end
+  end
+  object RepeatMenu: TPopupMenu
+    left = 425
+    top = 350
+    object MenuItem37: TMenuItem
+      Action = BackEnd.actRepeatNone
+      GroupIndex = 1
+      RadioItem = True
+    end
+    object MenuItem33: TMenuItem
+      Action = BackEnd.actRepeatTrack
+      GroupIndex = 1
+      RadioItem = True
+    end
+    object MenuItem36: TMenuItem
+      Action = BackEnd.actRepeatAlbum
+      GroupIndex = 1
+      RadioItem = True
+    end
+    object MenuItem35: TMenuItem
+      Action = BackEnd.actRepeatAll
+      GroupIndex = 1
+      RadioItem = True
+    end
+  end
+end

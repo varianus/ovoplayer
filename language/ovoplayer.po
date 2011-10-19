@@ -1,0 +1,724 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: appconsts.raddedtrack
+msgid "Added:"
+msgstr ""
+
+#: appconsts.rallfiles
+msgid "All Files(%0:s)|%0:s"
+msgstr ""
+
+#: appconsts.rbegincollectionscan
+msgid "Scanning Collection"
+msgstr ""
+
+#: appconsts.remptytag
+msgid "<none>"
+msgstr ""
+
+#: appconsts.rfailedtrack
+msgid "Failed:"
+msgstr ""
+
+#: appconsts.rnever
+msgid "Never"
+msgstr ""
+
+#: appconsts.rnotplaying
+msgid "Not Playing"
+msgstr ""
+
+#: appconsts.rremovedtrack
+msgid "Removed:"
+msgstr ""
+
+#: appconsts.rupdatedtrack
+msgid "Updated:"
+msgstr ""
+
+#: TBACKEND.ACTEXIT.CAPTION
+msgid "Exit"
+msgstr ""
+
+#: TBACKEND.ACTIMPORTDIRECTORY.CAPTION
+msgid "Import Directory"
+msgstr ""
+
+#: TBACKEND.ACTMUTE.CAPTION
+msgid "Mute"
+msgstr ""
+
+#: TBACKEND.ACTNEXT.CAPTION
+msgctxt "TBACKEND.ACTNEXT.CAPTION"
+msgid "Next"
+msgstr ""
+
+#: TBACKEND.ACTNEXT.HINT
+msgctxt "TBACKEND.ACTNEXT.HINT"
+msgid "Next"
+msgstr ""
+
+#: TBACKEND.ACTPAUSE.CAPTION
+msgctxt "TBACKEND.ACTPAUSE.CAPTION"
+msgid "Pause"
+msgstr ""
+
+#: TBACKEND.ACTPAUSE.HINT
+msgctxt "TBACKEND.ACTPAUSE.HINT"
+msgid "Pause"
+msgstr ""
+
+#: TBACKEND.ACTPLAY.CAPTION
+msgctxt "TBACKEND.ACTPLAY.CAPTION"
+msgid "Play"
+msgstr ""
+
+#: TBACKEND.ACTPLAY.HINT
+msgctxt "TBACKEND.ACTPLAY.HINT"
+msgid "Play"
+msgstr ""
+
+#: TBACKEND.ACTPLAYLISTADDFILES.CAPTION
+msgctxt "TBACKEND.ACTPLAYLISTADDFILES.CAPTION"
+msgid "Add Files"
+msgstr ""
+
+#: TBACKEND.ACTPLAYLISTCLEAR.CAPTION
+msgid "Clear"
+msgstr ""
+
+#: TBACKEND.ACTPLAYLISTLOAD.CAPTION
+msgid "Load Playlist"
+msgstr ""
+
+#: TBACKEND.ACTPLAYLISTLOAD.HINT
+msgid "Load a Playlist"
+msgstr ""
+
+#: TBACKEND.ACTPLAYLISTSAVE.CAPTION
+msgid "Save PlayList"
+msgstr ""
+
+#: TBACKEND.ACTPLAYLISTSAVE.HINT
+msgid "Save current playlist"
+msgstr ""
+
+#: TBACKEND.ACTPLAYLISTSHUFFLE.CAPTION
+msgid "actShufflePlayList"
+msgstr ""
+
+#: TBACKEND.ACTPREVIOUS.CAPTION
+msgctxt "TBACKEND.ACTPREVIOUS.CAPTION"
+msgid "Previous"
+msgstr ""
+
+#: TBACKEND.ACTPREVIOUS.HINT
+msgctxt "TBACKEND.ACTPREVIOUS.HINT"
+msgid "Previous"
+msgstr ""
+
+#: TBACKEND.ACTREMOVEMISSING.CAPTION
+msgid "Remove Missing"
+msgstr ""
+
+#: TBACKEND.ACTREPEATALBUM.CAPTION
+msgid "Repeat Album"
+msgstr ""
+
+#: TBACKEND.ACTREPEATALL.CAPTION
+msgid "Repeat Playlist"
+msgstr ""
+
+#: TBACKEND.ACTREPEATNONE.CAPTION
+msgid "Not Repeat"
+msgstr ""
+
+#: TBACKEND.ACTREPEATTRACK.CAPTION
+msgctxt "TBACKEND.ACTREPEATTRACK.CAPTION"
+msgid "Repeat track"
+msgstr ""
+
+#: TBACKEND.ACTRESCANCOLLECTION.CAPTION
+msgid "Update Collection"
+msgstr ""
+
+#: TBACKEND.ACTSKIPBACKWARD.CAPTION
+msgid "Skip Backward"
+msgstr ""
+
+#: TBACKEND.ACTSKIPFORWARD.CAPTION
+msgid "Skip Forward"
+msgstr ""
+
+#: TBACKEND.ACTSTOP.CAPTION
+msgctxt "TBACKEND.ACTSTOP.CAPTION"
+msgid "Stop"
+msgstr ""
+
+#: TBACKEND.ACTSTOP.HINT
+msgctxt "TBACKEND.ACTSTOP.HINT"
+msgid "Stop"
+msgstr ""
+
+#: TBACKEND.OPENDIALOGFILES.TITLE
+msgctxt "TBACKEND.OPENDIALOGFILES.TITLE"
+msgid "Open Playlist"
+msgstr ""
+
+#: TBACKEND.OPENDIALOGPLAYLIST.TITLE
+msgctxt "TBACKEND.OPENDIALOGPLAYLIST.TITLE"
+msgid "Open Playlist"
+msgstr ""
+
+#: TFABOUT.BUTTON1.CAPTION
+msgid "Close"
+msgstr ""
+
+#: TFABOUT.CAPTION
+msgid "About"
+msgstr ""
+
+#: TFABOUT.LABEL1.CAPTION
+msgid "OVOPlayer"
+msgstr ""
+
+#: TFABOUT.LABEL2.CAPTION
+msgid "Version :"
+msgstr ""
+
+#: TFABOUT.LABEL3.CAPTION
+msgid "Author : Marco Caselli"
+msgstr ""
+
+#: TFABOUT.LABEL4.CAPTION
+msgid "Another free music player"
+msgstr ""
+
+#: TFABOUT.LVERSION.CAPTION
+msgid "Version"
+msgstr ""
+
+#: TFCONFIG.BADDDIR.CAPTION
+msgid "Add ..."
+msgstr ""
+
+#: TFCONFIG.BREMOVEDIR.CAPTION
+msgid "Remove"
+msgstr ""
+
+#: TFCONFIG.BRESCANLIBRARY.CAPTION
+msgid "Scan Now"
+msgstr ""
+
+#: TFCONFIG.BUTTONPANEL.CANCELBUTTON.CAPTION
+msgctxt "TFCONFIG.BUTTONPANEL.CANCELBUTTON.CAPTION"
+msgid "Annulla"
+msgstr ""
+
+#: TFCONFIG.BUTTONPANEL.CLOSEBUTTON.CAPTION
+msgctxt "TFCONFIG.BUTTONPANEL.CLOSEBUTTON.CAPTION"
+msgid "&Chiudi"
+msgstr ""
+
+#: TFCONFIG.BUTTONPANEL.HELPBUTTON.CAPTION
+msgctxt "TFCONFIG.BUTTONPANEL.HELPBUTTON.CAPTION"
+msgid "&Aiuto"
+msgstr ""
+
+#: TFCONFIG.BUTTONPANEL.OKBUTTON.CAPTION
+msgctxt "TFCONFIG.BUTTONPANEL.OKBUTTON.CAPTION"
+msgid "&OK"
+msgstr ""
+
+#: TFCONFIG.CAPTION
+msgid "Config"
+msgstr ""
+
+#: TFCONFIG.CBMINIMIZEONCLOSE.CAPTION
+msgid "Minimize on Close"
+msgstr ""
+
+#: TFCONFIG.CBRESTART.CAPTION
+msgid "Restart from last position"
+msgstr ""
+
+#: TFCONFIG.CBSCANONSTART.CAPTION
+msgid "Scan On program start"
+msgstr ""
+
+#: TFCONFIG.CBTRAYVISIBLE.CAPTION
+msgid "Show Tray Icon"
+msgstr ""
+
+#: TFCONFIG.GROUPBOX1.CAPTION
+msgid "Categories"
+msgstr ""
+
+#: TFCONFIG.LABEL1.CAPTION
+msgid "Directories"
+msgstr ""
+
+#: TFCONFIG.LABEL2.CAPTION
+msgid "BackGround Color"
+msgstr ""
+
+#: TFCONFIG.LABEL3.CAPTION
+msgid "Font Color"
+msgstr ""
+
+#: TFCONFIG.LABEL4.CAPTION
+msgid "Tranparency"
+msgstr ""
+
+#: TFCONFIG.LABEL5.CAPTION
+msgid "Track to extract for quick playlist"
+msgstr ""
+
+#: TFCONFIG.LABEL6.CAPTION
+msgid "Mplayer Path"
+msgstr ""
+
+#: TFCONFIG.RGAUDIOENGINE.CAPTION
+msgid "Audio Engine"
+msgstr ""
+
+#: TFCONFIG.RGOSDKIND.CAPTION
+msgid "Notification Kind"
+msgstr ""
+
+#: TFCONFIG.SBENGINE.CAPTION
+msgctxt "TFCONFIG.SBENGINE.CAPTION"
+msgid "Engine"
+msgstr ""
+
+#: TFCONFIG.SBINTERFACE.CAPTION
+msgctxt "TFCONFIG.SBINTERFACE.CAPTION"
+msgid "Interface"
+msgstr ""
+
+#: TFCONFIG.SBLIBRARY.CAPTION
+msgctxt "TFCONFIG.SBLIBRARY.CAPTION"
+msgid "Media Library"
+msgstr ""
+
+#: TFCONFIG.SBPLAYLIST.CAPTION
+msgctxt "TFCONFIG.SBPLAYLIST.CAPTION"
+msgid "Play List"
+msgstr ""
+
+#: TFCONFIG.SPEEDBUTTON2.CAPTION
+msgid "Notification"
+msgstr ""
+
+#: TFCONFIG.TSENGINE.CAPTION
+msgctxt "TFCONFIG.TSENGINE.CAPTION"
+msgid "Engine"
+msgstr ""
+
+#: TFCONFIG.TSINTERFACE.CAPTION
+msgctxt "TFCONFIG.TSINTERFACE.CAPTION"
+msgid "Interface"
+msgstr ""
+
+#: TFCONFIG.TSMEDIALIBRARY.CAPTION
+msgctxt "TFCONFIG.TSMEDIALIBRARY.CAPTION"
+msgid "Media Library"
+msgstr ""
+
+#: TFCONFIG.TSMPLAYER.CAPTION
+msgid "tsMPlayer"
+msgstr ""
+
+#: TFCONFIG.TSNONE.CAPTION
+msgid "tsNone"
+msgstr ""
+
+#: TFCONFIG.TSOSD.CAPTION
+msgid "OSD"
+msgstr ""
+
+#: TFCONFIG.TSPLAYLIST.CAPTION
+msgctxt "TFCONFIG.TSPLAYLIST.CAPTION"
+msgid "Play List"
+msgstr ""
+
+#: TFMAINFORM.ALBUM.CAPTION
+msgctxt "TFMAINFORM.ALBUM.CAPTION"
+msgid "Album"
+msgstr ""
+
+#: TFMAINFORM.ARTIST.CAPTION
+msgctxt "TFMAINFORM.ARTIST.CAPTION"
+msgid "Artist"
+msgstr ""
+
+#: TFMAINFORM.BTNBACKDIR.CAPTION
+msgctxt "TFMAINFORM.BTNBACKDIR.CAPTION"
+msgid "Back"
+msgstr ""
+
+#: TFMAINFORM.BTNFORWARDDIR.CAPTION
+msgctxt "TFMAINFORM.BTNFORWARDDIR.CAPTION"
+msgid "Forward"
+msgstr ""
+
+#: TFMAINFORM.BTNHOMEDIR.CAPTION
+msgctxt "TFMAINFORM.BTNHOMEDIR.CAPTION"
+msgid "Home"
+msgstr ""
+
+#: TFMAINFORM.BTNUPDIR.CAPTION
+msgctxt "TFMAINFORM.BTNUPDIR.CAPTION"
+msgid "Up"
+msgstr ""
+
+#: TFMAINFORM.CAPTION
+msgid "OVO Player"
+msgstr ""
+
+#: TFMAINFORM.CBGROUPBY.TEXT
+msgid "AlbumArtist / Album"
+msgstr ""
+
+#: TFMAINFORM.EDTFILTER.EDITLABEL.CAPTION
+msgid "Filter"
+msgstr ""
+
+#: TFMAINFORM.GBSTATS.CAPTION
+msgid "Stats"
+msgstr ""
+
+#: TFMAINFORM.LBTIME.CAPTION
+msgctxt "TFMAINFORM.LBTIME.CAPTION"
+msgid "00:00:00"
+msgstr ""
+
+#: TFMAINFORM.MENUITEM13.CAPTION
+msgctxt "TFMAINFORM.MENUITEM13.CAPTION"
+msgid "-"
+msgstr ""
+
+#: TFMAINFORM.MENUITEM14.CAPTION
+msgid "Tools"
+msgstr ""
+
+#: TFMAINFORM.MENUITEM15.CAPTION
+msgctxt "TFMAINFORM.MENUITEM15.CAPTION"
+msgid "-"
+msgstr ""
+
+#: TFMAINFORM.MENUITEM18.CAPTION
+msgctxt "TFMAINFORM.MENUITEM18.CAPTION"
+msgid "-"
+msgstr ""
+
+#: TFMAINFORM.MENUITEM20.CAPTION
+msgid "Preferences"
+msgstr ""
+
+#: TFMAINFORM.MENUITEM21.CAPTION
+msgctxt "TFMAINFORM.MENUITEM21.CAPTION"
+msgid "-"
+msgstr ""
+
+#: TFMAINFORM.MENUITEM25.CAPTION
+msgid "Help"
+msgstr ""
+
+#: TFMAINFORM.MENUITEM26.CAPTION
+msgid "Sort"
+msgstr ""
+
+#: TFMAINFORM.MENUITEM27.CAPTION
+msgctxt "TFMAINFORM.MENUITEM27.CAPTION"
+msgid "Title"
+msgstr ""
+
+#: TFMAINFORM.MENUITEM28.CAPTION
+msgctxt "TFMAINFORM.MENUITEM28.CAPTION"
+msgid "Track"
+msgstr ""
+
+#: TFMAINFORM.MENUITEM29.CAPTION
+msgctxt "TFMAINFORM.MENUITEM29.CAPTION"
+msgid "Duration"
+msgstr ""
+
+#: TFMAINFORM.MENUITEM3.CAPTION
+msgctxt "TFMAINFORM.MENUITEM3.CAPTION"
+msgid "-"
+msgstr ""
+
+#: TFMAINFORM.MENUITEM30.CAPTION
+msgid "Info Media"
+msgstr ""
+
+#: TFMAINFORM.MENUITEM31.CAPTION
+msgid "About ..."
+msgstr ""
+
+#: TFMAINFORM.MENUITEM32.CAPTION
+msgctxt "TFMAINFORM.MENUITEM32.CAPTION"
+msgid "New Item1"
+msgstr ""
+
+#: TFMAINFORM.MENUITEM34.CAPTION
+msgctxt "TFMAINFORM.MENUITEM34.CAPTION"
+msgid "-"
+msgstr ""
+
+#: TFMAINFORM.MENUITEM9.CAPTION
+msgctxt "TFMAINFORM.MENUITEM9.CAPTION"
+msgid "-"
+msgstr ""
+
+#: TFMAINFORM.MNUCOLLECTION.CAPTION
+msgctxt "TFMAINFORM.MNUCOLLECTION.CAPTION"
+msgid "Collection"
+msgstr ""
+
+#: TFMAINFORM.MNUENQUEUEITEMS.CAPTION
+msgid "Enqueue"
+msgstr ""
+
+#: TFMAINFORM.MNUFILE.CAPTION
+msgid "&File"
+msgstr ""
+
+#: TFMAINFORM.MNUFILEINFO.CAPTION
+msgctxt "TFMAINFORM.MNUFILEINFO.CAPTION"
+msgid "Media Info"
+msgstr ""
+
+#: TFMAINFORM.MNUINFO.CAPTION
+msgctxt "TFMAINFORM.MNUINFO.CAPTION"
+msgid "Media Info"
+msgstr ""
+
+#: TFMAINFORM.MNUPLAYITEMS.CAPTION
+msgctxt "TFMAINFORM.MNUPLAYITEMS.CAPTION"
+msgid "Play"
+msgstr ""
+
+#: TFMAINFORM.MNUREFRESHITEMS.CAPTION
+msgid "Refresh"
+msgstr ""
+
+#: TFMAINFORM.MNUREMOVEPLAYLIST.CAPTION
+msgid "Remove from Playlist"
+msgstr ""
+
+#: TFMAINFORM.MNURESTORE.CAPTION
+msgid "Restore"
+msgstr ""
+
+#: TFMAINFORM.PANEL1.CAPTION
+msgid "Panel1"
+msgstr ""
+
+#: TFMAINFORM.SGSTATS.COLUMNS[0].TITLE.CAPTION
+msgctxt "TFMAINFORM.SGSTATS.COLUMNS[0].TITLE.CAPTION"
+msgid "Title"
+msgstr ""
+
+#: TFMAINFORM.SGSTATS.COLUMNS[1].TITLE.CAPTION
+msgctxt "TFMAINFORM.SGSTATS.COLUMNS[1].TITLE.CAPTION"
+msgid "Title"
+msgstr ""
+
+#: TFMAINFORM.TBREPEAT.CAPTION
+msgid "     "
+msgstr ""
+
+#: TFMAINFORM.TITLE.CAPTION
+msgctxt "TFMAINFORM.TITLE.CAPTION"
+msgid "Title"
+msgstr ""
+
+#: TFMAINFORM.TOOLBAR1.CAPTION
+msgid "ToolBar1"
+msgstr ""
+
+#: TFMAINFORM.TOOLBUTTON12.CAPTION
+msgid "ToolButton12"
+msgstr ""
+
+#: TFMAINFORM.TOOLBUTTON13.CAPTION
+msgid "ToolButton13"
+msgstr ""
+
+#: TFMAINFORM.TOOLBUTTON14.CAPTION
+msgid "ToolButton14"
+msgstr ""
+
+#: TFMAINFORM.TSCOLLECTION.CAPTION
+msgctxt "TFMAINFORM.TSCOLLECTION.CAPTION"
+msgid "Collection"
+msgstr ""
+
+#: TFMAINFORM.TSDIRECTORY.CAPTION
+msgid "Directory"
+msgstr ""
+
+#: TFMAINFORM.TSPLAYLIST.CAPTION
+msgid "PlayList"
+msgstr ""
+
+#: TFMINIPLAYER.CAPTION
+msgctxt "TFMINIPLAYER.CAPTION"
+msgid "MiniPlayer"
+msgstr ""
+
+#: TFOSD.ALBUM.CAPTION
+msgctxt "TFOSD.ALBUM.CAPTION"
+msgid "Album"
+msgstr ""
+
+#: TFOSD.ARTIST.CAPTION
+msgctxt "TFOSD.ARTIST.CAPTION"
+msgid "Artist"
+msgstr ""
+
+#: TFOSD.TITLE.CAPTION
+msgctxt "TFOSD.TITLE.CAPTION"
+msgid "Title"
+msgstr ""
+
+#: TFOSD.TRACK.CAPTION
+msgid "0"
+msgstr ""
+
+#: TFSONGINFO.BNEXT.CAPTION
+msgctxt "TFSONGINFO.BNEXT.CAPTION"
+msgid "Next"
+msgstr ""
+
+#: TFSONGINFO.BPREVIOUS.CAPTION
+msgctxt "TFSONGINFO.BPREVIOUS.CAPTION"
+msgid "Previous"
+msgstr ""
+
+#: TFSONGINFO.BUTTONPANEL1.CANCELBUTTON.CAPTION
+msgctxt "TFSONGINFO.BUTTONPANEL1.CANCELBUTTON.CAPTION"
+msgid "Annulla"
+msgstr ""
+
+#: TFSONGINFO.BUTTONPANEL1.CLOSEBUTTON.CAPTION
+msgctxt "TFSONGINFO.BUTTONPANEL1.CLOSEBUTTON.CAPTION"
+msgid "&Chiudi"
+msgstr ""
+
+#: TFSONGINFO.BUTTONPANEL1.HELPBUTTON.CAPTION
+msgctxt "TFSONGINFO.BUTTONPANEL1.HELPBUTTON.CAPTION"
+msgid "&Aiuto"
+msgstr ""
+
+#: TFSONGINFO.BUTTONPANEL1.OKBUTTON.CAPTION
+msgctxt "TFSONGINFO.BUTTONPANEL1.OKBUTTON.CAPTION"
+msgid "&OK"
+msgstr ""
+
+#: TFSONGINFO.CAPTION
+msgid "Song Information"
+msgstr ""
+
+#: TFSONGINFO.GROUPBOX1.CAPTION
+msgid "Library"
+msgstr ""
+
+#: TFSONGINFO.LABEL1.CAPTION
+msgctxt "TFSONGINFO.LABEL1.CAPTION"
+msgid "Artist"
+msgstr ""
+
+#: TFSONGINFO.LABEL10.CAPTION
+msgid "BPM"
+msgstr ""
+
+#: TFSONGINFO.LABEL11.CAPTION
+msgid "BitRate"
+msgstr ""
+
+#: TFSONGINFO.LABEL12.CAPTION
+msgid "Sampling"
+msgstr ""
+
+#: TFSONGINFO.LABEL13.CAPTION
+msgid "Channels"
+msgstr ""
+
+#: TFSONGINFO.LABEL14.CAPTION
+msgctxt "TFSONGINFO.LABEL14.CAPTION"
+msgid "File Name"
+msgstr ""
+
+#: TFSONGINFO.LABEL15.CAPTION
+msgid "Size"
+msgstr ""
+
+#: TFSONGINFO.LABEL16.CAPTION
+msgid "Play Count"
+msgstr ""
+
+#: TFSONGINFO.LABEL17.CAPTION
+msgid "Added to collection"
+msgstr ""
+
+#: TFSONGINFO.LABEL18.CAPTION
+msgid "Last Played"
+msgstr ""
+
+#: TFSONGINFO.LABEL19.CAPTION
+msgid "Rating"
+msgstr ""
+
+#: TFSONGINFO.LABEL2.CAPTION
+msgctxt "TFSONGINFO.LABEL2.CAPTION"
+msgid "Album"
+msgstr ""
+
+#: TFSONGINFO.LABEL3.CAPTION
+msgctxt "TFSONGINFO.LABEL3.CAPTION"
+msgid "Title"
+msgstr ""
+
+#: TFSONGINFO.LABEL4.CAPTION
+msgid "Album Artist"
+msgstr ""
+
+#: TFSONGINFO.LABEL5.CAPTION
+msgid "Genre"
+msgstr ""
+
+#: TFSONGINFO.LABEL6.CAPTION
+msgid "Comment"
+msgstr ""
+
+#: TFSONGINFO.LABEL7.CAPTION
+msgid "Year"
+msgstr ""
+
+#: TFSONGINFO.LABEL8.CAPTION
+msgctxt "TFSONGINFO.LABEL8.CAPTION"
+msgid "Track"
+msgstr ""
+
+#: TFSONGINFO.LABEL9.CAPTION
+msgctxt "TFSONGINFO.LABEL9.CAPTION"
+msgid "Duration"
+msgstr ""
+
+#: TFSONGINFO.PNLMOVESELECTION.CAPTION
+msgid "pnlMoveSelection"
+msgstr ""
+
+#: TFSONGINFO.TSMEDIAPROPERTY.CAPTION
+msgctxt "TFSONGINFO.TSMEDIAPROPERTY.CAPTION"
+msgid "Media Property"
+msgstr ""
+
+#: TFSONGINFO.TSTAGS.CAPTION
+msgid "Tags"
+msgstr ""
+

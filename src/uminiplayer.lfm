@@ -1,0 +1,100 @@
+object fMiniPlayer: TfMiniPlayer
+  Left = 737
+  Height = 58
+  Top = 333
+  Width = 203
+  BorderStyle = bsNone
+  Caption = 'MiniPlayer'
+  ClientHeight = 58
+  ClientWidth = 203
+  Color = 11955992
+  FormStyle = fsSystemStayOnTop
+  KeyPreview = True
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnHide = FormHide
+  OnMouseLeave = FormMouseLeave
+  OnShow = FormShow
+  LCLVersion = '0.9.31'
+  object Panel1: TPanel
+    Left = 0
+    Height = 58
+    Top = 0
+    Width = 203
+    Align = alClient
+    BevelInner = bvLowered
+    BorderWidth = 2
+    BorderStyle = bsSingle
+    ClientHeight = 54
+    ClientWidth = 199
+    ParentColor = False
+    TabOrder = 0
+    object tbPlayControls: TToolBar
+      Left = 4
+      Height = 22
+      Top = 4
+      Width = 191
+      AutoSize = True
+      EdgeInner = esNone
+      EdgeOuter = esNone
+      Flat = False
+      Images = BackEnd.ilButtons
+      ParentColor = False
+      TabOrder = 0
+      object ToolButton1: TToolButton
+        Left = 1
+        Top = 0
+        Action = BackEnd.actPrevious
+      end
+      object ToolButton2: TToolButton
+        Left = 53
+        Top = 0
+        Action = BackEnd.actPlay
+      end
+      object ToolButton3: TToolButton
+        Left = 105
+        Top = 0
+        Action = BackEnd.actStop
+      end
+      object ToolButton4: TToolButton
+        Left = 157
+        Top = 0
+        Action = BackEnd.actNext
+      end
+      object ToolButton5: TToolButton
+        Left = 79
+        Top = 0
+        Action = BackEnd.actPause
+      end
+      object ToolButton6: TToolButton
+        Left = 27
+        Top = 0
+        Action = BackEnd.actSkipBackward
+      end
+      object ToolButton7: TToolButton
+        Left = 131
+        Top = 0
+        Action = BackEnd.actSkipForward
+      end
+    end
+    object TrackBar: TThemedSlider
+      Left = 4
+      Height = 24
+      Top = 26
+      Width = 191
+      Align = alClient
+      BorderWidth = 2
+      Step = 10000
+      Max = 100
+      Min = 0
+      Position = 15
+      Sliderwidth = 8
+      OnChange = TrackBarChange
+    end
+  end
+  object Timer: TTimer
+    Interval = 333
+    OnTimer = TimerTimer
+    left = 112
+  end
+end
