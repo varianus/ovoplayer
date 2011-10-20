@@ -8,7 +8,7 @@
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="15"/>
+        <EditorIndex Value="14"/>
         <WindowIndex Value="0"/>
         <TopLine Value="16"/>
         <CursorPos X="48" Y="35"/>
@@ -23,7 +23,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uMain"/>
         <IsVisibleTab Value="True"/>
-        <EditorIndex Value="33"/>
+        <EditorIndex Value="27"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1224"/>
         <CursorPos X="17" Y="1232"/>
@@ -38,7 +38,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uSongInfo"/>
-        <EditorIndex Value="38"/>
+        <EditorIndex Value="30"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="11" Y="20"/>
@@ -63,7 +63,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="GUIBackEnd"/>
-        <EditorIndex Value="14"/>
+        <EditorIndex Value="13"/>
         <WindowIndex Value="0"/>
         <TopLine Value="536"/>
         <CursorPos X="38" Y="552"/>
@@ -75,7 +75,7 @@
         <Filename Value="song.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="song"/>
-        <EditorIndex Value="30"/>
+        <EditorIndex Value="24"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="20"/>
@@ -89,7 +89,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uOSD"/>
-        <EditorIndex Value="35"/>
+        <EditorIndex Value="29"/>
         <WindowIndex Value="0"/>
         <TopLine Value="180"/>
         <CursorPos X="1" Y="197"/>
@@ -100,7 +100,7 @@
         <Filename Value="playlist.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="PlayList"/>
-        <EditorIndex Value="28"/>
+        <EditorIndex Value="22"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="20"/>
@@ -144,7 +144,7 @@
         <Filename Value="playlistmanager.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="PlayListManager"/>
-        <EditorIndex Value="29"/>
+        <EditorIndex Value="23"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="2"/>
@@ -161,7 +161,7 @@
         <Filename Value="multimediakeys.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MultimediaKeys"/>
-        <EditorIndex Value="26"/>
+        <EditorIndex Value="20"/>
         <WindowIndex Value="0"/>
         <TopLine Value="41"/>
         <CursorPos X="7" Y="63"/>
@@ -194,7 +194,7 @@
         <Filename Value="filessupport.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="FilesSupport"/>
-        <EditorIndex Value="12"/>
+        <EditorIndex Value="11"/>
         <WindowIndex Value="0"/>
         <TopLine Value="208"/>
         <CursorPos X="2" Y="19"/>
@@ -208,7 +208,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uMiniPlayer"/>
-        <EditorIndex Value="34"/>
+        <EditorIndex Value="28"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
@@ -222,7 +222,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uConfig"/>
-        <EditorIndex Value="32"/>
+        <EditorIndex Value="26"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="20"/>
@@ -239,7 +239,7 @@
         <Filename Value="decoupler.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="decoupler"/>
-        <EditorIndex Value="11"/>
+        <EditorIndex Value="10"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="2" Y="19"/>
@@ -250,7 +250,7 @@
         <Filename Value="generalfunc.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="GeneralFunc"/>
-        <EditorIndex Value="13"/>
+        <EditorIndex Value="12"/>
         <WindowIndex Value="0"/>
         <TopLine Value="35"/>
         <CursorPos X="2" Y="19"/>
@@ -260,7 +260,7 @@
       <Unit22>
         <Filename Value="ovoplayer.inc"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="39"/>
+        <EditorIndex Value="31"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="4" Y="19"/>
@@ -273,7 +273,7 @@
         <ComponentName Value="fAbout"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uAbout"/>
-        <EditorIndex Value="31"/>
+        <EditorIndex Value="25"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="20"/>
@@ -347,7 +347,7 @@
         <Filename Value="ovotag\file_flac.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_flac"/>
-        <EditorIndex Value="22"/>
+        <EditorIndex Value="16"/>
         <WindowIndex Value="0"/>
         <TopLine Value="114"/>
         <CursorPos X="31" Y="140"/>
@@ -358,7 +358,7 @@
         <Filename Value="ovotag\file_mp3.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_mp3"/>
-        <EditorIndex Value="23"/>
+        <EditorIndex Value="17"/>
         <WindowIndex Value="0"/>
         <TopLine Value="394"/>
         <CursorPos X="74" Y="417"/>
@@ -369,7 +369,7 @@
         <Filename Value="ovotag\file_wma.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_wma"/>
-        <EditorIndex Value="24"/>
+        <EditorIndex Value="18"/>
         <WindowIndex Value="0"/>
         <TopLine Value="91"/>
         <CursorPos X="74" Y="105"/>
@@ -401,7 +401,7 @@
         <Filename Value="ovotag\file_ogg.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_ogg"/>
-        <EditorIndex Value="25"/>
+        <EditorIndex Value="19"/>
         <WindowIndex Value="0"/>
         <TopLine Value="121"/>
         <CursorPos X="72" Y="127"/>
@@ -424,7 +424,7 @@
       </Unit39>
       <Unit40>
         <Filename Value="platform\win\mmkeys.inc"/>
-        <EditorIndex Value="27"/>
+        <EditorIndex Value="21"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="2"/>
@@ -434,22 +434,18 @@
       <Unit41>
         <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\inc\ctypes.pp"/>
         <UnitName Value="ctypes"/>
-        <EditorIndex Value="37"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="50" Y="2"/>
         <UsageCount Value="14"/>
-        <Loaded Value="True"/>
       </Unit41>
       <Unit42>
         <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\win32\system.pp"/>
         <UnitName Value="System"/>
-        <EditorIndex Value="36"/>
         <WindowIndex Value="0"/>
         <TopLine Value="880"/>
         <CursorPos X="19" Y="907"/>
         <UsageCount Value="14"/>
-        <Loaded Value="True"/>
       </Unit42>
       <Unit43>
         <Filename Value="Import\ptypes.inc"/>
@@ -471,7 +467,7 @@
       <Unit45>
         <Filename Value="ovotag\basetag.pas"/>
         <UnitName Value="basetag"/>
-        <EditorIndex Value="21"/>
+        <EditorIndex Value="15"/>
         <WindowIndex Value="0"/>
         <TopLine Value="186"/>
         <CursorPos X="14" Y="202"/>
@@ -480,40 +476,32 @@
       </Unit45>
       <Unit46>
         <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\objpas\sysutils\osutilsh.inc"/>
-        <EditorIndex Value="10"/>
         <WindowIndex Value="0"/>
         <TopLine Value="25"/>
         <CursorPos X="10" Y="41"/>
         <UsageCount Value="13"/>
-        <Loaded Value="True"/>
       </Unit46>
       <Unit47>
         <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\inc\systemh.inc"/>
-        <EditorIndex Value="19"/>
         <WindowIndex Value="0"/>
         <TopLine Value="981"/>
         <CursorPos X="11" Y="997"/>
         <UsageCount Value="13"/>
-        <Loaded Value="True"/>
       </Unit47>
       <Unit48>
         <Filename Value="C:\Ex-D\lazarus\lcl\lclproc.pas"/>
         <UnitName Value="LCLProc"/>
-        <EditorIndex Value="18"/>
         <WindowIndex Value="0"/>
         <TopLine Value="884"/>
         <CursorPos X="14" Y="890"/>
         <UsageCount Value="13"/>
-        <Loaded Value="True"/>
       </Unit48>
       <Unit49>
         <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\inc\system.inc"/>
-        <EditorIndex Value="20"/>
         <WindowIndex Value="0"/>
         <TopLine Value="892"/>
         <CursorPos X="3" Y="894"/>
         <UsageCount Value="13"/>
-        <Loaded Value="True"/>
       </Unit49>
       <Unit50>
         <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\inc\lnfodwrf.pp"/>
@@ -525,27 +513,23 @@
       </Unit50>
       <Unit51>
         <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\objpas\sysutils\sysutilh.inc"/>
-        <EditorIndex Value="16"/>
         <WindowIndex Value="0"/>
         <TopLine Value="185"/>
         <CursorPos X="17" Y="204"/>
         <UsageCount Value="12"/>
-        <Loaded Value="True"/>
       </Unit51>
       <Unit52>
         <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\objpas\sysutils\sysutils.inc"/>
-        <EditorIndex Value="17"/>
         <WindowIndex Value="0"/>
         <TopLine Value="507"/>
         <CursorPos X="3" Y="432"/>
         <UsageCount Value="12"/>
-        <Loaded Value="True"/>
       </Unit52>
     </Units>
     <General>
       <ActiveWindowIndexAtStart Value="0"/>
     </General>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="26" HistoryIndex="25">
       <Position1>
         <Filename Value="guibackend.pas"/>
         <Caret Line="543" Column="1" TopLine="525"/>
@@ -603,40 +587,40 @@
         <Caret Line="591" Column="15" TopLine="565"/>
       </Position14>
       <Position15>
-        <Filename Value="C:\Ex-D\lazarus\lcl\lclproc.pas"/>
-        <Caret Line="188" Column="11" TopLine="172"/>
+        <Filename Value="guibackend.pas"/>
+        <Caret Line="565" Column="1" TopLine="562"/>
       </Position15>
       <Position16>
-        <Filename Value="C:\Ex-D\lazarus\lcl\lclproc.pas"/>
-        <Caret Line="880" Column="7" TopLine="855"/>
+        <Filename Value="guibackend.pas"/>
+        <Caret Line="31" Column="41" TopLine="1"/>
       </Position16>
       <Position17>
         <Filename Value="guibackend.pas"/>
-        <Caret Line="565" Column="1" TopLine="562"/>
+        <Caret Line="555" Column="37" TopLine="531"/>
       </Position17>
       <Position18>
         <Filename Value="guibackend.pas"/>
-        <Caret Line="31" Column="41" TopLine="1"/>
+        <Caret Line="559" Column="8" TopLine="536"/>
       </Position18>
       <Position19>
         <Filename Value="guibackend.pas"/>
-        <Caret Line="555" Column="37" TopLine="531"/>
+        <Caret Line="552" Column="38" TopLine="536"/>
       </Position19>
       <Position20>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="559" Column="8" TopLine="536"/>
+        <Filename Value="ovotag\basetag.pas"/>
+        <Caret Line="202" Column="11" TopLine="187"/>
       </Position20>
       <Position21>
-        <Filename Value="C:\Ex-D\lazarus\lcl\lclproc.pas"/>
-        <Caret Line="189" Column="17" TopLine="173"/>
+        <Filename Value="ovotag\basetag.pas"/>
+        <Caret Line="191" Column="33" TopLine="187"/>
       </Position21>
       <Position22>
-        <Filename Value="C:\Ex-D\lazarus\lcl\lclproc.pas"/>
-        <Caret Line="890" Column="14" TopLine="884"/>
+        <Filename Value="ovotag\basetag.pas"/>
+        <Caret Line="202" Column="7" TopLine="187"/>
       </Position22>
       <Position23>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="552" Column="38" TopLine="536"/>
+        <Filename Value="ovotag\basetag.pas"/>
+        <Caret Line="203" Column="1" TopLine="187"/>
       </Position23>
       <Position24>
         <Filename Value="ovotag\basetag.pas"/>
@@ -644,28 +628,12 @@
       </Position24>
       <Position25>
         <Filename Value="ovotag\basetag.pas"/>
-        <Caret Line="191" Column="33" TopLine="187"/>
+        <Caret Line="143" Column="19" TopLine="127"/>
       </Position25>
       <Position26>
         <Filename Value="ovotag\basetag.pas"/>
-        <Caret Line="202" Column="7" TopLine="187"/>
-      </Position26>
-      <Position27>
-        <Filename Value="ovotag\basetag.pas"/>
-        <Caret Line="203" Column="1" TopLine="187"/>
-      </Position27>
-      <Position28>
-        <Filename Value="ovotag\basetag.pas"/>
-        <Caret Line="202" Column="11" TopLine="187"/>
-      </Position28>
-      <Position29>
-        <Filename Value="ovotag\basetag.pas"/>
-        <Caret Line="143" Column="19" TopLine="127"/>
-      </Position29>
-      <Position30>
-        <Filename Value="ovotag\basetag.pas"/>
         <Caret Line="234" Column="3" TopLine="232"/>
-      </Position30>
+      </Position26>
     </JumpHistory>
   </ProjectSession>
   <Debugging>

@@ -16,7 +16,7 @@
     </General>
     <i18n>
       <EnableI18N Value="True"/>
-      <OutDir Value="../language"/>
+      <OutDir Value="..\language"/>
     </i18n>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
@@ -356,7 +356,7 @@
     <Version Value="10"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="../bin/$(TargetOS)/ovoplayer"/>
+      <Filename Value="..\bin\$(TargetOS)\ovoplayer"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir);platform\$(SrcOS)"/>
@@ -405,7 +405,6 @@ if LCLWidgetType = 'win32' then
       <CompilerMessages>
         <UseMsgFile Value="True"/>
       </CompilerMessages>
-      <CustomOptions Value="-Xm"/>
       <CompilerPath Value="$(CompPath)"/>
     </Other>
   </CompilerOptions>
