@@ -32,7 +32,7 @@ const
   AppName    = 'ovoplayer';
   AppNameServerID    = AppName;
   DisplayAppName = 'OVO Player';
-  AppVersion = '1.0.0 Alpha';
+  AppVersion = '0.0.1alpha';
 
   DefaultResourceDirectory = '/usr/share/' + AppName + '/';
   ResourceSubDirectory     = 'Resources';
@@ -63,4 +63,4 @@ initialization
  OnGetApplicationName := @GetAppName;
 
 
-end.
+end.
