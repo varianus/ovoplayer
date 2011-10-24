@@ -199,6 +199,7 @@ end;
 
 constructor TTagReader.Create(FileName: TfileName);
 begin
+  Create;
   LoadFromFile(FileName);
 end;
 

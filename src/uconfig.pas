@@ -117,7 +117,7 @@ end;
 
 procedure TfConfig.OKButtonClick(Sender: TObject);
 begin
-  if fOSD.Visible then
+  if Assigned(FOSD) and fOSD.Visible then
     begin
     BackEnd.Config.NotificationParam.X := fOsd.left;
     BackEnd.Config.NotificationParam.Y := fOsd.top;
@@ -163,7 +163,7 @@ end;
 
 procedure TfConfig.CancelButtonClick(Sender: TObject);
 begin
-  if fOSD.Visible then
+  if Assigned(Fosd) and fOSD.Visible then
     begin
       fOSD.Close;
     end;
@@ -173,14 +173,14 @@ end;
 procedure TfConfig.colorBackgroundChange(Sender: TObject);
 begin
   BackEnd.Config.NotificationParam.BackColor := colorBackground.Selected;
-  if fOSD.Visible then
+  if Assigned(Fosd) and fOSD.Visible then
     fosd.UpdateAspect;
 end;
 
 procedure TfConfig.ColorFontChange(Sender: TObject);
 begin
   BackEnd.Config.NotificationParam.FontColor := ColorFont.Selected;
-  if fOSD.Visible then
+  if Assigned(Fosd) and fOSD.Visible then
     fosd.UpdateAspect;
 
 end;
@@ -226,14 +226,14 @@ end;
 procedure TfConfig.tbTransparencyChange(Sender: TObject);
 begin
   BackEnd.Config.NotificationParam.Transparency := tbTransparency.Position;
-  if fOSD.Visible then
+  if Assigned(Fosd) and fOSD.Visible then
     fosd.UpdateAspect;
 
 end;
 
 procedure TfConfig.tsOSDHide(Sender: TObject);
 begin
-  if fOSD.Visible then
+  if Assigned(Fosd) and fOSD.Visible then
     begin
       BackEnd.Config.NotificationParam.X := fosd.left;
       BackEnd.Config.NotificationParam.Y := fosd.top;

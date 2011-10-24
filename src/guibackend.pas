@@ -28,7 +28,7 @@ uses
   Classes, SysUtils, FileUtil, ActnList, Controls, Dialogs, Forms, LResources,
   PopupNotifier, PlayList, AudioEngine, AudioEngine_MPlayer, audioengine_vlc,
   strutils, audioengine_Xine, audioengine_bass, PlayListManager, MediaLibrary,
-  MultimediaKeys, Config, UniqueInstance,lnfodwrf ;
+  MultimediaKeys, Config, UniqueInstance;
 
 type
 

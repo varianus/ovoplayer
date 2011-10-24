@@ -1651,7 +1651,8 @@ zipdist: all
 	-$(DEL) -r $(ZIPSRCDIR)
 		-$(MKDIR) $(ZIPSRCDIR)
 		-$(MKDIR) $(ZIPSRCDIR)/locale
-		-$(MKDIR) $(ZIPSRCDIR)/resources		
+		-$(MKDIR) $(ZIPSRCDIR)/resources	
+	 strip --strip-all $(BIN_DIR)/ovoplayer$(EXEEXT)
 	 strip --strip-all $(BIN_DIR)/ovoplayer$(EXEEXT)
 	-$(CPPROG) $(BIN_DIR)/ovoplayer$(EXEEXT) $(ZIPSRCDIR)
 		-$(CPPROG) $(BASE)/language/*.po $(ZIPSRCDIR)/locale

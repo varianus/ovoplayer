@@ -111,7 +111,6 @@ uses
 
 const
   SectionUnix    = 'UNIX';
-
   IdentResourcesPath = 'ResourcesPath';
 
 constructor TConfig.Create;

@@ -36,9 +36,6 @@ type
 
   TEngineCommand = (ecInvalid, ecStop, ecPrevious, ecPlay, ecNext, ecPause, ecSeek);
 
-  PConfigParam = ^TConfigParam;
-  TConfigParam = record end;
-
 
   TAudioEngineClass = class of TAudioEngine;
   { TAudioEngine }
@@ -63,7 +60,7 @@ type
     procedure SetMuted(const AValue: boolean); virtual; abstract;
     Function GetMuted: boolean; virtual; abstract;
   public
-    Class Function IsAvalaible(ConfigParam: PConfigParam): boolean; virtual; abstract;
+    Class Function IsAvalaible(ConfigParam: TStrings): boolean; virtual; abstract;
     constructor Create; virtual;
     destructor Destroy; override;
     procedure Pause; virtual;

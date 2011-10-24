@@ -4,16 +4,14 @@
     <PathDelim Value="\"/>
     <Version Value="9"/>
     <BuildModes Active="NATIVE"/>
-    <Units Count="53">
+    <Units Count="58">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="14"/>
         <WindowIndex Value="0"/>
         <TopLine Value="16"/>
         <CursorPos X="48" Y="35"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="39"/>
       </Unit0>
       <Unit1>
         <Filename Value="umain.pas"/>
@@ -22,14 +20,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uMain"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="27"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1224"/>
         <CursorPos X="17" Y="1232"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <UsageCount Value="39"/>
       </Unit1>
       <Unit2>
         <Filename Value="usonginfo.pas"/>
@@ -38,23 +32,19 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uSongInfo"/>
-        <EditorIndex Value="30"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="11" Y="20"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="39"/>
       </Unit2>
       <Unit3>
         <Filename Value="appconsts.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AppConsts"/>
-        <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="2" Y="19"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="39"/>
       </Unit3>
       <Unit4>
         <Filename Value="guibackend.pas"/>
@@ -63,24 +53,19 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="GUIBackEnd"/>
-        <EditorIndex Value="13"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="536"/>
-        <CursorPos X="38" Y="552"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <TopLine Value="1"/>
+        <CursorPos X="41" Y="31"/>
+        <UsageCount Value="39"/>
       </Unit4>
       <Unit5>
         <Filename Value="song.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="song"/>
-        <EditorIndex Value="24"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="20"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="39"/>
       </Unit5>
       <Unit6>
         <Filename Value="uosd.pas"/>
@@ -89,117 +74,111 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uOSD"/>
-        <EditorIndex Value="29"/>
         <WindowIndex Value="0"/>
         <TopLine Value="180"/>
         <CursorPos X="1" Y="197"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="39"/>
       </Unit6>
       <Unit7>
         <Filename Value="playlist.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="PlayList"/>
-        <EditorIndex Value="22"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="20"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="39"/>
       </Unit7>
       <Unit8>
         <Filename Value="audioengine.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AudioEngine"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="13"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="2" Y="19"/>
-        <UsageCount Value="35"/>
+        <TopLine Value="44"/>
+        <CursorPos X="53" Y="63"/>
+        <UsageCount Value="39"/>
         <Loaded Value="True"/>
       </Unit8>
       <Unit9>
         <Filename Value="audioengine_mplayer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AudioEngine_MPlayer"/>
-        <EditorIndex Value="3"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="2" Y="19"/>
-        <UsageCount Value="35"/>
+        <TopLine Value="70"/>
+        <CursorPos X="21" Y="93"/>
+        <UsageCount Value="39"/>
         <Loaded Value="True"/>
       </Unit9>
       <Unit10>
         <Filename Value="audioengine_bass.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="audioengine_bass"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="12"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="2" Y="19"/>
-        <UsageCount Value="35"/>
+        <TopLine Value="249"/>
+        <CursorPos X="66" Y="249"/>
+        <UsageCount Value="39"/>
         <Loaded Value="True"/>
       </Unit10>
       <Unit11>
         <Filename Value="playlistmanager.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="PlayListManager"/>
-        <EditorIndex Value="23"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="2"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="39"/>
       </Unit11>
       <Unit12>
         <Filename Value="medialibrary.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MediaLibrary"/>
-        <UsageCount Value="35"/>
+        <EditorIndex Value="5"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="212"/>
+        <CursorPos X="33" Y="234"/>
+        <UsageCount Value="39"/>
+        <Loaded Value="True"/>
       </Unit12>
       <Unit13>
         <Filename Value="multimediakeys.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MultimediaKeys"/>
-        <EditorIndex Value="20"/>
         <WindowIndex Value="0"/>
         <TopLine Value="41"/>
         <CursorPos X="7" Y="63"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="39"/>
       </Unit13>
       <Unit14>
         <Filename Value="config.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Config"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="97"/>
-        <CursorPos X="20" Y="119"/>
-        <UsageCount Value="35"/>
+        <TopLine Value="256"/>
+        <CursorPos X="2" Y="114"/>
+        <UsageCount Value="39"/>
         <Loaded Value="True"/>
       </Unit14>
       <Unit15>
         <Filename Value="audiotag.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AudioTag"/>
-        <EditorIndex Value="7"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="2" Y="19"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="39"/>
       </Unit15>
       <Unit16>
         <Filename Value="filessupport.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="FilesSupport"/>
-        <EditorIndex Value="11"/>
         <WindowIndex Value="0"/>
         <TopLine Value="208"/>
         <CursorPos X="2" Y="19"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="39"/>
       </Unit16>
       <Unit17>
         <Filename Value="uminiplayer.pas"/>
@@ -208,12 +187,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uMiniPlayer"/>
-        <EditorIndex Value="28"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
+        <TopLine Value="46"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="39"/>
       </Unit17>
       <Unit18>
         <Filename Value="uconfig.pas"/>
@@ -222,50 +199,44 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uConfig"/>
-        <EditorIndex Value="26"/>
+        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="1" Y="20"/>
-        <UsageCount Value="35"/>
+        <TopLine Value="104"/>
+        <CursorPos X="19" Y="120"/>
+        <UsageCount Value="39"/>
         <Loaded Value="True"/>
       </Unit18>
       <Unit19>
         <Filename Value="guibackend.lfm"/>
         <IsPartOfProject Value="True"/>
-        <UsageCount Value="35"/>
+        <UsageCount Value="39"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit19>
       <Unit20>
         <Filename Value="decoupler.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="decoupler"/>
-        <EditorIndex Value="10"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="2" Y="19"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="39"/>
       </Unit20>
       <Unit21>
         <Filename Value="generalfunc.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="GeneralFunc"/>
-        <EditorIndex Value="12"/>
         <WindowIndex Value="0"/>
         <TopLine Value="35"/>
         <CursorPos X="2" Y="19"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="39"/>
       </Unit21>
       <Unit22>
         <Filename Value="ovoplayer.inc"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="31"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="4" Y="19"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="39"/>
       </Unit22>
       <Unit23>
         <Filename Value="uabout.pas"/>
@@ -273,22 +244,20 @@
         <ComponentName Value="fAbout"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uAbout"/>
-        <EditorIndex Value="25"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="20"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="39"/>
       </Unit23>
       <Unit24>
         <Filename Value="audioengine_xine.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="audioengine_Xine"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="11"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="2" Y="19"/>
-        <UsageCount Value="35"/>
+        <TopLine Value="259"/>
+        <CursorPos X="66" Y="259"/>
+        <UsageCount Value="39"/>
         <Loaded Value="True"/>
       </Unit24>
       <Unit25>
@@ -298,13 +267,13 @@
         <WindowIndex Value="0"/>
         <TopLine Value="16"/>
         <CursorPos X="2" Y="32"/>
-        <UsageCount Value="35"/>
+        <UsageCount Value="39"/>
       </Unit25>
       <Unit26>
         <Filename Value="Import\PasLibVlcUnit.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="PasLibVlcUnit"/>
-        <UsageCount Value="35"/>
+        <UsageCount Value="39"/>
       </Unit26>
       <Unit27>
         <Filename Value="Import\gstreamer.pas"/>
@@ -313,80 +282,72 @@
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="35"/>
+        <UsageCount Value="39"/>
       </Unit27>
       <Unit28>
         <Filename Value="audioengine_vlc.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="audioengine_vlc"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="10"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="273"/>
-        <CursorPos X="42" Y="275"/>
-        <UsageCount Value="35"/>
+        <TopLine Value="265"/>
+        <CursorPos X="65" Y="281"/>
+        <UsageCount Value="39"/>
         <Loaded Value="True"/>
       </Unit28>
       <Unit29>
         <Filename Value="Import\lazdynamic_bass.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="lazdynamic_bass"/>
-        <UsageCount Value="35"/>
+        <UsageCount Value="39"/>
       </Unit29>
       <Unit30>
         <Filename Value="ovotag\commonfunctions.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="CommonFunctions"/>
-        <EditorIndex Value="8"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="49"/>
+        <TopLine Value="13"/>
         <CursorPos X="2" Y="67"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="39"/>
       </Unit30>
       <Unit31>
         <Filename Value="ovotag\file_flac.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_flac"/>
-        <EditorIndex Value="16"/>
         <WindowIndex Value="0"/>
         <TopLine Value="114"/>
         <CursorPos X="31" Y="140"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="39"/>
       </Unit31>
       <Unit32>
         <Filename Value="ovotag\file_mp3.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_mp3"/>
-        <EditorIndex Value="17"/>
         <WindowIndex Value="0"/>
         <TopLine Value="394"/>
         <CursorPos X="74" Y="417"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="39"/>
       </Unit32>
       <Unit33>
         <Filename Value="ovotag\file_wma.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_wma"/>
-        <EditorIndex Value="18"/>
         <WindowIndex Value="0"/>
         <TopLine Value="91"/>
         <CursorPos X="74" Y="105"/>
-        <UsageCount Value="35"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="39"/>
       </Unit33>
       <Unit34>
         <Filename Value="ovotag\tag_id3v2.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_id3v2"/>
-        <UsageCount Value="35"/>
+        <UsageCount Value="39"/>
       </Unit34>
       <Unit35>
         <Filename Value="ovotag\tag_vorbis.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_vorbis"/>
-        <UsageCount Value="35"/>
+        <UsageCount Value="39"/>
       </Unit35>
       <Unit36>
         <Filename Value="ovotag\tag_wma.pas"/>
@@ -395,18 +356,16 @@
         <WindowIndex Value="0"/>
         <TopLine Value="91"/>
         <CursorPos X="1" Y="1"/>
-        <UsageCount Value="35"/>
+        <UsageCount Value="39"/>
       </Unit36>
       <Unit37>
         <Filename Value="ovotag\file_ogg.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_ogg"/>
-        <EditorIndex Value="19"/>
         <WindowIndex Value="0"/>
         <TopLine Value="121"/>
         <CursorPos X="72" Y="127"/>
-        <UsageCount Value="23"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="27"/>
       </Unit37>
       <Unit38>
         <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\inc\threadh.inc"/>
@@ -424,12 +383,10 @@
       </Unit39>
       <Unit40>
         <Filename Value="platform\win\mmkeys.inc"/>
-        <EditorIndex Value="21"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="1" Y="2"/>
         <UsageCount Value="15"/>
-        <Loaded Value="True"/>
       </Unit40>
       <Unit41>
         <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\inc\ctypes.pp"/>
@@ -457,22 +414,18 @@
       <Unit44>
         <Filename Value="import-engines\xine.pas"/>
         <UnitName Value="xine"/>
-        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="919"/>
         <CursorPos X="1" Y="921"/>
         <UsageCount Value="14"/>
-        <Loaded Value="True"/>
       </Unit44>
       <Unit45>
         <Filename Value="ovotag\basetag.pas"/>
         <UnitName Value="basetag"/>
-        <EditorIndex Value="15"/>
         <WindowIndex Value="0"/>
         <TopLine Value="186"/>
         <CursorPos X="14" Y="202"/>
         <UsageCount Value="14"/>
-        <Loaded Value="True"/>
       </Unit45>
       <Unit46>
         <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\objpas\sysutils\osutilsh.inc"/>
@@ -491,10 +444,12 @@
       <Unit48>
         <Filename Value="C:\Ex-D\lazarus\lcl\lclproc.pas"/>
         <UnitName Value="LCLProc"/>
+        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="884"/>
-        <CursorPos X="14" Y="890"/>
+        <TopLine Value="805"/>
+        <CursorPos X="1" Y="827"/>
         <UsageCount Value="13"/>
+        <Loaded Value="True"/>
       </Unit48>
       <Unit49>
         <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\inc\system.inc"/>
@@ -525,133 +480,202 @@
         <CursorPos X="3" Y="432"/>
         <UsageCount Value="12"/>
       </Unit52>
+      <Unit53>
+        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\objpas\classes\classesh.inc"/>
+        <EditorIndex Value="8"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="546"/>
+        <CursorPos X="20" Y="562"/>
+        <UsageCount Value="12"/>
+        <Loaded Value="True"/>
+      </Unit53>
+      <Unit54>
+        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\objpas\classes\stringl.inc"/>
+        <EditorIndex Value="9"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="209"/>
+        <CursorPos X="3" Y="216"/>
+        <UsageCount Value="12"/>
+        <Loaded Value="True"/>
+      </Unit54>
+      <Unit55>
+        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\packages\fcl-process\src\process.pp"/>
+        <UnitName Value="process"/>
+        <EditorIndex Value="6"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="89"/>
+        <CursorPos X="21" Y="104"/>
+        <UsageCount Value="12"/>
+        <Loaded Value="True"/>
+      </Unit55>
+      <Unit56>
+        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\packages\fcl-process\src\win\process.inc"/>
+        <EditorIndex Value="7"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="159"/>
+        <CursorPos X="3" Y="170"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit56>
+      <Unit57>
+        <Filename Value="C:\Ex-D\lazarus\lcl\include\control.inc"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="4219"/>
+        <CursorPos X="1" Y="4170"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit57>
     </Units>
     <General>
       <ActiveWindowIndexAtStart Value="0"/>
     </General>
-    <JumpHistory Count="26" HistoryIndex="25">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="543" Column="1" TopLine="525"/>
+        <Filename Value="audioengine_mplayer.pas"/>
+        <Caret Line="332" Column="18" TopLine="316"/>
       </Position1>
       <Position2>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="544" Column="1" TopLine="525"/>
+        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\packages\fcl-process\src\process.pp"/>
+        <Caret Line="48" Column="3" TopLine="44"/>
       </Position2>
       <Position3>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="545" Column="1" TopLine="525"/>
+        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\packages\fcl-process\src\process.pp"/>
+        <Caret Line="104" Column="21" TopLine="89"/>
       </Position3>
       <Position4>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="546" Column="1" TopLine="525"/>
+        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\packages\fcl-process\src\win\process.inc"/>
+        <Caret Line="170" Column="3" TopLine="159"/>
       </Position4>
       <Position5>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="548" Column="1" TopLine="534"/>
+        <Filename Value="audioengine_mplayer.pas"/>
+        <Caret Line="335" Column="1" TopLine="316"/>
       </Position5>
       <Position6>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="549" Column="1" TopLine="534"/>
+        <Filename Value="audioengine_mplayer.pas"/>
+        <Caret Line="336" Column="1" TopLine="316"/>
       </Position6>
       <Position7>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="552" Column="1" TopLine="534"/>
+        <Filename Value="audioengine_mplayer.pas"/>
+        <Caret Line="343" Column="1" TopLine="316"/>
       </Position7>
       <Position8>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="561" Column="1" TopLine="534"/>
+        <Filename Value="audioengine_mplayer.pas"/>
+        <Caret Line="344" Column="1" TopLine="317"/>
       </Position8>
       <Position9>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="563" Column="1" TopLine="536"/>
+        <Filename Value="audioengine_mplayer.pas"/>
+        <Caret Line="345" Column="1" TopLine="318"/>
       </Position9>
       <Position10>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="585" Column="1" TopLine="569"/>
+        <Filename Value="C:\Ex-D\lazarus\lcl\include\control.inc"/>
+        <Caret Line="4169" Column="1" TopLine="4153"/>
       </Position10>
       <Position11>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="586" Column="1" TopLine="569"/>
+        <Filename Value="C:\Ex-D\lazarus\lcl\include\control.inc"/>
+        <Caret Line="4170" Column="1" TopLine="4153"/>
       </Position11>
       <Position12>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="587" Column="1" TopLine="569"/>
+        <Filename Value="C:\Ex-D\lazarus\lcl\include\control.inc"/>
+        <Caret Line="4171" Column="1" TopLine="4153"/>
       </Position12>
       <Position13>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="546" Column="26" TopLine="539"/>
+        <Filename Value="C:\Ex-D\lazarus\lcl\lclproc.pas"/>
+        <Caret Line="821" Column="1" TopLine="805"/>
       </Position13>
       <Position14>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="591" Column="15" TopLine="565"/>
+        <Filename Value="C:\Ex-D\lazarus\lcl\lclproc.pas"/>
+        <Caret Line="827" Column="1" TopLine="805"/>
       </Position14>
       <Position15>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="565" Column="1" TopLine="562"/>
+        <Filename Value="C:\Ex-D\lazarus\lcl\include\control.inc"/>
+        <Caret Line="4170" Column="1" TopLine="4153"/>
       </Position15>
       <Position16>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="31" Column="41" TopLine="1"/>
+        <Filename Value="C:\Ex-D\lazarus\lcl\include\control.inc"/>
+        <Caret Line="4171" Column="1" TopLine="4153"/>
       </Position16>
       <Position17>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="555" Column="37" TopLine="531"/>
+        <Filename Value="C:\Ex-D\lazarus\lcl\include\control.inc"/>
+        <Caret Line="4170" Column="1" TopLine="4153"/>
       </Position17>
       <Position18>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="559" Column="8" TopLine="536"/>
+        <Filename Value="C:\Ex-D\lazarus\lcl\include\control.inc"/>
+        <Caret Line="4171" Column="1" TopLine="4153"/>
       </Position18>
       <Position19>
-        <Filename Value="guibackend.pas"/>
-        <Caret Line="552" Column="38" TopLine="536"/>
+        <Filename Value="audioengine_mplayer.pas"/>
+        <Caret Line="342" Column="35" TopLine="326"/>
       </Position19>
       <Position20>
-        <Filename Value="ovotag\basetag.pas"/>
-        <Caret Line="202" Column="11" TopLine="187"/>
+        <Filename Value="audioengine_mplayer.pas"/>
+        <Caret Line="335" Column="1" TopLine="326"/>
       </Position20>
       <Position21>
-        <Filename Value="ovotag\basetag.pas"/>
-        <Caret Line="191" Column="33" TopLine="187"/>
+        <Filename Value="audioengine_mplayer.pas"/>
+        <Caret Line="336" Column="1" TopLine="326"/>
       </Position21>
       <Position22>
-        <Filename Value="ovotag\basetag.pas"/>
-        <Caret Line="202" Column="7" TopLine="187"/>
+        <Filename Value="audioengine_mplayer.pas"/>
+        <Caret Line="342" Column="1" TopLine="326"/>
       </Position22>
       <Position23>
-        <Filename Value="ovotag\basetag.pas"/>
-        <Caret Line="203" Column="1" TopLine="187"/>
+        <Filename Value="audioengine_mplayer.pas"/>
+        <Caret Line="343" Column="1" TopLine="326"/>
       </Position23>
       <Position24>
-        <Filename Value="ovotag\basetag.pas"/>
-        <Caret Line="202" Column="11" TopLine="187"/>
+        <Filename Value="audioengine_mplayer.pas"/>
+        <Caret Line="344" Column="1" TopLine="326"/>
       </Position24>
       <Position25>
-        <Filename Value="ovotag\basetag.pas"/>
-        <Caret Line="143" Column="19" TopLine="127"/>
+        <Filename Value="audioengine_mplayer.pas"/>
+        <Caret Line="345" Column="1" TopLine="326"/>
       </Position25>
       <Position26>
-        <Filename Value="ovotag\basetag.pas"/>
-        <Caret Line="234" Column="3" TopLine="232"/>
+        <Filename Value="audioengine_mplayer.pas"/>
+        <Caret Line="346" Column="1" TopLine="326"/>
       </Position26>
+      <Position27>
+        <Filename Value="uconfig.pas"/>
+        <Caret Line="236" Column="6" TopLine="240"/>
+      </Position27>
+      <Position28>
+        <Filename Value="uconfig.pas"/>
+        <Caret Line="226" Column="37" TopLine="213"/>
+      </Position28>
+      <Position29>
+        <Filename Value="audioengine_mplayer.pas"/>
+        <Caret Line="335" Column="1" TopLine="329"/>
+      </Position29>
+      <Position30>
+        <Filename Value="audioengine_mplayer.pas"/>
+        <Caret Line="342" Column="35" TopLine="329"/>
+      </Position30>
     </JumpHistory>
   </ProjectSession>
   <Debugging>
-    <BreakPoints Count="2">
+    <BreakPoints Count="3">
       <Item1>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="audioengine_vlc.pas"/>
-        <Line Value="273"/>
-      </Item1>
-      <Item2>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\inc\lnfodwrf.pp"/>
         <Line Value="727"/>
+      </Item1>
+      <Item2>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="audioengine_mplayer.pas"/>
+        <Line Value="335"/>
       </Item2>
+      <Item3>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\packages\fcl-process\src\win\process.inc"/>
+        <Line Value="170"/>
+      </Item3>
     </BreakPoints>
   </Debugging>
 </CONFIG>

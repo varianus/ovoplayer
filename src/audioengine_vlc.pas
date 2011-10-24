@@ -50,7 +50,7 @@ type
     Function GetMuted: boolean; override;
     procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
   public
-    Class Function IsAvalaible(ConfigParam: PConfigParam): boolean; override;
+    Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
     destructor Destroy; override;
@@ -278,7 +278,7 @@ begin
     end;
 end;
 
-class function TAudioEngineVLC.IsAvalaible(ConfigParam: PConfigParam): boolean;
+class function TAudioEngineVLC.IsAvalaible(ConfigParam: TStrings): boolean;
 begin
   Result:= Check_libvlc;
 end;

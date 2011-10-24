@@ -30,11 +30,17 @@ uses
 type
 
   { TAudioEngineMPlayer }
+  PConfigParamMplayer = ^TConfigParamMPlayer;
+  TConfigParamMPlayer = record
+    PlayerPath: ShortString;
+  end;
+
+
+
 
   TAudioEngineMPlayer = class(TAudioEngine)
   private
     fMainVolume: integer;
-    fMPlayerPath: string;
     FPaused: boolean;
     fPlayerProcess: TProcessUTF8;
     fPlayerState: TEngineState;
@@ -60,7 +66,7 @@ type
     // see: mplayer -input cmdlist and http://www.mplayerhq.hu/DOCS/tech/slave.txt
 
   public
-    Class Function IsAvalaible(ConfigParam: PConfigParam): boolean; override;
+    Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
     constructor Create; override;
     procedure Activate; override;
     destructor Destroy; override;
@@ -82,6 +88,13 @@ uses strutils, FileUtil, lclproc;
 const
   TIMEPOSOUT = 'A: ';
   EXITING = 'Exiting...';
+
+  {$IFDEF WINDOWS}
+    fMPlayerPath = 'mplayer.exe';
+  {$ELSE}
+    fMPlayerPath = 'mplayer';
+  {$ENDIF}
+
 
 var
   EngFormat: TFormatSettings;
@@ -198,11 +211,6 @@ constructor TAudioEngineMPlayer.Create;
 begin
   inherited Create;
   fMainVolume := 127;
-{$IFDEF WINDOWS}
-  fMPlayerPath := 'C:\Program Files (x86)\SMPlayer\MPlayer-p4-svn-32492\mplayer.exe';
-{$ELSE}
-  fMPlayerPath := 'mplayer';
-{$ENDIF}
   fTimer := TTimer.Create(nil);
   fTimer.Enabled:=false;
   fTimer.Interval :=150;
@@ -319,10 +327,36 @@ begin
     end;
 end;
 
-class function TAudioEngineMPlayer.IsAvalaible(ConfigParam: PConfigParam
-  ): boolean;
+class function TAudioEngineMPlayer.IsAvalaible(ConfigParam: TStrings): boolean;
+var
+  AProcess : TProcess;
+  APath :string;
 begin
-  Result:= true;
+  Result:= false;
+  if Assigned(ConfigParam) then
+    begin
+      APath:= ConfigParam.Values['Path'];
+      if APath <> '' then
+         APath:= IncludeTrailingPathDelimiter(APath);
+    end;
+  AProcess := TProcess.Create(nil);
+  try
+  AProcess.CommandLine:= APath + fMPlayerPath;
+  try
+    AProcess.Execute;
+    if AProcess.ExitStatus = 0 then
+       Result:=true;
+
+  Except
+    Result := false;
+  end;
+
+  finally
+    AProcess.Terminate(1);
+    AProcess.free;
+  end;
+
+
 
 end;
 
