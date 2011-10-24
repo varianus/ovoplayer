@@ -70,20 +70,21 @@ object fConfig: TfConfig
           'XINE'
           'BASS'
         )
-        OnClick = rgOSDKindClick
+        OnClick = rgAudioEngineClick
         TabOrder = 0
       end
-      object PageControl1: TPageControl
+      object pcEngineParams: TPageControl
         Left = 3
         Height = 104
         Top = 184
         Width = 472
         ActivePage = tsMPlayer
+        ShowTabs = False
         TabIndex = 0
         TabOrder = 1
         object tsMPlayer: TTabSheet
           Caption = 'tsMPlayer'
-          ClientHeight = 76
+          ClientHeight = 96
           ClientWidth = 464
           object MPlayerPath: TFileNameEdit
             Left = 3
@@ -306,16 +307,16 @@ object fConfig: TfConfig
     Top = 452
     Width = 635
     OKButton.Name = 'OKButton'
-    OKButton.Caption = '&OK'
+    OKButton.DefaultCaption = True
     OKButton.OnClick = OKButtonClick
     HelpButton.Name = 'HelpButton'
-    HelpButton.Caption = '&Aiuto'
+    HelpButton.DefaultCaption = True
     HelpButton.Enabled = False
     CloseButton.Name = 'CloseButton'
-    CloseButton.Caption = '&Chiudi'
+    CloseButton.DefaultCaption = True
     CloseButton.Enabled = False
     CancelButton.Name = 'CancelButton'
-    CancelButton.Caption = 'Annulla'
+    CancelButton.DefaultCaption = True
     CancelButton.OnClick = CancelButtonClick
     TabOrder = 1
     ShowButtons = [pbOK, pbCancel]

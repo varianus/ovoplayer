@@ -54,7 +54,7 @@ type
     Label5: TLabel;
     Label6: TLabel;
     lbMLPath:   TListBox;
-    PageControl1: TPageControl;
+    pcEngineParams: TPageControl;
     pcConfig:   TPageControl;
     rgOSDKind:  TRadioGroup;
     rgAudioEngine: TRadioGroup;
@@ -81,6 +81,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
+    procedure rgAudioEngineClick(Sender: TObject);
     procedure rgOSDKindClick(Sender: TObject);
     procedure sbEngineClick(Sender: TObject);
     procedure sbInterfaceClick(Sender: TObject);
@@ -129,6 +130,15 @@ begin
   BackEnd.Config.SaveConfig;
   BackEnd.Config.Flush;
   Close;
+end;
+
+procedure TfConfig.rgAudioEngineClick(Sender: TObject);
+begin
+  case rgAudioEngine.ItemIndex of
+     1: pcEngineParams.ActivePage := tsMPlayer;
+  else
+     pcEngineParams.ActivePage := tsNone;
+  end;
 end;
 
 procedure TfConfig.rgOSDKindClick(Sender: TObject);
