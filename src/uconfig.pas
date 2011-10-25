@@ -80,6 +80,7 @@ type
     procedure ColorFontChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure MPlayerPathChange(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
     procedure rgAudioEngineClick(Sender: TObject);
     procedure rgOSDKindClick(Sender: TObject);
@@ -120,10 +121,9 @@ procedure TfConfig.OKButtonClick(Sender: TObject);
 begin
   if Assigned(FOSD) and fOSD.Visible then
     begin
-    BackEnd.Config.NotificationParam.X := fOsd.left;
-    BackEnd.Config.NotificationParam.Y := fOsd.top;
-    fOSD.Close;
-
+      BackEnd.Config.NotificationParam.X := fOsd.left;
+      BackEnd.Config.NotificationParam.Y := fOsd.top;
+      fOSD.Close;
     end;
 
   MapToConfig;
@@ -135,7 +135,10 @@ end;
 procedure TfConfig.rgAudioEngineClick(Sender: TObject);
 begin
   case rgAudioEngine.ItemIndex of
-     1: pcEngineParams.ActivePage := tsMPlayer;
+     1: begin
+          BackEnd.Config.ReadSubParams(1);
+          pcEngineParams.ActivePage := tsMPlayer;
+        end
   else
      pcEngineParams.ActivePage := tsNone;
   end;
@@ -198,7 +201,9 @@ end;
 procedure TfConfig.FormCreate(Sender: TObject);
 begin
   TRadioButton(rgAudioEngine.Controls[0]).Enabled := TAudioEngineVLC.IsAvalaible(nil);
-  TRadioButton(rgAudioEngine.Controls[1]).Enabled := TAudioEngineMPlayer.IsAvalaible(nil);
+  // Usually in Windows MPlayer is not in the path...
+  // MPlayer choice is now always avalaible so you can specify application path
+  TRadioButton(rgAudioEngine.Controls[1]).Enabled := true;// TAudioEngineMPlayer.IsAvalaible(nil);
   TRadioButton(rgAudioEngine.Controls[2]).Enabled := TAudioEngineXINE.IsAvalaible(nil);
   TRadioButton(rgAudioEngine.Controls[3]).Enabled := TAudioEngineBASS.IsAvalaible(nil);
 end;
@@ -216,6 +221,11 @@ begin
   sbInterface.click;
   ConfigToMap;
 
+end;
+
+procedure TfConfig.MPlayerPathChange(Sender: TObject);
+begin
+  BackEnd.Config.EngineSubParams.Values['Path']:=MPlayerPath.Text;
 end;
 
 procedure TfConfig.sbLibraryClick(Sender: TObject);

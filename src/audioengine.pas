@@ -59,6 +59,7 @@ type
     procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); virtual; abstract;
     procedure SetMuted(const AValue: boolean); virtual; abstract;
     Function GetMuted: boolean; virtual; abstract;
+    Function GetEngineName: string; virtual; abstract;
   public
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; virtual; abstract;
     constructor Create; virtual;
@@ -73,6 +74,7 @@ type
     procedure UnPause; virtual; abstract;
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); virtual; abstract;
   public
+    property EngineName: string read GetEngineName;
     property Muted: boolean read GetMuted write SetMuted;
     property MainVolume: integer read GetMainVolume write SetMainVolume;
     property OnSongEnd: TNotifyEvent read FOnSongEnd write SetOnSongEnd;

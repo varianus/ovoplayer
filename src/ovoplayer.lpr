@@ -29,10 +29,10 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   FilesSupport, lazcontrols, AudioTag, MediaLibrary, GeneralFunc, audioengine,
   virtualtreeview_package, audioengine_bass, PasLibVlcUnit, xine, decoupler,
   MultimediaKeys, uConfig, uOSD, Config, AppConsts, uMiniPlayer, uSongInfo,
-  GUIBackEnd, uAbout, audioengine_xine, audioengine_vlc, mcaselli,
-  uniqueinstance_package, DefaultTranslator, CommonFunctions, file_flac,
-  file_mp3, file_wma, tag_wma, tag_vorbis, tag_id3v2, basetag, file_ogg,
-  gstreamer, lazdynamic_bass, UniqueInstanceRaw;
+  GUIBackEnd, uAbout, audioengine_xine, audioengine_vlc, audioengine_dummy,
+  mcaselli, uniqueinstance_package, DefaultTranslator, CommonFunctions,
+  file_flac, file_mp3, file_wma, tag_wma, tag_vorbis, tag_id3v2, basetag,
+  file_ogg, gstreamer, lazdynamic_bass, UniqueInstanceRaw;
 
 {$R *.res}
 begin

@@ -27,7 +27,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, ActnList, Controls, Dialogs, Forms, LResources,
   PopupNotifier, PlayList, AudioEngine, AudioEngine_MPlayer, audioengine_vlc,
-  strutils, audioengine_Xine, audioengine_bass, PlayListManager, MediaLibrary,
+  strutils, audioengine_Xine, audioengine_bass, AudioEngine_dummy, PlayListManager, MediaLibrary,
   MultimediaKeys, Config, UniqueInstance;
 
 type
@@ -164,6 +164,8 @@ begin
      Config.EngineParam.EngineKind:=0;
     end;
 
+  mediaLibrary := TMediaLibrary.Create;
+
   case Config.EngineParam.EngineKind of
     0 : Engine := TAudioEngineVLC;
     1 : Engine := TAudioEngineMPlayer;
@@ -171,14 +173,13 @@ begin
     3 : Engine := TAudioEngineBASS;
   end;
 
-  if Engine.IsAvalaible(nil) then
-     AudioEngine := Engine.Create;
+  if not Engine.IsAvalaible(Config.EngineSubParams) then
+       engine:=TAudioEnginedummy;
 
-  mediaLibrary := TMediaLibrary.Create;
-
+  AudioEngine := Engine.Create;
   AudioEngine.OnSongEnd := @AudioEngineSongEnd;
-
   AudioEngine.Activate;
+
   fMultimediaKeys := TMultimediaKeys.Create;
   fMultimediaKeys.OnMMKey := @OnMultimediaKeys;
 

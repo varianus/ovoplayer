@@ -48,6 +48,7 @@ type
     procedure DoPlay(Song: TSong; offset:Integer); override;
     procedure SetMuted(const AValue: boolean);  override;
     Function GetMuted: boolean; override;
+    Function GetEngineName: String; override;
     procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
   public
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
@@ -265,6 +266,11 @@ end;
 function TAudioEngineVLC.GetMuted: boolean;
 begin
  result:=Boolean(libvlc_audio_get_mute(p_mi));
+end;
+
+function TAudioEngineVLC.GetEngineName: String;
+begin
+  Result:='VLC';
 end;
 
 procedure TAudioEngineVLC.ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0);

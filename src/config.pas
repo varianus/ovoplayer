@@ -82,8 +82,6 @@ type
     procedure WriteStringS(Section: string; BaseName: string; Values: TStrings);
     function ReadStrings(Section: string; Name: string; var Values: TStrings): integer;
     procedure WriteColor(const Section, Ident: string; const Value: TColor);
-
-
   public
     NotificationParam: TNotificationParam;
     MediaLibraryParam: TMediaLibraryParam;
@@ -91,9 +89,12 @@ type
     PlayListParam:     TPlayListParam;
     EngineParam:       TEngineParam;
     GeneralParam:      TGeneralParam;
+    EngineSubParams:   TStringList;
     constructor Create;
     procedure ReadConfig;
     procedure SaveConfig;
+    Procedure ReadSubParams(EngineKind:Integer=-1);
+    procedure SaveSubParams(EngineKind: Integer=-1);
     function GetResourcesPath: string;
     Property ConfigDir: string read fConfigDir;
     procedure Flush;
@@ -118,11 +119,20 @@ begin
   ConfigFile := GetAppConfigFile(False {$ifdef NEEDCFGSUBDIR} , true{$ENDIF} );
   fConfigDir :=  GetConfigDir;
   fIniFiles  := TMemIniFile.Create(ConfigFile, False);
-
   MediaLibraryParam.LibraryPaths := TStringList.Create;
-
+  EngineSubParams:= TStringList.Create;
   ReadConfig;
 
+end;
+
+destructor TConfig.Destroy;
+begin
+  SaveConfig;
+  fIniFiles.UpdateFile;
+  MediaLibraryParam.LibraryPaths.Free;
+  EngineSubParams.Free;
+  fIniFiles.Free;
+  inherited Destroy;
 end;
 
 procedure TConfig.SaveConfig;
@@ -153,13 +163,49 @@ begin
   // ENGINE
   fIniFiles.WriteInteger('AudioEngine', 'Kind', EngineParam.EngineKind);
   fIniFiles.WriteInteger('AudioEngine', 'Volume', EngineParam.Volume);
+  fIniFiles.WriteInteger('AudioEngine', 'Volume', EngineParam.Volume);
 
 
   //GENERAL
   fIniFiles.WriteString('General', 'LastFolder', GeneralParam.LastImportFolder);
   fIniFiles.WriteString(SectionUnix, IdentResourcesPath, ResourcesPath);
+  SaveSubParams;
 
 end;
+
+procedure TConfig.ReadSubParams(EngineKind:Integer=-1);
+begin
+  if EngineKind = -1 then
+     EngineKind := EngineParam.EngineKind;
+
+  case EngineKind of
+    1 : fIniFiles.ReadSectionValues('AudioEngine.Mplayer', EngineSubParams)
+  else
+    EngineSubParams.Clear;
+  end;
+end;
+
+procedure TConfig.SaveSubParams(EngineKind:Integer=-1);
+var
+  Section:string;
+  i :Integer;
+begin
+  if EngineKind = -1 then
+     EngineKind := EngineParam.EngineKind;
+
+  case EngineKind of
+    1 : Section:= 'AudioEngine.Mplayer';
+  else
+    Section :='AudioEngine.?';
+  end;
+
+  for i := 0 to EngineSubParams.Count -1 do
+    begin
+       fIniFiles.WriteString(Section, EngineSubParams.Names[i], EngineSubParams.ValueFromIndex[i]);
+    end;
+
+end;
+
 
 procedure TConfig.ReadConfig;
 begin
@@ -189,6 +235,7 @@ begin
   // ENGINE
   EngineParam.EngineKind := fIniFiles.ReadInteger('AudioEngine', 'Kind', -1);
   EngineParam.Volume := fIniFiles.ReadInteger('AudioEngine', 'Volume', 50);
+  ReadSubParams;
 
   //GENERAL
   GeneralParam.LastImportFolder := fIniFiles.ReadString('General', 'LastFolder', GetUserDir);
@@ -274,15 +321,6 @@ begin
   Result := ExtractFilePath(ExtractFilePath(ParamStr(0))) + ResourceSubDirectory + PathDelim;
 {$endif}
 
-end;
-
-destructor TConfig.Destroy;
-begin
-  SaveConfig;
-  fIniFiles.UpdateFile;
-  MediaLibraryParam.LibraryPaths.Free;
-  fIniFiles.Free;
-  inherited Destroy;
 end;
 
 end.

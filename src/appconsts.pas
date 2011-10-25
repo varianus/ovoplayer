@@ -51,6 +51,7 @@ Resourcestring
   rFailedTrack  = 'Failed:';
   rUpdatedTrack = 'Updated:';
   rNever        = 'Never';
+  rMissingConfig = 'Can''t activate Audio Engine. Please review configuration';
 
 implementation
 
@@ -63,4 +64,4 @@ initialization
  OnGetApplicationName := @GetAppName;
 
 
-end.
+end.

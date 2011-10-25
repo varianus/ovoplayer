@@ -142,7 +142,7 @@
         <PackageName Value="LCL"/>
       </Item7>
     </RequiredPackages>
-    <Units Count="38">
+    <Units Count="39">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -350,6 +350,11 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_ogg"/>
       </Unit37>
+      <Unit38>
+        <Filename Value="audioengine_dummy.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="audioengine_dummy"/>
+      </Unit38>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -409,7 +414,7 @@ if LCLWidgetType = 'win32' then
     </Other>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="3">
+    <Exceptions Count="3" IgnoreAll="True">
       <Item1>
         <Name Value="EAbort"/>
       </Item1>

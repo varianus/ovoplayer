@@ -28,7 +28,7 @@ uses
   Classes, types, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
   ComCtrls, Menus, ExtCtrls, Buttons, StdCtrls, Song, uOSD, playlist,
   AudioEngine, GUIBackEnd, Config, ThemedSlider, VirtualTrees,
-  DefaultTranslator, Grids, EditBtn;
+  DefaultTranslator, Grids, EditBtn, ActnList, AudioEngine_dummy;
 
 type
   TSortFields = record
@@ -50,6 +50,9 @@ type
 
 
   TfMainForm = class(TForm)
+    actShowAbout: TAction;
+    ActShowPreferences: TAction;
+    ActionList: TActionList;
     Artist:     TLabel;
     cbGroupBy:  TComboBox;
     edtFilter: TLabeledEdit;
@@ -114,10 +117,9 @@ type
     ToolButton11: TToolButton;
     ToolButton12: TToolButton;
     ToolButton13: TToolButton;
-    ToolButton14: TToolButton;
     TrackBar: TThemedSlider;
     tsPlayList: TTabSheet;
-    ToolBar1: TToolBar;
+    tbDirectory: TToolBar;
     ToolButton10: TToolButton;
     btnBackDir: TToolButton;
     btnForwardDir: TToolButton;
@@ -161,6 +163,8 @@ type
     lvPlayList: TVirtualStringTree;
     CollectionTree: TVirtualStringTree;
     FilesTree: TVirtualStringTree;
+    procedure actShowAboutExecute(Sender: TObject);
+    procedure ActShowPreferencesExecute(Sender: TObject);
     procedure BackEndSongStart(Sender: TObject);
     procedure btnBackDirClick(Sender: TObject);
     procedure btnForwardDirClick(Sender: TObject);
@@ -209,8 +213,6 @@ type
     procedure mnuRestoreClick(Sender: TObject);
     procedure mnuEnqueueItemsClick(Sender: TObject);
     procedure mnuFileInfoClick(Sender: TObject);
-    procedure MenuItem20Click(Sender: TObject);
-    procedure MenuItem31Click(Sender: TObject);
     procedure mnuInfoClick(Sender: TObject);
     procedure MenuItem30Click(Sender: TObject);
     procedure mnuPlayItemsClick(Sender: TObject);
@@ -508,6 +510,22 @@ begin
 
 end;
 
+procedure TfMainForm.ActShowPreferencesExecute(Sender: TObject);
+var
+  TheForm: TfConfig;
+begin
+  TheForm := TfConfig.Create(Self);
+  TheForm.Show;
+end;
+
+procedure TfMainForm.actShowAboutExecute(Sender: TObject);
+var
+  theForm : TfAbout;
+begin
+  theForm:= TfAbout.create(application);
+  theForm.ShowModal;
+end;
+
 procedure TfMainForm.btnBackDirClick(Sender: TObject);
 begin
   dec(PathIndex);
@@ -656,6 +674,7 @@ var
   tmpSize:TSize;
 
 begin
+
   PathHistory := TStringList.Create;
   PathHistory.Duplicates := dupIgnore;
 
@@ -764,6 +783,12 @@ var
   tmpSize:TSize;
 begin
   lvPlayList.ScrollIntoView(FindNode(BackEnd.PlayList.ItemIndex), False);
+  if BackEnd.AudioEngine.EngineName = 'dummy' then
+     begin
+       ShowMessage(rMissingConfig);
+       ActShowPreferences.Execute;
+     end;
+
 end;
 
 procedure TfMainForm.lvPlayListBeforeCellPaint(Sender: TBaseVirtualTree; TargetCanvas: TCanvas;
@@ -1000,23 +1025,6 @@ begin
       info.InitFromFile(Data^.FullPath);
       Info.show;
     end;
-end;
-
-procedure TfMainForm.MenuItem20Click(Sender: TObject);
-var
-  TheForm: TfConfig;
-begin
-  TheForm := TfConfig.Create(Self);
-  TheForm.Show;
-end;
-
-procedure TfMainForm.MenuItem31Click(Sender: TObject);
-var
-  theForm : TfAbout;
-begin
-  theForm:= TfAbout.create(application);
-  theForm.ShowModal;
-
 end;
 
 procedure TfMainForm.mnuInfoClick(Sender: TObject);

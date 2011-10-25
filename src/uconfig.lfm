@@ -83,7 +83,6 @@ object fConfig: TfConfig
         TabIndex = 0
         TabOrder = 1
         object tsMPlayer: TTabSheet
-          Caption = 'tsMPlayer'
           ClientHeight = 96
           ClientWidth = 464
           object MPlayerPath: TFileNameEdit
@@ -91,7 +90,6 @@ object fConfig: TfConfig
             Height = 23
             Top = 25
             Width = 424
-            FileName = 'mplayer'
             DialogOptions = [ofReadOnly, ofPathMustExist, ofFileMustExist, ofNoTestFileCreate, ofViewDetail]
             FilterIndex = 0
             HideDirectories = False
@@ -99,6 +97,7 @@ object fConfig: TfConfig
             NumGlyphs = 0
             MaxLength = 0
             TabOrder = 0
+            OnChange = MPlayerPathChange
           end
           object Label6: TLabel
             Left = 4
@@ -112,7 +111,6 @@ object fConfig: TfConfig
           end
         end
         object tsNone: TTabSheet
-          Caption = 'tsNone'
         end
       end
     end

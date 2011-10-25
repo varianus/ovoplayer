@@ -21,6 +21,10 @@ msgstr ""
 msgid "Failed:"
 msgstr ""
 
+#: appconsts.rmissingconfig
+msgid "Can't activate Audio Engine. Please review configuration"
+msgstr ""
+
 #: appconsts.rnever
 msgid "Never"
 msgstr ""
@@ -176,6 +180,7 @@ msgid "Close"
 msgstr ""
 
 #: TFABOUT.CAPTION
+msgctxt "TFABOUT.CAPTION"
 msgid "About"
 msgstr ""
 
@@ -209,26 +214,6 @@ msgstr ""
 
 #: TFCONFIG.BRESCANLIBRARY.CAPTION
 msgid "Scan Now"
-msgstr ""
-
-#: TFCONFIG.BUTTONPANEL.CANCELBUTTON.CAPTION
-msgctxt "TFCONFIG.BUTTONPANEL.CANCELBUTTON.CAPTION"
-msgid "Annulla"
-msgstr ""
-
-#: TFCONFIG.BUTTONPANEL.CLOSEBUTTON.CAPTION
-msgctxt "TFCONFIG.BUTTONPANEL.CLOSEBUTTON.CAPTION"
-msgid "&Chiudi"
-msgstr ""
-
-#: TFCONFIG.BUTTONPANEL.HELPBUTTON.CAPTION
-msgctxt "TFCONFIG.BUTTONPANEL.HELPBUTTON.CAPTION"
-msgid "&Aiuto"
-msgstr ""
-
-#: TFCONFIG.BUTTONPANEL.OKBUTTON.CAPTION
-msgctxt "TFCONFIG.BUTTONPANEL.OKBUTTON.CAPTION"
-msgid "&OK"
 msgstr ""
 
 #: TFCONFIG.CAPTION
@@ -326,14 +311,6 @@ msgctxt "TFCONFIG.TSMEDIALIBRARY.CAPTION"
 msgid "Media Library"
 msgstr ""
 
-#: TFCONFIG.TSMPLAYER.CAPTION
-msgid "tsMPlayer"
-msgstr ""
-
-#: TFCONFIG.TSNONE.CAPTION
-msgid "tsNone"
-msgstr ""
-
 #: TFCONFIG.TSOSD.CAPTION
 msgid "OSD"
 msgstr ""
@@ -341,6 +318,15 @@ msgstr ""
 #: TFCONFIG.TSPLAYLIST.CAPTION
 msgctxt "TFCONFIG.TSPLAYLIST.CAPTION"
 msgid "Play List"
+msgstr ""
+
+#: TFMAINFORM.ACTSHOWABOUT.CAPTION
+msgctxt "TFMAINFORM.ACTSHOWABOUT.CAPTION"
+msgid "About"
+msgstr ""
+
+#: TFMAINFORM.ACTSHOWPREFERENCES.CAPTION
+msgid "Preferences .."
 msgstr ""
 
 #: TFMAINFORM.ALBUM.CAPTION
@@ -413,10 +399,6 @@ msgctxt "TFMAINFORM.MENUITEM18.CAPTION"
 msgid "-"
 msgstr ""
 
-#: TFMAINFORM.MENUITEM20.CAPTION
-msgid "Preferences"
-msgstr ""
-
 #: TFMAINFORM.MENUITEM21.CAPTION
 msgctxt "TFMAINFORM.MENUITEM21.CAPTION"
 msgid "-"
@@ -452,15 +434,6 @@ msgstr ""
 
 #: TFMAINFORM.MENUITEM30.CAPTION
 msgid "Info Media"
-msgstr ""
-
-#: TFMAINFORM.MENUITEM31.CAPTION
-msgid "About ..."
-msgstr ""
-
-#: TFMAINFORM.MENUITEM32.CAPTION
-msgctxt "TFMAINFORM.MENUITEM32.CAPTION"
-msgid "New Item1"
 msgstr ""
 
 #: TFMAINFORM.MENUITEM34.CAPTION
@@ -513,10 +486,6 @@ msgstr ""
 msgid "Restore"
 msgstr ""
 
-#: TFMAINFORM.PANEL1.CAPTION
-msgid "Panel1"
-msgstr ""
-
 #: TFMAINFORM.SGSTATS.COLUMNS[0].TITLE.CAPTION
 msgctxt "TFMAINFORM.SGSTATS.COLUMNS[0].TITLE.CAPTION"
 msgid "Title"
@@ -534,22 +503,6 @@ msgstr ""
 #: TFMAINFORM.TITLE.CAPTION
 msgctxt "TFMAINFORM.TITLE.CAPTION"
 msgid "Title"
-msgstr ""
-
-#: TFMAINFORM.TOOLBAR1.CAPTION
-msgid "ToolBar1"
-msgstr ""
-
-#: TFMAINFORM.TOOLBUTTON12.CAPTION
-msgid "ToolButton12"
-msgstr ""
-
-#: TFMAINFORM.TOOLBUTTON13.CAPTION
-msgid "ToolButton13"
-msgstr ""
-
-#: TFMAINFORM.TOOLBUTTON14.CAPTION
-msgid "ToolButton14"
 msgstr ""
 
 #: TFMAINFORM.TSCOLLECTION.CAPTION
@@ -597,26 +550,6 @@ msgstr ""
 #: TFSONGINFO.BPREVIOUS.CAPTION
 msgctxt "TFSONGINFO.BPREVIOUS.CAPTION"
 msgid "Previous"
-msgstr ""
-
-#: TFSONGINFO.BUTTONPANEL1.CANCELBUTTON.CAPTION
-msgctxt "TFSONGINFO.BUTTONPANEL1.CANCELBUTTON.CAPTION"
-msgid "Annulla"
-msgstr ""
-
-#: TFSONGINFO.BUTTONPANEL1.CLOSEBUTTON.CAPTION
-msgctxt "TFSONGINFO.BUTTONPANEL1.CLOSEBUTTON.CAPTION"
-msgid "&Chiudi"
-msgstr ""
-
-#: TFSONGINFO.BUTTONPANEL1.HELPBUTTON.CAPTION
-msgctxt "TFSONGINFO.BUTTONPANEL1.HELPBUTTON.CAPTION"
-msgid "&Aiuto"
-msgstr ""
-
-#: TFSONGINFO.BUTTONPANEL1.OKBUTTON.CAPTION
-msgctxt "TFSONGINFO.BUTTONPANEL1.OKBUTTON.CAPTION"
-msgid "&OK"
 msgstr ""
 
 #: TFSONGINFO.CAPTION
@@ -707,10 +640,6 @@ msgstr ""
 #: TFSONGINFO.LABEL9.CAPTION
 msgctxt "TFSONGINFO.LABEL9.CAPTION"
 msgid "Duration"
-msgstr ""
-
-#: TFSONGINFO.PNLMOVESELECTION.CAPTION
-msgid "pnlMoveSelection"
 msgstr ""
 
 #: TFSONGINFO.TSMEDIAPROPERTY.CAPTION

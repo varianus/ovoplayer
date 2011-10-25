@@ -228,12 +228,11 @@ object fMainForm: TfMainForm
         OnGetText = FilesTreeGetText
         OnGetImageIndex = FilesTreeGetImageIndex
       end
-      object ToolBar1: TToolBar
+      object tbDirectory: TToolBar
         Left = 0
         Height = 49
         Top = 0
         Width = 226
-        Caption = 'ToolBar1'
         Flat = False
         Images = BackEnd.ilButtons
         TabOrder = 1
@@ -278,23 +277,17 @@ object fMainForm: TfMainForm
           TabOrder = 0
           OnEditingDone = ePathEditingDone
         end
-        object ToolButton14: TToolButton
-          Left = 105
-          Top = 2
-          Caption = 'ToolButton14'
-          OnClick = ToolButton14Click
-        end
       end
     end
     object tsPlayList: TTabSheet
       Caption = 'PlayList'
       ClientHeight = 609
-      ClientWidth = 232
+      ClientWidth = 226
       object PlaylistTree: TTreeView
         Left = 0
         Height = 609
         Top = 0
-        Width = 232
+        Width = 226
         Align = alClient
         DefaultItemHeight = 18
         ReadOnly = True
@@ -436,13 +429,11 @@ object fMainForm: TfMainForm
           Left = 277
           Top = 0
           Width = 10
-          Caption = 'ToolButton12'
           Style = tbsSeparator
         end
         object ToolButton13: TToolButton
           Left = 339
           Top = 0
-          Caption = 'ToolButton13'
           Enabled = False
           ShowCaption = False
         end
@@ -471,7 +462,6 @@ object fMainForm: TfMainForm
         Top = 26
         Width = 571
         Align = alBottom
-        Caption = 'Panel1'
         ClientHeight = 24
         ClientWidth = 571
         TabOrder = 1
@@ -690,8 +680,8 @@ object fMainForm: TfMainForm
   end
   object MainMenu: TMainMenu
     Images = BackEnd.ilSmall
-    left = 304
-    top = 160
+    left = 425
+    top = 184
     object mnuFile: TMenuItem
       Caption = '&File'
       object mnuLoadPlaylist: TMenuItem
@@ -728,15 +718,13 @@ object fMainForm: TfMainForm
     object MenuItem14: TMenuItem
       Caption = 'Tools'
       object MenuItem20: TMenuItem
-        Caption = 'Preferences'
-        OnClick = MenuItem20Click
+        Action = ActShowPreferences
       end
     end
     object MenuItem25: TMenuItem
       Caption = 'Help'
       object MenuItem31: TMenuItem
-        Caption = 'About ...'
-        OnClick = MenuItem31Click
+        Action = actShowAbout
       end
     end
   end
@@ -792,8 +780,8 @@ object fMainForm: TfMainForm
   object PlaylistMenu: TPopupMenu
     Images = BackEnd.ilSmall
     OnPopup = PlaylistMenuPopup
-    left = 336
-    top = 248
+    left = 425
+    top = 264
     object MenuItem17: TMenuItem
       Action = BackEnd.actPlayListAddFiles
     end
@@ -874,10 +862,9 @@ object fMainForm: TfMainForm
   end
   object pnHeaderPlaylist: TPopupMenu
     OnPopup = pnHeaderPlaylistPopup
-    left = 448
-    top = 160
+    left = 536
+    top = 184
     object MenuItem32: TMenuItem
-      Caption = 'New Item1'
     end
   end
   object RepeatMenu: TPopupMenu
@@ -902,6 +889,19 @@ object fMainForm: TfMainForm
       Action = BackEnd.actRepeatAll
       GroupIndex = 1
       RadioItem = True
+    end
+  end
+  object ActionList: TActionList
+    Images = BackEnd.ilSmall
+    left = 272
+    top = 184
+    object ActShowPreferences: TAction
+      Caption = 'Preferences ..'
+      OnExecute = ActShowPreferencesExecute
+    end
+    object actShowAbout: TAction
+      Caption = 'About'
+      OnExecute = actShowAboutExecute
     end
   end
 end
