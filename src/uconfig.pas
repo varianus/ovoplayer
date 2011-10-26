@@ -137,6 +137,7 @@ begin
   case rgAudioEngine.ItemIndex of
      1: begin
           BackEnd.Config.ReadSubParams(1);
+          MPlayerPath.Text:= BackEnd.Config.EngineSubParams.Values['Path'];
           pcEngineParams.ActivePage := tsMPlayer;
         end
   else
