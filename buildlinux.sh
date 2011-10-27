@@ -5,8 +5,7 @@ LAZARUS_DIR=~/lazarus/lazarus
 
 # 
 if [ "$BASE" = "" ]; then
-  BASE=c:/source/ovoplayer 
-  #$(pwd)
+  BASE=$(pwd)
 fi   
    
 if [ ! "$OS_TARGET" = "" ]; then 
@@ -32,4 +31,4 @@ cp $BASE/release.cfg  $BASE/extrafpc.cfg
 $LAZARUS_DIR/lazbuild -B -r $BASE/src/ovoplayer.lpi $DC_ARCH
 strip --strip-all $BASE/bin/linux/ovoplayer
 
-echo $none > $BASE/extrafpc.cfg
+echo $NONE > $BASE/extrafpc.cfg
