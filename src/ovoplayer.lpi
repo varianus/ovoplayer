@@ -410,6 +410,10 @@ if LCLWidgetType = 'win32' then
       <CompilerMessages>
         <UseMsgFile Value="True"/>
       </CompilerMessages>
+      <ConfigFile>
+        <CustomConfigFile Value="True"/>
+        <ConfigFilePath Value="..\extrafpc.cfg"/>
+      </ConfigFile>
       <CompilerPath Value="$(CompPath)"/>
     </Other>
   </CompilerOptions>
