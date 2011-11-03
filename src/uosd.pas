@@ -32,14 +32,8 @@ type
 
   { TfOSD }
 
-  TfOSD = class(TForm)
-    Album: TLabel;
-    Artist: TLabel;
-    imgCover: TImage;
-    timShow: TTimer;
-    timPaint: TTimer;
-    Title: TLabel;
-    Track: TLabel;
+  TfOSD = class(THintWindow)
+  private
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormMouseDown(Sender: TObject; Button: TMouseButton;
@@ -51,6 +45,7 @@ type
       Shift: TShiftState; X, Y: integer);
     procedure FormShow(Sender: TObject);
     procedure bCloseClick(Sender: TObject);
+    procedure ShowAtPos(x: Integer; y: Integer);
     procedure timShowTimer(Sender: TObject);
     procedure timPaintTimer(Sender: TObject);
     procedure TitleClick(Sender: TObject);
@@ -60,9 +55,23 @@ type
     {$IFDEF SUPPORT_SHAPING}
     procedure ShapeControl(AControl: TWinControl);
     {$ENDIF SUPPORT_SHAPING}
+  Protected
+    procedure Paint; override;
   public
+    _top, _left:Integer;
     ConfigMode: boolean;
+    Album: TLabel;
+    Artist: TLabel;
+    imgCover: TImage;
+    Title: TLabel;
+    Track: TLabel;
+
+    timShow: TTimer;
+    timPaint: TTimer;
+
     procedure UpdateAspect;
+    Constructor Create(AOwner: Tcomponent); override;
+    Destructor Destroy; override;
   end;
 
 var
@@ -89,6 +98,12 @@ begin
   fOSD.track.Caption := Song.Tags.TrackString;
   fOSD.Album.Caption := Song.Tags.Album;
   fOSD.Artist.Caption := Song.Tags.Artist;
+
+  fOSD.LoadFromConfig;
+  fOSD.UpdateAspect;
+
+  fOSD.AlphaBlend := True;
+
   if Image <> nil then
     fOSD.imgCover.Picture.Assign(Image)
   else
@@ -98,15 +113,13 @@ begin
       fOSD.imgCover.Picture.LoadFromFile(imgName);
   end;
 
-  fOSD.LoadFromConfig;
-
-  fOSD.AlphaBlend := True;
-
   fOSD.timPaint.Enabled := False;
   fOSD.timShow.Enabled := True;
 
   fOSD.Show;
 end;
+
+
 
 procedure ShowOSDConfig;
 var
@@ -129,6 +142,7 @@ begin
 
   fOSD.LoadFromConfig;
   fOSD.ConfigMode := True;
+  fOSD.UpdateAspect;
 
   fOSD.AlphaBlend := True;
 
@@ -138,6 +152,26 @@ end;
 
 { TfOSD }
 
+procedure TfOSD.ShowAtPos(x: Integer; y: Integer);
+begin
+  if x + Width > Screen.Width then
+  begin
+    left := x - Width;
+    if Left < 0 then Left := 0;
+  end
+  else
+    left := x;
+
+  if y + Height > Screen.Height then
+  begin
+    top := y - Height;
+    if top < 0 then top := 0;
+  end
+  else
+    top := y;
+
+  Show;
+end;
 procedure TfOSD.timShowtimer(Sender: TObject);
 begin
   timShow.Enabled := False;
@@ -154,8 +188,9 @@ begin
     timPaint.Enabled := False;
     Close;
   end;
-
+  timPaint.Interval:=40;
   AlphaBlendValue := AlphaBlendValue - 8;
+  Application.ProcessMessages;
 end;
 
 procedure TfOSD.TitleClick(Sender: TObject);
@@ -241,8 +276,11 @@ var
   i: integer;
 begin
   timShow.Interval := BackEnd.Config.NotificationParam.TimeOut;
+  timPaint.Interval:=40;
   Top := BackEnd.Config.NotificationParam.Y;
   Left := BackEnd.Config.NotificationParam.X;
+  Width:=430;
+  Height:=103;
   Color := BackEnd.Config.NotificationParam.BackColor;
   AlphaBlendValue := BackEnd.Config.NotificationParam.Transparency;
   for i := 0 to ComponentCount - 1 do
@@ -269,6 +307,159 @@ begin
       TStaticText(Components[i]).Font.color :=
         BackEnd.Config.NotificationParam.FontColor;
     end;
+end;
+
+constructor TfOSD.Create(AOwner: Tcomponent);
+begin
+  inherited Create(AOwner);
+  timPaint:= TTimer.Create(self);
+  timPaint.Enabled:=false;
+  timPaint.OnTimer:=@timPaintTimer;
+  timPaint.Interval:=40;
+  timShow:= TTimer.Create(self);
+  timShow.Enabled:=false;
+  timShow.OnTimer:=@timShowTimer;
+
+  imgCover:= TImage.Create(Self);
+  with imgCover do begin
+    Left := 11;
+    Height := 89;
+    Top := 8;
+    Width := 102;
+    Anchors := [];
+    BorderSpacing.Left := 1;
+    BorderSpacing.Top := 1;
+    BorderSpacing.Right := 1;
+    BorderSpacing.Bottom := 1;
+    BorderSpacing.Around := 1;
+    Enabled := False;
+    OnMouseDown := @FormMouseDown;
+    OnMouseEnter := @FormMouseEnter;
+    OnMouseLeave := @FormMouseLeave;
+    OnMouseMove := @FormMouseMove;
+    OnMouseUp := @FormMouseUp;
+    Stretch := True;
+    Transparent := True;
+    Parent := self;
+  end;
+
+  Title:= TLabel.create(self);
+  with Title do begin
+    Parent := self;
+    Left := 123;
+    Height := 20;
+    Top := 8;
+    Width := 285;
+    AutoSize := False;
+    Caption := 'Title';
+    Color := 11955992;
+    Font.Color := clBlack;
+    Font.Height := 20;
+    Font.Style := [fsBold];
+    ParentColor := False;
+    ParentFont := False;
+    Transparent := true;
+    OnMouseDown := @FormMouseDown;
+    OnMouseMove := @FormMouseMove;
+    OnMouseUp := @FormMouseUp;
+    OnMouseEnter := @FormMouseEnter;
+    OnMouseLeave := @FormMouseLeave;
+    OptimalFill := True;
+  end;
+
+  Album:= TLabel.create(self);
+  with Album do begin
+    Parent := self;
+    Left := 123;
+    Height := 16;
+    Top := 33;
+    Width := 285;
+    AutoSize := False;
+    Caption := 'Album';
+    Color := 11955992;
+    Font.Color := clBlack;
+    Font.Height := 16;
+    ParentColor := False;
+    ParentFont := False;
+    Transparent := False;
+    OnMouseDown := @FormMouseDown;
+    OnMouseMove := @FormMouseMove;
+    OnMouseUp := @FormMouseUp;
+    OnMouseEnter := @FormMouseEnter;
+    OnMouseLeave := @FormMouseLeave;
+    OptimalFill := True;
+  end;
+
+  Artist:= TLabel.create(self);
+  with Artist do begin
+    Parent := self;
+    Left := 123;
+    Height := 16;
+    Top := 57;
+    Width := 285;
+    AutoSize := False;
+    Caption := 'Artist';
+    Color := 11955992;
+    Font.Color := clBlack;
+    Font.Height := 16;
+    ParentColor := False;
+    ParentFont := False;
+    Transparent := False;
+    OnMouseDown := @FormMouseDown;
+    OnMouseMove := @FormMouseMove;
+    OnMouseUp := @FormMouseUp;
+    OnMouseEnter := @FormMouseEnter;
+    OnMouseLeave := @FormMouseLeave;
+    OptimalFill := True;
+  end;
+
+  Track:= TLabel.create(self);
+  with Track do begin
+    Parent := self;
+    Left := 123;
+    Height := 17;
+    Top := 81;
+    Width := 285;
+    AutoSize := False;
+    Caption := '0';
+    Color := 11955992;
+    Font.Color := clBlack;
+    Font.Height := 18;
+    ParentColor := False;
+    ParentFont := False;
+    Transparent := False;
+    OnMouseDown := @FormMouseDown;
+    OnMouseMove := @FormMouseMove;
+    OnMouseUp := @FormMouseUp;
+    OnMouseEnter := @FormMouseEnter;
+    OnMouseLeave := @FormMouseLeave;
+    OptimalFill := True;
+  end;
+
+  {$IFDEF SUPPORT_SHAPING}
+    ShapeControl(Self);
+  {$ENDIF SUPPORT_SHAPING}
+end;
+
+procedure TfOSD.Paint;
+begin
+  Canvas.Brush.Style := bsSolid;
+  Canvas.Brush.Color := Color;
+  Canvas.FillRect(Rect(0,0,width,height));
+
+end;
+
+destructor TfOSD.Destroy;
+begin
+  timPaint.free;
+  timShow.free;
+  Album.free;
+  Artist.free;
+  imgCover.free;
+  Title.free;
+  Track.free;
+
+  inherited Destroy;
 end;
 
 
