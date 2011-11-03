@@ -34,8 +34,6 @@ type
 
   TfOSD = class(THintWindow)
   private
-    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
-    procedure FormCreate(Sender: TObject);
     procedure FormMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: integer);
     procedure FormMouseEnter(Sender: TObject);
@@ -83,9 +81,7 @@ procedure ShowOSDConfig;
 
 implementation
 
-uses AppConsts, lclproc, Math;
-
-{$R *.lfm}
+uses AppConsts, lclproc, Math, graphutil;
 
 procedure ShowOSD(Song: TSong; Image: TPicture);
 var
@@ -93,6 +89,9 @@ var
 begin
   if fOSD = nil then
     fOSD := TfOSD.Create(application);
+ {$IFDEF SUPPORT_SHAPING}
+  fOSD.ShapeControl(fOSD);
+ {$ENDIF SUPPORT_SHAPING}
 
   fOSD.Title.Caption := Song.tags.Title;
   fOSD.track.Caption := Song.Tags.TrackString;
@@ -228,20 +227,6 @@ procedure TfOSD.FormMouseLeave(Sender: TObject);
 begin
   if not ConfigMode then
     AlphaBlendValue := BackEnd.Config.NotificationParam.Transparency;
-end;
-
-procedure TfOSD.FormClose(Sender: TObject; var CloseAction: TCloseAction);
-begin
-  CloseAction := caFree;
-  fOSD := nil;
-end;
-
-procedure TfOSD.FormCreate(Sender: TObject);
-begin
-{$IFDEF SUPPORT_SHAPING}
-  ShapeControl(Self);
-{$ENDIF SUPPORT_SHAPING}
-
 end;
 
 {$IFDEF SUPPORT_SHAPING}
@@ -381,7 +366,7 @@ begin
     Font.Height := 16;
     ParentColor := False;
     ParentFont := False;
-    Transparent := False;
+    Transparent := true;
     OnMouseDown := @FormMouseDown;
     OnMouseMove := @FormMouseMove;
     OnMouseUp := @FormMouseUp;
@@ -404,7 +389,7 @@ begin
     Font.Height := 16;
     ParentColor := False;
     ParentFont := False;
-    Transparent := False;
+    Transparent := true;
     OnMouseDown := @FormMouseDown;
     OnMouseMove := @FormMouseMove;
     OnMouseUp := @FormMouseUp;
@@ -427,7 +412,7 @@ begin
     Font.Height := 18;
     ParentColor := False;
     ParentFont := False;
-    Transparent := False;
+    Transparent := true;
     OnMouseDown := @FormMouseDown;
     OnMouseMove := @FormMouseMove;
     OnMouseUp := @FormMouseUp;
@@ -440,12 +425,34 @@ begin
     ShapeControl(Self);
   {$ENDIF SUPPORT_SHAPING}
 end;
+procedure DrawGradient(Canvas:Tcanvas;Rect:Trect; Color1, Color2: TColor);
+var
+i, steps: Integer;
+R1, G1, B1, R2, G2, B2: byte;
+Rx, Gx, Bx: Real;
+begin
+  with Canvas do begin
+    RedGreenBlue(Color1, r1, g1, b1);
+    RedGreenBlue(Color2, r2, g2, b2);
+    steps:= ceil(Min((rect.Right -Rect.Left) /2, (rect.Bottom - Rect.Top) / 2));
+    for i := 1 to steps do
+      begin
+        Rx := R1 - ((R1-R2) / steps) * i;
+        Gx := G1 - ((G1-G2) / steps) * i;
+        Bx := B1 - ((B1-B2) / steps) * i;
+        Pen.Color := RGBToColor(Trunc(Rx),Trunc(Gx),Trunc(Bx));
+        Brush.Color := Pen.Color;
+        ellipse(i, i, (rect.Right - Rect.Left) - i,(rect.Bottom - Rect.Top) -i );
+      end;
+  end;
+end;
 
 procedure TfOSD.Paint;
 begin
   Canvas.Brush.Style := bsSolid;
   Canvas.Brush.Color := Color;
-  Canvas.FillRect(Rect(0,0,width,height));
+//  Canvas.FillRect(Rect(0,0,width,height));
+  DrawGradient(Canvas, Rect(0,0,width,height), color, GetHighLightColor(color));
 
 end;
 

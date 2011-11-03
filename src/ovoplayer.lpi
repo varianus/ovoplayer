@@ -30,7 +30,7 @@
           <Macro1 Name="LCLWidgetType" Value="gtk2"/>
         </MacroValues>
         <CompilerOptions>
-          <Version Value="10"/>
+          <Version Value="11"/>
           <PathDelim Value="\"/>
           <Target>
             <Filename Value="bin\ovoplayer"/>
@@ -45,7 +45,6 @@
           </CodeGeneration>
           <Linking>
             <Debugging>
-              <GenerateDebugInfo Value="True"/>
               <DebugInfoType Value="dsDwarf2Set"/>
               <UseExternalDbgSyms Value="True"/>
             </Debugging>
@@ -69,7 +68,7 @@
           <Macro1 Name="LCLWidgetType" Value="qt"/>
         </MacroValues>
         <CompilerOptions>
-          <Version Value="10"/>
+          <Version Value="11"/>
           <PathDelim Value="\"/>
           <Target>
             <Filename Value="bin\$(LCLWidgetType)\ovoplayer"/>
@@ -84,7 +83,6 @@
           </CodeGeneration>
           <Linking>
             <Debugging>
-              <GenerateDebugInfo Value="True"/>
               <DebugInfoType Value="dsDwarf2Set"/>
               <UseExternalDbgSyms Value="True"/>
             </Debugging>
@@ -358,7 +356,7 @@
     </Units>
   </ProjectOptions>
   <CompilerOptions>
-    <Version Value="10"/>
+    <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
       <Filename Value="..\bin\$(TargetOS)\ovoplayer"/>
@@ -396,8 +394,7 @@ if LCLWidgetType = 'win32' then
     </CodeGeneration>
     <Linking>
       <Debugging>
-        <GenerateDebugInfo Value="True"/>
-        <DebugInfoType Value="dsStabs"/>
+        <DebugInfoType Value="dsDwarf2"/>
         <UseValgrind Value="True"/>
       </Debugging>
       <Options>
@@ -412,7 +409,7 @@ if LCLWidgetType = 'win32' then
       </CompilerMessages>
       <ConfigFile>
         <CustomConfigFile Value="True"/>
-        <ConfigFilePath Value="..\extrafpc.cfg"/>
+        <ConfigFilePath Value="../extrafpc.cfg"/>
       </ConfigFile>
       <CompilerPath Value="$(CompPath)"/>
     </Other>
@@ -431,4 +428,3 @@ if LCLWidgetType = 'win32' then
     </Exceptions>
   </Debugging>
 </CONFIG>
->>>>>>> .r19
