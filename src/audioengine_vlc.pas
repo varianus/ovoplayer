@@ -133,10 +133,10 @@ begin
 end;
 
 constructor TAudioEngineVLC.Create;
-const ArgsNumber = 6;
+const ArgsNumber = 5;
 const
   args: array[0..ArgsNumber - 1] of PAnsiChar =
-    ('-I', 'dummy',
+    ('-I',// 'dummy',
      '--quiet',
      '--no-xlib',
      '--file-caching=500',
