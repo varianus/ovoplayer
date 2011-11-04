@@ -1,7 +1,7 @@
 object fMainForm: TfMainForm
-  Left = 398
+  Left = 368
   Height = 657
-  Top = 181
+  Top = 159
   Width = 811
   Caption = 'OVO Player'
   ClientHeight = 637
@@ -124,6 +124,7 @@ object fMainForm: TfMainForm
           Align = alRight
           Constraints.MaxHeight = 22
           Constraints.MaxWidth = 22
+          Caption = 'Close'
           Flat = True
           Glyph.Data = {
             36040000424D3604000000000000360000002800000010000000100000000100

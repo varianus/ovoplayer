@@ -178,6 +178,7 @@ msgid "Open Playlist"
 msgstr ""
 
 #: TFABOUT.BUTTON1.CAPTION
+msgctxt "TFABOUT.BUTTON1.CAPTION"
 msgid "Close"
 msgstr ""
 
@@ -496,6 +497,11 @@ msgstr ""
 #: TFMAINFORM.SGSTATS.COLUMNS[1].TITLE.CAPTION
 msgctxt "TFMAINFORM.SGSTATS.COLUMNS[1].TITLE.CAPTION"
 msgid "Title"
+msgstr ""
+
+#: TFMAINFORM.SPEEDBUTTON1.CAPTION
+msgctxt "TFMAINFORM.SPEEDBUTTON1.CAPTION"
+msgid "Close"
 msgstr ""
 
 #: TFMAINFORM.TBREPEAT.CAPTION
