@@ -113,7 +113,7 @@
         <LaunchingApplication PathPlusParams="\usr\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="7">
+    <RequiredPackages Count="6">
       <Item1>
         <PackageName Value="mcaselli"/>
         <MinVersion Major="1" Valid="True"/>
@@ -131,14 +131,11 @@
         <MinVersion Major="1" Valid="True" Release="1"/>
       </Item4>
       <Item5>
-        <PackageName Value="LazControls"/>
+        <PackageName Value="virtualtreeview_package"/>
       </Item5>
       <Item6>
-        <PackageName Value="virtualtreeview_package"/>
-      </Item6>
-      <Item7>
         <PackageName Value="LCL"/>
-      </Item7>
+      </Item6>
     </RequiredPackages>
     <Units Count="39">
       <Unit0>

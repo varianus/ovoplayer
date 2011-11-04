@@ -26,7 +26,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   cthreads, {$ENDIF} {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, uMain, song, PlayList, PlayListManager, AudioEngine_MPlayer,
-  FilesSupport, lazcontrols, AudioTag, MediaLibrary, GeneralFunc, audioengine,
+  FilesSupport, AudioTag, MediaLibrary, GeneralFunc, audioengine,
   virtualtreeview_package, audioengine_bass, PasLibVlcUnit, xine, decoupler,
   MultimediaKeys, uConfig, uOSD, Config, AppConsts, uMiniPlayer, uSongInfo,
   GUIBackEnd, uAbout, audioengine_xine, audioengine_vlc, audioengine_dummy,
