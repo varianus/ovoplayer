@@ -216,14 +216,21 @@ begin
       begin
          if AnsiStartsStr('action:', Parameters[i]) then
            begin
-
              tempstr:=copy(Parameters[i], 8, Length(Parameters[i]));
-             if tempstr = 'seek+' then
-                actSkipForward.Execute;
-             if tempstr = 'seek-' then
-                actSkipBackward.Execute;
-
-             Continue;
+                  if tempstr = 'seek+' then
+                actSkipForward.Execute
+             else if tempstr = 'seek-' then
+                actSkipBackward.Execute
+             else if tempstr = 'play' then
+                actPlay.Execute
+             else if tempstr = 'stop' then
+                actStop.Execute
+             else if tempstr = 'pause' then
+                actPause.Execute
+             else if tempstr = 'next' then
+                actNext.Execute
+             else if tempstr = 'previous' then
+                actPrevious.Execute
            end;
 
          if Assigned(FOnExternalCommand) then

@@ -4,10 +4,10 @@ object BackEnd: TBackEnd
   OldCreateOrder = False
   left = 474
   top = 218
-  Height = 0
+  Height = 240
   HorizontalOffset = 469
   VerticalOffset = 312
-  Width = 0
+  Width = 320
   object ActionList: TActionList
     Images = ilButtons
     left = 67

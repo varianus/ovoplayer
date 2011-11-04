@@ -44,7 +44,7 @@ begin
       begin
         TempStr := '';
         for i := 1 to ParamCount do
-          TempStr := TempStr + 'action:'+ParamStr(i) + Separator;
+          TempStr := TempStr + 'action:'+lowercase(ParamStr(i)) + Separator;
         Active := True;
         SendStringMessage(ParamCount, TempStr);
       end;
