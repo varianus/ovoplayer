@@ -425,34 +425,13 @@ begin
     ShapeControl(Self);
   {$ENDIF SUPPORT_SHAPING}
 end;
-procedure DrawGradient(Canvas:Tcanvas;Rect:Trect; Color1, Color2: TColor);
-var
-i, steps: Integer;
-R1, G1, B1, R2, G2, B2: byte;
-Rx, Gx, Bx: Real;
-begin
-  with Canvas do begin
-    RedGreenBlue(Color1, r1, g1, b1);
-    RedGreenBlue(Color2, r2, g2, b2);
-    steps:= ceil(Min((rect.Right -Rect.Left) /2, (rect.Bottom - Rect.Top) / 2));
-    for i := 1 to steps do
-      begin
-        Rx := R1 - ((R1-R2) / steps) * i;
-        Gx := G1 - ((G1-G2) / steps) * i;
-        Bx := B1 - ((B1-B2) / steps) * i;
-        Pen.Color := RGBToColor(Trunc(Rx),Trunc(Gx),Trunc(Bx));
-        Brush.Color := Pen.Color;
-        ellipse(i, i, (rect.Right - Rect.Left) - i,(rect.Bottom - Rect.Top) -i );
-      end;
-  end;
-end;
 
 procedure TfOSD.Paint;
 begin
   Canvas.Brush.Style := bsSolid;
   Canvas.Brush.Color := Color;
-//  Canvas.FillRect(Rect(0,0,width,height));
-  DrawGradient(Canvas, Rect(0,0,width,height), color, GetHighLightColor(color));
+  Canvas.FillRect(Rect(0,0,width,height));
+  DrawGradientWindow(Canvas, Rect(0,0,width,height), height, Color);
 
 end;
 
@@ -514,4 +493,4 @@ end;
 initialization
   fOSD := nil;
 end.
-
+
