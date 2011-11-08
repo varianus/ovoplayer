@@ -33,7 +33,7 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <CommandLineParams Value="pause"/>
+        <CommandLineParams Value="--pause"/>
       </local>
     </RunParams>
     <RequiredPackages Count="1">

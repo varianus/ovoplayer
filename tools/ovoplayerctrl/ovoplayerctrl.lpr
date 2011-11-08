@@ -16,7 +16,12 @@ type
 
   TOvoPlayerCtrl = class(TCustomApplication)
   private
-    function InstanceRunning: Boolean;
+    ShortOptions:string;
+    LongOptions:TStringList;
+
+    function PostCommand(Command:string): Boolean;
+    Procedure AddOptions(ShortOption:string; LongOption:string); overload;
+    Procedure AddOptions(LongOption:string); overload;
   protected
     procedure DoRun; override;
   public
@@ -26,15 +31,13 @@ type
   end;
 
 { TOvoPlayerCtrl }
-const
-  BaseServerId = 'tuniqueinstance_';
-  Separator = '|';
+var
+  BaseServerId:string = 'tuniqueinstance_';
+  Separator:string = '|';
 
-function TOvoPlayerCtrl.InstanceRunning: Boolean;
+function TOvoPlayerCtrl.PostCommand(Command:string): Boolean;
 var
   TempStr: String;
-  i: Integer;
-
 begin
   with TSimpleIPCClient.Create(nil) do
   try
@@ -42,24 +45,48 @@ begin
     Result := ServerRunning;
     if Result then
       begin
-        TempStr := '';
-        for i := 1 to ParamCount do
-          TempStr := TempStr + 'action:'+lowercase(ParamStr(i)) + Separator;
+        TempStr := 'action:'+lowercase(Command) + Separator;
         Active := True;
-        SendStringMessage(ParamCount, TempStr);
+        SendStringMessage(TempStr);
       end;
   finally
     Free;
   end;
 end;
 
+procedure TOvoPlayerCtrl.AddOptions(ShortOption: string; LongOption: string);
+begin
+  ShortOptions:=ShortOptions+ShortOptions;
+  AddOptions(LongOption);
+end;
+
+procedure TOvoPlayerCtrl.AddOptions(LongOption: string);
+begin
+  LongOptions.Add(LongOption);
+end;
+
 
 procedure TOvoPlayerCtrl.DoRun;
 var
   ErrorMsg: String;
+  i:Integer;
+const
+  MediaControlCount = 7;
+var
+  MediaControl : array [0..MediaControlCount-1] of string =
+                                   ('pause', 'play', 'stop',
+                                    'next', 'previous',
+                                    'seek+', 'seek-');
 begin
   // quick check parameters
-  ErrorMsg:=CheckOptions('h','help');
+  AddOptions('h','help');
+  AddOptions('p:','playsong:');
+  AddOptions('e:','enqueue:');
+
+  for i := 0 to MediaControlCount -1 do
+     AddOptions(MediaControl[i]);
+
+  ErrorMsg:=CheckOptions(ShortOptions, LongOptions);
   if ErrorMsg<>'' then begin
     ShowException(Exception.Create(ErrorMsg));
     Terminate;
@@ -73,7 +100,10 @@ begin
     Exit;
   end;
 
-  InstanceRunning;
+  for i := 0 to MediaControlCount -1 do
+     if HasOption(MediaControl[i]) then
+        PostCommand(MediaControl[i]);
+
 
   // stop program loop
   Terminate;
@@ -82,11 +112,14 @@ end;
 constructor TOvoPlayerCtrl.Create(TheOwner: TComponent);
 begin
   inherited Create(TheOwner);
+  ShortOptions:= '';
+  LongOptions:= TStringList.Create;
   StopOnException:=True;
 end;
 
 destructor TOvoPlayerCtrl.Destroy;
 begin
+  LongOptions.Free;
   inherited Destroy;
 end;
 

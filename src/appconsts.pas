@@ -27,13 +27,14 @@ interface
 uses
   Classes, SysUtils;
 
+var
+   AppNameServerID :string  = 'ovoplayer';
 const
 
-  AppName    = 'ovoplayer';
-  AppNameServerID    = AppName;
   DisplayAppName = 'OVO Player';
   AppVersion = '0.0.1alpha';
 
+  AppName  = 'ovoplayer';
   DefaultResourceDirectory = '/usr/share/' + AppName + '/';
   ResourceSubDirectory     = 'Resources';
   LastPlaylistName = 'lastplaylist.xspf';
