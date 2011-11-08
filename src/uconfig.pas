@@ -123,7 +123,7 @@ begin
     begin
       BackEnd.Config.NotificationParam.X := fOsd.left;
       BackEnd.Config.NotificationParam.Y := fOsd.top;
-      fOSD.Close;
+      FreeAndNil(fOSD);
     end;
 
   MapToConfig;
@@ -149,11 +149,11 @@ procedure TfConfig.rgOSDKindClick(Sender: TObject);
 begin
   if rgOSDKind.ItemIndex = 2 then
      begin
-        if fOSD <> nil then
+        if Assigned(fOSD) then
           ShowOSDConfig;
      end
   else
-    fOSD.free;
+     FreeAndNil(fOSD);
 end;
 
 procedure TfConfig.bAddDirClick(Sender: TObject);
@@ -179,7 +179,7 @@ procedure TfConfig.CancelButtonClick(Sender: TObject);
 begin
   if Assigned(Fosd) and fOSD.Visible then
     begin
-      fOSD.Close;
+      FreeAndNil(fOSD);
     end;
   Close;
 end;
@@ -258,7 +258,7 @@ begin
     begin
       BackEnd.Config.NotificationParam.X := fosd.left;
       BackEnd.Config.NotificationParam.Y := fosd.top;
-      fOSD.Close;
+      FreeAndNil(fOSD);
     end;
 end;
 
@@ -320,4 +320,4 @@ begin
   //GENERAL
 end;
 
-end.
+end.
