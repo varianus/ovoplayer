@@ -37,8 +37,10 @@ type
   protected
     procedure BeginGrab; virtual; abstract;
     procedure EndGrab; virtual; abstract;
+    function GetGrabbed: Boolean; Virtual; abstract;
   public
     Owner: TMultimediaKeys;
+    Property Grabbed: Boolean read GetGrabbed;
   end;
 
   TOnMMKeys = procedure(Sender: TObject; Command: TEngineCommand) of object;
@@ -70,4 +72,4 @@ begin
 end;
 
 
-end.
+end.

@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {$IFDEF WINDOWS}
   {$DEFINE SUPPORT_SHAPING}
 {$ENDIF WINDOWS}
-
+{$DEFINE SUPPORT_SHAPING}
 //if release is defined, try to be quiet
 {$IFDEF RELEASE}
   {$HINTS OFF}
@@ -33,4 +33,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 // under Unix we need fo add a sub-directory to configuration files directory
 {$IFDEF UNIX}
   {$DEFINE NEEDCFGSUBDIR}
+{$ENDIF UNIX}
+
+{$IFDEF UNIX}
+  {.$DEFINE USE_DBUS_MMKEYS}
 {$ENDIF UNIX}
