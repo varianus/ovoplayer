@@ -14,9 +14,9 @@ object fConfig: TfConfig
     Height = 446
     Top = 0
     Width = 494
-    ActivePage = tsInterface
+    ActivePage = tsPlaylist
     Align = alClient
-    TabIndex = 0
+    TabIndex = 3
     TabOrder = 0
     object tsInterface: TTabSheet
       Caption = 'Interfaces'
@@ -217,14 +217,14 @@ object fConfig: TfConfig
         Top = 23
         Width = 192
         AutoSize = False
-        Caption = 'Track to extract for quick playlist'
-        Font.Height = 13
+        Caption = 'Tracks to extract for quick playlist'
+        Font.Height = 14
         ParentColor = False
         ParentFont = False
         OptimalFill = True
       end
       object seLimit: TSpinEdit
-        Left = 211
+        Left = 219
         Height = 23
         Top = 18
         Width = 58

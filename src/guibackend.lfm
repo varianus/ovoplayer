@@ -84,7 +84,7 @@ object BackEnd: TBackEnd
     end
     object actPlayListShuffle: TAction
       Category = 'PlayList'
-      Caption = 'actShufflePlayList'
+      Caption = 'Shuffle PlayList'
       ImageIndex = 9
       OnExecute = actPlayListShuffleExecute
     end

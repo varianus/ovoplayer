@@ -109,7 +109,8 @@ msgid "Save current playlist"
 msgstr ""
 
 #: TBACKEND.ACTPLAYLISTSHUFFLE.CAPTION
-msgid "actShufflePlayList"
+msgctxt "TBACKEND.ACTPLAYLISTSHUFFLE.CAPTION"
+msgid "Shuffle PlayList"
 msgstr ""
 
 #: TBACKEND.ACTPREVIOUS.CAPTION
@@ -221,6 +222,10 @@ msgstr ""
 msgid "Config"
 msgstr ""
 
+#: TFCONFIG.CBCAPTUREMMKEYS.CAPTION
+msgid "Use multimedia Keys"
+msgstr ""
+
 #: TFCONFIG.CBMINIMIZEONCLOSE.CAPTION
 msgid "Minimize on Close"
 msgstr ""
@@ -258,7 +263,7 @@ msgid "Tranparency"
 msgstr ""
 
 #: TFCONFIG.LABEL5.CAPTION
-msgid "Track to extract for quick playlist"
+msgid "Tracks to extract for quick playlist"
 msgstr ""
 
 #: TFCONFIG.LABEL6.CAPTION
@@ -267,6 +272,10 @@ msgstr ""
 
 #: TFCONFIG.RGAUDIOENGINE.CAPTION
 msgid "Audio Engine"
+msgstr ""
+
+#: TFCONFIG.RGKEYCAPTUREMODE.CAPTION
+msgid "Keys Capture Mode"
 msgstr ""
 
 #: TFCONFIG.RGOSDKIND.CAPTION
@@ -280,7 +289,7 @@ msgstr ""
 
 #: TFCONFIG.SBINTERFACE.CAPTION
 msgctxt "TFCONFIG.SBINTERFACE.CAPTION"
-msgid "Interface"
+msgid "Interfaces"
 msgstr ""
 
 #: TFCONFIG.SBLIBRARY.CAPTION
@@ -304,7 +313,7 @@ msgstr ""
 
 #: TFCONFIG.TSINTERFACE.CAPTION
 msgctxt "TFCONFIG.TSINTERFACE.CAPTION"
-msgid "Interface"
+msgid "Interfaces"
 msgstr ""
 
 #: TFCONFIG.TSMEDIALIBRARY.CAPTION

@@ -182,7 +182,7 @@ begin
 
   if Config.InterfaceParam.CaptureMMKeys then
     begin
-      fMultimediaKeys := TMultimediaKeys.Create(backend.Config.InterfaceParam.CaptureMMkeysMode);
+      fMultimediaKeys := TMultimediaKeys.Create(Config.InterfaceParam.CaptureMMkeysMode);
       fMultimediaKeys.OnMMKey := @OnMultimediaKeys;
     end;
 
