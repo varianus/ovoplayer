@@ -32,7 +32,7 @@ var
 const
 
   DisplayAppName = 'OVO Player';
-  AppVersion = '0.0.1alpha';
+  AppVersion = {$i version.inc};
 
   AppName  = 'ovoplayer';
   DefaultResourceDirectory = '/usr/share/' + AppName + '/';
