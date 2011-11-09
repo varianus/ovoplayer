@@ -123,8 +123,9 @@ begin
   UnRegisterHotkey( hwindow, Longint(ecNext));
 end;
 
-constructor TMultimediaKeys.Create;
+constructor TMultimediaKeys.Create(Mode: Integer);
 begin
+  fMode := Mode;
   KeyCapture := TkeyCaptureWin.Create;
   KeyCapture.Owner:= Self;
   KeyCapture.BeginGrab;

@@ -38,6 +38,7 @@ type
     bRemoveDir: TButton;
     bRescanLibrary: TButton;
     ButtonPanel: TButtonPanel;
+    cbCaptureMMKeys: TCheckBox;
     cbScanOnStart: TCheckBox;
     cbTrayVisible: TCheckBox;
     cbMinimizeOnClose: TCheckBox;
@@ -56,6 +57,7 @@ type
     lbMLPath:   TListBox;
     pcEngineParams: TPageControl;
     pcConfig:   TPageControl;
+    rgKeyCaptureMode: TRadioGroup;
     rgOSDKind:  TRadioGroup;
     rgAudioEngine: TRadioGroup;
     sbEngine:   TSpeedButton;
@@ -76,6 +78,7 @@ type
     procedure bRescanLibraryClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure CancelButtonClick(Sender: TObject);
+    procedure cbCaptureMMKeysClick(Sender: TObject);
     procedure colorBackgroundChange(Sender: TObject);
     procedure ColorFontChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -184,6 +187,11 @@ begin
   Close;
 end;
 
+procedure TfConfig.cbCaptureMMKeysClick(Sender: TObject);
+begin
+  rgKeyCaptureMode.Enabled := cbCaptureMMKeys.Checked;
+end;
+
 procedure TfConfig.colorBackgroundChange(Sender: TObject);
 begin
   BackEnd.Config.NotificationParam.BackColor := colorBackground.Selected;
@@ -202,8 +210,8 @@ end;
 procedure TfConfig.FormCreate(Sender: TObject);
 begin
   TRadioButton(rgAudioEngine.Controls[0]).Enabled := TAudioEngineVLC.IsAvalaible(nil);
-  // Usually in Windows MPlayer is not in the path...
-  // MPlayer choice is now always avalaible so you can specify application path
+  // Usually in Windows MPlayer is not in path...
+  // MPlayer choice will be always avalaible so you can specify application path
   TRadioButton(rgAudioEngine.Controls[1]).Enabled := true;// TAudioEngineMPlayer.IsAvalaible(nil);
   TRadioButton(rgAudioEngine.Controls[2]).Enabled := TAudioEngineXINE.IsAvalaible(nil);
   TRadioButton(rgAudioEngine.Controls[3]).Enabled := TAudioEngineBASS.IsAvalaible(nil);
@@ -221,6 +229,11 @@ begin
   pcConfig.ShowTabs:=false;
   sbInterface.click;
   ConfigToMap;
+  {$IFDEF ASKMMKEYSMODE}
+    rgKeyCaptureMode.Visible:=True;
+  {$ELSE}
+    rgKeyCaptureMode.Visible:=False;;
+  {$ENDIF ASKMMKEYSMODE}
 
 end;
 
@@ -283,6 +296,8 @@ begin
   // INTERFACE
   BackEnd.Config.InterfaceParam.MinimizeOnClose := cbMinimizeOnClose.checked;
   BackEnd.Config.InterfaceParam.ShowTrayIcon    := cbTrayVisible.checked;
+  BackEnd.Config.InterfaceParam.CaptureMMKeys   := cbCaptureMMKeys.checked;
+  BackEnd.Config.InterfaceParam.CaptureMMkeysMode:= rgKeyCaptureMode.ItemIndex;
 
   // PLAYLIST
   BackEnd.Config.PlayListParam.LimitTrack       := seLimit.Value;
@@ -307,8 +322,11 @@ begin
   tbTransparency.Position   := BackEnd.Config.NotificationParam.Transparency;
 
   // INTERFACE
-  cbMinimizeOnClose.checked := BackEnd.Config.InterfaceParam.MinimizeOnClose;
-  cbTrayVisible.checked := BackEnd.Config.InterfaceParam.ShowTrayIcon;
+  cbMinimizeOnClose.checked  := BackEnd.Config.InterfaceParam.MinimizeOnClose;
+  cbTrayVisible.checked      := BackEnd.Config.InterfaceParam.ShowTrayIcon;
+  cbCaptureMMKeys.checked    := BackEnd.Config.InterfaceParam.CaptureMMKeys;
+  rgKeyCaptureMode.ItemIndex := BackEnd.Config.InterfaceParam.CaptureMMkeysMode;
+
 
   // PLAYLIST
   seLimit.Value             := BackEnd.Config.PlayListParam.LimitTrack;
@@ -320,4 +338,4 @@ begin
   //GENERAL
 end;
 
-end.
+end.

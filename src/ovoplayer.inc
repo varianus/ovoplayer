@@ -19,22 +19,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 }
 // Master include File for OVOPlayer Apps
 //
-// GTK2 shaping seems to not work
 {$IFDEF WINDOWS}
-  {$DEFINE SUPPORT_SHAPING}
+  {$DEFINE SUPPORT_SHAPING} // seems to work only on windows
 {$ENDIF WINDOWS}
-{$DEFINE SUPPORT_SHAPING}
-//if release is defined, try to be quiet
+
+//if release is defined, try to be quiet and efficient...
 {$IFDEF RELEASE}
   {$HINTS OFF}
   {$INLINE ON}
 {$ENDIF RELEASE}
 
-// under Unix we need fo add a sub-directory to configuration files directory
 {$IFDEF UNIX}
-  {$DEFINE NEEDCFGSUBDIR}
+  {$DEFINE NEEDCFGSUBDIR} // Need to add a sub-directory to configuration files directory
+  {$DEFINE ASKMMKEYSMODE} // Ask for multimedia keys capture mode
 {$ENDIF UNIX}
 
-{$IFDEF UNIX}
-  {.$DEFINE USE_DBUS_MMKEYS}
-{$ENDIF UNIX}

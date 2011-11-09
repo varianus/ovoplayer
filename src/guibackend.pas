@@ -180,8 +180,11 @@ begin
   AudioEngine.OnSongEnd := @AudioEngineSongEnd;
   AudioEngine.Activate;
 
-  fMultimediaKeys := TMultimediaKeys.Create;
-  fMultimediaKeys.OnMMKey := @OnMultimediaKeys;
+  if Config.InterfaceParam.CaptureMMKeys then
+    begin
+      fMultimediaKeys := TMultimediaKeys.Create(backend.Config.InterfaceParam.CaptureMMkeysMode);
+      fMultimediaKeys.OnMMKey := @OnMultimediaKeys;
+    end;
 
 end;
 

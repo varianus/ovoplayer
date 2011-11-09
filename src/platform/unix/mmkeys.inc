@@ -20,7 +20,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 uses DBUS, LCLProc, AppConsts, x,  xlib, gdk, keysym;
 
 type
- {$IFDEF  USE_DBUS_MMKEYS}
   { TDBUSThread }
 
   TDBUSThread = class (TThread)
@@ -45,7 +44,7 @@ type
     Procedure BeginGrab; Override;
     Procedure EndGrab; Override;
   end;
-  {$ELSE}
+
   { TkeyCaptureXGrab }
 
   TkeyCaptureXGrab = class (TKeyCapture)
@@ -59,7 +58,7 @@ type
     Procedure BeginGrab; Override;
     Procedure EndGrab; Override;
   end;
-  {$ENDIF}
+
 
 const
  XF86XK_AudioPlay  = $1008FF14;   // Start playing of audio >
@@ -74,27 +73,6 @@ const
  GNOME_SETTINGS_DAEMON_INTERFACE  = 'org.gnome.SettingsDaemon.MediaKeys';
  GNOME_SETTINGS_DAEMON_NAME       = 'org.gnome.SettingsDaemon';
 
-
- constructor TMultimediaKeys.Create;
- begin
-   {$IFDEF  USE_DBUS_MMKEYS}
-   KeyCapture := TkeyCaptureDBUS.Create;
-   {$ELSE}
-   KeyCapture := TkeyCaptureXGrab.Create;
-   {$ENDIF}
-
-   KeyCapture.Owner:= Self;
-   KeyCapture.BeginGrab;
- end;
-
-destructor TMultimediaKeys.Destroy;
-begin
-  KeyCapture.EndGrab;
-  KeyCapture.Free;
-end;
-
-
-{$IFDEF  USE_DBUS_MMKEYS}
 function filter_func(connection: PDBusConnection; message_: PDBusMessage; user_data: Pointer): DBusHandlerResult; cdecl;
 var 
   err: DBusError;
@@ -225,8 +203,6 @@ begin
   TMPF:= DBusHandleMessageFunction(@filter_func);
   dbus_connection_Remove_filter (fBus, TMPF, self);
 end;
-
-{$ELSE}
 
 { TkeyCaptureXGrab }
 Function grab_mmkey (key_code : Integer; root: TWindow):boolean;
@@ -391,6 +367,22 @@ begin
   GrabKeys(False);
 end;
 
-{$ENDIF}
+constructor TMultimediaKeys.Create(Mode:Integer);
+begin
+  fMode := Mode;
+  if fMode = 0 then
+    KeyCapture := TkeyCaptureDBUS.Create
+  else
+    KeyCapture := TkeyCaptureXGrab.Create;
 
-
+  KeyCapture.Owner:= Self;
+  KeyCapture.BeginGrab;
+end;
+
+destructor TMultimediaKeys.Destroy;
+begin
+ KeyCapture.EndGrab;
+ KeyCapture.Free;
+end;
+
+

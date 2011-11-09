@@ -137,7 +137,7 @@
         <PackageName Value="LCL"/>
       </Item6>
     </RequiredPackages>
-    <Units Count="39">
+    <Units Count="40">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -350,6 +350,10 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="audioengine_dummy"/>
       </Unit38>
+      <Unit39>
+        <Filename Value="version.inc"/>
+        <IsPartOfProject Value="True"/>
+      </Unit39>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

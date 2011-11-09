@@ -37,7 +37,7 @@ type
   protected
     procedure BeginGrab; virtual; abstract;
     procedure EndGrab; virtual; abstract;
-    function GetGrabbed: Boolean; Virtual; abstract;
+    function GetGrabbed: Boolean; Virtual;
   public
     Owner: TMultimediaKeys;
     Property Grabbed: Boolean read GetGrabbed;
@@ -49,12 +49,15 @@ type
 
   TMultimediaKeys = class
   private
+    fMode: integer;
     FOnMMKey:   TOnMMKeys;
     KeyCapture: TKeyCapture;
+
     procedure SetOnMMKey(const AValue: TOnMMKeys);
   public
-    constructor Create;
+    constructor Create(Mode:Integer);
     destructor Destroy; override;
+    property Mode:integer read fMode;
     property OnMMKey: TOnMMKeys read FOnMMKey write SetOnMMKey;
 
   end;
@@ -64,6 +67,11 @@ implementation
 { TMultimediaKeys }
 {$I mmkeys.inc}
 
+function TKeyCapture.GetGrabbed: Boolean;
+begin
+  result:=False;
+end;
+
 procedure TMultimediaKeys.SetOnMMKey(const AValue: TOnMMKeys);
 begin
   if FOnMMKey = AValue then
@@ -72,4 +80,4 @@ begin
 end;
 
 
-end.
+end.
