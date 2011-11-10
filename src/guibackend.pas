@@ -158,12 +158,6 @@ begin
   Manager  := TPlayListManager.Create;
   Playlist := TPlayList.Create;
   PlayList.RepeatMode :=  TplRepeat(Config.PlayListParam.RepeatMode);
-
-  if Config.EngineParam.EngineKind = -1 then
-    begin
-     Config.EngineParam.EngineKind:=0;
-    end;
-
   mediaLibrary := TMediaLibrary.Create;
 
   case Config.EngineParam.EngineKind of
@@ -171,10 +165,26 @@ begin
     1 : Engine := TAudioEngineMPlayer;
     2 : Engine := TAudioEngineXINE;
     3 : Engine := TAudioEngineBASS;
+  else
+    begin
+      if TAudioEngineVLC.IsAvalaible(Config.EngineSubParams) then
+         Engine := TAudioEngineVLC
+      else
+        if TAudioEngineMPlayer.IsAvalaible(Config.EngineSubParams)  then
+           Engine := TAudioEngineMPlayer
+      else
+        if TAudioEngineXINE.IsAvalaible(Config.EngineSubParams)  then
+           Engine := TAudioEngineXINE
+      else
+          if TAudioEngineBASS.IsAvalaible(Config.EngineSubParams)  then
+             Engine := TAudioEngineBASS
+      else
+          engine:=TAudioEnginedDummy
+    end;
   end;
 
   if not Engine.IsAvalaible(Config.EngineSubParams) then
-       engine:=TAudioEnginedummy;
+       engine:=TAudioEngineDummy;
 
   AudioEngine := Engine.Create;
   AudioEngine.OnSongEnd := @AudioEngineSongEnd;

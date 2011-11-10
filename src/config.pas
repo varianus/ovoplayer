@@ -224,7 +224,7 @@ begin
   NotificationParam.TimeOut := fIniFiles.ReadInteger('Notification', 'TimeOut', 3000);
   NotificationParam.X := fIniFiles.ReadInteger('Notification', 'X', 100);
   NotificationParam.Y := fIniFiles.ReadInteger('Notification', 'Y', 100);
-  NotificationParam.Transparency := fIniFiles.ReadInteger('Notification', 'Transparency', 240);
+  NotificationParam.Transparency := fIniFiles.ReadInteger('Notification', 'Transparency', 230);
 
   // INTERFACE
   InterfaceParam.MinimizeOnClose := fIniFiles.ReadBool('Interface', 'MinimizeOnClose', True);
