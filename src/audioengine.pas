@@ -36,8 +36,8 @@ type
 
   TEngineCommand = (ecInvalid, ecStop, ecPrevious, ecPlay, ecNext, ecPause, ecSeek);
 
-
   TAudioEngineClass = class of TAudioEngine;
+
   { TAudioEngine }
 
   TAudioEngine = class
@@ -86,9 +86,6 @@ type
   end;
 
 implementation
-
-var
-  EngFormat: TFormatSettings;
 
 { TAudioEngine }
 

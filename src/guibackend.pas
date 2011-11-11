@@ -179,7 +179,7 @@ begin
           if TAudioEngineBASS.IsAvalaible(Config.EngineSubParams)  then
              Engine := TAudioEngineBASS
       else
-          engine:=TAudioEnginedDummy
+          engine:=TAudioEngineDummy
     end;
   end;
 

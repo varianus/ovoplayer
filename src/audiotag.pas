@@ -53,7 +53,6 @@ function GetFileTagsObject(FileName: string): TTagReader;
 function IdentifyKind(FileName: string): TSongFormat;
 
 implementation
-uses CommonFunctions;
 
 function LoadTags(var Song: Tsong): boolean;
 begin

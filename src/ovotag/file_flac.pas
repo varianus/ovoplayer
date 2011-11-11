@@ -108,7 +108,6 @@ function TFlacReader.LoadFromFile(FileName: Tfilename): boolean;
 var
   fStream: TFileStream;
   Header: TFlacHeader;
-  Start: byte;
   BlockHeader: TMetaDataBlockHeader;
   BlockLength: integer;
   BlockType: integer;

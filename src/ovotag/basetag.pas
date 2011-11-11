@@ -64,11 +64,12 @@ type
     procedure SetID(AValue: string);
     function GetAsString: string; virtual; abstract;
     procedure SetAsString(AValue: string); virtual; abstract;
+    function ReadFromStream(AStream:TStream):boolean; virtual; abstract;
+
   public
     constructor Create; virtual; Overload;
     constructor Create(ID:String); virtual; Overload;
     destructor Destroy; override;
-    function ReadFromStream(AStream:TStream):boolean; virtual; abstract;
   public
     property ID: string read GetID Write SetID;
     property AsString: string read GetAsString write SetAsString;
@@ -83,6 +84,10 @@ type
     FImage: TStream;
     procedure SetFrameRef(AValue: TFrameElement);
     procedure SetImage(AValue: TStream);
+  protected
+    function GetAsString: string;  override;
+    procedure SetAsString(AValue: string); override;
+    function ReadFromStream(AStream:TStream):boolean; override;
   Public
     Description: String;
     MIMEType: String;
@@ -178,6 +183,20 @@ begin
   FImage:=AValue;
 end;
 
+function TImageElement.GetAsString: string;
+begin
+  Result:= '';
+end;
+
+procedure TImageElement.SetAsString(AValue: string);
+begin
+end;
+
+function TImageElement.ReadFromStream(AStream: TStream): boolean;
+begin
+  Result:=False;
+end;
+
 constructor TImageElement.Create;
 begin
   inherited Create;
@@ -218,6 +237,13 @@ end;
 
 function TTagReader.DumpInfo: TMediaProperty;
 begin
+  with Result do
+   begin
+     BitRate :=0;
+     BPM := 0;
+     Sampling := 0;
+     ChannelMode := '';
+   end;
 
 end;
 

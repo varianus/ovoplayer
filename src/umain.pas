@@ -50,6 +50,7 @@ type
 
 
   TfMainForm = class(TForm)
+    actShowPLMediainfo: TAction;
     actShowAbout: TAction;
     ActShowPreferences: TAction;
     ActionList: TActionList;
@@ -164,6 +165,7 @@ type
     CollectionTree: TVirtualStringTree;
     FilesTree: TVirtualStringTree;
     procedure actShowAboutExecute(Sender: TObject);
+    procedure actShowPLMediainfoExecute(Sender: TObject);
     procedure ActShowPreferencesExecute(Sender: TObject);
     procedure BackEndSongStart(Sender: TObject);
     procedure btnBackDirClick(Sender: TObject);
@@ -214,7 +216,6 @@ type
     procedure mnuEnqueueItemsClick(Sender: TObject);
     procedure mnuFileInfoClick(Sender: TObject);
     procedure mnuInfoClick(Sender: TObject);
-    procedure MenuItem30Click(Sender: TObject);
     procedure mnuPlayItemsClick(Sender: TObject);
     procedure mnuRemovePlaylistClick(Sender: TObject);
     procedure PlaylistMenuPopup(Sender: TObject);
@@ -526,6 +527,42 @@ begin
   theForm.ShowModal;
 end;
 
+procedure TfMainForm.actShowPLMediainfoExecute(Sender: TObject);
+var
+  info : TfSongInfo;
+  Node: PVirtualNode;
+  fileList: TStringList;
+begin
+  Node:=lvPlayList.GetFirstSelected;
+  if node = nil then
+     exit;
+  if lvPlayList.SelectedCount = 1 then
+      begin
+        info := TfSongInfo.Create(Application);
+        info.InitFromFile(BackEnd.PlayList[Node^.Index].FullName);
+        Info.show;
+       end
+  else
+     begin
+       fileList := TStringList.Create;
+       try
+          Node:=lvPlayList.GetFirstSelected;
+          while node <> nil do
+            begin
+              fileList.Add(BackEnd.PlayList[Node^.Index].FullName);
+              Node:=lvPlayList.GetNextSelected(Node);
+            end;
+         info := TfSongInfo.Create(Application);
+         info.InitFromList(FileList);
+         Info.show;
+
+       finally
+         FreeAndNil(FileList);
+       end;
+
+    end;
+end;
+
 procedure TfMainForm.btnBackDirClick(Sender: TObject);
 begin
   dec(PathIndex);
@@ -669,10 +706,8 @@ end;
 
 procedure TfMainForm.FormCreate(Sender: TObject);
 var
-  node: PVirtualNode;
-  tmpIcon :TIcon;
-  tmpSize:TSize;
-
+  tmpIcon : TIcon;
+  tmpSize : TSize;
 begin
 
   PathHistory := TStringList.Create;
@@ -1058,43 +1093,6 @@ begin
               if (Data <> nil) and (Data^.Kind = tkSong) then
                  fileList.Add(BackEnd.mediaLibrary.FullNameFromID(Data^.ID));
               Node:=CollectionTree.GetNextSelected(Node);
-            end;
-         info := TfSongInfo.Create(Application);
-         info.InitFromList(FileList);
-         Info.show;
-
-       finally
-         FreeAndNil(FileList);
-       end;
-
-    end;
-end;
-
-procedure TfMainForm.MenuItem30Click(Sender: TObject);
-var
-  info : TfSongInfo;
-  Node: PVirtualNode;
-  Data : PNodeData;
-  fileList: TStringList;
-begin
-  Node:=lvPlayList.GetFirstSelected;
-  if node = nil then
-     exit;
-  if lvPlayList.SelectedCount = 1 then
-      begin
-        info := TfSongInfo.Create(Application);
-        info.InitFromFile(BackEnd.PlayList[Node^.Index].FullName);
-        Info.show;
-       end
-  else
-     begin
-       fileList := TStringList.Create;
-       try
-          Node:=lvPlayList.GetFirstSelected;
-          while node <> nil do
-            begin
-              fileList.Add(BackEnd.PlayList[Node^.Index].FullName);
-              Node:=lvPlayList.GetNextSelected(Node);
             end;
          info := TfSongInfo.Create(Application);
          info.InitFromList(FileList);

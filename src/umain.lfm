@@ -806,8 +806,7 @@ object fMainForm: TfMainForm
       Caption = '-'
     end
     object MenuItem30: TMenuItem
-      Caption = 'Info Media'
-      OnClick = MenuItem30Click
+      Action = actShowPLMediainfo
     end
     object MenuItem11: TMenuItem
       Action = BackEnd.actPlaylistSave
@@ -903,6 +902,10 @@ object fMainForm: TfMainForm
     object actShowAbout: TAction
       Caption = 'About'
       OnExecute = actShowAboutExecute
+    end
+    object actShowPLMediainfo: TAction
+      Caption = 'Media Info'
+      OnExecute = actShowPLMediainfoExecute
     end
   end
 end

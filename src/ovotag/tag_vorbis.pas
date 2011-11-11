@@ -33,9 +33,10 @@ type
   TVorbisFrame = class(TFrameElement)
   Private
     fValue :string;
-  public
+  protected
     function GetAsString: string;  override;
     procedure SetAsString(AValue: string); override;
+  public
     function ReadFromStream(AStream: TStream): boolean; override;
   end;
 
@@ -51,8 +52,6 @@ type
 
 
 implementation
-uses CommonFunctions;
-
 { TVorbisFrame }
 
 function TVorbisFrame.GetAsString: string;
@@ -115,6 +114,7 @@ begin
   Size := BetoN(AStream.ReadDWord);
   img.Image.CopyFrom(AStream, Size);
   AddImage(img);
+  Result:= true;
 end;
 
 function TVorbisTags.GetCommonTags: TCommonTags;

@@ -25,7 +25,7 @@ unit PlayListManager;
 interface
 
 uses
-  Classes, SysUtils, Playlist, AudioTag, Song, MediaLibrary;
+  Classes, SysUtils, Playlist, AudioTag, MediaLibrary;
 
 const
   XSPF_VERSION = 'http://dartclub.tripod.com/MMP/0/1/';
@@ -339,7 +339,6 @@ function TPlayListManager.ImportFromM3U(const FileName: TFileName; var Playlist:
 var
   f: textfile;
   s: string;
-  i: integer;
   p: string;
 begin
   Playlist.Clear;

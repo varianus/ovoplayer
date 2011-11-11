@@ -25,7 +25,7 @@ unit MediaLibrary;
 interface
 
 uses
-  Classes, SysUtils, DB, sqlite3conn, sqldb, Song, lclproc, basetag;
+  Classes, SysUtils, DB, sqlite3conn, sqldb, lclproc, basetag;
 
 type
 
@@ -413,7 +413,7 @@ begin
   BeforeScan;
   Scanner := TDirectoryScanner.CreateScanner(Paths, self);
   Scanner.OnTerminate := @EndScan;
-  Scanner.Resume;
+  Scanner.Start;
 end;
 
 procedure TMediaLibrary.RemoveMissing;

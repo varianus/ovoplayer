@@ -111,7 +111,7 @@ end;
 
 function ExtractText(const SourceString: string; LanguageID: boolean): string;
 var
-  Source, Separator: string;
+  Source: string;
   EncodingID: char;
 begin
   { Extract significant text data from a complex field }
@@ -120,15 +120,10 @@ begin
   if Length(Source) > 0 then
   begin
     EncodingID := Source[1];
-    if EncodingID = UNICODE_ID then
-      Separator := #0#0
-    else
-      Separator := #0;
     if LanguageID then
       Delete(Source, 1, 4)
     else
       Delete(Source, 1, 1);
-    //    Delete(Source, 1, Pos(Separator, Source) + Length(Separator) - 1);
     Result := GetANSI(EncodingID + Source);
   end;
 end;

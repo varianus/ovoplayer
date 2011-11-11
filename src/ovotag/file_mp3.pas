@@ -406,7 +406,6 @@ const
   SizeOfData = MAX_MPEG_FRAME_LENGTH * 2;
 var
   fStream: TFileStream;
-  i: integer;
   Data: array [1..SizeOfData] of byte;
   Transferred: DWord;
 
@@ -415,7 +414,6 @@ begin
 
   try
     fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
-    //  fStream.ReadBuffer(Header, SizeOf(Header));
     ftags := TID3Tags.Create;
     fTags.ReadFromStream(fStream);
 
