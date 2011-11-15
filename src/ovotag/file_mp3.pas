@@ -24,7 +24,10 @@ unit file_mp3;
 interface
 
 uses
-  Classes, SysUtils, basetag, tag_id3v2;
+  Classes, SysUtils, audiotag, basetag, tag_id3v2;
+
+const
+  Mp3FileMask: string    = '*.mpa;*.mp1;*.mp2;*.mp3;';
 
 type
 
@@ -438,5 +441,7 @@ begin
   end;
 end;
 
+initialization
+  RegisterTagReader(Mp3FileMask, TMP3Reader);
 end.
 

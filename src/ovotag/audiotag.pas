@@ -1,5 +1,5 @@
 {
-This file is part of OvoPlayer
+This file is part of OvoTag
 Copyright (C) 2011 Marco Caselli
 
 OvoPlayer is free software; you can redistribute it and/or
@@ -26,33 +26,49 @@ interface
 
 uses
   Classes, SysUtils, Song,
-  file_flac, file_mp3, file_wma, file_ogg,
   baseTag;
 
-const
-  Mp3FileMask: string    = '*.mpa;*.mp1;*.mp2;*.mp3;';
-  MPPFileMask: string    = '*.mp+;*.mpc;';
-  FlacFileMask: string   = '*.flac;';
-  MonkeyFileMask: string = '*.mac;*.ape;';
-  WMAFileMask: string    = '*.wma;';
-  OGGFileMask: string    = '*.ogg;';
-  WAVFileMask: string    = '*.wav;';
+function SupportedExtension: string;
 
-var
-  SupportedExtension: string;
-
-
-type
-  TSongFormat = (sfUnsupported, sfAAC, sfAC3, sfAPE, sfCDA, sfFLAC, sfMP3, sfMonkey, sfOGG, sfWMA);
-
+Procedure RegisterTagReader(const Extensions: string;
+                            const TagReader: TTagReaderClass);
 
 function LoadTags(var Song: Tsong): boolean;
 function ExtractTags(FileName: string): TCommonTags; overload;
 function ExtractTags(FileTags: TTagReader): TCommonTags; overload;
 function GetFileTagsObject(FileName: string): TTagReader;
-function IdentifyKind(FileName: string): TSongFormat;
+function IdentifyKind(FileName: string): TTagReaderClass;
 
 implementation
+type
+  RTagReader = record
+    Extensions : String;
+    TagReader : TTagReaderClass;
+  end;
+
+var
+  AReaderList : array of RTagReader;
+
+function SupportedExtension: string;
+var
+  i:Integer;
+begin
+  result:= '';
+  for i := Low(AReaderList) to High(AReaderList) do
+     result:= Result + AReaderList[i].Extensions;
+
+end;
+
+procedure RegisterTagReader(const Extensions: string;
+  const TagReader: TTagReaderClass);
+var
+  tr: RTagReader;
+begin
+  tr.Extensions:=Extensions;
+  tr.TagReader:=TagReader;
+  SetLength(AReaderList, Length(AReaderList) +1);
+  AReaderList[High(AReaderList)] := tr;
+end;
 
 function LoadTags(var Song: Tsong): boolean;
 begin
@@ -63,49 +79,32 @@ begin
 end;
 
 function GetFileTagsObject(FileName: string): TTagReader;
-  var
-    kind: TSongFormat;
-  begin
-    kind := IdentifyKind(FileName);
-    Result := nil;
-    case kind of
-      sfMP3:  Result := TMP3Reader.Create(FileName);
-      sfWMA:  Result := TWMAReader.Create(FileName);
-      sfFLAC: Result := TFlacReader.Create(FileName);
-      sfOGG: Result := TOGGReader.Create(FileName);
-    else
-      Result:= TTagReader.Create(FileName); // FallBack
-    end;
-  end;
+var
+  kind: TTagReaderClass;
+begin
+  kind := IdentifyKind(FileName);
+  Result:= kind.Create(FileName); // FallBack
+end;
 
-
-function IdentifyKind(FileName: string): TSongFormat;
+function IdentifyKind(FileName: string): TTagReaderClass;
 var
   ext: string;
+  i : Integer;
 begin
   ext    := lowercase(ExtractFileExt(Filename));
-
-  if Pos(ext, Mp3FileMask) > 0 then
-     Result := sfMP3
-  else
-  if Pos(ext, FlacFileMask) > 0 then
-     Result := sfFLAC
-  else
-  if Pos(ext, WMAFileMask) > 0 then
-     Result := sfWMA
-  else
-  if Pos(ext, OGGFileMask) > 0 then
-     Result := sfOGG
-  else
-     Result := sfUnsupported;
-
+  result := TTagReader;
+  for i := Low(AReaderList) to High(AReaderList) do
+     if Pos(ext, AReaderList[i].Extensions) > 0 then
+        begin
+           result := AReaderList[i].TagReader;
+           exit;
+        end;
 end;
 
 function ExtractTags(FileTags: TTagReader): TCommonTags;
 begin
   if FileTags = nil  then
      exit;
-
   Result := FileTags.GetCommonTags;
 end;
 
@@ -120,9 +119,5 @@ begin
 end;
 
 initialization
-  SupportedExtension := Mp3FileMask
-                      + OGGFileMask
-                      + FlacFileMask
-                      + WMAFileMask
-                      ;
+  setlength(AReaderList, 0);
 end.

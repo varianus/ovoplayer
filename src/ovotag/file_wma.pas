@@ -24,7 +24,10 @@ unit file_wma;
 interface
 
 uses
-  Classes, SysUtils, basetag, tag_wma;
+  Classes, SysUtils, AudioTag, basetag, tag_wma;
+
+const
+  WMAFileMask: string    = '*.wma;';
 
 type
   { TWMAReader }
@@ -140,6 +143,9 @@ begin
   result:= (Tags <> nil) and (tags.count > 0);
 
 end;
+
+initialization
+  RegisterTagReader(WMAFileMask, TWMAReader);
 
 end.
 

@@ -24,7 +24,10 @@ unit file_ogg;
 interface
 
 uses
-  Classes, SysUtils, baseTag, tag_Vorbis;
+  Classes, SysUtils, AudioTag, baseTag, tag_Vorbis;
+
+const
+  OGGFileMask: string    = '*.ogg;';
 
 type
 
@@ -153,6 +156,9 @@ begin
   end;
 
 end;
+
+initialization
+  RegisterTagReader(OGGFileMask, TOGGReader);
 
 end.
 

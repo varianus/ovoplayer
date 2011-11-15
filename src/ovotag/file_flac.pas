@@ -24,7 +24,10 @@ unit file_flac;
 interface
 
 uses
-  Classes, SysUtils, baseTag, tag_Vorbis;
+  Classes, SysUtils, AudioTag, baseTag, tag_Vorbis;
+
+const
+  FlacFileMask: string   = '*.flac;';
 
 type
 
@@ -162,6 +165,9 @@ begin
   end;
 
 end;
+
+initialization
+  RegisterTagReader(FlacFileMask, TFlacReader);
 
 end.
 

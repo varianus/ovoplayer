@@ -132,6 +132,7 @@ type
   end;
 
   { TTagReader }
+  TTagReaderClass = class of TTagReader;
 
   TTagReader = class
   private

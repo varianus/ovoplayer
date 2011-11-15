@@ -1,8 +1,8 @@
 {
-This file is part of OvoPlayer
+This file is part of OvoTag
 Copyright (C) 2011 Marco Caselli
 
-OvoPlayer is free software; you can redistribute it and/or
+OvoTag is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
 as published by the Free Software Foundation; either version 2
 of the License, or (at your option) any later version.
