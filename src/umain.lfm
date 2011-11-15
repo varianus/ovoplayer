@@ -1,7 +1,7 @@
 object fMainForm: TfMainForm
-  Left = 368
+  Left = 349
   Height = 657
-  Top = 159
+  Top = 108
   Width = 811
   Caption = 'OVO Player'
   ClientHeight = 637

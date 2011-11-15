@@ -63,7 +63,7 @@ type
   end;
 
   TEngineParam = record
-    EngineKind : Integer;
+    EngineKind : string;
     Volume : Integer;
   end;
 
@@ -95,8 +95,8 @@ type
     constructor Create;
     procedure ReadConfig;
     procedure SaveConfig;
-    Procedure ReadSubParams(EngineKind:Integer=-1);
-    procedure SaveSubParams(EngineKind: Integer=-1);
+    Procedure ReadSubParams(EngineKind:String='');
+    procedure SaveSubParams(EngineKind:String='');
     function GetResourcesPath: string;
     Property ConfigDir: string read fConfigDir;
     procedure Flush;
@@ -165,7 +165,7 @@ begin
   fIniFiles.WriteInteger('PlayList', 'RepeatMode', PlayListParam.RepeatMode);
 
   // ENGINE
-  fIniFiles.WriteInteger('AudioEngine', 'Kind', EngineParam.EngineKind);
+  fIniFiles.WriteString('AudioEngine', 'Kind', EngineParam.EngineKind);
   fIniFiles.WriteInteger('AudioEngine', 'Volume', EngineParam.Volume);
   fIniFiles.WriteInteger('AudioEngine', 'Volume', EngineParam.Volume);
 
@@ -177,31 +177,24 @@ begin
 
 end;
 
-procedure TConfig.ReadSubParams(EngineKind:Integer=-1);
+procedure TConfig.ReadSubParams(EngineKind:String='');
 begin
-  if EngineKind = -1 then
+  if EngineKind = '' then
      EngineKind := EngineParam.EngineKind;
 
-  case EngineKind of
-    1 : fIniFiles.ReadSectionValues('AudioEngine.Mplayer', EngineSubParams)
-  else
-    EngineSubParams.Clear;
-  end;
+  EngineSubParams.Clear;
+  fIniFiles.ReadSectionValues('AudioEngine.'+ EngineKind, EngineSubParams)
 end;
 
-procedure TConfig.SaveSubParams(EngineKind:Integer=-1);
+procedure TConfig.SaveSubParams(EngineKind:String='');
 var
   Section:string;
   i :Integer;
 begin
-  if EngineKind = -1 then
+  if EngineKind = '' then
      EngineKind := EngineParam.EngineKind;
 
-  case EngineKind of
-    1 : Section:= 'AudioEngine.Mplayer';
-  else
-    Section :='AudioEngine.?';
-  end;
+  Section:= 'AudioEngine.'+ EngineKind;
 
   for i := 0 to EngineSubParams.Count -1 do
     begin
@@ -239,7 +232,7 @@ begin
   PlayListParam.RepeatMode :=  fIniFiles.ReadInteger('PlayList', 'RepeatMode', 0);
 
   // ENGINE
-  EngineParam.EngineKind := fIniFiles.ReadInteger('AudioEngine', 'Kind', -1);
+  EngineParam.EngineKind := fIniFiles.ReadString('AudioEngine', 'Kind', '');
   EngineParam.Volume := fIniFiles.ReadInteger('AudioEngine', 'Volume', 50);
   ReadSubParams;
 

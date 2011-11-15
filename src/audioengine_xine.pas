@@ -49,10 +49,11 @@ type
     procedure DoPlay(Song: TSong; offset:Integer); override;
     procedure SetMuted(const AValue: boolean);  override;
     Function GetMuted: boolean; override;
-    Function GetEngineName: String; override;
     procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
   public
+    class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
+
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
     destructor Destroy; override;
@@ -246,7 +247,7 @@ begin
   Result:=Boolean(xine_get_param(XINEStream,XINE_PARAM_AUDIO_MUTE));
 end;
 
-function TAudioEngineXINE.GetEngineName: String;
+class function TAudioEngineXINE.GetEngineName: String;
 begin
   Result:='Xine';
 end;
@@ -315,5 +316,7 @@ begin
 end;
 
 initialization
+  RegisterEngineClass(TAudioEngineXINE, 3, false, true);
+
 
 end.

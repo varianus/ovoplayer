@@ -52,11 +52,12 @@ type
     procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
   public
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
+    class Function GetEngineName: String; override;
+
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
     destructor Destroy; override;
     procedure Activate; override;
-
     procedure Pause; override;
     function Playing: boolean; override;
     function Running: boolean; override;
@@ -260,6 +261,11 @@ begin
   end;
 end;
 
+class function TAudioEngineBASS.GetEngineName: String;
+begin
+  Result:='BASS';
+end;
+
 procedure TAudioEngineBASS.PostCommand(Command: TEngineCommand; Param: integer);
 begin
   ReceivedCommand(Self, Command, Param);
@@ -300,5 +306,6 @@ begin
 end;
 
 initialization
+  RegisterEngineClass(TAudioEngineBASS, 3, false, true);
 
 end.

@@ -59,12 +59,13 @@ type
     function GetState: TEngineState; override;
     procedure SetMuted(const AValue: boolean);  override;
     Function GetMuted: boolean; override;
-    Function GetEngineName: String; override;
     procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
     // see: mplayer -input cmdlist and http://www.mplayerhq.hu/DOCS/tech/slave.txt
 
   public
+    class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
+
     constructor Create; override;
     procedure Activate; override;
     destructor Destroy; override;
@@ -314,7 +315,7 @@ begin
   Result := fMuted;
 end;
 
-function TAudioEngineMPlayer.GetEngineName: String;
+class function TAudioEngineMPlayer.GetEngineName: String;
 begin
   Result:='MPlayer';
 end;
@@ -413,5 +414,7 @@ initialization
   EngFormat := DefaultFormatSettings;
   EngFormat.DecimalSeparator := '.';
   EngFormat.ThousandSeparator := ',';
+
+  RegisterEngineClass(TAudioEngineMPlayer, 1, true, false);
 
 end.

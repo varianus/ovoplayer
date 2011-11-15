@@ -38,6 +38,14 @@ type
 
   TAudioEngineClass = class of TAudioEngine;
 
+  RAudioEngine = record
+    Engine : TAudioEngineClass;
+    Name: String;
+    Priority : Integer;
+    ForceSelection:boolean;
+    _Experimental : boolean;
+  end;
+
   { TAudioEngine }
 
   TAudioEngine = class
@@ -59,9 +67,10 @@ type
     procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); virtual; abstract;
     procedure SetMuted(const AValue: boolean); virtual; abstract;
     Function GetMuted: boolean; virtual; abstract;
-    Function GetEngineName: string; virtual; abstract;
   public
+    class Function GetEngineName: string; virtual; abstract;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; virtual; abstract;
+
     constructor Create; virtual;
     destructor Destroy; override;
     procedure Pause; virtual;
@@ -74,7 +83,6 @@ type
     procedure UnPause; virtual; abstract;
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); virtual; abstract;
   public
-    property EngineName: string read GetEngineName;
     property Muted: boolean read GetMuted write SetMuted;
     property MainVolume: integer read GetMainVolume write SetMainVolume;
     property OnSongEnd: TNotifyEvent read FOnSongEnd write SetOnSongEnd;
@@ -85,7 +93,48 @@ type
     Property MaxVolume: Integer Read GetMaxVolume;
   end;
 
+Procedure RegisterEngineClass(const EngineClass: TAudioEngineClass;
+                              const Priority:Integer;
+                              const ForceSelection: boolean = false;
+                              const _Experimental:boolean = false);
+
+Function GetEngineByName(const Name: string): TAudioEngineClass;
+
+var
+  EngineArray : array of RAudioEngine;
+
 implementation
+
+
+procedure RegisterEngineClass(const EngineClass: TAudioEngineClass;
+                              const Priority: Integer;
+                              const ForceSelection: boolean = false;
+                              const _Experimental:boolean = false);
+var
+  EngineRecord : RAudioEngine;
+begin
+  SetLength(EngineArray, Length(EngineArray) + 1);
+  EngineRecord.Engine := EngineClass;
+  EngineRecord.Name := Engineclass.GetEngineName;
+  EngineRecord.Priority := Priority;
+  EngineRecord.ForceSelection:=ForceSelection;
+  EngineRecord._Experimental := _Experimental;
+  EngineArray[High(EngineArray)] := EngineRecord;
+end;
+
+function GetEngineByName(const Name: string): TAudioEngineClass;
+var
+  i:integer;
+begin
+  result:=nil;
+  for i := Low(EngineArray) to High(EngineArray) do
+    if SameText(EngineArray[i].Name, Name) then
+       begin
+         Result:= EngineArray[i].Engine;
+         break;
+       end;
+
+end;
 
 { TAudioEngine }
 
@@ -144,4 +193,6 @@ begin
     FOnSongStart(self);
 end;
 
+initialization
+  setlength(EngineArray, 0);
 end.

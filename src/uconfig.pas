@@ -27,7 +27,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
   ExtCtrls, StdCtrls, Buttons, ButtonPanel, ColorBox, Menus, Spin, EditBtn,
-  GUIBackEnd, uOSD;
+  GUIBackEnd, uOSD, AudioEngine, LCLProc;
 
 type
 
@@ -137,15 +137,14 @@ end;
 
 procedure TfConfig.rgAudioEngineClick(Sender: TObject);
 begin
-  case rgAudioEngine.ItemIndex of
-     1: begin
-          BackEnd.Config.ReadSubParams(1);
-          MPlayerPath.Text:= BackEnd.Config.EngineSubParams.Values['Path'];
-          pcEngineParams.ActivePage := tsMPlayer;
-        end
+  if rgAudioEngine.Items[rgAudioEngine.ItemIndex] = 'MPlayer' then
+    begin
+      BackEnd.Config.ReadSubParams('MPlayer');
+      MPlayerPath.Text:= BackEnd.Config.EngineSubParams.Values['Path'];
+      pcEngineParams.ActivePage := tsMPlayer;
+    end
   else
      pcEngineParams.ActivePage := tsNone;
-  end;
 end;
 
 procedure TfConfig.rgOSDKindClick(Sender: TObject);
@@ -208,13 +207,28 @@ begin
 end;
 
 procedure TfConfig.FormCreate(Sender: TObject);
+var
+  i: integer;
+  avail :boolean;
+  tmpstr: string;
 begin
-  TRadioButton(rgAudioEngine.Controls[0]).Enabled := TAudioEngineVLC.IsAvalaible(nil);
-  // Usually in Windows MPlayer is not in path...
-  // MPlayer choice will be always avalaible so you can specify application path
-  TRadioButton(rgAudioEngine.Controls[1]).Enabled := true;// TAudioEngineMPlayer.IsAvalaible(nil);
-  TRadioButton(rgAudioEngine.Controls[2]).Enabled := TAudioEngineXINE.IsAvalaible(nil);
-  TRadioButton(rgAudioEngine.Controls[3]).Enabled := TAudioEngineBASS.IsAvalaible(nil);
+  rgAudioEngine.Items.clear;
+  tmpstr := '';
+  for i:= low(EngineArray) to High(EngineArray) do
+    begin
+      tmpstr:= tmpstr + EngineArray[i].Name + sLineBreak;
+    end;
+  rgAudioEngine.Items.Text:=tmpstr;
+
+  for i:= 0 to rgAudioEngine.items.count -1 do
+    begin
+       if not(rgAudioEngine.Controls[i] is TRadioButton) then
+          continue;
+      if EngineArray[i].ForceSelection then
+         TRadioButton(rgAudioEngine.Controls[i]).Enabled:=true;
+      else
+         TRadioButton(rgAudioEngine.Controls[i]).Enabled := EngineArray[i].Engine.IsAvalaible(nil);
+    end;
 end;
 
 procedure TfConfig.FormShow(Sender: TObject);
@@ -304,7 +318,7 @@ begin
   BackEnd.Config.PlayListParam.Restart          := cbRestart.Checked;
 
   // ENGINE
-  BackEnd.Config.EngineParam.EngineKind         := rgAudioEngine.ItemIndex;
+  BackEnd.Config.EngineParam.EngineKind         := rgAudioEngine.Items[rgAudioEngine.ItemIndex];
 
   //GENERAL
 end;
@@ -333,7 +347,7 @@ begin
   cbRestart.Checked         := BackEnd.Config.PlayListParam.Restart;
 
   // ENGINE
-  rgAudioEngine.ItemIndex   := BackEnd.Config.EngineParam.EngineKind;
+  rgAudioEngine.ItemIndex   := rgAudioEngine.Items.IndexOf(Backend.Config.EngineParam.EngineKind);
 
   //GENERAL
 end;

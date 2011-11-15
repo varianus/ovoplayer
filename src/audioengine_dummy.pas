@@ -43,15 +43,15 @@ type
     procedure DoPlay(Song: TSong; offset:Integer); override;
     procedure SetMuted(const AValue: boolean);  override;
     Function GetMuted: boolean; override;
-    Function GetEngineName: String; override;
     procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
   public
+    class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
+
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
     destructor Destroy; override;
     procedure Activate; override;
-
     procedure Pause; override;
     function Playing: boolean; override;
     function Running: boolean; override;
@@ -131,7 +131,7 @@ begin
   Result:=false;
 end;
 
-function TAudioEnginedummy.GetEngineName: String;
+class function TAudioEnginedummy.GetEngineName: String;
 begin
   Result:='dummy';
 end;
@@ -177,5 +177,5 @@ begin
 end;
 
 initialization
-
+  RegisterEngineClass(TAudioEnginedummy, 99, false, false);
 end.
