@@ -100,6 +100,8 @@ Procedure RegisterEngineClass(const EngineClass: TAudioEngineClass;
 
 Function GetEngineByName(const Name: string): TAudioEngineClass;
 
+Function GetBestEngine: TAudioEngineClass;
+
 var
   EngineArray : array of RAudioEngine;
 
@@ -131,6 +133,42 @@ begin
     if SameText(EngineArray[i].Name, Name) then
        begin
          Result:= EngineArray[i].Engine;
+         break;
+       end;
+
+end;
+
+procedure SortEngines(var Vals:Array of RAudioEngine);
+var i,j,k:Integer;
+    Hold:RAudioEngine;
+    ACount:Integer;
+begin
+  ACount := Length(Vals);
+  for i := 1 to ACount - 1 do
+    begin
+      Hold:=Vals[i];
+      j := i;
+      k := j - 1;
+      while ((j > 0) and (Vals[k].Priority > Hold.Priority)) do
+        begin
+          Vals[j] := Vals[k];
+          dec(j);
+          dec(k);
+        end;
+      Vals[j] := Hold;
+    end;
+end;
+
+function GetBestEngine: TAudioEngineClass;
+var
+  i:integer;
+begin
+  SortEngines(EngineArray);
+  result:=nil;
+  for i := Low(EngineArray) to High(EngineArray) do
+    if EngineArray[i].Engine.isAvalaible(nil) then
+       begin
+         result := EngineArray[i].Engine;
          break;
        end;
 

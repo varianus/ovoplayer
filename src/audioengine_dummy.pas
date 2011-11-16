@@ -177,5 +177,5 @@ begin
 end;
 
 initialization
-  RegisterEngineClass(TAudioEnginedummy, 99, false, false);
+ // RegisterEngineClass(TAudioEnginedummy, 99, false, false);
 end.

@@ -225,7 +225,7 @@ begin
        if not(rgAudioEngine.Controls[i] is TRadioButton) then
           continue;
       if EngineArray[i].ForceSelection then
-         TRadioButton(rgAudioEngine.Controls[i]).Enabled:=true;
+         TRadioButton(rgAudioEngine.Controls[i]).Enabled:=true
       else
          TRadioButton(rgAudioEngine.Controls[i]).Enabled := EngineArray[i].Engine.IsAvalaible(nil);
     end;

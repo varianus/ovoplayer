@@ -97,8 +97,6 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 144
-        ClientWidth = 133
         OnClick = rgAudioEngineClick
         TabOrder = 0
       end

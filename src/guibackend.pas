@@ -26,8 +26,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, ActnList, Controls, Dialogs, Forms, LResources,
-  PopupNotifier, PlayList, AudioEngine, AudioEngine_MPlayer, audioengine_vlc,
-  strutils, audioengine_Xine, audioengine_bass, AudioEngine_dummy, PlayListManager, MediaLibrary,
+  PopupNotifier, PlayList, AudioEngine, AudioEngine_dummy,
+  PlayListManager, MediaLibrary,
   MultimediaKeys, Config, UniqueInstance;
 
 type
@@ -136,7 +136,7 @@ function BackEnd: TBackEnd;
 implementation
 
 {$R *.lfm}
-uses LCLProc, FilesSupport, AudioTag, AppConsts;
+uses LCLProc, strutils,  FilesSupport, AudioTag, AppConsts;
 
 { TBackEnd }
 
@@ -159,23 +159,15 @@ begin
   Playlist := TPlayList.Create;
   PlayList.RepeatMode :=  TplRepeat(Config.PlayListParam.RepeatMode);
   mediaLibrary := TMediaLibrary.Create;
+  engine := nil;
+  if Config.EngineParam.EngineKind <> '' then
+     Engine := GetEngineByName(Config.EngineParam.EngineKind);
 
-  Engine := GetEngineByName(Config.EngineParam.EngineKind);
   if Engine = nil then
     begin
-      if TAudioEngineVLC.IsAvalaible(Config.EngineSubParams) then
-         Engine := TAudioEngineVLC
-      else
-        if TAudioEngineMPlayer.IsAvalaible(Config.EngineSubParams)  then
-           Engine := TAudioEngineMPlayer
-      else
-        if TAudioEngineXINE.IsAvalaible(Config.EngineSubParams)  then
-           Engine := TAudioEngineXINE
-      else
-          if TAudioEngineBASS.IsAvalaible(Config.EngineSubParams)  then
-             Engine := TAudioEngineBASS
-      else
-          engine:=TAudioEngineDummy
+      Engine := GetBestEngine;
+      if Engine = nil then
+         engine:=TAudioEngineDummy
     end;
 
   if not Engine.IsAvalaible(Config.EngineSubParams) then
