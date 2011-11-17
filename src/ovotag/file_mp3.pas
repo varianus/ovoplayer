@@ -17,6 +17,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 }
+{A lot of code taken from
+  Audio Tools Library  from Jurgen Faul and  The MAC Team
+  http://mac.sourceforge.net/atl/
+}
 {$I ovotag.inc}
 unit file_mp3;
 
