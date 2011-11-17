@@ -32,7 +32,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   GUIBackEnd, uAbout, audioengine_xine, audioengine_vlc, audioengine_dummy,
   mcaselli, uniqueinstance_package, CommonFunctions,
   file_flac, file_mp3, file_wma, tag_wma, tag_vorbis, tag_id3v2, basetag,
-  file_ogg, gstreamer, lazdynamic_bass, UniqueInstanceRaw,
+  file_ogg, file_monkey, tag_ape, gstreamer, lazdynamic_bass, UniqueInstanceRaw,
   DefaultTranslator;
 
 {$R *.res}

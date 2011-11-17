@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 229
+  Left = 331
   Height = 738
-  Top = 56
+  Top = 169
   Width = 785
   Caption = 'Form1'
   ClientHeight = 738
@@ -389,6 +389,16 @@ object Form1: TForm1
     Enabled = False
     MaxValue = 9999
     TabOrder = 12
+  end
+  object Button5: TButton
+    Tag = 5
+    Left = 584
+    Height = 25
+    Top = 40
+    Width = 75
+    Caption = 'Monkey'
+    OnClick = ReadTag
+    TabOrder = 13
   end
   object OpenDialog1: TOpenDialog
     left = 128

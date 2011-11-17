@@ -7,8 +7,11 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, Unit1, basetag, file_ogg, tag_vorbis, file_wma, tag_wma, file_mp3,
-  tag_id3v2, file_flac;
+  Forms, Unit1,
+  basetag,
+  tag_vorbis, file_ogg, file_flac,
+  tag_wma, file_wma,
+  tag_id3v2, file_mp3, file_monkey, tag_ape;
 
 {$R *.res}
 

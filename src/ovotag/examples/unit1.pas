@@ -17,6 +17,7 @@ type
     Button2: TButton;
     Button3: TButton;
     Button4: TButton;
+    Button5: TButton;
     edAlbum: TEdit;
     edAlbumArtist: TEdit;
     edArtist: TEdit;
@@ -63,7 +64,7 @@ var
 implementation
 
 {$R *.lfm}
-uses file_flac, file_wma, file_mp3, file_ogg;
+uses file_flac, file_wma, file_mp3, file_ogg, file_monkey;
 
 { TForm1 }
 
@@ -73,6 +74,7 @@ var
   TagReader: TTagReader;
   CommonTags: TCommonTags;
   FileStream: TfileStream;
+  tmpsr: string;
 begin
   memo1.clear;
   if not OpenDialog1.Execute then exit;
@@ -82,13 +84,15 @@ begin
     2: TagReader:= TWMAReader.Create;
     3: TagReader:= TMP3Reader.Create;
     4: TagReader:= TOGGReader.Create;
+    5: TagReader:= TMonkeyReader.Create;
   end;
 
   TagReader.LoadFromFile(OpenDialog1.FileName);
   CommonTags:= TagReader.GetCommonTags;
   for i:= 0 to TagReader.Tags.Count -1 do
     begin
-      Memo1.Lines.Add( TagReader.Tags.Frames[i].ID+ ' ---> '+  TagReader.Tags.Frames[i].AsString) ;
+      tmpsr := TagReader.Tags.Frames[i].ID+ ' ---> '+  TagReader.Tags.Frames[i].AsString;
+      Memo1.Lines.Add( tmpsr ) ;
     end;
 
  leFileName.Caption :=CommonTags.FileName ;
@@ -109,7 +113,6 @@ begin
  seYear.Value := i;
 
  seTrack.Value := CommonTags.Track;
-
 
  if TagReader.Tags.ImageCount > 0 then
    begin

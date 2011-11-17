@@ -14,9 +14,9 @@ object fConfig: TfConfig
     Height = 446
     Top = 0
     Width = 494
-    ActivePage = tsEngine
+    ActivePage = tsOSD
     Align = alClient
-    TabIndex = 1
+    TabIndex = 4
     TabOrder = 0
     object tsInterface: TTabSheet
       Caption = 'Interfaces'

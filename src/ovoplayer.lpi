@@ -137,7 +137,7 @@
         <PackageName Value="LCL"/>
       </Item6>
     </RequiredPackages>
-    <Units Count="40">
+    <Units Count="42">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -354,6 +354,16 @@
         <Filename Value="version.inc"/>
         <IsPartOfProject Value="True"/>
       </Unit39>
+      <Unit40>
+        <Filename Value="ovotag\file_monkey.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="file_monkey"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="ovotag\tag_ape.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="tag_ape"/>
+      </Unit41>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
