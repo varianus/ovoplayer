@@ -168,6 +168,8 @@ begin
       Engine := GetBestEngine;
       if Engine = nil then
          engine:=TAudioEngineDummy
+      else
+        Config.EngineParam.EngineKind := Engine.getEngineNAme;;
     end;
 
   if not Engine.IsAvalaible(Config.EngineSubParams) then
@@ -596,4 +598,4 @@ end;
 
 initialization
   fBackEnd := nil;
-end.
+end.

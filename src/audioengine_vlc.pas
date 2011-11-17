@@ -335,7 +335,7 @@ begin
 end;
 
 initialization
-  RegisterEngineClass(TAudioEngineVLC, 3, false, false);
+  RegisterEngineClass(TAudioEngineVLC, 1, false, false);
 
 
-end.
+end.

@@ -341,14 +341,21 @@ begin
   if Assigned(ConfigParam) then
     begin
       APath:= ConfigParam.Values['Path'];
-      if APath = '' then
+      if trim(APath) = '' then
          APath := fMPlayerPath;
-    end;
+    end
+  else
+    APath := fMPlayerPath;;
 
   AProcess := TProcessUTF8.Create(nil);
   AProcess.Options := AProcess.Options + [poUsePipes, poNoConsole];
 
   try
+    if APath = '' then
+       begin
+          result:= false;
+          exit;
+       end;
     AProcess.CommandLine:= APath;
     fProgramPath:=APath;
     try
@@ -415,6 +422,6 @@ initialization
   EngFormat.DecimalSeparator := '.';
   EngFormat.ThousandSeparator := ',';
 
-  RegisterEngineClass(TAudioEngineMPlayer, 1, true, false);
+  RegisterEngineClass(TAudioEngineMPlayer, 2, true, false);
 
-end.
+end.
