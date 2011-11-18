@@ -36,7 +36,7 @@ type
 
   TMonkeyReader = class(TTagReader)
   private
-    fTags: TAPETags;
+    fTags: TTags;
     FSampleRate: integer;
     FSamples: int64;
   protected
@@ -47,6 +47,8 @@ type
   end;
 
 implementation
+
+uses tag_id3v2;
 
 { TMonkeyReader }
 
@@ -72,13 +74,23 @@ var
   fStream: TFileStream;
   Start: byte;
   i:Integer;
+  tempTags : TTags;
+  HaveID3V2 :boolean;
 
 begin
   Result := inherited LoadFromFile(FileName);
   fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
   try
+    tempTags := TID3Tags.Create;
+    HaveID3V2 := tempTags.ReadFromStream(fStream);
+    fStream.Position:=0;
     ftags := TAPETags.Create;
     Result := ftags.ReadFromStream(fStream);
+    if (not result) and HaveID3V2 then
+       begin
+         fTags.free;
+         fTags := tempTags;
+       end;
   finally
     fstream.Free;
   end;

@@ -425,6 +425,8 @@ begin
     ftags := TID3Tags.Create;
     fTags.ReadFromStream(fStream);
 
+    fStream.Seek(fTags.Size, soFromBeginning);
+
     Transferred := fStream.Read(Data[1], SizeOfData);
     FFrame := FindFrame(Data, FVBR);
     if (not FFrame.Found) and (Transferred = SizeOfData) then

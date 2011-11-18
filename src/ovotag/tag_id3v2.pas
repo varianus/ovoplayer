@@ -53,6 +53,7 @@ type
     fSize: Integer;
     procedure DecodeFrameToImage(Frame: TID3Frame; Image: TImageElement);
     function GetBestMatch(Index1, Index2: Integer; NewFrame: boolean): String;
+    function ImportFromID3V1(AStream: TStream): boolean;
   public
     Version: word;
   public
@@ -64,8 +65,20 @@ type
 
 implementation
 
-uses CommonFunctions;
+uses CommonFunctions, ID3v1Genres;
 type
+
+  TID3V1Record = record
+    Header:  array [1..3] of char;
+    Title:   array [1..30] of char;
+    Artist:  array [1..30] of char;
+    Album:   array [1..30] of char;
+    Year:    array [1..4] of char;
+    Comment: array [1..28] of char;
+    Stopper : char;
+    Track : byte;
+    Genre:   byte;
+  end;
     { TID3Frame }
   TID3Header = packed record
     Marker: array[0..2] of ansichar;
@@ -123,6 +136,54 @@ begin
    Result := GetFrameValue(ID3V2_KNOWNFRAME[Index1,  NewFrame]);
   if Result = '' then
     Result := GetFrameValue(ID3V2_KNOWNFRAME[Index2,  NewFrame]);
+
+end;
+
+function TID3Tags.ImportFromID3V1(AStream: TStream): boolean;
+var
+  V1Rec : TID3V1Record;
+  Frame : TID3Frame;
+begin
+  fSize:=0;
+  result := false;
+  AStream.Seek(AStream.Size - SizeOf(V1Rec), soFromBeginning);
+  AStream.Read(V1Rec,  SizeOf(V1Rec));
+  if V1Rec.Header <> 'TAG' then
+    exit;
+
+  version := 0;
+  Frame := TID3Frame.Create('TPE1');
+  Frame.AsString := trim(V1Rec.Artist);
+
+  Frame := TID3Frame.Create('TALB');
+  Frame.AsString := trim(V1Rec.Album);
+
+  Frame := TID3Frame.Create('TIT2');
+  Frame.AsString := trim(V1Rec.Title);
+
+  Frame := TID3Frame.Create('TYER');
+  Frame.AsString := trim(V1Rec.Year);
+
+  if V1Rec.Genre < 147 then
+    begin
+      Frame := TID3Frame.Create('TCON');
+      Frame.AsString := v1Genres[V1Rec.Genre];
+    end;
+
+  if V1Rec.Stopper = #00 then
+    begin
+      Frame := TID3Frame.Create('COMM');
+      Frame.AsString := trim(V1Rec.Comment);
+
+      Frame := TID3Frame.Create('TRCK');
+      Frame.AsString := inttostr(v1rec.track);
+    end
+  else
+  begin
+    Frame := TID3Frame.Create('COMM');
+    Frame.AsString := trim(V1Rec.Comment + V1Rec.stopper + char(V1Rec.track));
+  end
+
 
 end;
 
@@ -186,7 +247,11 @@ begin
   Result := False;
   AStream.Read(header, SizeOf(header));
   if header.Marker <> ID3_HEADER_MARKER then
-    exit;
+     begin
+       result := ImportFromID3V1(AStream);
+       exit;
+
+     end;
 
   Version := header.Version;
   fSize := SyncSafe_Decode(header.size, version);
