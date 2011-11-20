@@ -25,15 +25,20 @@ program ovoplayer;
 uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   cthreads, {$ENDIF} {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, uMain, song, PlayList, PlayListManager, AudioEngine_MPlayer,
-  FilesSupport, AudioTag, MediaLibrary, GeneralFunc, audioengine,
-  virtualtreeview_package, audioengine_bass, PasLibVlcUnit, xine, decoupler,
+  Forms, uMain, PlayList, PlayListManager, AudioEngine_MPlayer,
+  FilesSupport, MediaLibrary, GeneralFunc, audioengine,
+  virtualtreeview_package, decoupler,
   MultimediaKeys, uConfig, uOSD, Config, AppConsts, uMiniPlayer, uSongInfo,
-  GUIBackEnd, uAbout, audioengine_xine, audioengine_vlc, audioengine_dummy,
-  mcaselli, uniqueinstance_package, CommonFunctions,
-  file_flac, file_mp3, file_wma, tag_wma, tag_vorbis, tag_id3v2, basetag,
-  file_ogg, file_monkey, tag_ape, gstreamer, lazdynamic_bass, UniqueInstanceRaw,
-  DefaultTranslator;
+  GUIBackEnd, uAbout, audioengine_dummy,  mcaselli,
+  {$IFDEF GSTREAMER} gstreamer, audioengine_gstreamer, {$ENDIF}
+  {$IFDEF VLC} PasLibVlcUnit, audioengine_vlc, {$ENDIF}
+  {$IFDEF XINE} xine, audioengine_xine, {$ENDIF}
+  {$IFDEF BASS} lazdynamic_bass, audioengine_bass, {$ENDIF}
+  // ovotag
+  song, AudioTag, basetag, file_flac, file_mp3, file_wma,
+  tag_wma, tag_vorbis, tag_id3v2, file_ogg, file_monkey, tag_ape,
+  //
+  UniqueInstanceRaw,  uniqueinstance_package, CommonFunctions, DefaultTranslator;
 
 {$R *.res}
 begin
@@ -43,7 +48,8 @@ begin
       Application.Title:=DisplayAppName;
       Application.Initialize;
       Application.CreateForm(TfMainForm, fMainForm);
+      fMainForm.show;
       Application.CreateForm(TfMiniPlayer, fMiniPlayer);
       Application.Run;
    end;
-end.
+end.

@@ -1,12 +1,12 @@
 object fAbout: TfAbout
-  Left = 457
-  Height = 219
-  Top = 334
-  Width = 358
+  Left = 334
+  Height = 304
+  Top = 279
+  Width = 476
   BorderStyle = bsDialog
   Caption = 'About'
-  ClientHeight = 219
-  ClientWidth = 358
+  ClientHeight = 304
+  ClientWidth = 476
   OnShow = FormShow
   LCLVersion = '0.9.31'
   object Image1: TImage
@@ -394,8 +394,8 @@ object fAbout: TfAbout
     Width = 216
     Alignment = taCenter
     AutoSize = False
-    Caption = 'OVOPlayer'
-    Font.Height = 32
+    Caption = 'OvoPlayer'
+    Font.Height = 26
     ParentColor = False
     ParentFont = False
     OptimalFill = True
@@ -426,10 +426,10 @@ object fAbout: TfAbout
     OptimalFill = True
   end
   object Button1: TButton
-    Left = 104
+    Left = 376
     Height = 26
-    Top = 190
-    Width = 143
+    Top = 275
+    Width = 88
     Anchors = [akLeft, akRight, akBottom]
     Caption = 'Close'
     OnClick = Button1Click
@@ -459,4 +459,4 @@ object fAbout: TfAbout
     ParentFont = False
     OptimalFill = True
   end
-end
+end

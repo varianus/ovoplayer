@@ -32,5 +32,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {$IFDEF UNIX}
   {$DEFINE NEEDCFGSUBDIR} // Need to add a sub-directory to configuration files directory
   {$DEFINE ASKMMKEYSMODE} // Ask for multimedia keys capture mode
+  {.$DEFINE GSTREAMER} // GStreamer need glib
 {$ENDIF UNIX}
 
+{$DEFINE VLC} //
+{$DEFINE XINE} //
+{$DEFINE BASS} //
+
+
+
+

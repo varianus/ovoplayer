@@ -818,7 +818,8 @@ var
   tmpSize:TSize;
 begin
   lvPlayList.ScrollIntoView(FindNode(BackEnd.PlayList.ItemIndex), False);
-  if BackEnd.AudioEngine.GetEngineName = 'dummy' then
+
+  if (BackEnd.AudioEngine = nil) or (BackEnd.AudioEngine.GetEngineName = 'dummy') then
      begin
        ShowMessage(rMissingConfig);
        ActShowPreferences.Execute;
@@ -1433,4 +1434,4 @@ begin
 
 end;
 
-end.
+end.

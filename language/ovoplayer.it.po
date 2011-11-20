@@ -189,7 +189,7 @@ msgid "About"
 msgstr "Informazioni su"
 
 #: TFABOUT.LABEL1.CAPTION
-msgid "OVOPlayer"
+msgid "OvoPlayer"
 msgstr ""
 
 #: TFABOUT.LABEL2.CAPTION

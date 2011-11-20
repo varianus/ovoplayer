@@ -137,7 +137,7 @@
         <PackageName Value="LCL"/>
       </Item6>
     </RequiredPackages>
-    <Units Count="42">
+    <Units Count="39">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -291,79 +291,64 @@
         <UnitName Value="PasLibVlcUnit"/>
       </Unit26>
       <Unit27>
-        <Filename Value="Import\gstreamer.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="gstreamer"/>
-      </Unit27>
-      <Unit28>
         <Filename Value="audioengine_vlc.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="audioengine_vlc"/>
-      </Unit28>
-      <Unit29>
+      </Unit27>
+      <Unit28>
         <Filename Value="Import\lazdynamic_bass.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="lazdynamic_bass"/>
-      </Unit29>
-      <Unit30>
+      </Unit28>
+      <Unit29>
         <Filename Value="ovotag\commonfunctions.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="CommonFunctions"/>
-      </Unit30>
-      <Unit31>
+      </Unit29>
+      <Unit30>
         <Filename Value="ovotag\file_flac.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_flac"/>
-      </Unit31>
-      <Unit32>
+      </Unit30>
+      <Unit31>
         <Filename Value="ovotag\file_mp3.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_mp3"/>
-      </Unit32>
-      <Unit33>
+      </Unit31>
+      <Unit32>
         <Filename Value="ovotag\file_wma.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_wma"/>
-      </Unit33>
-      <Unit34>
+      </Unit32>
+      <Unit33>
         <Filename Value="ovotag\tag_id3v2.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_id3v2"/>
-      </Unit34>
-      <Unit35>
+      </Unit33>
+      <Unit34>
         <Filename Value="ovotag\tag_vorbis.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_vorbis"/>
-      </Unit35>
-      <Unit36>
+      </Unit34>
+      <Unit35>
         <Filename Value="ovotag\tag_wma.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_wma"/>
-      </Unit36>
-      <Unit37>
+      </Unit35>
+      <Unit36>
         <Filename Value="ovotag\file_ogg.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_ogg"/>
-      </Unit37>
-      <Unit38>
+      </Unit36>
+      <Unit37>
         <Filename Value="audioengine_dummy.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="audioengine_dummy"/>
-      </Unit38>
-      <Unit39>
+      </Unit37>
+      <Unit38>
         <Filename Value="version.inc"/>
         <IsPartOfProject Value="True"/>
-      </Unit39>
-      <Unit40>
-        <Filename Value="ovotag\file_monkey.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="file_monkey"/>
-      </Unit40>
-      <Unit41>
-        <Filename Value="ovotag\tag_ape.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="tag_ape"/>
-      </Unit41>
+      </Unit38>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -396,6 +381,7 @@ if LCLWidgetType = 'win32' then
     </BuildMacros>
     <CodeGeneration>
       <SmartLinkUnit Value="True"/>
+      <RelocatableUnit Value="True"/>
       <Checks>
         <StackChecks Value="True"/>
       </Checks>
@@ -415,7 +401,7 @@ if LCLWidgetType = 'win32' then
       </CompilerMessages>
       <ConfigFile>
         <CustomConfigFile Value="True"/>
-        <ConfigFilePath Value="../extrafpc.cfg"/>
+        <ConfigFilePath Value="..\extrafpc.cfg"/>
       </ConfigFile>
       <CompilerPath Value="$(CompPath)"/>
     </Other>

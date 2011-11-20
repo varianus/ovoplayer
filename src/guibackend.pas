@@ -564,7 +564,6 @@ begin
   for I := 0 to ExceptFrameCount - 1 do
     Report := Report + LineEnding + BackTraceStrFunc (Frames[I] );
   msg.Text:=Report;
-  msg.SaveToFile(IncludeTrailingPathDelimiter(GetUserDir)+'stacktrace.log');
   msg.free;
   DumpStack;
 end;
