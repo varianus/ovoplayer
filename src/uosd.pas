@@ -49,20 +49,22 @@ type
     procedure TitleClick(Sender: TObject);
   private
     MovePoint: TPoint;
+    Album: TLabel;
+    Artist: TLabel;
+    imgCover: TPicture;
+    Title: TLabel;
+    Track: TLabel;
+
     procedure LoadFromConfig;
     {$IFDEF SUPPORT_SHAPING}
     procedure ShapeControl(AControl: TWinControl);
     {$ENDIF SUPPORT_SHAPING}
+
   Protected
     procedure Paint; override;
   public
     _top, _left:Integer;
     ConfigMode: boolean;
-    Album: TLabel;
-    Artist: TLabel;
-    imgCover: TImage;
-    Title: TLabel;
-    Track: TLabel;
 
     timShow: TTimer;
     timPaint: TTimer;
@@ -88,7 +90,7 @@ var
   imgName: string;
 begin
   if fOSD = nil then
-    fOSD := TfOSD.Create(application);
+    fOSD := TfOSD.Create(nil);
  {$IFDEF SUPPORT_SHAPING}
   fOSD.ShapeControl(fOSD);
  {$ENDIF SUPPORT_SHAPING}
@@ -104,12 +106,15 @@ begin
   fOSD.AlphaBlend := True;
 
   if Image <> nil then
-    fOSD.imgCover.Picture.Assign(Image)
+    begin
+      fosd.imgCover.Assign(Image);
+    end
+
   else
   begin
     imgName := BackEnd.GetImageFromfolder(IncludeTrailingPathDelimiter(Song.FilePath));
     if imgName <> '' then
-      fOSD.imgCover.Picture.LoadFromFile(imgName);
+      fOSD.imgCover.LoadFromFile(imgName);
   end;
 
   fOSD.timPaint.Enabled := False;
@@ -135,7 +140,7 @@ begin
   imgName := BackEnd.Config.GetResourcesPath + 'nocover.png';
 
   if imgName <> '' then
-    fOSD.imgCover.Picture.LoadFromFile(imgName);
+    fOSD.imgCover.LoadFromFile(imgName);
 
   fOSD.AlphaBlendValue := 200;
 
@@ -305,28 +310,7 @@ begin
   timShow.Enabled:=false;
   timShow.OnTimer:=@timShowTimer;
 
-  imgCover:= TImage.Create(Self);
-  with imgCover do begin
-    Left := 11;
-    Height := 89;
-    Top := 8;
-    Width := 102;
-    Anchors := [];
-    BorderSpacing.Left := 1;
-    BorderSpacing.Top := 1;
-    BorderSpacing.Right := 1;
-    BorderSpacing.Bottom := 1;
-    BorderSpacing.Around := 1;
-    Enabled := False;
-    OnMouseDown := @FormMouseDown;
-    OnMouseEnter := @FormMouseEnter;
-    OnMouseLeave := @FormMouseLeave;
-    OnMouseMove := @FormMouseMove;
-    OnMouseUp := @FormMouseUp;
-    Stretch := True;
-    Transparent := True;
-    Parent := self;
-  end;
+  imgCover:= TPicture.Create;
 
   Title:= TLabel.create(self);
   with Title do begin
@@ -432,6 +416,8 @@ begin
   Canvas.Brush.Color := Color;
   Canvas.FillRect(Rect(0,0,width,height));
   DrawGradientWindow(Canvas, Rect(0,0,width,height), height, Color);
+  if Assigned(imgCover) then
+     Canvas.StretchDraw(Rect(11,8,113, 97), imgCover.Graphic);
 
 end;
 
@@ -493,4 +479,4 @@ end;
 initialization
   fOSD := nil;
 end.
-
+
