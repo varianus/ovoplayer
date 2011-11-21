@@ -56,6 +56,7 @@ type
     function ImportFromID3V1(AStream: TStream): boolean;
   public
     Version: word;
+    FromV1 : boolean;
   public
     Property Size: Integer read fSize;
     Function GetCommonTags: TCommonTags; override;
@@ -154,55 +155,64 @@ begin
   version := 0;
   Frame := TID3Frame.Create('TPE1');
   Frame.AsString := trim(V1Rec.Artist);
+  Add(Frame);
 
   Frame := TID3Frame.Create('TALB');
   Frame.AsString := trim(V1Rec.Album);
+  Add(Frame);
 
   Frame := TID3Frame.Create('TIT2');
   Frame.AsString := trim(V1Rec.Title);
+  Add(Frame);
 
   Frame := TID3Frame.Create('TYER');
   Frame.AsString := trim(V1Rec.Year);
+  Add(Frame);
 
   if V1Rec.Genre < 147 then
     begin
       Frame := TID3Frame.Create('TCON');
       Frame.AsString := v1Genres[V1Rec.Genre];
+      Add(Frame);
     end;
 
   if V1Rec.Stopper = #00 then
     begin
       Frame := TID3Frame.Create('COMM');
       Frame.AsString := trim(V1Rec.Comment);
+      Add(Frame);
 
       Frame := TID3Frame.Create('TRCK');
       Frame.AsString := inttostr(v1rec.track);
+      Add(Frame);
+
     end
   else
   begin
     Frame := TID3Frame.Create('COMM');
     Frame.AsString := trim(V1Rec.Comment + V1Rec.stopper + char(V1Rec.track));
-  end
-
+    Add(Frame);
+  end;
+  result:=true;
 
 end;
 
 function TID3Tags.GetCommonTags: TCommonTags;
 var
-  UseNewTag: boolean;
+  UseOldTag: boolean;
 begin
   Result:=inherited GetCommonTags;
-  UseNewTag := Version <= TAG_VERSION_2_2;
+  UseOldTag := (Version <= TAG_VERSION_2_2) and not FromV1;
 
-  Result.Artist := GetBestMatch(2, 14, UseNewTag);
-  Result.Title := GetBestMatch(1, 15, UseNewTag);
-  Result.Album := GetBestMatch(3, 16, UseNewTag);
-  Result.Year := GetBestMatch(5, 13, UseNewTag);
-  Result.AlbumArtist := GetContent(GetFrameValue(ID3V2_KNOWNFRAME[18, UseNewTag]), Result.Artist);
-  result.Track:=  ExtractTrack(GetFrameValue(ID3V2_KNOWNFRAME[4, UseNewTag]));
-  result.TrackString := GetFrameValue(ID3V2_KNOWNFRAME[4, UseNewTag]);
-  result.Comment:= GetFrameValue(ID3V2_KNOWNFRAME[7, UseNewTag]);
-  result.Genre:= ExtractGenre(GetFrameValue(ID3V2_KNOWNFRAME[6, UseNewTag]));
+  Result.Artist := GetBestMatch(2, 14, UseOldTag);
+  Result.Title := GetBestMatch(1, 15, UseOldTag);
+  Result.Album := GetBestMatch(3, 16, UseOldTag);
+  Result.Year := GetBestMatch(5, 13, UseOldTag);
+  Result.AlbumArtist := GetContent(GetFrameValue(ID3V2_KNOWNFRAME[18, UseOldTag]), Result.Artist);
+  result.Track:=  ExtractTrack(GetFrameValue(ID3V2_KNOWNFRAME[4, UseOldTag]));
+  result.TrackString := GetFrameValue(ID3V2_KNOWNFRAME[4, UseOldTag]);
+  result.Comment:= GetFrameValue(ID3V2_KNOWNFRAME[7, UseOldTag]);
+  result.Genre:= ExtractGenre(GetFrameValue(ID3V2_KNOWNFRAME[6, UseOldTag]));
   Result.HasImage:=ImageCount > 0;
 
 end;
@@ -245,12 +255,13 @@ var
   Stop:boolean;
 begin
   Result := False;
+  FromV1:=false;;
   AStream.Read(header, SizeOf(header));
   if header.Marker <> ID3_HEADER_MARKER then
      begin
-       result := ImportFromID3V1(AStream);
+       FromV1 := ImportFromID3V1(AStream);
+       result:= FromV1;
        exit;
-
      end;
 
   Version := header.Version;
@@ -295,7 +306,9 @@ end;
 procedure TID3Frame.SetAsString(AValue: string);
 begin
    SetLength(Data, Length(AValue));
-   Move(AValue[1], Data[0], Length(AValue));
+   fSize :=  Length(AValue);
+   if fSize > 0 then
+      StrPCopy(@(Data[0]), #00+AValue);
 end;
 
 function TID3Frame.IsValid: Boolean;
