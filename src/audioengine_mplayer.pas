@@ -123,7 +123,6 @@ var
         SetLength(Buffer, BytesAvailable);
         BytesRead  := fPlayerProcess.OutPut.Read(Buffer[1], BytesAvailable);
         ProcessStr := copy(Buffer, 1, BytesRead);
-        debugln(processstr);
         if AnsiStartsStr(TIMEPOSOUT,ProcessStr) then
           begin
             ProcessStr := trim(Copy(ProcessStr, 3, 7));
@@ -414,6 +413,9 @@ end;
 destructor TAudioEngineMPlayer.Destroy;
 begin
   SendMPlayerCommand('quit');
+  if Running then
+     fPlayerProcess.Terminate(0);
+
   inherited Destroy;
 end;
 
@@ -424,4 +426,4 @@ initialization
 
   RegisterEngineClass(TAudioEngineMPlayer, 2, true, false);
 
-end.
+end.
