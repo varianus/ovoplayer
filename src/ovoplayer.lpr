@@ -42,6 +42,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
 
 {$R *.res}
 begin
+
   if not isAppRunning then
    begin
       Application.Title:='OVO Player';
@@ -52,4 +53,4 @@ begin
       Application.CreateForm(TfMiniPlayer, fMiniPlayer);
       Application.Run;
    end;
-end.
+end.

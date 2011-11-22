@@ -13,13 +13,14 @@ uses
 type
 
   { TOvoPlayerCtrl }
+  TCommandType = (ctFile, ctAction);
 
   TOvoPlayerCtrl = class(TCustomApplication)
   private
     ShortOptions:string;
     LongOptions:TStringList;
 
-    function PostCommand(Command:string): Boolean;
+    function PostCommand(CommandType:TCommandType; Command:string; Parameter:string=''): Boolean;
     Procedure AddOptions(ShortOption:string; LongOption:string); overload;
     Procedure AddOptions(LongOption:string); overload;
   protected
@@ -35,7 +36,7 @@ var
   BaseServerId:string = 'tuniqueinstance_';
   Separator:string = '|';
 
-function TOvoPlayerCtrl.PostCommand(Command:string): Boolean;
+function TOvoPlayerCtrl.PostCommand(CommandType:TCommandType;Command:string;Parameter:string=''): Boolean;
 var
   TempStr: String;
 begin
@@ -45,7 +46,11 @@ begin
     Result := ServerRunning;
     if Result then
       begin
-        TempStr := 'action:'+lowercase(Command) + Separator;
+        case CommandType of
+          ctAction : TempStr := 'action:'+lowercase(Command) + Separator;
+          ctFile : TempStr := 'file:'+lowercase(Command) +'='+Parameter+ Separator;
+        end;
+
         Active := True;
         SendStringMessage(TempStr);
       end;
@@ -102,8 +107,13 @@ begin
 
   for i := 0 to MediaControlCount -1 do
      if HasOption(MediaControl[i]) then
-        PostCommand(MediaControl[i]);
+        PostCommand(ctAction,MediaControl[i]);
 
+  if HasOption('e','enqueue') then
+     PostCommand(ctFile, 'e', GetOptionValue('e','enqueue'));
+
+  if HasOption('p','playsong') then
+     PostCommand(ctFile, 'p', GetOptionValue('p','playsong'));
 
   // stop program loop
   Terminate;

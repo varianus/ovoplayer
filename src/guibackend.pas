@@ -211,6 +211,8 @@ procedure TBackEnd.UniqueInstanceIOtherInstance(Sender: TObject;
 var
   i:integer;
   tempstr: string;
+  idx: integer;
+  tempparam: string;
 begin
   //
   if ParamCount > 0 then
@@ -219,25 +221,53 @@ begin
          if AnsiStartsStr('action:', Parameters[i]) then
            begin
              tempstr:=copy(Parameters[i], 8, Length(Parameters[i]));
-                  if tempstr = 'seek+' then
-                actSkipForward.Execute
-             else if tempstr = 'seek-' then
-                actSkipBackward.Execute
-             else if tempstr = 'play' then
-                actPlay.Execute
-             else if tempstr = 'stop' then
-                actStop.Execute
-             else if tempstr = 'pause' then
-                actPause.Execute
-             else if tempstr = 'next' then
-                actNext.Execute
-             else if tempstr = 'previous' then
-                actPrevious.Execute
+             if tempstr = 'seek+'    then
+                actSkipForward.Execute   else
+             if tempstr = 'seek-'    then
+                actSkipBackward.Execute  else
+             if tempstr = 'play'     then
+               actPlay.Execute           else
+             if tempstr = 'stop'     then
+                actStop.Execute          else
+             if tempstr = 'pause'    then
+                actPause.Execute         else
+             if tempstr = 'next'     then
+                actNext.Execute          else
+             if tempstr = 'previous' then
+                actPrevious.Execute;
+
+             if Assigned(FOnExternalCommand) then
+                FOnExternalCommand(Self, Parameters[i]);
+
            end;
 
-         if Assigned(FOnExternalCommand) then
-            FOnExternalCommand(Self, Parameters[i]);
+         if AnsiStartsStr('file:', Parameters[i]) then
+           begin
+             tempstr:=copy(Parameters[i], 6, 2);
+             tempparam:=copy(Parameters[i], 8, Length(Parameters[i]));
+             if tempstr = 'e=' then
+                begin
+                  idx := PlayList.EnqueueFile(tempparam);
+                  SignalPlayListChange;
+                end else
+             if tempstr = 'p=' then
+                begin
+                  PlayList.Clear;
+                  SignalPlayListChange;
+                  idx := PlayList.EnqueueFile(tempparam);
+                  PlayList.ItemIndex:=idx;
+                  AudioEngine.Play(PlayList.CurrentItem);
+                end  else
+             if tempstr = 'x=' then
+                begin
+                  PlayList.Clear;
+                  SignalPlayListChange;
+                  idx := PlayList.EnqueueFile(tempparam);
+                  PlayList.ItemIndex:=idx;
+                  AudioEngine.Play(PlayList.CurrentItem);
+                end;
 
+           end;
       end;
 
 end;
@@ -597,4 +627,4 @@ end;
 
 initialization
   fBackEnd := nil;
-end.
+end.
