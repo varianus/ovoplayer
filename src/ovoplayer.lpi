@@ -137,7 +137,7 @@
         <PackageName Value="LCL"/>
       </Item6>
     </RequiredPackages>
-    <Units Count="39">
+    <Units Count="42">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -349,6 +349,21 @@
         <Filename Value="version.inc"/>
         <IsPartOfProject Value="True"/>
       </Unit38>
+      <Unit39>
+        <Filename Value="ovotag\file_monkey.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="file_Monkey"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="ovotag\tag_ape.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="tag_APE"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="ovotag\id3v1genres.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="id3v1genres"/>
+      </Unit41>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -394,6 +409,11 @@ if LCLWidgetType = 'win32' then
         <DebugInfoType Value="dsDwarf2"/>
         <UseValgrind Value="True"/>
       </Debugging>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="True"/>
+        </Win32>
+      </Options>
     </Linking>
     <Other>
       <CompilerMessages>
