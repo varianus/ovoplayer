@@ -37,12 +37,13 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   // ovotag
   song, AudioTag, basetag, file_flac, file_mp3, file_wma,
   tag_wma, tag_vorbis, tag_id3v2, file_ogg, file_monkey, tag_ape,
+  id3v1genres,
   //
-  UniqueInstanceRaw,  uniqueinstance_package, CommonFunctions, DefaultTranslator;
+  UniqueInstanceRaw, uniqueinstance_package, CommonFunctions,
+  DefaultTranslator;
 
 {$R *.res}
 begin
-
   if not isAppRunning then
    begin
       Application.Title:='OVO Player';
