@@ -45,13 +45,18 @@ type
   { TAPETags }
 
   TAPETags = class(TTags)
+  private
+    function ImportFromID3V1(AStream: TStream): boolean;
   public
+    FromV1: Boolean;
     Function GetCommonTags: TCommonTags; override;
     function ReadFromStream(AStream: TStream): boolean; override;
   end;
 
 
 implementation
+uses
+  tag_id3v2, id3v1genres;
 
 const
   APE_IDENTIFIER :string = 'APETAGEX';
@@ -120,6 +125,60 @@ end;
 
 { TAPETags }
 
+function TAPETags.ImportFromID3V1(AStream: TStream): boolean;
+var
+  V1Rec : TID3V1Record;
+  Frame : TID3Frame;
+begin
+  result := false;
+  AStream.Seek(AStream.Size - SizeOf(V1Rec), soFromBeginning);
+  AStream.Read(V1Rec,  SizeOf(V1Rec));
+  if V1Rec.Header <> 'TAG' then
+    exit;
+
+  Frame := TID3Frame.Create('ARTIST');
+  Frame.AsString := trim(V1Rec.Artist);
+  Add(Frame);
+
+  Frame := TID3Frame.Create('ALBUM');
+  Frame.AsString := trim(V1Rec.Album);
+  Add(Frame);
+
+  Frame := TID3Frame.Create('TITLE');
+  Frame.AsString := trim(V1Rec.Title);
+  Add(Frame);
+
+  Frame := TID3Frame.Create('YEAR');
+  Frame.AsString := trim(V1Rec.Year);
+  Add(Frame);
+
+  if V1Rec.Genre < 147 then
+    begin
+      Frame := TID3Frame.Create('GENRE');
+      Frame.AsString := v1Genres[V1Rec.Genre];
+      Add(Frame);
+    end;
+
+  if V1Rec.Stopper = #00 then
+    begin
+      Frame := TID3Frame.Create('COMMENT');
+      Frame.AsString := trim(V1Rec.Comment);
+      Add(Frame);
+
+      Frame := TID3Frame.Create('TRACK');
+      Frame.AsString := inttostr(v1rec.track);
+      Add(Frame);
+
+    end
+  else
+  begin
+    Frame := TID3Frame.Create('COMMENT');
+    Frame.AsString := trim(V1Rec.Comment + V1Rec.stopper + char(V1Rec.track));
+    Add(Frame);
+  end;
+  result:=true;
+
+end;
 function TAPETags.GetCommonTags: TCommonTags;
 begin
   Result:=inherited GetCommonTags;
@@ -144,17 +203,36 @@ var
   header :  TAPEHeader;
   i: cardinal;
   Frame: TAPEFrame;
+  offset: Integer;
+  V1Rec: TID3V1Record;
 begin
   Clear;
   result := false;
+  FromV1 := false;
   try
-    AStream.Seek(AStream.Size - SizeOf(Header), soFromBeginning);
+
+    AStream.Seek(AStream.Size - SizeOf(V1Rec), soFromBeginning);
+    AStream.Read(V1Rec,  SizeOf(V1Rec));
+
+    if V1Rec.Header <> 'TAG' then
+       Offset := 0
+    else
+       Offset := SizeOf(V1Rec);
+
+    AStream.Seek(AStream.Size - SizeOf(Header) - offset, soFromBeginning);
     AStream.Read(Header, sizeof(Header));
 
    if String(Header.Marker) <> APE_IDENTIFIER then
-      exit;
+      begin
+        if offset = SizeOf(V1rec) then
+           begin
+             FromV1 := ImportFromID3V1(AStream);
+             result:= FromV1;
+           end;
+        exit;
+      end;
 
-   AStream.Seek(AStream.Size - header.TagSize,  soFromBeginning);
+   AStream.Seek(AStream.Size - header.TagSize - offset,  soFromBeginning);
 
     for i := 0 to header.count - 1 do
     begin

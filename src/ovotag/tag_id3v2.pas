@@ -29,6 +29,18 @@ uses
 
 type
 
+  TID3V1Record = record
+    Header:  array [1..3] of char;
+    Title:   array [1..30] of char;
+    Artist:  array [1..30] of char;
+    Album:   array [1..30] of char;
+    Year:    array [1..4] of char;
+    Comment: array [1..28] of char;
+    Stopper : char;
+    Track : byte;
+    Genre:   byte;
+  end;
+
   TID3Tags = class;
 
   TID3Frame = class(TFrameElement)
@@ -69,17 +81,6 @@ implementation
 uses CommonFunctions, ID3v1Genres;
 type
 
-  TID3V1Record = record
-    Header:  array [1..3] of char;
-    Title:   array [1..30] of char;
-    Artist:  array [1..30] of char;
-    Album:   array [1..30] of char;
-    Year:    array [1..4] of char;
-    Comment: array [1..28] of char;
-    Stopper : char;
-    Track : byte;
-    Genre:   byte;
-  end;
     { TID3Frame }
   TID3Header = packed record
     Marker: array[0..2] of ansichar;
