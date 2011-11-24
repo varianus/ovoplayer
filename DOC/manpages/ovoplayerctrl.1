@@ -1,0 +1,51 @@
+.TH "ovoplayerctrl" "1" "0.0.2" "Marco Caselli" "Audio"
+.SH "NAME"
+.LP 
+ovoplayerctrl \- Command line controller for OvoPlayer
+.SH "SYNTAX"
+.LP 
+ovoplayerctrl [\fIoption\fP]
+.br 
+
+.SH "DESCRIPTION"
+.LP 
+This program serve as a "remote control" for Ovoplayer. 
+.SH "OPTIONS"
+.LP 
+.TP 
+\fB\-\-next\fR 
+Skip to next song in playlist
+.TP 
+\fB\-\-previous\fR
+Skip to previous song in playlist
+.TP 
+\fB\-\-pause\fR
+Pause current song
+.TP 
+\fB\-\-play\fR
+Resume current song
+.TP 
+\fB\-\-stop\fR
+Stop playing
+.TP 
+\fB\-\-seek+\fR
+Skip forward 10 second in current song
+.TP 
+\fB\-\-seek\-\fR
+Skip backward 10 second in current song
+.TP 
+\fB\-\-enqueue=<filename>\fR
+Enqueue song to current playlist
+.TP 
+\fB\-\-playsong=<filename>\fR
+Play song and clear current playlist
+.TP 
+\fB\-\-encplay=<filename>\fR\fR
+Enqueue current playlist AND begin play a song
+
+.SH "AUTHORS"
+.LP 
+Marco Caselli <marcocas@gmail.com>
+.SH "SEE ALSO"
+.LP 
+ovoplayer(1) 
