@@ -53,14 +53,17 @@ type
     function ProcessPath(FileName: string; CurPlayList: string): string;
   public
     function GetPlayListType(FileName: string): TPlayListType;
-    function ImportFromDirectory(const Directory: string; Recursive: boolean; var Playlist: TPlaylist): integer;
+    function ImportFromDirectory(const Directory: string; Recursive: boolean;
+      var Playlist: TPlaylist): integer;
 
-    function ImportFromStrings(const Strings: TStrings; var Playlist: TPlaylist): integer;
+    function ImportFromStrings(const Strings: TStrings;
+      var Playlist: TPlaylist): integer;
 
-    function ImportFromMediaLibrary(const Lib: TMediaLibrary;  var Playlist: TPlaylist;
-                                    const Filter: string=''; order :string=''): integer;
+    function ImportFromMediaLibrary(const Lib: TMediaLibrary;
+      var Playlist: TPlaylist; const Filter: string = '';
+      order: string = ''): integer;
 
-    function ImportFromWPL(const FileName: TFileName; var Playlist: TPlaylist ): integer;
+    function ImportFromWPL(const FileName: TFileName; var Playlist: TPlaylist): integer;
     function ImportFromXSPF(const FileName: TFileName; var Playlist: TPlaylist): integer;
     function ImportFromM3U(const FileName: TFileName; var Playlist: TPlaylist): integer;
     function ImportFromPLS(const FileName: TFileName; var Playlist: TPlaylist): integer;
@@ -69,7 +72,8 @@ type
 
     function LoadPlayList(const FileName: TFileName; var Playlist: TPlaylist): integer;
 
-    procedure SaveToXSPF(const FileName: TFileName; var Playlist: TPlaylist; CurrentTime: integer = -1);
+    procedure SaveToXSPF(const FileName: TFileName; var Playlist: TPlaylist;
+      CurrentTime: integer = -1);
   public
     property SavedTime: integer read fSavedTime default 0;
 
@@ -81,43 +85,43 @@ uses
   DOM, XMLRead, XMLWrite, URIParser, IniFiles, filesSupport, LCLProc, basetag;
 
 const
-//  GenDelims  = [':', '/', '?', '#', '[', ']', '@'];
-  SubDelims  = ['!', '$', '&', '''', '(', ')', '*', '+', ',', ';', '='];
-  ALPHA      = ['A'..'Z', 'a'..'z'];
-  DIGIT      = ['0'..'9'];
+  //  GenDelims  = [':', '/', '?', '#', '[', ']', '@'];
+  SubDelims = ['!', '$', '&', '''', '(', ')', '*', '+', ',', ';', '='];
+  ALPHA = ['A'..'Z', 'a'..'z'];
+  DIGIT = ['0'..'9'];
   Unreserved = ALPHA + DIGIT + ['-', '.', '_', '~'];
   ValidPathChars = Unreserved + SubDelims + ['@', ':', '/'];
 
 function Escape(const s: string; const Allowed: TSysCharSet): string;
 var
   i, L: integer;
-  P:    PChar;
+  P: PChar;
 begin
   L := Length(s);
   for i := 1 to Length(s) do
     if not (s[i] in Allowed) then
       Inc(L, 2);
   if L = Length(s) then
-    begin
+  begin
     Result := s;
     Exit;
-    end;
+  end;
 
   SetLength(Result, L);
   P := @Result[1];
   for i := 1 to Length(s) do
-    begin
+  begin
     if not (s[i] in Allowed) then
-      begin
+    begin
       P^ := '%';
       Inc(P);
       StrFmt(P, '%.2x', [Ord(s[i])]);
       Inc(P);
-      end
+    end
     else
       P^ := s[i];
     Inc(P);
-    end;
+  end;
 end;
 
 function Unescape(const s: string): string;
@@ -133,7 +137,7 @@ var
       'a'..'f': Result := Ord(c) - (Ord('a') - 10);
       else
         Result := 0;
-      end;
+    end;
   end;
 
 begin
@@ -142,29 +146,30 @@ begin
   P := PChar(Result);  { use PChar to prevent numerous calls to UniqueString }
   RealLength := 0;
   while i <= Length(s) do
-    begin
+  begin
     if s[i] = '%' then
-      begin
+    begin
       P[RealLength] := Chr(HexValue(s[i + 1]) shl 4 or HexValue(s[i + 2]));
       Inc(i, 3);
-      end
+    end
     else
-      begin
+    begin
       P[RealLength] := s[i];
       Inc(i);
-      end;
-    Inc(RealLength);
     end;
+    Inc(RealLength);
+  end;
   SetLength(Result, RealLength);
 end;
 
 
-function TPlayListManager.ImportFromXSPF(const FileName: TFileName; var Playlist: TPlaylist): integer;
+function TPlayListManager.ImportFromXSPF(const FileName: TFileName;
+  var Playlist: TPlaylist): integer;
 var
   XMLDoc: TXMLDocument;
   Root, Node: TDOMNode;
   //  list: TDOMNodeList;
-  i:     integer;
+  i: integer;
   fName: string;
   IntValue: integer;
 
@@ -174,12 +179,12 @@ var
   begin
     Result := nil;
     for j := 0 to x.ChildNodes.Count - 1 do
-      begin
+    begin
       if UpperCase(x.ChildNodes.Item[j].NodeName) = UpperCase(Name) then
-        begin
+      begin
         Result := x.ChildNodes.Item[j];
-        end;
       end;
+    end;
   end;
 
 begin
@@ -189,50 +194,52 @@ begin
 
   ReadXMLFile(XMLDoc, FileName);
   if XMLDoc = nil then
-     exit;;
+    exit;
+  ;
 
   Root := FindNode(XMLDoc.DocumentElement, 'tracklist');
   for i := 0 to Root.ChildNodes.Count - 1 do
-    begin
-    Node  := FindNode(Root.ChildNodes.Item[i], 'location');
+  begin
+    Node := FindNode(Root.ChildNodes.Item[i], 'location');
     fname := Node.FirstChild.NodeValue;
     if Length(fname) > MAX_PATH then
       Continue;
     URIToFilename(Unescape(fname), fname);
     Playlist.EnqueueFile(fName);
-    end;
+  end;
 
   Root := FindNode(XMLDoc.DocumentElement, 'extension');
   for i := 0 to Root.ChildNodes.Count - 1 do
-    begin
+  begin
     Node := FindNode(Root, 'currentItem');
     if node <> nil then
-      begin
-      fname    := Node.FirstChild.NodeValue;
+    begin
+      fname := Node.FirstChild.NodeValue;
       IntValue := StrToIntDef(fName, -1);
       Playlist.ItemIndex := IntValue;
-      end;
+    end;
 
     Node := FindNode(Root, 'currentTime');
     if node <> nil then
-      begin
-      fname      := Node.FirstChild.NodeValue;
-      IntValue   := StrToIntDef(fName, -1) div 1000;
+    begin
+      fname := Node.FirstChild.NodeValue;
+      IntValue := StrToIntDef(fName, -1) div 1000;
       fSavedTime := IntValue;
-      end;
-
     end;
+
+  end;
 
   Result := i;
 
   XMLDoc.Free;
 end;
 
-function TPlayListManager.ImportFromWPL(const FileName: TFileName; var Playlist: TPlaylist): integer;
+function TPlayListManager.ImportFromWPL(const FileName: TFileName;
+  var Playlist: TPlaylist): integer;
 var
   XMLDoc: TXMLDocument;
-  Root  : TDOMNode;
-  i:     integer;
+  Root: TDOMNode;
+  i: integer;
   fName: string;
 
   function FindNode(x: TDOMNode; Name: string): TDOMNode;
@@ -241,12 +248,12 @@ var
   begin
     Result := nil;
     for j := 0 to x.ChildNodes.Count - 1 do
-      begin
+    begin
       if UpperCase(x.ChildNodes.Item[j].NodeName) = UpperCase(Name) then
-        begin
-          Result := x.ChildNodes.Item[j];
-        end;
+      begin
+        Result := x.ChildNodes.Item[j];
       end;
+    end;
   end;
 
 begin
@@ -259,26 +266,27 @@ begin
   Root := FindNode(root, 'seq');
 
   for i := 0 to Root.ChildNodes.Count - 1 do
-    begin
-      if Root.ChildNodes.Item[i].NodeName <> 'media' then
-         Continue;
-      fname := Root.ChildNodes.Item[i].Attributes.GetNamedItem('src').NodeValue;
-      if Length(fname) > MAX_PATH then
-        Continue;
-      inc(Result);
-      URIToFilename(Unescape(fname), fname);
-      Playlist.EnqueueFile(fName);
-    end;
+  begin
+    if Root.ChildNodes.Item[i].NodeName <> 'media' then
+      Continue;
+    fname := Root.ChildNodes.Item[i].Attributes.GetNamedItem('src').NodeValue;
+    if Length(fname) > MAX_PATH then
+      Continue;
+    Inc(Result);
+    URIToFilename(Unescape(fname), fname);
+    Playlist.EnqueueFile(fName);
+  end;
 
   XMLDoc.Free;
 end;
 
 
-function TPlayListManager.ImportFromASX(const FileName: TFileName; var Playlist: TPlaylist): integer;
+function TPlayListManager.ImportFromASX(const FileName: TFileName;
+  var Playlist: TPlaylist): integer;
 var
   XMLDoc: TXMLDocument;
   Root, Node: TDOMNode;
-  i:     integer;
+  i: integer;
   fName: string;
 
   function FindNode(x: TDOMNode; Name: string): TDOMNode;
@@ -287,12 +295,12 @@ var
   begin
     Result := nil;
     for j := 0 to x.ChildNodes.Count - 1 do
-      begin
+    begin
       if UpperCase(x.ChildNodes.Item[j].NodeName) = UpperCase(Name) then
-        begin
-          Result := x.ChildNodes.Item[j];
-        end;
+      begin
+        Result := x.ChildNodes.Item[j];
       end;
+    end;
   end;
 
 begin
@@ -304,14 +312,14 @@ begin
   Root := XMLDoc.DocumentElement;
 
   for i := 0 to Root.ChildNodes.Count - 1 do
-    begin
-    Node  := FindNode(Root.ChildNodes.Item[i], 'ref');
+  begin
+    Node := FindNode(Root.ChildNodes.Item[i], 'ref');
     fname := Node.Attributes.GetNamedItem('href').NodeValue;
     if Length(fname) > MAX_PATH then
       Continue;
     URIToFilename(Unescape(fname), fname);
     Playlist.EnqueueFile(fName);
-    end;
+  end;
 
   Result := i;
 
@@ -322,20 +330,22 @@ end;
 function TPlayListManager.ProcessPath(FileName: string; CurPlayList: string): string;
 begin
   FileName := Trim(FileName);
-  if not ((Copy(UpperCase(FileName), 1, 7) = 'HTTP://') or (Copy(UpperCase(FileName), 1, 6) = 'FTP://')) then
-    begin
+  if not ((Copy(UpperCase(FileName), 1, 7) = 'HTTP://') or
+    (Copy(UpperCase(FileName), 1, 6) = 'FTP://')) then
+  begin
     if CurPlaylist[Length(CurPlaylist)] <> PathDelim then
       CurPlaylist := CurPlaylist + PathDelim; // changed the next IF to protect UNCs  KWL
     if (Copy(FileName, 1, 1) = PathDelim) and (Copy(FileName, 2, 1) <> PathDelim) then
       FileName := Copy(CurPlaylist, 1, 2) + FileName
     else
-      if Copy(FileName, 2, 2) <> ':\' then
-        FileName := CurPlaylist + FileName;
-    end;
+    if Copy(FileName, 2, 2) <> ':\' then
+      FileName := CurPlaylist + FileName;
+  end;
   Result := FileName;
 end;
 
-function TPlayListManager.ImportFromM3U(const FileName: TFileName; var Playlist: TPlaylist): integer;
+function TPlayListManager.ImportFromM3U(const FileName: TFileName;
+  var Playlist: TPlaylist): integer;
 var
   f: textfile;
   s: string;
@@ -347,28 +357,29 @@ begin
   reset(f);
   Result := 0;
   while EOF(f) <> True do
-    begin
+  begin
     readln(f, s);
     s := trim(s);
     if uppercase(copy(s, 0, 7)) = '#EXTINF' then
-      begin
+    begin
       readln(f, s);
-      inc(Result);
+      Inc(Result);
       Playlist.EnqueueFile(ProcessPath(s, p));
-      end
+    end
     else
-      begin
+    begin
       if uppercase(copy(s, 0, 7)) <> '#EXTM3U' then
-        begin
-          inc(Result);
-          Playlist.EnqueueFile(ProcessPath(s, p));
-        end;
+      begin
+        Inc(Result);
+        Playlist.EnqueueFile(ProcessPath(s, p));
       end;
     end;
+  end;
   closefile(f);
 end;
 
-function TPlayListManager.ImportFromBSP(const FileName: TFileName; var Playlist: TPlaylist): integer;
+function TPlayListManager.ImportFromBSP(const FileName: TFileName;
+  var Playlist: TPlaylist): integer;
 var
   f: TextFile;
   s: string;
@@ -380,12 +391,12 @@ begin
   reset(f);
   Result := 0;
   while not EOF(f) do
-    begin
-      Inc(Result);
-      readln(f, s);
-      s := trim(s);
-      Playlist.EnqueueFile(ProcessPath(s, p));
-    end;
+  begin
+    Inc(Result);
+    readln(f, s);
+    s := trim(s);
+    Playlist.EnqueueFile(ProcessPath(s, p));
+  end;
   closefile(f);
 end;
 
@@ -397,19 +408,19 @@ var
   i: integer;
   p: string;
   ini: TMemIniFile;
-  cnt : Integer;
+  cnt: integer;
 begin
   Playlist.Clear;
   p := ExtractFilePath(FileName);
   ini := TMemIniFile.Create(FileName);
   try
-    cnt := ini.ReadInteger('playlist','NumberOfEntries', 0);
+    cnt := ini.ReadInteger('playlist', 'NumberOfEntries', 0);
     for i := 1 to cnt do
-      begin
-        s := ini.ReadString('playlist','File'+inttostr(i), '');
-        if s <> '' then
-           Playlist.EnqueueFile(ProcessPath(s, p));
-      end;
+    begin
+      s := ini.ReadString('playlist', 'File' + IntToStr(i), '');
+      if s <> '' then
+        Playlist.EnqueueFile(ProcessPath(s, p));
+    end;
     Result := cnt;
   finally
     ini.Free;
@@ -417,34 +428,36 @@ begin
 end;
 
 
-function TPlayListManager.LoadPlayList(const FileName: TFileName; var Playlist: TPlaylist): integer;
+function TPlayListManager.LoadPlayList(const FileName: TFileName;
+  var Playlist: TPlaylist): integer;
 var
   plType: TPlayListType;
 begin
   plType := GetPlayListType(FileName);
   case plType of
     pltXSPF: ImportFromXSPF(FileName, Playlist);
-    pltM3U : ImportFromM3U(FileName, Playlist);
-    pltPLS : ImportFromPLS(FileName, Playlist);
-    pltASX : ImportFromASX(FileName, Playlist);
+    pltM3U: ImportFromM3U(FileName, Playlist);
+    pltPLS: ImportFromPLS(FileName, Playlist);
+    pltASX: ImportFromASX(FileName, Playlist);
     pltBSPL: ImportFromBSP(FileName, Playlist);
-    pltWPL : ImportFromWPL(FileName, Playlist);
-    end;
+    pltWPL: ImportFromWPL(FileName, Playlist);
+  end;
   Result := Playlist.Count;
 
 end;
 
-procedure TPlayListManager.SaveToXSPF(const FileName: TFileName; var Playlist: TPlaylist; CurrentTime: integer = -1);
+procedure TPlayListManager.SaveToXSPF(const FileName: TFileName;
+  var Playlist: TPlaylist; CurrentTime: integer = -1);
 var
   XMLDoc: TXMLDocument;
   Root, Node: TDOMelement;
   TrackNode, PropNode: TDOMelement;
-  i:   integer;
+  i: integer;
   Str: TfileStream;
 
 begin
   XMLDoc := TXMLDocument.Create;
-  Root   := XMLDoc.CreateElement('playlist');
+  Root := XMLDoc.CreateElement('playlist');
   root.SetAttribute('version', '1');
   root.SetAttribute('xmlns', 'http://xspf.org/ns/0/');
   XMLDoc.AppendChild(root);
@@ -455,18 +468,18 @@ begin
   TrackNode.SetAttribute('application', XSPF_VERSION);
   Root.AppendChild(TrackNode);
   if CurrentTime <> -1 then
-    begin
+  begin
     PropNode := XMLDoc.CreateElement('currentItem');
     propnode.TextContent := IntToStr(Playlist.ItemIndex);
     TrackNode.AppendChild(PropNode);
     PropNode := XMLDoc.CreateElement('currentTime');
     propnode.TextContent := IntToStr(CurrentTime);
     TrackNode.AppendChild(PropNode);
-    end;
+  end;
 
 
   for i := 0 to Playlist.Count - 1 do
-    begin
+  begin
     TrackNode := XMLDoc.CreateElement('track');
     node.AppendChild(TrackNode);
 
@@ -478,7 +491,7 @@ begin
     propnode.TextContent := Playlist[i].Tags.Title;
     TrackNode.AppendChild(PropNode);
 
-    end;
+  end;
 
   Str := TFileStream.Create(FileName, fmCreate);
   WriteXMLFile(XMLDoc, Str);
@@ -489,51 +502,57 @@ end;
 
 function TPlayListManager.GetPlayListType(FileName: string): TPlayListType;
 var
-  f:     textfile;
+  f: textfile;
   s, fe: string;
 begin
   Result := pltUnknown;
   if fileexists(FileName) then
-    begin
+  begin
     assignfile(f, FileName);
     reset(f);
     repeat
       readln(f, s);
     until (trim(s) <> '') or EOF(f);
-    closefile(f);
 
+    if trim(lowercase(s)) = '<?xml version="1.0"?>' then
+      Result := pltXSPF
+    else
     if trim(s) = '#EXTM3U' then
       Result := pltM3U
     else if copy(s, 0, 4) = 'BSPL' then
+      Result := pltBSPL
+    else if lowercase(copy(s, 0, 5)) = '<?wpl' then
+      Result := pltWPL
+    else if lowercase(copy(s, 0, 4)) = '<ASX' then
+      Result := pltASX
+    else
+    begin
+      fe := ansilowercase(extractfileext(FileName));
+      if fe = '.xspf' then
+        Result := pltXSPF
+      else if fe = '.m3u' then
+        Result := pltM3U
+      else if fe = '.bsl' then
         Result := pltBSPL
-      else if lowercase(copy(s, 0, 5)) = '<?wpl'  then
-          Result := pltWPL
-        else if lowercase(copy(s, 0, 4)) = '<ASX' then
-            Result := pltASX
-          else
-            begin
-            fe := ansilowercase(extractfileext(FileName));
-            if fe = '.m3u' then
-              Result := pltM3U
-            else if fe = '.bsl' then
-                Result := pltBSPL
-              else if fe = '.wpl' then
-                  Result := pltWPL
-                else if fe = '.lap' then
-                    Result := pltPLS
-                  else if fe = '.pls' then
-                      Result := pltPLS
-                    else if fe = '.asx' then
-                        Result := pltASX
-                    else if fe = '.wax' then
-                       Result := pltASX;
+      else if fe = '.wpl' then
+        Result := pltWPL
+      else if fe = '.lap' then
+        Result := pltPLS
+      else if fe = '.pls' then
+        Result := pltPLS
+      else if fe = '.asx' then
+        Result := pltASX
+      else if fe = '.wax' then
+        Result := pltASX;
 
-            end;
     end;
+  end;
+  closefile(f);
+
 end;
 
-function TPlayListManager.ImportFromDirectory(const Directory: string; Recursive: boolean;
-  var Playlist: TPlaylist): integer;
+function TPlayListManager.ImportFromDirectory(const Directory: string;
+  Recursive: boolean; var Playlist: TPlaylist): integer;
 var
   list: TStringList;
 begin
@@ -546,7 +565,8 @@ begin
   list.Free;
 end;
 
-function TPlayListManager.ImportFromStrings(const Strings: TStrings; var Playlist: TPlaylist): integer;
+function TPlayListManager.ImportFromStrings(const Strings: TStrings;
+  var Playlist: TPlaylist): integer;
 var
   i: integer;
 begin
@@ -557,23 +577,25 @@ begin
   Result := Strings.Count;
 end;
 
-function TPlayListManager.ImportFromMediaLibrary(const Lib: TMediaLibrary;  var Playlist: TPlaylist;
-                                    const Filter: string=''; order :string=''): integer;
+function TPlayListManager.ImportFromMediaLibrary(const Lib: TMediaLibrary;
+  var Playlist: TPlaylist; const Filter: string = '';
+  order: string = ''): integer;
 var
   Tags: tcommontags;
 begin
   Result := 0;
   lib.ReadBegin(order, Filter);
   while not Lib.ReadComplete do
-    begin
-      inc(Result);
-      Tags := Lib.ReadItem;
-      Playlist.EnqueueFile(tags.FileName);
-      lib.NextItem;
-    end;
+  begin
+    Inc(Result);
+    Tags := Lib.ReadItem;
+    Playlist.EnqueueFile(tags.FileName);
+    lib.NextItem;
+  end;
   lib.ReadEnd;
 
 end;
 
 
 end.
+
