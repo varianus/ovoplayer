@@ -367,10 +367,19 @@ procedure TBackEnd.actPlaylistLoadExecute(Sender: TObject);
 begin
   if OpenDialogPlaylist.Execute then
     begin
+    PlayList.clear;
     Manager.LoadPlayList(OpenDialogPlaylist.FileName, PlayList);
     PlayList.LoadAllTags;
     if Assigned(OnPlayListLoad) then
       OnPlayListLoad(self);
+
+    if (Manager.SavedTime <> 0) and
+        Config.PlayListParam.Restart and
+       (PlayList.CurrentItem <> nil) then
+      begin
+         AudioEngine.Play(PlayList.CurrentItem, Manager.SavedTime);
+      end;
+
     end;
 
 end;
@@ -524,7 +533,7 @@ begin
   if not SaveDialogPlayList.Execute then
     exit;
 
-  Manager.SaveToXSPF(SaveDialogPlayList.FileName, PlayList);
+  Manager.SaveToXSPF(SaveDialogPlayList.FileName, PlayList, AudioEngine.Position);
 
 end;
 

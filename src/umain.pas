@@ -452,6 +452,7 @@ var
 begin
   pnlPlayInfo.visible:=true;
   song := BackEnd.PlayList.CurrentItem;
+  lvPlayList.ScrollIntoView(FindNode(BackEnd.PlayList.ItemIndex), true);
 
   Title.Caption     := Song.tags.Title;
   track.Caption     := Song.Tags.TrackString;
@@ -1434,4 +1435,4 @@ begin
 
 end;
 
-end.
+end.
