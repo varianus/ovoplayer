@@ -45,6 +45,7 @@ type
     fUpdating:  boolean;
     fSortDirection : TplSortDirection;
     fSavedPointer :Pointer;
+    function CheckItem(Item: integer): integer;
     function GetCurrentItem: TSong;
     function GetItem(Index: integer): TSong;
     function GetTotalTime: double;
@@ -310,13 +311,27 @@ begin
   fUpdating := False;
 end;
 
+Function TPlayList.CheckItem(Item: integer): integer;
+begin
+ if item > count then
+    result:=count
+ else
+   if item < 0 then
+      result :=0
+   else
+      result := item;
+
+end;
+
 procedure TPlayList.Swap(Item1, Item2: integer);
 var
   Q:pointer;
 begin
+  item1:= CheckItem(item1);
+  item2:= CheckItem(item2);
+  if item1 = item2 then
+     exit;
   q:= List^[Item1];
-  if (Item2 > Count) or (Item2 = -1) then
-    Item2 := Count;
   List^[Item1]:= List^[Item2];
   List^[Item2]:=Q;
 

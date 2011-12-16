@@ -953,7 +953,7 @@ end;
 procedure TfMainForm.lvPlayListMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: integer);
 begin
   if ssLeft in Shift then
-    fSourceNode := lvPlayList.GetNodeAt(x, y);
+     fSourceNode := lvPlayList.GetNodeAt(x, y - lvPlayList.Header.Height);
 
 end;
 
@@ -965,7 +965,8 @@ begin
   if not (ssLeft in shift) then
     exit;
 
-  fTargetNode := lvPlayList.GetNodeAt(x, y );
+  fTargetNode := lvPlayList.GetNodeAt(x, y - lvPlayList.Header.Height );
+
   if (fTargetNode = nil) or
      (fTargetNode = fSourceNode) then
     exit;
@@ -973,6 +974,8 @@ begin
   BackEnd.PlayList.PushPos;
   BackEnd.PlayList.Swap(fTargetNode^.Index, fSourceNode^.Index);
   BackEnd.PlayList.PopPos;
+  lvPlayList.ClearSelection;
+  lvPlayList.Selected[fTargetNode] := true;
 
   lvPlayList.InvalidateNode(fTargetNode);
   lvPlayList.InvalidateNode(fSourceNode);

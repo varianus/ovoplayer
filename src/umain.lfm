@@ -1,11 +1,11 @@
 object fMainForm: TfMainForm
   Left = 349
-  Height = 657
+  Height = 694
   Top = 108
-  Width = 811
+  Width = 866
   Caption = 'OVO Player'
-  ClientHeight = 636
-  ClientWidth = 811
+  ClientHeight = 674
+  ClientWidth = 866
   Constraints.MinHeight = 400
   Constraints.MinWidth = 600
   Menu = MainMenu
@@ -18,7 +18,7 @@ object fMainForm: TfMainForm
   LCLVersion = '0.9.31'
   object pcMain: TPageControl
     Left = 0
-    Height = 636
+    Height = 674
     Top = 0
     Width = 234
     ActivePage = tsCollection
@@ -30,25 +30,25 @@ object fMainForm: TfMainForm
     Options = [nboMultiLine, nboHidePageListPopup]
     object tsCollection: TTabSheet
       Caption = 'Collection'
-      ClientHeight = 607
-      ClientWidth = 230
+      ClientHeight = 646
+      ClientWidth = 226
       object pnlCollection: TPanel
         Left = 0
         Height = 70
         Top = 0
-        Width = 230
+        Width = 226
         Align = alTop
         BevelOuter = bvNone
         ClientHeight = 70
-        ClientWidth = 230
+        ClientWidth = 226
         TabOrder = 0
         object cbGroupBy: TComboBox
           Left = 6
-          Height = 25
+          Height = 23
           Top = 6
-          Width = 221
+          Width = 217
           Anchors = [akTop, akLeft, akRight]
-          ItemHeight = 0
+          ItemHeight = 15
           ItemIndex = 0
           Items.Strings = (
             'AlbumArtist / Album'
@@ -63,19 +63,19 @@ object fMainForm: TfMainForm
         end
         object edtFilter: TLabeledEdit
           Left = 49
-          Height = 25
+          Height = 23
           Top = 38
-          Width = 178
+          Width = 174
           Anchors = [akTop, akLeft, akRight]
           EditLabel.AnchorSideTop.Control = edtFilter
           EditLabel.AnchorSideTop.Side = asrCenter
           EditLabel.AnchorSideRight.Control = edtFilter
           EditLabel.AnchorSideBottom.Control = edtFilter
           EditLabel.AnchorSideBottom.Side = asrBottom
-          EditLabel.Left = 16
+          EditLabel.Left = 19
           EditLabel.Height = 16
-          EditLabel.Top = 42
-          EditLabel.Width = 30
+          EditLabel.Top = 41
+          EditLabel.Width = 27
           EditLabel.Caption = 'Filter'
           EditLabel.ParentColor = False
           LabelPosition = lpLeft
@@ -85,9 +85,9 @@ object fMainForm: TfMainForm
       end
       object CollectionTree: TVirtualStringTree
         Left = 0
-        Height = 428
+        Height = 467
         Top = 70
-        Width = 230
+        Width = 226
         Align = alClient
         Color = clWindow
         DefaultText = 'Node'
@@ -107,17 +107,17 @@ object fMainForm: TfMainForm
       object gbStats: TGroupBox
         Left = 0
         Height = 109
-        Top = 498
-        Width = 230
+        Top = 537
+        Width = 226
         Align = alBottom
         Caption = 'Stats'
-        ClientHeight = 92
-        ClientWidth = 226
+        ClientHeight = 91
+        ClientWidth = 222
         ParentFont = False
         TabOrder = 2
         Visible = False
         object SpeedButton1: TSpeedButton
-          Left = 204
+          Left = 200
           Height = 22
           Top = 0
           Width = 22
@@ -168,9 +168,9 @@ object fMainForm: TfMainForm
         end
         object sgStats: TStringGrid
           Left = 0
-          Height = 92
+          Height = 91
           Top = 0
-          Width = 204
+          Width = 200
           Align = alClient
           AutoEdit = False
           ColCount = 2
@@ -178,7 +178,6 @@ object fMainForm: TfMainForm
             item
               MaxSize = 400
               Title.Caption = 'Title'
-              Title.PrefixOption = poNone
               Width = 143
             end          
             item
@@ -186,7 +185,6 @@ object fMainForm: TfMainForm
               MaxSize = 400
               SizePriority = 2
               Title.Caption = 'Title'
-              Title.PrefixOption = poNone
               Width = 54
             end>
           DefaultRowHeight = 18
@@ -206,12 +204,12 @@ object fMainForm: TfMainForm
     end
     object tsDirectory: TTabSheet
       Caption = 'Directory'
-      ClientHeight = 607
-      ClientWidth = 230
+      ClientHeight = 646
+      ClientWidth = 226
       OnShow = tsDirectoryShow
       object FilesTree: TVirtualStringTree
         Left = 0
-        Height = 560
+        Height = 597
         Top = 49
         Width = 226
         Align = alClient
@@ -282,11 +280,11 @@ object fMainForm: TfMainForm
     end
     object tsPlayList: TTabSheet
       Caption = 'PlayList'
-      ClientHeight = 607
-      ClientWidth = 230
+      ClientHeight = 646
+      ClientWidth = 226
       object PlaylistTree: TTreeView
         Left = 0
-        Height = 609
+        Height = 646
         Top = 0
         Width = 226
         Align = alClient
@@ -312,31 +310,31 @@ object fMainForm: TfMainForm
   end
   object pnlMain: TPanel
     Left = 240
-    Height = 636
+    Height = 674
     Top = 0
-    Width = 571
+    Width = 626
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 636
-    ClientWidth = 571
+    ClientHeight = 674
+    ClientWidth = 626
     Constraints.MinWidth = 439
     TabOrder = 1
     object pnlControl: TPanel
       Left = 0
       Height = 50
-      Top = 586
-      Width = 571
+      Top = 624
+      Width = 626
       Align = alBottom
       Anchors = [akLeft, akRight]
       BevelOuter = bvNone
       ClientHeight = 50
-      ClientWidth = 571
+      ClientWidth = 626
       TabOrder = 0
       object tbMediaControl: TToolBar
         Left = 0
         Height = 22
         Top = 3
-        Width = 571
+        Width = 626
         BorderSpacing.Top = 3
         Constraints.MaxHeight = 25
         EdgeBorders = []
@@ -461,16 +459,16 @@ object fMainForm: TfMainForm
         Left = 0
         Height = 24
         Top = 26
-        Width = 571
+        Width = 626
         Align = alBottom
         ClientHeight = 24
-        ClientWidth = 571
+        ClientWidth = 626
         TabOrder = 1
         object TrackBar: TThemedSlider
           Left = 1
           Height = 22
           Top = 1
-          Width = 474
+          Width = 529
           Align = alClient
           BorderWidth = 2
           Step = 10000
@@ -481,7 +479,7 @@ object fMainForm: TfMainForm
           OnChange = TrackBarChange
         end
         object lbTime: TLabel
-          Left = 475
+          Left = 530
           Height = 22
           Top = 1
           Width = 95
@@ -499,19 +497,19 @@ object fMainForm: TfMainForm
     end
     object pnlPlaylist: TPanel
       Left = 0
-      Height = 462
+      Height = 500
       Top = 124
-      Width = 571
+      Width = 626
       Align = alClient
-      ClientHeight = 462
-      ClientWidth = 571
+      ClientHeight = 500
+      ClientWidth = 626
       Constraints.MinWidth = 494
       TabOrder = 1
       object lvPlayList: TVirtualStringTree
         Left = 1
-        Height = 460
+        Height = 498
         Top = 1
-        Width = 569
+        Width = 624
         Align = alClient
         Color = clWindow
         DefaultPasteMode = amNoWhere
@@ -535,7 +533,7 @@ object fMainForm: TfMainForm
             Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coFixed, coSmartResize, coAllowFocus]
             Position = 2
             Text = 'Title'
-            Width = 241
+            Width = 294
           end        
           item
             Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coSmartResize, coAllowFocus]
@@ -610,10 +608,10 @@ object fMainForm: TfMainForm
       Left = 0
       Height = 124
       Top = 0
-      Width = 571
+      Width = 626
       Align = alTop
       ClientHeight = 124
-      ClientWidth = 571
+      ClientWidth = 626
       TabOrder = 2
       object imgCover: TImage
         Left = 0
@@ -626,7 +624,7 @@ object fMainForm: TfMainForm
         Left = 132
         Height = 24
         Top = 6
-        Width = 429
+        Width = 484
         Anchors = [akTop, akLeft, akRight]
         AutoSize = False
         Caption = 'Title'
@@ -640,7 +638,7 @@ object fMainForm: TfMainForm
         Left = 132
         Height = 21
         Top = 36
-        Width = 429
+        Width = 484
         Anchors = [akTop, akLeft, akRight]
         AutoSize = False
         Caption = 'Album'
@@ -653,7 +651,7 @@ object fMainForm: TfMainForm
         Left = 132
         Height = 21
         Top = 65
-        Width = 429
+        Width = 484
         Anchors = [akTop, akLeft, akRight]
         AutoSize = False
         Caption = 'Artist'
@@ -675,7 +673,7 @@ object fMainForm: TfMainForm
   end
   object Splitter1: TSplitter
     Left = 234
-    Height = 636
+    Height = 674
     Top = 0
     Width = 6
   end
@@ -908,4 +906,4 @@ object fMainForm: TfMainForm
       OnExecute = actShowPLMediainfoExecute
     end
   end
-end
+end
