@@ -396,7 +396,6 @@ if LCLWidgetType = 'win32' then
     </BuildMacros>
     <CodeGeneration>
       <SmartLinkUnit Value="True"/>
-      <RelocatableUnit Value="True"/>
       <Checks>
         <StackChecks Value="True"/>
       </Checks>

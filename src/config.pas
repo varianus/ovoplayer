@@ -82,7 +82,7 @@ type
     fIniFiles:     TMemIniFile;
     function ReadColor(const Section, Ident: string; const Default: TColor): TColor;
     procedure WriteStringS(Section: string; BaseName: string; Values: TStrings);
-    function ReadStrings(Section: string; Name: string; var Values: TStrings): integer;
+    function ReadStrings(Section: string; Name: string; Values: TStrings): integer;
     procedure WriteColor(const Section, Ident: string; const Value: TColor);
   public
     NotificationParam: TNotificationParam;
@@ -260,7 +260,7 @@ begin
     end;
 end;
 
-function TConfig.ReadStrings(Section: string; Name: string; var Values: TStrings): integer;
+function TConfig.ReadStrings(Section: string; Name: string; Values: TStrings): integer;
 var
   strs: TStringList;
   i:    integer;
@@ -322,4 +322,4 @@ begin
 
 end;
 
-end.
+end.
