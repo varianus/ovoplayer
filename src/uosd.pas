@@ -120,6 +120,7 @@ begin
   fOSD.timPaint.Enabled := False;
   fOSD.timShow.Enabled := True;
 
+  FOSD.Repaint;
   fOSD.Show;
 end;
 
