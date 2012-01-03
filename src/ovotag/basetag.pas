@@ -56,6 +56,7 @@ type
 type
 
   { TFrameElement }
+  TFrameElementClass = class of TFrameElement;
 
   TFrameElement = class
   Private
@@ -65,12 +66,13 @@ type
     procedure SetID(AValue: string);
     function GetAsString: string; virtual; abstract;
     procedure SetAsString(AValue: string); virtual; abstract;
-    function ReadFromStream(AStream:TStream):boolean; virtual; abstract;
-
   public
     constructor Create; virtual; Overload;
     constructor Create(ID:String); virtual; Overload;
     destructor Destroy; override;
+    function ReadFromStream(AStream:TStream):boolean; virtual; abstract;
+    function WriteToStream(AStream:TStream):DWord; virtual; abstract;
+
   public
     property ID: string read GetID Write SetID;
     property AsString: string read GetAsString write SetAsString;
@@ -114,14 +116,17 @@ type
     function GetImageCount: integer;
   protected
     Function GetCommonTags: TCommonTags; virtual;
+    Procedure SetCommonTags(CommonTags :TCommonTags); virtual;
   public
     constructor Create; virtual;
     destructor Destroy; override;
     function ReadFromStream(AStream:TStream):boolean; virtual; abstract;
+    function WriteToStream(AStream: TStream): boolean; virtual; abstract;
     Procedure Add(Frame: TFrameElement);
     Procedure AddImage(Image: TImageElement);
     Procedure Clear;
     function GetFrameValue(ID: String): String;
+    procedure SetFrameValue(const ID:String;const Value:String; FrameClass: TFrameElementClass);
   public
     property Count: integer read GetCount;
     property ImageCount: integer read GetImageCount;
@@ -375,6 +380,23 @@ begin
       HasImage:=False;
     end;
 end;
+
+procedure TTags.SetCommonTags(CommonTags: TCommonTags);
+begin
+  //
+end;
+
+procedure TTags.SetFrameValue(const ID:String;const Value:String; FrameClass: TFrameElementClass);
+var
+  Element : TFrameElement;
+begin
+  Element := FramesByID[ID];
+  if Element = nil then
+     Element := FrameClass.Create(ID);
+
+  Element.AsString := Value;
+end;
+
 
 function TTags.GetFrameValue(ID:String):String;
 var

@@ -39,16 +39,20 @@ type
     procedure SetAsString(AValue: string); override;
   public
     function ReadFromStream(AStream: TStream): boolean; override;
+    function WriteToStream(AStream: TStream): DWord; override;
   end;
 
   { TVorbisTags }
 
   TVorbisTags = class(TTags)
+  private
   public
     Vendor: string;
     function ReadImageFromStream(AStream: TStream): boolean;
     Function GetCommonTags: TCommonTags; override;
+    Procedure SetCommonTags(CommonTags :TCommonTags); override;
     function ReadFromStream(AStream: TStream): boolean; override;
+    function WriteToStream(AStream: TStream): boolean; override;
   end;
 
 
@@ -84,7 +88,19 @@ begin
      end;
 end;
 
-
+function TVorbisFrame.WriteToStream(AStream: TStream): DWord;
+var
+  fSize:Cardinal;
+  Data: String;
+  iSep :Integer;
+begin
+  Result := 0;
+  Data:= UTF8Encode(ID+'='+fValue);
+  fSize:= Length(Data);
+  AStream.WriteDWord(fSize);
+  AStream.Write(Data[1], fSize);
+  Result:=fSize;
+end;
 
 { TVorbisTags }
 
@@ -134,6 +150,46 @@ begin
 
   if Result.AlbumArtist = '' then
      Result.AlbumArtist := result.Artist;
+end;
+
+procedure TVorbisTags.SetCommonTags(CommonTags: TCommonTags);
+begin
+  inherited SetCommonTags(CommonTags);
+  if CommonTags.Album <> '' then
+     SetFrameValue('ALBUM', CommonTags.Album, TVorbisFrame);
+  if CommonTags.AlbumArtist <> '' then
+     SetFrameValue('ALBUMARTIST', CommonTags.AlbumArtist, TVorbisFrame);
+  if CommonTags.Artist <> '' then
+     SetFrameValue('ARTIST', CommonTags.Artist, TVorbisFrame);
+  if CommonTags.Comment <> '' then
+     SetFrameValue('COMMENT', CommonTags.Comment, TVorbisFrame);
+  if CommonTags.Genre <> '' then
+     SetFrameValue('GENRE', CommonTags.Genre, TVorbisFrame);
+  if CommonTags.Title <> '' then
+     SetFrameValue('TITLE', CommonTags.Title, TVorbisFrame);
+  if CommonTags.TrackString <> '' then
+     SetFrameValue('TRACKNUMBER', CommonTags.TrackString, TVorbisFrame);
+  if CommonTags.Year <> '' then
+     SetFrameValue('DATE', CommonTags.Year, TVorbisFrame);
+
+end;
+
+function TVorbisTags.WriteToStream(AStream: TStream): boolean;
+var
+  fSize: cardinal;
+  Data: array of char;
+  i: cardinal;
+  Frame: TVorbisFrame;
+begin
+  fSize:= Length(Vendor);
+  AStream.WriteDWord(FSize);
+  if fSize > 0 then;
+     AStream.Write(Vendor[1], fSize);
+
+  AStream.WriteDWord(Count);
+  for i := 0 to Count - 1 do
+    Frames[i].WriteTostream (AStream);
+
 end;
 
 function TVorbisTags.ReadFromStream(AStream: TStream): boolean;
