@@ -37,6 +37,11 @@ type
   private
     fTags: TWmaTags;
     fDuration: int64;
+    fBitRate : Integer;
+    fBPM : Integer;
+    fSampling : Integer;
+    fChannelMode : string;
+
   protected
     function GetTags: TTags; override;
     function GetDuration: int64; override;
@@ -72,12 +77,35 @@ type
     MaxBitrate:  DWORD;
   end;
 
+  TWMAAudioProperty = packed record
+    CodecID : WORD;
+    Channels : WORD;
+    Samples : DWORD;
+    BytePerSecond : DWORD;
+    BlockAlignment : WORD;
+    BitsPerSamples : WORD;
+    CodecDataSize : WORD;
+  end;
+
+  TWMAStreamProperty =  packed record
+    StreamHeader : TObjectHeader;
+    StreamType : TGuid;
+    ErrorCorrectionType : TGuid;
+    TimeOffset : QWORD;
+    DataLength : DWORD;
+    ErrorCorrectionLength : DWORD;
+    Flags : WORD;
+    Reserved : DWORD;
+    AudioProperty : TWMAAudioProperty;
+  end;
+
 const
 
   WMA_HEADER_ID :TGUID = '{75B22630-668E-11CF-A6D9-00AA0062CE6C}';
   WMA_CONTENT_DESCRIPTION :TGUID = '{75B22633-668E-11CF-A6D9-00AA0062CE6C}';
   WMA_EXTENDED_CONTENT_DESCRIPTION :TGUID = '{D2D0A440-E307-11D2-97F0-00A0C95EA850}';
   WMA_FILE_PROPERTIES :TGUID = '{8CABDCA1-A947-11CF-8EE4-00C00C205365}';
+  WMA_STREAM_PROPERTIES :TGUID = '{B7DC0791-A9B7-11CF-8EE6-00C00C205365}';
 { TWMAReader }
 
 function TWMAReader.GetTags: TTags;
@@ -101,6 +129,7 @@ var
   Header : TWMaHeader;
   SubObjHeader : TObjectHeader;
   FileProperty :TWMAFileProperty;
+  StreamProperty : TWMAStreamProperty;
   i:     Integer;
 begin
   Result := Inherited LoadFromFile(FileName);
@@ -127,6 +156,14 @@ begin
              fDuration := (FileProperty.PlayDuration div 10000) - FileProperty.Preroll;
            end
         else
+        if IsEqualGUID(SubObjHeader.ObjectID, WMA_STREAM_PROPERTIES) then
+           begin
+             fStream.Read(StreamProperty, SizeOf(TWMAStreamProperty));
+             fChannelMode := Inttostr(StreamProperty.AudioProperty.Channels)
+             { TODO : Fix types };
+           end
+        else
+
         if IsEqualGUID(SubObjHeader.ObjectID, WMA_EXTENDED_CONTENT_DESCRIPTION) then
            begin
              fTags := TWMATags.Create;
@@ -149,4 +186,4 @@ initialization
   RegisterTagReader(WMAFileMask, TWMAReader);
 
 end.
-
+
