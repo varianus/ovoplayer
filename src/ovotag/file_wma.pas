@@ -31,28 +31,6 @@ const
   WMAFileMask: string    = '*.wma;';
 
 type
-  { TWMAReader }
-
-  TWMAReader = class(TTagReader)
-  private
-    fTags: TWmaTags;
-    fDuration: int64;
-    fBitRate : Integer;
-    fBPM : Integer;
-    fSampling : Integer;
-    fChannelMode : string;
-
-  protected
-    function GetTags: TTags; override;
-    function GetDuration: int64; override;
-    Function DumpInfo: TMediaProperty; override;
-  public
-    function LoadFromFile(FileName: Tfilename): boolean; override;
-  end;
-
-implementation
-
-type
   TObjectHeader = packed record
     ObjectID :  TGuid;
     ObjectSize: QWord;
@@ -99,6 +77,37 @@ type
     AudioProperty : TWMAAudioProperty;
   end;
 
+  TWMAContentDescription =  packed record
+    StreamHeader : TObjectHeader;
+    TitleLength : WORD;
+    AuthorLength : WORD;
+    CopyrightLength : WORD;
+    DescriptionLength : WORD;
+    RatingLength : WORD;
+  end;
+  { TWMAReader }
+
+  TWMAReader = class(TTagReader)
+  private
+    fTags: TWmaTags;
+    fDuration: int64;
+    fBitRate : Integer;
+    fBPM : Integer;
+    fSampling : Integer;
+    fChannelMode : string;
+    procedure ImportContentDescription(AStream: TStream;
+      ContentDescription: TWMAContentDescription);
+
+  protected
+    function GetTags: TTags; override;
+    function GetDuration: int64; override;
+    Function DumpInfo: TMediaProperty; override;
+  public
+    function LoadFromFile(FileName: Tfilename): boolean; override;
+  end;
+
+implementation
+
 const
 
   WMA_HEADER_ID :TGUID = '{75B22630-668E-11CF-A6D9-00AA0062CE6C}';
@@ -123,6 +132,50 @@ begin
   Result:=inherited DumpInfo;
 end;
 
+Procedure TWMAReader.ImportContentDescription(AStream: TStream;
+                           ContentDescription : TWMAContentDescription);
+var
+  tmpValue: array of char;
+  Frame : TWMAFrame;
+begin
+  if ContentDescription.TitleLength > 0 then
+     begin
+        SetLength(tmpValue, ContentDescription.TitleLength);
+        AStream.Read(tmpValue[0], ContentDescription.TitleLength);
+        Frame := TWMAFrame.Create('WM/TITLE');
+        Frame.DataType := 1;
+        Frame.AsString := trim(WideString(tmpValue));
+        fTags.Add(Frame);
+     end;
+
+  if ContentDescription.AuthorLength > 0 then
+     begin
+        SetLength(tmpValue, ContentDescription.AuthorLength);
+        AStream.Read(tmpValue[0], ContentDescription.AuthorLength);
+        Frame := TWMAFrame.Create('WM/AUTHOR');
+        Frame.DataType := 1;
+        Frame.AsString := trim(WideString(tmpValue));
+        fTags.Add(Frame);
+     end;
+
+  if ContentDescription.AuthorLength > 0 then
+     begin
+        SetLength(tmpValue, ContentDescription.CopyrightLength);
+        AStream.Read(tmpValue[0], ContentDescription.CopyrightLength);
+     end;
+  if ContentDescription.DescriptionLength > 0 then
+     begin
+        SetLength(tmpValue, ContentDescription.DescriptionLength);
+        AStream.Read(tmpValue[0], ContentDescription.DescriptionLength);
+     end;
+  if ContentDescription.RatingLength > 0 then
+     begin
+        SetLength(tmpValue, ContentDescription.RatingLength);
+        AStream.Read(tmpValue[0], ContentDescription.RatingLength);
+     end;
+
+end;
+
 function TWMAReader.LoadFromFile(FileName: Tfilename): boolean;
 var
   fStream: TFileStream;
@@ -130,6 +183,7 @@ var
   SubObjHeader : TObjectHeader;
   FileProperty :TWMAFileProperty;
   StreamProperty : TWMAStreamProperty;
+  ContentDescription : TWMAContentDescription;
   i:     Integer;
 begin
   Result := Inherited LoadFromFile(FileName);
@@ -138,16 +192,18 @@ begin
     fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
 
     fStream.ReadBuffer(Header, SizeOf(Header));
-    ftags:=nil;
+    fTags := TWMATags.Create;
+
     if not IsEqualGUID(Header.ObjectHeader.ObjectID, WMA_HEADER_ID) then
        exit;
 
     for i := 0 to Header.ObjectCount do
       begin
         fStream.Read(SubObjHeader, SizeOf(SubObjHeader));
-        //if SubObjHeader.ObjectID = WMA_CONTENT_DESCRIPTION then
+        //if IsEqualGUID(SubObjHeader.ObjectID, WMA_CONTENT_DESCRIPTION) then
         //   begin
-        //
+        //     fStream.Read(ContentDescription, SizeOf(TWMAContentDescription));
+        //     ImportContentDescription(fStream, ContentDescription);
         //   end
         //else
         if IsEqualGUID(SubObjHeader.ObjectID, WMA_FILE_PROPERTIES) then
@@ -166,7 +222,6 @@ begin
 
         if IsEqualGUID(SubObjHeader.ObjectID, WMA_EXTENDED_CONTENT_DESCRIPTION) then
            begin
-             fTags := TWMATags.Create;
              fTags.ReadFromStream(fStream);
            end
         else
@@ -186,4 +241,4 @@ initialization
   RegisterTagReader(WMAFileMask, TWMAReader);
 
 end.
-
+
