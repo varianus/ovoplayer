@@ -43,6 +43,8 @@ type
 
   TID3Tags = class;
 
+  { TID3Frame }
+
   TID3Frame = class(TFrameElement)
   private
     fSize: Integer;
@@ -52,6 +54,7 @@ type
     Tags: TID3Tags;
     Property Size: Integer read fSize;
   public
+    Destructor Destroy; override;
     function GetAsString: string; override;
     procedure SetAsString(AValue: string); override;
     function ReadFromStream(AStream: TStream): boolean; override;
@@ -154,45 +157,71 @@ begin
     exit;
 
   version := 0;
-  Frame := TID3Frame.Create('TPE1');
-  Frame.AsString := trim(V1Rec.Artist);
-  Add(Frame);
+  if trim(V1Rec.Artist) <> '' then
+    begin
+      Frame := TID3Frame.Create('TPE1');
+      Frame.Tags := Self;
+      Frame.AsString := trim(V1Rec.Artist);
+      Add(Frame);
+    end;
 
-  Frame := TID3Frame.Create('TALB');
-  Frame.AsString := trim(V1Rec.Album);
-  Add(Frame);
+  if trim(V1Rec.Album) <> '' then
+     begin
+       Frame := TID3Frame.Create('TALB');
+       Frame.Tags := Self;
+       Frame.AsString := trim(V1Rec.Album);
+       Add(Frame);
+     end;
 
-  Frame := TID3Frame.Create('TIT2');
-  Frame.AsString := trim(V1Rec.Title);
-  Add(Frame);
+  if trim(V1Rec.Title) <> '' then
+     begin
+      Frame := TID3Frame.Create('TIT2');
+      Frame.Tags := Self;
+      Frame.AsString := trim(V1Rec.Title);
+      Add(Frame);
+    end;
 
-  Frame := TID3Frame.Create('TYER');
-  Frame.AsString := trim(V1Rec.Year);
-  Add(Frame);
+  if trim(V1Rec.Year) <> '' then
+    begin
+      Frame := TID3Frame.Create('TYER');
+      Frame.Tags := Self;
+      Frame.AsString := trim(V1Rec.Year);
+      Add(Frame);
+    end;
 
   if V1Rec.Genre < 147 then
     begin
       Frame := TID3Frame.Create('TCON');
+      Frame.Tags := Self;
       Frame.AsString := v1Genres[V1Rec.Genre];
       Add(Frame);
     end;
 
   if V1Rec.Stopper = #00 then
     begin
-      Frame := TID3Frame.Create('COMM');
-      Frame.AsString := trim(V1Rec.Comment);
-      Add(Frame);
+      if trim(V1Rec.Comment) <> '' then
+        begin
+          Frame := TID3Frame.Create('COMM');
+          Frame.Tags := Self;
+          Frame.AsString := trim(V1Rec.Comment);
+          Add(Frame);
+        end;
 
       Frame := TID3Frame.Create('TRCK');
+      Frame.Tags := Self;
       Frame.AsString := inttostr(v1rec.track);
       Add(Frame);
 
     end
   else
   begin
-    Frame := TID3Frame.Create('COMM');
-    Frame.AsString := trim(V1Rec.Comment + V1Rec.stopper + char(V1Rec.track));
-    Add(Frame);
+    if trim(V1Rec.Comment + V1Rec.stopper + char(V1Rec.track)) <> '' then
+      begin
+        Frame := TID3Frame.Create('COMM');
+        Frame.Tags := Self;
+        Frame.AsString := trim(V1Rec.Comment + V1Rec.stopper + char(V1Rec.track));
+        Add(Frame);
+      end;
   end;
   result:=true;
 
@@ -306,10 +335,17 @@ end;
 
 procedure TID3Frame.SetAsString(AValue: string);
 begin
-   SetLength(Data, Length(AValue));
-   fSize :=  Length(AValue);
-   if fSize > 0 then
-      StrPCopy(@(Data[0]), #00+AValue);
+  fSize :=  Length(AValue);
+  if fSize = 0 then
+     begin
+       SetLength(Data, 0);
+       exit;
+     end;
+
+  SetLength(Data, fSize + 2);
+  Data[0] := #00;
+  StrPCopy(@(Data[1]), AValue);
+
 end;
 
 function TID3Frame.IsValid: Boolean;
@@ -325,6 +361,12 @@ begin
       Exit;   // Corruption protection
 
   Result := True;
+end;
+
+destructor TID3Frame.Destroy;
+begin
+  self.Tags:= nil;
+  inherited Destroy;
 end;
 
 
