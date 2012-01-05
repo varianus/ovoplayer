@@ -59,17 +59,17 @@ function TWMATags.GetCommonTags: TCommonTags;
 begin
   Result:=inherited GetCommonTags;
 
-
   Result.Album := GetFrameValue('WM/ALBUMTITLE');
   Result.AlbumArtist := GetFrameValue('WM/ALBUMARTIST');
   Result.Artist := GetFrameValue('WM/AUTHOR');
   Result.Comment := GetFrameValue('WM/DESCRIPTION');
-//  Result.Duration := GetFrameValue('ARTIST');
   Result.Genre := GetFrameValue('WM/GENRE');
   Result.Title := GetFrameValue('WM/TITLE');
   Result.Track := StrToIntDef(GetFrameValue('WM/TRACKNUMBER'),0);;
   Result.TrackString := GetFrameValue('WM/TRACKNUMBER');
   Result.Year := GetFrameValue('WM/YEAR');
+  if Result.AlbumArtist = '' then
+     Result.AlbumArtist := Result.Artist;
 end;
 
 function TWMATags.ReadFromStream(AStream: TStream): boolean;
@@ -77,6 +77,7 @@ var
   ContentCount: word;
   i: word;
   Frame: TWMAFrame;
+  oldFrame: TFrameElement;
 begin
   Result := False;
   ContentCount := AStream.ReadWord;
@@ -84,7 +85,12 @@ begin
   begin
     Frame := TWMAFrame.Create;
     if Frame.ReadFromStream(AStream) then
-      add(Frame)
+      begin
+        oldFrame := Self.FramesByID[frame.ID];
+        if Assigned(oldFrame) then
+           Remove(OldFrame);
+        add(Frame)
+      end
     else
       FreeAndNil(Frame);
   end;

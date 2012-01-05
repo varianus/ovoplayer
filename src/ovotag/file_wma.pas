@@ -66,7 +66,7 @@ type
   end;
 
   TWMAStreamProperty =  packed record
-    StreamHeader : TObjectHeader;
+  //  StreamHeader : TObjectHeader;
     StreamType : TGuid;
     ErrorCorrectionType : TGuid;
     TimeOffset : QWORD;
@@ -78,7 +78,7 @@ type
   end;
 
   TWMAContentDescription =  packed record
-    StreamHeader : TObjectHeader;
+ //   StreamHeader : TObjectHeader;
     TitleLength : WORD;
     AuthorLength : WORD;
     CopyrightLength : WORD;
@@ -142,23 +142,29 @@ begin
      begin
         SetLength(tmpValue, ContentDescription.TitleLength);
         AStream.Read(tmpValue[0], ContentDescription.TitleLength);
-        Frame := TWMAFrame.Create('WM/TITLE');
-        Frame.DataType := 1;
-        Frame.AsString := trim(WideString(tmpValue));
-        fTags.Add(Frame);
+        if fTags.FramesByID['WM/TITLE'] = nil then
+           begin
+             Frame := TWMAFrame.Create('WM/TITLE');
+             Frame.DataType := 0;
+             Frame.AsString := trim(WideString(tmpValue));
+             fTags.Add(Frame);
+           end;
      end;
 
   if ContentDescription.AuthorLength > 0 then
      begin
         SetLength(tmpValue, ContentDescription.AuthorLength);
         AStream.Read(tmpValue[0], ContentDescription.AuthorLength);
-        Frame := TWMAFrame.Create('WM/AUTHOR');
-        Frame.DataType := 1;
-        Frame.AsString := trim(WideString(tmpValue));
-        fTags.Add(Frame);
+        if fTags.FramesByID['WM/AUTHOR'] = nil then
+           begin
+             Frame := TWMAFrame.Create('WM/AUTHOR');
+             Frame.DataType := 0;
+             Frame.AsString := trim(WideString(tmpValue));
+             fTags.Add(Frame);
+           end;
      end;
 
-  if ContentDescription.AuthorLength > 0 then
+  if ContentDescription.CopyrightLength > 0 then
      begin
         SetLength(tmpValue, ContentDescription.CopyrightLength);
         AStream.Read(tmpValue[0], ContentDescription.CopyrightLength);
@@ -184,6 +190,7 @@ var
   FileProperty :TWMAFileProperty;
   StreamProperty : TWMAStreamProperty;
   ContentDescription : TWMAContentDescription;
+  CurrPos : int64;
   i:     Integer;
 begin
   Result := Inherited LoadFromFile(FileName);
@@ -200,12 +207,12 @@ begin
     for i := 0 to Header.ObjectCount do
       begin
         fStream.Read(SubObjHeader, SizeOf(SubObjHeader));
-        //if IsEqualGUID(SubObjHeader.ObjectID, WMA_CONTENT_DESCRIPTION) then
-        //   begin
-        //     fStream.Read(ContentDescription, SizeOf(TWMAContentDescription));
-        //     ImportContentDescription(fStream, ContentDescription);
-        //   end
-        //else
+        if IsEqualGUID(SubObjHeader.ObjectID, WMA_CONTENT_DESCRIPTION) then
+           begin
+             fStream.Read(ContentDescription, SizeOf(TWMAContentDescription));
+             ImportContentDescription(fStream, ContentDescription);
+           end
+        else
         if IsEqualGUID(SubObjHeader.ObjectID, WMA_FILE_PROPERTIES) then
            begin
              fStream.Read(FileProperty, SizeOf(TWMAFileProperty));
@@ -215,7 +222,9 @@ begin
         if IsEqualGUID(SubObjHeader.ObjectID, WMA_STREAM_PROPERTIES) then
            begin
              fStream.Read(StreamProperty, SizeOf(TWMAStreamProperty));
-             fChannelMode := Inttostr(StreamProperty.AudioProperty.Channels)
+             fChannelMode := Inttostr(StreamProperty.AudioProperty.Channels);
+             fStream.Seek(StreamProperty.AudioProperty.CodecDataSize + StreamProperty.ErrorCorrectionLength, soFromcurrent);
+
              { TODO : Fix types };
            end
         else

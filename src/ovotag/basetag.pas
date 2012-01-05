@@ -123,6 +123,7 @@ type
     function ReadFromStream(AStream:TStream):boolean; virtual; abstract;
     function WriteToStream(AStream: TStream): boolean; virtual; abstract;
     Procedure Add(Frame: TFrameElement);
+    Procedure Remove(Frame: TFrameElement);
     Procedure AddImage(Image: TImageElement);
     Procedure Clear;
     function GetFrameValue(ID: String): String;
@@ -348,6 +349,11 @@ end;
 procedure TTags.Add(Frame: TFrameElement);
 begin
   FramesList.Add(Frame);
+end;
+
+procedure TTags.Remove(Frame: TFrameElement);
+begin
+  FramesList.Remove(Frame);
 end;
 
 procedure TTags.AddImage(Image: TImageElement);
