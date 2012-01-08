@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=OvoPlayer
+Categories=Application;Multimedia;
+Exec=ovoplayer
+Hidden=false
+Icon=ovoplayer.png
+Terminal=false
+Type=Application
