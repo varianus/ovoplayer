@@ -2,7 +2,7 @@
 Version=1.0
 Encoding=UTF-8
 Name=OvoPlayer
-Categories=Application;Multimedia;
+Categories=Application;AudioVideo;Audio
 Exec=ovoplayer
 Hidden=false
 Icon=ovoplayer.png

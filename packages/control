@@ -7,8 +7,16 @@ Depends: libatk1.0-0 (>= 1.12.4), libc6 (>= 2.2.5), libcairo2 (>= 1.2.4), libdbu
 Recommends: vlc
 Installed-Size: :INSTALLEDSIZE
 Maintainer: marco caselli <marcocas@gmail.com>
-Summary:Ovoplayer, a free multiplatform audio player
-Description:Audio Player
-  Midoif.
-  .
-  sigjpsoèd.
+Description: Free multiplatform audio player
+ .
+ Features:
+   * Can play and read music tag from MP3, FLAC, WMA, APE and OGG files.
+   * Cross platform - work on Linux and Windows.
+   * Multiple audio engines supported.
+   * Can import M3U, ASX, PLS, XSPF, BSPL, WPL playlist.
+ .
+ Supported engines.
+   * VLC - preferred choice, tested on Linux and Windows.
+   * MPlayer - play almost any format, tested on Linux and Windows.
+   * XINE - almost complete (some performance issues), tested on Linux.
+   * BASS - complete, tested on Windows.
