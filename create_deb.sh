@@ -6,7 +6,7 @@ fi
 
 #bash $BASE/buildlinux.sh
 
-PROG_VER=$(sed -e "s/[^0-9.]//g" $BASE/src/version.inc)
+PROG_VER=$(sed -e "s/[^0-9.a-zA-Z]//g" $BASE/src/version.inc)
 BIN_DIR=$BASE/bin/linux
 DEBSRCDIR=$BASE/packages/debian/
 PACKAGES_DIR=$BASE/packages
@@ -41,8 +41,6 @@ $INSTALLFILE  $BASE/packages/copyright $DEBSRCDIR/usr/share/doc/ovoplayer
 
 gzip -c --best $BASE/DOC/manpages/ovoplayer.1 > $DEBSRCDIR/usr/share/man/man1/ovoplayer.1.gz
 chmod 0644 $DEBSRCDIR/usr/share/man/man1/ovoplayer.1.gz
-
-
 
 INSTALLEDSIZE=$(du -xs --apparent-size --block-size=1024 $DEBSRCDIR/usr | sed -e '$s/[^0-9]//g')
 sed -e 's/:INSTALLEDSIZE/'$INSTALLEDSIZE'/;s/:VERSION/'$PROG_VER'/' $BASE/packages/control > $DEBSRCDIR/DEBIAN/control
