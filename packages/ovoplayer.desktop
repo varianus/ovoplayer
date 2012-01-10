@@ -3,7 +3,7 @@ Version=1.0
 Encoding=UTF-8
 Name=OvoPlayer
 Categories=Application;AudioVideo;Audio
-Exec=ovoplayer
+Exec=env LIBOVERLAY_SCROLLBAR=0 ovoplayer
 Hidden=false
 Icon=ovoplayer.png
 Terminal=false
