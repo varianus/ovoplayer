@@ -26,7 +26,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls, ButtonPanel, Spin, ComCtrls, Buttons, AudioTag,
+  StdCtrls, ButtonPanel, Spin, ComCtrls, Buttons, AudioTag, types,
   ImageTrack, BaseTag ;
 
 type
@@ -87,10 +87,14 @@ type
     procedure CancelButtonClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormShow(Sender: TObject);
+    procedure lbFilesMouseLeave(Sender: TObject);
+    procedure lbFilesMouseMove(Sender: TObject; Shift: TShiftState; X,
+      Y: Integer);
     procedure lbFilesSelectionChange(Sender: TObject; User: boolean);
     procedure OKButtonClick(Sender: TObject);
   private
     FList : TStringList;
+    fHint : THintWindow;
     Procedure LoadFromFile(FileName:TFileName);
     procedure LoadFromFileInfo(FileName: TFileName);
     procedure LoadFromLibrary(ID: Integer);
@@ -115,17 +119,50 @@ uses AppConsts, FilesSupport, GUIBackEnd, MediaLibrary;
 procedure TfSongInfo.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   CloseAction := caFree;
+  fHint.free;
 end;
 
 procedure TfSongInfo.FormShow(Sender: TObject);
 var
   i:Integer;
 begin
+  fHint := THintWindow.Create(Self);
+  fHint.HideInterval:=3000;
+  fHint.AutoHide:=true;
   for i := 0 to ComponentCount -1 do
      if Components[i] is TLabel then
        if Tlabel (Components[i]).OptimalFill then
           Tlabel (Components[i]).AdjustFontForOptimalFill;
 
+end;
+
+procedure TfSongInfo.lbFilesMouseLeave(Sender: TObject);
+begin
+  fHint.hide;
+end;
+
+procedure TfSongInfo.lbFilesMouseMove(Sender: TObject; Shift: TShiftState; X,
+  Y: Integer);
+var
+  item: integer;
+  rec: TRect;
+  p: Tpoint;
+begin
+  item := lbFiles.ItemAtPos(point(x, y), true);
+  if (item > -1) then
+    begin
+      rec := fHint.CalcHintRect(Width, lbFiles.Items[item], nil);
+      if rec.right > lbFiles.Width then
+         begin
+           p.x := x;
+           p.y := y;
+           p := lbFiles.ClientToScreen(p);
+           OffsetRect(rec, p.x, p.y);
+           fHint.ActivateHint( rec, lbFiles.Items[item]);
+         end
+      else
+        fHint.hide;
+    end;
 end;
 
 procedure TfSongInfo.lbFilesSelectionChange(Sender: TObject; User: boolean);
