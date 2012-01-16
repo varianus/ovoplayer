@@ -365,7 +365,8 @@ begin
     end;
 
   finally
-    AProcess.Terminate(0);
+    if AProcess.Running then
+       AProcess.Terminate(0);
     AProcess.free;
   end;
 
