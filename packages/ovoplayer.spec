@@ -1,34 +1,33 @@
-Name:cactusjukebox
+Name:ovoplayer
 Version:1.0
 Release:1
-Summary:This is cactusjukebox mp3 player package.
+Summary:Free multiplatform audio player.
 Group: Applications/Multimedia
-#指定了$RPM_BUILD_ROOT的值
 BuildRoot:/var/tmp/%{name}-%{version}-%{release}-root
 License:GPL
-Source:cactusjukebox.tar.gz
-URL:http://www.lazarus.freepascal.org
-Packager:cactusjukebox
-Requires:mplayer
+Source:ovoplayer.tar.gz
+URL:http://code.google.com/p/ovoplayer
+Packager:ovoplayer
+Requires:mplayer | VLC
 
 %description
-This package is a cactusjukebox RPM.
+OVOPLAYER
 
 #%prep
 #%setup –c
 #%install
-#install -m 755 cactus_jukebox /usr/local/bin/cactus_jukebox
+#install -m 755 ovoplayer /usr/bin/ovoplayer
 rm -rf $RPM_BUILD_ROOT
 #mkdir -p $RPM_BUILD_ROOT
-cp cactus_jukebox /usr/local/bin/cactus_jukebox
+cp ovoplayer /usr/local/bin/ovoplayer
 
 %pre/%post/%trigger
-cp cactus_jukebox /usr/local/bin/cactus_jukebox
+cp ovoplayer /usr/local/bin/ovoplayer
 
 %files
-#/usr/local/bin/
+#/usr/bin/
 %defattr(-,root,root)
-/cactus_jukebox
+/ovoplayer
 #(-,root,root)
 #%{userpath}
 
