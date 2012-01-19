@@ -3,7 +3,7 @@ setlocal
 
 :: Set path where lazarus is installed
 set LAZARUS_DIR=c:\ex-d\lazarus
-set FPC_BIN=C:\Ex-D\lazarus\fpc\2.4.4\bin\i386-Win32
+set FPC_BIN=C:\Ex-D\lazarus\fpc\2.6.0\bin\i386-Win32
 :: 
 if "%BASE%" == "" ( SET BASE=%CD%)
    
