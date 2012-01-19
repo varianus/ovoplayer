@@ -14,18 +14,18 @@
 [Files]
 Source: {#SourceDir}\bin\win32\ovoplayer.exe; DestDir: {app}; Flags: overwritereadonly createallsubdirs recursesubdirs; 
 Source: {#SourceDir}\bin\win32\sqlite3.dll; DestDir: {app};
-Source: {#SourceDir}\language\ovoplayer.po; DestDir: local; 
-Source: {#SourceDir}\language\ovoplayer.it.po; DestDir: local; 
-Source: {#SourceDir}\images\logo.png; DestDir: Resources; 
-Source: {#SourceDir}\images\nocover.png; DestDir: Resources; 
+Source: {#SourceDir}\language\ovoplayer.po; DestDir: {app}\locale;  
+Source: {#SourceDir}\language\ovoplayer.it.po; DestDir: {app}\locale;
+Source: {#SourceDir}\images\logo.png; DestDir: {app}\Resources;
+Source: {#SourceDir}\images\nocover.png; DestDir: {app}\Resources; 
 Source: {#SourceDir}\LICENSE.txt; DestDir: {app};
 
 [Dirs]
-Name: Resources;
-Name: local;
+Name: Resources; 
+Name: locale; 
 
 [Icons]
-Name: {group}\; Filename: {app}\ovoplayer.exe; WorkingDir: {app}; IconFilename: {app}\ovoplayer.exe; Comment: OvoPlayer; 
+Name: {group}\OvoPlayer; Filename: {app}\ovoplayer.exe; WorkingDir: {app}; IconFilename: {app}\ovoplayer.exe; Comment: OvoPlayer; 
 
 [Setup]
 SetupIconFile={#SourceDir}\images\ovoplayer.ico
@@ -42,4 +42,3 @@ AlwaysShowDirOnReadyPage=true
 AlwaysShowGroupOnReadyPage=true
 LicenseFile={#SourceDir}\LICENSE.txt
 OutputBaseFilename={#MyAppName}-{#MyAppVer}
-
