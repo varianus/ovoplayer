@@ -37,6 +37,7 @@ type
     //  equalizer, convert: pointer;
     volume :pointer;
     //    loop:pointer;
+    bus: pointer;
   protected
     function GetMainVolume: integer; override;
     procedure SetMainVolume(const AValue: integer); override;
@@ -72,6 +73,12 @@ implementation
 { TAudioEngineGStreamer }
 uses  glib2;
 
+
+function bus_watch_callback(bus: pointer; message:pointer; user_data:pointer): boolean; cdecl;
+begin
+  result:=true;
+end;
+
 function TAudioEngineGStreamer.GetMainVolume: integer;
 begin
   Result := 100;
@@ -89,12 +96,28 @@ begin
 end;
 
 function TAudioEngineGStreamer.GetSongPos: integer;
+var
+  format : dword;
+  cur: Int64;
 begin
-  Result := 0;
+  format := GST_FORMAT_TIME;
+  cur := 0;
+  if gst_element_query_position (G_OBJECT(playbin), format, cur) then
+  if (format <> GST_FORMAT_TIME) then
+      result:= 0
+  else
+      result:= cur div 1000000;
 end;
 
 procedure TAudioEngineGStreamer.SetSongPos(const AValue: integer);
 begin
+    gst_element_seek (G_object(PlayBin), 1.0,
+                     GST_FORMAT_TIME,
+                     GST_SEEK_FLAG_FLUSH or GST_SEEK_FLAG_KEY_UNIT,
+                     GST_SEEK_TYPE_SET, Avalue * 1000000 ,
+                     GST_SEEK_TYPE_NONE, GST_CLOCK_TIME_NONE);
+    gst_element_set_state(G_object(PlayBin), GST_STATE_PLAYING);
+
 end;
 
 procedure TAudioEngineGStreamer.Activate;
@@ -102,7 +125,6 @@ type pbin = pointer;
 var seff: pbin;
 begin
   libGST_dynamic_dll_init;
-
 
   gst_init_check(0, nil);
   playbin := gst_element_factory_make('playbin2', 'play');
@@ -121,9 +143,9 @@ begin
   gst_bin_add_many(seff,playbin, [ volume, audiosink, nil]);
   gst_element_link_many(playbin, volume, [audiosink, nil]);
 
-//  bus := gst_pipeline_get_bus (GST_PIPELINE (play));
-//  gst_bus_add_watch (bus, bus_watch_callback, loop);
-//  gst_object_unref (bus);
+  bus := gst_pipeline_get_bus (playbin);
+  gst_bus_add_watch (bus, bus_watch_callback, self);
+  gst_object_unref (bus);
 
 end;
 
@@ -144,7 +166,7 @@ var State: GstElementState;
     pending : GstElementState;
 begin
   pending :=0;
-  gst_element_get_state(G_OBJECT(playbin), state, pending,  -1);
+  gst_element_get_state(G_OBJECT(playbin), state, pending,  nil);
   case state of
     GST_STATE_NULL      :result := ENGINE_STOP;
     GST_STATE_READY     :result := ENGINE_ON_LINE;
@@ -195,7 +217,7 @@ end;
 
 procedure TAudioEngineGStreamer.Pause;
 begin
-  gst_element_set_state(playbin, GST_STATE_PAUSED);
+  gst_element_set_state(g_object(playbin), GST_STATE_PAUSED);
 end;
 
 procedure TAudioEngineGStreamer.DoPlay(Song: TSong; offset:Integer);
@@ -253,12 +275,12 @@ end;
 
 procedure TAudioEngineGStreamer.Stop;
 begin
-  gst_element_set_state(playbin, GST_STATE_NULL);
+  gst_element_set_state(G_OBJECT(playbin), GST_STATE_NULL);
 end;
 
 procedure TAudioEngineGStreamer.UnPause;
 begin
-  gst_element_set_state(playbin, GST_STATE_PLAYING);
+  gst_element_set_state(G_OBJECT(playbin), GST_STATE_PLAYING);
 
 end;
 

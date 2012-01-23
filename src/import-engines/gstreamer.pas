@@ -31,6 +31,22 @@ const
   GST_STATE_PAUSED              = (1 shl 2);
   GST_STATE_PLAYING             = (1 shl 3);
 
+  GST_SEEK_FLAG_NONE            = 0;
+  GST_SEEK_FLAG_FLUSH           = (1 shl 0);
+  GST_SEEK_FLAG_ACCURATE        = (1 shl 1);
+  GST_SEEK_FLAG_KEY_UNIT        = (1 shl 2);
+  GST_SEEK_FLAG_SEGMENT         = (1 shl 3);
+  GST_SEEK_FLAG_SKIP            = (1 shl 4);
+
+  GST_SEEK_TYPE_NONE            = 0;
+  GST_SEEK_TYPE_CUR             = 1;
+  GST_SEEK_TYPE_SET             = 2;
+  GST_SEEK_TYPE_END             = 3;
+
+  GST_CLOCK_TIME_NONE           = -1;
+
+  GST_FORMAT_TIME               =  3;
+
 type
 
   GstElementState = dword;
@@ -44,6 +60,17 @@ type
   gst_element_link_many_t = function (element_1: Pointer{GstElement*};element_2: Pointer{GstElement*};additional: array of const): Boolean; cdecl;
   gst_element_set_state_t = function (element: Pointer{GstElement*};state: GstElementState): GstElementState; cdecl;
   gst_element_get_state_T = function (element: Pointer{GstElement*};var state: GstElementState ; var pending: GstElementState;timeout: pTimeVal): GstElementState; cdecl;
+  gst_pipeline_get_bus_T  = function (pipeline: Pointer{GstPipeline*}): pointer{GstBus*}; cdecl;
+  gst_object_unref_T      = function (Obj: Pointer): dword; cdecl;
+  gst_element_query_position_T      = function (element: Pointer; var Format:DWORD; var CURR:int64 ): boolean; cdecl;
+  gst_element_seek_t      = function  (element: pointer; rate :double; format :Dword; flags :dword;
+                                                         cur_type: dword;  cur:Int64;
+                                                         stop_type: dword; stop:Int64): boolean; cdecl;
+
+
+  gst_bus_func = function (bus: pointer; message:pointer; user_data:pointer): boolean; cdecl;
+
+  gst_bus_add_watch_T = function (bus: pointer;func:gst_bus_func; user_data:pointer): dword; cdecl;
 
 
 var
@@ -57,6 +84,11 @@ var
   gst_element_link_many : gst_element_link_many_t;
   gst_element_set_state : gst_element_set_state_t;
   gst_element_get_state : gst_element_get_state_T;
+  gst_pipeline_get_bus  : gst_pipeline_get_bus_T;
+  gst_bus_add_watch     : gst_bus_add_watch_T;
+  gst_object_unref      : gst_object_unref_T;
+  gst_element_seek      : gst_element_seek_t;
+  gst_element_query_position : gst_element_query_position_T;
 
 
   procedure libGST_dynamic_dll_init;
@@ -111,7 +143,14 @@ begin
   if not libGST_dll_get_proc_addr(pointer(gst_element_link_many),  'gst_element_link_many') then   exit;
   if not libGST_dll_get_proc_addr(pointer(gst_element_set_state),  'gst_element_set_state') then   exit;
   if not libGST_dll_get_proc_addr(pointer(gst_element_get_state),  'gst_element_get_state') then   exit;
+  if not libGST_dll_get_proc_addr(pointer(gst_pipeline_get_bus),  'gst_pipeline_get_bus') then   exit;
+  if not libGST_dll_get_proc_addr(pointer(gst_bus_add_watch),  'gst_bus_add_watch') then   exit;
+  if not libGST_dll_get_proc_addr(pointer(gst_object_unref),  'gst_object_unref') then   exit;
+  if not libGST_dll_get_proc_addr(pointer(gst_element_query_position),  'gst_element_query_position') then   exit;
+  if not libGST_dll_get_proc_addr(pointer(gst_element_seek),  'gst_element_seek') then   exit;
+
 end;
+
 
 procedure libgst_dynamic_dll_done();
 begin
