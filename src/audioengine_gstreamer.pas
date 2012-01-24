@@ -33,10 +33,7 @@ type
 
   TAudioEngineGStreamer = class(TAudioEngine)
   private
-    playbin, fakesink, audiosink : pointer;
-    //  equalizer, convert: pointer;
-    volume :pointer;
-    //    loop:pointer;
+    playbin : pointer;
     bus: pointer;
   protected
     function GetMainVolume: integer; override;
@@ -80,14 +77,24 @@ begin
 end;
 
 function TAudioEngineGStreamer.GetMainVolume: integer;
+var
+  Par: TGValue ;
 begin
-  Result := 100;
+  par.g_type:= G_TYPE_DOUBLE;
+  Par.data[0].v_double :=0;
+  g_object_get_property (PGObject(playbin) ,'volume', @Par);
+  Result := trunc( Par.data[0].v_double * 100);
+
 
 end;
 
 procedure TAudioEngineGStreamer.SetMainVolume(const AValue: integer);
+var
+ Par: TGValue;
 begin
-
+  par.g_type:= G_TYPE_DOUBLE;
+  Par.data[0].v_double := AValue / 100 ;
+  g_object_set_property (PGObject(playbin) ,'volume', @Par);
 end;
 
 function TAudioEngineGStreamer.GetMaxVolume: integer;
@@ -103,26 +110,21 @@ begin
   format := GST_FORMAT_TIME;
   cur := 0;
   if gst_element_query_position (G_OBJECT(playbin), format, cur) then
-  if (format <> GST_FORMAT_TIME) then
-      result:= 0
-  else
-      result:= cur div 1000000;
+    if (format <> GST_FORMAT_TIME) then
+       result:= 0
+    else
+       result:= cur div 1000000;
 end;
 
 procedure TAudioEngineGStreamer.SetSongPos(const AValue: integer);
 begin
-    gst_element_seek (G_object(PlayBin), 1.0,
+  if not  gst_element_seek_simple (G_object(PlayBin),
                      GST_FORMAT_TIME,
-                     GST_SEEK_FLAG_FLUSH or GST_SEEK_FLAG_KEY_UNIT,
-                     GST_SEEK_TYPE_SET, Avalue * 1000000 ,
-                     GST_SEEK_TYPE_NONE, GST_CLOCK_TIME_NONE);
-    gst_element_set_state(G_object(PlayBin), GST_STATE_PLAYING);
+                     GST_SEEK_FLAG_FLUSH or GST_SEEK_FLAG_KEY_UNIT, Avalue * 1000000) then
 
 end;
 
 procedure TAudioEngineGStreamer.Activate;
-type pbin = pointer;
-var seff: pbin;
 begin
   libGST_dynamic_dll_init;
 
@@ -130,18 +132,6 @@ begin
   playbin := gst_element_factory_make('playbin2', 'play');
   if (playbin = nil) then
       playbin := gst_element_factory_make('playbin', 'play');
-
-  audiosink := gst_element_factory_make('autoaudiosink', 'audio_sink');
-  fakesink := gst_element_factory_make('fakesink', 'video_sink');
-  volume := gst_element_factory_make('volume', 'volume_plugin');
-
-  g_object_set(G_OBJECT(fakesink), 'sync', TRUE, nil);
-  g_object_set(G_OBJECT(playbin), 'video-sink', fakesink, NULL);
-
-  seff := gst_bin_new('audio-bin');
-
-  gst_bin_add_many(seff,playbin, [ volume, audiosink, nil]);
-  gst_element_link_many(playbin, volume, [audiosink, nil]);
 
   bus := gst_pipeline_get_bus (playbin);
   gst_bus_add_watch (bus, bus_watch_callback, self);
@@ -175,60 +165,34 @@ begin
   end;
 
 end;
-const
-  SubDelims  = ['!', '$', '&', '''', '(', ')', '*', '+', ',', ';', '='];
-  ALPHA      = ['A'..'Z', 'a'..'z'];
-  DIGIT      = ['0'..'9'];
-  Unreserved = ALPHA + DIGIT + ['-', '.', '_', '~'];
-  ValidPathChars = Unreserved + SubDelims + ['@', ':', '/'];
-
-function Escape(const s: string; const Allowed: TSysCharSet): string;
-var
-  i, L: integer;
-  P:    PChar;
-begin
-  L := Length(s);
-  for i := 1 to Length(s) do
-    if not (s[i] in Allowed) then
-      Inc(L, 2);
-  if L = Length(s) then
-    begin
-    Result := s;
-    Exit;
-    end;
-
-  SetLength(Result, L);
-  P := @Result[1];
-  for i := 1 to Length(s) do
-    begin
-    if not (s[i] in Allowed) then
-      begin
-      P^ := '%';
-      Inc(P);
-      StrFmt(P, '%.2x', [Ord(s[i])]);
-      Inc(P);
-      end
-    else
-      P^ := s[i];
-    Inc(P);
-    end;
-end;
-
 
 procedure TAudioEngineGStreamer.Pause;
+var
+     xx :integer;
 begin
-  gst_element_set_state(g_object(playbin), GST_STATE_PAUSED);
+  xx:= gst_element_set_state((playbin), GST_STATE_PAUSED);
 end;
 
 procedure TAudioEngineGStreamer.DoPlay(Song: TSong; offset:Integer);
+var
+ tmp:string;
 begin
-  g_object_set(G_OBJECT(playbin), 'uri', pchar(FilenameToURI(Escape(Song.FullName, ValidPathChars))), nil);
+  gst_element_set_state(playbin, GST_STATE_READY);
+  tmp:=  g_filename_to_uri(pchar(Song.FullName),nil,nil);
+  g_object_set(G_OBJECT(playbin), 'uri', pchar(tmp), nil);
   gst_element_set_state(playbin, GST_STATE_PLAYING);
 
 end;
 
 procedure TAudioEngineGStreamer.SetMuted(const AValue: boolean);
+var
+ Par: TGValue;
+
 begin
+  par.g_type:= G_TYPE_BOOLEAN;
+  Par.data[0].v_uint := ord(AValue);
+  g_object_set_property (PGObject(playbin) ,'mute', @Par);
+
 end;
 
 function TAudioEngineGStreamer.GetMuted: boolean;

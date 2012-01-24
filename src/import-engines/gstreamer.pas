@@ -62,7 +62,9 @@ type
   gst_element_get_state_T = function (element: Pointer{GstElement*};var state: GstElementState ; var pending: GstElementState;timeout: pTimeVal): GstElementState; cdecl;
   gst_pipeline_get_bus_T  = function (pipeline: Pointer{GstPipeline*}): pointer{GstBus*}; cdecl;
   gst_object_unref_T      = function (Obj: Pointer): dword; cdecl;
-  gst_element_query_position_T      = function (element: Pointer; var Format:DWORD; var CURR:int64 ): boolean; cdecl;
+  gst_element_query_position_T   = function (element: Pointer; var Format:DWORD; var CURR:int64 ): boolean; cdecl;
+  gst_element_seek_simple_t      = function (element: pointer; format :Dword; flags :dword;  cur:Int64): boolean; cdecl;
+
   gst_element_seek_t      = function  (element: pointer; rate :double; format :Dword; flags :dword;
                                                          cur_type: dword;  cur:Int64;
                                                          stop_type: dword; stop:Int64): boolean; cdecl;
@@ -88,6 +90,7 @@ var
   gst_bus_add_watch     : gst_bus_add_watch_T;
   gst_object_unref      : gst_object_unref_T;
   gst_element_seek      : gst_element_seek_t;
+  gst_element_seek_simple      : gst_element_seek_simple_t;
   gst_element_query_position : gst_element_query_position_T;
 
 
@@ -148,6 +151,8 @@ begin
   if not libGST_dll_get_proc_addr(pointer(gst_object_unref),  'gst_object_unref') then   exit;
   if not libGST_dll_get_proc_addr(pointer(gst_element_query_position),  'gst_element_query_position') then   exit;
   if not libGST_dll_get_proc_addr(pointer(gst_element_seek),  'gst_element_seek') then   exit;
+  if not libGST_dll_get_proc_addr(pointer(gst_element_seek_simple),  'gst_element_seek_simple') then   exit;
+
 
 end;
 
