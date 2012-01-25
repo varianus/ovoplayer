@@ -20,12 +20,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {$I ovoplayer.inc}
 unit audioengine_gstreamer;
 
-{$mode delphi}{$H+}
+{$mode objfpc}{$H+}
 
 interface
 
 uses
-  Classes, SysUtils, AudioEngine, gstreamer, Song, uriparser;
+  Classes, SysUtils, AudioEngine, gstreamer, Song, uriparser, decoupler;
 
 type
 
@@ -35,6 +35,7 @@ type
   private
     playbin : pointer;
     bus: pointer;
+    fdecoupler: TDecoupler;
   protected
     function GetMainVolume: integer; override;
     procedure SetMainVolume(const AValue: integer); override;
@@ -43,9 +44,9 @@ type
     procedure SetSongPos(const AValue: integer); override;
     function GetState: TEngineState; override;
     procedure DoPlay(Song: TSong; offset:Integer); override;
+    procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
     procedure SetMuted(const AValue: boolean);  override;
     Function GetMuted: boolean; override;
-    procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
   public
     class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
@@ -71,9 +72,23 @@ implementation
 uses  glib2;
 
 
-function bus_watch_callback(bus: pointer; message:pointer; user_data:pointer): boolean; cdecl;
+function bus_watch_callback(bus: pointer; message:pgstmessage; user_data:pointer): boolean; cdecl;
+var
+ Player: TAudioEngineGStreamer;
 begin
+
+  player:=  TAudioEngineGStreamer(User_data);
+  if (user_data <> NIL) then
+     begin
+          case message^._type of
+          GST_MESSAGE_EOS:
+               begin
+                  player.PostCommand(ecNext);
+               end;
+          end;
+     end;
   result:=true;
+
 end;
 
 function TAudioEngineGStreamer.GetMainVolume: integer;
@@ -126,15 +141,13 @@ end;
 
 procedure TAudioEngineGStreamer.Activate;
 begin
-  libGST_dynamic_dll_init;
-
   gst_init_check(0, nil);
   playbin := gst_element_factory_make('playbin2', 'play');
   if (playbin = nil) then
       playbin := gst_element_factory_make('playbin', 'play');
 
   bus := gst_pipeline_get_bus (playbin);
-  gst_bus_add_watch (bus, bus_watch_callback, self);
+  gst_bus_add_watch (bus, @bus_watch_callback, self);
   gst_object_unref (bus);
 
 end;
@@ -142,22 +155,27 @@ end;
 constructor TAudioEngineGStreamer.Create;
 begin
   inherited Create;
+  libGST_dynamic_dll_init;
+
+    fdecoupler := TDecoupler.Create;
+    fdecoupler.OnCommand := @ReceivedCommand;
 
 end;
 
 destructor TAudioEngineGStreamer.Destroy;
 begin
-
+  libGST_dynamic_dll_done;
+  fdecoupler.free;
   inherited Destroy;
 end;
 
 function TAudioEngineGStreamer.GetState: TEngineState;
-var State: GstElementState;
+var _State: GstElementState;
     pending : GstElementState;
 begin
   pending :=0;
-  gst_element_get_state(G_OBJECT(playbin), state, pending,  nil);
-  case state of
+  gst_element_get_state(G_OBJECT(playbin), _state, pending,  nil);
+  case _state of
     GST_STATE_NULL      :result := ENGINE_STOP;
     GST_STATE_READY     :result := ENGINE_ON_LINE;
     GST_STATE_PAUSED    :result := ENGINE_PAUSE;
@@ -182,6 +200,11 @@ begin
   g_object_set(G_OBJECT(playbin), 'uri', pchar(tmp), nil);
   gst_element_set_state(playbin, GST_STATE_PLAYING);
 
+  if offset <> 0 then
+    PostCommand(ecSeek);
+
+
+
 end;
 
 procedure TAudioEngineGStreamer.SetMuted(const AValue: boolean);
@@ -196,8 +219,12 @@ begin
 end;
 
 function TAudioEngineGStreamer.GetMuted: boolean;
+var
+ Par: TGValue;
 begin
-  Result:=false;
+  par.g_type:= G_TYPE_BOOLEAN;
+  g_object_get_property (PGObject(playbin) ,'mute', @Par);
+  Result :=  boolean(Par.data[0].v_uint);
 end;
 
 class function TAudioEngineGStreamer.GetEngineName: String;
@@ -210,17 +237,26 @@ begin
   case Command of
     ecNext: if Assigned(OnSongEnd) then
         OnSongEnd(Self);
+    ecSeek: Seek(Param, True);
     end;
 end;
 
 class function TAudioEngineGStreamer.IsAvalaible(ConfigParam: TStrings): boolean;
 begin
-  Result:= True;
+  result := false;
+  libGST_dynamic_dll_init;
+  try
+    result := libgst_dynamic_dll_error = '';
+    libGST_dynamic_dll_done;
+  Except
+    exit;
+  end;
+
 end;
 
 procedure TAudioEngineGStreamer.PostCommand(Command: TEngineCommand; Param: integer);
 begin
-  ReceivedCommand(Self, Command, Param);
+  fdecoupler.SendCommand(Command, Param);
 end;
 
 function TAudioEngineGStreamer.Playing: boolean;
@@ -234,7 +270,15 @@ begin
 end;
 
 procedure TAudioEngineGStreamer.Seek(Seconds: integer; SeekAbsolute: boolean);
+var
+  currpos: integer;
 begin
+  currpos := GetSongPos;
+  if SeekAbsolute then
+    SetSongPos(Seconds * 1000)
+  else
+    SetSongPos(currpos + Seconds * 1000);
+
 end;
 
 procedure TAudioEngineGStreamer.Stop;
