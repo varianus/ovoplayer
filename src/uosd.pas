@@ -54,6 +54,7 @@ type
     imgCover: TPicture;
     Title: TLabel;
     Track: TLabel;
+    BackPanel:Tpanel;
 
     procedure LoadFromConfig;
     {$IFDEF SUPPORT_SHAPING}
@@ -72,6 +73,7 @@ type
     procedure UpdateAspect;
     Constructor Create(AOwner: Tcomponent); override;
     Destructor Destroy; override;
+    procedure SetBounds(ALeft, ATop, AWidth, AHeight: integer); override;
   end;
 
 var
@@ -159,17 +161,17 @@ end;
 
 procedure TfOSD.ShowAtPos(x: Integer; y: Integer);
 begin
-  if x + Width > Screen.Width then
+  if x + Width > Screen.DeskTopWidth then
   begin
-    left := x - Width;
+    left := x - Width -1;
     if Left < 0 then Left := 0;
   end
   else
     left := x;
 
-  if y + Height > Screen.Height then
+  if y + Height > Screen.DeskTopHeight then
   begin
-    top := y - Height;
+    top := y - Height -1;
     if top < 0 then top := 0;
   end
   else
@@ -311,11 +313,28 @@ begin
   timShow.Enabled:=false;
   timShow.OnTimer:=@timShowTimer;
 
+
+  BackPanel:= TPanel.create(self);
+  with BackPanel do begin
+    Parent := self;
+    Left := 0;
+    Height := self.Height;
+    Top := 0;
+    Width := Self.Width ;
+    Align := AlClient;
+ //   Transparent := true;
+    OnMouseDown := @FormMouseDown;
+    OnMouseMove := @FormMouseMove;
+    OnMouseUp := @FormMouseUp;
+    OnMouseEnter := @FormMouseEnter;
+    OnMouseLeave := @FormMouseLeave;
+  end;
+
   imgCover:= TPicture.Create;
 
-  Title:= TLabel.create(self);
+  Title:= TLabel.create(BackPanel);
   with Title do begin
-    Parent := self;
+    Parent := BackPanel;
     Left := 123;
     Height := 20;
     Top := 8;
@@ -337,9 +356,9 @@ begin
     OptimalFill := True;
   end;
 
-  Album:= TLabel.create(self);
+  Album:= TLabel.create(BackPanel);
   with Album do begin
-    Parent := self;
+    Parent := BackPanel;
     Left := 123;
     Height := 16;
     Top := 33;
@@ -360,9 +379,9 @@ begin
     OptimalFill := True;
   end;
 
-  Artist:= TLabel.create(self);
+  Artist:= TLabel.create(BackPanel);
   with Artist do begin
-    Parent := self;
+    Parent := BackPanel;
     Left := 123;
     Height := 16;
     Top := 57;
@@ -383,9 +402,9 @@ begin
     OptimalFill := True;
   end;
 
-  Track:= TLabel.create(self);
+  Track:= TLabel.create(BackPanel);
   with Track do begin
-    Parent := self;
+    Parent := BackPanel;
     Left := 123;
     Height := 17;
     Top := 81;
@@ -405,6 +424,12 @@ begin
     OnMouseLeave := @FormMouseLeave;
     OptimalFill := True;
   end;
+
+  OnMouseDown := @FormMouseDown;
+  OnMouseMove := @FormMouseMove;
+  OnMouseUp := @FormMouseUp;
+  OnMouseEnter := @FormMouseEnter;
+  OnMouseLeave := @FormMouseLeave;
 
   {$IFDEF SUPPORT_SHAPING}
     ShapeControl(Self);
@@ -435,6 +460,23 @@ begin
   inherited Destroy;
 end;
 
+procedure TfOSD.SetBounds(ALeft, ATop, AWidth, AHeight: integer);
+begin
+  if (ALeft + AWidth) > Screen.DesktopWidth then
+      ALeft := Screen.DesktopWidth - ( AWidth +1);
+
+  if (ATop + AHeight) > Screen.DesktopHeight then
+      ATop := Screen.DesktopHeight - ( AHeight +1);
+
+  if ALeft < 1 then
+     ALeft:= 1;
+
+  if ATop < 1 then
+     ATop:= 1;
+
+  inherited SetBounds(ALeft, ATop, AWidth, AHeight);
+end;
+
 
 procedure TfOSD.FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: integer);
 var
@@ -443,14 +485,10 @@ begin
   if ConfigMode then
     if (Tag = 1) then
     begin
-      if (Top >= 0) and (Left >= 0) and (Left + Width <= Screen.DesktopWidth) and
-        (Top + Height <= Screen.DesktopHeight) then
-      begin
-        punto := mouse.CursorPos;
-        punto.X := max(punto.X - MovePoint.X, 0);
-        punto.Y := max(punto.Y - MovePoint.Y, 0);
-        SetBounds(punto.x, punto.y, Width, Height);
-      end;
+      punto := mouse.CursorPos;
+      punto.X := max(punto.X - MovePoint.X, 0);
+      punto.Y := max(punto.Y - MovePoint.Y, 0);
+      SetBounds(punto.x, punto.y, Width, Height);
     end;
 end;
 
@@ -480,4 +518,4 @@ end;
 initialization
   fOSD := nil;
 end.
-
+
