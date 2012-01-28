@@ -178,8 +178,8 @@ msgctxt "TBACKEND.OPENDIALOGPLAYLIST.TITLE"
 msgid "Open Playlist"
 msgstr "Apri Playlist"
 
-#: tfabout.button1.caption
-msgctxt "TFABOUT.BUTTON1.CAPTION"
+#: tfabout.bclose.caption
+msgctxt "tfabout.bclose.caption"
 msgid "Close"
 msgstr "Chiudi"
 
@@ -202,6 +202,14 @@ msgstr "Autore : Marco Caselli"
 
 #: tfabout.label4.caption
 msgid "Another free music player"
+msgstr ""
+
+#: tfabout.label6.caption
+msgid "Home Page:"
+msgstr ""
+
+#: tfabout.lhomepage.caption
+msgid "http://code.google.com/p/ovoplayer/"
 msgstr ""
 
 #: tfabout.lversion.caption
@@ -361,6 +369,16 @@ msgctxt "TFMAINFORM.BTNBACKDIR.CAPTION"
 msgid "Back"
 msgstr "Indietro"
 
+#: tfmainform.btnclosecollectionstat.caption
+msgctxt "tfmainform.btnclosecollectionstat.caption"
+msgid "Close"
+msgstr "Chiudi"
+
+#: tfmainform.btnfiltercancel.caption
+msgctxt "tfmainform.btnfiltercancel.caption"
+msgid "Close"
+msgstr "Chiudi"
+
 #: tfmainform.btnforwarddir.caption
 msgctxt "TFMAINFORM.BTNFORWARDDIR.CAPTION"
 msgid "Forward"
@@ -380,11 +398,21 @@ msgstr "Su"
 msgid "OVO Player"
 msgstr ""
 
+#: tfmainform.cbgroupby.hint
+msgid "Group song"
+msgstr ""
+
 #: tfmainform.cbgroupby.text
 msgid "AlbumArtist / Album"
 msgstr "ArtistaAlbum / Album"
 
 #: tfmainform.edtfilter.editlabel.caption
+msgctxt "tfmainform.edtfilter.editlabel.caption"
+msgid "Filter"
+msgstr "Filtro"
+
+#: tfmainform.edtfilter.hint
+msgctxt "tfmainform.edtfilter.hint"
 msgid "Filter"
 msgstr "Filtro"
 
@@ -508,11 +536,6 @@ msgstr "Titolo"
 msgctxt "TFMAINFORM.SGSTATS.COLUMNS[1].TITLE.CAPTION"
 msgid "Title"
 msgstr "Titolo"
-
-#: tfmainform.speedbutton1.caption
-msgctxt "TFMAINFORM.SPEEDBUTTON1.CAPTION"
-msgid "Close"
-msgstr "Chiudi"
 
 #: tfmainform.tbrepeat.caption
 msgid "     "

@@ -54,15 +54,11 @@ type
     imgCover: TPicture;
     Title: TLabel;
     Track: TLabel;
-    BackPanel:Tpanel;
 
     procedure LoadFromConfig;
     {$IFDEF SUPPORT_SHAPING}
     procedure ShapeControl(AControl: TWinControl);
     {$ENDIF SUPPORT_SHAPING}
-
-  Protected
-    procedure Paint; override;
   public
     _top, _left:Integer;
     ConfigMode: boolean;
@@ -71,6 +67,7 @@ type
     timPaint: TTimer;
 
     procedure UpdateAspect;
+    procedure Paint; override;
     Constructor Create(AOwner: Tcomponent); override;
     Destructor Destroy; override;
     procedure SetBounds(ALeft, ATop, AWidth, AHeight: integer); override;
@@ -294,10 +291,10 @@ begin
   AlphaBlendValue := BackEnd.Config.NotificationParam.Transparency;
 
   for i := 0 to ComponentCount - 1 do
-    if Components[i] is TStaticText then
+    if Components[i] is TLabel then
     begin
-      TStaticText(Components[i]).color := color;
-      TStaticText(Components[i]).Font.color :=
+ //     TLabel(Components[i]).color := color;
+      TLabel(Components[i]).Font.color :=
         BackEnd.Config.NotificationParam.FontColor;
     end;
 end;
@@ -313,28 +310,11 @@ begin
   timShow.Enabled:=false;
   timShow.OnTimer:=@timShowTimer;
 
-
-  BackPanel:= TPanel.create(self);
-  with BackPanel do begin
-    Parent := self;
-    Left := 0;
-    Height := self.Height;
-    Top := 0;
-    Width := Self.Width ;
-    Align := AlClient;
- //   Transparent := true;
-    OnMouseDown := @FormMouseDown;
-    OnMouseMove := @FormMouseMove;
-    OnMouseUp := @FormMouseUp;
-    OnMouseEnter := @FormMouseEnter;
-    OnMouseLeave := @FormMouseLeave;
-  end;
-
   imgCover:= TPicture.Create;
 
-  Title:= TLabel.create(BackPanel);
+  Title:= TLabel.create(Self);
   with Title do begin
-    Parent := BackPanel;
+    Parent := Self;
     Left := 123;
     Height := 20;
     Top := 8;
@@ -356,9 +336,9 @@ begin
     OptimalFill := True;
   end;
 
-  Album:= TLabel.create(BackPanel);
+  Album:= TLabel.create(Self);
   with Album do begin
-    Parent := BackPanel;
+    Parent := Self;
     Left := 123;
     Height := 16;
     Top := 33;
@@ -379,9 +359,9 @@ begin
     OptimalFill := True;
   end;
 
-  Artist:= TLabel.create(BackPanel);
+  Artist:= TLabel.create(Self);
   with Artist do begin
-    Parent := BackPanel;
+    Parent := Self;
     Left := 123;
     Height := 16;
     Top := 57;
@@ -402,9 +382,9 @@ begin
     OptimalFill := True;
   end;
 
-  Track:= TLabel.create(BackPanel);
+  Track:= TLabel.create(Self);
   with Track do begin
-    Parent := BackPanel;
+    Parent := Self;
     Left := 123;
     Height := 17;
     Top := 81;
@@ -518,4 +498,4 @@ end;
 initialization
   fOSD := nil;
 end.
-
+

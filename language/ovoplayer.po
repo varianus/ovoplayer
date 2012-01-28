@@ -176,8 +176,8 @@ msgctxt "TBACKEND.OPENDIALOGPLAYLIST.TITLE"
 msgid "Open Playlist"
 msgstr ""
 
-#: tfabout.button1.caption
-msgctxt "TFABOUT.BUTTON1.CAPTION"
+#: tfabout.bclose.caption
+msgctxt "TFABOUT.BCLOSE.CAPTION"
 msgid "Close"
 msgstr ""
 
@@ -200,6 +200,14 @@ msgstr ""
 
 #: tfabout.label4.caption
 msgid "Another free music player"
+msgstr ""
+
+#: tfabout.label6.caption
+msgid "Home Page:"
+msgstr ""
+
+#: tfabout.lhomepage.caption
+msgid "http://code.google.com/p/ovoplayer/"
 msgstr ""
 
 #: tfabout.lversion.caption
@@ -359,6 +367,16 @@ msgctxt "TFMAINFORM.BTNBACKDIR.CAPTION"
 msgid "Back"
 msgstr ""
 
+#: tfmainform.btnclosecollectionstat.caption
+msgctxt "TFMAINFORM.BTNCLOSECOLLECTIONSTAT.CAPTION"
+msgid "Close"
+msgstr ""
+
+#: tfmainform.btnfiltercancel.caption
+msgctxt "TFMAINFORM.BTNFILTERCANCEL.CAPTION"
+msgid "Close"
+msgstr ""
+
 #: tfmainform.btnforwarddir.caption
 msgctxt "TFMAINFORM.BTNFORWARDDIR.CAPTION"
 msgid "Forward"
@@ -378,11 +396,21 @@ msgstr ""
 msgid "OVO Player"
 msgstr ""
 
+#: tfmainform.cbgroupby.hint
+msgid "Group song"
+msgstr ""
+
 #: tfmainform.cbgroupby.text
 msgid "AlbumArtist / Album"
 msgstr ""
 
 #: tfmainform.edtfilter.editlabel.caption
+msgctxt "tfmainform.edtfilter.editlabel.caption"
+msgid "Filter"
+msgstr ""
+
+#: tfmainform.edtfilter.hint
+msgctxt "TFMAINFORM.EDTFILTER.HINT"
 msgid "Filter"
 msgstr ""
 
@@ -505,11 +533,6 @@ msgstr ""
 #: tfmainform.sgstats.columns[1].title.caption
 msgctxt "TFMAINFORM.SGSTATS.COLUMNS[1].TITLE.CAPTION"
 msgid "Title"
-msgstr ""
-
-#: tfmainform.speedbutton1.caption
-msgctxt "TFMAINFORM.SPEEDBUTTON1.CAPTION"
-msgid "Close"
 msgstr ""
 
 #: tfmainform.tbrepeat.caption

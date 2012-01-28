@@ -25,10 +25,10 @@ unit uMain;
 interface
 
 uses
-  Classes, types, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
-  ComCtrls, Menus, ExtCtrls, Buttons, StdCtrls, Song, uOSD, playlist,
+  Classes, types, SysUtils, FileUtil, Forms, Controls, Graphics,
+  Dialogs, ComCtrls, Menus, ExtCtrls, Buttons, StdCtrls, Song, uOSD, playlist,
   AudioEngine, GUIBackEnd, Config, ThemedSlider, VirtualTrees,
-  DefaultTranslator, Grids, EditBtn, ActnList, AudioEngine_dummy;
+  DefaultTranslator, Grids, EditBtn, ActnList;
 
 type
   TSortFields = record
@@ -112,9 +112,10 @@ type
     pnCollection: TPopupMenu;
     pnHeaderPlaylist: TPopupMenu;
     RepeatMenu: TPopupMenu;
-    SpeedButton1: TSpeedButton;
+    btnCloseCollectionStat: TSpeedButton;
     slVolume: TThemedSlider;
     sgStats: TStringGrid;
+    btnFilterCancel: TSpeedButton;
     ToolButton11: TToolButton;
     ToolButton12: TToolButton;
     ToolButton13: TToolButton;
@@ -169,6 +170,7 @@ type
     procedure ActShowPreferencesExecute(Sender: TObject);
     procedure BackEndSongStart(Sender: TObject);
     procedure btnBackDirClick(Sender: TObject);
+    procedure btnFilterCancelClick(Sender: TObject);
     procedure btnForwardDirClick(Sender: TObject);
     procedure btnHomeDirClick(Sender: TObject);
     procedure cbGroupByChange(Sender: TObject);
@@ -223,7 +225,7 @@ type
     procedure pnCollectionPopup(Sender: TObject);
     procedure pnHeaderPlaylistPopup(Sender: TObject);
     procedure slVolumeChange(Sender: TObject);
-    procedure SpeedButton1Click(Sender: TObject);
+    procedure btnCloseCollectionStatClick(Sender: TObject);
     procedure TimerTimer(Sender: TObject);
     procedure btnUpDirClick(Sender: TObject);
     procedure tbRepeatClick(Sender: TObject);
@@ -573,6 +575,11 @@ begin
   LoadDir(PathHistory[PathIndex]);
 end;
 
+procedure TfMainForm.btnFilterCancelClick(Sender: TObject);
+begin
+  edtFilter.Clear;
+end;
+
 procedure TfMainForm.btnForwardDirClick(Sender: TObject);
 begin
   inc(PathIndex);
@@ -814,9 +821,6 @@ begin
 end;
 
 procedure TfMainForm.FormShow(Sender: TObject);
-var
-  tmpIcon :TIcon;
-  tmpSize:TSize;
 begin
   lvPlayList.ScrollIntoView(FindNode(BackEnd.PlayList.ItemIndex), False);
 
@@ -1201,7 +1205,7 @@ begin
 //
 end;
 
-procedure TfMainForm.SpeedButton1Click(Sender: TObject);
+procedure TfMainForm.btnCloseCollectionStatClick(Sender: TObject);
 begin
   sgStats.Clean;
   sgStats.RowCount := 1;
@@ -1438,4 +1442,4 @@ begin
 
 end;
 
-end.
+end.

@@ -1,7 +1,7 @@
 object fAbout: TfAbout
-  Left = 334
+  Left = 511
   Height = 304
-  Top = 279
+  Top = 280
   Width = 476
   BorderStyle = bsDialog
   Caption = 'About'
@@ -402,37 +402,38 @@ object fAbout: TfAbout
   end
   object Label2: TLabel
     Left = 8
-    Height = 16
+    Height = 17
     Top = 120
-    Width = 67
+    Width = 112
+    Alignment = taRightJustify
     AutoSize = False
     Caption = 'Version :'
-    Font.Height = 13
+    Font.Height = 14
     ParentColor = False
     ParentFont = False
     OptimalFill = True
   end
   object lVersion: TLabel
-    Left = 86
-    Height = 16
+    Left = 125
+    Height = 17
     Top = 120
     Width = 170
     AutoSize = False
     Caption = 'Version'
-    Font.Height = 13
+    Font.Height = 14
     Font.Style = [fsBold]
     ParentColor = False
     ParentFont = False
     OptimalFill = True
   end
-  object Button1: TButton
+  object bClose: TButton
     Left = 376
     Height = 26
     Top = 275
     Width = 88
     Anchors = [akLeft, akRight, akBottom]
     Caption = 'Close'
-    OnClick = Button1Click
+    OnClick = bCloseClick
     TabOrder = 0
   end
   object Label3: TLabel
@@ -457,6 +458,35 @@ object fAbout: TfAbout
     Font.Height = 15
     ParentColor = False
     ParentFont = False
+    OptimalFill = True
+  end
+  object Label6: TLabel
+    Left = 8
+    Height = 17
+    Top = 154
+    Width = 112
+    Alignment = taRightJustify
+    AutoSize = False
+    Caption = 'Home Page:'
+    Font.Height = 14
+    ParentColor = False
+    ParentFont = False
+    OptimalFill = True
+  end
+  object lHomePage: TLabel
+    Left = 125
+    Height = 17
+    Top = 154
+    Width = 322
+    AutoSize = False
+    Caption = 'http://code.google.com/p/ovoplayer/'
+    Font.Color = clBlue
+    Font.Height = 14
+    ParentColor = False
+    ParentFont = False
+    OnMouseDown = lHomePageMouseDown
+    OnMouseEnter = lHomePageMouseEnter
+    OnMouseLeave = lHomePageMouseLeave
     OptimalFill = True
   end
 end

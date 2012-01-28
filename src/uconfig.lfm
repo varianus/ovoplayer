@@ -14,19 +14,19 @@ object fConfig: TfConfig
     Height = 440
     Top = 0
     Width = 494
-    ActivePage = tsOSD
+    ActivePage = tsInterface
     Align = alClient
-    TabIndex = 4
+    TabIndex = 0
     TabOrder = 0
     object tsInterface: TTabSheet
       Caption = 'Interfaces'
-      ClientHeight = 411
+      ClientHeight = 410
       ClientWidth = 490
       object cbMinimizeOnClose: TCheckBox
         Left = 11
-        Height = 19
+        Height = 24
         Top = 50
-        Width = 118
+        Width = 145
         Caption = 'Minimize on Close'
         Checked = True
         State = cbChecked
@@ -34,9 +34,9 @@ object fConfig: TfConfig
       end
       object cbTrayVisible: TCheckBox
         Left = 11
-        Height = 19
+        Height = 24
         Top = 18
-        Width = 101
+        Width = 123
         Caption = 'Show Tray Icon'
         Checked = True
         State = cbChecked
@@ -44,9 +44,9 @@ object fConfig: TfConfig
       end
       object cbCaptureMMKeys: TCheckBox
         Left = 11
-        Height = 19
+        Height = 24
         Top = 96
-        Width = 130
+        Width = 165
         Caption = 'Use multimedia Keys'
         Checked = True
         OnClick = cbCaptureMMKeysClick
@@ -68,7 +68,7 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 64
+        ClientHeight = 63
         ClientWidth = 197
         Items.Strings = (
           'Gnome D-BUS mode'
@@ -80,7 +80,7 @@ object fConfig: TfConfig
     end
     object tsEngine: TTabSheet
       Caption = 'Engine'
-      ClientHeight = 411
+      ClientHeight = 410
       ClientWidth = 490
       object rgAudioEngine: TRadioGroup
         Left = 3
@@ -114,7 +114,7 @@ object fConfig: TfConfig
           ClientWidth = 468
           object MPlayerPath: TFileNameEdit
             Left = 3
-            Height = 25
+            Height = 26
             Top = 25
             Width = 424
             DialogOptions = [ofReadOnly, ofPathMustExist, ofFileMustExist, ofNoTestFileCreate, ofViewDetail]
@@ -145,7 +145,7 @@ object fConfig: TfConfig
     end
     object tsMediaLibrary: TTabSheet
       Caption = 'Media Library'
-      ClientHeight = 411
+      ClientHeight = 410
       ClientWidth = 490
       object lbMLPath: TListBox
         Left = 3
@@ -159,9 +159,9 @@ object fConfig: TfConfig
       end
       object Label1: TLabel
         Left = 11
-        Height = 16
+        Height = 17
         Top = 9
-        Width = 57
+        Width = 72
         Caption = 'Directories'
         ParentColor = False
       end
@@ -193,23 +193,22 @@ object fConfig: TfConfig
       end
       object cbScanOnStart: TCheckBox
         Left = 3
-        Height = 19
+        Height = 24
         Top = 218
-        Width = 139
+        Width = 172
         Caption = 'Scan On program start'
         TabOrder = 4
       end
     end
     object tsPlaylist: TTabSheet
       Caption = 'Play List'
-      ClientHeight = 411
+      ClientHeight = 410
       ClientWidth = 490
       object Label5: TLabel
         Left = 11
-        Height = 13
+        Height = 18
         Top = 23
-        Width = 192
-        AutoSize = False
+        Width = 238
         Caption = 'Tracks to extract for quick playlist'
         Font.Height = 14
         ParentColor = False
@@ -217,8 +216,8 @@ object fConfig: TfConfig
         OptimalFill = True
       end
       object seLimit: TSpinEdit
-        Left = 219
-        Height = 23
+        Left = 279
+        Height = 26
         Top = 18
         Width = 58
         MaxValue = 9999
@@ -227,22 +226,22 @@ object fConfig: TfConfig
       end
       object cbRestart: TCheckBox
         Left = 11
-        Height = 19
+        Height = 24
         Top = 56
-        Width = 152
+        Width = 191
         Caption = 'Restart from last position'
         TabOrder = 1
       end
     end
     object tsOSD: TTabSheet
       Caption = 'OSD'
-      ClientHeight = 411
+      ClientHeight = 410
       ClientWidth = 490
       OnHide = tsOSDHide
       OnShow = tsOSDShow
       object colorBackground: TColorBox
         Left = 187
-        Height = 22
+        Height = 30
         Top = 154
         Width = 176
         DefaultColorColor = 11955992
@@ -255,9 +254,9 @@ object fConfig: TfConfig
       end
       object Label2: TLabel
         Left = 27
-        Height = 16
+        Height = 17
         Top = 157
-        Width = 98
+        Width = 118
         Caption = 'BackGround Color'
         ParentColor = False
       end
@@ -276,7 +275,7 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 88
+        ClientHeight = 87
         ClientWidth = 181
         Items.Strings = (
           'None'
@@ -288,15 +287,15 @@ object fConfig: TfConfig
       end
       object Label3: TLabel
         Left = 27
-        Height = 16
+        Height = 17
         Top = 199
-        Width = 57
+        Width = 67
         Caption = 'Font Color'
         ParentColor = False
       end
       object ColorFont: TColorBox
         Left = 187
-        Height = 22
+        Height = 30
         Top = 191
         Width = 176
         DefaultColorColor = 11955992
@@ -322,9 +321,9 @@ object fConfig: TfConfig
       end
       object Label4: TLabel
         Left = 27
-        Height = 16
+        Height = 17
         Top = 236
-        Width = 67
+        Width = 80
         Caption = 'Tranparency'
         ParentColor = False
       end
@@ -357,7 +356,7 @@ object fConfig: TfConfig
     Width = 153
     Align = alLeft
     Caption = 'Categories'
-    ClientHeight = 423
+    ClientHeight = 422
     ClientWidth = 149
     Color = clWindow
     ParentColor = False

@@ -32,15 +32,21 @@ type
   { TfAbout }
 
   TfAbout = class(TForm)
-    Button1: TButton;
+    bClose: TButton;
     Image1: TImage;
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
+    Label6: TLabel;
     lVersion: TLabel;
-    procedure Button1Click(Sender: TObject);
+    lHomePage: TLabel;
+    procedure bCloseClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure lHomePageMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure lHomePageMouseEnter(Sender: TObject);
+    procedure lHomePageMouseLeave(Sender: TObject);
   private
     { private declarations }
   public
@@ -52,7 +58,7 @@ var
 
 implementation
 
-uses AppConsts;
+uses AppConsts, lclintf;
 {$R *.lfm}
 
 { TfAbout }
@@ -70,10 +76,30 @@ begin
 
 end;
 
-procedure TfAbout.Button1Click(Sender: TObject);
+procedure TfAbout.lHomePageMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  OpenURL(TLabel(Sender).Caption);
+end;
+
+procedure TfAbout.lHomePageMouseEnter(Sender: TObject);
+begin
+  TLabel(Sender).Font.Style := [fsUnderLine];
+  TLabel(Sender).Font.Color := clRed;
+  TLabel(Sender).Cursor := crHandPoint;
+end;
+
+procedure TfAbout.lHomePageMouseLeave(Sender: TObject);
+begin
+  TLabel(Sender).Font.Style := [];
+  TLabel(Sender).Font.Color := clBlue;
+  TLabel(Sender).Cursor := crDefault;
+end;
+
+procedure TfAbout.bCloseClick(Sender: TObject);
 begin
   ModalResult:=mrOK;
 end;
 
 end.
-
+
