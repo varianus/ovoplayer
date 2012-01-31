@@ -223,7 +223,7 @@ begin
   InterfaceParam.MinimizeOnClose := fIniFiles.ReadBool('Interface', 'MinimizeOnClose', True);
   InterfaceParam.ShowTrayIcon := fIniFiles.ReadBool('Interface', 'ShowTrayIcon', True);
   InterfaceParam.GroupBy := fIniFiles.ReadInteger('Interface', 'GroupBy', 0);
-  InterfaceParam.CaptureMMKeys := fIniFiles.ReadBool('Interface', 'CaptureMMKeys', True);
+  InterfaceParam.CaptureMMKeys := fIniFiles.ReadBool('Interface', 'CaptureMMKeys', False);
   InterfaceParam.CaptureMMkeysMode := fIniFiles.ReadInteger('Interface', 'CaptureMMkeysMode', 0);
 
   // PLAYLIST
