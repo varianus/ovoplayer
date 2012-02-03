@@ -26,16 +26,16 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
-  ExtCtrls, GUIBackEnd, ThemedSlider;
+  ExtCtrls, customdrawncontrols, GUIBackEnd;
 
 type
 
   { TfMiniPlayer }
 
   TfMiniPlayer = class(TForm)
+    TrackBar: TCDTrackBar;
     Panel1: TPanel;
     tbPlayControls: TToolBar;
-    TrackBar: TThemedSlider;
     Timer: TTimer;
     ToolButton1: TToolButton;
     ToolButton2: TToolButton;
@@ -126,4 +126,4 @@ begin
   BackEnd.AudioEngine.Position := TrackBar.Position;
 end;
 
-end.
+end.

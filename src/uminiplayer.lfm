@@ -25,15 +25,15 @@ object fMiniPlayer: TfMiniPlayer
     BevelInner = bvLowered
     BorderWidth = 2
     BorderStyle = bsSingle
-    ClientHeight = 54
-    ClientWidth = 199
+    ClientHeight = 56
+    ClientWidth = 201
     ParentColor = False
     TabOrder = 0
     object tbPlayControls: TToolBar
       Left = 4
       Height = 22
       Top = 4
-      Width = 191
+      Width = 193
       AutoSize = True
       EdgeInner = esNone
       EdgeOuter = esNone
@@ -77,19 +77,17 @@ object fMiniPlayer: TfMiniPlayer
         Action = BackEnd.actSkipForward
       end
     end
-    object TrackBar: TThemedSlider
+    object TrackBar: TCDTrackBar
       Left = 4
-      Height = 24
+      Height = 26
       Top = 26
-      Width = 191
-      Align = alClient
-      BorderWidth = 2
-      Step = 10000
+      Width = 193
       Max = 100
       Min = 0
-      Position = 15
-      Sliderwidth = 8
-      OnChange = TrackBarChange
+      OnChangeByUser = TrackBarChange
+      Position = 0
+      Align = alClient
+      DrawStyle = dsExtra2
     end
   end
   object Timer: TTimer
@@ -97,4 +95,4 @@ object fMiniPlayer: TfMiniPlayer
     OnTimer = TimerTimer
     left = 112
   end
-end
+end

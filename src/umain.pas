@@ -27,9 +27,9 @@ interface
 uses
   Classes, types, SysUtils, FileUtil, Forms, Controls, Graphics,
   Dialogs, ComCtrls, Menus, ExtCtrls, Buttons, StdCtrls, Song, uOSD, playlist,
-  AudioEngine, GUIBackEnd, Config, ThemedSlider, VirtualTrees,
+  AudioEngine, GUIBackEnd, Config, VirtualTrees,
   DefaultTranslator, Grids, EditBtn, ActnList, customdrawncontrols,
-  customdrawn_common;
+  customdrawn_common, customdrawn_ovoplayer;
 
 type
   TSortFields = record

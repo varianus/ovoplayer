@@ -21,6 +21,8 @@ type
 
   TCDDrawerOvoPlayer = class(TCDDrawerCommon)
   public
+    // General drawing routines
+    procedure DrawSlider(ADest: TCanvas; ADestPos: TPoint; ASize: TSize; AState: TCDControlState); override;
     // ===================================
     // Common Controls Tab
     // ===================================
@@ -31,6 +33,16 @@ type
 
 implementation
 
+procedure TCDDrawerOvoPlayer.DrawSlider(ADest: TCanvas; ADestPos: TPoint;
+  ASize: TSize; AState: TCDControlState);
+var
+  lRect: TRect;
+begin
+  lRect := Bounds(ADestPos.X, ADestPos.Y, ASize.CX, ASize.CY);
+  ADest.Brush.Color := clLtGray;
+  ADest.FillRect(lRect);
+  ADest.Frame3d(lRect, clWhite, clGray, 2);
+end;
 
 procedure TCDDrawerOvoPlayer.DrawTrackBar(ADest: TCanvas;
   ASize: TSize; AState: TCDControlState; AStateEx: TCDPositionedCStateEx);
@@ -39,8 +51,8 @@ var
   lTickmarkLeft, lTickmarkTop: integer; // for drawing the decorative bars
   dRect: TRect;
   CDBarSpacing: Integer;
-  pStepWidth, lTickmarkLeftFloat: Double;
   lPoint: TPoint;
+  pStepWidth: Double;
   lSize, lMeasureSize: TSize;
   lValue5, lValue11: Integer;
 begin
@@ -83,28 +95,14 @@ begin
   ADest.Rectangle(Bounds(lPoint.X, lPoint.Y, lSize.cx, lSize.cy));
   DrawSunkenFrame(ADest, lPoint, lSize);
 
-  // Draws the tickmarks and also the slider button
-  lTickmarkLeft := GetMeasures(TCDTRACKBAR_LEFT_SPACING);
-  lTickmarkLeftFloat := lTickmarkLeft;
+  // Draw the slider
+  lTickmarkLeft := GetMeasures(TCDTRACKBAR_LEFT_SPACING) + Round(pStepWidth*AStateEx.Position);
   lTickmarkTop := GetMeasures(TCDTRACKBAR_TOP_SPACING) + GetMeasures(TCDTRACKBAR_FRAME_HEIGHT)+5;
   ADest.Pen.Style := psSolid;
-  for i := 0 to StepsCount - 1 do
-  begin
-    ADest.Pen.Color := clBlack;
-    if csfHorizontal in AState then
-      ADest.Line(lTickmarkLeft, lTickmarkTop, lTickmarkLeft, lTickmarkTop+3)
-    else
-      ADest.Line(lTickmarkTop, lTickmarkLeft, lTickmarkTop+3, lTickmarkLeft);
-
-    // Draw the slider
-    if i = AStateEx.Position then
-      DrawSlider(ADest,
+  ADest.Pen.Color := clBlack;
+  DrawSlider(ADest,
         Point(lTickmarkLeft-lValue5, GetMeasures(TCDTRACKBAR_TOP_SPACING)-2),
         Size(lValue11, GetMeasures(TCDTRACKBAR_FRAME_HEIGHT)+lValue5), AState);
-
-    lTickmarkLeftFloat := lTickmarkLeftFloat + pStepWidth;
-    lTickmarkLeft := Round(lTickmarkLeftFloat);
-  end;
 
   // Draw the focus
   if csfHasFocus in AState then
@@ -128,8 +126,6 @@ begin
        InternalBitmap.canvas.Brush.Color:= WidgetSet.GetSysColor(COLOR_BTNFACE);
 
     InternalBitmap.Canvas.FillRect(0, 0, InternalBitmap.Width, InternalBitmap.Height);
-    InternalBitmap.Transparent:=true;
-    InternalBitmap.TransparentMode:=tmAuto;
     r1:=rect(0, BorderWidth +2, Width, (Height - BorderWidth-2));
     WidgetSet.Frame3d(InternalBitmap.canvas.Handle, r1, BorderWidth, bvLowered);
     if fMax = 0 then
@@ -166,6 +162,6 @@ end;
 { TCDListViewDrawerCommon }
 
 initialization
-  RegisterDrawer(TCDDrawerOvoPlayer.Create, dsExtra1);
+  RegisterDrawer(TCDDrawerOvoPlayer.Create, dsExtra2);
 end.
 

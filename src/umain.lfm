@@ -502,7 +502,7 @@ object fMainForm: TfMainForm
           Min = 1
           OnChangeByUser = slVolumeChange
           Position = 50
-          DrawStyle = dsDefault
+          DrawStyle = dsExtra2
         end
       end
       object Panel1: TPanel
@@ -539,7 +539,7 @@ object fMainForm: TfMainForm
           OnChangeByUser = TrackBarChange
           Position = 0
           Align = alClient
-          DrawStyle = dsDefault
+          DrawStyle = dsExtra2
         end
       end
     end
