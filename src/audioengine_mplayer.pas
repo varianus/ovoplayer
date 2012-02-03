@@ -399,16 +399,14 @@ var
   st: string;
 begin
   if Running then
-    begin
-      st := 'seek ' + IntToStr(Seconds div 1000);
-      if SeekAbsolute then
-        st := st + ' 2'
-      else
-        st := st + ' 0';
-      SendMPlayerCommand(st);
-      fPlayerProcess.Output.Seek(MaxInt, soCurrent);
-    end;
-
+  begin
+    st := 'seek ' + IntToStr(Seconds div 1000);
+    if SeekAbsolute then
+      st := st + ' 2'
+    else
+      st := st + ' 0';
+    SendMPlayerCommand(st);
+  end;
 end;
 
 destructor TAudioEngineMPlayer.Destroy;
@@ -427,4 +425,4 @@ initialization
 
   RegisterEngineClass(TAudioEngineMPlayer, 2, true, false);
 
-end.
+end.
