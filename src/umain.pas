@@ -28,7 +28,8 @@ uses
   Classes, types, SysUtils, FileUtil, Forms, Controls, Graphics,
   Dialogs, ComCtrls, Menus, ExtCtrls, Buttons, StdCtrls, Song, uOSD, playlist,
   AudioEngine, GUIBackEnd, Config, ThemedSlider, VirtualTrees,
-  DefaultTranslator, Grids, EditBtn, ActnList;
+  DefaultTranslator, Grids, EditBtn, ActnList, customdrawncontrols,
+  customdrawn_common;
 
 type
   TSortFields = record
@@ -56,6 +57,8 @@ type
     ActionList: TActionList;
     Artist:     TLabel;
     cbGroupBy:  TComboBox;
+    slVolume: TCDTrackBar;
+    TrackBar: TCDTrackBar;
     edtFilter: TLabeledEdit;
     ePath: TDirectoryEdit;
     gbStats: TGroupBox;
@@ -113,13 +116,11 @@ type
     pnHeaderPlaylist: TPopupMenu;
     RepeatMenu: TPopupMenu;
     btnCloseCollectionStat: TSpeedButton;
-    slVolume: TThemedSlider;
     sgStats: TStringGrid;
     btnFilterCancel: TSpeedButton;
     ToolButton11: TToolButton;
     ToolButton12: TToolButton;
     ToolButton13: TToolButton;
-    TrackBar: TThemedSlider;
     tsPlayList: TTabSheet;
     tbDirectory: TToolBar;
     ToolButton10: TToolButton;
@@ -1214,15 +1215,13 @@ end;
 
 procedure TfMainForm.TimerTimer(Sender: TObject);
 begin
-
   if (BackEnd.AudioEngine.State = ENGINE_PLAY)  then
-     begin
-       if not seeking then
-          TrackBar.Position := BackEnd.AudioEngine.Position;
-     end;
+  begin
+    if not seeking then
+      TrackBar.Position := BackEnd.AudioEngine.Position;
+  end;
 
   lbTime.Caption := TimeToStr(BackEnd.AudioEngine.Position / MSecsPerDay);
-
 end;
 
 procedure TfMainForm.btnUpDirClick(Sender: TObject);
@@ -1252,19 +1251,18 @@ var
 begin
   exit;
   if ssLeft in Shift then
-    begin
-      Seeking     := True;
-      TrackBar.Cursor := crHSplit;
-      newPosition := Round(x * TrackBar.Max / TrackBar.ClientWidth);
-      TrackBar.Position := newPosition;
-      BackEnd.AudioEngine.Position := newPosition;
-    end
+  begin
+    Seeking     := True;
+    TrackBar.Cursor := crHSplit;
+    newPosition := Round(x * TrackBar.Max / TrackBar.ClientWidth);
+    TrackBar.Position := newPosition;
+    BackEnd.AudioEngine.Position := newPosition;
+  end
   else
-    begin
+  begin
     TrackBar.Cursor := crDefault;
     Seeking := False;
-    end;
-
+  end;
 end;
 
 procedure TfMainForm.TrackBarMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: integer);

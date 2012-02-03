@@ -29,7 +29,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   FilesSupport, MediaLibrary, GeneralFunc, audioengine,
   virtualtreeview_package, decoupler,
   MultimediaKeys, uConfig, uOSD, Config, AppConsts, uMiniPlayer, uSongInfo,
-  GUIBackEnd, uAbout, audioengine_dummy,  mcaselli,
+  GUIBackEnd, uAbout, audioengine_dummy,
   {$IFDEF GSTREAMER} gstreamer, audioengine_gstreamer, {$ENDIF}
   {$IFDEF VLC} PasLibVlcUnit, audioengine_vlc, {$ENDIF}
   {$IFDEF XINE} xine, audioengine_xine, {$ENDIF}
@@ -54,4 +54,4 @@ begin
       Application.CreateForm(TfMiniPlayer, fMiniPlayer);
       Application.Run;
    end;
-end.
+end.

@@ -113,7 +113,6 @@
     <RequiredPackages Count="6">
       <Item1>
         <PackageName Value="mcaselli"/>
-        <MinVersion Major="1" Valid="True"/>
       </Item1>
       <Item2>
         <PackageName Value="uniqueinstance_package"/>
