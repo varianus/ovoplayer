@@ -33,16 +33,13 @@
           <Version Value="11"/>
           <PathDelim Value="\"/>
           <Target>
-            <Filename Value="bin\ovoplayer"/>
+            <Filename Value="..\bin\$(TargetOS)\ovoplayer"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir);platform\$(SrcOS)"/>
-            <OtherUnitFiles Value="modifiedATL;Import"/>
+            <OtherUnitFiles Value="modifiedATL;Import;ovotag;import-engines"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
-          <CodeGeneration>
-            <SmartLinkUnit Value="True"/>
-          </CodeGeneration>
           <Linking>
             <Debugging>
               <DebugInfoType Value="dsDwarf2Set"/>
@@ -137,7 +134,7 @@
         <PackageName Value="LCL"/>
       </Item6>
     </RequiredPackages>
-    <Units Count="42">
+    <Units Count="43">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -172,198 +169,203 @@
         <UnitName Value="GUIBackEnd"/>
       </Unit4>
       <Unit5>
-        <Filename Value="song.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="song"/>
-      </Unit5>
-      <Unit6>
         <Filename Value="uosd.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fOSD"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uOSD"/>
-      </Unit6>
-      <Unit7>
+      </Unit5>
+      <Unit6>
         <Filename Value="playlist.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="PlayList"/>
-      </Unit7>
-      <Unit8>
+      </Unit6>
+      <Unit7>
         <Filename Value="audioengine.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AudioEngine"/>
-      </Unit8>
-      <Unit9>
+      </Unit7>
+      <Unit8>
         <Filename Value="audioengine_mplayer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AudioEngine_MPlayer"/>
-      </Unit9>
-      <Unit10>
+      </Unit8>
+      <Unit9>
         <Filename Value="audioengine_bass.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="audioengine_bass"/>
-      </Unit10>
-      <Unit11>
+      </Unit9>
+      <Unit10>
         <Filename Value="playlistmanager.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="PlayListManager"/>
-      </Unit11>
-      <Unit12>
+      </Unit10>
+      <Unit11>
         <Filename Value="medialibrary.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MediaLibrary"/>
-      </Unit12>
-      <Unit13>
+      </Unit11>
+      <Unit12>
         <Filename Value="multimediakeys.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="MultimediaKeys"/>
-      </Unit13>
-      <Unit14>
+      </Unit12>
+      <Unit13>
         <Filename Value="config.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Config"/>
-      </Unit14>
-      <Unit15>
+      </Unit13>
+      <Unit14>
         <Filename Value="audiotag.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AudioTag"/>
-      </Unit15>
-      <Unit16>
+      </Unit14>
+      <Unit15>
         <Filename Value="filessupport.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="FilesSupport"/>
-      </Unit16>
-      <Unit17>
+      </Unit15>
+      <Unit16>
         <Filename Value="uminiplayer.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fMiniPlayer"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uMiniPlayer"/>
-      </Unit17>
-      <Unit18>
+      </Unit16>
+      <Unit17>
         <Filename Value="uconfig.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fConfig"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uConfig"/>
-      </Unit18>
-      <Unit19>
+      </Unit17>
+      <Unit18>
         <Filename Value="guibackend.lfm"/>
         <IsPartOfProject Value="True"/>
-      </Unit19>
-      <Unit20>
+      </Unit18>
+      <Unit19>
         <Filename Value="decoupler.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="decoupler"/>
-      </Unit20>
-      <Unit21>
+      </Unit19>
+      <Unit20>
         <Filename Value="generalfunc.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="GeneralFunc"/>
-      </Unit21>
-      <Unit22>
+      </Unit20>
+      <Unit21>
         <Filename Value="ovoplayer.inc"/>
         <IsPartOfProject Value="True"/>
-      </Unit22>
-      <Unit23>
+      </Unit21>
+      <Unit22>
         <Filename Value="uabout.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fAbout"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uAbout"/>
-      </Unit23>
-      <Unit24>
+      </Unit22>
+      <Unit23>
         <Filename Value="audioengine_xine.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="audioengine_Xine"/>
-      </Unit24>
-      <Unit25>
+      </Unit23>
+      <Unit24>
         <Filename Value="Import\xine.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="xine"/>
-      </Unit25>
-      <Unit26>
-        <Filename Value="Import\PasLibVlcUnit.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="PasLibVlcUnit"/>
-      </Unit26>
-      <Unit27>
+      </Unit24>
+      <Unit25>
         <Filename Value="audioengine_vlc.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="audioengine_vlc"/>
-      </Unit27>
-      <Unit28>
+      </Unit25>
+      <Unit26>
         <Filename Value="Import\lazdynamic_bass.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="lazdynamic_bass"/>
-      </Unit28>
-      <Unit29>
+      </Unit26>
+      <Unit27>
         <Filename Value="ovotag\commonfunctions.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="CommonFunctions"/>
-      </Unit29>
-      <Unit30>
+      </Unit27>
+      <Unit28>
         <Filename Value="ovotag\file_flac.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_flac"/>
-      </Unit30>
-      <Unit31>
+      </Unit28>
+      <Unit29>
         <Filename Value="ovotag\file_mp3.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_mp3"/>
-      </Unit31>
-      <Unit32>
+      </Unit29>
+      <Unit30>
         <Filename Value="ovotag\file_wma.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_wma"/>
-      </Unit32>
-      <Unit33>
+      </Unit30>
+      <Unit31>
         <Filename Value="ovotag\tag_id3v2.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_id3v2"/>
-      </Unit33>
-      <Unit34>
+      </Unit31>
+      <Unit32>
         <Filename Value="ovotag\tag_vorbis.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_vorbis"/>
-      </Unit34>
-      <Unit35>
+      </Unit32>
+      <Unit33>
         <Filename Value="ovotag\tag_wma.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_wma"/>
-      </Unit35>
-      <Unit36>
+      </Unit33>
+      <Unit34>
         <Filename Value="ovotag\file_ogg.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_ogg"/>
-      </Unit36>
-      <Unit37>
+      </Unit34>
+      <Unit35>
         <Filename Value="audioengine_dummy.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="audioengine_dummy"/>
-      </Unit37>
-      <Unit38>
+      </Unit35>
+      <Unit36>
         <Filename Value="version.inc"/>
         <IsPartOfProject Value="True"/>
-      </Unit38>
-      <Unit39>
+      </Unit36>
+      <Unit37>
         <Filename Value="ovotag\file_monkey.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_Monkey"/>
-      </Unit39>
-      <Unit40>
+      </Unit37>
+      <Unit38>
         <Filename Value="ovotag\tag_ape.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_APE"/>
-      </Unit40>
-      <Unit41>
+      </Unit38>
+      <Unit39>
         <Filename Value="ovotag\id3v1genres.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="id3v1genres"/>
+        <UnitName Value="ID3v1Genres"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="ovotag\basetag.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="basetag"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="ovotag\song.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="song"/>
       </Unit41>
+      <Unit42>
+        <Filename Value="import-engines\PasLibVlcUnit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="PasLibVlcUnit"/>
+      </Unit42>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -395,7 +397,6 @@ if LCLWidgetType = 'win32' then
       </Item1>
     </BuildMacros>
     <CodeGeneration>
-      <SmartLinkUnit Value="True"/>
       <Checks>
         <StackChecks Value="True"/>
       </Checks>

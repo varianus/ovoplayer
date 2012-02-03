@@ -1397,6 +1397,8 @@ begin
 end;
 
 procedure TfMainForm.ClearPanelInfo;
+var
+  lFile: string;
 begin
   Title.Caption     := rNotPlaying;
   Album.Caption     := '';
@@ -1404,8 +1406,11 @@ begin
   Track.Caption     := '';
   TrackBar.Position := 0;
   lbTime.caption    := TimeToStr(0);
-  imgCover.Picture.LoadFromFile(backend.Config.GetResourcesPath + 'logo.png');
-
+  lFile := backend.Config.GetResourcesPath + 'logo.png';
+  if not FileExists(lFile) then
+    DebugLn('[TfMainForm.ClearPanelInfo] File not found: ' + lFile)
+  else
+    imgCover.Picture.LoadFromFile(lFile);
 end;
 
 procedure TfMainForm.OnEngineCommand(Sender: Tobject; Command: TEngineCommand);
