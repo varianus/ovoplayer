@@ -105,7 +105,6 @@ var
   fConfig: TfConfig;
 
 implementation
-uses audioengine_vlc, AudioEngine_MPlayer, audioengine_Xine, audioengine_bass;
 {$R *.lfm}
 
 { TfConfig }
