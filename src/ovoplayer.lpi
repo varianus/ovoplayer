@@ -113,10 +113,12 @@
     <RequiredPackages Count="6">
       <Item1>
         <PackageName Value="mcaselli"/>
+        <DefaultFilename Value="components\mcaselli.lpk" Prefer="True"/>
       </Item1>
       <Item2>
         <PackageName Value="uniqueinstance_package"/>
         <MinVersion Minor="2" Valid="True"/>
+        <DefaultFilename Value="components\uniqueinstance\uniqueinstance_package.lpk" Prefer="True"/>
       </Item2>
       <Item3>
         <PackageName Value="SQLDBLaz"/>
