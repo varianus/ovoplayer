@@ -234,6 +234,7 @@ type
     procedure TrackBarChange(Sender: TObject);
     procedure TrackBarMouseMove(Sender: TObject; Shift: TShiftState; X, Y: integer);
     procedure TrackBarMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: integer);
+    procedure TrayIconClick(Sender: TObject);
     procedure TrayIconDblClick(Sender: TObject);
     procedure TrayIconMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
@@ -1270,9 +1271,19 @@ begin
   SeekIng := False;
 end;
 
+procedure TfMainForm.TrayIconClick(Sender: TObject);
+begin
+  TrayIconDblClick(Sender);
+end;
+
 procedure TfMainForm.TrayIconDblClick(Sender: TObject);
 begin
-  Show;
+  if Visible then Hide
+  else
+  begin
+    Show;
+    BringToFront;
+  end;
 end;
 
 procedure TfMainForm.TrayIconMouseDown(Sender: TObject; Button: TMouseButton;
@@ -1445,4 +1456,4 @@ begin
 
 end;
 
-end.
+end.
