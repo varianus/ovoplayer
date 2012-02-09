@@ -122,11 +122,11 @@
       </Item2>
       <Item3>
         <PackageName Value="SQLDBLaz"/>
-        <MinVersion Major="1" Valid="True" Release="1"/>
+        <MinVersion Major="1" Release="1" Valid="True"/>
       </Item3>
       <Item4>
         <PackageName Value="LCLBase"/>
-        <MinVersion Major="1" Valid="True" Release="1"/>
+        <MinVersion Major="1" Release="1" Valid="True"/>
       </Item4>
       <Item5>
         <PackageName Value="virtualtreeview_package"/>

@@ -235,7 +235,6 @@ type
     procedure TrackBarMouseMove(Sender: TObject; Shift: TShiftState; X, Y: integer);
     procedure TrackBarMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: integer);
     procedure TrayIconClick(Sender: TObject);
-    procedure TrayIconDblClick(Sender: TObject);
     procedure TrayIconMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure PlaylistTreeDblClick(Sender: TObject);
@@ -1272,11 +1271,6 @@ begin
 end;
 
 procedure TfMainForm.TrayIconClick(Sender: TObject);
-begin
-  TrayIconDblClick(Sender);
-end;
-
-procedure TfMainForm.TrayIconDblClick(Sender: TObject);
 begin
   if Visible then Hide
   else
