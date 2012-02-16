@@ -29,7 +29,7 @@ Name: {group}\OvoPlayer; Filename: {app}\ovoplayer.exe; WorkingDir: {app}; IconF
 
 [Setup]
 SetupIconFile={#SourceDir}\images\ovoplayer.ico
-AppCopyright=Copyright 2012 Marco Caselli
+AppCopyright=Copyright 2012 Marco Caselli, Felipe Monteiro de Carvalho
 AppName={#MyAppName}
 AppVerName= {#MyAppName}{#MyAppVer}
 DefaultDirName={pf}\{#MyAppName}
