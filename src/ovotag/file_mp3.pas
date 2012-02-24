@@ -81,6 +81,7 @@ type
     Function DumpInfo: TMediaProperty; override;
   public
     function LoadFromFile(FileName: Tfilename): boolean; override;
+    function SaveToFile(FileName: Tfilename): boolean; override;
   end;
 
 implementation
@@ -446,6 +447,25 @@ begin
   finally
     fStream.Free;
   end;
+end;
+
+function TMP3Reader.SaveToFile(FileName: Tfilename): boolean;
+var
+  SourceStream: TFileStream;
+  DestStream: TFileStream;
+begin
+  inherited SaveToFile(Filename);
+  SourceStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
+  DestStream := TFileStream.Create(fileName+'-.mp3', fmCreate or fmOpenReadWrite or fmShareDenyNone);
+
+  SourceStream.Seek(fTags.Size, soFromBeginning);
+
+  fTags.WriteToStream(DestStream);
+  DestStream.CopyFrom(SourceStream, SourceStream.Size - SourceStream.Position);
+
+  SourceStream.Free;
+  DestStream.Free;
+
 end;
 
 initialization

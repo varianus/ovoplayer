@@ -52,7 +52,7 @@ type
     Function GetCommonTags: TCommonTags; override;
     Procedure SetCommonTags(CommonTags :TCommonTags); override;
     function ReadFromStream(AStream: TStream): boolean; override;
-    function WriteToStream(AStream: TStream): boolean; override;
+    function WriteToStream(AStream: TStream): DWord; override;
   end;
 
 
@@ -174,7 +174,7 @@ begin
 
 end;
 
-function TVorbisTags.WriteToStream(AStream: TStream): boolean;
+function TVorbisTags.WriteToStream(AStream: TStream): DWord;
 var
   fSize: cardinal;
   Data: array of char;
@@ -189,6 +189,8 @@ begin
   AStream.WriteDWord(Count);
   for i := 0 to Count - 1 do
     Frames[i].WriteTostream (AStream);
+
+  result := SizeOf(DWord) * 2;
 
 end;
 

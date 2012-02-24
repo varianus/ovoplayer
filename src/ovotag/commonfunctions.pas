@@ -36,6 +36,7 @@ function ExtractTrack(const TrackString: string): word;
 
 function GetANSI(const Source: string): string;
 function ExtractString(p:pbyte; size:cardinal): widestring;
+procedure EncodeString(s:widestring; var e:pchar; var l:cardinal);
 
 procedure FixTrack(const TrackString: string; const TrackNr: integer;
   out TrackStringFixed: string; out TrackNrFixed: integer); overload;
@@ -50,7 +51,8 @@ function GetContent(const Content1, Content2: string): string;
 function ExtractYear(const YearString, DateString: string): string;
 function ExtractGenre(const GenreString: string): string;
 function ExtractText(const SourceString: string; LanguageID: boolean): string;
-function SyncSafe_Decode(const SyncDWord: DWord; Version: Integer): DWord;
+function SyncSafe_Decode(const SyncDWord: DWord): DWord;
+function SyncSafe_Encode(const SyncDWord: DWord): DWord;
 
 // Bit Operations
 function GetBit(const Value: DWord; const Bit: byte): boolean; inline;
@@ -64,19 +66,31 @@ implementation
 
 { --------------------------------------------------------------------------- }
 
+function SyncSafe_Encode(const SyncDWord: DWord): DWord;
+var
+   b: array [0..3] of byte absolute SyncDWord;
+   tmp : DWord;
+begin
+//
+//  result:=  ((SyncDWord and $0000007f) shl 24) xor
+//            ((SyncDWord and $00003f80) shl  9) xor
+//            ((SyncDWord and $001fc000) shr  6) xor
+//            ((SyncDWord and $0fe00000) shr 21);
+tmp := SyncDWord and $FFFFFFF;
+result := NtoBE((tmp and $7F) or ((tmp and $3F80) shl 1)
+   or ((tmp and $1FC000) shl 2) or ((tmp and $FE00000) shl 3));
 
-function SyncSafe_Decode(const SyncDWord: DWord; Version: Integer): DWord;
+end;
+
+function SyncSafe_Decode(const SyncDWord: DWord): DWord;
 var
    b: array [0..3] of byte absolute SyncDWord;
 begin
+ result:=((SyncDWord and $000000ff) shl 21) xor
+         ((SyncDWord and $0000ff00) shl  6) xor
+         ((SyncDWord and $00ff0000) shr  9) xor
+         ((SyncDWord and $ff000000) shr 24)
 
-  if version > 3 then
-    result:=((SyncDWord and $000000ff) shl 21) xor
-            ((SyncDWord and $0000ff00) shl  6) xor
-            ((SyncDWord and $00ff0000) shr  9) xor
-            ((SyncDWord and $ff000000) shr 24)
-  else
-      Result := b[0] * $1000000 + b[1] * $10000 + b[2] * $100 + b[3];
 end;
 
 function GetContent(const Content1, Content2: string): string;
@@ -132,7 +146,6 @@ function Swap32(const Figure: DWORD): DWORD;
 var
   ByteArray: array [1..4] of byte absolute Figure;
 begin
-  { Swap 4 bytes }
   Result :=
     ByteArray[1] shr 24 + ByteArray[2] shr 16 + ByteArray[3] shr 8 + ByteArray[4];
 end;
@@ -161,6 +174,17 @@ begin
     end
   else
     Result := Trim(Source);
+end;
+
+procedure EncodeString(s:widestring; var e:pchar; var l:cardinal);
+var
+  t:string;
+begin
+  t:=UTF8Encode(s);
+  l:=length(t)+1;
+  getmem(pointer(e),l);
+  pbyte(e)^:=0;
+  if l<>1 then move(t[1],(e+1)^,l-1);
 end;
 
 function ExtractString(p:pbyte; size:cardinal):widestring;

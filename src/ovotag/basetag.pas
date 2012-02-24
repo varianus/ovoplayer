@@ -62,6 +62,7 @@ type
   Private
     fId:String;
   Protected
+    function GetSize: DWord; virtual;
     function GetID: string; virtual;
     procedure SetID(AValue: string);
     function GetAsString: string; virtual; abstract;
@@ -74,6 +75,7 @@ type
     function WriteToStream(AStream:TStream):DWord; virtual; abstract;
 
   public
+    Property Size: DWord read GetSize;
     property ID: string read GetID Write SetID;
     property AsString: string read GetAsString write SetAsString;
 
@@ -121,7 +123,7 @@ type
     constructor Create; virtual;
     destructor Destroy; override;
     function ReadFromStream(AStream:TStream):boolean; virtual; abstract;
-    function WriteToStream(AStream: TStream): boolean; virtual; abstract;
+    function WriteToStream(AStream:TStream):DWord; virtual; abstract;
     Procedure Add(Frame: TFrameElement);
     Procedure Remove(Frame: TFrameElement);
     Procedure AddImage(Image: TImageElement);
@@ -154,6 +156,7 @@ type
     destructor Destroy; override;
     Function GetCommonTags: TCommonTags;
     function LoadFromFile(FileName: Tfilename): boolean; virtual;
+    function SaveToFile(FileName: Tfilename): boolean; virtual;
   public
     property Tags: TTags read GetTags;
     Property MediaProperty: TMediaProperty read DumpInfo;
@@ -268,6 +271,11 @@ function TTagReader.LoadFromFile(FileName: Tfilename): boolean;
 begin
   FFileName:=FileName;
   Result:=false;
+end;
+
+function TTagReader.SaveToFile(FileName: Tfilename): boolean;
+begin
+  Result := false;
 end;
 
 { TTags }
@@ -421,6 +429,11 @@ procedure TFrameElement.SetID(AValue: string);
 begin
   if fId <> AValue then
      fId:= AValue;
+end;
+
+function TFrameElement.GetSize: DWord;
+begin
+  Result := 0;
 end;
 
 function TFrameElement.GetID: string;
