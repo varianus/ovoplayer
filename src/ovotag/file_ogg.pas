@@ -43,7 +43,7 @@ type
     function GetDuration: int64; override;
     function GetTags: TTags; override;
   public
-    function LoadFromFile(FileName: Tfilename): boolean; override;
+    function LoadFromFile(AFileName: Tfilename): boolean; override;
   end;
 
 implementation
@@ -115,7 +115,7 @@ begin
   Result := fTags;
 end;
 
-function TOGGReader.LoadFromFile(FileName: Tfilename): boolean;
+function TOGGReader.LoadFromFile(AFileName: Tfilename): boolean;
 var
   fStream: TFileStream;
   Header: TOggHeader;
@@ -127,7 +127,7 @@ var
   i:Integer;
 
 begin
-  Result := inherited LoadFromFile(FileName);
+  Result := inherited LoadFromFile(AFileName);
   fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
   try
     fStream.Read(Header, sizeof(Header));

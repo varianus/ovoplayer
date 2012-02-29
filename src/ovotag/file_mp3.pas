@@ -80,8 +80,8 @@ type
     function GetDuration: int64; override;
     Function DumpInfo: TMediaProperty; override;
   public
-    function LoadFromFile(FileName: Tfilename): boolean; override;
-    function SaveToFile(FileName: Tfilename): boolean; override;
+    function LoadFromFile(AFileName: Tfilename): boolean; override;
+    function SaveToFile(AFileName: Tfilename): boolean; override;
   end;
 
 implementation
@@ -410,7 +410,7 @@ begin
   Result := fMediaProperty;
 end;
 
-function TMP3Reader.LoadFromFile(FileName: Tfilename): boolean;
+function TMP3Reader.LoadFromFile(AFileName: Tfilename): boolean;
 const
   SizeOfData = MAX_MPEG_FRAME_LENGTH * 2;
 var
@@ -419,7 +419,7 @@ var
   Transferred: DWord;
 
 begin
-  Result := inherited LoadFromFile(FileName);
+  Result := inherited LoadFromFile(AFileName);
 
   try
     fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
@@ -449,14 +449,14 @@ begin
   end;
 end;
 
-function TMP3Reader.SaveToFile(FileName: Tfilename): boolean;
+function TMP3Reader.SaveToFile(AFileName: Tfilename): boolean;
 var
   SourceStream: TFileStream;
   DestStream: TFileStream;
 begin
-  inherited SaveToFile(Filename);
-  SourceStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
-  DestStream := TFileStream.Create(fileName+'-.mp3', fmCreate or fmOpenReadWrite or fmShareDenyNone);
+  inherited SaveToFile(AFilename);
+  SourceStream := TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
+  DestStream := TFileStream.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
 
   SourceStream.Seek(fTags.Size, soFromBeginning);
 

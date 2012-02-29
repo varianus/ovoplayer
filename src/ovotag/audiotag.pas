@@ -91,6 +91,7 @@ var
   ext: string;
   i : Integer;
 begin
+  Result := Nil;
   ext    := lowercase(ExtractFileExt(Filename));
   result := TTagReader;
   for i := Low(AReaderList) to High(AReaderList) do

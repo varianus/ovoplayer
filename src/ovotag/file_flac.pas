@@ -48,7 +48,7 @@ type
     function GetTags: TTags; override;
     Function DumpInfo: TMediaProperty; override;
   public
-    function LoadFromFile(FileName: Tfilename): boolean; override;
+    function LoadFromFile(AFileName: Tfilename): boolean; override;
   end;
 
 implementation
@@ -108,7 +108,7 @@ begin
     end;
 end;
 
-function TFlacReader.LoadFromFile(FileName: Tfilename): boolean;
+function TFlacReader.LoadFromFile(AFileName: Tfilename): boolean;
 var
   fStream: TFileStream;
   Header: TFlacHeader;

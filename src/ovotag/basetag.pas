@@ -155,9 +155,11 @@ type
     Constructor Create; overload;
     destructor Destroy; override;
     Function GetCommonTags: TCommonTags;
-    function LoadFromFile(FileName: Tfilename): boolean; virtual;
-    function SaveToFile(FileName: Tfilename): boolean; virtual;
+    Procedure SetCommonTags(CommonTags: TCommonTags);
+    function LoadFromFile(AFileName: Tfilename): boolean; virtual;
+    function SaveToFile(AFileName: Tfilename): boolean; virtual;
   public
+    Property FileName : string Read FFileName;
     property Tags: TTags read GetTags;
     Property MediaProperty: TMediaProperty read DumpInfo;
   end;
@@ -267,13 +269,18 @@ begin
      Result.Title := ChangeFileExt(ExtractFileName(FFileName) ,'');
 end;
 
-function TTagReader.LoadFromFile(FileName: Tfilename): boolean;
+procedure TTagReader.SetCommonTags(CommonTags: TCommonTags);
 begin
-  FFileName:=FileName;
+  Tags.SetCommonTags(CommonTags);
+end;
+
+function TTagReader.LoadFromFile(AFileName: Tfilename): boolean;
+begin
+  FFileName:=AFileName;
   Result:=false;
 end;
 
-function TTagReader.SaveToFile(FileName: Tfilename): boolean;
+function TTagReader.SaveToFile(AFileName: Tfilename): boolean;
 begin
   Result := false;
 end;

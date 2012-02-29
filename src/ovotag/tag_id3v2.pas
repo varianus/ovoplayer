@@ -78,6 +78,7 @@ type
   public
     Property Size: Integer read fSize;
     Function GetCommonTags: TCommonTags; override;
+    Procedure SetCommonTags(CommonTags :TCommonTags); override;
     function ReadFromStream(AStream: TStream): boolean; override;
     function WriteToStream(AStream: TStream): DWord; override;
   end;
@@ -256,6 +257,23 @@ begin
   result.Comment:= GetFrameValue(ID3V2_KNOWNFRAME[7, UseOldTag]);
   result.Genre:= ExtractGenre(GetFrameValue(ID3V2_KNOWNFRAME[6, UseOldTag]));
   Result.HasImage:=ImageCount > 0;
+
+end;
+
+procedure TID3Tags.SetCommonTags(CommonTags: TCommonTags);
+begin
+  inherited SetCommonTags(CommonTags);
+
+  //Result.Artist := GetBestMatch(2, 14, UseOldTag);
+  //Result.Title := GetBestMatch(1, 15, UseOldTag);
+  //Result.Album := GetBestMatch(3, 16, UseOldTag);
+  //Result.Year := GetBestMatch(5, 13, UseOldTag);
+  //Result.AlbumArtist := GetContent(GetFrameValue(ID3V2_KNOWNFRAME[18, UseOldTag]), Result.Artist);
+  //result.Track:=  ExtractTrack(GetFrameValue(ID3V2_KNOWNFRAME[4, UseOldTag]));
+  //result.TrackString := GetFrameValue(ID3V2_KNOWNFRAME[4, UseOldTag]);
+  //result.Comment:= GetFrameValue(ID3V2_KNOWNFRAME[7, UseOldTag]);
+  //result.Genre:= ExtractGenre(GetFrameValue(ID3V2_KNOWNFRAME[6, UseOldTag]));
+  //Result.HasImage:=ImageCount > 0;
 
 end;
 

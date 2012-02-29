@@ -43,7 +43,7 @@ type
     function GetDuration: int64; override;
     function GetTags: TTags; override;
   public
-    function LoadFromFile(FileName: Tfilename): boolean; override;
+    function LoadFromFile(AFileName: Tfilename): boolean; override;
   end;
 
 implementation
@@ -69,7 +69,7 @@ begin
   Result := fTags;
 end;
 
-function TMonkeyReader.LoadFromFile(FileName: Tfilename): boolean;
+function TMonkeyReader.LoadFromFile(AFileName: Tfilename): boolean;
 var
   fStream: TFileStream;
   Start: byte;
@@ -78,7 +78,7 @@ var
   HaveID3V2 :boolean;
 
 begin
-  Result := inherited LoadFromFile(FileName);
+  Result := inherited LoadFromFile(AFileName);
   fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
   try
     tempTags := TID3Tags.Create;
