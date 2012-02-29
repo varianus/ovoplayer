@@ -4,11 +4,12 @@
     <Version Value="9"/>
     <PathDelim Value="\"/>
     <General>
+      <SessionStorage Value="InProjectDir"/>
       <MainUnit Value="0"/>
       <UseAppBundle Value="False"/>
       <ResourceType Value="res"/>
+      <UseXPManifest Value="True"/>
       <Icon Value="0"/>
-      <ActiveWindowIndexAtStart Value="0"/>
     </General>
     <i18n>
       <EnableI18N LFM="False"/>
@@ -16,7 +17,7 @@
     <VersionInfo>
       <StringTable ProductVersion=""/>
     </VersionInfo>
-    <BuildModes Count="1" Active="Default">
+    <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>
     </BuildModes>
     <PublishOptions>
@@ -34,17 +35,11 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="44">
+    <Units Count="12">
       <Unit0>
         <Filename Value="project1.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="project1"/>
-        <EditorIndex Value="6"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="1" Y="14"/>
-        <UsageCount Value="132"/>
-        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="unit1.pas"/>
@@ -52,503 +47,58 @@
         <ComponentName Value="Form1"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit1"/>
-        <EditorIndex Value="0"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="80"/>
-        <CursorPos X="93" Y="79"/>
-        <UsageCount Value="132"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
-        <Filename Value="basetag.pas"/>
-        <UnitName Value="basetag"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="197"/>
-        <CursorPos X="30" Y="12"/>
-        <UsageCount Value="119"/>
-      </Unit2>
-      <Unit3>
-        <Filename Value="id3v2.pas"/>
-        <UnitName Value="ID3v2"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="77"/>
-        <CursorPos X="26" Y="93"/>
-        <UsageCount Value="32"/>
-      </Unit3>
-      <Unit4>
-        <Filename Value="commonfunctions.pas"/>
-        <UnitName Value="CommonFunctions"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="2"/>
-        <CursorPos X="10" Y="18"/>
-        <UsageCount Value="50"/>
-      </Unit4>
-      <Unit5>
-        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\packages\fcl-base\src\contnrs.pp"/>
-        <UnitName Value="contnrs"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="42"/>
-        <CursorPos X="3" Y="31"/>
-        <UsageCount Value="27"/>
-      </Unit5>
-      <Unit6>
-        <Filename Value="file_ogg.pas"/>
-        <UnitName Value="file_ogg"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="107"/>
-        <CursorPos X="37" Y="116"/>
-        <UsageCount Value="80"/>
-      </Unit6>
-      <Unit7>
-        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\objpas\classes\classesh.inc"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="783"/>
-        <CursorPos X="20" Y="800"/>
-        <UsageCount Value="18"/>
-      </Unit7>
-      <Unit8>
-        <Filename Value="tag_vorbis.pas"/>
-        <UnitName Value="tag_vorbis"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="73"/>
-        <CursorPos X="49" Y="89"/>
-        <UsageCount Value="75"/>
-      </Unit8>
-      <Unit9>
-        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\objpas\sysutils\osutilsh.inc"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="26"/>
-        <CursorPos X="16" Y="42"/>
-        <UsageCount Value="13"/>
-      </Unit9>
-      <Unit10>
-        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\objpas\sysutils\osutil.inc"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="81"/>
-        <CursorPos X="3" Y="84"/>
-        <UsageCount Value="13"/>
-      </Unit10>
-      <Unit11>
-        <Filename Value="file_wma.pas"/>
-        <UnitName Value="file_wma"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="31"/>
-        <CursorPos X="37" Y="70"/>
-        <UsageCount Value="71"/>
-      </Unit11>
-      <Unit12>
-        <Filename Value="tag_wma.pas"/>
-        <UnitName Value="tag_wma"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="22"/>
-        <CursorPos X="28" Y="43"/>
-        <UsageCount Value="71"/>
-      </Unit12>
-      <Unit13>
-        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\inc\objpash.inc"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="113"/>
-        <CursorPos X="8" Y="129"/>
-        <UsageCount Value="9"/>
-      </Unit13>
-      <Unit14>
-        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\objpas\sysutils\intfh.inc"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="9"/>
-        <CursorPos X="10" Y="39"/>
-        <UsageCount Value="7"/>
-      </Unit14>
-      <Unit15>
-        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\objpas\sysutils\sysuintf.inc"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="1" Y="1"/>
-        <UsageCount Value="7"/>
-      </Unit15>
-      <Unit16>
-        <Filename Value="C:\Ex-D\lazarus\lcl\include\application.inc"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="2276"/>
-        <CursorPos X="30" Y="2297"/>
-        <UsageCount Value="22"/>
-      </Unit16>
-      <Unit17>
-        <Filename Value="file_mp3.pas"/>
-        <UnitName Value="file_mp3"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="34"/>
-        <CursorPos X="1" Y="50"/>
-        <UsageCount Value="61"/>
-      </Unit17>
-      <Unit18>
-        <Filename Value="tag_id3v2.pas"/>
-        <UnitName Value="tag_id3v2"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="28"/>
-        <CursorPos X="24" Y="74"/>
-        <UsageCount Value="61"/>
-      </Unit18>
-      <Unit19>
-        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\objpas\classes\bits.inc"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="167"/>
-        <CursorPos X="4" Y="171"/>
-        <UsageCount Value="7"/>
-      </Unit19>
-      <Unit20>
-        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\inc\systemh.inc"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="597"/>
-        <CursorPos X="12" Y="611"/>
-        <UsageCount Value="21"/>
-      </Unit20>
-      <Unit21>
-        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\inc\ustringh.inc"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="87"/>
-        <CursorPos X="16" Y="105"/>
-        <UsageCount Value="17"/>
-      </Unit21>
-      <Unit22>
-        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\inc\ustrings.inc"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="2271"/>
-        <CursorPos X="10" Y="2302"/>
-        <UsageCount Value="17"/>
-      </Unit22>
-      <Unit23>
-        <Filename Value="C:\Ex-D\lazarus\lcl\lconvencoding.pas"/>
-        <UnitName Value="LConvEncoding"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="6554"/>
-        <CursorPos X="3" Y="6331"/>
-        <UsageCount Value="9"/>
-      </Unit23>
-      <Unit24>
-        <Filename Value="C:\Ex-D\lazarus\lcl\lclproc.pas"/>
-        <UnitName Value="LCLProc"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="13"/>
-        <CursorPos X="1" Y="1"/>
-        <UsageCount Value="17"/>
-      </Unit24>
-      <Unit25>
-        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\inc\generic.inc"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="1803"/>
-        <CursorPos X="10" Y="1834"/>
-        <UsageCount Value="11"/>
-      </Unit25>
-      <Unit26>
-        <Filename Value="file_flac.pas"/>
-        <UnitName Value="file_flac"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="116"/>
-        <CursorPos X="18" Y="143"/>
-        <UsageCount Value="34"/>
-      </Unit26>
-      <Unit27>
-        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\objpas\sysutils\syspchh.inc"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="11"/>
-        <CursorPos X="10" Y="27"/>
-        <UsageCount Value="10"/>
-      </Unit27>
-      <Unit28>
-        <Filename Value="..\usonginfo.pas"/>
-        <ComponentName Value="fSongInfo"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="uSongInfo"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="213"/>
-        <CursorPos X="1" Y="216"/>
-        <UsageCount Value="10"/>
-      </Unit28>
-      <Unit29>
-        <Filename Value="C:\Ex-D\lazarus\lcl\forms.pp"/>
-        <UnitName Value="Forms"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="1" Y="1"/>
-        <UsageCount Value="9"/>
-      </Unit29>
-      <Unit30>
-        <Filename Value="..\audiotag.pas"/>
-        <UnitName Value="AudioTag"/>
-        <EditorIndex Value="3"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="1" Y="20"/>
-        <UsageCount Value="16"/>
-        <Loaded Value="True"/>
-      </Unit30>
-      <Unit31>
-        <Filename Value="..\song.pas"/>
-        <UnitName Value="song"/>
-        <EditorIndex Value="4"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="11" Y="20"/>
-        <UsageCount Value="16"/>
-        <Loaded Value="True"/>
-      </Unit31>
-      <Unit32>
-        <Filename Value="..\commonfunctions.pas"/>
-        <UnitName Value="CommonFunctions"/>
-        <EditorIndex Value="5"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="1"/>
-        <CursorPos X="1" Y="1"/>
-        <UsageCount Value="16"/>
-        <Loaded Value="True"/>
-      </Unit32>
-      <Unit33>
         <Filename Value="..\basetag.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="basetag"/>
-        <EditorIndex Value="14"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="46"/>
-        <CursorPos X="3" Y="60"/>
-        <UsageCount Value="31"/>
-        <Loaded Value="True"/>
-      </Unit33>
-      <Unit34>
+      </Unit2>
+      <Unit3>
         <Filename Value="..\file_ogg.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_ogg"/>
-        <EditorIndex Value="13"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="131"/>
-        <CursorPos X="33" Y="36"/>
-        <UsageCount Value="31"/>
-        <Loaded Value="True"/>
-      </Unit34>
-      <Unit35>
+      </Unit3>
+      <Unit4>
         <Filename Value="..\tag_vorbis.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_vorbis"/>
-        <EditorIndex Value="12"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="133"/>
-        <CursorPos X="20" Y="50"/>
-        <UsageCount Value="31"/>
-        <Loaded Value="True"/>
-      </Unit35>
-      <Unit36>
+      </Unit4>
+      <Unit5>
         <Filename Value="..\file_wma.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_wma"/>
-        <EditorIndex Value="11"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="103"/>
-        <CursorPos X="22" Y="20"/>
-        <UsageCount Value="31"/>
-        <Loaded Value="True"/>
-      </Unit36>
-      <Unit37>
+      </Unit5>
+      <Unit6>
         <Filename Value="..\tag_wma.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_wma"/>
-        <EditorIndex Value="10"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="112"/>
-        <CursorPos X="27" Y="138"/>
-        <UsageCount Value="31"/>
-        <Loaded Value="True"/>
-      </Unit37>
-      <Unit38>
+      </Unit6>
+      <Unit7>
         <Filename Value="..\file_mp3.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_mp3"/>
-        <EditorIndex Value="9"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="415"/>
-        <CursorPos X="5" Y="429"/>
-        <UsageCount Value="31"/>
-        <Loaded Value="True"/>
-      </Unit38>
-      <Unit39>
+      </Unit7>
+      <Unit8>
         <Filename Value="..\tag_id3v2.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_id3v2"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="8"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="166"/>
-        <CursorPos X="71" Y="183"/>
-        <UsageCount Value="31"/>
-        <Bookmarks Count="2">
-          <Item0 X="3" Y="111" ID="1"/>
-          <Item1 X="5" Y="194" ID="2"/>
-        </Bookmarks>
-        <Loaded Value="True"/>
-      </Unit39>
-      <Unit40>
+      </Unit8>
+      <Unit9>
         <Filename Value="..\file_flac.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_flac"/>
-        <EditorIndex Value="7"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="133"/>
-        <CursorPos X="22" Y="20"/>
-        <UsageCount Value="31"/>
-        <Loaded Value="True"/>
-      </Unit40>
-      <Unit41>
+      </Unit9>
+      <Unit10>
         <Filename Value="..\file_monkey.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_Monkey"/>
-        <EditorIndex Value="1"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="70"/>
-        <CursorPos X="2" Y="92"/>
-        <UsageCount Value="31"/>
-        <Loaded Value="True"/>
-      </Unit41>
-      <Unit42>
+      </Unit10>
+      <Unit11>
         <Filename Value="..\tag_ape.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_APE"/>
-        <EditorIndex Value="2"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="140"/>
-        <CursorPos X="1" Y="174"/>
-        <UsageCount Value="31"/>
-        <Loaded Value="True"/>
-      </Unit42>
-      <Unit43>
-        <Filename Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\objpas\classes\streams.inc"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="300"/>
-        <CursorPos X="5" Y="363"/>
-        <UsageCount Value="11"/>
-      </Unit43>
+      </Unit11>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
-      <Position1>
-        <Filename Value="..\tag_ape.pas"/>
-        <Caret Line="112" Column="1" TopLine="94"/>
-      </Position1>
-      <Position2>
-        <Filename Value="..\tag_ape.pas"/>
-        <Caret Line="114" Column="1" TopLine="94"/>
-      </Position2>
-      <Position3>
-        <Filename Value="..\tag_ape.pas"/>
-        <Caret Line="115" Column="1" TopLine="94"/>
-      </Position3>
-      <Position4>
-        <Filename Value="..\tag_ape.pas"/>
-        <Caret Line="116" Column="1" TopLine="94"/>
-      </Position4>
-      <Position5>
-        <Filename Value="..\tag_ape.pas"/>
-        <Caret Line="117" Column="1" TopLine="94"/>
-      </Position5>
-      <Position6>
-        <Filename Value="..\tag_ape.pas"/>
-        <Caret Line="162" Column="1" TopLine="139"/>
-      </Position6>
-      <Position7>
-        <Filename Value="..\tag_ape.pas"/>
-        <Caret Line="112" Column="1" TopLine="95"/>
-      </Position7>
-      <Position8>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="91" Column="1" TopLine="68"/>
-      </Position8>
-      <Position9>
-        <Filename Value="..\tag_ape.pas"/>
-        <Caret Line="75" Column="1" TopLine="58"/>
-      </Position9>
-      <Position10>
-        <Filename Value="..\tag_ape.pas"/>
-        <Caret Line="76" Column="1" TopLine="58"/>
-      </Position10>
-      <Position11>
-        <Filename Value="..\tag_ape.pas"/>
-        <Caret Line="81" Column="1" TopLine="58"/>
-      </Position11>
-      <Position12>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="93" Column="50" TopLine="68"/>
-      </Position12>
-      <Position13>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="94" Column="1" TopLine="68"/>
-      </Position13>
-      <Position14>
-        <Filename Value="..\tag_ape.pas"/>
-        <Caret Line="111" Column="3" TopLine="94"/>
-      </Position14>
-      <Position15>
-        <Filename Value="..\tag_ape.pas"/>
-        <Caret Line="108" Column="30" TopLine="92"/>
-      </Position15>
-      <Position16>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="94" Column="1" TopLine="68"/>
-      </Position16>
-      <Position17>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="95" Column="1" TopLine="68"/>
-      </Position17>
-      <Position18>
-        <Filename Value="..\tag_ape.pas"/>
-        <Caret Line="135" Column="62" TopLine="119"/>
-      </Position18>
-      <Position19>
-        <Filename Value="..\tag_ape.pas"/>
-        <Caret Line="140" Column="27" TopLine="118"/>
-      </Position19>
-      <Position20>
-        <Filename Value="..\tag_id3v2.pas"/>
-        <Caret Line="193" Column="31" TopLine="175"/>
-      </Position20>
-      <Position21>
-        <Filename Value="..\tag_id3v2.pas"/>
-        <Caret Line="200" Column="14" TopLine="189"/>
-      </Position21>
-      <Position22>
-        <Filename Value="..\tag_id3v2.pas"/>
-        <Caret Line="34" Column="27" TopLine="17"/>
-      </Position22>
-      <Position23>
-        <Filename Value="..\tag_id3v2.pas"/>
-        <Caret Line="149" Column="32" TopLine="134"/>
-      </Position23>
-      <Position24>
-        <Filename Value="..\tag_id3v2.pas"/>
-        <Caret Line="154" Column="54" TopLine="125"/>
-      </Position24>
-      <Position25>
-        <Filename Value="..\tag_id3v2.pas"/>
-        <Caret Line="153" Column="13" TopLine="142"/>
-      </Position25>
-      <Position26>
-        <Filename Value="..\tag_id3v2.pas"/>
-        <Caret Line="144" Column="24" TopLine="142"/>
-      </Position26>
-      <Position27>
-        <Filename Value="..\tag_id3v2.pas"/>
-        <Caret Line="142" Column="29" TopLine="124"/>
-      </Position27>
-      <Position28>
-        <Filename Value="..\tag_id3v2.pas"/>
-        <Caret Line="191" Column="40" TopLine="157"/>
-      </Position28>
-      <Position29>
-        <Filename Value="..\tag_id3v2.pas"/>
-        <Caret Line="169" Column="46" TopLine="144"/>
-      </Position29>
-      <Position30>
-        <Filename Value="..\tag_id3v2.pas"/>
-        <Caret Line="178" Column="40" TopLine="161"/>
-      </Position30>
-    </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
@@ -581,45 +131,6 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="3">
-      <Item1>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="tag_vorbis.pas"/>
-        <Line Value="84"/>
-      </Item1>
-      <Item2>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="C:\Ex-D\lazarus\fpc\2.4.4\fpc-2.4.4\rtl\objpas\classes\streams.inc"/>
-        <Line Value="451"/>
-      </Item2>
-      <Item3>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="..\tag_id3v2.pas"/>
-        <Line Value="194"/>
-      </Item3>
-    </BreakPoints>
-    <Watches Count="4">
-      <Item1>
-        <Expression Value="st"/>
-      </Item1>
-      <Item2>
-        <Expression Value="st"/>
-        <DisplayStyle Value="wdfMemDump"/>
-      </Item2>
-      <Item3>
-        <Expression Value="SyncDWord"/>
-        <DisplayStyle Value="wdfHex"/>
-      </Item3>
-      <Item4>
-        <DisplayStyle Value="wdfHex"/>
-      </Item4>
-    </Watches>
     <Exceptions Count="3">
       <Item1>
         <Name Value="EAbort"/>

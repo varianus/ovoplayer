@@ -1,407 +1,408 @@
 object Form1: TForm1
-  Left = 331
-  Height = 738
-  Top = 169
-  Width = 785
+  Left = 337
+  Height = 645
+  Top = 138
+  Width = 805
   Caption = 'Form1'
-  ClientHeight = 738
-  ClientWidth = 785
+  ClientHeight = 645
+  ClientWidth = 805
+  OnCreate = FormCreate
   LCLVersion = '0.9.31'
-  object Button1: TButton
-    Tag = 1
-    Left = 496
-    Height = 25
-    Top = 8
-    Width = 75
-    Caption = 'FLAC'
-    OnClick = ReadTag
-    TabOrder = 0
-  end
   object Memo1: TMemo
-    Left = 16
-    Height = 288
-    Top = 8
-    Width = 472
+    Left = 0
+    Height = 169
+    Top = 476
+    Width = 805
+    Align = alClient
     Lines.Strings = (
       'Memo1'
     )
     ScrollBars = ssAutoBoth
+    TabOrder = 0
+  end
+  object gbCommonTags: TGroupBox
+    Left = 0
+    Height = 299
+    Top = 37
+    Width = 805
+    Align = alTop
+    Caption = 'Common Tags'
+    ClientHeight = 281
+    ClientWidth = 801
     TabOrder = 1
+    object Label1: TLabel
+      Left = 0
+      Height = 17
+      Top = 45
+      Width = 93
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'Artist'
+      Font.Height = 18
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object edArtist: TEdit
+      Left = 98
+      Height = 23
+      Top = 41
+      Width = 384
+      TabOrder = 0
+    end
+    object Label2: TLabel
+      Left = 0
+      Height = 17
+      Top = 77
+      Width = 93
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'Album'
+      Font.Height = 18
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object edAlbum: TEdit
+      Left = 98
+      Height = 23
+      Top = 72
+      Width = 384
+      TabOrder = 1
+    end
+    object Label3: TLabel
+      Left = 0
+      Height = 17
+      Top = 12
+      Width = 93
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'Title'
+      Font.Height = 18
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object edTitle: TEdit
+      Left = 98
+      Height = 23
+      Top = 7
+      Width = 384
+      TabOrder = 2
+    end
+    object Label4: TLabel
+      Left = 0
+      Height = 17
+      Top = 110
+      Width = 93
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'Album Artist'
+      Font.Height = 18
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object edAlbumArtist: TEdit
+      Left = 98
+      Height = 23
+      Top = 105
+      Width = 384
+      TabOrder = 3
+    end
+    object Label5: TLabel
+      Left = 0
+      Height = 17
+      Top = 143
+      Width = 93
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'Genre'
+      Font.Height = 18
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object edGenre: TEdit
+      Left = 98
+      Height = 23
+      Top = 137
+      Width = 384
+      TabOrder = 4
+    end
+    object meComment: TMemo
+      Left = 100
+      Height = 71
+      Top = 202
+      Width = 682
+      TabOrder = 5
+    end
+    object Label6: TLabel
+      Left = 0
+      Height = 17
+      Top = 207
+      Width = 93
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'Comment'
+      Font.Height = 18
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object seYear: TSpinEdit
+      Left = 98
+      Height = 23
+      Top = 169
+      Width = 101
+      MaxValue = 9999
+      TabOrder = 6
+    end
+    object Label7: TLabel
+      Left = 0
+      Height = 17
+      Top = 170
+      Width = 93
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'Year'
+      Font.Height = 18
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object Label8: TLabel
+      Left = 231
+      Height = 17
+      Top = 170
+      Width = 93
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'Track'
+      Enabled = False
+      Font.Height = 18
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object seTrack: TSpinEdit
+      Left = 329
+      Height = 23
+      Top = 169
+      Width = 101
+      MaxValue = 9999
+      TabOrder = 7
+    end
+    object Image1: TImage
+      Left = 502
+      Height = 194
+      Top = 0
+      Width = 280
+      Stretch = True
+    end
   end
-  object Button2: TButton
-    Tag = 2
-    Left = 584
-    Height = 25
-    Top = 8
-    Width = 75
-    Caption = 'WMA'
-    OnClick = ReadTag
+  object gbMediaInfo: TGroupBox
+    Left = 0
+    Height = 140
+    Top = 336
+    Width = 805
+    Align = alTop
+    Caption = 'Media Info'
+    ClientHeight = 122
+    ClientWidth = 801
     TabOrder = 2
+    object Label9: TLabel
+      Left = 0
+      Height = 16
+      Top = 64
+      Width = 106
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'Duration'
+      Font.Height = 16
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object leDuration: TLabel
+      Left = 117
+      Height = 16
+      Top = 64
+      Width = 146
+      AutoSize = False
+      ParentColor = False
+    end
+    object Label10: TLabel
+      Left = 0
+      Height = 16
+      Top = 96
+      Width = 106
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'BPM'
+      Font.Height = 16
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object leBPM: TLabel
+      Left = 117
+      Height = 16
+      Top = 96
+      Width = 146
+      AutoSize = False
+      ParentColor = False
+    end
+    object leBitRate: TLabel
+      Left = 407
+      Height = 16
+      Top = 32
+      Width = 146
+      AutoSize = False
+      ParentColor = False
+    end
+    object Label11: TLabel
+      Left = 290
+      Height = 16
+      Top = 32
+      Width = 106
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'BitRate'
+      Font.Height = 16
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object Label12: TLabel
+      Left = 290
+      Height = 17
+      Top = 64
+      Width = 106
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'Sampling'
+      Font.Height = 18
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object leSampling: TLabel
+      Left = 407
+      Height = 16
+      Top = 64
+      Width = 146
+      AutoSize = False
+      ParentColor = False
+    end
+    object Label13: TLabel
+      Left = 290
+      Height = 17
+      Top = 96
+      Width = 106
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'Channels'
+      Font.Height = 18
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object leChannels: TLabel
+      Left = 407
+      Height = 16
+      Top = 96
+      Width = 146
+      AutoSize = False
+      ParentColor = False
+    end
+    object Label14: TLabel
+      Left = 0
+      Height = 16
+      Top = 0
+      Width = 106
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'File Name'
+      Font.Height = 16
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object leFileName: TLabel
+      Left = 117
+      Height = 16
+      Top = 0
+      Width = 665
+      Anchors = [akTop, akLeft, akRight, akBottom]
+      AutoSize = False
+      ParentColor = False
+    end
+    object Label15: TLabel
+      Left = 0
+      Height = 16
+      Top = 32
+      Width = 106
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'Size'
+      Font.Height = 16
+      ParentColor = False
+      ParentFont = False
+      OptimalFill = True
+    end
+    object leSize: TLabel
+      Left = 117
+      Height = 16
+      Top = 32
+      Width = 146
+      AutoSize = False
+      ParentColor = False
+    end
   end
-  object Button3: TButton
-    Tag = 3
-    Left = 664
-    Height = 25
-    Top = 8
-    Width = 75
-    Caption = 'MP3'
-    OnClick = ReadTag
+  object Panel1: TPanel
+    Left = 0
+    Height = 37
+    Top = 0
+    Width = 805
+    Align = alTop
+    ClientHeight = 37
+    ClientWidth = 805
     TabOrder = 3
-  end
-  object Button4: TButton
-    Tag = 4
-    Left = 496
-    Height = 25
-    Top = 40
-    Width = 75
-    Caption = 'OGG'
-    OnClick = ReadTag
-    TabOrder = 4
-  end
-  object Image1: TImage
-    Left = 496
-    Height = 194
-    Top = 88
-    Width = 280
-    Stretch = True
-  end
-  object Label9: TLabel
-    Left = 6
-    Height = 16
-    Top = 368
-    Width = 106
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'Duration'
-    Font.Height = 16
-    ParentColor = False
-    ParentFont = False
-    OptimalFill = True
-  end
-  object leDuration: TLabel
-    Left = 123
-    Height = 16
-    Top = 368
-    Width = 146
-    AutoSize = False
-    ParentColor = False
-  end
-  object Label10: TLabel
-    Left = 6
-    Height = 16
-    Top = 400
-    Width = 106
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'BPM'
-    Font.Height = 16
-    ParentColor = False
-    ParentFont = False
-    OptimalFill = True
-  end
-  object leBPM: TLabel
-    Left = 123
-    Height = 16
-    Top = 400
-    Width = 146
-    AutoSize = False
-    ParentColor = False
-  end
-  object leBitRate: TLabel
-    Left = 413
-    Height = 16
-    Top = 336
-    Width = 146
-    AutoSize = False
-    ParentColor = False
-  end
-  object Label11: TLabel
-    Left = 296
-    Height = 16
-    Top = 336
-    Width = 106
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'BitRate'
-    Font.Height = 16
-    ParentColor = False
-    ParentFont = False
-    OptimalFill = True
-  end
-  object Label12: TLabel
-    Left = 296
-    Height = 17
-    Top = 368
-    Width = 106
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'Sampling'
-    Font.Height = 18
-    ParentColor = False
-    ParentFont = False
-    OptimalFill = True
-  end
-  object leSampling: TLabel
-    Left = 413
-    Height = 16
-    Top = 368
-    Width = 146
-    AutoSize = False
-    ParentColor = False
-  end
-  object Label13: TLabel
-    Left = 296
-    Height = 17
-    Top = 400
-    Width = 106
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'Channels'
-    Font.Height = 18
-    ParentColor = False
-    ParentFont = False
-    OptimalFill = True
-  end
-  object leChannels: TLabel
-    Left = 413
-    Height = 16
-    Top = 400
-    Width = 146
-    AutoSize = False
-    ParentColor = False
-  end
-  object Label14: TLabel
-    Left = 6
-    Height = 16
-    Top = 304
-    Width = 106
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'File Name'
-    Font.Height = 16
-    ParentColor = False
-    ParentFont = False
-    OptimalFill = True
-  end
-  object leFileName: TLabel
-    Left = 123
-    Height = 16
-    Top = 304
-    Width = 337
-    AutoSize = False
-    ParentColor = False
-  end
-  object Label15: TLabel
-    Left = 6
-    Height = 16
-    Top = 336
-    Width = 106
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'Size'
-    Font.Height = 16
-    ParentColor = False
-    ParentFont = False
-    OptimalFill = True
-  end
-  object leSize: TLabel
-    Left = 123
-    Height = 16
-    Top = 336
-    Width = 146
-    AutoSize = False
-    ParentColor = False
-  end
-  object Label1: TLabel
-    Left = 24
-    Height = 17
-    Top = 470
-    Width = 93
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'Artist'
-    Enabled = False
-    Font.Height = 18
-    ParentColor = False
-    ParentFont = False
-    OptimalFill = True
-  end
-  object edArtist: TEdit
-    Left = 122
-    Height = 23
-    Top = 466
-    Width = 384
-    Enabled = False
-    TabOrder = 5
-  end
-  object Label2: TLabel
-    Left = 24
-    Height = 17
-    Top = 502
-    Width = 93
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'Album'
-    Enabled = False
-    Font.Height = 18
-    ParentColor = False
-    ParentFont = False
-    OptimalFill = True
-  end
-  object edAlbum: TEdit
-    Left = 122
-    Height = 23
-    Top = 497
-    Width = 384
-    Enabled = False
-    TabOrder = 6
-  end
-  object Label3: TLabel
-    Left = 24
-    Height = 17
-    Top = 437
-    Width = 93
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'Title'
-    Enabled = False
-    Font.Height = 18
-    ParentColor = False
-    ParentFont = False
-    OptimalFill = True
-  end
-  object edTitle: TEdit
-    Left = 122
-    Height = 23
-    Top = 432
-    Width = 384
-    Enabled = False
-    TabOrder = 7
-  end
-  object Label4: TLabel
-    Left = 24
-    Height = 17
-    Top = 535
-    Width = 93
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'Album Artist'
-    Enabled = False
-    Font.Height = 18
-    ParentColor = False
-    ParentFont = False
-    OptimalFill = True
-  end
-  object edAlbumArtist: TEdit
-    Left = 122
-    Height = 23
-    Top = 530
-    Width = 384
-    Enabled = False
-    TabOrder = 8
-  end
-  object Label5: TLabel
-    Left = 24
-    Height = 17
-    Top = 568
-    Width = 93
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'Genre'
-    Enabled = False
-    Font.Height = 18
-    ParentColor = False
-    ParentFont = False
-    OptimalFill = True
-  end
-  object edGenre: TEdit
-    Left = 122
-    Height = 23
-    Top = 562
-    Width = 384
-    Enabled = False
-    TabOrder = 9
-  end
-  object meComment: TMemo
-    Left = 124
-    Height = 90
-    Top = 626
-    Width = 385
-    Enabled = False
-    TabOrder = 10
-  end
-  object Label6: TLabel
-    Left = 24
-    Height = 17
-    Top = 626
-    Width = 93
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'Comment'
-    Enabled = False
-    Font.Height = 18
-    ParentColor = False
-    ParentFont = False
-    OptimalFill = True
-  end
-  object seYear: TSpinEdit
-    Left = 122
-    Height = 23
-    Top = 594
-    Width = 101
-    Enabled = False
-    MaxValue = 9999
-    TabOrder = 11
-  end
-  object Label7: TLabel
-    Left = 24
-    Height = 17
-    Top = 595
-    Width = 93
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'Year'
-    Enabled = False
-    Font.Height = 18
-    ParentColor = False
-    ParentFont = False
-    OptimalFill = True
-  end
-  object Label8: TLabel
-    Left = 255
-    Height = 17
-    Top = 595
-    Width = 93
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'Track'
-    Enabled = False
-    Font.Height = 18
-    ParentColor = False
-    ParentFont = False
-    OptimalFill = True
-  end
-  object seTrack: TSpinEdit
-    Left = 353
-    Height = 23
-    Top = 594
-    Width = 101
-    Enabled = False
-    MaxValue = 9999
-    TabOrder = 12
-  end
-  object Button5: TButton
-    Tag = 5
-    Left = 584
-    Height = 25
-    Top = 40
-    Width = 75
-    Caption = 'Monkey'
-    OnClick = ReadTag
-    TabOrder = 13
+    object bOpenFile: TButton
+      Tag = 3
+      Left = 24
+      Height = 25
+      Top = 1
+      Width = 75
+      Caption = 'Open'
+      OnClick = ReadTag
+      TabOrder = 0
+    end
+    object bSave: TButton
+      Left = 128
+      Height = 25
+      Top = 1
+      Width = 75
+      Caption = 'Save As..'
+      OnClick = bSaveAsClick
+      TabOrder = 1
+    end
+    object bSave1: TButton
+      Left = 224
+      Height = 25
+      Top = 1
+      Width = 75
+      Caption = 'Save!!'
+      TabOrder = 2
+    end
   end
   object OpenDialog1: TOpenDialog
-    left = 128
-    top = 16
+    left = 344
+    top = 576
+  end
+  object SaveDialog1: TSaveDialog
+    left = 240
+    top = 568
   end
 end
