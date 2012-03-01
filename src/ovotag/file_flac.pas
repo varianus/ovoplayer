@@ -117,9 +117,9 @@ var
   BlockType: integer;
 
 begin
-  Result := inherited LoadFromFile(FileName);
+  Result := inherited LoadFromFile(AFileName);
   try
-    fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
+    fStream := TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
     fStream.Read(Header, sizeof(Header));
     if Header.Marker <> FLAC_IDENTIFIER then
       exit;
