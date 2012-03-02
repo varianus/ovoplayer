@@ -54,8 +54,6 @@ type
   protected
     function GetSize: DWord; override;
   public
-    Tags: TID3Tags;
-  public
     destructor Destroy; override;
     function GetAsString: string; override;
     procedure SetAsString(AValue: string); override;
@@ -162,11 +160,11 @@ begin
   if V1Rec.Header <> 'TAG' then
     exit;
 
-  version := TAG_VERSION_2_4;
+  version := TAG_VERSION_2_3;
   if trim(V1Rec.Artist) <> '' then
   begin
     Frame := TID3Frame.Create('TPE1');
-    Frame.Tags := Self;
+    Frame.Tagger := Self;
     frame.fFlags := 0;
     Frame.AsString := trim(V1Rec.Artist);
     Add(Frame);
@@ -175,7 +173,7 @@ begin
   if trim(V1Rec.Album) <> '' then
   begin
     Frame := TID3Frame.Create('TALB');
-    Frame.Tags := Self;
+    Frame.Tagger := Self;
     frame.fFlags := 0;
     Frame.AsString := trim(V1Rec.Album);
     Add(Frame);
@@ -184,7 +182,7 @@ begin
   if trim(V1Rec.Title) <> '' then
   begin
     Frame := TID3Frame.Create('TIT2');
-    Frame.Tags := Self;
+    Frame.Tagger := Self;
     frame.fFlags := 0;
     Frame.AsString := trim(V1Rec.Title);
     Add(Frame);
@@ -193,7 +191,7 @@ begin
   if trim(V1Rec.Year) <> '' then
   begin
     Frame := TID3Frame.Create('TYER');
-    Frame.Tags := Self;
+    Frame.Tagger := Self;
     frame.fFlags := 0;
     Frame.AsString := trim(V1Rec.Year);
     Add(Frame);
@@ -202,7 +200,7 @@ begin
   if V1Rec.Genre < 147 then
   begin
     Frame := TID3Frame.Create('TCON');
-    Frame.Tags := Self;
+    Frame.Tagger := Self;
     frame.fFlags := 0;
     Frame.AsString := v1Genres[V1Rec.Genre];
     Add(Frame);
@@ -213,14 +211,14 @@ begin
     if trim(V1Rec.Comment) <> '' then
     begin
       Frame := TID3Frame.Create('COMM');
-      Frame.Tags := Self;
+      Frame.Tagger := Self;
       frame.fFlags := 0;
       Frame.AsString := trim(V1Rec.Comment);
       Add(Frame);
     end;
 
     Frame := TID3Frame.Create('TRCK');
-    Frame.Tags := Self;
+    Frame.Tagger := Self;
     frame.fFlags := 0;
     Frame.AsString := IntToStr(v1rec.track);
     Add(Frame);
@@ -231,7 +229,7 @@ begin
     if trim(V1Rec.Comment + V1Rec.stopper + char(V1Rec.track)) <> '' then
     begin
       Frame := TID3Frame.Create('COMM');
-      Frame.Tags := Self;
+      Frame.Tagger := Self;
       frame.fFlags := 0;
       Frame.AsString := trim(V1Rec.Comment + V1Rec.stopper + char(V1Rec.track));
       Add(Frame);
@@ -267,6 +265,9 @@ var
   UseOldTag: boolean;
 begin
   inherited SetCommonTags(CommonTags);
+  if Version = 0  then
+     Version := TAG_VERSION_2_3;
+
   UseOldTag := (Version <= TAG_VERSION_2_2) and not FromV1;
   SetFrameValue(ID3V2_KNOWNFRAME[2, UseOldTag], CommonTags.Artist, TID3Frame);
   SetFrameValue(ID3V2_KNOWNFRAME[1, UseOldTag], CommonTags.Title, TID3Frame);
@@ -367,7 +368,7 @@ begin
     while (AStream.Position < (fSize + SizeOf(header))) and not stop do
     begin
       Frame := TID3Frame.Create;
-      Frame.Tags := self;
+      Frame.Tagger := self;
       if Frame.ReadFromStream(AStream) then
       begin
         Add(Frame);
@@ -438,7 +439,7 @@ end;
 
 destructor TID3Frame.Destroy;
 begin
-  self.Tags := nil;
+  self.Tagger := nil;
   inherited Destroy;
 end;
 
@@ -456,10 +457,10 @@ begin
   if fSize = 0 then
      exit;
 
-  if Tags.Version >= TAG_VERSION_2_3 then
+  if TID3Tags(Tagger).Version >= TAG_VERSION_2_3 then
   begin
     Header.ID := ID;
-    if Tags.Version >= TAG_VERSION_2_4 then
+    if TID3Tags(Tagger).Version >= TAG_VERSION_2_4 then
       header.Size := SyncSafe_Encode(fSize)
     else
       Header.Size := NtoBE(fSize);
@@ -488,7 +489,7 @@ var
   DataSize: Dword;
 begin
   Result := False;
-  if Tags.Version < TAG_VERSION_2_3 then
+  if TID3Tags(Tagger).Version < TAG_VERSION_2_3 then
   begin
     AStream.Read(HeaderOld, SizeOf(HeaderOld));
     id := string(HeaderOld.ID);
@@ -504,13 +505,13 @@ begin
     if not IsValid then
       exit; // Corruption protection
     fFlags := Header.Flags;
-    if Tags.Version >= TAG_VERSION_2_4 then
+    if TID3Tags(Tagger).Version >= TAG_VERSION_2_4 then
       DataSize := SyncSafe_Decode(Header.Size)
     else
       DataSize := {Swap32}BEToN(Header.Size);
   end;
 
-  if DataSize > Tags.size then
+  if DataSize > TID3Tags(Tagger).size then
     exit; // Corruption protection
 
   SetLength(Data, DataSize + 1);

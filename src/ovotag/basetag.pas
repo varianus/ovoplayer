@@ -57,6 +57,7 @@ type
 
   { TFrameElement }
   TFrameElementClass = class of TFrameElement;
+  TTags = class;
 
   TFrameElement = class
   Private
@@ -68,6 +69,7 @@ type
     function GetAsString: string; virtual; abstract;
     procedure SetAsString(AValue: string); virtual; abstract;
   public
+    Tagger : TTags;
     constructor Create; virtual; Overload;
     constructor Create(ID:String); virtual; Overload;
     destructor Destroy; override;
@@ -413,7 +415,11 @@ var
 begin
   Element := FramesByID[ID];
   if Element = nil then
-     Element := FrameClass.Create(ID);
+     begin
+       Element := FrameClass.Create(ID);
+       Element.Tagger:=self;
+       Add(Element);
+     end;
 
   Element.AsString := Value;
 end;
