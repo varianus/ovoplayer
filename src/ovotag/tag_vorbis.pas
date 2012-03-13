@@ -82,9 +82,9 @@ begin
   iSep := pos('=',String(data));
   if iSep > 0 then
      begin
-      ID :=UpperCase(Copy(string(Data), 1, iSep - 1));
-      fValue := UTF8Decode(Copy(string(Data), iSep + 1, MaxInt));
-      Result:=true;
+       ID :=UpperCase(Copy(string(Data), 1, iSep - 1));
+       fValue := UTF8Decode(Copy(string(Data), iSep + 1, MaxInt));
+       Result:=true;
      end;
 end;
 
@@ -184,7 +184,7 @@ begin
   fSize:= Length(Vendor);
   AStream.WriteDWord(FSize);
   if fSize > 0 then;
-     AStream.Write(Vendor[1], fSize);
+     AStream.Write(Vendor[1], fSize+1);
 
   AStream.WriteDWord(Count);
   for i := 0 to Count - 1 do

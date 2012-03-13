@@ -49,6 +49,8 @@ type
     Function DumpInfo: TMediaProperty; override;
   public
     function LoadFromFile(AFileName: Tfilename): boolean; override;
+    function SaveToFile(AFileName: Tfilename): boolean; override;
+//
   end;
 
 implementation
@@ -164,6 +166,82 @@ begin
     fMediaProperty.ChannelMode:= FGetChannelMode;
     fstream.Free;
   end;
+
+end;
+
+function TFlacReader.SaveToFile(AFileName: Tfilename): boolean;
+var
+  SourceStream: TFileStream;
+  DestStream: TFileStream;
+  Header: TFlacHeader;
+  BlockHeader: TMetaDataBlockHeader;
+  BlockLength: integer;
+  BlockType: integer;
+  MemoryStream : TmemoryStream;
+  HaveTags :boolean;
+
+begin
+  inherited SaveToFile(AFilename);
+  SourceStream := TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
+  DestStream := TFileStream.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
+
+  SourceStream.Read(Header, sizeof(Header));
+  if Header.Marker <> FLAC_IDENTIFIER then
+    exit;
+
+  if (Header.MetaDataBlockHeader[1] and $80) <> 0 then
+    exit;
+  HaveTags:= false;
+  DestStream.Write(Header, sizeof(Header));
+  repeat
+    SourceStream.Read(BlockHeader, SizeOf(BlockHeader));
+    BlockType := (BlockHeader[1] and $7F);
+    BlockLength := (BlockHeader[2] shl 16) or (BlockHeader[3] shl 8) or
+      (BlockHeader[4]);
+    case BlockType of
+      BLOCK_TYPE_VORBIS_COMMENT:
+      begin
+        HaveTags := true;
+        SourceStream.Seek(BlockLength, soFromCurrent);
+        MemoryStream := TMemoryStream.Create;
+        fTags.WriteToStream(MemoryStream);
+        MemoryStream.Position:= 0;
+        BlockLength:=  MemoryStream.Size;
+        BlockHeader[2] := (BlockLength and $ff0000) shr 16;
+        BlockHeader[3] := (BlockLength and $00ff00) shr 8;
+        BlockHeader[4] := (BlockLength and $0000ff);
+        DestStream.Write(BlockHeader, SizeOf(BlockHeader));
+        DestStream.CopyFrom(MemoryStream, BlockLength);
+        MemoryStream.Free;
+      end;
+
+      else
+        begin
+          DestStream.Write(BlockHeader, SizeOf(BlockHeader));
+          DestStream.CopyFrom(SourceStream, BlockLength);
+        end;
+    end;
+  until (BlockHeader[1] and $80) <> 0;
+
+  //if not HaveTags then
+  //  begin
+  //    BlockHeader[1] := BLOCK_TYPE_VORBIS_COMMENT;
+  //    MemoryStream := TMemoryStream.Create;
+  //    fTags.WriteToStream(MemoryStream);
+  //    MemoryStream.Position:= 0;
+  //    BlockLength:=  MemoryStream.Size;
+  //    BlockHeader[2] := (BlockLength and $ff0000) shr 16;
+  //    BlockHeader[3] := (BlockLength and $00ff00) shr 8;
+  //    BlockHeader[4] := (BlockLength and $0000ff);
+  //    DestStream.Write(BlockHeader, SizeOf(BlockHeader));
+  //    DestStream.CopyFrom(MemoryStream, BlockLength);
+  //    MemoryStream.Free;
+  //  end;
+
+  DestStream.CopyFrom(SourceStream, SourceStream.Size - SourceStream.Position);
+
+  SourceStream.Free;
+  DestStream.Free;
 
 end;
 
