@@ -34,6 +34,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   {$DEFINE ASKMMKEYSMODE} // Ask for multimedia keys capture mode
   {.$DEFINE GSTREAMER} // GStreamer need glib
 {$ENDIF UNIX}
+{$IFDEF WINDOWS}
+  {$DEFINE DSHOW} // Work only on windows
+{$ENDIF WINDOWS}
 
 {$DEFINE VLC} //
 {$DEFINE XINE} //
@@ -41,4 +44,4 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
 
-
+
