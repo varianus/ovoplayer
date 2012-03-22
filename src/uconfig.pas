@@ -75,6 +75,7 @@ type
     tsMediaLibrary: TTabSheet;
     tsPlaylist: TTabSheet;
     procedure bAddDirClick(Sender: TObject);
+    procedure bRemoveDirClick(Sender: TObject);
     procedure bRescanLibraryClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure CancelButtonClick(Sender: TObject);
@@ -163,9 +164,16 @@ begin
     lbMLPath.Items.Add(BackEnd.SelectDirectoryDialog.FileName);
 end;
 
+procedure TfConfig.bRemoveDirClick(Sender: TObject);
+begin
+  if lbMLPath.ItemIndex > -1 then
+     lbMLPath.Items.Delete(lbMLPath.ItemIndex);
+end;
+
 procedure TfConfig.bRescanLibraryClick(Sender: TObject);
 begin
-  BackEnd.MediaLibrary.Scan(BackEnd.Config.MediaLibraryParam.LibraryPaths);
+//  BackEnd.MediaLibrary.Scan(BackEnd.Config.MediaLibraryParam.LibraryPaths);
+    BackEnd.MediaLibrary.Scan(lbMLPath.Items);
 end;
 
 procedure TfConfig.Button1Click(Sender: TObject);
@@ -351,4 +359,4 @@ begin
   //GENERAL
 end;
 
-end.
+end.
