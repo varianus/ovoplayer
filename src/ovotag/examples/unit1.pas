@@ -53,6 +53,7 @@ type
     SaveDialog1: TSaveDialog;
     seTrack: TSpinEdit;
     seYear: TSpinEdit;
+    procedure bSave1Click(Sender: TObject);
     procedure bSaveAsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ReadTag(Sender: TObject);
@@ -177,6 +178,14 @@ begin
   MapToTags;
   TagReader.SetCommonTags(CommonTags);
   TagReader.SaveToFile(SaveDialog1.FileName);
+
+end;
+
+procedure TForm1.bSave1Click(Sender: TObject);
+begin
+  MapToTags;
+  TagReader.SetCommonTags(CommonTags);
+  TagReader.UpdateFile;
 
 end;
 

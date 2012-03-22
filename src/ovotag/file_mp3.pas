@@ -454,14 +454,18 @@ var
   SourceStream: TFileStream;
   DestStream: TFileStream;
 begin
+  result:= true;
   inherited SaveToFile(AFilename);
   SourceStream := TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
   DestStream := TFileStream.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
 
-  SourceStream.Seek(fTags.Size, soFromBeginning);
-
-  fTags.WriteToStream(DestStream);
-  DestStream.CopyFrom(SourceStream, SourceStream.Size - SourceStream.Position);
+  Try
+    SourceStream.Seek(fTags.Size, soFromBeginning);
+    fTags.WriteToStream(DestStream);
+    DestStream.CopyFrom(SourceStream, SourceStream.Size - SourceStream.Position);
+  Except
+    Result:=false;
+  end;
 
   SourceStream.Free;
   DestStream.Free;

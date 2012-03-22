@@ -86,7 +86,7 @@ begin
   end
   else
   begin
-    Result := 0;
+    Result := 1;
   end;
 end;
 

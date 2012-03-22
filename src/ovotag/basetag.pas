@@ -160,6 +160,7 @@ type
     Procedure SetCommonTags(CommonTags: TCommonTags);
     function LoadFromFile(AFileName: Tfilename): boolean; virtual;
     function SaveToFile(AFileName: Tfilename): boolean; virtual;
+    function UpdateFile: boolean; virtual;
   public
     Property FileName : string Read FFileName;
     property Tags: TTags read GetTags;
@@ -168,6 +169,7 @@ type
 
 
 implementation
+uses FileUtil;
 
 operator = (t1 : TCommonTags; t2 : TCommonTags) b : boolean;
 begin
@@ -285,6 +287,22 @@ end;
 function TTagReader.SaveToFile(AFileName: Tfilename): boolean;
 begin
   Result := false;
+end;
+
+function TTagReader.UpdateFile: boolean;
+var
+  SaveFile : string;
+begin
+//  SaveFile:=  ExtractFileNameOnly(FileName) + '.~.'+ ExtractFileExt(FileName);
+  SaveFile:=  ChangeFileExt(FileName, '.~.'+ ExtractFileExt(FileName));
+
+  result := SaveToFile(SaveFile);
+
+  if Result then
+     result := DeleteFile(FileName);
+
+  result := RenameFile( SaveFile, FileName);
+
 end;
 
 { TTags }
