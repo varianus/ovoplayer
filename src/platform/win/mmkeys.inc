@@ -113,6 +113,7 @@ begin
   RegisterHotKey(hwindow, Longint(ecPrevious), 0, VK_MEDIA_PREV_TRACK);
   RegisterHotKey(hwindow, Longint(ecPlay),     0, VK_MEDIA_PLAY_PAUSE);
   RegisterHotKey(hwindow, Longint(ecNext),     0, VK_MEDIA_NEXT_TRACK);
+
 end;
 
 procedure TkeyCaptureWin.EndGrab;
@@ -121,6 +122,8 @@ begin
   UnRegisterHotkey( hwindow, Longint(ecPrevious));
   UnRegisterHotkey( hwindow, Longint(ecPlay));
   UnRegisterHotkey( hwindow, Longint(ecNext));
+
+  DestroyWindow(hwindow);
 end;
 
 constructor TMultimediaKeys.Create(Mode: Integer);
