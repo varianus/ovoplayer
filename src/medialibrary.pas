@@ -205,10 +205,14 @@ begin
 
   for I := 0 to FileList.Count - 1 do
     begin
+      try
       tags := AudioTag.ExtractTags(FileList[i]);
       if trim(tags.Title) = '' then
          tags.Title := ChangeFileExt(ExtractFileName(FileList[i]), '');
       Synchronize(@Callback);
+      Except
+        DebugLn('Error reading ', FileList[i]);
+      end;
     end;
   FileList.free;
 end;
