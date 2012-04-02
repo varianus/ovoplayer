@@ -186,8 +186,38 @@ var
   BlockHeader: VorbisHeader;
   TagHeader: VorbisTag;
   i:Integer;
-  crc, savepos, offs : DWORD;
-
+  crc, savepos, offs, OldSize : DWORD;
+  LacingArray: array [1..$FF] of byte;
+    procedure SetLacingValues(const NewTagSize: integer);
+    var
+      Index, Position, Value: integer;
+      Buffer: array [1..$FF] of byte;
+    begin
+      { Set new lacing values for the second Ogg page }
+      Position := 1;
+      Value    := 0;
+      for Index := header.page_segments downto 1 do
+        begin
+        if LacingArray[Index] < $FF then
+          begin
+          Position := Index;
+          Value    := 0;
+          end;
+        Inc(Value, LacingArray[Index]);
+        end;
+      Value := Value + NewTagSize - OldSize;// - SizeOf(Header) - SizeOf(TagHeader) - header.page_segments);
+      { Change lacing values at the beginning }
+      for Index := 1 to Value div $FF do
+        Buffer[Index] := $FF;
+      Buffer[(Value div $FF) + 1] := Value mod $FF;
+      if Position < header.page_segments then
+        for Index := Position + 1 to header.page_segments do
+          Buffer[Index - Position + (Value div $FF) + 1] :=
+            LacingArray[Index];
+      header.page_segments:= header.page_segments - Position + (Value div $FF) + 1;
+      for Index := 1 to header.page_segments do
+        LacingArray[Index] := Buffer[Index];
+    end;
 
 begin
   Result := inherited SaveToFile(AFileName);
@@ -212,27 +242,29 @@ begin
     Header.page_checksum:=0;
     crc := 0;
 
-    DestStream.Write(Header, sizeof(Header));
-
     offs:=0;
     for i := 1 to Header.page_segments do
         begin
           Start := SourceStream.ReadByte;
           Offs:= offs + Start;
-          DestStream.WriteByte(Start);
+          LacingArray[i]:=Start;
         end;
 
     SourceStream.Read(TagHeader, SizeOf(TagHeader));
-    DestStream.Write(TagHeader, sizeof(TagHeader));
+    oldSize:=0;
 
     dw := SourceStream.ReadDWord;
+    OldSize:= OldSize+ Dw + SizeOf(DWord);
+
     SourceStream.Seek(dw, soFromCurrent);
     FrameCount := SourceStream.ReadDWord;
+    OldSize:= OldSize+ SizeOf(DWord);
 
     for i := 0 to FrameCount - 1 do
     begin
       dw := SourceStream.ReadDWord;
       SourceStream.Seek(dw, soFromCurrent);
+      OldSize:= OldSize+ Dw + SizeOf(DWord);
     end;
 
     MemoryStream := TMemoryStream.Create;
@@ -240,6 +272,18 @@ begin
     fTags.WriteToStream(MemoryStream);
 
     MemoryStream.Position:=0;
+
+    SetLacingValues(MemoryStream.Size);
+
+    DestStream.Write(Header, sizeof(Header));
+    offs:= 0;
+    for i := 1 to Header.page_segments do
+        begin
+          Offs:= offs + LacingArray[i];
+          DestStream.WriteByte(LacingArray[i]);
+        end;
+    DestStream.Write(TagHeader, sizeof(TagHeader));
+
     DestStream.CopyFrom(MemoryStream, MemoryStream.Size);
     DestStream.CopyFrom(SourceStream, SourceStream.Size - SourceStream.Position);
 

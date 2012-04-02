@@ -181,10 +181,9 @@ var
   i: cardinal;
   Frame: TVorbisFrame;
 begin
-  fSize:= Length(Vendor);
+  fSize:= Length(Vendor) + 1;
   AStream.WriteDWord(FSize);
-  if fSize > 0 then;
-     AStream.Write(Vendor[1], fSize+1);
+  AStream.Write(Vendor[1], fSize);
 
   AStream.WriteDWord(Count);
   for i := 0 to Count - 1 do
