@@ -84,7 +84,7 @@ type
 
 implementation
 uses
-  FPCAdds;
+  FPCAdds, math;
 
 Procedure IntQuickSort(FList: PPointerList; L, R : Longint;
                      Compare: TPlayListSortCompare);

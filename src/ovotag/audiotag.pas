@@ -72,9 +72,13 @@ end;
 
 function LoadTags(var Song: Tsong): boolean;
 begin
-  Song.SetTags(ExtractTags(Song.FullName));
-  Song.TagLoaded := True;
-  Result := Song.Tags.Title = '';
+  Result := FileExists(Song.FullName);
+  if result then
+     begin
+       Song.SetTags(ExtractTags(Song.FullName));
+       Song.TagLoaded := True;
+       Result := Song.Tags.Title = '';
+     end;
 
 end;
 

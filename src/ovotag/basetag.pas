@@ -94,7 +94,6 @@ type
   protected
     function GetAsString: string;  override;
     procedure SetAsString(AValue: string); override;
-    function ReadFromStream(AStream:TStream):boolean; override;
   Public
     Description: String;
     MIMEType: String;
@@ -102,6 +101,7 @@ type
 
     constructor Create; override;
     destructor Destroy; override;
+    function ReadFromStream(AStream:TStream):boolean; override;
     Property FrameRef: TFrameElement read FFrameRef write SetFrameRef;
     Property Image: TStream read FImage write SetImage;
   end;
