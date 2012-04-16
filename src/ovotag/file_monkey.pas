@@ -44,6 +44,7 @@ type
     function GetTags: TTags; override;
   public
     function LoadFromFile(AFileName: Tfilename): boolean; override;
+    function SaveToFile(AFileName: Tfilename): boolean; override;
   end;
 
 implementation
@@ -94,6 +95,17 @@ begin
   finally
     fstream.Free;
   end;
+
+end;
+
+function TMonkeyReader.SaveToFile(AFileName: Tfilename): boolean;
+var
+  SourceStream: TFileStream;
+  DestStream: TFileStream;
+begin
+  Result:=inherited SaveToFile(AFileName);
+  SourceStream := TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
+  DestStream := TFileStream.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
 
 end;
 

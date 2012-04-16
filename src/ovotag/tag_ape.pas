@@ -40,6 +40,7 @@ type
     procedure SetAsString(AValue: string); override;
   public
     function ReadFromStream(AStream: TStream): boolean; override;
+    function WriteToStream(AStream: TStream): DWord; override;
   end;
 
   { TAPETags }
@@ -50,13 +51,15 @@ type
   public
     FromV1: Boolean;
     Function GetCommonTags: TCommonTags; override;
+    procedure SetCommonTags(CommonTags: TCommonTags); override;
     function ReadFromStream(AStream: TStream): boolean; override;
+    function WriteToStream(AStream: TStream): DWord; override;
   end;
 
 
 implementation
 uses
-  tag_id3v2, id3v1genres;
+  Commonfunctions, tag_id3v2, id3v1genres;
 
 const
   APE_IDENTIFIER :string = 'APETAGEX';
@@ -123,12 +126,26 @@ begin
   result:=true;
 end;
 
+function TAPEFrame.WriteToStream(AStream: TStream): DWord;
+var
+  fSize:Cardinal;
+begin
+  fSize:= Length(fValue);
+  AStream.WriteDWord(fSize);
+  AStream.WriteDWord(DataType);
+  AStream.WriteAnsiString(ID);
+  AStream.WriteByte(0);
+  AStream.Write(fValue[1],fSize);
+  Result := 4+4+Length(id) +1 +fSize;
+
+end;
+
 { TAPETags }
 
 function TAPETags.ImportFromID3V1(AStream: TStream): boolean;
 var
   V1Rec : TID3V1Record;
-  Frame : TID3Frame;
+  Frame : TAPEFrame;
 begin
   result := false;
   AStream.Seek(AStream.Size - SizeOf(V1Rec), soFromBeginning);
@@ -136,43 +153,43 @@ begin
   if V1Rec.Header <> 'TAG' then
     exit;
 
-  Frame := TID3Frame.Create('ARTIST');
+  Frame := TAPEFrame.Create('ARTIST');
   Frame.AsString := trim(V1Rec.Artist);
   Add(Frame);
 
-  Frame := TID3Frame.Create('ALBUM');
+  Frame := TAPEFrame.Create('ALBUM');
   Frame.AsString := trim(V1Rec.Album);
   Add(Frame);
 
-  Frame := TID3Frame.Create('TITLE');
+  Frame := TAPEFrame.Create('TITLE');
   Frame.AsString := trim(V1Rec.Title);
   Add(Frame);
 
-  Frame := TID3Frame.Create('YEAR');
+  Frame := TAPEFrame.Create('YEAR');
   Frame.AsString := trim(V1Rec.Year);
   Add(Frame);
 
   if V1Rec.Genre < 147 then
     begin
-      Frame := TID3Frame.Create('GENRE');
+      Frame := TAPEFrame.Create('GENRE');
       Frame.AsString := v1Genres[V1Rec.Genre];
       Add(Frame);
     end;
 
   if V1Rec.Stopper = #00 then
     begin
-      Frame := TID3Frame.Create('COMMENT');
+      Frame := TAPEFrame.Create('COMMENT');
       Frame.AsString := trim(V1Rec.Comment);
       Add(Frame);
 
-      Frame := TID3Frame.Create('TRACK');
+      Frame := TAPEFrame.Create('TRACK');
       Frame.AsString := inttostr(v1rec.track);
       Add(Frame);
 
     end
   else
   begin
-    Frame := TID3Frame.Create('COMMENT');
+    Frame := TAPEFrame.Create('COMMENT');
     Frame.AsString := trim(V1Rec.Comment + V1Rec.stopper + char(V1Rec.track));
     Add(Frame);
   end;
@@ -194,6 +211,28 @@ begin
   Result.Year := GetFrameValue('YEAR');
   if Result.AlbumArtist = '' then
      Result.AlbumArtist := result.Artist;
+end;
+
+procedure TAPETags.SetCommonTags(CommonTags: TCommonTags);
+begin
+  inherited SetCommonTags(CommonTags);
+  if CommonTags.Album <> '' then
+     SetFrameValue('ALBUM', CommonTags.Album, TAPEFrame);
+  if CommonTags.AlbumArtist <> '' then
+     SetFrameValue('ALBUMARTIST', CommonTags.AlbumArtist, TAPEFrame);
+  if CommonTags.Artist <> '' then
+     SetFrameValue('ARTIST', CommonTags.Artist, TAPEFrame);
+  if CommonTags.Comment <> '' then
+     SetFrameValue('COMMENT', CommonTags.Comment, TAPEFrame);
+  if CommonTags.Genre <> '' then
+     SetFrameValue('GENRE', CommonTags.Genre, TAPEFrame);
+  if CommonTags.Title <> '' then
+     SetFrameValue('TITLE', CommonTags.Title, TAPEFrame);
+  if CommonTags.TrackString <> '' then
+     SetFrameValue('TRACKNUMBER', CommonTags.TrackString, TAPEFrame);
+  if CommonTags.Year <> '' then
+     SetFrameValue('DATE', CommonTags.Year, TAPEFrame);
+
 end;
 
 function TAPETags.ReadFromStream(AStream: TStream): boolean;
@@ -246,6 +285,32 @@ begin
 
   finally
   end;
+end;
+
+function TAPETags.WriteToStream(AStream: TStream): DWord;
+var
+  header :  TAPEHeader;
+  i: cardinal;
+  Totsize: DWOrd;
+  HeaderPos : integer;
+begin
+
+  HeaderPos:= AStream.Position;
+  header.Marker := APE_IDENTIFIER;
+  header.count:= Count;
+  header.versionNumber:=2000;
+  header.flags := 0;
+  header.flags := SetBit(header.flags, 30);
+  header.flags := SetBit(header.flags, 29);
+  AStream.Write(header, SizeOf(header));
+  Totsize:=0;
+  for i := 0 to Count do
+     Totsize := Totsize + Frames[i].WriteToStream(AStream);
+
+  header.TagSize:=Totsize;
+  AStream.Seek(HeaderPos, soFromBeginning);
+  AStream.Write(header, SizeOf(header));
+
 end;
 
 end.
