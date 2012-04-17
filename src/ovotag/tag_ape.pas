@@ -27,7 +27,20 @@ interface
 uses
   Classes, SysUtils, baseTag;
 
+const
+  APE_IDENTIFIER :string = 'APETAGEX';
+
 type
+
+  TAPEHeader = packed record
+    Marker: array[1..8] of ansichar;
+    versionNumber:dword;
+    TagSize:DWORD;
+    count:DWORD;
+    flags:DWORD;
+    reserved:array[1..8] of byte;
+  end;
+
 
   { TAPEFrame }
 
@@ -61,22 +74,7 @@ implementation
 uses
   Commonfunctions, tag_id3v2, id3v1genres;
 
-const
-  APE_IDENTIFIER :string = 'APETAGEX';
-
-type
-
-  TAPEHeader = packed record
-    Marker: array[1..8] of ansichar;
-    versionNumber:dword;
-    TagSize:DWORD;
-    count:DWORD;
-    flags:DWORD;
-    reserved:array[1..8] of byte;
-  end;
 { TAPEFrame }
-
-
 
 function TAPEFrame.GetAsString: string;
 begin
@@ -119,10 +117,10 @@ begin
       NextChar:= ansichar(AStream.ReadByte);
     end;
   Id := tmpName;
-  SetLength(Data, fSize + 1);
+  SetLength(Data, fSize+1);
 
   AStream.Read(Data[0], fSize);
-  fValue:=string(Data) +#0;
+  fValue:=string(Data) ;
   result:=true;
 end;
 
@@ -133,10 +131,10 @@ begin
   fSize:= Length(fValue);
   AStream.WriteDWord(fSize);
   AStream.WriteDWord(DataType);
-  AStream.WriteAnsiString(ID);
+  AStream.Write(ID[1],Length(id));
   AStream.WriteByte(0);
   AStream.Write(fValue[1],fSize);
-  Result := 4+4+Length(id) +1 +fSize;
+  Result := 9 + Length(id) +fSize;
 
 end;
 
@@ -293,6 +291,7 @@ var
   i: cardinal;
   Totsize: DWOrd;
   HeaderPos : integer;
+  MemStream : Tmemorystream;
 begin
 
   HeaderPos:= AStream.Position;
@@ -300,15 +299,24 @@ begin
   header.count:= Count;
   header.versionNumber:=2000;
   header.flags := 0;
-  header.flags := SetBit(header.flags, 30);
-  header.flags := SetBit(header.flags, 29);
-  AStream.Write(header, SizeOf(header));
-  Totsize:=0;
-  for i := 0 to Count do
-     Totsize := Totsize + Frames[i].WriteToStream(AStream);
+  for i := 1 to 8 do
+    header.reserved[i] := $0;
+  header.flags := header.flags or (1 shl 31);
+  header.flags := header.flags or (1 shl 29);
 
-  header.TagSize:=Totsize;
-  AStream.Seek(HeaderPos, soFromBeginning);
+  MemStream := TMemoryStream.create;
+  Totsize:=0;
+  for i := 0 to Count -1 do
+     Totsize := Totsize + Frames[i].WriteToStream(MemStream);
+
+  header.TagSize:=Totsize + SizeOf(header);
+  AStream.Write(header, SizeOf(header));
+  MemStream.Position:=0;
+  AStream.CopyFrom(MemStream, MemStream.size);
+  MemStream.Free;
+
+  header.flags := 0;
+  header.flags :=  header.flags or (1 shl 31);
   AStream.Write(header, SizeOf(header));
 
 end;
