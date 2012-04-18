@@ -1,5 +1,5 @@
 object fMainForm: TfMainForm
-  Left = 419
+  Left = 317
   Height = 694
   Top = 139
   Width = 866
@@ -15,7 +15,7 @@ object fMainForm: TfMainForm
   OnHide = FormHide
   OnResize = FormResize
   OnShow = FormShow
-  LCLVersion = '0.9.31'
+  LCLVersion = '1.1'
   object pcMain: TPageControl
     Left = 0
     Height = 674
@@ -30,7 +30,7 @@ object fMainForm: TfMainForm
     Options = [nboMultiLine, nboHidePageListPopup]
     object tsCollection: TTabSheet
       Caption = 'Collection'
-      ClientHeight = 648
+      ClientHeight = 646
       ClientWidth = 235
       object pnlCollection: TPanel
         Left = 0
@@ -44,12 +44,12 @@ object fMainForm: TfMainForm
         TabOrder = 0
         object cbGroupBy: TComboBox
           Left = 4
-          Height = 21
+          Height = 23
           Hint = 'Group song'
           Top = 6
           Width = 228
           Anchors = [akTop, akLeft, akRight]
-          ItemHeight = 13
+          ItemHeight = 15
           ItemIndex = 0
           Items.Strings = (
             'AlbumArtist / Album'
@@ -64,7 +64,7 @@ object fMainForm: TfMainForm
         end
         object edtFilter: TLabeledEdit
           Left = 47
-          Height = 21
+          Height = 23
           Hint = 'Filter'
           Top = 38
           Width = 165
@@ -74,10 +74,10 @@ object fMainForm: TfMainForm
           EditLabel.AnchorSideRight.Control = edtFilter
           EditLabel.AnchorSideBottom.Control = edtFilter
           EditLabel.AnchorSideBottom.Side = asrBottom
-          EditLabel.Left = 19
-          EditLabel.Height = 14
+          EditLabel.Left = 17
+          EditLabel.Height = 16
           EditLabel.Top = 41
-          EditLabel.Width = 25
+          EditLabel.Width = 27
           EditLabel.Caption = 'Filter'
           EditLabel.ParentColor = False
           LabelPosition = lpLeft
@@ -137,7 +137,7 @@ object fMainForm: TfMainForm
       end
       object CollectionTree: TVirtualStringTree
         Left = 0
-        Height = 469
+        Height = 467
         Top = 70
         Width = 235
         Align = alClient
@@ -159,7 +159,7 @@ object fMainForm: TfMainForm
       object gbStats: TGroupBox
         Left = 0
         Height = 109
-        Top = 539
+        Top = 537
         Width = 235
         Align = alBottom
         Caption = 'Stats'
@@ -666,6 +666,9 @@ object fMainForm: TfMainForm
         Height = 107
         Top = 4
         Width = 124
+        OnDblClick = imgCoverDblClick
+        ParentShowHint = False
+        ShowHint = True
         Stretch = True
       end
       object Title: TLabel

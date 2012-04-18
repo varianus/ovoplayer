@@ -29,7 +29,7 @@ uses
   Dialogs, ComCtrls, Menus, ExtCtrls, Buttons, StdCtrls, Song, uOSD, playlist,
   AudioEngine, GUIBackEnd, Config, VirtualTrees,
   DefaultTranslator, Grids, EditBtn, ActnList, customdrawncontrols,
-  customdrawn_common, customdrawn_ovoplayer;
+  customdrawn_common, customdrawn_ovoplayer, ucover;
 
 type
   TSortFields = record
@@ -195,6 +195,7 @@ type
     procedure FormHide(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure imgCoverDblClick(Sender: TObject);
     procedure lvPlayListBeforeCellPaint(Sender: TBaseVirtualTree; TargetCanvas: TCanvas;
       Node: PVirtualNode; Column: TColumnIndex; CellPaintMode: TVTCellPaintMode; CellRect: TRect;
       var ContentRect: TRect);
@@ -478,6 +479,7 @@ begin
        f.Tags.Images[0].image.Position:=0;
        try
           imgCover.Picture.LoadFromStream(f.Tags.Images[0].image);
+          imgCover.Hint:= 'Embedded in file';
           imgloaded:= true;
        Except
        end;
@@ -490,12 +492,13 @@ begin
       if (imgName <> '') and (imgName <> CurrentCover) then
         begin
           imgCover.Picture.LoadFromFile(imgName);
+          imgCover.Hint:=imgName;
           CurrentCover := imgName;
         end;
      end;
 
   if BackEnd.Config.NotificationParam.Kind = npkOSD then
-    ShowOSD(BackEnd.PlayList.CurrentItem, imgCover.Picture);
+     ShowOSD(BackEnd.PlayList.CurrentItem, imgCover.Picture);
 
   if BackEnd.Config.NotificationParam.Kind = npkNotifications then
     begin
@@ -830,6 +833,21 @@ begin
        ShowMessage(rMissingConfig);
        ActShowPreferences.Execute;
      end;
+
+end;
+
+procedure TfMainForm.imgCoverDblClick(Sender: TObject);
+var
+  coverForm: TfCover;
+begin
+  coverForm := TfCover.Create(Self);
+  try
+    coverForm.ImageCover.Picture.Assign(imgCover.Picture);
+    coverForm.SetSize(imgCover.Picture.Height,imgCover.Picture.Width);
+    coverForm.ShowModal;
+  finally
+     coverForm.free;
+  end;
 
 end;
 
