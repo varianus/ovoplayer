@@ -21,6 +21,7 @@ type
 
   TCDDrawerOvoPlayer = class(TCDDrawerCommon)
   public
+    function GetMeasures(AMeasureID: Integer): Integer; override;
     // General drawing routines
     procedure DrawSlider(ADest: TCanvas; ADestPos: TPoint; ASize: TSize; AState: TCDControlState); override;
     // ===================================
@@ -33,6 +34,20 @@ type
 
 implementation
 
+function TCDDrawerOvoPlayer.GetMeasures(AMeasureID: Integer): Integer;
+begin
+  case AMeasureID of
+  //
+  TCDTRACKBAR_LEFT_SPACING: Result := 7;
+  TCDTRACKBAR_RIGHT_SPACING: Result := 7;
+  TCDTRACKBAR_TOP_SPACING: Result := 5;
+  TCDTRACKBAR_FRAME_HEIGHT: Result := DPIAdjustment(14);
+  else
+    result := Inherited  GetMeasures(AMeasureID);
+  end;
+end;
+
+
 procedure TCDDrawerOvoPlayer.DrawSlider(ADest: TCanvas; ADestPos: TPoint;
   ASize: TSize; AState: TCDControlState);
 var
@@ -43,6 +58,7 @@ begin
   ADest.FillRect(lRect);
   ADest.Frame3d(lRect, clWhite, clGray, 2);
 end;
+
 
 procedure TCDDrawerOvoPlayer.DrawTrackBar(ADest: TCanvas;
   ASize: TSize; AState: TCDControlState; AStateEx: TCDPositionedCStateEx);
@@ -55,6 +71,7 @@ var
   pStepWidth: Double;
   lSize, lMeasureSize: TSize;
   lValue5, lValue11: Integer;
+  lReachedPos: Integer;
 begin
   lValue5 := DPIAdjustment(5);
   lValue11 := DPIAdjustment(11);
@@ -66,8 +83,10 @@ begin
 
   // Preparations
   StepsCount := AStateEx.PosCount;
-  if StepsCount > 0 then pStepWidth := (lMeasureSize.cx - CDBarSpacing) / (StepsCount-1)
+  if StepsCount > 0 then pStepWidth := (lMeasureSize.cx - CDBarSpacing) / (StepsCount + 1)
   else pStepWidth := 0.0;
+
+  lReachedPos := Round(pStepWidth*AStateEx.Position);
 
   // Background
 
@@ -90,13 +109,19 @@ begin
        GetMeasures(TCDTRACKBAR_LEFT_SPACING));
     lSize := Size(GetMeasures(TCDTRACKBAR_FRAME_HEIGHT), ASize.CY - CDBarSpacing);
   end;
+
+  ADest.Brush.Color := Palette.Highlight;
+  ADest.Pen.Style := psClear;
+  ADest.Rectangle(Bounds(lPoint.X, lPoint.Y, lReachedPos, lSize.cy));
+
   ADest.Brush.Color := Palette.Window;
   ADest.Pen.Style := psClear;
-  ADest.Rectangle(Bounds(lPoint.X, lPoint.Y, lSize.cx, lSize.cy));
+  ADest.Rectangle(Bounds(lReachedPos + GetMeasures(TCDTRACKBAR_LEFT_SPACING), lPoint.Y, lSize.cx -lReachedPos -1, lSize.cy));
+
   DrawSunkenFrame(ADest, lPoint, lSize);
 
   // Draw the slider
-  lTickmarkLeft := GetMeasures(TCDTRACKBAR_LEFT_SPACING) + Round(pStepWidth*AStateEx.Position);
+  lTickmarkLeft := GetMeasures(TCDTRACKBAR_LEFT_SPACING) + lReachedPos;
   lTickmarkTop := GetMeasures(TCDTRACKBAR_TOP_SPACING) + GetMeasures(TCDTRACKBAR_FRAME_HEIGHT)+5;
   ADest.Pen.Style := psSolid;
   ADest.Pen.Color := clBlack;
