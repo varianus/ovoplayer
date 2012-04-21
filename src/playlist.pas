@@ -29,8 +29,9 @@ uses
 
 type
 
-  TplSortField = (stNone, stTitle, StAlbum, stDuration,  stTrack, stGenre,
+  TplSortField = (stNone, stTitle, StAlbum, stArtist, stDuration,  stTrack, stGenre,
                   stYear, stAlbumArtist, stFileName);
+
   TplSortDirection = (sdplAscending, sdplDiscending);
   TplRepeat = (rptNone, rptTrack, rptAlbum, rptPlayList);
 
@@ -123,6 +124,7 @@ begin
   case FSortField of
     stTitle      : result:= CompareStr(s1.Title,s2.Title);
     StAlbum      : result:= CompareStr(s1.Tags.Album, s2.Tags.Album);
+    StArtist     : result:= CompareStr(s1.Tags.Artist, s2.Tags.AlbumArtist);
     stDuration   : result:= CompareValue(s1.Tags.Duration, s2.Tags.Duration);
     stTrack : begin
                  result:= CompareStr(s1.Tags.Album, s2.Tags.Album);
@@ -146,8 +148,13 @@ function TPlayList.EnqueueFile(FileName: TFileName): integer;
 var
   Song: TSong;
 begin
-  song   := TSong.Create(FileName);
-  Result := Add(Song);
+  if FileExists(FileName) then
+     begin
+      song   := TSong.Create(FileName);
+      Result := Add(Song);
+     end
+  else
+    Result := -1;
 end;
 
 function TPlayList.Add(ASong: TSong): integer;
@@ -395,4 +402,4 @@ begin
   Sort;
 end;
 
-end.
+end.
