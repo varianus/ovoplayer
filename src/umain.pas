@@ -909,14 +909,14 @@ begin
   case Column of
     1: CellText := IntToStr(node^.Index + 1);
     2: CellText := ASong.Title;
-    3: CellText := ASong.Tags.Album;
-    4: CellText := TimeToStr(ASong.Tags.Duration / MSecsPerDay);
-    5: CellText := ASong.Tags.TrackString;
-    6: CellText := ASong.Tags.Genre;
-    7: CellText := ASong.Tags.Year;
-    8: CellText := ASong.Tags.AlbumArtist;
-    9: CellText := ASong.FileName;
-   10: CellText := '5';
+    3: CellText := ASong.Tags.Artist;
+    4: CellText := ASong.Tags.Album;
+    5: CellText := TimeToStr(ASong.Tags.Duration / MSecsPerDay);
+    6: CellText := ASong.Tags.TrackString;
+    7: CellText := ASong.Tags.Genre;
+    8: CellText := ASong.Tags.Year;
+    9: CellText := ASong.Tags.AlbumArtist;
+   10: CellText := ASong.FileName;
   end;
 
 end;
@@ -952,13 +952,14 @@ begin
 
   case HitInfo.Column  of
     2 : SortField := stTitle;
-    3 : SortField := StAlbum;
-    4 : SortField := stDuration;
-    5 : SortField := stTrack;
-    6 : SortField := stGenre ;
-    7 : SortField := stYear;
-    8 : SortField := stAlbumArtist;
-    9 : SortField := stFileName;
+    3 : SortField := stArtist;
+    4 : SortField := StAlbum;
+    5 : SortField := stDuration;
+    6 : SortField := stTrack;
+    7 : SortField := stGenre ;
+    8 : SortField := stYear;
+    9 : SortField := stAlbumArtist;
+   10 : SortField := stFileName;
   else
     SortField:= stNone;
   end;
@@ -1468,4 +1469,4 @@ begin
 
 end;
 
-end.
+end.
