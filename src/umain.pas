@@ -265,10 +265,10 @@ type
     procedure ReloadPlayList;
     procedure OnEngineCommand(Sender: Tobject; Command : TEngineCommand);
     procedure OnExternalCommand(Sender: Tobject; Command : String);
+    procedure SaveConfig(Sender: TObject);
+    procedure ReadConfig(Sender: TObject);
     procedure RemoveSelectionFromPlaylist;
 
-  public
-    { public declarations }
   end;
 
 var
@@ -440,6 +440,7 @@ begin
     end
   else
     begin
+      SaveConfig(nil);
       CloseAction:=caFree;
     end;
 
@@ -736,6 +737,7 @@ begin
 
   BackEnd.OnPlayListChange := @PlayListChange;
   BackEnd.AudioEngine.OnSongStart := @BackEndSongStart;
+  BackEnd.OnSaveInterfaceState:= @SaveConfig;
 
   BackEnd.OnPlayListLoad  := @OnLoaded;
   BackEnd.OnEngineCommand := @OnEngineCommand;
@@ -746,6 +748,8 @@ begin
 
   slVolume.Position := BackEnd.Config.EngineParam.Volume;
   slVolume.Max:= BackEnd.AudioEngine.MaxVolume;
+
+  ReadConfig(Self);
 
   CollectionTree.NodeDataSize := SizeOf(TNodeData);
   FilesTree.NodeDataSize := SizeOf(TFileData);
@@ -1052,6 +1056,62 @@ begin
    OnLoaded(nil);
 end;
 
+procedure TfMainForm.SaveConfig(Sender: TObject);
+var
+  tmpSt: TStringList;
+  i: integer;
+begin
+  tmpSt := TStringList.Create;
+  try
+    for i := 0 to lvPlayList.Header.Columns.Count -1 do
+      begin
+        tmpst.Add(Inttostr(i)+'='+
+                  lvPlayList.Header.Columns.Items[i].Text+';'+
+                  BoolToStr(coVisible in lvPlayList.Header.Columns.Items[i].Options,'Y','N')+';'+
+                  IntToStr(lvPlayList.Header.Columns.Items[i].Width)+';'
+                  );
+      end;
+    BackEnd.Config.SaveCustomParams('PlayListGrid', tmpSt);
+  finally
+    tmpSt.free;
+  end;
+
+
+end;
+
+procedure TfMainForm.ReadConfig(Sender: TObject);
+var
+  tmpSt: TStringList;
+  info: TStringList;
+  i: integer;
+  Col: integer;
+begin
+  tmpSt := TStringList.Create;
+  info  := TStringList.Create;
+  try
+    BackEnd.Config.ReadCustomParams('PlayListGrid', tmpSt);
+    for i := 0 to tmpSt.Count -1 do
+      begin
+        info.Clear;
+        info.StrictDelimiter := true;
+        info.Delimiter := ';';
+        info.DelimitedText := tmpSt[i];
+        Col := StrToint(tmpSt.Names[i]);
+        lvPlayList.Header.Columns.Items[Col].Width:= StrToint(info[2]);
+        if Info[1] = 'Y' then
+           lvPlayList.Header.Columns.Items[Col].Options := lvPlayList.Header.Columns.Items[Col].Options + [coVisible]
+        else
+           lvPlayList.Header.Columns.Items[Col].Options := lvPlayList.Header.Columns.Items[Col].Options - [coVisible];
+
+      end;
+
+  finally
+    tmpSt.free;
+    info.free;
+  end;
+
+end;
+
 
 procedure TfMainForm.lvPlayListKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
 begin
@@ -1199,6 +1259,7 @@ begin
 
   end;
   lvPlayList.Invalidate;
+  SaveConfig(self);
 end;
 
 procedure TfMainForm.pnHeaderPlaylistPopup(Sender: TObject);
@@ -1469,4 +1530,4 @@ begin
 
 end;
 
-end.
+end.

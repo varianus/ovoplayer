@@ -97,6 +97,9 @@ type
     procedure SaveConfig;
     Procedure ReadSubParams(EngineKind:String='');
     procedure SaveSubParams(EngineKind:String='');
+    Procedure ReadCustomParams(const Section:string; Params:TStrings);
+    procedure SaveCustomParams(const Section:string; Params:TStrings);
+
     function GetResourcesPath: string;
     Property ConfigDir: string read fConfigDir;
     procedure Flush;
@@ -201,6 +204,24 @@ begin
        fIniFiles.WriteString(Section, EngineSubParams.Names[i], EngineSubParams.ValueFromIndex[i]);
     end;
 
+end;
+
+procedure TConfig.ReadCustomParams(const Section:string; Params: TStrings);
+var
+  i :Integer;
+begin
+  Params.Clear;
+  fIniFiles.ReadSectionValues(Section, Params)
+end;
+
+procedure TConfig.SaveCustomParams(const Section:string; Params: TStrings);
+var
+  i :Integer;
+begin
+for i := 0 to Params.Count -1 do
+  begin
+     fIniFiles.WriteString(Section, Params.Names[i], Params.ValueFromIndex[i]);
+  end;
 end;
 
 
@@ -322,4 +343,4 @@ begin
 
 end;
 
-end.
+end.

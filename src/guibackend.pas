@@ -103,12 +103,14 @@ type
     FOnPlayListChange: TNotifyEvent;
     FOnPlayListLoad:   TNotifyEvent;
     fMultimediaKeys:   TMultimediaKeys;
+    FOnSaveInterfaceState: TNotifyEvent;
     procedure AudioEngineSongEnd(Sender: TObject);
     procedure onMultimediaKeys(Sender: TObject; Command: TEngineCommand);
     procedure SetOnEngineCommand(const AValue: TOnEngineCommand);
     procedure SetOnExternalCommand(const AValue: TOnExternalCommand);
     procedure SetOnPlayListChange(const AValue: TNotifyEvent);
     procedure SetOnPlayListLoad(const AValue: TNotifyEvent);
+    procedure SetOnSaveInterfaceState(AValue: TNotifyEvent);
     { private declarations }
   public
     PlayList: TPlaylist;
@@ -121,6 +123,7 @@ type
     procedure HandleCommand(Command: TEngineCommand; Param: integer);
     procedure SaveState;
     procedure SignalPlayListChange;
+    property OnSaveInterfaceState: TNotifyEvent read FOnSaveInterfaceState write SetOnSaveInterfaceState;
     property OnPlayListChange: TNotifyEvent read FOnPlayListChange write SetOnPlayListChange;
     property OnPlayListLoad: TNotifyEvent read FOnPlayListLoad write SetOnPlayListLoad;
     property OnEngineCommand :TOnEngineCommand read FOnEngineCommand write SetOnEngineCommand;
@@ -356,6 +359,12 @@ begin
   FOnPlayListLoad := AValue;
 end;
 
+procedure TBackEnd.SetOnSaveInterfaceState(AValue: TNotifyEvent);
+begin
+  if FOnSaveInterfaceState=AValue then Exit;
+  FOnSaveInterfaceState:=AValue;
+end;
+
 procedure TBackEnd.SignalPlayListChange;
 begin
   if Assigned(OnPlayListChange) then
@@ -427,6 +436,9 @@ end;
 procedure TBackEnd.actExitExecute(Sender: TObject);
 begin
   SaveState;
+  if Assigned(FOnSaveInterfaceState) then
+     FOnSaveInterfaceState(Sender);
+
   Application.Terminate;
 end;
 
