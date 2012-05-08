@@ -1067,6 +1067,7 @@ begin
       begin
         tmpst.Add(Inttostr(i)+'='+
                   lvPlayList.Header.Columns.Items[i].Text+';'+
+                  IntToStr(lvPlayList.Header.Columns.Items[i].position)+';'+
                   BoolToStr(coVisible in lvPlayList.Header.Columns.Items[i].Options,'Y','N')+';'+
                   IntToStr(lvPlayList.Header.Columns.Items[i].Width)+';'
                   );
@@ -1097,11 +1098,12 @@ begin
         info.Delimiter := ';';
         info.DelimitedText := tmpSt[i];
         Col := StrToint(tmpSt.Names[i]);
-        lvPlayList.Header.Columns.Items[Col].Width:= StrToint(info[2]);
-        if Info[1] = 'Y' then
+        lvPlayList.Header.Columns.Items[Col].Position:= StrToint(info[1]);
+        if Info[2] = 'Y' then
            lvPlayList.Header.Columns.Items[Col].Options := lvPlayList.Header.Columns.Items[Col].Options + [coVisible]
         else
            lvPlayList.Header.Columns.Items[Col].Options := lvPlayList.Header.Columns.Items[Col].Options - [coVisible];
+        lvPlayList.Header.Columns.Items[Col].Width:= StrToint(info[3]);
 
       end;
 
