@@ -132,7 +132,7 @@ const
                  + ' VALUES ('
                  + ' :Filename, :TrackString, :Track, :Title, :Album, :Artist,'
                  + ' :AlbumArtist, :Genre, :year, :elabflag, :Duration,'
-                 + ' :Playcount, :Rating, :LastPlay, :Added'
+                 + ' :Playcount, :Rating, :LastPlay, datetime(''now'')'
                  + ')';
 
   UPDATESONG     =  'update songs'
@@ -147,10 +147,6 @@ const
                  + ' ,year  = :year'
                  + ' ,elabflag = :elabflag'
                  + ' ,Duration = :Duration'
-//                 + ' ,Playcount = :Playcount'
-//                 + ' ,Rating  = :Rating'
-//                 + ' ,LastPlay = :LastPlay'
-//                 + ' ,Added = :Added'
                  + ' where ID = :ID';
 
   CREATESONGINDEX1 = 'CREATE INDEX "idx_artist" on songs (Artist ASC);';
@@ -341,7 +337,7 @@ begin
     begin
        wrkSong := fInsertSong;
        wrkSong.Params.ParamByName('PlayCount').AsInteger:= 0;
-       wrkSong.Params.ParamByName('Added').AsDateTime := Now;
+//       wrkSong.Params.ParamByName('Added').AsDateTime := Now;
        inc(fAdded)
     end;
 
@@ -385,6 +381,7 @@ end;
 
 procedure TMediaLibrary.BeforeScan;
 begin
+
   fDB.ExecuteDirect('update songs set elabflag = ''S''');
 end;
 
@@ -401,6 +398,7 @@ begin
     fRemoved:=qtmp.RowsAffected;
   finally
     qtmp.Free;
+    fTR.CommitRetaining;
   end;
 
 end;
@@ -428,6 +426,7 @@ begin
   fAdded   := 0;
   fFailed  := 0;
   fUpdated := 0;
+
   qtmp:=TSQLQuery.Create(fDB);
   try
     if Assigned(FOnScanStart) then
@@ -454,6 +453,7 @@ begin
   finally
     qtmp.free;
   end;
+  fTR.CommitRetaining;
   if Assigned(FOnScanComplete) then
     FOnScanComplete(Self, 0, 0, fRemoved, 0);
 
@@ -545,6 +545,7 @@ end;
 function TMediaLibrary.SetSongPlayed(ID: integer): string;
 begin
   fWorkQuery.Close;
+
   fWorkQuery.SQL.Text := 'update songs set '
                        + '  Playcount = Playcount + 1'
                        + ' ,lastplay = datetime(''now'')'
@@ -552,6 +553,7 @@ begin
   fWorkQuery.ExecSQL;
   Result := '';
   fWorkQuery.Close;
+  fTR.CommitRetaining;
 end;
 
 function TMediaLibrary.TagsFromID(ID: integer): TCommonTags;
