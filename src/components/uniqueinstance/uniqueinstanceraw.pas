@@ -37,42 +37,18 @@ unit UniqueInstanceRaw;
 interface
 
 uses
-  Classes, SysUtils, simpleipc;
+  Classes, SysUtils;
   
-  function InstanceRunning(const Identifier: String; SendParameters: Boolean = False): Boolean;
+  function InstanceRunning(const Identifier: String; SendParameters: Boolean = False; DoInitServer: Boolean = True): Boolean;
 
   function InstanceRunning: Boolean;
 
 implementation
 
 uses
-  SimpleIPCWrapper;
-
-const
-  BaseServerId = 'tuniqueinstance_';
-  Separator = '|';
-
-var
-  FIPCServer: TSimpleIPCServer;
-
-function GetFormattedParams: String;
-var
-  i: Integer;
-begin
-  Result := '';
-  for i := 1 to ParamCount do
-    Result := Result + ParamStr(i) + Separator;
-end;
+  SimpleIpc, SimpleIPCWrapper, UniqueInstanceBase;
   
-function InstanceRunning(const Identifier: String; SendParameters: Boolean = False): Boolean;
-
-  function GetServerId: String;
-  begin
-    if Identifier <> '' then
-      Result := BaseServerId + Identifier
-    else
-      Result := BaseServerId + ExtractFileName(ParamStr(0));
-  end;
+function InstanceRunning(const Identifier: String; SendParameters: Boolean; DoInitServer: Boolean): Boolean;
   
 var
   Client: TSimpleIPCClient;
@@ -81,16 +57,12 @@ begin
   Client := TSimpleIPCClient.Create(nil);
   with Client do
   try
-    ServerId := GetServerId;
+    ServerId := GetServerId(Identifier);
     Result := IsServerRunning(Client);
     if not Result then
     begin
-      //It's the first instance. Init the server
-      if FIPCServer = nil then
-        FIPCServer := TSimpleIPCServer.Create(nil);
-      FIPCServer.ServerID := ServerId;
-      FIPCServer.Global := True;
-      InitServer(FIPCServer);
+      if DoInitServer then
+        InitializeUniqueServer(ServerID);
     end
     else
       // an instance already exists
@@ -109,8 +81,5 @@ begin
   Result := InstanceRunning('');
 end;
 
-finalization
-  FIPCServer.Free;
-
 end.
-
+

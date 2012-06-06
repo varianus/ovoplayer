@@ -49,11 +49,9 @@ type
   TUniqueInstance = class(TComponent)
   private
     FIdentifier: String;
-    FIPCServer: TSimpleIPCServer;
     FOnOtherInstance: TOnOtherInstance;
     FUpdateInterval: Cardinal;
     FEnabled: Boolean;
-    function GetServerId: String;
     procedure ReceiveMessage(Sender: TObject);
     procedure TerminateApp(Sender: TObject; var Done: Boolean);
     {$ifdef unix}
@@ -73,42 +71,29 @@ type
 implementation
 
 uses
-  StrUtils, SimpleIPCWrapper;
-
-const
-  BaseServerId = 'tuniqueinstance_';
-  Separator = '|';
-
-function GetFormattedParams: String;
-var
-  i: Integer;
-begin
-  Result := '';
-  for i := 1 to ParamCount do
-    Result := Result + ParamStr(i) + Separator;
-end;
+  StrUtils, SimpleIPCWrapper, UniqueInstanceBase;
 
 { TUniqueInstance }
 
 procedure TUniqueInstance.ReceiveMessage(Sender: TObject);
 var
-  TempArray: array of String;
-  Count,i: Integer;
+  ParamsArray: array of String;
+  Count: Integer;
 
-  procedure GetParams(const AStr: String);
+  procedure FillParamsArray(const ParamsStr: String);
   var
-    pos1,pos2:Integer;
+    pos1, pos2, i: Integer;
   begin
-    SetLength(TempArray, Count);
+    SetLength(ParamsArray, Count);
     //fill params
     i := 0;
-    pos1:=1;
-    pos2:=pos(Separator, AStr);
+    pos1 := 1;
+    pos2 := pos(ParamsSeparator, ParamsStr);
     while pos1 < pos2 do
     begin
-      TempArray[i] := Copy(AStr, pos1, pos2 - pos1);
+      ParamsArray[i] := Copy(ParamsStr, pos1, pos2 - pos1);
       pos1 := pos2+1;
-      pos2 := posex(Separator, AStr, pos1);
+      pos2 := posex(ParamsSeparator, ParamsStr, pos1);
       inc(i);
     end;
   end;
@@ -118,9 +103,8 @@ begin
   begin
     //MsgType stores ParamCount
     Count := FIPCServer.MsgType;
-    GetParams(FIPCServer.StringMessage);
-    FOnOtherInstance(Self, Count, TempArray);
-    SetLength(TempArray, 0);
+    FillParamsArray(FIPCServer.StringMessage);
+    FOnOtherInstance(Self, Count, ParamsArray);
   end;
 end;
 
@@ -138,15 +122,6 @@ begin
   Done := False;
 end;
 
-function TUniqueInstance.GetServerId: String;
-begin
-  if FIdentifier <> '' then
-    Result := BaseServerId + FIdentifier
-  else
-    Result := BaseServerId + ExtractFileName(ParamStr(0));
-end;
-
-
 procedure TUniqueInstance.Loaded;
 var
   IPCClient: TSimpleIPCClient;
@@ -157,7 +132,7 @@ begin
   if not (csDesigning in ComponentState) and FEnabled then
   begin
     IPCClient := TSimpleIPCClient.Create(Self);
-    IPCClient.ServerId := GetServerId;
+    IPCClient.ServerId := GetServerId(FIdentifier);
     if IsServerRunning(IPCClient) then
     begin
       //A instance is already running
@@ -180,12 +155,8 @@ begin
     end
     else
     begin
-      //It's the first instance. Init the server
-      FIPCServer := TSimpleIPCServer.Create(Self);
-      FIPCServer.ServerID := IPCClient.ServerId;
-      FIPCServer.Global := True;
+      InitializeUniqueServer(IPCClient.ServerID);
       FIPCServer.OnMessage := @ReceiveMessage;
-      InitServer(FIPCServer);
       //there's no more need for IPCClient
       IPCClient.Destroy;
       {$ifdef unix}

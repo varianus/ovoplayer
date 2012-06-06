@@ -8,7 +8,7 @@ interface
 
 uses
   UniqueInstance, UniqueInstanceRaw, registeruniqueinstance, SimpleIPCWrapper, 
-  LazarusPackageIntf;
+  UniqueInstanceBase, LazarusPackageIntf;
 
 implementation
 
