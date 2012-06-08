@@ -27,7 +27,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   StdCtrls, ButtonPanel, Spin, ComCtrls, Buttons, AudioTag, types,
-  ImageTrack, BaseTag ;
+  ImageTrack, BaseTag, contnrs ;
 
 type
 
@@ -37,6 +37,14 @@ type
     bNext: TBitBtn;
     bPrevious: TBitBtn;
     ButtonPanel1: TButtonPanel;
+    cbAlbum: TCheckBox;
+    cbAlbumArtist: TCheckBox;
+    cbGenre: TCheckBox;
+    cbComment: TCheckBox;
+    cbYear: TCheckBox;
+    cbTitle: TCheckBox;
+    cbArtist: TCheckBox;
+    cbTrack: TCheckBox;
     edAlbum: TEdit;
     edAlbumArtist: TEdit;
     edArtist: TEdit;
@@ -95,6 +103,7 @@ type
   private
     FList : TStringList;
     fHint : THintWindow;
+    fTagList : TFPobjectList;
     Procedure LoadFromFile(FileName:TFileName);
     procedure LoadFromFileInfo(FileName: TFileName);
     procedure LoadFromLibrary(ID: Integer);
@@ -192,6 +201,7 @@ constructor TfSongInfo.Create(Aowner: Tcomponent);
 begin
   inherited Create(Aowner);
   FList:= TStringList.Create;
+  fTagList := TFPObjectList.Create(True);
 end;
 
 destructor TfSongInfo.Destroy;
@@ -300,6 +310,7 @@ begin
   FLIST.Assign(FileNames);
   for i := 0 to FList.Count - 1 do
      begin
+//       fTagList.Add();
        lbFiles.Items.Add(ExtractFileName(FList[i]));
      end;
 
