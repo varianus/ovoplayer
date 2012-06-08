@@ -70,7 +70,7 @@ begin
      if Value > KBYTE then
         Result:=FltTostr(Value / KBYTE)+' KB'
      else
-        Result:=FltTostr(Value) +' Bytea';
+        Result:=FltTostr(Value) +' Bytes';
 end;
 
 // Derived from "Like" by Michael Winter
