@@ -192,6 +192,7 @@ type
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure FormDropFiles(Sender: TObject; const FileNames: array of String);
     procedure FormHide(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -384,7 +385,10 @@ end;
 
 procedure TfMainForm.ePathEditingDone(Sender: TObject);
 begin
+  if PathIndex < PathHistory.Count then
+     PathHistory.Capacity:= PathIndex;
   LoadDir(ePath.Directory);
+
 end;
 
 procedure TfMainForm.FilesTreeDblClick(Sender: TObject);
@@ -818,6 +822,13 @@ begin
   PathHistory.Free;
 end;
 
+procedure TfMainForm.FormDropFiles(Sender: TObject;
+  const FileNames: array of String);
+begin
+  BackEnd.Manager.ImportFromStringArray(FileNames, BackEnd.PlayList);
+  BackEnd. SignalPlayListChange;
+end;
+
 procedure TfMainForm.FormHide(Sender: TObject);
 begin
   Application.ShowMainForm:=False;
@@ -1073,8 +1084,9 @@ begin
                   );
       end;
     BackEnd.Config.SaveCustomParams('PlayListGrid', tmpSt);
+
   finally
-    tmpSt.free;
+    tmpSt.Free;
   end;
 
 

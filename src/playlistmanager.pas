@@ -59,6 +59,9 @@ type
     function ImportFromStrings(const Strings: TStrings;
       var Playlist: TPlaylist): integer;
 
+    function ImportFromStringArray(const Strings: Array of string;
+      var Playlist: TPlaylist): integer;
+
     function ImportFromMediaLibrary(const Lib: TMediaLibrary;
       var Playlist: TPlaylist; const Filter: string = '';
       order: string = ''): integer;
@@ -577,11 +580,29 @@ begin
   Result := Strings.Count;
 end;
 
+function TPlayListManager.ImportFromStringArray(const Strings: array of string;
+  var Playlist: TPlaylist): integer;
+var
+  i: integer;
+  cnt: integer;
+begin
+  cnt := 0;
+  PlayList.BeginUpdate;
+  for I := 0 to high(Strings) do
+     begin
+      PlayList.EnqueueFile(Strings[i]);
+      inc(cnt);
+     end;
+  PlayList.EndUpdate;
+  Result := cnt;
+end;
+
+
 function TPlayListManager.ImportFromMediaLibrary(const Lib: TMediaLibrary;
   var Playlist: TPlaylist; const Filter: string = '';
   order: string = ''): integer;
 var
-  Tags: tcommontags;
+  Tags: TCommonTags;
 begin
   Result := 0;
   lib.ReadBegin(order, Filter);
