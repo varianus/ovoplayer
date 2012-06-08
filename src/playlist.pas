@@ -38,7 +38,7 @@ type
   { TPlayList }
   TPlayListSortCompare = function (Item1, Item2: Pointer): Integer of object;
 
-  TPlayList = class(TList)
+  TPlayList = class(TFPList)
   private
     FItemIndex: integer;
     FRepeatMode: TplRepeat;
@@ -61,7 +61,7 @@ type
     function EnqueueFile(FileName: TFileName): integer;
     function Add(ASong: TSong): integer;
     procedure Delete(Index: integer);
-    procedure Clear;  override;
+    procedure Clear;//  override;
     function Next: TSong;
     function Previous: TSong;
     procedure Swap(Item1, Item2: integer);
@@ -402,4 +402,4 @@ begin
   Sort;
 end;
 
-end.
+end.
