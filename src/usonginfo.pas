@@ -27,9 +27,20 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   StdCtrls, ButtonPanel, Spin, ComCtrls, Buttons, AudioTag, types,
-  ImageTrack, BaseTag, contnrs ;
+  ImageTrack, BaseTag, contnrs, FilesSupport, MediaLibrary;
 
 type
+
+  RSongInfo = record
+    FileName: string;
+    Tags: TCommonTags;
+    MediaProperty: TMediaProperty;
+    FileInfo: TFileInfo;
+    ExtendedInfo: TExtendedInfo;
+    ID: integer;
+  end;
+
+  ASongInfo = array of RSongInfo;
 
   { TfSongInfo }
 
@@ -96,23 +107,22 @@ type
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure lbFilesMouseLeave(Sender: TObject);
-    procedure lbFilesMouseMove(Sender: TObject; Shift: TShiftState; X,
-      Y: Integer);
+    procedure lbFilesMouseMove(Sender: TObject; Shift: TShiftState; X, Y: integer);
     procedure lbFilesSelectionChange(Sender: TObject; User: boolean);
     procedure OKButtonClick(Sender: TObject);
   private
-    FList : TStringList;
-    fHint : THintWindow;
-    fTagList : TFPobjectList;
-    Procedure LoadFromFile(FileName:TFileName);
-    procedure LoadFromFileInfo(FileName: TFileName);
-    procedure LoadFromLibrary(ID: Integer);
-    procedure LoadFromMediaProperty(MediaProperty: TMediaProperty);
-    procedure LoadFromTags(Tags: TCommonTags);
+    fHint: THintWindow;
+    fTagList: ASongInfo;
+    fCount: integer;
+    procedure LoadFromFile(FileName: TFileName; var Info: RSongInfo);
+    procedure ShowFileInfo(Info: TFileInfo);
+    procedure ShowLibraryInfo(Info: TExtendedInfo);
+    procedure ShowMediaProperty(MediaProperty: TMediaProperty);
+    procedure ShowTags(Tags: TCommonTags);
   public
-    constructor Create(Aowner: Tcomponent); override;
-    Destructor Destroy; override;
-    Procedure InitFromList(FileNameS:TStrings);
+    constructor Create(Aowner: TComponent); override;
+    destructor Destroy; override;
+    procedure InitFromList(FileNameS: TStrings);
     procedure InitFromFile(FileName: TFileName);
   end;
 
@@ -120,28 +130,34 @@ var
   fSongInfo: TfSongInfo;
 
 implementation
+
 {$R *.lfm}
-uses AppConsts, FilesSupport, GUIBackEnd, MediaLibrary;
+uses AppConsts, GUIBackEnd;
 
 { TfSongInfo }
 
 procedure TfSongInfo.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   CloseAction := caFree;
-  fHint.free;
+  fHint.Free;
 end;
 
 procedure TfSongInfo.FormShow(Sender: TObject);
 var
-  i:Integer;
+  i: integer;
 begin
+  if lbFiles.Count > 0 then
+     lbFiles.Selected[0] := true;
+
+  lbFilesSelectionChange(lbFiles, true);
+
   fHint := THintWindow.Create(Self);
-  fHint.HideInterval:=3000;
-  fHint.AutoHide:=true;
-  for i := 0 to ComponentCount -1 do
-     if Components[i] is TLabel then
-       if Tlabel (Components[i]).OptimalFill then
-          Tlabel (Components[i]).AdjustFontForOptimalFill;
+  fHint.HideInterval := 3000;
+  fHint.AutoHide := True;
+  for i := 0 to ComponentCount - 1 do
+    if Components[i] is TLabel then
+      if Tlabel(Components[i]).OptimalFill then
+        Tlabel(Components[i]).AdjustFontForOptimalFill;
 
 end;
 
@@ -150,134 +166,131 @@ begin
   fHint.hide;
 end;
 
-procedure TfSongInfo.lbFilesMouseMove(Sender: TObject; Shift: TShiftState; X,
-  Y: Integer);
+procedure TfSongInfo.lbFilesMouseMove(Sender: TObject; Shift: TShiftState;
+  X, Y: integer);
 var
   item: integer;
   rec: TRect;
   p: Tpoint;
 begin
-  item := lbFiles.ItemAtPos(point(x, y), true);
+  item := lbFiles.ItemAtPos(point(x, y), True);
   if (item > -1) then
+  begin
+    rec := fHint.CalcHintRect(Width, lbFiles.Items[item], nil);
+    if rec.right > lbFiles.Width then
     begin
-      rec := fHint.CalcHintRect(Width, lbFiles.Items[item], nil);
-      if rec.right > lbFiles.Width then
-         begin
-           p.x := x;
-           p.y := y;
-           p := lbFiles.ClientToScreen(p);
-           OffsetRect(rec, p.x, p.y);
-           fHint.ActivateHint( rec, lbFiles.Items[item]);
-         end
-      else
-        fHint.hide;
-    end;
+      p.x := x;
+      p.y := y;
+      p := lbFiles.ClientToScreen(p);
+      OffsetRect(rec, p.x, p.y);
+      fHint.ActivateHint(rec, lbFiles.Items[item]);
+    end
+    else
+      fHint.hide;
+  end;
 end;
 
 procedure TfSongInfo.lbFilesSelectionChange(Sender: TObject; User: boolean);
 var
   ts: TTabSheet;
 begin
- if lbFiles.SelCount = 1 then
-    begin
-       ts:= pcSongInfo.ActivePage;
-       LoadFromFile(FList[lbFiles.ItemIndex]);
-       tsMediaProperty.TabVisible:= true;
-       pcSongInfo.ActivePage := ts;
-    end
- else
-    begin
-      pcSongInfo.ActivePage:= tsTags;
-      tsMediaProperty.TabVisible:= False;
-    end;
+  if lbFiles.SelCount = 1 then
+  begin
+    ts := pcSongInfo.ActivePage;
+    leFileName.Caption := fTagList[lbFiles.ItemIndex].FileName;
+    ShowTags(fTagList[lbFiles.ItemIndex].Tags);
+    ShowFileInfo(fTagList[lbFiles.ItemIndex].FileInfo);
+    ShowMediaProperty(fTagList[lbFiles.ItemIndex].MediaProperty);
+    ShowLibraryInfo(fTagList[lbFiles.ItemIndex].ExtendedInfo);
+    tsMediaProperty.TabVisible := True;
+    pcSongInfo.ActivePage := ts;
+  end
+  else
+  begin
+    pcSongInfo.ActivePage := tsTags;
+    tsMediaProperty.TabVisible := False;
+  end;
 end;
 
 procedure TfSongInfo.OKButtonClick(Sender: TObject);
 begin
-    Close;
+  Close;
 end;
 
-constructor TfSongInfo.Create(Aowner: Tcomponent);
+constructor TfSongInfo.Create(Aowner: TComponent);
 begin
   inherited Create(Aowner);
-  FList:= TStringList.Create;
-  fTagList := TFPObjectList.Create(True);
 end;
 
 destructor TfSongInfo.Destroy;
 begin
-  FreeAndNil(FList);
+  SetLength(fTagList, 0);
   inherited Destroy;
 
 end;
 
 procedure TfSongInfo.CancelButtonClick(Sender: TObject);
 begin
-    Close;
+  Close;
 end;
 
 procedure TfSongInfo.bPreviousClick(Sender: TObject);
 begin
   if lbFiles.ItemIndex > 0 then
-     lbFiles.ItemIndex:=lbFiles.ItemIndex -1;
+    lbFiles.ItemIndex := lbFiles.ItemIndex - 1;
 end;
 
 procedure TfSongInfo.bNextClick(Sender: TObject);
 begin
- if lbFiles.ItemIndex < lbFiles.Count -1 then
-    lbFiles.ItemIndex:=lbFiles.ItemIndex + 1;
+  if lbFiles.ItemIndex < lbFiles.Count - 1 then
+    lbFiles.ItemIndex := lbFiles.ItemIndex + 1;
 end;
 
 
-procedure TfSongInfo.LoadFromFile(FileName: TFileName);
+procedure TfSongInfo.LoadFromFile(FileName: TFileName; var Info: RSongInfo);
 var
-  FileObject : TTagReader;
-  ID :Integer;
+  FileObject: TTagReader;
+  ID: integer;
 begin
+  Info.FileName := FileName;
   FileObject := GetFileTagsObject(FileName);
-  LoadFromTags(ExtractTags(FileObject));
-  LoadFromMediaProperty(FileObject.MediaProperty);
-  LoadFromFileInfo(FileName);
-  ID := backEnd.mediaLibrary.IDFromFullName(FileName);
+  info.Tags := ExtractTags(FileObject);
+  info.MediaProperty := FileObject.MediaProperty;
+  info.ID := backEnd.mediaLibrary.IDFromFullName(FileName);
+  info.FileInfo := GetFileInfo(FileName);
   if id <> -1 then
-     LoadFromLibrary(ID);
-  leFileName.Caption := FileName;
+    info.ExtendedInfo := BackEnd.mediaLibrary.InfoFromID(info.ID);
 
 end;
 
-procedure TfSongInfo.LoadFromMediaProperty(MediaProperty: TMediaProperty);
+procedure TfSongInfo.ShowMediaProperty(MediaProperty: TMediaProperty);
 begin
-  leBitRate.Caption := format('%d Kbps',[MediaProperty.BitRate]);
-  leBPM.Caption := IntTostr(MediaProperty.BPM);
+  leBitRate.Caption := format('%d Kbps', [MediaProperty.BitRate]);
+  leBPM.Caption := IntToStr(MediaProperty.BPM);
   leChannels.Caption := MediaProperty.ChannelMode;
-  leSampling.Caption := format('%d Hz',[MediaProperty.Sampling]);
+  leSampling.Caption := format('%d Hz', [MediaProperty.Sampling]);
 end;
 
-procedure TfSongInfo.LoadFromFileInfo(FileName: TFileName);
-var
-  info:TFileInfo;
+procedure TfSongInfo.ShowFileInfo(Info: TFileInfo);
 begin
-  info:=GetFileInfo(FileName);
+
   leSize.Caption := strByteSize(info.Size);
 end;
 
-procedure TfSongInfo.LoadFromLibrary(ID: Integer);
-var
-  Info: TExtendedInfo;
+procedure TfSongInfo.ShowLibraryInfo(Info: TExtendedInfo);
 begin
-  info := BackEnd.mediaLibrary.InfoFromID(ID);
   lePlayCount.Caption := IntToStr(info.PlayCount);
   leAdded.Caption := DateTimeToStr(Info.Added);
   if Info.LastPlay <> 0 then
-     leLastPlayed.Caption := DateTimeToStr(Info.LastPlay)
+    leLastPlayed.Caption := DateTimeToStr(Info.LastPlay)
   else
-     leLastPlayed.Caption := rNever;
-
+    leLastPlayed.Caption := rNever;
 
 end;
 
-procedure TfSongInfo.LoadFromTags(Tags: TCommonTags);
-var int:Integer;
+procedure TfSongInfo.ShowTags(Tags: TCommonTags);
+var
+  int: integer;
 begin
   leFileName.Caption := Tags.FileName;
   edArtist.Caption := Tags.Artist;
@@ -285,37 +298,41 @@ begin
   edAlbumArtist.Caption := Tags.AlbumArtist;
   edGenre.Caption := Tags.Genre;
   edTitle.Caption := Tags.Title;
-  int:=0;
-  TryStrToInt(Tags.Year,int);
+  int := 0;
+  TryStrToInt(Tags.Year, int);
   seYear.Value := int;
-
   seTrack.Value := Tags.Track;
 
 end;
 
 procedure TfSongInfo.InitFromFile(FileName: TFileName);
+var
+  st: TStringList;
 begin
-  LoadFromFile(FileName);
-  lbFiles.Visible:=false;
-  bNext.Visible:=false;
-  bPrevious.Visible:=false;
+  st := TStringList.Create;
+  st.Add(FileName);
+  InitFromList(st);
+  st.Free;
+
+//  lbFiles.Visible := False;
+  bNext.Visible := False;
+  bPrevious.Visible := False;
 end;
 
 
 procedure TfSongInfo.InitFromList(FileNameS: TStrings);
-var i:Integer;
+var
+  i: integer;
 begin
-  FList.clear;
-  lbFiles.items.clear;
-  FLIST.Assign(FileNames);
-  for i := 0 to FList.Count - 1 do
-     begin
-//       fTagList.Add();
-       lbFiles.Items.Add(ExtractFileName(FList[i]));
-     end;
+  lbFiles.items.Clear;
+  fCount := FileNameS.Count;
+  SetLength(fTagList, fCount);
 
-  if lbFiles.Count > 0 then
-     lbFiles.Selected[0]:= true;
+  for i := 0 to fCount - 1 do
+  begin
+    LoadFromFile(FileNameS[i], fTagList[i]);
+    lbFiles.Items.Add(ExtractFileName(FileNameS[i]));
+  end;
 end;
 
 

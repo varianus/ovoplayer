@@ -120,8 +120,8 @@ const
                  + ' "Duration" INTEGER default 0,'
                  + ' "Playcount" INTEGER,'
                  + ' "Rating" INTEGER ,'
-                 + ' "LastPlay" DATE,'
-                 + ' "Added" DATE,'
+                 + ' "LastPlay" DATETIME,'
+                 + ' "Added" DATETIME,'
                  + ' "elabflag" CHAR(1) COLLATE NOCASE);';
 
   INSERTINTOSONG = 'INSERT INTO songs ('
@@ -572,16 +572,17 @@ end;
 function TMediaLibrary.InfoFromID(ID: integer): TExtendedInfo;
 begin
   fWorkQuery.Close;
-  fWorkQuery.SQL.Text := 'select * from songs where id =' + IntToStr(ID);
+  fWorkQuery.SQL.Text := 'select PlayCount, Added, LastPlay, Rating' +
+                         ' from songs where id =' + IntToStr(ID);
   fWorkQuery.Open;
   if fWorkQuery.RecordCount = 0 then
      result.PlayCount:= -1
   else
      begin
-       Result.PlayCount:=fWorkQuery.FieldByName('PlayCount').AsInteger;
-       Result.Added:=fWorkQuery.FieldByName('Added').AsDateTime;
-       Result.LastPlay:=fWorkQuery.FieldByName('LastPlay').AsDateTime;
-       Result.Rating:=fWorkQuery.FieldByName('Rating').AsInteger;
+       Result.PlayCount:=fWorkQuery.Fields[0].AsInteger;
+       Result.Added:=fWorkQuery.Fields[1].AsDateTime;
+       Result.LastPlay:=fWorkQuery.Fields[2].AsDateTime;
+       Result.Rating:=fWorkQuery.Fields[3].AsInteger;
      end;
 
   fWorkQuery.Close;
