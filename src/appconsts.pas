@@ -53,6 +53,7 @@ Resourcestring
   rUpdatedTrack = 'Updated:';
   rNever        = 'Never';
   rMissingConfig = 'Can''t activate Audio Engine. Please review configuration';
+  rMultipleValue = '<Multiple Value>';
 
 implementation
 
