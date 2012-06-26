@@ -279,7 +279,8 @@ object fSongInfo: TfSongInfo
         Height = 23
         Top = 63
         Width = 384
-        TabOrder = 0
+        OnChange = edArtistChange
+        TabOrder = 2
       end
       object Label2: TLabel
         Left = 0
@@ -299,7 +300,8 @@ object fSongInfo: TfSongInfo
         Height = 23
         Top = 94
         Width = 384
-        TabOrder = 1
+        OnChange = edAlbumChange
+        TabOrder = 4
       end
       object Label3: TLabel
         Left = 0
@@ -319,7 +321,8 @@ object fSongInfo: TfSongInfo
         Height = 23
         Top = 29
         Width = 384
-        TabOrder = 2
+        OnChange = edTitleChange
+        TabOrder = 0
       end
       object Label4: TLabel
         Left = 0
@@ -339,7 +342,8 @@ object fSongInfo: TfSongInfo
         Height = 23
         Top = 127
         Width = 384
-        TabOrder = 3
+        OnChange = edAlbumArtistChange
+        TabOrder = 6
       end
       object Label5: TLabel
         Left = 0
@@ -359,14 +363,16 @@ object fSongInfo: TfSongInfo
         Height = 23
         Top = 159
         Width = 384
-        TabOrder = 4
+        OnChange = edGenreChange
+        TabOrder = 8
       end
       object meComment: TMemo
         Left = 100
         Height = 90
         Top = 223
         Width = 385
-        TabOrder = 5
+        OnChange = meCommentChange
+        TabOrder = 14
       end
       object Label6: TLabel
         Left = 0
@@ -387,7 +393,7 @@ object fSongInfo: TfSongInfo
         Top = 191
         Width = 101
         MaxValue = 9999
-        TabOrder = 6
+        TabOrder = 10
       end
       object Label7: TLabel
         Left = 0
@@ -415,62 +421,54 @@ object fSongInfo: TfSongInfo
         ParentFont = False
         OptimalFill = True
       end
-      object seTrack: TSpinEdit
-        Left = 381
-        Height = 23
-        Top = 191
-        Width = 101
-        MaxValue = 9999
-        TabOrder = 7
-      end
       object cbTitle: TCheckBox
         Left = 490
         Height = 19
         Top = 31
         Width = 20
-        TabOrder = 8
+        TabOrder = 1
       end
       object cbArtist: TCheckBox
         Left = 490
         Height = 19
         Top = 67
         Width = 20
-        TabOrder = 9
+        TabOrder = 3
       end
       object cbAlbum: TCheckBox
         Left = 490
         Height = 19
         Top = 97
         Width = 20
-        TabOrder = 10
+        TabOrder = 5
       end
       object cbAlbumArtist: TCheckBox
         Left = 490
         Height = 19
         Top = 130
         Width = 20
-        TabOrder = 11
+        TabOrder = 7
       end
       object cbGenre: TCheckBox
         Left = 490
         Height = 19
         Top = 162
         Width = 20
-        TabOrder = 12
+        TabOrder = 9
       end
       object cbYear: TCheckBox
         Left = 208
         Height = 19
         Top = 194
         Width = 20
-        TabOrder = 13
+        TabOrder = 11
       end
       object cbTrack: TCheckBox
         Left = 490
         Height = 19
         Top = 194
         Width = 20
-        TabOrder = 14
+        TabOrder = 13
       end
       object cbComment: TCheckBox
         Left = 490
@@ -478,6 +476,14 @@ object fSongInfo: TfSongInfo
         Top = 232
         Width = 20
         TabOrder = 15
+      end
+      object edTrack: TEdit
+        Left = 381
+        Height = 23
+        Top = 191
+        Width = 101
+        OnChange = edTrackChange
+        TabOrder = 12
       end
     end
   end
@@ -670,7 +676,8 @@ object fSongInfo: TfSongInfo
       Align = alClient
       AutoSize = False
       OKButton.Name = 'OKButton'
-      OKButton.DefaultCaption = True
+      OKButton.Caption = 'Save'
+      OKButton.DefaultCaption = False
       OKButton.OnClick = OKButtonClick
       HelpButton.Name = 'HelpButton'
       HelpButton.DefaultCaption = True
@@ -679,7 +686,8 @@ object fSongInfo: TfSongInfo
       CloseButton.DefaultCaption = True
       CloseButton.Enabled = False
       CancelButton.Name = 'CancelButton'
-      CancelButton.DefaultCaption = True
+      CancelButton.Caption = 'Discard'
+      CancelButton.DefaultCaption = False
       CancelButton.OnClick = CancelButtonClick
       TabOrder = 2
       ShowButtons = [pbOK, pbCancel]
