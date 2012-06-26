@@ -35,6 +35,11 @@ type
     ChannelMode : string;
   end;
 
+  TIDFields = (idAlbum, idAlbumArtist, idArtist, idComment, idGenre,
+    idTitle, idTrack, idYear);
+  TIDFieldsSet = set of TIDFields;
+
+  { TCommonTags }
   TCommonTags = record
     ID: integer;
     FileName: string;
@@ -50,6 +55,8 @@ type
     Year: string;
     HasImage:boolean;
   end;
+
+  ACommonTags = Array of TCommonTags;
 
   operator = (t1 : TCommonTags; t2 : TCommonTags) b : boolean;
 
@@ -167,6 +174,9 @@ type
     Property MediaProperty: TMediaProperty read DumpInfo;
   end;
 
+Procedure ClearTags(var Tags:TcommonTags); inline;
+function GetTagByID(Tags:TcommonTags; Field: TIDFields):string; inline;
+Procedure SetTagByID(var Tags:TcommonTags; Field: TIDFields; Value :string); inline;
 
 implementation
 uses FileUtil;
@@ -184,6 +194,51 @@ begin
            (t1.Genre       = t2.Genre) and
            (t1.Year        = t2.Year) and
            (t1.Duration    = t2.Duration);
+end;
+
+procedure ClearTags(var Tags:TcommonTags);
+begin
+  Tags.ID           := 0;
+  Tags.FileName     := '';
+  Tags.TrackString  := '';
+  Tags.Track        := 0;
+  Tags.Title        := '';
+  Tags.Album        := '';
+  Tags.AlbumArtist  := '';
+  Tags.Artist       := '';
+  Tags.Genre        := '';
+  Tags.Year         := '';
+  Tags.Duration     := 0;
+
+end;
+
+function GetTagByID(Tags:TcommonTags; Field: TIDFields):string;
+begin
+  case Field of
+    idAlbum       : Result := Tags.Album;
+    idAlbumArtist : Result := Tags.AlbumArtist;
+    idArtist      : Result := Tags.Artist;
+    idComment     : Result := Tags.Comment;
+    idGenre       : Result := Tags.Genre;
+    idTitle       : Result := Tags.Title;
+    idTrack       : Result := Tags.TrackString;
+    idYear        : Result := Tags.Year;
+  end;
+end;
+
+Procedure SetTagByID(var Tags:TcommonTags; Field: TIDFields; Value :string);
+begin
+    case Field of
+    idAlbum       : Tags.Album := Value;
+    idAlbumArtist : Tags.AlbumArtist := Value;
+    idArtist      : Tags.Artist := Value;
+    idComment     : Tags.Comment := Value;
+    idGenre       : Tags.Genre := Value;
+    idTitle       : Tags.Title := Value;
+    idTrack       : Tags.TrackString := Value;
+    idYear        : Tags.Year := Value;
+  end;
+
 end;
 
 { TImageElement }
