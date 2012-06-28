@@ -190,7 +190,24 @@ end;
 
 procedure TAudioEngineDShow.Activate;
 begin
-//
+  if Assigned(MediaControl) then
+     begin
+       Release;
+     end;
+
+  if CoCreateInstance( CLSID_FilterGraph,
+                       nil,
+                       CLSCTX_INPROC_SERVER,
+                       IID_IGraphBuilder,
+                       GraphBuilder ) <> S_OK Then
+    Raise exception.create('Error');
+
+  GraphBuilder.QueryInterface( IID_IMediaControl,  MediaControl );
+  GraphBuilder.QueryInterface( IID_IBasicAudio,    AudioControl );
+  GraphBuilder.QueryInterface( IID_IMediaPosition, PositionControl );
+  GraphBuilder.QueryInterface( IID_IMediaEventEx,  MediaEvent );
+  MediaEvent.SetNotifyWindow(hwindow, WM_APP + 2, 0);
+
 end;
 
 constructor TAudioEngineDShow.Create;
@@ -224,6 +241,7 @@ function TAudioEngineDShow.GetState: TEngineState;
 var
   State: TFilter_State;
 begin
+
   Result := ENGINE_ON_LINE;
   MediaControl.GetState(200,State);
 
@@ -241,26 +259,10 @@ end;
 
 procedure TAudioEngineDShow.DoPlay(Song: TSong; offset:Integer);
 begin
-  if Assigned(MediaControl) then
-     begin
-       Release;
-     end;
-
-  if CoCreateInstance( CLSID_FilterGraph,
-                       nil,
-                       CLSCTX_INPROC_SERVER,
-                       IID_IGraphBuilder,
-                       GraphBuilder ) <> S_OK Then
-    Raise exception.create('Error');
-
-  GraphBuilder.QueryInterface( IID_IMediaControl,  MediaControl );
-  GraphBuilder.QueryInterface( IID_IBasicAudio,    AudioControl );
-  GraphBuilder.QueryInterface( IID_IMediaPosition, PositionControl );
-  GraphBuilder.QueryInterface( IID_IMediaEventEx,  MediaEvent );
-  MediaEvent.SetNotifyWindow(hwindow, WM_APP + 2, 0);
-
+  Activate;
   MediaControl.RenderFile( PWideChar( WideString( Song.FullName) ) );
   MediaControl.Run;
+  Seek(offset, True);
 end;
 
 procedure TAudioEngineDShow.SetMuted(const AValue: boolean);
