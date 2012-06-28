@@ -33,6 +33,7 @@ type
 
   RSongInfo = record
     FileName: string;
+    TagReader: TTagReader;
     Tags: TCommonTags;
     Modified: TIDFieldsSet;
     MediaProperty: TMediaProperty;
@@ -64,14 +65,14 @@ type
     edTitle: TEdit;
     GroupBox1: TGroupBox;
     ImageTrack: TImageTrack;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
-    Label6: TLabel;
-    Label7: TLabel;
-    Label8: TLabel;
+    laArtist: TLabel;
+    laAlbum: TLabel;
+    laTitle: TLabel;
+    laAlbumArtist: TLabel;
+    laGenre: TLabel;
+    laComment: TLabel;
+    laYear: TLabel;
+    laTrack: TLabel;
     Label9: TLabel;
     Label10: TLabel;
     Label11: TLabel;
@@ -98,7 +99,7 @@ type
     pnlMoveSelection: TPanel;
     pcSongInfo: TPageControl;
     edTrack: TEdit;
-    seYear: TSpinEdit;
+    edYear: TEdit;
     tsMediaProperty: TTabSheet;
     tsTags: TTabSheet;
 
@@ -111,7 +112,9 @@ type
     procedure edGenreChange(Sender: TObject);
     procedure edTitleChange(Sender: TObject);
     procedure edTrackChange(Sender: TObject);
+    procedure edYearChange(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
+    procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lbFilesMouseLeave(Sender: TObject);
     procedure lbFilesMouseMove(Sender: TObject; Shift: TShiftState; X, Y: integer);
@@ -119,7 +122,7 @@ type
     procedure meCommentChange(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
   private
-    fUpdating : boolean;
+    fUpdating: boolean;
     fHint: THintWindow;
     fTagList: ASongInfo;
     fOriginalTag: ACommonTags;
@@ -128,7 +131,7 @@ type
     fCombinedFlags: TIDFieldsSet;
     fCombinedModified: TIDFieldsSet;
 
-    procedure CheckModified(Field: TIDFields; Edit: TWinControl);
+    procedure CheckModified(Field: TIDFields; AText: string);
     procedure CombineTags;
     procedure LoadFromFile(FileName: TFileName; var Info: RSongInfo);
     procedure ShowFileInfo(Info: TFileInfo);
@@ -136,6 +139,7 @@ type
     procedure ShowMediaProperty(MediaProperty: TMediaProperty);
     procedure ShowTags(Tags: TCommonTags; Modified: TIDFieldsSet);
     procedure ShowCombinedTags;
+    procedure UpdateHiglighting(Modified: TIDFieldsSet);
   public
     constructor Create(Aowner: TComponent); override;
     destructor Destroy; override;
@@ -154,9 +158,23 @@ uses AppConsts, GUIBackEnd, CommonFunctions;
 { TfSongInfo }
 
 procedure TfSongInfo.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+var
+  i:Integer;
 begin
   CloseAction := caFree;
+
   fHint.Free;
+end;
+
+procedure TfSongInfo.FormDestroy(Sender: TObject);
+var
+  i:Integer;
+begin
+  for i := 0 to lbFiles.Count -1 do
+    begin
+      if Assigned(fTagList[i].TagReader) then
+         fTagList[i].TagReader.Free;
+    end;
 end;
 
 procedure TfSongInfo.FormShow(Sender: TObject);
@@ -232,7 +250,19 @@ begin
 end;
 
 procedure TfSongInfo.OKButtonClick(Sender: TObject);
+var
+  i: integer;
 begin
+  for i := 0 to lbFiles.Count - 1 do
+    if fTagList[i].Modified <> [] then
+    begin
+       fTagList[i].TagReader.SetCommonTags(fTagList[i].Tags);
+       fTagList[i].TagReader.UpdateFile;
+       if fTagList[i].ID <> -1 then
+         begin
+            BackEnd.mediaLibrary.Update(fTagList[i].ID, fTagList[i].Tags);
+         end;
+    end;
   Close;
 end;
 
@@ -247,7 +277,7 @@ begin
   begin
     if not lbFiles.Selected[i] then
       Continue;
-    fCombinedModified:=fCombinedModified + fTagList[i].Modified;
+    fCombinedModified := fCombinedModified + fTagList[i].Modified;
     if First then
     begin
       fCombinedTags := fTagList[i].Tags;
@@ -296,83 +326,80 @@ end;
 
 procedure TfSongInfo.edAlbumArtistChange(Sender: TObject);
 begin
-  CheckModified(idAlbumArtist, edAlbumArtist);
+  CheckModified(idAlbumArtist, edAlbumArtist.Caption);
 end;
 
 procedure TfSongInfo.edAlbumChange(Sender: TObject);
 begin
-  CheckModified(idAlbum, edAlbum);
+  CheckModified(idAlbum, edAlbum.Caption);
 end;
 
 procedure TfSongInfo.edArtistChange(Sender: TObject);
 begin
-  CheckModified(idArtist, edArtist);
+  CheckModified(idArtist, edArtist.Caption);
 end;
 
 procedure TfSongInfo.edGenreChange(Sender: TObject);
 begin
-  CheckModified(idGenre, edGenre);
+  CheckModified(idGenre, edGenre.Caption);
 end;
 
 procedure TfSongInfo.edTitleChange(Sender: TObject);
 begin
-  CheckModified(idTitle, edTitle);
+  CheckModified(idTitle, edTitle.Caption);
 end;
 
 procedure TfSongInfo.edTrackChange(Sender: TObject);
 begin
-  CheckModified(idTrack, edTrack);
+  CheckModified(idTrack, edTrack.Caption);
+end;
+
+procedure TfSongInfo.edYearChange(Sender: TObject);
+begin
+  CheckModified(idYear, edYear.Caption);
 end;
 
 procedure TfSongInfo.meCommentChange(Sender: TObject);
 begin
-  CheckModified(idComment, meComment);
+  CheckModified(idComment, meComment.Lines.Text);
 end;
 
 
-procedure TfSongInfo.CheckModified(Field: TIDFields; Edit: TWinControl);
+procedure TfSongInfo.CheckModified(Field: TIDFields; AText: string);
 var
   i: integer;
-  fText: string;
-  SelCount: Integer;
+  SelCount: integer;
 begin
-  if fUpdating then exit;
+  if fUpdating then
+    exit;
   SelCount := 0;
   for i := 0 to lbFiles.Count - 1 do
   begin
     if lbFiles.Selected[i] then
     begin
       Inc(SelCount);
-      if (Edit is TEdit) then
-        fText := TEdit(Edit).Caption
-      else
-      if (Edit is TMemo) then
-        fText := TMemo(Edit).Lines.Text;
 
-      IF fText = rMultipleValue THEN
+      if aText = rMultipleValue then
         EXIT;
 
-      if (fText <> GetTagByID(fOriginalTag[i], Field)) then
+      if (aText <> GetTagByID(fOriginalTag[i], Field)) then
       begin
         Include(fTagList[i].Modified, Field);
-        SetTagByID(fTagList[i].Tags, Field, fText);
-        Edit.Font.Style := [fsBold];
+        SetTagByID(fTagList[i].Tags, Field, aText);
       end
       else
-        begin
-          Exclude(fTagList[i].Modified, Field);
-          SetTagByID(fTagList[i].Tags, Field, fText);
-          Edit.Font.Style := [];
-        end;
+      begin
+        Exclude(fTagList[i].Modified, Field);
+        SetTagByID(fTagList[i].Tags, Field, aText);
+      end;
     end;
   end;
- if SelCount > 1 then
-   begin
-     CombineTags;
-     ShowCombinedTags;
-//     ShowTags(fCombinedTags, fCombinedModified)
-   end
- else
+  if SelCount > 1 then
+  begin
+    CombineTags;
+    ShowCombinedTags;
+  end
+  else
     ShowTags(fTagList[lbFiles.ItemIndex].Tags, fTagList[lbFiles.ItemIndex].Modified);
 end;
 
@@ -391,13 +418,12 @@ end;
 
 procedure TfSongInfo.LoadFromFile(FileName: TFileName; var Info: RSongInfo);
 var
-  FileObject: TTagReader;
   ID: integer;
 begin
   Info.FileName := FileName;
-  FileObject := GetFileTagsObject(FileName);
-  info.Tags := ExtractTags(FileObject);
-  info.MediaProperty := FileObject.MediaProperty;
+  info.TagReader := GetFileTagsObject(FileName);
+  info.Tags := ExtractTags(info.TagReader);
+  info.MediaProperty := info.TagReader.MediaProperty;
   info.ID := backEnd.mediaLibrary.IDFromFullName(FileName);
   info.FileInfo := GetFileInfo(FileName);
   if id <> -1 then
@@ -434,25 +460,25 @@ procedure TfSongInfo.ShowTags(Tags: TCommonTags; Modified: TIDFieldsSet);
 var
   int: integer;
 begin
-  fUpdating:= true;
+  fUpdating := True;
   leFileName.Caption := Tags.FileName;
   edArtist.Caption := Tags.Artist;
   edAlbum.Caption := Tags.Album;
   edAlbumArtist.Caption := Tags.AlbumArtist;
   edGenre.Caption := Tags.Genre;
   edTitle.Caption := Tags.Title;
-  int := 0;
-  TryStrToInt(Tags.Year, int);
-  seYear.Value := int;
+  edYear.Caption := Tags.Year;
   edTrack.Caption := Tags.TrackString;
   meComment.Lines.Text := Tags.Comment;
-  fUpdating:= False;
+  UpdateHiglighting(Modified);
+  fUpdating := False;
 
 end;
 
+
 procedure TfSongInfo.ShowCombinedTags;
 begin
-   fUpdating:= true;
+  fUpdating := True;
   leFileName.Caption := rMultipleValue;
 
   if idAlbum in fCombinedFlags then
@@ -491,10 +517,105 @@ begin
     edTrack.Caption := fCombinedTags.TrackString;
 
   if idYear in fCombinedFlags then
-    seYear.Caption := rMultipleValue
+    edYear.Caption := rMultipleValue
   else
-    seYear.Caption := fCombinedTags.Year;
-  fUpdating:= False;
+    edYear.Caption := fCombinedTags.Year;
+
+  UpdateHiglighting(fCombinedModified);
+  fUpdating := False;
+end;
+
+procedure TfSongInfo.UpdateHiglighting(Modified: TIDFieldsSet);
+var
+  Highlight: boolean;
+begin
+
+  if idAlbum in Modified then
+  begin
+    edAlbum.Font.Style := [fsBold];
+    laAlbum.Font.Style := [fsBold];
+  end
+  else
+  begin
+    edAlbum.Font.Style := [];
+    laAlbum.Font.Style := [];
+  end;
+
+  if idAlbumArtist in Modified then
+  begin
+    edAlbumArtist.Font.Style := [fsBold];
+    laAlbumArtist.Font.Style := [fsBold];
+  end
+  else
+  begin
+    edAlbumArtist.Font.Style := [];
+    laAlbumArtist.Font.Style := [];
+  end;
+
+  if idArtist in Modified then
+  begin
+    edArtist.Font.Style := [fsBold];
+    laArtist.Font.Style := [fsBold];
+  end
+  else
+  begin
+    edArtist.Font.Style := [];
+    laArtist.Font.Style := [];
+  end;
+  if idComment in Modified then
+  begin
+    meComment.Font.Style := [fsBold];
+    laComment.Font.Style := [fsBold];
+  end
+  else
+  begin
+    meComment.Font.Style := [];
+    laComment.Font.Style := [];
+  end;
+  if idGenre in Modified then
+  begin
+    edGenre.Font.Style := [fsBold];
+    laGenre.Font.Style := [fsBold];
+  end
+  else
+  begin
+    edGenre.Font.Style := [];
+    laGenre.Font.Style := [];
+  end;
+
+  if idTitle in Modified then
+  begin
+    edTitle.Font.Style := [fsBold];
+    laTitle.Font.Style := [fsBold];
+  end
+  else
+  begin
+    edTitle.Font.Style := [];
+    laTitle.Font.Style := [];
+  end;
+
+  if idTrack in Modified then
+  begin
+    edTrack.Font.Style := [fsBold];
+    laTrack.Font.Style := [fsBold];
+  end
+  else
+  begin
+    edTrack.Font.Style := [];
+    laTrack.Font.Style := [];
+  end;
+
+  if idYear in Modified then
+  begin
+    edYear.Font.Style := [fsBold];
+    laYear.Font.Style := [fsBold];
+  end
+  else
+  begin
+    edYear.Font.Style := [];
+    laYear.Font.Style := [];
+  end;
+
 end;
 
 procedure TfSongInfo.InitFromFile(FileName: TFileName);

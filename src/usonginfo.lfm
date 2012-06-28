@@ -8,6 +8,7 @@ object fSongInfo: TfSongInfo
   ClientHeight = 407
   ClientWidth = 759
   OnClose = FormClose
+  OnDestroy = FormDestroy
   OnShow = FormShow
   LCLVersion = '1.1'
   object pcSongInfo: TPageControl
@@ -261,7 +262,7 @@ object fSongInfo: TfSongInfo
       Caption = 'Tags'
       ClientHeight = 329
       ClientWidth = 583
-      object Label1: TLabel
+      object laArtist: TLabel
         Left = 0
         Height = 17
         Top = 67
@@ -282,7 +283,7 @@ object fSongInfo: TfSongInfo
         OnChange = edArtistChange
         TabOrder = 2
       end
-      object Label2: TLabel
+      object laAlbum: TLabel
         Left = 0
         Height = 17
         Top = 99
@@ -303,7 +304,7 @@ object fSongInfo: TfSongInfo
         OnChange = edAlbumChange
         TabOrder = 4
       end
-      object Label3: TLabel
+      object laTitle: TLabel
         Left = 0
         Height = 17
         Top = 34
@@ -324,7 +325,7 @@ object fSongInfo: TfSongInfo
         OnChange = edTitleChange
         TabOrder = 0
       end
-      object Label4: TLabel
+      object laAlbumArtist: TLabel
         Left = 0
         Height = 17
         Top = 132
@@ -345,7 +346,7 @@ object fSongInfo: TfSongInfo
         OnChange = edAlbumArtistChange
         TabOrder = 6
       end
-      object Label5: TLabel
+      object laGenre: TLabel
         Left = 0
         Height = 17
         Top = 165
@@ -372,9 +373,9 @@ object fSongInfo: TfSongInfo
         Top = 223
         Width = 385
         OnChange = meCommentChange
-        TabOrder = 14
+        TabOrder = 13
       end
-      object Label6: TLabel
+      object laComment: TLabel
         Left = 0
         Height = 17
         Top = 223
@@ -387,28 +388,20 @@ object fSongInfo: TfSongInfo
         ParentFont = False
         OptimalFill = True
       end
-      object seYear: TSpinEdit
-        Left = 98
-        Height = 23
-        Top = 191
-        Width = 101
-        MaxValue = 9999
-        TabOrder = 10
-      end
-      object Label7: TLabel
+      object laYear: TLabel
         Left = 0
         Height = 17
-        Top = 192
+        Top = 193
         Width = 93
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'Year'
-        Font.Height = 15
+        Font.Height = 18
         ParentColor = False
         ParentFont = False
         OptimalFill = True
       end
-      object Label8: TLabel
+      object laTrack: TLabel
         Left = 283
         Height = 17
         Top = 192
@@ -461,21 +454,21 @@ object fSongInfo: TfSongInfo
         Height = 19
         Top = 194
         Width = 20
-        TabOrder = 11
+        TabOrder = 10
       end
       object cbTrack: TCheckBox
         Left = 490
         Height = 19
         Top = 194
         Width = 20
-        TabOrder = 13
+        TabOrder = 12
       end
       object cbComment: TCheckBox
         Left = 490
         Height = 19
         Top = 232
         Width = 20
-        TabOrder = 15
+        TabOrder = 14
       end
       object edTrack: TEdit
         Left = 381
@@ -483,7 +476,15 @@ object fSongInfo: TfSongInfo
         Top = 191
         Width = 101
         OnChange = edTrackChange
-        TabOrder = 12
+        TabOrder = 11
+      end
+      object edYear: TEdit
+        Left = 98
+        Height = 23
+        Top = 191
+        Width = 101
+        OnChange = edYearChange
+        TabOrder = 15
       end
     end
   end
