@@ -206,7 +206,10 @@ begin
   Result.Title := GetFrameValue('TITLE');
   Result.Track := StrToIntDef(GetFrameValue('TRACK'),0);
   Result.TrackString := GetFrameValue('TRACK');
-  Result.Year := GetFrameValue('YEAR');
+  Result.Year := GetFrameValue('DATE');
+  if Result.Year = '' then
+     Result.Year := GetFrameValue('YEAR');
+
   if Result.AlbumArtist = '' then
      Result.AlbumArtist := result.Artist;
 end;

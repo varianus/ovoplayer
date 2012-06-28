@@ -107,35 +107,40 @@ var
   header : TAPEHeader;
 begin
   Result:=inherited SaveToFile(AFileName);
+
   SourceStream := TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
   DestStream := TFileStream.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
 
-  SourceStream.Seek(SourceStream.Size - SizeOf(V1Rec), soFromBeginning);
-  SourceStream.Read(V1Rec,  SizeOf(V1Rec));
+  try
+    SourceStream.Seek(SourceStream.Size - SizeOf(V1Rec), soFromBeginning);
+    SourceStream.Read(V1Rec,  SizeOf(V1Rec));
 
-  if V1Rec.Header <> 'TAG' then
-     Offset := 0
-  else
-     Offset := SizeOf(V1Rec);
+    if V1Rec.Header <> 'TAG' then
+       Offset := 0
+    else
+       Offset := SizeOf(V1Rec);
 
-  SourceStream.Seek(SourceStream.Size - SizeOf(Header) - offset, soFromBeginning);
-  SourceStream.Read(Header, sizeof(Header));
+    SourceStream.Seek(SourceStream.Size - SizeOf(Header) - offset, soFromBeginning);
+    SourceStream.Read(Header, sizeof(Header));
 
- if String(Header.Marker) = APE_IDENTIFIER then
-    begin
-      Offset := offset + header.TagSize;
-      SourceStream.Seek(SourceStream.Size - SizeOf(Header) - offset, soFromBeginning);
-      SourceStream.Read(Header, sizeof(Header));
-      if String(Header.Marker) = APE_IDENTIFIER then
-         Offset := offset + sizeof(Header);
-    end;
+    if String(Header.Marker) = APE_IDENTIFIER then
+      begin
+        Offset := offset + header.TagSize;
+        SourceStream.Seek(SourceStream.Size - SizeOf(Header) - offset, soFromBeginning);
+        SourceStream.Read(Header, sizeof(Header));
+        if String(Header.Marker) = APE_IDENTIFIER then
+           Offset := offset + sizeof(Header);
+      end;
 
- SourceStream.Position := 0;
- DestStream.CopyFrom(SourceStream, SourceStream.Size - offset);
- Tags.WriteToStream(DestStream);
+   SourceStream.Position := 0;
+   DestStream.CopyFrom(SourceStream, SourceStream.Size - offset);
+   Tags.WriteToStream(DestStream);
+   Result := True;
+  finally
+    SourceStream.Free;
+    DestStream.Free;
+  end;
 
- SourceStream.Free;
- DestStream.Free;
 
 end;
 
