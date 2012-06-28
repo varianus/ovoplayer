@@ -95,6 +95,7 @@ type
     function SetSongPlayed(ID: integer): string;
     function TagsFromID(ID: integer): TCommonTags;
     function InfoFromID(ID: integer): TExtendedInfo;
+    procedure Update(ID: Integer; Tags: TCommonTags);
 
     property OnScanComplete: TScanComplete read FOnScanComplete write SetOnScanComplete;
     property OnScanStart: TNotifyEvent read FOnScanStart write SetOnScanStart;
@@ -309,6 +310,27 @@ begin
   fTR.Free;
   fDB.Free;
   inherited Destroy;
+end;
+
+procedure TMediaLibrary.Update(ID:Integer; Tags: TCommonTags);
+var
+  AsInteger: Integer;
+begin
+
+  fUpdateSong.Params.ParamByName('ID').AsInteger         := ID;
+  fUpdateSong.Params.ParamByName('Filename').AsString    := UTF8Encode(Tags.FileName);
+  fUpdateSong.Params.ParamByName('TrackString').AsString := Tags.TrackString;
+  fUpdateSong.Params.ParamByName('Track').AsInteger      := Tags.Track;
+  fUpdateSong.Params.ParamByName('Title').AsString       := UTF8Encode(Tags.Title);
+  fUpdateSong.Params.ParamByName('Album').AsString       := UTF8Encode(Tags.Album);
+  fUpdateSong.Params.ParamByName('Artist').AsString      := UTF8Encode(Tags.Artist);
+  fUpdateSong.Params.ParamByName('AlbumArtist').AsString := UTF8Encode(Tags.AlbumArtist);
+  fUpdateSong.Params.ParamByName('Genre').AsString       := Tags.Genre;
+  fUpdateSong.Params.ParamByName('year').AsString        := Tags.Year;
+  fUpdateSong.Params.ParamByName('Duration').AsInteger   := Tags.Duration;
+  fUpdateSong.Params.ParamByName('elabflag').AsString    := '';
+  fUpdateSong.ExecSQL;
+  fTR.CommitRetaining;
 end;
 
 procedure TMediaLibrary.Add(Tags: TCommonTags);
