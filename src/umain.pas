@@ -57,6 +57,16 @@ type
     ActionList: TActionList;
     Artist:     TLabel;
     cbGroupBy:  TComboBox;
+    MenuItem38: TMenuItem;
+    MenuItem39: TMenuItem;
+    MenuItem40: TMenuItem;
+    MenuItem41: TMenuItem;
+    MenuItem42: TMenuItem;
+    MenuItem43: TMenuItem;
+    MenuItem44: TMenuItem;
+    MenuItem45: TMenuItem;
+    MenuItem46: TMenuItem;
+    MenuItem47: TMenuItem;
     slVolume: TCDTrackBar;
     TrackBar: TCDTrackBar;
     edtFilter: TLabeledEdit;

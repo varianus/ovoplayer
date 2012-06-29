@@ -64,6 +64,7 @@ type
     ApplicationProperties: TApplicationProperties;
     ilButtons:   TImageList;
     ilSmall:     TImageList;
+    ilNone: TImageList;
     OpenDialogPlaylist: TOpenDialog;
     OpenDialogFiles: TOpenDialog;
     SaveDialogPlayList: TSaveDialog;

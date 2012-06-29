@@ -1,7 +1,7 @@
 object fMainForm: TfMainForm
-  Left = 317
+  Left = 333
   Height = 694
-  Top = 139
+  Top = 184
   Width = 866
   AllowDropFiles = True
   Caption = 'OVO Player'
@@ -730,7 +730,7 @@ object fMainForm: TfMainForm
     Width = 4
   end
   object MainMenu: TMainMenu
-    Images = BackEnd.ilSmall
+    Images = BackEnd.ilButtons
     left = 425
     top = 184
     object mnuFile: TMenuItem
@@ -755,6 +755,37 @@ object fMainForm: TfMainForm
       end
       object MenuItem16: TMenuItem
         Action = BackEnd.actExit
+      end
+    end
+    object MenuItem38: TMenuItem
+      Caption = 'PlayList'
+      object MenuItem39: TMenuItem
+        Action = BackEnd.actPlayListAddFiles
+      end
+      object MenuItem41: TMenuItem
+        Action = BackEnd.actPlayListShuffle
+      end
+      object MenuItem42: TMenuItem
+        Caption = 'Repeat Mode'
+        SubMenuImages = BackEnd.ilNone
+        object MenuItem43: TMenuItem
+          Action = BackEnd.actRepeatNone
+        end
+        object MenuItem44: TMenuItem
+          Action = BackEnd.actRepeatTrack
+        end
+        object MenuItem45: TMenuItem
+          Action = BackEnd.actRepeatAlbum
+        end
+        object MenuItem46: TMenuItem
+          Action = BackEnd.actRepeatAll
+        end
+      end
+      object MenuItem47: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem40: TMenuItem
+        Action = BackEnd.actPlayListClear
       end
     end
     object mnuCollection: TMenuItem
