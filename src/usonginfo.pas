@@ -487,6 +487,7 @@ var
 begin
   fUpdating := True;
   leFileName.Caption := Tags.FileName;
+  leDuration.Caption := TimeToStr(Tags.Duration / MSecsPerDay);
   edArtist.Caption := Tags.Artist;
   edAlbum.Caption := Tags.Album;
   edAlbumArtist.Caption := Tags.AlbumArtist;
