@@ -1402,19 +1402,27 @@ end;
 procedure TfMainForm.PlaylistTreeDblClick(Sender: TObject);
 var
   item: TTreeNode;
+  Limit : Integer;
+  strLimit: string;
 begin
   item := PlaylistTree.Selected;
   if item = nil then
      exit;
+  Limit := BackEnd.Config.PlayListParam.LimitTrack;
+  if limit > 0 then
+     strLimit:= ' limit ' + IntToStr(Limit)
+  else
+     strLimit:= '';
+
   case item.StateIndex of
      1: BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
-        'playcount = 0');
+        'playcount = 0', 'random()'  + strLimit);
      2: BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
-        '', 'added limit 50');
+        '', 'added' + strLimit);
      3: BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
-        '', 'playcount desc limit 50');
+        '', 'playcount desc ' + strLimit);
      4: BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
-        '','random() limit 50');
+        '','random()' + strLimit);
      5: BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
         '');
   end;
@@ -1497,6 +1505,7 @@ begin
     end;
 
   lvPlayList.EndUpdate;
+  lvPlayList.ScrollIntoView(FindNode(BackEnd.PlayList.ItemIndex), true, true);
   AdaptSize;
 
   lvPlayList.Invalidate;
