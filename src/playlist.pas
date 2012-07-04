@@ -64,6 +64,7 @@ type
     procedure Clear;//  override;
     function Next: TSong;
     function Previous: TSong;
+    Function FindByName(FileName: TFileName): integer;
     procedure Swap(Item1, Item2: integer);
     procedure BeginUpdate;
     procedure EndUpdate;
@@ -306,6 +307,20 @@ begin
     ItemIndex := ItemIndex - 1;
 
   Result := CurrentItem;
+end;
+
+function TPlayList.FindByName(FileName: TFileName): integer;
+var
+  i: integer;
+begin
+   result := -1;
+   for i:= 0 to Count -1 do
+     if Songs[i].FullName = FileName then
+       begin
+          Result := i;
+          Break;
+       end;
+
 end;
 
 procedure TPlayList.BeginUpdate;

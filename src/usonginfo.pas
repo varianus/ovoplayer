@@ -252,16 +252,41 @@ end;
 procedure TfSongInfo.OKButtonClick(Sender: TObject);
 var
   i: integer;
+  idx: integer;
+  currpos: integer;
+  MustRestart: boolean;
 begin
   for i := 0 to lbFiles.Count - 1 do
     if fTagList[i].Modified <> [] then
     begin
+       idx := BackEnd.PlayList.FindByName(fTagList[i].FileName);
+       MustRestart:= (idx = BackEnd.PlayList.ItemIndex) and BackEnd.AudioEngine.Playing; // if song is playing
+       if MustRestart then
+          begin
+            currpos:=BackEnd.AudioEngine.Position div 1000;
+            BackEnd.AudioEngine.Stop;
+          end;
        fTagList[i].TagReader.SetCommonTags(fTagList[i].Tags);
        fTagList[i].TagReader.UpdateFile;
-       if fTagList[i].ID <> -1 then
+
+       if MustRestart then
+          begin
+            BackEnd.AudioEngine.Play(BackEnd.PlayList.Songs[idx], currpos);
+          end;
+
+       if idx <> -1 then  // if song is in playlist
+          begin
+             BackEnd.PlayList.Songs[idx].SetTags(fTagList[i].Tags);
+             BackEnd.SignalPlayListChange;
+          end;
+
+
+       if fTagList[i].ID <> -1 then  // if song is in media library
          begin
             BackEnd.mediaLibrary.Update(fTagList[i].ID, fTagList[i].Tags);
          end;
+
+
     end;
   Close;
 end;
