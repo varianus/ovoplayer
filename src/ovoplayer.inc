@@ -23,6 +23,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   {$DEFINE SUPPORT_SHAPING} // seems to work only on windows
 {$ENDIF WINDOWS}
 
+{$IFDEF LCLWin32}
+  {$DEFINE SUPPORT_LISTBOX_HINT} // GTK2 have some problems
+{$ENDIF LCLWin32}
+
 //if release is defined, try to be quiet and efficient...
 {$IFDEF RELEASE}
   {$HINTS OFF}
@@ -34,6 +38,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   {$DEFINE ASKMMKEYSMODE} // Ask for multimedia keys capture mode
   {.$DEFINE GSTREAMER} // GStreamer need glib
 {$ENDIF UNIX}
+
 {$IFDEF WINDOWS}
   {$DEFINE DSHOW} // Work only on windows
 {$ENDIF WINDOWS}

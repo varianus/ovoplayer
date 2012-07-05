@@ -123,7 +123,9 @@ type
     procedure OKButtonClick(Sender: TObject);
   private
     fUpdating: boolean;
+    {$IFDEF SUPPORT_LISTBOX_HINT}
     fHint: THintWindow;
+    {$ENDIF}
     fTagList: ASongInfo;
     fOriginalTag: ACommonTags;
     fCount: integer;
@@ -163,7 +165,10 @@ var
 begin
   CloseAction := caFree;
 
+  {$IFDEF SUPPORT_LISTBOX_HINT}
   fHint.Free;
+  {$ENDIF}
+
 end;
 
 procedure TfSongInfo.FormDestroy(Sender: TObject);
@@ -185,10 +190,11 @@ begin
     lbFiles.Selected[0] := True;
 
   lbFilesSelectionChange(lbFiles, True);
-
+  {$IFDEF SUPPORT_LISTBOX_HINT}
   fHint := THintWindow.Create(Self);
   fHint.HideInterval := 3000;
   fHint.AutoHide := True;
+  {$ENDIF}
   for i := 0 to ComponentCount - 1 do
     if Components[i] is TLabel then
       if Tlabel(Components[i]).OptimalFill then
@@ -198,11 +204,14 @@ end;
 
 procedure TfSongInfo.lbFilesMouseLeave(Sender: TObject);
 begin
+  {$IFDEF SUPPORT_LISTBOX_HINT}
   fHint.hide;
+  {$ENDIF}
 end;
 
 procedure TfSongInfo.lbFilesMouseMove(Sender: TObject; Shift: TShiftState;
   X, Y: integer);
+{$IFDEF SUPPORT_LISTBOX_HINT}
 var
   item: integer;
   rec: TRect;
@@ -224,6 +233,10 @@ begin
       fHint.hide;
   end;
 end;
+{$ELSE}
+begin
+end;
+{$ENDIF}
 
 procedure TfSongInfo.lbFilesSelectionChange(Sender: TObject; User: boolean);
 var
