@@ -95,7 +95,6 @@ type
     MenuItem15: TMenuItem;
     MenuItem16: TMenuItem;
     MenuItem20: TMenuItem;
-    MenuItem21: TMenuItem;
     MenuItem23: TMenuItem;
     MenuItem24: TMenuItem;
     MenuItem25: TMenuItem;
@@ -242,7 +241,6 @@ type
     procedure TimerTimer(Sender: TObject);
     procedure btnUpDirClick(Sender: TObject);
     procedure tbRepeatClick(Sender: TObject);
-    procedure ToolButton14Click(Sender: TObject);
     procedure TrackBarChange(Sender: TObject);
     procedure TrackBarMouseMove(Sender: TObject; Shift: TShiftState; X, Y: integer);
     procedure TrackBarMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: integer);
@@ -494,7 +492,7 @@ begin
        f.Tags.Images[0].image.Position:=0;
        try
           imgCover.Picture.LoadFromStream(f.Tags.Images[0].image);
-          imgCover.Hint:= 'Embedded in file';
+          imgCover.Hint:= rEmbedded;
           imgloaded:= true;
        Except
        end;
@@ -1339,11 +1337,6 @@ begin
   RepeatMenu.PopUp;
 end;
 
-procedure TfMainForm.ToolButton14Click(Sender: TObject);
-begin
-  raise exception.create('aaa');
-end;
-
 procedure TfMainForm.TrackBarChange(Sender: TObject);
 begin
   BackEnd.AudioEngine.Position := TrackBar.Position;
@@ -1563,4 +1556,4 @@ begin
 
 end;
 
-end.
+end.
