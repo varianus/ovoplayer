@@ -140,6 +140,9 @@ begin
     result:=0;
   end;
 
+ if (SortField <> stTitle) and (Result = 0) then
+    result:= CompareStr(s1.Title,s2.Title);
+
   if fSortDirection = sdplDiscending then
      Result := Result * -1;
 end;
@@ -417,4 +420,4 @@ begin
   Sort;
 end;
 
-end.
+end.
