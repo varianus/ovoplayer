@@ -48,14 +48,17 @@ type
     procedure timPaintTimer(Sender: TObject);
     procedure TitleClick(Sender: TObject);
   private
+    fBitmap: TBitmap;
     MovePoint: TPoint;
-    Album: TLabel;
-    Artist: TLabel;
     imgCover: TPicture;
-    Title: TLabel;
-    Track: TLabel;
+
+    fTitle : string;
+    ftrack : string;
+    fAlbum : string;
+    fArtist : string;
 
     procedure LoadFromConfig;
+    procedure InternalPaint;
     {$IFDEF SUPPORT_SHAPING}
     procedure ShapeControl(AControl: TWinControl);
     {$ENDIF SUPPORT_SHAPING}
@@ -66,6 +69,8 @@ type
     timShow: TTimer;
     timPaint: TTimer;
 
+    BackGroundColor: TColor;
+    FontColor : TColor;
     procedure UpdateAspect;
     procedure Paint; override;
     Constructor Create(AOwner: Tcomponent); override;
@@ -90,17 +95,16 @@ var
 begin
   if fOSD = nil then
     fOSD := TfOSD.Create(nil);
+
  {$IFDEF SUPPORT_SHAPING}
   fOSD.ShapeControl(fOSD);
  {$ENDIF SUPPORT_SHAPING}
 
-  fOSD.Title.Caption := Song.tags.Title;
-  fOSD.track.Caption := Song.Tags.TrackString;
-  fOSD.Album.Caption := Song.Tags.Album;
-  fOSD.Artist.Caption := Song.Tags.Artist;
 
-  fOSD.LoadFromConfig;
-  fOSD.UpdateAspect;
+  fOSD.fTitle := Song.tags.Title;
+  fOSD.ftrack := Song.Tags.TrackString;
+  fOSD.fAlbum := Song.Tags.Album;
+  fOSD.fArtist := Song.Tags.Artist;
 
   fOSD.AlphaBlend := True;
 
@@ -118,8 +122,9 @@ begin
 
   fOSD.timPaint.Enabled := False;
   fOSD.timShow.Enabled := True;
-
-  FOSD.Repaint;
+  fOSD.LoadFromConfig;
+  fOSD.UpdateAspect;
+  fOSD.InternalPaint;
   fOSD.Show;
 end;
 
@@ -132,10 +137,10 @@ begin
   if fOSD = nil then
     fOSD := TfOSD.Create(application);
 
-  fOSD.Title.Caption := DisplayAppName;
-  fOSD.Artist.Caption := 'Drag to change position';
-  fOSD.Track.Caption := '';
-  fOSD.Album.Caption := '';
+  fOSD.fTitle := DisplayAppName;
+  fOSD.fAlbum := rDragToChangePosition;
+  fOSD.ftrack := '';
+  fOSD.fArtist := '';
 
   imgName := BackEnd.Config.GetResourcesPath + 'nocover.png';
 
@@ -147,6 +152,7 @@ begin
   fOSD.LoadFromConfig;
   fOSD.ConfigMode := True;
   fOSD.UpdateAspect;
+  fOSD.InternalPaint;
 
   fOSD.AlphaBlend := True;
 
@@ -283,20 +289,45 @@ begin
 end;
 
 procedure TfOSD.UpdateAspect;
-var
-  i: integer;
 begin
-
-  Color := BackEnd.Config.NotificationParam.BackColor;
+  BackGroundColor := BackEnd.Config.NotificationParam.BackColor;
   AlphaBlendValue := BackEnd.Config.NotificationParam.Transparency;
+  FontColor := BackEnd.Config.NotificationParam.FontColor;
 
-  for i := 0 to ComponentCount - 1 do
-    if Components[i] is TLabel then
-    begin
- //     TLabel(Components[i]).color := color;
-      TLabel(Components[i]).Font.color :=
-        BackEnd.Config.NotificationParam.FontColor;
-    end;
+end;
+
+procedure TfOSD.InternalPaint;
+var
+  ARect : TRect;
+  leftPos : integer;
+begin
+  fBitmap.SetSize(Width, Height);
+  fBitmap.Canvas.Brush.Style := bsSolid;
+  fBitmap.Canvas.Brush.Color := Color;
+  ARect := Rect(0,0,fBitmap.width,fBitmap.height);
+  fBitmap.Canvas.Frame3D(ARect, GetShadowColor(Color), GetHighLightColor(Color), 2);
+  DrawGradientWindow(fBitmap.Canvas, ARect, height, Color);
+
+  if Assigned(imgCover) then
+     fBitmap.Canvas.StretchDraw(Rect(11,8,113, 97), imgCover.Graphic);
+
+  LeftPos := 123;
+
+  fBitmap.Canvas.Font.Assign(Font);
+  fBitmap.Canvas.Font.Color:= FontColor;
+  fBitmap.Canvas.Font.Style := [fsBold];
+  fBitmap.Canvas.Brush.Style:=bsClear;
+  fBitmap.Canvas.Font.Height := 20;
+  fBitmap.Canvas.TextOut(leftPos,8, fTitle);
+
+  fBitmap.Canvas.Font.Height := 16;
+  fBitmap.Canvas.Font.Style := [];
+  fBitmap.Canvas.TextOut(leftPos,33, fAlbum);
+  fBitmap.Canvas.TextOut(leftPos,57, fArtist);
+  fBitmap.Canvas.TextOut(leftPos,81, ftrack);
+
+  Repaint;
+
 end;
 
 constructor TfOSD.Create(AOwner: Tcomponent);
@@ -311,99 +342,9 @@ begin
   timShow.OnTimer:=@timShowTimer;
 
   imgCover:= TPicture.Create;
-
-  Title:= TLabel.create(Self);
-  with Title do begin
-    Parent := Self;
-    Left := 123;
-    Height := 20;
-    Top := 8;
-    Width := 285;
-    AutoSize := False;
-    Caption := 'Title';
-    Color := 11955992;
-    Font.Color := clBlack;
-    Font.Height := 20;
-    Font.Style := [fsBold];
-    ParentColor := False;
-    ParentFont := False;
-    Transparent := true;
-    OnMouseDown := @FormMouseDown;
-    OnMouseMove := @FormMouseMove;
-    OnMouseUp := @FormMouseUp;
-    OnMouseEnter := @FormMouseEnter;
-    OnMouseLeave := @FormMouseLeave;
-    OptimalFill := True;
-  end;
-
-  Album:= TLabel.create(Self);
-  with Album do begin
-    Parent := Self;
-    Left := 123;
-    Height := 16;
-    Top := 33;
-    Width := 285;
-    AutoSize := False;
-    Caption := 'Album';
-    Color := 11955992;
-    Font.Color := clBlack;
-    Font.Height := 16;
-    ParentColor := False;
-    ParentFont := False;
-    Transparent := true;
-    OnMouseDown := @FormMouseDown;
-    OnMouseMove := @FormMouseMove;
-    OnMouseUp := @FormMouseUp;
-    OnMouseEnter := @FormMouseEnter;
-    OnMouseLeave := @FormMouseLeave;
-    OptimalFill := True;
-  end;
-
-  Artist:= TLabel.create(Self);
-  with Artist do begin
-    Parent := Self;
-    Left := 123;
-    Height := 16;
-    Top := 57;
-    Width := 285;
-    AutoSize := False;
-    Caption := 'Artist';
-    Color := 11955992;
-    Font.Color := clBlack;
-    Font.Height := 16;
-    ParentColor := False;
-    ParentFont := False;
-    Transparent := true;
-    OnMouseDown := @FormMouseDown;
-    OnMouseMove := @FormMouseMove;
-    OnMouseUp := @FormMouseUp;
-    OnMouseEnter := @FormMouseEnter;
-    OnMouseLeave := @FormMouseLeave;
-    OptimalFill := True;
-  end;
-
-  Track:= TLabel.create(Self);
-  with Track do begin
-    Parent := Self;
-    Left := 123;
-    Height := 17;
-    Top := 81;
-    Width := 285;
-    AutoSize := False;
-    Caption := '0';
-    Color := 11955992;
-    Font.Color := clBlack;
-    Font.Height := 18;
-    ParentColor := False;
-    ParentFont := False;
-    Transparent := true;
-    OnMouseDown := @FormMouseDown;
-    OnMouseMove := @FormMouseMove;
-    OnMouseUp := @FormMouseUp;
-    OnMouseEnter := @FormMouseEnter;
-    OnMouseLeave := @FormMouseLeave;
-    OptimalFill := True;
-  end;
+  BorderWidth:=1;
+  fBitmap := TBitmap.Create;
+  fBitmap.SetSize(Width, Height);
 
   OnMouseDown := @FormMouseDown;
   OnMouseMove := @FormMouseMove;
@@ -418,25 +359,15 @@ end;
 
 procedure TfOSD.Paint;
 begin
-  Canvas.Brush.Style := bsSolid;
-  Canvas.Brush.Color := Color;
-  Canvas.FillRect(Rect(0,0,width,height));
-  DrawGradientWindow(Canvas, Rect(0,0,width,height), height, Color);
-  if Assigned(imgCover) then
-     Canvas.StretchDraw(Rect(11,8,113, 97), imgCover.Graphic);
-
+   self.Canvas.CopyRect(rect(0,0, Width, Height), fBitmap.Canvas, rect(0,0, fBitmap.Width, fBitmap.Height));
 end;
 
 destructor TfOSD.Destroy;
 begin
   timPaint.free;
   timShow.free;
-  Album.free;
-  Artist.free;
   imgCover.free;
-  Title.free;
-  Track.free;
-
+  fBitmap.free;
   inherited Destroy;
 end;
 
