@@ -13,6 +13,14 @@ msgstr ""
 msgid "Scanning Collection"
 msgstr ""
 
+#: appconsts.rdragtochangeposition
+msgid "Drag to change position"
+msgstr ""
+
+#: appconsts.rembedded
+msgid "Embedded in file"
+msgstr ""
+
 #: appconsts.remptytag
 msgid "<none>"
 msgstr ""
@@ -23,6 +31,10 @@ msgstr ""
 
 #: appconsts.rmissingconfig
 msgid "Can't activate Audio Engine. Please review configuration"
+msgstr ""
+
+#: appconsts.rmultiplevalue
+msgid "<Multiple Value>"
 msgstr ""
 
 #: appconsts.rnever
@@ -176,9 +188,8 @@ msgctxt "TBACKEND.OPENDIALOGPLAYLIST.TITLE"
 msgid "Open Playlist"
 msgstr ""
 
-#: tfabout.bclose.caption
-msgctxt "TFABOUT.BCLOSE.CAPTION"
-msgid "Close"
+#: tfabout.blicense.caption
+msgid "&License"
 msgstr ""
 
 #: tfabout.caption
@@ -338,6 +349,10 @@ msgctxt "TFCONFIG.TSPLAYLIST.CAPTION"
 msgid "Play List"
 msgstr ""
 
+#: tflicense.caption
+msgid "License"
+msgstr ""
+
 #: tfmainform.actshowabout.caption
 msgctxt "TFMAINFORM.ACTSHOWABOUT.CAPTION"
 msgid "About"
@@ -442,11 +457,6 @@ msgctxt "TFMAINFORM.MENUITEM18.CAPTION"
 msgid "-"
 msgstr ""
 
-#: tfmainform.menuitem21.caption
-msgctxt "TFMAINFORM.MENUITEM21.CAPTION"
-msgid "-"
-msgstr ""
-
 #: tfmainform.menuitem25.caption
 msgid "Help"
 msgstr ""
@@ -477,6 +487,20 @@ msgstr ""
 
 #: tfmainform.menuitem34.caption
 msgctxt "TFMAINFORM.MENUITEM34.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfmainform.menuitem38.caption
+msgctxt "TFMAINFORM.MENUITEM38.CAPTION"
+msgid "PlayList"
+msgstr ""
+
+#: tfmainform.menuitem42.caption
+msgid "Repeat Mode"
+msgstr ""
+
+#: tfmainform.menuitem47.caption
+msgctxt "TFMAINFORM.MENUITEM47.CAPTION"
 msgid "-"
 msgstr ""
 
@@ -554,6 +578,7 @@ msgid "Directory"
 msgstr ""
 
 #: tfmainform.tsplaylist.caption
+msgctxt "tfmainform.tsplaylist.caption"
 msgid "PlayList"
 msgstr ""
 
@@ -591,6 +616,14 @@ msgctxt "TFSONGINFO.BPREVIOUS.CAPTION"
 msgid "Previous"
 msgstr ""
 
+#: tfsonginfo.buttonpanel1.cancelbutton.caption
+msgid "Discard"
+msgstr ""
+
+#: tfsonginfo.buttonpanel1.okbutton.caption
+msgid "Save"
+msgstr ""
+
 #: tfsonginfo.caption
 msgid "Song Information"
 msgstr ""
@@ -599,8 +632,18 @@ msgstr ""
 msgid "Library"
 msgstr ""
 
-#: tfsonginfo.label1.caption
-msgctxt "TFSONGINFO.LABEL1.CAPTION"
+#: tfsonginfo.laalbum.caption
+msgctxt "TFSONGINFO.LAALBUM.CAPTION"
+msgid "Album"
+msgstr ""
+
+#: tfsonginfo.laalbumartist.caption
+msgctxt "TFSONGINFO.LAALBUMARTIST.CAPTION"
+msgid "Album Artist"
+msgstr ""
+
+#: tfsonginfo.laartist.caption
+msgctxt "TFSONGINFO.LAARTIST.CAPTION"
 msgid "Artist"
 msgstr ""
 
@@ -645,40 +688,34 @@ msgstr ""
 msgid "Rating"
 msgstr ""
 
-#: tfsonginfo.label2.caption
-msgctxt "TFSONGINFO.LABEL2.CAPTION"
-msgid "Album"
-msgstr ""
-
-#: tfsonginfo.label3.caption
-msgctxt "TFSONGINFO.LABEL3.CAPTION"
-msgid "Title"
-msgstr ""
-
-#: tfsonginfo.label4.caption
-msgid "Album Artist"
-msgstr ""
-
-#: tfsonginfo.label5.caption
-msgid "Genre"
-msgstr ""
-
-#: tfsonginfo.label6.caption
-msgid "Comment"
-msgstr ""
-
-#: tfsonginfo.label7.caption
-msgid "Year"
-msgstr ""
-
-#: tfsonginfo.label8.caption
-msgctxt "TFSONGINFO.LABEL8.CAPTION"
-msgid "Track"
-msgstr ""
-
 #: tfsonginfo.label9.caption
 msgctxt "TFSONGINFO.LABEL9.CAPTION"
 msgid "Duration"
+msgstr ""
+
+#: tfsonginfo.lacomment.caption
+msgctxt "TFSONGINFO.LACOMMENT.CAPTION"
+msgid "Comment"
+msgstr ""
+
+#: tfsonginfo.lagenre.caption
+msgctxt "TFSONGINFO.LAGENRE.CAPTION"
+msgid "Genre"
+msgstr ""
+
+#: tfsonginfo.latitle.caption
+msgctxt "TFSONGINFO.LATITLE.CAPTION"
+msgid "Title"
+msgstr ""
+
+#: tfsonginfo.latrack.caption
+msgctxt "TFSONGINFO.LATRACK.CAPTION"
+msgid "Track"
+msgstr ""
+
+#: tfsonginfo.layear.caption
+msgctxt "TFSONGINFO.LAYEAR.CAPTION"
+msgid "Year"
 msgstr ""
 
 #: tfsonginfo.tsmediaproperty.caption
