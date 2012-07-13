@@ -25,14 +25,15 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls;
+  StdCtrls, Buttons, uLicense;
 
 type
 
   { TfAbout }
 
   TfAbout = class(TForm)
-    bClose: TButton;
+    bClose: TBitBtn;
+    bLicense: TBitBtn;
     Image1: TImage;
     Label1: TLabel;
     Label2: TLabel;
@@ -42,13 +43,15 @@ type
     lVersion: TLabel;
     lHomePage: TLabel;
     procedure bCloseClick(Sender: TObject);
+    procedure bLicenseClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lHomePageMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure lHomePageMouseEnter(Sender: TObject);
     procedure lHomePageMouseLeave(Sender: TObject);
   private
-    { private declarations }
+    LicenseForm : TfLicense;
+    procedure LicenseDestroy(Sender: TObject);
   public
     { public declarations }
   end; 
@@ -100,6 +103,24 @@ procedure TfAbout.bCloseClick(Sender: TObject);
 begin
   ModalResult:=mrOK;
 end;
+
+procedure TfAbout.bLicenseClick(Sender: TObject);
+begin
+  if Not assigned(LicenseForm) then
+     begin
+       LicenseForm:= TfLicense.Create(Self);
+       LicenseForm.OnDestroy:=@LicenseDestroy;
+       LicenseForm.Show;
+     end
+  else
+    FreeAndNil(LicenseForm);
+end;
+
+procedure TfAbout.LicenseDestroy(Sender: TObject);
+begin
+  LicenseForm := nil;
+end;
+
 
 end.
 

@@ -1,14 +1,14 @@
 object fAbout: TfAbout
-  Left = 511
+  Left = 683
   Height = 304
-  Top = 280
+  Top = 302
   Width = 476
   BorderStyle = bsDialog
   Caption = 'About'
   ClientHeight = 304
   ClientWidth = 476
   OnShow = FormShow
-  LCLVersion = '0.9.31'
+  LCLVersion = '1.1'
   object Image1: TImage
     Left = 0
     Height = 107
@@ -426,16 +426,6 @@ object fAbout: TfAbout
     ParentFont = False
     OptimalFill = True
   end
-  object bClose: TButton
-    Left = 376
-    Height = 26
-    Top = 275
-    Width = 88
-    Anchors = [akLeft, akRight, akBottom]
-    Caption = 'Close'
-    OnClick = bCloseClick
-    TabOrder = 0
-  end
   object Label3: TLabel
     Left = 138
     Height = 14
@@ -488,5 +478,28 @@ object fAbout: TfAbout
     OnMouseEnter = lHomePageMouseEnter
     OnMouseLeave = lHomePageMouseLeave
     OptimalFill = True
+  end
+  object bClose: TBitBtn
+    Left = 360
+    Height = 38
+    Top = 264
+    Width = 108
+    Anchors = [akLeft, akRight, akBottom]
+    Default = True
+    DefaultCaption = True
+    Kind = bkClose
+    ModalResult = 11
+    OnClick = bCloseClick
+    TabOrder = 0
+  end
+  object bLicense: TBitBtn
+    Left = 208
+    Height = 38
+    Top = 264
+    Width = 108
+    Anchors = [akLeft, akRight, akBottom]
+    Caption = '&License'
+    OnClick = bLicenseClick
+    TabOrder = 1
   end
 end

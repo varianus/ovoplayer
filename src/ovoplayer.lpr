@@ -44,7 +44,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   id3v1genres,
   //
   UniqueInstanceRaw, uniqueinstance_package, CommonFunctions,
-  DefaultTranslator;
+  DefaultTranslator, ulicense;
 
 {$R *.res}
 begin
@@ -58,4 +58,4 @@ begin
       Application.CreateForm(TfMiniPlayer, fMiniPlayer);
       Application.Run;
    end;
-end.
+end.

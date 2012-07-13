@@ -1,0 +1,61 @@
+object fLicense: TfLicense
+  Left = 704
+  Height = 343
+  Top = 248
+  Width = 480
+  Caption = 'License'
+  ClientHeight = 343
+  ClientWidth = 480
+  OnClose = FormClose
+  LCLVersion = '1.1'
+  object Memo1: TMemo
+    Left = 0
+    Height = 293
+    Top = 0
+    Width = 480
+    Align = alClient
+    Lines.Strings = (
+      'Copyright (C) 2011 Marco Caselli <marcocas@gmail.com>'
+      ''
+      'This program is free software; you can redistribute it and/or modify'
+      'it under the terms of the GNU General Public License as published by'
+      'the Free Software Foundation; either version 2 of the License, or'
+      '(at your option) any later version.'
+      ''
+      'This program is distributed in the hope that it will be useful,'
+      'but WITHOUT ANY WARRANTY; without even the implied warranty of'
+      'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the'
+      'GNU General Public License for more details.'
+      ''
+      'You should have received a copy of the GNU General Public License along'
+      'with this program; if not, write to the Free Software Foundation, Inc.,'
+      '51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.'
+    )
+    ReadOnly = True
+    ScrollBars = ssAutoBoth
+    TabOrder = 0
+    WordWrap = False
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 50
+    Top = 293
+    Width = 480
+    Align = alBottom
+    ClientHeight = 50
+    ClientWidth = 480
+    TabOrder = 1
+    object bClose: TBitBtn
+      Left = 376
+      Height = 38
+      Top = 7
+      Width = 97
+      Anchors = [akRight, akBottom]
+      DefaultCaption = True
+      Kind = bkClose
+      ModalResult = 11
+      OnClick = bCloseClick
+      TabOrder = 0
+    end
+  end
+end
