@@ -74,7 +74,6 @@ type
     laYear: TLabel;
     laTrack: TLabel;
     Label9: TLabel;
-    Label10: TLabel;
     Label11: TLabel;
     Label12: TLabel;
     Label13: TLabel;
@@ -83,14 +82,12 @@ type
     Label16: TLabel;
     Label17: TLabel;
     Label18: TLabel;
-    Label19: TLabel;
     leLastPlayed: TLabel;
     leFileName: TLabel;
     leAdded: TLabel;
     leSize: TLabel;
     leSampling: TLabel;
     leDuration: TLabel;
-    leBPM: TLabel;
     leBitRate: TLabel;
     leChannels: TLabel;
     lbFiles: TListBox;
@@ -113,6 +110,7 @@ type
     procedure edTitleChange(Sender: TObject);
     procedure edTrackChange(Sender: TObject);
     procedure edYearChange(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -186,10 +184,6 @@ procedure TfSongInfo.FormShow(Sender: TObject);
 var
   i: integer;
 begin
-  if lbFiles.Count > 0 then
-    lbFiles.Selected[0] := True;
-
-  lbFilesSelectionChange(lbFiles, True);
   {$IFDEF SUPPORT_LISTBOX_HINT}
   fHint := THintWindow.Create(Self);
   fHint.HideInterval := 3000;
@@ -397,6 +391,15 @@ begin
   CheckModified(idYear, edYear.Caption);
 end;
 
+procedure TfSongInfo.FormActivate(Sender: TObject);
+begin
+  if lbFiles.Count > 0 then
+    lbFiles.Selected[0] := True;
+
+  lbFilesSelectionChange(lbFiles, True);
+
+end;
+
 procedure TfSongInfo.meCommentChange(Sender: TObject);
 begin
   CheckModified(idComment, meComment.Lines.Text);
@@ -472,7 +475,6 @@ end;
 procedure TfSongInfo.ShowMediaProperty(MediaProperty: TMediaProperty);
 begin
   leBitRate.Caption := format('%d Kbps', [MediaProperty.BitRate]);
-  leBPM.Caption := IntToStr(MediaProperty.BPM);
   leChannels.Caption := MediaProperty.ChannelMode;
   leSampling.Caption := format('%d Hz', [MediaProperty.Sampling]);
 end;
@@ -668,6 +670,7 @@ begin
 
   bNext.Visible := False;
   bPrevious.Visible := False;
+
 end;
 
 
@@ -686,7 +689,9 @@ begin
     fOriginalTag[i] := fTagList[i].Tags;
     lbFiles.Items.Add(ExtractFileName(FileNameS[i]));
   end;
+
+
 end;
 
 
-end.
+end.
