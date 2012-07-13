@@ -45,6 +45,7 @@ Resourcestring
   rEmptyTag = '<none>';
   rNotPlaying = 'Not Playing';
   rAllFiles     = 'All Files(%0:s)|%0:s';
+  rEmbedded  = 'Embedded in file';
 
   rBeginCollectionScan  = 'Scanning Collection';
   rAddedTrack   = 'Added:';
@@ -54,6 +55,7 @@ Resourcestring
   rNever        = 'Never';
   rMissingConfig = 'Can''t activate Audio Engine. Please review configuration';
   rMultipleValue = '<Multiple Value>';
+  rDragToChangePosition = 'Drag to change position';
 
 implementation
 
@@ -66,4 +68,4 @@ initialization
  OnGetApplicationName := @GetAppName;
 
 
-end.
+end.
