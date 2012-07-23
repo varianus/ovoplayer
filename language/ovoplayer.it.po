@@ -213,7 +213,7 @@ msgstr "Autore : Marco Caselli"
 
 #: tfabout.label4.caption
 msgid "Another free music player"
-msgstr ""
+msgstr "Un altro riproduttore musicale libero"
 
 #: tfabout.label6.caption
 msgid "Home Page:"
@@ -316,7 +316,7 @@ msgstr "Interfacce"
 #: tfconfig.sblibrary.caption
 msgctxt "TFCONFIG.SBLIBRARY.CAPTION"
 msgid "Media Library"
-msgstr ""
+msgstr "Libreria Musicale"
 
 #: tfconfig.sbplaylist.caption
 msgctxt "TFCONFIG.SBPLAYLIST.CAPTION"
@@ -351,6 +351,25 @@ msgctxt "TFCONFIG.TSPLAYLIST.CAPTION"
 msgid "Play List"
 msgstr "PlayList"
 
+#: tfcover.btnzoomin.caption
+msgctxt "tfcover.btnzoomin.caption"
+msgid "Zoom +"
+msgstr ""
+
+#: tfcover.btnzoomout.caption
+msgctxt "tfcover.btnzoomout.caption"
+msgid "Zoom -"
+msgstr ""
+
+#: tfcover.btnzoomreset.caption
+msgctxt "tfcover.btnzoomreset.caption"
+msgid "Original size"
+msgstr "Dimens. originale"
+
+#: tfcover.caption
+msgid "Cover Viewer"
+msgstr "Visualizzatore Copertine"
+
 #: tflicense.caption
 msgid "License"
 msgstr ""
@@ -363,7 +382,7 @@ msgstr "Informazioni su"
 #: tfmainform.actshowplmediainfo.caption
 msgctxt "TFMAINFORM.ACTSHOWPLMEDIAINFO.CAPTION"
 msgid "Media Info"
-msgstr ""
+msgstr "Informazione media"
 
 #: tfmainform.actshowpreferences.caption
 msgid "Preferences .."
@@ -377,7 +396,7 @@ msgstr "Album"
 #: tfmainform.artist.caption
 msgctxt "TFMAINFORM.ARTIST.CAPTION"
 msgid "Artist"
-msgstr ""
+msgstr "Artista"
 
 #: tfmainform.btnbackdir.caption
 msgctxt "TFMAINFORM.BTNBACKDIR.CAPTION"
@@ -415,7 +434,7 @@ msgstr ""
 
 #: tfmainform.cbgroupby.hint
 msgid "Group song"
-msgstr ""
+msgstr "Raggruppa "
 
 #: tfmainform.cbgroupby.text
 msgid "AlbumArtist / Album"
@@ -527,12 +546,12 @@ msgstr ""
 #: tfmainform.mnufileinfo.caption
 msgctxt "TFMAINFORM.MNUFILEINFO.CAPTION"
 msgid "Media Info"
-msgstr ""
+msgstr "Informazione media"
 
 #: tfmainform.mnuinfo.caption
 msgctxt "TFMAINFORM.MNUINFO.CAPTION"
 msgid "Media Info"
-msgstr ""
+msgstr "Informazione media"
 
 #: tfmainform.mnuplayitems.caption
 msgctxt "TFMAINFORM.MNUPLAYITEMS.CAPTION"
@@ -545,7 +564,7 @@ msgstr "Aggiorna"
 
 #: tfmainform.mnuremoveplaylist.caption
 msgid "Remove from Playlist"
-msgstr ""
+msgstr "Rimuovi da Playlist"
 
 #: tfmainform.mnurestore.caption
 msgid "Restore"
@@ -659,28 +678,28 @@ msgstr ""
 
 #: tfsonginfo.label13.caption
 msgid "Channels"
-msgstr ""
+msgstr "Canali"
 
 #: tfsonginfo.label14.caption
 msgctxt "TFSONGINFO.LABEL14.CAPTION"
 msgid "File Name"
-msgstr ""
+msgstr "Nome File"
 
 #: tfsonginfo.label15.caption
 msgid "Size"
-msgstr ""
+msgstr "Dimens."
 
 #: tfsonginfo.label16.caption
 msgid "Play Count"
-msgstr ""
+msgstr "Conteggio Esecuzioni"
 
 #: tfsonginfo.label17.caption
 msgid "Added to collection"
-msgstr ""
+msgstr "Aggiunti a collezione"
 
 #: tfsonginfo.label18.caption
 msgid "Last Played"
-msgstr ""
+msgstr "Ultima riproduzione"
 
 #: tfsonginfo.label9.caption
 msgctxt "TFSONGINFO.LABEL9.CAPTION"
@@ -715,7 +734,7 @@ msgstr "Anno"
 #: tfsonginfo.tsmediaproperty.caption
 msgctxt "TFSONGINFO.TSMEDIAPROPERTY.CAPTION"
 msgid "Media Property"
-msgstr ""
+msgstr "Proprietà Media"
 
 #: tfsonginfo.tstags.caption
 msgid "Tags"

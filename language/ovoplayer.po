@@ -349,6 +349,25 @@ msgctxt "TFCONFIG.TSPLAYLIST.CAPTION"
 msgid "Play List"
 msgstr ""
 
+#: tfcover.btnzoomin.caption
+msgctxt "TFCOVER.BTNZOOMIN.CAPTION"
+msgid "Zoom +"
+msgstr ""
+
+#: tfcover.btnzoomout.caption
+msgctxt "TFCOVER.BTNZOOMOUT.CAPTION"
+msgid "Zoom -"
+msgstr ""
+
+#: tfcover.btnzoomreset.caption
+msgctxt "TFCOVER.BTNZOOMRESET.CAPTION"
+msgid "Original size"
+msgstr ""
+
+#: tfcover.caption
+msgid "Cover Viewer"
+msgstr ""
+
 #: tflicense.caption
 msgid "License"
 msgstr ""
@@ -647,10 +666,6 @@ msgctxt "TFSONGINFO.LAARTIST.CAPTION"
 msgid "Artist"
 msgstr ""
 
-#: tfsonginfo.label10.caption
-msgid "BPM"
-msgstr ""
-
 #: tfsonginfo.label11.caption
 msgid "BitRate"
 msgstr ""
@@ -682,10 +697,6 @@ msgstr ""
 
 #: tfsonginfo.label18.caption
 msgid "Last Played"
-msgstr ""
-
-#: tfsonginfo.label19.caption
-msgid "Rating"
 msgstr ""
 
 #: tfsonginfo.label9.caption
