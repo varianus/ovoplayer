@@ -1093,6 +1093,14 @@ begin
       end;
     BackEnd.Config.SaveCustomParams('PlayListGrid', tmpSt);
 
+    tmpSt.clear;
+    tmpSt.Values['Height']:= IntToStr(Height);
+    tmpSt.Values['Width']:= IntToStr(Width);
+    tmpSt.Values['Top']:= IntToStr(Top);
+    tmpSt.Values['Left']:= IntToStr(Left);
+
+    BackEnd.Config.SaveCustomParams('MainForm', tmpSt);
+
   finally
     tmpSt.Free;
   end;
@@ -1126,6 +1134,13 @@ begin
         lvPlayList.Header.Columns.Items[Col].Width:= StrToint(info[3]);
 
       end;
+    tmpSt.Clear;
+    BackEnd.Config.ReadCustomParams('MainForm', tmpSt);
+
+    Height := StrToIntDef(tmpSt.Values['Height'], Height);
+    Width := StrToIntDef(tmpSt.Values['Width'], Width);
+    Top := StrToIntDef(tmpSt.Values['Top'], Top);
+    Left := StrToIntDef(tmpSt.Values['Left'], Left);
 
   finally
     tmpSt.free;
@@ -1556,4 +1571,4 @@ begin
 
 end;
 
-end.
+end.
