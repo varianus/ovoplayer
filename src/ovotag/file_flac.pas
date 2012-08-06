@@ -42,7 +42,6 @@ type
     FChannels:    byte;
     FBitsPerSample: byte;
     fMediaProperty: TMediaProperty;
-    function FGetChannelMode: string;
   protected
     function GetDuration: int64; override;
     function GetTags: TTags; override;
@@ -54,7 +53,8 @@ type
   end;
 
 implementation
-
+uses
+  CommonFunctions;
 { TFlacReader }
 const
   FLAC_IDENTIFIER = 'fLaC';
@@ -100,15 +100,6 @@ begin
   Result:= fMediaProperty;
 end;
 
-function TFlacReader.FGetChannelMode: string;
-begin
-  case FChannels of
-    1: Result := 'Mono';
-    2: Result := 'Stereo';
-    else
-       Result := Format('Multi Channel (%d)',[FChannels]);
-    end;
-end;
 
 function TFlacReader.LoadFromFile(AFileName: Tfilename): boolean;
 var
@@ -163,7 +154,7 @@ begin
   finally
     fMediaProperty.Bitrate := Round(((fStream.Size - fStream.Position) / 1000) * 8 / getDuration);
     fMediaProperty.Sampling:= FSampleRate;
-    fMediaProperty.ChannelMode:= FGetChannelMode;
+    fMediaProperty.ChannelMode:= DecodeChannelNumber(FChannels);
     fstream.Free;
   end;
 

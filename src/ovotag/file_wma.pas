@@ -99,7 +99,6 @@ type
     fObjectCount: integer;
     fHaveContentDescription: boolean;
     fHaveExtendedDescription: boolean;
-    function FGetChannelMode: string;
     procedure ImportContentDescription(AStream: TStream;
       ContentDescription: TWMAContentDescription);
   protected
@@ -112,7 +111,7 @@ type
   end;
 
 implementation
-
+uses CommonFunctions;
 const
 
   WMA_HEADER_ID: TGUID = '{75B22630-668E-11CF-A6D9-00AA0062CE6C}';
@@ -131,16 +130,6 @@ end;
 function TWMAReader.GetDuration: int64;
 begin
   Result := fDuration;
-end;
-
-function TWMAReader.FGetChannelMode: string;
-begin
-  case FChannels of
-    1: Result := 'Mono';
-    2: Result := 'Stereo';
-    else
-       Result := Format('Multi Channel (%d)',[FChannels]);
-    end;
 end;
 
 function TWMAReader.DumpInfo: TMediaProperty;
@@ -246,7 +235,7 @@ begin
       begin
         fStream.Read(StreamProperty, SizeOf(TWMAStreamProperty));
         fChannels := StreamProperty.AudioProperty.Channels;
-        fChannelMode:= FGetChannelMode;
+        fChannelMode:= DecodeChannelNumber(fChannels);
         fSampling:= StreamProperty.AudioProperty.Samples;
         fBitRate:= (StreamProperty.AudioProperty.BytePerSecond * 8) div 1000;
         fStream.Seek(StreamProperty.AudioProperty.CodecDataSize +

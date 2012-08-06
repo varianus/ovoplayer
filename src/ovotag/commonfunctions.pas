@@ -46,6 +46,7 @@ procedure FixTrack(const TrackString: WideString; const TrackNr: integer;
   overload;
 
 function Swap32(const Figure: DWORD): DWORD;
+function DecodeChannelNumber(Channels:integer): string;
 
 function GetContent(const Content1, Content2: string): string;
 function ExtractYear(const YearString, DateString: string): string;
@@ -65,6 +66,16 @@ function EnableBit(const Value: DWord; const Bit: byte;
 implementation
 
 { --------------------------------------------------------------------------- }
+
+function DecodeChannelNumber(Channels:integer): string;
+begin
+  case Channels of
+    1: Result := 'Mono';
+    2: Result := 'Stereo';
+    else
+       Result := Format('Multi Channel (%d)',[Channels]);
+    end;
+end;
 
 function SyncSafe_Encode(const SyncDWord: DWord): DWord;
 var
