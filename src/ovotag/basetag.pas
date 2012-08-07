@@ -168,6 +168,7 @@ type
     function LoadFromFile(AFileName: Tfilename): boolean; virtual;
     function SaveToFile(AFileName: Tfilename): boolean; virtual;
     function UpdateFile: boolean; virtual;
+    function isUpdateable: boolean; virtual;
   public
     Property FileName : string Read FFileName;
     property Tags: TTags read GetTags;
@@ -358,6 +359,11 @@ begin
 
   result := RenameFile( SaveFile, FileName);
 
+end;
+
+function TTagReader.isUpdateable: boolean;
+begin
+  Result := false;
 end;
 
 { TTags }

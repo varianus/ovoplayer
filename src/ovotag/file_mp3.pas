@@ -79,6 +79,7 @@ type
     function GetTags: TTags; override;
     function GetDuration: int64; override;
     Function DumpInfo: TMediaProperty; override;
+    function isUpdateable: boolean; override;
   public
     function LoadFromFile(AFileName: Tfilename): boolean; override;
     function SaveToFile(AFileName: Tfilename): boolean; override;
@@ -408,6 +409,11 @@ end;
 function TMP3Reader.DumpInfo: TMediaProperty;
 begin
   Result := fMediaProperty;
+end;
+
+function TMP3Reader.isUpdateable: boolean;
+begin
+  Result:=true;
 end;
 
 function TMP3Reader.LoadFromFile(AFileName: Tfilename): boolean;

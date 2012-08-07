@@ -43,6 +43,7 @@ type
     function GetDuration: int64; override;
     function GetTags: TTags; override;
   public
+    function isUpdateable: boolean; override;
     function LoadFromFile(AFileName: Tfilename): boolean; override;
     function SaveToFile(AFileName: Tfilename): boolean; override;
   end;
@@ -68,6 +69,11 @@ end;
 function TMonkeyReader.GetTags: TTags;
 begin
   Result := fTags;
+end;
+
+function TMonkeyReader.isUpdateable: boolean;
+begin
+  Result:=true;
 end;
 
 function TMonkeyReader.LoadFromFile(AFileName: Tfilename): boolean;

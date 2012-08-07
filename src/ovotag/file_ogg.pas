@@ -47,7 +47,7 @@ type
     function GetDuration: int64; override;
     function GetTags: TTags; override;
     function DumpInfo: TMediaProperty; override;
-
+    function isUpdateable: boolean; override;
   public
     function LoadFromFile(AFileName: Tfilename): boolean; override;
     function SaveToFile(AFileName: Tfilename): boolean; override;
@@ -199,6 +199,11 @@ begin
   Result.ChannelMode := FGetChannelMode;
   Result.BitRate := fBitRate;
 
+end;
+
+function TOGGReader.isUpdateable: boolean;
+begin
+  Result:=true;
 end;
 
 function TOGGReader.FGetChannelMode: string;

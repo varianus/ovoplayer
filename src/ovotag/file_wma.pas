@@ -105,6 +105,7 @@ type
     function GetTags: TTags; override;
     function GetDuration: int64; override;
     function DumpInfo: TMediaProperty; override;
+    function isUpdateable: boolean; override;
   public
     function LoadFromFile(AFileName: Tfilename): boolean; override;
     function SaveToFile(AFileName: Tfilename): boolean; override;
@@ -137,6 +138,11 @@ begin
   Result := inherited DumpInfo;
   Result.BitRate:= fBitRate;
   Result.ChannelMode:= fChannelMode;
+end;
+
+function TWMAReader.isUpdateable: boolean;
+begin
+  Result := True;
 end;
 
 procedure TWMAReader.ImportContentDescription(AStream: TStream;

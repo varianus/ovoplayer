@@ -49,6 +49,8 @@ type
   public
     function LoadFromFile(AFileName: Tfilename): boolean; override;
     function SaveToFile(AFileName: Tfilename): boolean; override;
+    function isUpdateable: boolean; override;
+
 //
   end;
 
@@ -234,6 +236,11 @@ begin
   SourceStream.Free;
   DestStream.Free;
 
+end;
+
+function TFlacReader.isUpdateable: boolean;
+begin
+  Result := true;
 end;
 
 initialization
