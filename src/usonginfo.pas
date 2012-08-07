@@ -50,14 +50,6 @@ type
     bNext: TBitBtn;
     bPrevious: TBitBtn;
     ButtonPanel1: TButtonPanel;
-    cbAlbum: TCheckBox;
-    cbAlbumArtist: TCheckBox;
-    cbGenre: TCheckBox;
-    cbComment: TCheckBox;
-    cbYear: TCheckBox;
-    cbTitle: TCheckBox;
-    cbArtist: TCheckBox;
-    cbTrack: TCheckBox;
     edAlbum: TEdit;
     edAlbumArtist: TEdit;
     edArtist: TEdit;
@@ -128,6 +120,7 @@ type
     fOriginalTag: ACommonTags;
     fCount: integer;
     fCombinedTags: TCommonTags;
+    fCombinedUpdateable: boolean;
     fCombinedFlags: TIDFieldsSet;
     fCombinedModified: TIDFieldsSet;
 
@@ -264,7 +257,7 @@ var
   MustRestart: boolean;
 begin
   for i := 0 to lbFiles.Count - 1 do
-    if fTagList[i].Modified <> [] then
+    if (fTagList[i].Modified <> []) and fTagList[i].TagReader.isUpdateable then
     begin
        idx := BackEnd.PlayList.FindByName(fTagList[i].FileName);
        MustRestart:= (idx = BackEnd.PlayList.ItemIndex) and BackEnd.AudioEngine.Playing; // if song is playing
@@ -273,27 +266,25 @@ begin
             currpos:=BackEnd.AudioEngine.Position div 1000;
             BackEnd.AudioEngine.Stop;
           end;
+
        fTagList[i].TagReader.SetCommonTags(fTagList[i].Tags);
        fTagList[i].TagReader.UpdateFile;
+        if MustRestart then
+           begin
+             BackEnd.AudioEngine.Play(BackEnd.PlayList.Songs[idx], currpos);
+           end;
 
-       if MustRestart then
+        if (idx <> -1) then  // if song is in playlist
+           begin
+              BackEnd.PlayList.Songs[idx].SetTags(fTagList[i].Tags);
+              BackEnd.SignalPlayListChange;
+           end;
+
+
+        if fTagList[i].ID <> -1 then  // if song is in media library
           begin
-            BackEnd.AudioEngine.Play(BackEnd.PlayList.Songs[idx], currpos);
+             BackEnd.mediaLibrary.Update(fTagList[i].ID, fTagList[i].Tags);
           end;
-
-       if idx <> -1 then  // if song is in playlist
-          begin
-             BackEnd.PlayList.Songs[idx].SetTags(fTagList[i].Tags);
-             BackEnd.SignalPlayListChange;
-          end;
-
-
-       if fTagList[i].ID <> -1 then  // if song is in media library
-         begin
-            BackEnd.mediaLibrary.Update(fTagList[i].ID, fTagList[i].Tags);
-         end;
-
-
     end;
   Close;
 end;
@@ -303,13 +294,16 @@ var
   i: integer;
   First: boolean;
 begin
+  fCombinedUpdateable:= false;
   fCombinedFlags := [];
   fCombinedModified := [];
+  first:=true;
   for i := 0 to lbFiles.Count - 1 do
   begin
     if not lbFiles.Selected[i] then
       Continue;
     fCombinedModified := fCombinedModified + fTagList[i].Modified;
+    fCombinedUpdateable:= fCombinedUpdateable or fTagList[i].TagReader.isUpdateable;
     if First then
     begin
       fCombinedTags := fTagList[i].Tags;
@@ -421,7 +415,10 @@ begin
       Inc(SelCount);
 
       if aText = rMultipleValue then
-        EXIT;
+        exit;
+
+      if not fTagList[i].TagReader.isUpdateable then
+         continue;
 
       if (aText <> GetTagByID(fOriginalTag[i], Field)) then
       begin
@@ -500,6 +497,32 @@ procedure TfSongInfo.ShowTags(Tags: TCommonTags; Modified: TIDFieldsSet);
 var
   int: integer;
 begin
+  if fTagList[lbFiles.ItemIndex].TagReader.isUpdateable then
+    begin
+       edAlbum.ReadOnly := false;
+       edAlbumArtist.ReadOnly := false;
+       edArtist.ReadOnly := false;
+       meComment.ReadOnly := false;
+       edGenre.ReadOnly := false;
+       edTitle.ReadOnly := false;
+       edGenre.ReadOnly := false;
+       edTitle.ReadOnly := false;
+       edTrack.ReadOnly := false;
+       edYear.ReadOnly := false;
+    end
+  else
+    begin
+       edAlbum.ReadOnly := true;
+       edAlbumArtist.ReadOnly := true;
+       edArtist.ReadOnly := true;
+       meComment.ReadOnly := true;
+       edGenre.ReadOnly := true;
+       edTitle.ReadOnly := true;
+       edGenre.ReadOnly := true;
+       edTitle.ReadOnly := true;
+       edTrack.ReadOnly := true;
+       edYear.ReadOnly := true;
+    end;
   fUpdating := True;
   leFileName.Caption := Tags.FileName;
   leDuration.Caption := TimeToStr(Tags.Duration / MSecsPerDay);
@@ -519,6 +542,34 @@ end;
 
 procedure TfSongInfo.ShowCombinedTags;
 begin
+  if fCombinedUpdateable then
+    begin
+       edAlbum.ReadOnly := False;
+       edAlbumArtist.ReadOnly := False;
+       edArtist.ReadOnly := False;
+       meComment.ReadOnly := False;
+       edGenre.ReadOnly := False;
+       edTitle.ReadOnly := False;
+       edGenre.ReadOnly := False;
+       edTitle.ReadOnly := False;
+       edTrack.ReadOnly := False;
+       edYear.ReadOnly := False;
+    end
+  else
+    begin
+       edAlbum.ReadOnly := true;
+       edAlbumArtist.ReadOnly := true;
+       edArtist.ReadOnly := true;
+       meComment.ReadOnly := true;
+       edGenre.ReadOnly := true;
+       edTitle.ReadOnly := true;
+       edGenre.ReadOnly := true;
+       edTitle.ReadOnly := true;
+       edTrack.ReadOnly := true;
+       edYear.ReadOnly := true;
+    end;
+
+
   fUpdating := True;
   leFileName.Caption := rMultipleValue;
 
@@ -694,4 +745,4 @@ begin
 end;
 
 
-end.
+end.

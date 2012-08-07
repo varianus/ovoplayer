@@ -1,7 +1,7 @@
 object fSongInfo: TfSongInfo
-  Left = 602
+  Left = 328
   Height = 407
-  Top = 227
+  Top = 207
   Width = 759
   BorderStyle = bsDialog
   Caption = 'Song Information'
@@ -17,14 +17,14 @@ object fSongInfo: TfSongInfo
     Height = 357
     Top = 0
     Width = 591
-    ActivePage = tsMediaProperty
+    ActivePage = tsTags
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     object tsMediaProperty: TTabSheet
       Caption = 'Media Property'
-      ClientHeight = 326
-      ClientWidth = 587
+      ClientHeight = 329
+      ClientWidth = 583
       object Label9: TLabel
         Left = 6
         Height = 16
@@ -153,11 +153,11 @@ object fSongInfo: TfSongInfo
       end
       object GroupBox1: TGroupBox
         Left = 300
-        Height = 168
-        Top = 26
+        Height = 160
+        Top = 33
         Width = 280
         Caption = 'Library'
-        ClientHeight = 149
+        ClientHeight = 142
         ClientWidth = 276
         TabOrder = 0
         object Label16: TLabel
@@ -227,8 +227,8 @@ object fSongInfo: TfSongInfo
     end
     object tsTags: TTabSheet
       Caption = 'Tags'
-      ClientHeight = 326
-      ClientWidth = 587
+      ClientHeight = 329
+      ClientWidth = 583
       object laArtist: TLabel
         Left = 0
         Height = 16
@@ -244,11 +244,11 @@ object fSongInfo: TfSongInfo
       end
       object edArtist: TEdit
         Left = 98
-        Height = 27
+        Height = 23
         Top = 63
         Width = 384
         OnChange = edArtistChange
-        TabOrder = 2
+        TabOrder = 1
       end
       object laAlbum: TLabel
         Left = 0
@@ -265,11 +265,11 @@ object fSongInfo: TfSongInfo
       end
       object edAlbum: TEdit
         Left = 98
-        Height = 27
+        Height = 23
         Top = 94
         Width = 384
         OnChange = edAlbumChange
-        TabOrder = 4
+        TabOrder = 2
       end
       object laTitle: TLabel
         Left = 0
@@ -286,7 +286,7 @@ object fSongInfo: TfSongInfo
       end
       object edTitle: TEdit
         Left = 98
-        Height = 27
+        Height = 23
         Top = 29
         Width = 384
         OnChange = edTitleChange
@@ -307,11 +307,11 @@ object fSongInfo: TfSongInfo
       end
       object edAlbumArtist: TEdit
         Left = 98
-        Height = 27
+        Height = 23
         Top = 127
         Width = 384
         OnChange = edAlbumArtistChange
-        TabOrder = 6
+        TabOrder = 3
       end
       object laGenre: TLabel
         Left = 0
@@ -328,11 +328,11 @@ object fSongInfo: TfSongInfo
       end
       object edGenre: TEdit
         Left = 98
-        Height = 27
+        Height = 23
         Top = 159
         Width = 384
         OnChange = edGenreChange
-        TabOrder = 8
+        TabOrder = 4
       end
       object meComment: TMemo
         Left = 100
@@ -340,7 +340,7 @@ object fSongInfo: TfSongInfo
         Top = 223
         Width = 385
         OnChange = meCommentChange
-        TabOrder = 13
+        TabOrder = 6
       end
       object laComment: TLabel
         Left = 0
@@ -381,77 +381,21 @@ object fSongInfo: TfSongInfo
         ParentFont = False
         OptimalFill = True
       end
-      object cbTitle: TCheckBox
-        Left = 490
-        Height = 24
-        Top = 31
-        Width = 24
-        TabOrder = 1
-      end
-      object cbArtist: TCheckBox
-        Left = 490
-        Height = 24
-        Top = 67
-        Width = 24
-        TabOrder = 3
-      end
-      object cbAlbum: TCheckBox
-        Left = 490
-        Height = 24
-        Top = 97
-        Width = 24
-        TabOrder = 5
-      end
-      object cbAlbumArtist: TCheckBox
-        Left = 490
-        Height = 24
-        Top = 130
-        Width = 24
-        TabOrder = 7
-      end
-      object cbGenre: TCheckBox
-        Left = 490
-        Height = 24
-        Top = 162
-        Width = 24
-        TabOrder = 9
-      end
-      object cbYear: TCheckBox
-        Left = 208
-        Height = 24
-        Top = 194
-        Width = 24
-        TabOrder = 10
-      end
-      object cbTrack: TCheckBox
-        Left = 490
-        Height = 24
-        Top = 194
-        Width = 24
-        TabOrder = 12
-      end
-      object cbComment: TCheckBox
-        Left = 490
-        Height = 24
-        Top = 232
-        Width = 24
-        TabOrder = 14
-      end
       object edTrack: TEdit
         Left = 381
-        Height = 27
+        Height = 23
         Top = 191
         Width = 101
         OnChange = edTrackChange
-        TabOrder = 11
+        TabOrder = 5
       end
       object edYear: TEdit
         Left = 98
-        Height = 27
+        Height = 23
         Top = 191
         Width = 101
         OnChange = edYearChange
-        TabOrder = 15
+        TabOrder = 7
       end
     end
   end
@@ -470,7 +414,6 @@ object fSongInfo: TfSongInfo
     ScrollWidth = 166
     ShowHint = True
     TabOrder = 1
-    TopIndex = -1
   end
   object pnlMoveSelection: TPanel
     Left = 0
@@ -663,4 +606,4 @@ object fSongInfo: TfSongInfo
       ShowBevel = False
     end
   end
-end
+end
