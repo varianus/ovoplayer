@@ -64,7 +64,7 @@ function EnableBit(const Value: DWord; const Bit: byte;
 
 
 implementation
-
+uses ID3v1Genres;
 { --------------------------------------------------------------------------- }
 
 function DecodeChannelNumber(Channels:integer): string;
@@ -125,9 +125,15 @@ end;
 { --------------------------------------------------------------------------- }
 
 function ExtractGenre(const GenreString: string): string;
+var
+  GenreNumber: integer;
 begin
   { Extract genre from string }
   Result := GetANSI(GenreString);
+  GenreNumber:=255;
+  if TryStrToInt(Result, GenreNumber) and (GenreNumber <= ID3_MaxGenreExtended) then
+     Result := v1Genres[GenreNumber];
+
   if Pos(')', Result) > 0 then
     Delete(Result, 1, LastDelimiter(')', Result));
 end;

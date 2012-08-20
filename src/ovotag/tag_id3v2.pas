@@ -197,7 +197,7 @@ begin
     Add(Frame);
   end;
 
-  if V1Rec.Genre < 147 then
+  if V1Rec.Genre <= ID3_MaxGenreExtended then
   begin
     Frame := TID3Frame.Create('TCON');
     Frame.Tagger := Self;

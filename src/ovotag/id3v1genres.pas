@@ -24,7 +24,8 @@ interface
 
 const
   ID3_MaxGenre=125;
-  v1Genres:array[0..147] of widestring=
+  ID3_MaxGenreExtended = 147;
+  v1Genres:array[0..ID3_MaxGenreExtended] of widestring=
     ({  0} 'Blues',
      {  1} 'Classic Rock',
      {  2} 'Country',
