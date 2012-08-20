@@ -28,7 +28,7 @@ uses
   Classes, SysUtils, Playlist, AudioTag, MediaLibrary;
 
 const
-  XSPF_VERSION = 'http://dartclub.tripod.com/MMP/0/1/';
+  XSPF_VERSION = 'http://ovoplayer.altervista.org/ovoplayer/0/1/';
 
 type
 
