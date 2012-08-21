@@ -57,7 +57,7 @@ begin
        if result then
           begin
             Active := true;
-            SendStringMessage(1, 'activate|');
+            SendStringMessage(1, 'action:activate|');
           end;
 
      finally

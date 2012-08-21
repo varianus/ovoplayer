@@ -241,7 +241,7 @@ begin
                 actPrevious.Execute;
 
              if Assigned(FOnExternalCommand) then
-                FOnExternalCommand(Self, Parameters[i]);
+                FOnExternalCommand(Self, tempstr);
 
            end;
 
