@@ -53,10 +53,11 @@ type
     edAlbum: TEdit;
     edAlbumArtist: TEdit;
     edArtist: TEdit;
-    edGenre: TEdit;
+    edGenre: TComboBox;
     edTitle: TEdit;
     GroupBox1: TGroupBox;
     ImageTrack: TImageTrack;
+    imgCover: TImage;
     laArtist: TLabel;
     laAlbum: TLabel;
     laTitle: TLabel;
@@ -104,6 +105,7 @@ type
     procedure edYearChange(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
+    procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lbFilesMouseLeave(Sender: TObject);
@@ -146,7 +148,7 @@ var
 implementation
 
 {$R *.lfm}
-uses AppConsts, GUIBackEnd, CommonFunctions;
+  uses AppConsts, GUIBackEnd, CommonFunctions, ID3v1Genres;
 
 { TfSongInfo }
 
@@ -160,6 +162,16 @@ begin
   fHint.Free;
   {$ENDIF}
 
+end;
+
+procedure TfSongInfo.FormCreate(Sender: TObject);
+var
+  i: integer;
+begin
+  edGenre.Items.BeginUpdate;
+  for i := 0 to ID3_MaxGenreExtended do
+    edGenre.Items.Add(v1Genres[i]);
+  edGenre.Items.EndUpdate;
 end;
 
 procedure TfSongInfo.FormDestroy(Sender: TObject);
@@ -311,6 +323,8 @@ begin
     end
     else
     begin
+      if not fTagList[i].TagReader.isUpdateable then
+         Continue;
       if fTagList[i].Tags.Album <> fCombinedTags.Album then
         Include(fCombinedFlags, idAlbum);
       if fTagList[i].Tags.AlbumArtist <> fCombinedTags.AlbumArtist then
@@ -535,6 +549,14 @@ begin
   edTrack.Caption := Tags.TrackString;
   meComment.Lines.Text := Tags.Comment;
   UpdateHiglighting(Modified);
+  if Tags.HasImage then
+     begin
+       fTagList[lbFiles.ItemIndex].TagReader.Tags.Images[0].Image.Position:=0;
+       fTagList[lbFiles.ItemIndex].TagReader.Tags.Images[0].Image.Position:=0;
+       imgCover.Picture.LoadFromStream(fTagList[lbFiles.ItemIndex].TagReader.Tags.Images[0].image);
+     end
+  else
+     imgCover.Picture.Clear;
   fUpdating := False;
 
 end;
@@ -569,6 +591,7 @@ begin
        edYear.ReadOnly := true;
     end;
 
+  imgCover.Picture.Clear;
 
   fUpdating := True;
   leFileName.Caption := rMultipleValue;
