@@ -393,10 +393,13 @@ end;
 
 function TID3Frame.GetAsString: string;
 begin
-  if ID[1] in ['T', 'C', 'W'] then
-    Result := ExtractString(pByte(Data), size)
+  case
+     ID[1] of
+     'T', 'W' : Result := ExtractString(pByte(Data), size);
+     'C' : Result := ExtractText(string(Data), true);
   else
     Result := '?';
+  end;
 end;
 
 
