@@ -260,6 +260,7 @@ type
     procedure ClearPanelInfo;
     procedure CollectionHandler(Enqueue: boolean);
     function FindNode(Index: Cardinal): PVirtualNode;
+    procedure GoToNode(Node: PVirtualNode);
     procedure LoadDir(Path: string);
     procedure LoadTree;
     procedure MediaLibraryScanComplete(Sender: TObject; _Added, _Updated, _Removed, _Failed: integer);
@@ -457,6 +458,12 @@ begin
     end;
 
 end;
+procedure TfMainForm.GoToNode(Node: PVirtualNode);
+begin
+ if Node <> nil then
+    lvPlayList.ScrollIntoView(Node, true)
+
+end;
 
 procedure TfMainForm.BackEndSongStart(Sender: TObject);
 var
@@ -469,7 +476,7 @@ var
 begin
   pnlPlayInfo.visible:=true;
   song := BackEnd.PlayList.CurrentItem;
-  lvPlayList.ScrollIntoView(FindNode(BackEnd.PlayList.ItemIndex), true);
+  GoToNode(FindNode(BackEnd.PlayList.ItemIndex));
 
   Title.Caption     := Song.tags.Title;
   track.Caption     := Song.Tags.TrackString;
@@ -787,7 +794,7 @@ begin
       begin
          BackEnd.AudioEngine.Play(BackEnd.PlayList.CurrentItem, BackEnd.Manager.SavedTime);
          Application.ProcessMessages;
-         lvPlayList.ScrollIntoView(FindNode(BackEnd.PlayList.ItemIndex), true);
+         GoToNode(FindNode(BackEnd.PlayList.ItemIndex));
       end;
   except
      BackEnd.PlayList.clear;
@@ -849,7 +856,7 @@ end;
 
 procedure TfMainForm.FormShow(Sender: TObject);
 begin
-  lvPlayList.ScrollIntoView(FindNode(BackEnd.PlayList.ItemIndex), False);
+  GoToNode(FindNode(BackEnd.PlayList.ItemIndex));
 
   if (BackEnd.AudioEngine = nil) or (BackEnd.AudioEngine.GetEngineName = 'dummy') then
      begin
@@ -1513,7 +1520,7 @@ begin
     end;
 
   lvPlayList.EndUpdate;
-  lvPlayList.ScrollIntoView(FindNode(BackEnd.PlayList.ItemIndex), true, true);
+  GoToNode(FindNode(BackEnd.PlayList.ItemIndex));
   AdaptSize;
 
   lvPlayList.Invalidate;
