@@ -25,8 +25,8 @@ unit uOSD;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls, Buttons, song, GUIBackEnd;
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls, LCLType,
+  StdCtrls, Buttons, song, GUIBackEnd, LMessages;
 
 type
 
@@ -62,6 +62,8 @@ type
     {$IFDEF SUPPORT_SHAPING}
     procedure ShapeControl(AControl: TWinControl);
     {$ENDIF SUPPORT_SHAPING}
+  protected
+    procedure WMNCHitTest(var Message: TLMessage);  message LM_NCHITTEST;
   public
     _top, _left:Integer;
     ConfigMode: boolean;
@@ -114,6 +116,7 @@ begin
     end
 
   else
+
   begin
     imgName := BackEnd.GetImageFromfolder(IncludeTrailingPathDelimiter(Song.FilePath));
     if imgName <> '' then
@@ -124,6 +127,7 @@ begin
   fOSD.timShow.Enabled := True;
   fOSD.LoadFromConfig;
   fOSD.UpdateAspect;
+  fOSD.Enabled:=false;
   fOSD.InternalPaint;
   fOSD.Show;
 end;
@@ -155,7 +159,7 @@ begin
   fOSD.InternalPaint;
 
   fOSD.AlphaBlend := True;
-
+  fOSD.Enabled:=true;
   fOSD.Show;
 
 end;
@@ -346,15 +350,16 @@ begin
   fBitmap := TBitmap.Create;
   fBitmap.SetSize(Width, Height);
 
+  {$IFDEF SUPPORT_SHAPING}
+    ShapeControl(Self);
+  {$ENDIF SUPPORT_SHAPING}
+
   OnMouseDown := @FormMouseDown;
   OnMouseMove := @FormMouseMove;
   OnMouseUp := @FormMouseUp;
   OnMouseEnter := @FormMouseEnter;
   OnMouseLeave := @FormMouseLeave;
 
-  {$IFDEF SUPPORT_SHAPING}
-    ShapeControl(Self);
-  {$ENDIF SUPPORT_SHAPING}
 end;
 
 procedure TfOSD.Paint;
@@ -386,6 +391,14 @@ begin
      ATop:= 1;
 
   inherited SetBounds(ALeft, ATop, AWidth, AHeight);
+end;
+
+procedure TfOSD.WMNCHitTest(var Message: TLMessage);
+begin
+  if ConfigMode then
+     Message.Result := HTCLIENT
+  else
+     Message.Result := HTTRANSPARENT;
 end;
 
 
@@ -429,4 +442,4 @@ end;
 initialization
   fOSD := nil;
 end.
-
+
