@@ -27,7 +27,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   StdCtrls, ButtonPanel, Spin, ComCtrls, Buttons, AudioTag, types,
-  ImageTrack, BaseTag, contnrs, FilesSupport, MediaLibrary;
+  BaseTag, contnrs, FilesSupport, MediaLibrary;
 
 type
 
@@ -56,7 +56,6 @@ type
     edGenre: TComboBox;
     edTitle: TEdit;
     GroupBox1: TGroupBox;
-    ImageTrack: TImageTrack;
     imgCover: TImage;
     laArtist: TLabel;
     laAlbum: TLabel;
