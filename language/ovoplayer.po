@@ -568,6 +568,64 @@ msgstr ""
 msgid "Restore"
 msgstr ""
 
+#: tfmainform.sgplaylist.columns[0].title.caption
+msgid "    "
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[10].title.caption
+msgctxt "tfmainform.sgplaylist.columns[10].title.caption"
+msgid "FileName"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[11].title.caption
+msgctxt "TFMAINFORM.SGPLAYLIST.COLUMNS[11].TITLE.CAPTION"
+msgid "Rating"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[1].title.caption
+msgid "#"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[2].title.caption
+msgctxt "TFMAINFORM.SGPLAYLIST.COLUMNS[2].TITLE.CAPTION"
+msgid "Title"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[3].title.caption
+msgctxt "TFMAINFORM.SGPLAYLIST.COLUMNS[3].TITLE.CAPTION"
+msgid "Album"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[4].title.caption
+msgctxt "tfmainform.sgplaylist.columns[4].title.caption"
+msgid "Artist"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[5].title.caption
+msgctxt "TFMAINFORM.SGPLAYLIST.COLUMNS[5].TITLE.CAPTION"
+msgid "Time"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[6].title.caption
+msgctxt "TFMAINFORM.SGPLAYLIST.COLUMNS[6].TITLE.CAPTION"
+msgid "Track"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[7].title.caption
+msgctxt "TFMAINFORM.SGPLAYLIST.COLUMNS[7].TITLE.CAPTION"
+msgid "Genre"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[8].title.caption
+msgctxt "TFMAINFORM.SGPLAYLIST.COLUMNS[8].TITLE.CAPTION"
+msgid "Year"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[9].title.caption
+msgctxt "tfmainform.sgplaylist.columns[9].title.caption"
+msgid "Album Artist"
+msgstr ""
+
 #: tfmainform.sgstats.columns[0].title.caption
 msgctxt "TFMAINFORM.SGSTATS.COLUMNS[0].TITLE.CAPTION"
 msgid "Title"

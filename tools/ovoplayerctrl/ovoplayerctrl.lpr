@@ -1,5 +1,5 @@
 program ovoplayerctrl;
-{$apptype gui}
+{$apptype console}
 {$mode objfpc}{$H+}
 
 uses
@@ -8,7 +8,7 @@ uses
   {$ENDIF}{$ENDIF}
   Classes, SysUtils, CustApp,
   { you can add units after this }
-   SimpleIPC, AppConsts;
+   SimpleIPC;
 
 type
 
@@ -23,6 +23,7 @@ type
     function PostCommand(CommandType:TCommandType; Command:string; Parameter:string=''): Boolean;
     Procedure AddOptions(ShortOption:string; LongOption:string); overload;
     Procedure AddOptions(LongOption:string); overload;
+    procedure WriteVersion;
   protected
     procedure DoRun; override;
   public
@@ -34,8 +35,9 @@ type
 { TOvoPlayerCtrl }
 var
   BaseServerId:string = 'tuniqueinstance_';
+  AppNameServerID :string  = 'ovoplayer';
+  AppVersion : string = {$I ..\..\src\version.inc};
   Separator:string = '|';
-
 function TOvoPlayerCtrl.PostCommand(CommandType:TCommandType;Command:string;Parameter:string=''): Boolean;
 var
   TempStr: String;
@@ -61,7 +63,7 @@ end;
 
 procedure TOvoPlayerCtrl.AddOptions(ShortOption: string; LongOption: string);
 begin
-  ShortOptions:=ShortOptions+ShortOptions;
+  ShortOptions:=ShortOptions+ShortOption;
   AddOptions(LongOption);
 end;
 
@@ -85,8 +87,10 @@ var
 begin
   // quick check parameters
   AddOptions('h','help');
+  AddOptions('v','version');
   AddOptions('p:','playsong:');
   AddOptions('e:','enqueue:');
+  AddOptions('x:','enqplay:');
 
   for i := 0 to MediaControlCount -1 do
      AddOptions(MediaControl[i]);
@@ -104,6 +108,9 @@ begin
     Terminate;
     Exit;
   end;
+  if HasOption('v','version') then begin
+    WriteVersion;
+  end;
 
   for i := 0 to MediaControlCount -1 do
      if HasOption(MediaControl[i]) then
@@ -114,6 +121,10 @@ begin
 
   if HasOption('p','playsong') then
      PostCommand(ctFile, 'p', GetOptionValue('p','playsong'));
+
+  if HasOption('x','enqplay') then
+     PostCommand(ctFile, 'x', GetOptionValue('x','enqplay'));
+
 
   // stop program loop
   Terminate;
@@ -133,10 +144,44 @@ begin
   inherited Destroy;
 end;
 
-procedure TOvoPlayerCtrl.WriteHelp;
+procedure TOvoPlayerCtrl.WriteVersion;
 begin
   { add your help code here }
-  writeln('Usage: ',ExeName,' -h');
+  writeln('ovoplayerctrl ' + AppVersion);
+  writeln('This application act as a "remote control" for Ovoplayer application');
+  writeln;
+  writeln('Copyright (C) 2011, Marco Caselli <marcocas@gmail.com>');
+  writeln('License GPLv2: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html');
+end;
+procedure TOvoPlayerCtrl.WriteHelp;
+begin
+  writeln('ovoplayerctrl ' + AppVersion);
+  writeln('This application act as a "remote control" for Ovoplayer application');
+//  writeln('Copyright (C) 2011, Marco Caselli <marcocas@gmail.com>');
+//  writeln('License GPLv2: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+  writeln('Usage: ovoplayerctrl [option]');
+  writeln;
+  writeln('--next' + sLineBreak +
+          '    ' + 'Skip to next song in playlist');
+  writeln('--previous' + sLineBreak +
+          '    ' + 'Skip to previous song in playlist');
+  writeln('--pause' + sLineBreak +
+          '    ' + 'Pause current song');
+  writeln('--play' + sLineBreak +
+          '    ' + 'Resume current song');
+  writeln('--stop' + sLineBreak +
+          '    ' + 'Stop playing');
+  writeln('--seek+' + sLineBreak +
+          '    ' + 'Skip forward 10 second in current song');
+  writeln('--seek-' + sLineBreak +
+          '    ' + 'Skip backward 10 second in current song');
+  writeln('-e <filename>, --enqueue=<filename>' + sLineBreak +
+          '    ' + 'Enqueue song to current playlist');
+  writeln('-p <filename>, --playsong=<filename>' + sLineBreak +
+          '    ' + 'Play song and clear current playlist');
+  writeln('-x <filename>, --enqplay=<filename>' + sLineBreak +
+          '    ' + 'Enqueue current playlist AND begin play a song');
+
 end;
 
 var

@@ -1,4 +1,4 @@
-#define SourceDir "C:\source\ovoplayer"
+#define SourceDir ".."
 #define MyAppName "OvoPlayer"
 
 #define FileHandle
@@ -19,6 +19,7 @@ Source: {#SourceDir}\language\ovoplayer.it.po; DestDir: {app}\locale;
 Source: {#SourceDir}\images\logo.png; DestDir: {app}\Resources;
 Source: {#SourceDir}\images\nocover.png; DestDir: {app}\Resources; 
 Source: {#SourceDir}\LICENSE.txt; DestDir: {app};
+Source: {#SourceDir}\bin\win32\ovoplayerctrl.exe; DestDir: {app}; 
 
 [Dirs]
 Name: Resources; 

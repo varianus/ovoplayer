@@ -26,11 +26,10 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   cthreads, {$ENDIF} {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, uMain, PlayList, PlayListManager,
-  FilesSupport, MediaLibrary, GeneralFunc,
-  virtualtreeview_package, decoupler,
+  FilesSupport, MediaLibrary, GeneralFunc, decoupler,
   MultimediaKeys, uConfig, uOSD, Config, AppConsts, uMiniPlayer, uSongInfo,
   GUIBackEnd, uAbout,
-  customdrawn_ovoplayer, mcaselli,
+  customdrawn_ovoplayer,
   // Audio Engines
   audioengine, audioengine_dummy, AudioEngine_MPlayer,
   {$IFDEF GSTREAMER} gstreamer, audioengine_gstreamer, {$ENDIF}
@@ -44,12 +43,12 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   file_Wave,  tag_Dummy,
   id3v1genres,
   //
-  UniqueInstanceRaw, uniqueinstance_package, CommonFunctions,
-   DefaultTranslator, ulicense;
+  UniqueInstanceRaw, uniqueinstance_package, CommonFunctions, file_Dummy,
+   DefaultTranslator, ulicense, uCover;
 
 {$R *.res}
 begin
-  if not isAppRunning then
+  if not isAppRunning(Application) then
    begin
       Application.Title:='OVO Player';
       Application.Title:=DisplayAppName;

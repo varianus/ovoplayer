@@ -33,19 +33,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   {$INLINE ON}
 {$ENDIF RELEASE}
 
-{$IFDEF UNIX}
+{$IFDEF LINUX}
   {$DEFINE NEEDCFGSUBDIR} // Need to add a sub-directory to configuration files directory
   {$DEFINE ASKMMKEYSMODE} // Ask for multimedia keys capture mode
-  {.$DEFINE GSTREAMER} // GStreamer need glib
-{$ENDIF UNIX}
+  {$DEFINE GSTREAMER} // GStreamer need glib
+  {$DEFINE VLC} //
+  {$DEFINE XINE} //
+  {$DEFINE BASS} //
+{$ENDIF LINUX}
 
 {$IFDEF WINDOWS}
   {$DEFINE DSHOW} // Work only on windows
+  {$DEFINE VLC} //
+  {$DEFINE XINE} //
+  {$DEFINE BASS} //
 {$ENDIF WINDOWS}
 
-{$DEFINE VLC} //
-{$DEFINE XINE} //
-{$DEFINE BASS} //
+{$IFDEF DARWIN}
+  {$DEFINE VLC} //
+  {$DEFINE BASS} //
+{$ENDIF DARWIN}
 
 
 

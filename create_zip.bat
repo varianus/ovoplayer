@@ -16,6 +16,7 @@ MKDIR %ZIPSRCDIR%
 MKDIR %ZIPSRCDIR%\locale
 MKDIR %ZIPSRCDIR%\resources		
 copy /Y  %BIN_DIR%\ovoplayer.exe %ZIPSRCDIR%
+copy /Y  %BIN_DIR%\ovoplayerctrl.exe %ZIPSRCDIR%
 copy /Y  %BASE%\language\*.po %ZIPSRCDIR%\locale
 copy /Y  %BASE%\images\logo.png %ZIPSRCDIR%\resources		
 copy /Y  %BASE%\images\nocover.png %ZIPSRCDIR%\resources

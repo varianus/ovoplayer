@@ -15,14 +15,18 @@ if not "%WIDGETSET_TARGET%" == "" (  set DC_ARCH=%DC_ARCH% --ws=%WIDGETSET_TARGE
 
 set NONE=-l
 :: clean build files
-del /Q /S %BASE\src\lib\*.*
-del /Q /S %BASE\src\components\lib\*.*
+del /Q /S %BASE%\src\lib\*.*
+del /Q /S %BASE%\src\components\lib\*.*
+del /Q /S %BASE%\tools\ovoplayerctrl\lib\*.*
 
 del /Q ovoplayer.exe
+del /Q ovoplayerctrl.exe
 ::
 copy /Y %BASE%\release.cfg  %BASE%\extrafpc.cfg
 %LAZARUS_DIR%\lazbuild -B -r %BASE%\src\ovoplayer.lpi %DC_ARCH%
+%LAZARUS_DIR%\lazbuild -B -r %BASE%\tools\ovoplayerctrl\ovoplayerctrl.lpi %DC_ARCH%
 %FPC_BIN%\strip --strip-all %BASE%\bin\win32\ovoplayer.exe
+%FPC_BIN%\strip --strip-all %BASE%\bin\win32\ovoplayerctrl.exe
 
 echo %none% > %BASE%\extrafpc.cfg
 ENDLOCAL

@@ -19,4 +19,3 @@ Description: Free multiplatform audio player
    * MPlayer - play almost any format, tested on Linux and Windows.
    * XINE - almost complete (some performance issues), tested on Linux.
    * BASS - complete, tested on Windows.
-

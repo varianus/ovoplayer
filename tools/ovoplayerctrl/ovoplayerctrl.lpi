@@ -33,7 +33,7 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <CommandLineParams Value="--pause"/>
+        <CommandLineParams Value="-h"/>
       </local>
     </RunParams>
     <RequiredPackages Count="1">
@@ -58,7 +58,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="..\..\bin\ovoplayerctrl"/>
+      <Filename Value="..\..\bin\$(TargetOS)\ovoplayerctrl"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
@@ -69,6 +69,10 @@
       <CompilerMessages>
         <UseMsgFile Value="True"/>
       </CompilerMessages>
+      <ConfigFile>
+        <CustomConfigFile Value="True"/>
+        <ConfigFilePath Value="..\..\extrafpc.cfg"/>
+      </ConfigFile>
       <CompilerPath Value="$(CompPath)"/>
     </Other>
   </CompilerOptions>

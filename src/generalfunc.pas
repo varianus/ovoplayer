@@ -25,10 +25,10 @@ unit GeneralFunc;
 interface
 
 uses
-  Classes, SysUtils, AppConsts;
+  Classes, SysUtils, AppConsts, CustApp, lclProc;
 
 function TimeToMSec(Time: double): int64;
-Function isAppRunning:Boolean;
+Function isAppRunning(Application:TCustomApplication):Boolean;
 
 implementation
 uses
@@ -41,22 +41,28 @@ begin
   Result := trunc(Time * 1000 / transform);
 end;
 
-Function isAppRunning:Boolean;
+Function isAppRunning(Application:TCustomApplication):Boolean;
 const
   BaseServerId = 'tuniqueinstance_';
 //  Separator = '|';
 var
   Client : TSimpleIPCClient;
+  FilesInParm : TStringList;
+  i: Integer;
 begin
   Client := TSimpleIPCClient.Create(nil);
    with Client do
      try
        ServerId := BaseServerId + AppName;
-
        Result := IsServerRunning(Client);
        if result then
           begin
             Active := true;
+            FilesInParm := TStringList.Create;
+            Application.CheckOptions('', nil, nil, FilesInParm);
+            for i := 0 to FilesinParm.Count - 1 do
+               SendStringMessage(1, 'file:x='+FilesInParm[i] +'|');
+            DebugLn(FilesInParm[i]);
             SendStringMessage(1, 'action:activate|');
           end;
 

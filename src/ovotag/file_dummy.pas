@@ -63,6 +63,7 @@ end;
 
 function TDummyReader.LoadFromFile(AFileName: Tfilename): boolean;
 begin
+  inherited LoadFromFile(AFileName);
   Result := false;
   fTags := TDummyTags.Create;
 end;
@@ -75,4 +76,4 @@ end;
 initialization
   RegisterTagReader(DummyFileMask, TDummyReader);
 end.
-
+

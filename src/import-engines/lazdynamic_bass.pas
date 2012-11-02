@@ -40,6 +40,9 @@ const
   {$IFDEF LINUX}
   BASS_name = 'libbass.so';
   {$ENDIF LINUX}
+  {$IFDEF DARWIN}
+  BASS_name = 'libbass.dylib';
+  {$ENDIF DARWIN}
 
   BASSVERSION = $204;             // API version
   BASSVERSIONTEXT = '2.4';

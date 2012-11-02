@@ -4189,7 +4189,9 @@ const
   {$IFDEF LINUX}
   libvlc_name = 'libvlc.so.5';
   {$ENDIF LINUX}
-
+  {$IFDEF DARWIN}
+  libvlc_name = 'libvlc.dylib';
+  {$ENDIF DARWIN}
 var
   libvlc_handle: THandle;
 
@@ -4219,6 +4221,12 @@ begin
   Result := '';
 end;
 {$ENDIF LINUX}
+{$IFDEF DARWIN}
+function libvlc_get_install_path(): string;
+begin
+  Result := '/Applications/VLC.app/Contents/MacOS/lib/';
+end;
+{$ENDIF DARWIN}
 
 function libvlc_dll_get_proc_addr(var addr: Pointer; const name: PAnsiChar): Boolean;
 begin

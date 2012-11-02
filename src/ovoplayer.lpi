@@ -58,6 +58,7 @@
             </CompilerMessages>
             <CompilerPath Value="$(CompPath)"/>
           </Other>
+          <LCLWidgetType Value="gtk2"/>
         </CompilerOptions>
       </Item2>
       <Item3 Name="QT">
@@ -96,6 +97,7 @@
             </CompilerMessages>
             <CompilerPath Value="$(CompPath)"/>
           </Other>
+          <LCLWidgetType Value="qt"/>
         </CompilerOptions>
       </Item3>
       <Item4 Name="Release">
@@ -171,32 +173,25 @@ if LCLWidgetType = 'win32' then
         <LaunchingApplication PathPlusParams="\usr\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="6">
+    <RequiredPackages Count="4">
       <Item1>
-        <PackageName Value="mcaselli"/>
-        <DefaultFilename Value="components\mcaselli.lpk" Prefer="True"/>
-      </Item1>
-      <Item2>
         <PackageName Value="uniqueinstance_package"/>
         <MinVersion Minor="2" Valid="True"/>
         <DefaultFilename Value="components\uniqueinstance\uniqueinstance_package.lpk" Prefer="True"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="SQLDBLaz"/>
+        <MinVersion Major="1" Release="1" Valid="True"/>
       </Item2>
       <Item3>
-        <PackageName Value="SQLDBLaz"/>
+        <PackageName Value="LCLBase"/>
         <MinVersion Major="1" Release="1" Valid="True"/>
       </Item3>
       <Item4>
-        <PackageName Value="LCLBase"/>
-        <MinVersion Major="1" Release="1" Valid="True"/>
-      </Item4>
-      <Item5>
-        <PackageName Value="virtualtreeview_package"/>
-      </Item5>
-      <Item6>
         <PackageName Value="LCL"/>
-      </Item6>
+      </Item4>
     </RequiredPackages>
-    <Units Count="44">
+    <Units Count="49">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -326,6 +321,7 @@ if LCLWidgetType = 'win32' then
         <Filename Value="uabout.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fAbout"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uAbout"/>
       </Unit22>
@@ -434,16 +430,14 @@ if LCLWidgetType = 'win32' then
         <UnitName Value="customdrawn_ovoplayer"/>
       </Unit43>
       <Unit44>
-        <Filename Value="components\uniqueinstance\uniqueinstance.pas"/>
+        <Filename Value="ovotag\file_dummy.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="UniqueInstance"/>
+        <UnitName Value="file_Dummy"/>
       </Unit44>
       <Unit45>
-        <Filename Value="ucover.pas"/>
+        <Filename Value="ovotag\tag_dummy.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="fCover"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="uCover"/>
+        <UnitName Value="tag_Dummy"/>
       </Unit45>
       <Unit46>
         <Filename Value="audioengine_dshow.pas"/>
@@ -455,6 +449,12 @@ if LCLWidgetType = 'win32' then
         <IsPartOfProject Value="True"/>
         <UnitName Value="mediadshow"/>
       </Unit47>
+      <Unit48>
+        <Filename Value="ucover.pas"/>
+        <IsPartOfProject Value="True"/>
+        <HasResources Value="True"/>
+        <UnitName Value="uCover"/>
+      </Unit48>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -464,7 +464,7 @@ if LCLWidgetType = 'win32' then
       <Filename Value="..\bin\$(TargetOS)\ovoplayer"/>
     </Target>
     <SearchPaths>
-      <IncludeFiles Value="$(ProjOutDir);platform\$(SrcOS)"/>
+      <IncludeFiles Value="$(ProjOutDir);platform\$(TargetOS)"/>
       <OtherUnitFiles Value="import-engines;ovotag"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
@@ -492,7 +492,7 @@ if LCLWidgetType = 'win32' then
     </CodeGeneration>
     <Linking>
       <Debugging>
-        <DebugInfoType Value="dsDwarf2"/>
+        <DebugInfoType Value="dsDwarf2Set"/>
       </Debugging>
       <Options>
         <Win32>
@@ -512,7 +512,7 @@ if LCLWidgetType = 'win32' then
     </Other>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="3" IgnoreAll="True">
+    <Exceptions Count="4">
       <Item1>
         <Name Value="EAbort"/>
       </Item1>
@@ -522,6 +522,9 @@ if LCLWidgetType = 'win32' then
       <Item3>
         <Name Value="EFOpenError"/>
       </Item3>
+      <Item4>
+        <Name Value="Exception"/>
+      </Item4>
     </Exceptions>
   </Debugging>
-</CONFIG>
+</CONFIG>

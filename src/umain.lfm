@@ -1,11 +1,11 @@
 object fMainForm: TfMainForm
-  Left = 339
+  Left = 646
   Height = 694
-  Top = 136
+  Top = 148
   Width = 866
   AllowDropFiles = True
   Caption = 'OVO Player'
-  ClientHeight = 674
+  ClientHeight = 673
   ClientWidth = 866
   Constraints.MinHeight = 400
   Constraints.MinWidth = 600
@@ -21,7 +21,7 @@ object fMainForm: TfMainForm
   LCLVersion = '1.1'
   object pcMain: TPageControl
     Left = 0
-    Height = 674
+    Height = 673
     Top = 0
     Width = 243
     ActivePage = tsCollection
@@ -33,26 +33,26 @@ object fMainForm: TfMainForm
     Options = [nboMultiLine, nboHidePageListPopup]
     object tsCollection: TTabSheet
       Caption = 'Collection'
-      ClientHeight = 646
-      ClientWidth = 235
+      ClientHeight = 638
+      ClientWidth = 237
       object pnlCollection: TPanel
         Left = 0
         Height = 70
         Top = 0
-        Width = 235
+        Width = 237
         Align = alTop
         BevelOuter = bvNone
         ClientHeight = 70
-        ClientWidth = 235
+        ClientWidth = 237
         TabOrder = 0
         object cbGroupBy: TComboBox
           Left = 4
-          Height = 23
+          Height = 25
           Hint = 'Group song'
           Top = 6
-          Width = 228
+          Width = 230
           Anchors = [akTop, akLeft, akRight]
-          ItemHeight = 15
+          ItemHeight = 0
           ItemIndex = 0
           Items.Strings = (
             'AlbumArtist / Album'
@@ -67,20 +67,20 @@ object fMainForm: TfMainForm
         end
         object edtFilter: TLabeledEdit
           Left = 47
-          Height = 23
+          Height = 27
           Hint = 'Filter'
           Top = 38
-          Width = 165
+          Width = 167
           Anchors = [akTop, akLeft, akRight]
           EditLabel.AnchorSideTop.Control = edtFilter
           EditLabel.AnchorSideTop.Side = asrCenter
           EditLabel.AnchorSideRight.Control = edtFilter
           EditLabel.AnchorSideBottom.Control = edtFilter
           EditLabel.AnchorSideBottom.Side = asrBottom
-          EditLabel.Left = 18
-          EditLabel.Height = 15
-          EditLabel.Top = 42
-          EditLabel.Width = 26
+          EditLabel.Left = 10
+          EditLabel.Height = 17
+          EditLabel.Top = 43
+          EditLabel.Width = 34
           EditLabel.Caption = 'Filter'
           EditLabel.ParentColor = False
           LabelPosition = lpLeft
@@ -88,7 +88,7 @@ object fMainForm: TfMainForm
           OnChange = edtFilterChange
         end
         object btnFilterCancel: TSpeedButton
-          Left = 211
+          Left = 213
           Height = 22
           Top = 39
           Width = 22
@@ -137,41 +137,20 @@ object fMainForm: TfMainForm
           ShowCaption = False
         end
       end
-      object CollectionTree: TVirtualStringTree
-        Left = 0
-        Height = 467
-        Top = 70
-        Width = 235
-        Align = alClient
-        Color = clWindow
-        DefaultText = 'Node'
-        Header.AutoSizeIndex = 0
-        Header.Columns = <>
-        Header.DefaultHeight = 17
-        Header.MainColumn = -1
-        Images = BackEnd.ilSmall
-        PopupMenu = pnCollection
-        TabOrder = 1
-        TreeOptions.MiscOptions = [toFullRepaintOnResize, toGridExtensions, toInitOnSave, toToggleOnDblClick, toWheelPanning, toEditOnClick]
-        TreeOptions.SelectionOptions = [toFullRowSelect, toMultiSelect]
-        OnDblClick = CollectionTreeDblClick
-        OnGetText = CollectionTreeGetText
-        OnGetImageIndex = CollectionTreeGetImageIndex
-      end
       object gbStats: TGroupBox
         Left = 0
         Height = 109
-        Top = 537
-        Width = 235
+        Top = 529
+        Width = 237
         Align = alBottom
         Caption = 'Stats'
-        ClientHeight = 91
-        ClientWidth = 231
+        ClientHeight = 90
+        ClientWidth = 233
         ParentFont = False
-        TabOrder = 2
+        TabOrder = 1
         Visible = False
         object btnCloseCollectionStat: TSpeedButton
-          Left = 209
+          Left = 211
           Height = 22
           Top = 0
           Width = 22
@@ -221,9 +200,9 @@ object fMainForm: TfMainForm
         end
         object sgStats: TStringGrid
           Left = 0
-          Height = 91
+          Height = 90
           Top = 0
-          Width = 209
+          Width = 211
           Align = alClient
           AutoEdit = False
           ColCount = 2
@@ -254,40 +233,43 @@ object fMainForm: TfMainForm
           )
         end
       end
+      object tvCollection: TTreeView
+        Left = 0
+        Height = 459
+        Top = 70
+        Width = 237
+        Align = alClient
+        ExpandSignType = tvestPlusMinus
+        Images = BackEnd.ilSmall
+        Indent = 20
+        MultiSelect = True
+        ParentShowHint = False
+        PopupMenu = pnCollection
+        ReadOnly = True
+        RightClickSelect = True
+        RowSelect = True
+        ScrollBars = ssAutoBoth
+        ShowHint = True
+        TabOrder = 2
+        OnCreateNodeClass = tvCollectionCreateNodeClass
+        OnDblClick = tvCollectionDblClick
+        OnGetImageIndex = tvCollectionGetImageIndex
+        Options = [tvoAllowMultiselect, tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+      end
     end
     object tsDirectory: TTabSheet
       Caption = 'Directory'
-      ClientHeight = 640
-      ClientWidth = 239
+      ClientHeight = 638
+      ClientWidth = 237
       OnShow = tsDirectoryShow
-      object FilesTree: TVirtualStringTree
-        Left = 0
-        Height = 591
-        Top = 49
-        Width = 239
-        Align = alClient
-        Color = clWindow
-        DefaultText = 'Node'
-        Header.AutoSizeIndex = 0
-        Header.Columns = <>
-        Header.DefaultHeight = 17
-        Header.MainColumn = -1
-        Images = BackEnd.ilSmall
-        PopupMenu = pmdirectories
-        TabOrder = 0
-        TreeOptions.PaintOptions = [toShowButtons, toThemeAware, toUseBlendedImages]
-        OnDblClick = FilesTreeDblClick
-        OnGetText = FilesTreeGetText
-        OnGetImageIndex = FilesTreeGetImageIndex
-      end
       object tbDirectory: TToolBar
         Left = 0
         Height = 49
         Top = 0
-        Width = 239
+        Width = 237
         Flat = False
         Images = BackEnd.ilButtons
-        TabOrder = 1
+        TabOrder = 0
         object btnBackDir: TToolButton
           Left = 1
           Top = 2
@@ -330,11 +312,30 @@ object fMainForm: TfMainForm
           OnEditingDone = ePathEditingDone
         end
       end
+      object FilesTree: TTreeView
+        Left = 0
+        Height = 589
+        Top = 49
+        Width = 237
+        Align = alClient
+        ExpandSignType = tvestPlusMinus
+        Images = BackEnd.ilSmall
+        PopupMenu = pmdirectories
+        ReadOnly = True
+        RightClickSelect = True
+        RowSelect = True
+        ScrollBars = ssAutoBoth
+        TabOrder = 1
+        OnCreateNodeClass = FilesTreeCreateNodeClass
+        OnDblClick = FilesTreeDblClick
+        OnGetImageIndex = FilesTreeGetImageIndex
+        Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+      end
     end
     object tsPlayList: TTabSheet
       Caption = 'PlayList'
-      ClientHeight = 640
-      ClientWidth = 239
+      ClientHeight = 638
+      ClientWidth = 237
       object PlaylistTree: TTreeView
         Left = 0
         Height = 646
@@ -343,10 +344,12 @@ object fMainForm: TfMainForm
         Align = alClient
         DefaultItemHeight = 18
         ReadOnly = True
+        RightClickSelect = True
+        RowSelect = True
         ScrollBars = ssAutoBoth
         TabOrder = 0
         OnDblClick = PlaylistTreeDblClick
-        Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+        Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
         Items.Data = {
           F9FFFFFF020002000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF050000000000
           0000011100000044656661756C7420506C61796C69737473FFFFFFFFFFFFFFFF
@@ -363,32 +366,34 @@ object fMainForm: TfMainForm
   end
   object pnlMain: TPanel
     Left = 247
-    Height = 674
+    Height = 673
     Top = 0
     Width = 619
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 674
+    ClientHeight = 673
     ClientWidth = 619
     Constraints.MinWidth = 439
     TabOrder = 1
     object pnlControl: TPanel
       Left = 0
-      Height = 51
-      Top = 623
+      Height = 53
+      Top = 620
       Width = 619
       Align = alBottom
       Anchors = [akLeft, akRight]
       BevelOuter = bvNone
-      ClientHeight = 51
+      ClientHeight = 53
       ClientWidth = 619
       TabOrder = 0
       object tbMediaControl: TToolBar
         Left = 0
         Height = 25
-        Top = 3
+        Top = 1
         Width = 619
-        BorderSpacing.Top = 3
+        Align = alClient
+        BorderSpacing.Top = 1
+        ButtonHeight = 23
         Constraints.MaxHeight = 25
         EdgeBorders = []
         EdgeInner = esNone
@@ -496,7 +501,7 @@ object fMainForm: TfMainForm
         end
         object slVolume: TCDTrackBar
           Left = 355
-          Height = 22
+          Height = 23
           Top = 0
           Width = 100
           Max = 255
@@ -508,18 +513,19 @@ object fMainForm: TfMainForm
       end
       object Panel1: TPanel
         Left = 0
-        Height = 27
-        Top = 24
+        Height = 25
+        Top = 28
         Width = 619
         Align = alBottom
-        ClientHeight = 27
+        BevelOuter = bvNone
+        ClientHeight = 25
         ClientWidth = 619
         TabOrder = 1
         object lbTime: TLabel
           Left = 523
           Height = 25
-          Top = 1
-          Width = 95
+          Top = 0
+          Width = 96
           Align = alRight
           Alignment = taCenter
           Anchors = [akRight, akBottom]
@@ -531,10 +537,10 @@ object fMainForm: TfMainForm
           OptimalFill = True
         end
         object TrackBar: TCDTrackBar
-          Left = 1
+          Left = 0
           Height = 25
-          Top = 1
-          Width = 522
+          Top = 0
+          Width = 523
           Max = 10
           Min = 0
           OnChangeByUser = TrackBarChange
@@ -546,111 +552,130 @@ object fMainForm: TfMainForm
     end
     object pnlPlaylist: TPanel
       Left = 0
-      Height = 499
+      Height = 496
       Top = 124
       Width = 619
       Align = alClient
-      ClientHeight = 499
+      ClientHeight = 496
       ClientWidth = 619
       Constraints.MinWidth = 494
       TabOrder = 1
-      object lvPlayList: TVirtualStringTree
+      object sgPlayList: TStringGrid
         Left = 1
-        Height = 497
+        Height = 494
         Top = 1
         Width = 617
         Align = alClient
-        Color = clWindow
-        DefaultPasteMode = amNoWhere
-        DefaultText = 'Node'
-        DragType = dtVCL
-        Header.AutoSizeIndex = 2
-        Header.Columns = <        
+        AlternateColor = 15921906
+        AutoEdit = False
+        AutoFillColumns = True
+        ColCount = 12
+        Columns = <        
           item
-            Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coAllowFocus]
-            Position = 0
-            Text = 'Maincolumn'
+            MinSize = 16
+            MaxSize = 16
+            SizePriority = 0
+            Title.Caption = '    '
+            Width = 16
           end        
           item
             Alignment = taRightJustify
-            Options = [coAllowClick, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coFixed, coSmartResize, coAllowFocus, coUseCaptionAlignment]
-            Position = 1
-            Text = 'No.'
-            Width = 80
+            SizePriority = 0
+            Title.Caption = '#'
+            Title.PrefixOption = poHeaderClick
+            Width = 144
           end        
           item
-            Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coFixed, coSmartResize, coAllowFocus]
-            Position = 2
-            Text = 'Title'
-            Width = 337
+            Title.Caption = 'Title'
+            Width = 12
           end        
           item
-            Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coSmartResize, coAllowFocus]
-            Position = 3
-            Text = 'Artist'
+            SizePriority = 0
+            Title.Caption = 'Album'
+            Width = 144
           end        
           item
-            Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coSmartResize, coAllowFocus]
-            Position = 4
-            Text = 'Album'
-            Width = 61
-          end        
-          item
-            Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coSmartResize, coAllowFocus]
-            Position = 5
-            Text = 'Time'
-            Width = 80
+            Title.Caption = 'Artist'
+            Width = 12
           end        
           item
             Alignment = taRightJustify
-            Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coSmartResize, coAllowFocus]
-            Position = 6
-            Text = 'Track'
-            Width = 55
+            SizePriority = 0
+            Title.Caption = 'Time'
+            Width = 144
           end        
           item
-            Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coSmartResize, coAllowFocus]
-            Position = 7
-            Text = 'Genre'
+            SizePriority = 0
+            Title.Caption = 'Track'
+            Width = 144
           end        
           item
-            Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coSmartResize, coAllowFocus]
-            Position = 8
-            Text = 'Year'
+            SizePriority = 0
+            Title.Caption = 'Genre'
+            Width = 0
+            Visible = False
           end        
           item
-            Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coSmartResize, coAllowFocus]
-            Position = 9
-            Text = 'Album Artist'
-            Width = 10
+            Alignment = taRightJustify
+            SizePriority = 0
+            Title.Caption = 'Year'
+            Width = 0
+            Visible = False
           end        
           item
-            Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coAllowFocus]
-            Position = 10
-            Text = 'File Name'
+            SizePriority = 0
+            Title.Caption = 'Album Artist'
+            Width = 0
+            Visible = False
+          end        
+          item
+            SizePriority = 0
+            Title.Caption = 'FileName'
+            Width = 0
+            Visible = False
+          end        
+          item
+            SizePriority = 0
+            Title.Caption = 'Rating'
+            Width = 0
+            Visible = False
           end>
-        Header.DefaultHeight = 18
-        Header.Height = 18
-        Header.MinHeight = 18
-        Header.Options = [hoAutoResize, hoColumnResize, hoDrag, hoRestrictDrag, hoShowSortGlyphs, hoVisible, hoAutoSpring]
-        Header.Style = hsFlatButtons
-        Images = BackEnd.ilSmall
-        RootNodeCount = 1
+        DefaultColWidth = 18
+        DefaultRowHeight = 18
+        FixedCols = 0
+        Flat = True
+        Options = [goFixedVertLine, goFixedHorzLine, goColSizing, goRowSelect, goSmoothScroll, goFixedRowNumbering, goScrollKeepVisible, goHeaderPushedLook, goDontScrollPartCell, goTruncCellHints]
+        ParentShowHint = False
+        RowCount = 2
+        ShowHint = True
         TabOrder = 0
-        TreeOptions.MiscOptions = [toFullRepaintOnResize, toGridExtensions, toInitOnSave, toToggleOnDblClick, toWheelPanning, toFullRowDrag, toEditOnClick]
-        TreeOptions.PaintOptions = [toShowRoot, toThemeAware, toUseBlendedImages]
-        TreeOptions.SelectionOptions = [toFullRowSelect, toMultiSelect, toRightClickSelect]
-        OnBeforeCellPaint = lvPlayListBeforeCellPaint
-        OnDblClick = lvPlayListDblClick
-        OnGetText = lvPlayListGetText
-        OnPaintText = lvPlayListPaintText
-        OnGetImageIndex = lvPlayListGetImageIndex
-        OnGetPopupMenu = lvPlayListGetPopupMenu
-        OnHeaderClick = lvPlayListHeaderClick
-        OnKeyDown = lvPlayListKeyDown
-        OnMouseDown = lvPlayListMouseDown
-        OnMouseMove = lvPlayListMouseMove
-        OnMouseUp = lvPlayListMouseUp
+        TitleImageList = BackEnd.ilSmall
+        TitleStyle = tsStandard
+        UseXORFeatures = True
+        OnColRowMoved = sgPlayListColRowMoved
+        OnContextPopup = sgPlayListContextPopup
+        OnDblClick = sgPlayListDblClick
+        OnDrawCell = sgPlayListDrawCell
+        OnHeaderClick = sgPlayListHeaderClick
+        OnKeyDown = sgPlayListKeyDown
+        OnMouseDown = sgPlayListMouseDown
+        OnMouseMove = sgPlayListMouseMove
+        OnMouseUp = sgPlayListMouseUp
+        OnPrepareCanvas = sgPlayListPrepareCanvas
+        ColWidths = (
+          16
+          144
+          12
+          144
+          12
+          144
+          144
+          0
+          0
+          0
+          0
+          0
+        )
       end
     end
     object pnlPlayInfo: TPanel
@@ -674,13 +699,13 @@ object fMainForm: TfMainForm
       end
       object Title: TLabel
         Left = 132
-        Height = 23
+        Height = 24
         Top = 6
         Width = 477
         Anchors = [akTop, akLeft, akRight]
         AutoSize = False
         Caption = 'Title'
-        Font.Height = 19
+        Font.Height = 21
         Font.Style = [fsBold]
         ParentColor = False
         ParentFont = False
@@ -694,7 +719,7 @@ object fMainForm: TfMainForm
         Anchors = [akTop, akLeft, akRight]
         AutoSize = False
         Caption = 'Album'
-        Font.Height = 17
+        Font.Height = 18
         ParentColor = False
         ParentFont = False
         OptimalFill = True
@@ -707,7 +732,7 @@ object fMainForm: TfMainForm
         Anchors = [akTop, akLeft, akRight]
         AutoSize = False
         Caption = 'Artist'
-        Font.Height = 17
+        Font.Height = 18
         ParentColor = False
         ParentFont = False
         OptimalFill = True
@@ -725,12 +750,12 @@ object fMainForm: TfMainForm
   end
   object Splitter1: TSplitter
     Left = 243
-    Height = 674
+    Height = 673
     Top = 0
     Width = 4
   end
   object MainMenu: TMainMenu
-    Images = BackEnd.ilButtons
+    Images = BackEnd.ilSmall
     left = 425
     top = 184
     object mnuFile: TMenuItem
@@ -858,7 +883,6 @@ object fMainForm: TfMainForm
   end
   object PlaylistMenu: TPopupMenu
     Images = BackEnd.ilSmall
-    OnPopup = PlaylistMenuPopup
     left = 425
     top = 264
     object MenuItem17: TMenuItem
@@ -986,4 +1010,4 @@ object fMainForm: TfMainForm
       OnExecute = actShowPLMediainfoExecute
     end
   end
-end
+end

@@ -1,7 +1,7 @@
 object fSongInfo: TfSongInfo
-  Left = 328
+  Left = 485
   Height = 407
-  Top = 207
+  Top = 303
   Width = 759
   BorderStyle = bsDialog
   Caption = 'Song Information'
@@ -18,14 +18,14 @@ object fSongInfo: TfSongInfo
     Height = 357
     Top = 0
     Width = 591
-    ActivePage = tsTags
+    ActivePage = tsMediaProperty
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 0
     object tsMediaProperty: TTabSheet
       Caption = 'Media Property'
-      ClientHeight = 329
-      ClientWidth = 583
+      ClientHeight = 322
+      ClientWidth = 585
       object Label9: TLabel
         Left = 6
         Height = 16
@@ -123,14 +123,6 @@ object fSongInfo: TfSongInfo
         ParentFont = False
         OptimalFill = True
       end
-      object leFileName: TLabel
-        Left = 123
-        Height = 16
-        Top = 16
-        Width = 513
-        AutoSize = False
-        ParentColor = False
-      end
       object Label15: TLabel
         Left = 6
         Height = 16
@@ -158,7 +150,7 @@ object fSongInfo: TfSongInfo
         Top = 33
         Width = 280
         Caption = 'Library'
-        ClientHeight = 142
+        ClientHeight = 141
         ClientWidth = 276
         TabOrder = 0
         object Label16: TLabel
@@ -225,11 +217,22 @@ object fSongInfo: TfSongInfo
           ParentColor = False
         end
       end
+      object leFileName: TEdit
+        Left = 123
+        Height = 16
+        Top = 16
+        Width = 513
+        AutoSize = False
+        BorderStyle = bsNone
+        Color = clNone
+        ReadOnly = True
+        TabOrder = 1
+      end
     end
     object tsTags: TTabSheet
       Caption = 'Tags'
-      ClientHeight = 329
-      ClientWidth = 583
+      ClientHeight = 322
+      ClientWidth = 585
       object laArtist: TLabel
         Left = 0
         Height = 15
@@ -245,7 +248,7 @@ object fSongInfo: TfSongInfo
       end
       object edArtist: TEdit
         Left = 98
-        Height = 23
+        Height = 27
         Top = 43
         Width = 384
         OnChange = edArtistChange
@@ -266,7 +269,7 @@ object fSongInfo: TfSongInfo
       end
       object edAlbum: TEdit
         Left = 98
-        Height = 23
+        Height = 27
         Top = 74
         Width = 384
         OnChange = edAlbumChange
@@ -287,7 +290,7 @@ object fSongInfo: TfSongInfo
       end
       object edTitle: TEdit
         Left = 98
-        Height = 23
+        Height = 27
         Top = 9
         Width = 384
         OnChange = edTitleChange
@@ -308,7 +311,7 @@ object fSongInfo: TfSongInfo
       end
       object edAlbumArtist: TEdit
         Left = 98
-        Height = 23
+        Height = 27
         Top = 107
         Width = 384
         OnChange = edAlbumArtistChange
@@ -376,7 +379,7 @@ object fSongInfo: TfSongInfo
       end
       object edTrack: TEdit
         Left = 381
-        Height = 23
+        Height = 27
         Top = 171
         Width = 101
         OnChange = edTrackChange
@@ -384,7 +387,7 @@ object fSongInfo: TfSongInfo
       end
       object edYear: TEdit
         Left = 98
-        Height = 23
+        Height = 27
         Top = 171
         Width = 101
         OnChange = edYearChange
@@ -392,13 +395,13 @@ object fSongInfo: TfSongInfo
       end
       object edGenre: TComboBox
         Left = 98
-        Height = 23
+        Height = 27
         Top = 139
         Width = 384
         AutoComplete = True
         AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
         AutoDropDown = True
-        ItemHeight = 15
+        ItemHeight = 0
         OnChange = edGenreChange
         Sorted = True
         TabOrder = 7
@@ -429,6 +432,7 @@ object fSongInfo: TfSongInfo
     ScrollWidth = 166
     ShowHint = True
     TabOrder = 1
+    TopIndex = -1
   end
   object pnlMoveSelection: TPanel
     Left = 0

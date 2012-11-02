@@ -74,8 +74,8 @@ type
     Label16: TLabel;
     Label17: TLabel;
     Label18: TLabel;
+    leFileName: TEdit;
     leLastPlayed: TLabel;
-    leFileName: TLabel;
     leAdded: TLabel;
     leSize: TLabel;
     leSampling: TLabel;

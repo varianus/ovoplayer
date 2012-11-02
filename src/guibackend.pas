@@ -239,6 +239,8 @@ begin
                 actNext.Execute          else
              if tempstr = 'previous' then
                 actPrevious.Execute;
+             if tempstr = 'close' then
+                actExit.Execute;
 
              if Assigned(FOnExternalCommand) then
                 FOnExternalCommand(Self, tempstr);
@@ -264,11 +266,10 @@ begin
                 end  else
              if tempstr = 'x=' then
                 begin
-                  PlayList.Clear;
-                  SignalPlayListChange;
                   idx := PlayList.EnqueueFile(tempparam);
                   PlayList.ItemIndex:=idx;
                   AudioEngine.Play(PlayList.CurrentItem);
+                  SignalPlayListChange;
                 end;
 
            end;
@@ -470,6 +471,9 @@ end;
 procedure TBackEnd.actPauseExecute(Sender: TObject);
 begin
   AudioEngine.Pause;
+  if Assigned(FOnEngineCommand) then
+      FOnEngineCommand(AudioEngine, ecPause);
+
 end;
 
 procedure TBackEnd.actPlayExecute(Sender: TObject);

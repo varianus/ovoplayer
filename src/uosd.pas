@@ -96,7 +96,8 @@ var
   imgName: string;
 begin
   if fOSD = nil then
-    fOSD := TfOSD.Create(nil);
+//    fOSD := TfOSD.Create(nil);
+    Application.CreateForm(TfOSD, fOSD);
 
  {$IFDEF SUPPORT_SHAPING}
   fOSD.ShapeControl(fOSD);

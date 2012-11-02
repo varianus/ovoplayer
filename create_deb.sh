@@ -30,6 +30,7 @@ $MKDIR $DEBSRCDIR/usr/share/man/man1
 $MKDIR $DEBSRCDIR/DEBIAN
 
 $INSTALLEXE  -s $BIN_DIR/ovoplayer $DEBSRCDIR/usr/bin
+$INSTALLEXE  -s $BIN_DIR/ovoplayerctrl $DEBSRCDIR/usr/bin
 #cp   $BASE/language/*.po $DEBSRCDIR/locale
 $INSTALLFILE  $BASE/images/logo.png $DEBSRCDIR/usr/share/pixmaps/ovoplayer.png
 $INSTALLFILE  $BASE/images/nocover.png $DEBSRCDIR/usr/share/ovoplayer
@@ -38,6 +39,9 @@ $INSTALLFILE  $BASE/images/volume-slider-mask.png $DEBSRCDIR/usr/share/ovoplayer
 $INSTALLFILE  $PACKAGES_DIR/ovoplayer.desktop $DEBSRCDIR/usr/share/applications
 
 $INSTALLFILE  $PACKAGES_DIR/copyright $DEBSRCDIR/usr/share/doc/ovoplayer
+
+gzip -c --best $BASE/DOC/manpages/ovoplayerctrl.1 > $DEBSRCDIR/usr/share/man/man1/ovoplayerctrl.1.gz
+chmod 0644 $DEBSRCDIR/usr/share/man/man1/ovoplayerctrl.1.gz
 
 gzip -c --best $BASE/DOC/manpages/ovoplayer.1 > $DEBSRCDIR/usr/share/man/man1/ovoplayer.1.gz
 chmod 0644 $DEBSRCDIR/usr/share/man/man1/ovoplayer.1.gz

@@ -119,6 +119,12 @@ const
   SectionUnix    = 'UNIX';
   IdentResourcesPath = 'ResourcesPath';
 
+const
+  DefaultDirectory = '/usr/share/ovoplayer/';
+  BundleResourcesDirectory = '/Contents/Resources/';
+
+  SectionGeneral = 'General';
+
 constructor TConfig.Create;
 begin
   ConfigFile := GetAppConfigFile(False {$ifdef NEEDCFGSUBDIR} , true{$ENDIF} );

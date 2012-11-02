@@ -24,11 +24,14 @@ NONE=-l
 # clean build files
 rm -Rf $BASE/src/lib/*
 rm -Rf $BASE/src/components/lib/*.*
+rm -Rf $BASE/tools/ovoplayerctrl/lib/*.*
 
 rm -Rf $BASE/bin/linux
 #
 cp $BASE/release.cfg  $BASE/extrafpc.cfg
 $LAZARUS_DIR/lazbuild -B -r $BASE/src/ovoplayer.lpi $DC_ARCH
+$LAZARUS_DIR/lazbuild -B -r $BASE/tools/ovoplayerctrl/ovoplayerctrl.lpi $DC_ARCH
 strip --strip-all $BASE/bin/linux/ovoplayer
+strip --strip-all $BASE/bin/linux/ovoplayerctrl
 
 echo $NONE > $BASE/extrafpc.cfg
