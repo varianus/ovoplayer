@@ -501,21 +501,22 @@ var
 
 begin
   Node := TMusicTreeNode(tvCollection.GetFirstMultiSelected);
-  if Node = nil then
-    exit;
+  while Node <> nil do
+  begin
+    if not Enqueue then
+       BackEnd.actPlayListClear.Execute;
 
-  if not Enqueue then
-     BackEnd.actPlayListClear.Execute;
-
-  case node.Kind of
-    tkSong:
-      begin
-      aSong := TSong.Create(BackEnd.mediaLibrary.FullNameFromID(Node.ID));
-      BackEnd.PlayList.Add(ASong);
-      end
-    else
-      BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList, PrepareImportFilter(Node));
-    end;
+    case node.Kind of
+      tkSong:
+        begin
+        aSong := TSong.Create(BackEnd.mediaLibrary.FullNameFromID(Node.ID));
+        BackEnd.PlayList.Add(ASong);
+        end
+      else
+        BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList, PrepareImportFilter(Node));
+      end;
+   Node:= TMusicTreeNode(node.GetNextMultiSelected);
+  end;
 
   OnLoaded(sgPlayList);
 
