@@ -43,6 +43,7 @@ const
 
 Resourcestring
   rEmptyTag = '<none>';
+  rMissing = '<missing>';
   rNotPlaying = 'Not Playing';
   rAllFiles     = 'All Files(%0:s)|%0:s';
   rEmbedded  = 'Embedded in file';
@@ -68,4 +69,4 @@ initialization
  OnGetApplicationName := @GetAppName;
 
 
-end.
+end.

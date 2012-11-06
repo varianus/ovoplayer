@@ -29,6 +29,10 @@ msgstr ""
 msgid "Failed:"
 msgstr ""
 
+#: appconsts.rmissing
+msgid "<missing>"
+msgstr ""
+
 #: appconsts.rmissingconfig
 msgid "Can't activate Audio Engine. Please review configuration"
 msgstr ""

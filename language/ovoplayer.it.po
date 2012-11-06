@@ -31,6 +31,10 @@ msgstr "<nessuno>"
 msgid "Failed:"
 msgstr "Falliti:"
 
+#: appconsts.rmissing
+msgid "<mancante>"
+msgstr ""
+
 #: appconsts.rmissingconfig
 msgid "Can't activate Audio Engine. Please review configuration"
 msgstr "Impossibile attivare motore Audio. Verificare la configurazione"
@@ -577,12 +581,12 @@ msgstr ""
 #: tfmainform.sgplaylist.columns[10].title.caption
 msgctxt "tfmainform.sgplaylist.columns[10].title.caption"
 msgid "FileName"
-msgstr ""
+msgstr "Nome file"
 
 #: tfmainform.sgplaylist.columns[11].title.caption
 msgctxt "tfmainform.sgplaylist.columns[11].title.caption"
 msgid "Rating"
-msgstr ""
+msgstr "Valutazione"
 
 #: tfmainform.sgplaylist.columns[1].title.caption
 msgid "#"
@@ -608,33 +612,33 @@ msgstr "Artista"
 #| msgid "Track"
 msgctxt "tfmainform.sgplaylist.columns[5].title.caption"
 msgid "Time"
-msgstr "Traccia"
+msgstr "Tempo"
 
 #: tfmainform.sgplaylist.columns[6].title.caption
 #, fuzzy
 #| msgid "Genre"
 msgctxt "tfmainform.sgplaylist.columns[6].title.caption"
 msgid "Track"
-msgstr "Genere"
+msgstr "Traccia"
 
 #: tfmainform.sgplaylist.columns[7].title.caption
 #, fuzzy
 #| msgid "Year"
 msgctxt "tfmainform.sgplaylist.columns[7].title.caption"
 msgid "Genre"
-msgstr "Anno"
+msgstr "Genere"
 
 #: tfmainform.sgplaylist.columns[8].title.caption
 #, fuzzy
 #| msgid "Album Artist"
 msgctxt "tfmainform.sgplaylist.columns[8].title.caption"
 msgid "Year"
-msgstr "Artista Album"
+msgstr "Anno"
 
 #: tfmainform.sgplaylist.columns[9].title.caption
 msgctxt "tfmainform.sgplaylist.columns[9].title.caption"
 msgid "Album Artist"
-msgstr ""
+msgstr "Artista Album"
 
 #: tfmainform.sgstats.columns[0].title.caption
 msgctxt "TFMAINFORM.SGSTATS.COLUMNS[0].TITLE.CAPTION"
@@ -705,11 +709,11 @@ msgstr "Precedente"
 
 #: tfsonginfo.buttonpanel1.cancelbutton.caption
 msgid "Discard"
-msgstr ""
+msgstr "Abbandona"
 
 #: tfsonginfo.buttonpanel1.okbutton.caption
 msgid "Save"
-msgstr ""
+msgstr "Salva"
 
 #: tfsonginfo.caption
 msgid "Song Information"
