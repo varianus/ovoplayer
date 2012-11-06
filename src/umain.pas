@@ -1392,7 +1392,7 @@ begin
     if ASong = nil then exit;
     case aCol of
          1: Txt := IntToStr(Arow);
-         2: Txt := ASong.Tags.Title;
+         2: Txt := ASong.Title;
          3: Txt := ASong.Tags.Album;
          4: Txt := ASong.Tags.Artist;
          5: Txt := TimeToStr(ASong.Tags.Duration / MSecsPerDay);
@@ -1894,4 +1894,4 @@ begin
 
 end;
 
-end.
+end.
