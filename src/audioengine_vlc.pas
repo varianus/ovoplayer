@@ -134,12 +134,13 @@ begin
 end;
 
 constructor TAudioEngineVLC.Create;
-const ArgsNumber = 5;
+const ArgsNumber = 6;
 const
   args: array[0..ArgsNumber - 1] of PAnsiChar =
     ('-I',// 'dummy',
      '--quiet',
      '--no-xlib',
+     '--no-video-title-show',
      '--file-caching=500',
      '--ignore-config');
 begin
@@ -338,4 +339,4 @@ initialization
   RegisterEngineClass(TAudioEngineVLC, 1, false, false);
 
 
-end.
+end.
