@@ -69,7 +69,7 @@ type
 
 
 implementation
-
+uses math;
 { TAudioEngineVLC }
 
 procedure lib_vlc_player_event_hdlr(p_event: libvlc_event_t_ptr; Data: Pointer); cdecl;
@@ -143,6 +143,8 @@ const
      '--no-video-title-show',
      '--file-caching=500',
      '--ignore-config');
+var
+  ExceptionMask : TFPUExceptionMask;
 begin
   inherited Create;
   p_li := nil; // library instance
@@ -153,8 +155,11 @@ begin
     begin
     raise Exception.Create(libvlc_dynamic_dll_error);
     end;
-
+  ExceptionMask:= GetExceptionMask;
+  SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide,exOverflow, exUnderflow, exPrecision]);
   p_li := libvlc_new(ArgsNumber, @args);
+  SetExceptionMask(ExceptionMask);
+
   p_mi := libvlc_media_player_new(p_li);
 
   fdecoupler := TDecoupler.Create;
