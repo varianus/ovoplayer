@@ -8,7 +8,7 @@ object fConfig: TfConfig
   ClientWidth = 647
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '0.9.31'
+  LCLVersion = '1.1'
   object pcConfig: TPageControl
     Left = 153
     Height = 446
@@ -121,7 +121,7 @@ object fConfig: TfConfig
             FilterIndex = 0
             HideDirectories = False
             ButtonWidth = 23
-            NumGlyphs = 0
+            NumGlyphs = 1
             MaxLength = 0
             TabOrder = 0
             OnChange = MPlayerPathChange
@@ -158,9 +158,9 @@ object fConfig: TfConfig
       end
       object Label1: TLabel
         Left = 11
-        Height = 16
+        Height = 15
         Top = 9
-        Width = 57
+        Width = 56
         Caption = 'Directories'
         ParentColor = False
       end
@@ -368,11 +368,10 @@ object fConfig: TfConfig
       Top = 48
       Width = 149
       Align = alTop
-      Caption = 'Engine'
+      Caption = 'Audio Engine'
       Color = clWindow
       Flat = True
       GroupIndex = 1
-      NumGlyphs = 0
       OnClick = sbEngineClick
     end
     object SpeedButton2: TSpeedButton
@@ -385,7 +384,6 @@ object fConfig: TfConfig
       Color = clWindow
       Flat = True
       GroupIndex = 1
-      NumGlyphs = 0
       OnClick = SpeedButton2Click
     end
     object sbPlayList: TSpeedButton
@@ -398,7 +396,6 @@ object fConfig: TfConfig
       Color = clWindow
       Flat = True
       GroupIndex = 1
-      NumGlyphs = 0
       OnClick = sbPlayListClick
     end
     object sbLibrary: TSpeedButton
@@ -411,7 +408,6 @@ object fConfig: TfConfig
       Color = clWindow
       Flat = True
       GroupIndex = 1
-      NumGlyphs = 0
       OnClick = sbLibraryClick
     end
     object sbInterface: TSpeedButton
@@ -425,7 +421,6 @@ object fConfig: TfConfig
       Down = True
       Flat = True
       GroupIndex = 1
-      NumGlyphs = 0
       OnClick = sbInterfaceClick
     end
   end
