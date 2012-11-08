@@ -279,7 +279,7 @@ begin
 
   FPlayRunningI := True;
   fPlayerProcess := TProcessUTF8.Create(nil);
-  Params := ' -slave -nofs -nomouseinput -noquiet -vc null -vo null −nofontconfig '; //  -priority abovenormal -really-quiet -identify
+  Params := ' -slave -nofs -nomouseinput -noquiet -vc null -vo null -nofontconfig '; //  -priority abovenormal -really-quiet -identify
   Params := Params + ' -volume ' + IntToStr(Self.MainVolume) + ' -softvol -softvol-max 255';
   fPlayerProcess.Options := fPlayerProcess.Options + [poUsePipes, poNoConsole];
   fPlayerProcess.CommandLine :=ExePath + ' ' + Params + ' "' +Filename+'"';
