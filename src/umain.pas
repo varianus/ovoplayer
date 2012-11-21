@@ -539,7 +539,7 @@ end;
 
 procedure TfMainForm.ePathEditingDone(Sender: TObject);
 begin
-  if PathIndex < PathHistory.Count then
+  if (PathIndex+1) < PathHistory.Count then
      PathHistory.Capacity:= PathIndex;
   LoadDir(ePath.Directory);
 
@@ -1124,17 +1124,39 @@ end;
 procedure TfMainForm.mnuFileInfoClick(Sender: TObject);
 var
   info : TfSongInfo;
-var
   Node: TFileTreeNode;
+  fileList: TStringList;
 begin
-  Node := TFileTreeNode(FilesTree.Selected);
-  if (Node <> nil) and (not Node.isDir) then
+  Node := TFileTreeNode(FilesTree.GetFirstMultiSelected);
+  if node = nil then
+     exit;
+
+  if (not Node.isDir) then
     begin
       info := TfSongInfo.Create(Application);
       info.InitFromFile(Node.FullPath);
       Info.show;
     end;
+
+  fileList := TStringList.Create;
+  try
+     Node:= TFileTreeNode(FilesTree.GetFirstMultiSelected);
+     while node <> nil do
+       begin
+         if not Node.isDir then
+            fileList.Add(Node.FullPath);
+         Node:=TFileTreeNode(Node.GetNextMultiSelected);
+       end;
+    info := TfSongInfo.Create(Application);
+    info.InitFromList(FileList);
+    Info.show;
+
+  finally
+    FreeAndNil(FileList);
+  end;
+
 end;
+
 
 procedure TfMainForm.mnuInfoClick(Sender: TObject);
 var
@@ -1810,8 +1832,9 @@ begin
     FileList.Free;
   end;
   ePath.Directory := Path;
+
   if PathHistory.IndexOf(Path) < 0 then
-  PathIndex := PathHistory.Add(Path);
+     PathIndex := PathHistory.Add(Path);
 
 end;
 

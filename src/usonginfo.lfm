@@ -18,14 +18,201 @@ object fSongInfo: TfSongInfo
     Height = 357
     Top = 0
     Width = 591
-    ActivePage = tsMediaProperty
+    ActivePage = tsTags
     Align = alClient
     TabIndex = 0
     TabOrder = 0
+    object tsTags: TTabSheet
+      Caption = 'Tags'
+      ClientHeight = 329
+      ClientWidth = 583
+      object laArtist: TLabel
+        Left = 0
+        Height = 15
+        Top = 46
+        Width = 93
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Artist'
+        Font.Height = 16
+        ParentColor = False
+        ParentFont = False
+        OptimalFill = True
+      end
+      object edArtist: TEdit
+        Left = 98
+        Height = 23
+        Top = 43
+        Width = 384
+        OnChange = edArtistChange
+        TabOrder = 1
+      end
+      object laAlbum: TLabel
+        Left = 0
+        Height = 15
+        Top = 78
+        Width = 93
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Album'
+        Font.Height = 16
+        ParentColor = False
+        ParentFont = False
+        OptimalFill = True
+      end
+      object edAlbum: TEdit
+        Left = 98
+        Height = 23
+        Top = 74
+        Width = 384
+        OnChange = edAlbumChange
+        TabOrder = 2
+      end
+      object laTitle: TLabel
+        Left = 0
+        Height = 15
+        Top = 14
+        Width = 93
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Title'
+        Font.Height = 16
+        ParentColor = False
+        ParentFont = False
+        OptimalFill = True
+      end
+      object edTitle: TEdit
+        Left = 98
+        Height = 23
+        Top = 9
+        Width = 384
+        OnChange = edTitleChange
+        TabOrder = 0
+      end
+      object laAlbumArtist: TLabel
+        Left = 0
+        Height = 15
+        Top = 111
+        Width = 93
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Album Artist'
+        Font.Height = 16
+        ParentColor = False
+        ParentFont = False
+        OptimalFill = True
+      end
+      object edAlbumArtist: TEdit
+        Left = 98
+        Height = 23
+        Top = 107
+        Width = 384
+        OnChange = edAlbumArtistChange
+        TabOrder = 3
+      end
+      object laGenre: TLabel
+        Left = 0
+        Height = 15
+        Top = 144
+        Width = 93
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Genre'
+        Font.Height = 16
+        ParentColor = False
+        ParentFont = False
+        OptimalFill = True
+      end
+      object meComment: TMemo
+        Left = 100
+        Height = 107
+        Top = 203
+        Width = 328
+        OnChange = meCommentChange
+        TabOrder = 5
+      end
+      object laComment: TLabel
+        Left = 0
+        Height = 15
+        Top = 203
+        Width = 93
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Comment'
+        Font.Height = 16
+        ParentColor = False
+        ParentFont = False
+        OptimalFill = True
+      end
+      object laYear: TLabel
+        Left = 0
+        Height = 15
+        Top = 172
+        Width = 93
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Year'
+        Font.Height = 16
+        ParentColor = False
+        ParentFont = False
+        OptimalFill = True
+      end
+      object laTrack: TLabel
+        Left = 283
+        Height = 16
+        Top = 172
+        Width = 93
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Track'
+        Font.Height = 16
+        ParentColor = False
+        ParentFont = False
+        OptimalFill = True
+      end
+      object edTrack: TEdit
+        Left = 381
+        Height = 23
+        Top = 171
+        Width = 101
+        OnChange = edTrackChange
+        TabOrder = 4
+      end
+      object edYear: TEdit
+        Left = 98
+        Height = 23
+        Top = 171
+        Width = 101
+        OnChange = edYearChange
+        TabOrder = 6
+      end
+      object edGenre: TComboBox
+        Left = 98
+        Height = 23
+        Top = 139
+        Width = 384
+        AutoComplete = True
+        AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
+        AutoDropDown = True
+        ItemHeight = 15
+        OnChange = edGenreChange
+        Sorted = True
+        TabOrder = 7
+      end
+      object imgCover: TImage
+        Left = 452
+        Height = 107
+        Top = 203
+        Width = 124
+        ParentShowHint = False
+        ShowHint = True
+        Stretch = True
+      end
+    end
     object tsMediaProperty: TTabSheet
       Caption = 'Media Property'
-      ClientHeight = 322
-      ClientWidth = 585
+      ClientHeight = 329
+      ClientWidth = 583
       object Label9: TLabel
         Left = 6
         Height = 16
@@ -150,7 +337,7 @@ object fSongInfo: TfSongInfo
         Top = 33
         Width = 280
         Caption = 'Library'
-        ClientHeight = 141
+        ClientHeight = 142
         ClientWidth = 276
         TabOrder = 0
         object Label16: TLabel
@@ -229,193 +416,6 @@ object fSongInfo: TfSongInfo
         TabOrder = 1
       end
     end
-    object tsTags: TTabSheet
-      Caption = 'Tags'
-      ClientHeight = 322
-      ClientWidth = 585
-      object laArtist: TLabel
-        Left = 0
-        Height = 15
-        Top = 46
-        Width = 93
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = 'Artist'
-        Font.Height = 16
-        ParentColor = False
-        ParentFont = False
-        OptimalFill = True
-      end
-      object edArtist: TEdit
-        Left = 98
-        Height = 27
-        Top = 43
-        Width = 384
-        OnChange = edArtistChange
-        TabOrder = 1
-      end
-      object laAlbum: TLabel
-        Left = 0
-        Height = 15
-        Top = 78
-        Width = 93
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = 'Album'
-        Font.Height = 16
-        ParentColor = False
-        ParentFont = False
-        OptimalFill = True
-      end
-      object edAlbum: TEdit
-        Left = 98
-        Height = 27
-        Top = 74
-        Width = 384
-        OnChange = edAlbumChange
-        TabOrder = 2
-      end
-      object laTitle: TLabel
-        Left = 0
-        Height = 15
-        Top = 14
-        Width = 93
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = 'Title'
-        Font.Height = 16
-        ParentColor = False
-        ParentFont = False
-        OptimalFill = True
-      end
-      object edTitle: TEdit
-        Left = 98
-        Height = 27
-        Top = 9
-        Width = 384
-        OnChange = edTitleChange
-        TabOrder = 0
-      end
-      object laAlbumArtist: TLabel
-        Left = 0
-        Height = 15
-        Top = 111
-        Width = 93
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = 'Album Artist'
-        Font.Height = 16
-        ParentColor = False
-        ParentFont = False
-        OptimalFill = True
-      end
-      object edAlbumArtist: TEdit
-        Left = 98
-        Height = 27
-        Top = 107
-        Width = 384
-        OnChange = edAlbumArtistChange
-        TabOrder = 3
-      end
-      object laGenre: TLabel
-        Left = 0
-        Height = 15
-        Top = 144
-        Width = 93
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = 'Genre'
-        Font.Height = 16
-        ParentColor = False
-        ParentFont = False
-        OptimalFill = True
-      end
-      object meComment: TMemo
-        Left = 100
-        Height = 107
-        Top = 203
-        Width = 328
-        OnChange = meCommentChange
-        TabOrder = 5
-      end
-      object laComment: TLabel
-        Left = 0
-        Height = 15
-        Top = 203
-        Width = 93
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = 'Comment'
-        Font.Height = 16
-        ParentColor = False
-        ParentFont = False
-        OptimalFill = True
-      end
-      object laYear: TLabel
-        Left = 0
-        Height = 15
-        Top = 172
-        Width = 93
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = 'Year'
-        Font.Height = 16
-        ParentColor = False
-        ParentFont = False
-        OptimalFill = True
-      end
-      object laTrack: TLabel
-        Left = 283
-        Height = 16
-        Top = 172
-        Width = 93
-        Alignment = taRightJustify
-        AutoSize = False
-        Caption = 'Track'
-        Font.Height = 16
-        ParentColor = False
-        ParentFont = False
-        OptimalFill = True
-      end
-      object edTrack: TEdit
-        Left = 381
-        Height = 27
-        Top = 171
-        Width = 101
-        OnChange = edTrackChange
-        TabOrder = 4
-      end
-      object edYear: TEdit
-        Left = 98
-        Height = 27
-        Top = 171
-        Width = 101
-        OnChange = edYearChange
-        TabOrder = 6
-      end
-      object edGenre: TComboBox
-        Left = 98
-        Height = 27
-        Top = 139
-        Width = 384
-        AutoComplete = True
-        AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
-        AutoDropDown = True
-        ItemHeight = 0
-        OnChange = edGenreChange
-        Sorted = True
-        TabOrder = 7
-      end
-      object imgCover: TImage
-        Left = 452
-        Height = 107
-        Top = 203
-        Width = 124
-        ParentShowHint = False
-        ShowHint = True
-        Stretch = True
-      end
-    end
   end
   object lbFiles: TListBox
     Left = 0
@@ -432,7 +432,6 @@ object fSongInfo: TfSongInfo
     ScrollWidth = 166
     ShowHint = True
     TabOrder = 1
-    TopIndex = -1
   end
   object pnlMoveSelection: TPanel
     Left = 0

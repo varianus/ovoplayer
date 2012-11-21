@@ -260,14 +260,14 @@ object fMainForm: TfMainForm
     end
     object tsDirectory: TTabSheet
       Caption = 'Directory'
-      ClientHeight = 638
-      ClientWidth = 237
+      ClientHeight = 646
+      ClientWidth = 235
       OnShow = tsDirectoryShow
       object tbDirectory: TToolBar
         Left = 0
         Height = 49
         Top = 0
-        Width = 237
+        Width = 235
         Flat = False
         Images = BackEnd.ilButtons
         TabOrder = 0
@@ -301,7 +301,7 @@ object fMainForm: TfMainForm
         end
         object ePath: TDirectoryEdit
           Left = 1
-          Height = 27
+          Height = 23
           Top = 24
           Width = 202
           OnAcceptDirectory = ePathAcceptDirectory
@@ -315,12 +315,14 @@ object fMainForm: TfMainForm
       end
       object FilesTree: TTreeView
         Left = 0
-        Height = 589
+        Height = 597
         Top = 49
-        Width = 237
+        Width = 235
         Align = alClient
+        DefaultItemHeight = 18
         ExpandSignType = tvestPlusMinus
         Images = BackEnd.ilSmall
+        MultiSelect = True
         PopupMenu = pmdirectories
         ReadOnly = True
         RightClickSelect = True
@@ -330,7 +332,7 @@ object fMainForm: TfMainForm
         OnCreateNodeClass = FilesTreeCreateNodeClass
         OnDblClick = FilesTreeDblClick
         OnGetImageIndex = FilesTreeGetImageIndex
-        Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+        Options = [tvoAllowMultiselect, tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
       end
     end
     object tsPlayList: TTabSheet
@@ -645,6 +647,7 @@ object fMainForm: TfMainForm
         DefaultRowHeight = 18
         FixedCols = 0
         Flat = True
+        MouseWheelOption = mwGrid
         Options = [goFixedVertLine, goFixedHorzLine, goColSizing, goRowSelect, goSmoothScroll, goFixedRowNumbering, goScrollKeepVisible, goHeaderPushedLook, goDontScrollPartCell, goTruncCellHints]
         ParentShowHint = False
         RowCount = 2
