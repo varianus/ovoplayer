@@ -328,7 +328,7 @@ begin
   fUpdateSong.Params.ParamByName('Genre').AsString       := Tags.Genre;
   fUpdateSong.Params.ParamByName('year').AsString        := Tags.Year;
   fUpdateSong.Params.ParamByName('Duration').AsInteger   := Tags.Duration;
-  fUpdateSong.Params.ParamByName('elabflag').AsString    := '';
+  fUpdateSong.Params.ParamByName('elabflag').Clear;
   fUpdateSong.ExecSQL;
   fTR.CommitRetaining;
 end;
@@ -340,7 +340,7 @@ var
   tmpTags: TCommonTags;
 
 begin
-  ID := IDFromFullName(UTF8Encode(Tags.FileName));
+  ID := IDFromFullName(Tags.FileName);
   if ID  <> -1 then
     begin
       tmpTags := TagsFromID(ID);
@@ -364,16 +364,16 @@ begin
     end;
 
   wrkSong.Params.ParamByName('Filename').AsString    := UTF8Encode(Tags.FileName);
-  wrkSong.Params.ParamByName('TrackString').AsString := Tags.TrackString;
+  wrkSong.Params.ParamByName('TrackString').AsString := UTF8Encode(Tags.TrackString);
   wrkSong.Params.ParamByName('Track').AsInteger      := Tags.Track;
   wrkSong.Params.ParamByName('Title').AsString       := UTF8Encode(Tags.Title);
   wrkSong.Params.ParamByName('Album').AsString       := UTF8Encode(Tags.Album);
   wrkSong.Params.ParamByName('Artist').AsString      := UTF8Encode(Tags.Artist);
   wrkSong.Params.ParamByName('AlbumArtist').AsString := UTF8Encode(Tags.AlbumArtist);
-  wrkSong.Params.ParamByName('Genre').AsString       := Tags.Genre;
-  wrkSong.Params.ParamByName('year').AsString        := Tags.Year;
+  wrkSong.Params.ParamByName('Genre').AsString       := UTF8Encode(Tags.Genre);
+  wrkSong.Params.ParamByName('year').AsString        := UTF8Encode(Tags.Year);
   wrkSong.Params.ParamByName('Duration').AsInteger   := Tags.Duration;
-  wrkSong.Params.ParamByName('elabflag').AsString    := '';
+  wrkSong.Params.ParamByName('elabflag').Clear;
   wrkSong.ExecSQL;
 
 end;
@@ -517,8 +517,8 @@ begin
   Result.Album       := UTF8Decode(Table.FieldByName('Album').AsString);
   Result.AlbumArtist := UTF8Decode(Table.FieldByName('AlbumArtist').AsString);
   Result.Artist      := UTF8Decode(Table.FieldByName('Artist').AsString);
-  Result.Genre       := Table.FieldByName('Genre').AsString;
-  Result.Year        := Table.FieldByName('year').AsString;
+  Result.Genre       := UTF8Decode(Table.FieldByName('Genre').AsString);
+  Result.Year        := UTF8Decode(Table.FieldByName('year').AsString);
   Result.Duration    := Table.FieldByName('Duration').AsInteger;
 
 end;
@@ -554,7 +554,7 @@ end;
 function TMediaLibrary.IDFromFullName(FileName: TFileName): integer;
 begin
   fWorkQuery.Close;
-  fWorkQuery.SQL.Text := 'select ID from songs where filename =' + quotedstr(FileName);
+  fWorkQuery.SQL.Text := 'select ID from songs where filename =' + quotedstr(UTF8Encode(FileName));
   fWorkQuery.Open;
   if fWorkQuery.RecordCount > 0 then
      Result := fWorkQuery.Fields[0].AsInteger

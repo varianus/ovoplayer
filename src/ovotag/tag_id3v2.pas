@@ -84,7 +84,7 @@ type
 
 implementation
 
-uses CommonFunctions, ID3v1Genres;
+uses CommonFunctions, ID3v1Genres, lazutf8;
 
 type
 
@@ -405,6 +405,10 @@ end;
 
 procedure TID3Frame.SetAsString(AValue: string);
 begin
+  if copy(ID, 1, 3) = 'COM' then
+      Avalue := Space(3) + AValue;
+
+  Avalue:= UTF8toSys(AValue);
   fSize := Length(AValue);
   if fSize = 0 then
   begin
