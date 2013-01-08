@@ -32,8 +32,8 @@ msgid "Failed:"
 msgstr "Falliti:"
 
 #: appconsts.rmissing
-msgid "<mancante>"
-msgstr ""
+msgid "<missing>"
+msgstr "<mancante>"
 
 #: appconsts.rmissingconfig
 msgid "Can't activate Audio Engine. Please review configuration"
@@ -296,6 +296,7 @@ msgid "Mplayer Path"
 msgstr "Percorso di Mplayer"
 
 #: tfconfig.rgaudioengine.caption
+msgctxt "tfconfig.rgaudioengine.caption"
 msgid "Audio Engine"
 msgstr "Motore di Riproduzione"
 
@@ -309,8 +310,8 @@ msgstr "Tipo di Notifica"
 
 #: tfconfig.sbengine.caption
 msgctxt "TFCONFIG.SBENGINE.CAPTION"
-msgid "Engine"
-msgstr "Motore"
+msgid "Audio Engine"
+msgstr "Motore di riproduzione"
 
 #: tfconfig.sbinterface.caption
 msgctxt "TFCONFIG.SBINTERFACE.CAPTION"
