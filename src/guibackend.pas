@@ -189,6 +189,15 @@ begin
       fMultimediaKeys.OnMMKey := @OnMultimediaKeys;
     end;
 
+  UniqueInstanceI:= TUniqueInstance.Create(Self);
+  with UniqueInstanceI do
+    begin
+      Identifier := AppNameServerID;
+      UpdateInterval := 500;
+      OnOtherInstance := @UniqueInstanceIOtherInstance;
+      Enabled := True;
+    end;
+
 end;
 
 procedure TBackEnd.SaveState;
@@ -653,4 +662,4 @@ end;
 
 initialization
   fBackEnd := nil;
-end.
+end.

@@ -1760,14 +1760,6 @@ object BackEnd: TBackEnd
     left = 359
     top = 144
   end
-  object UniqueInstanceI: TUniqueInstance
-    Enabled = True
-    Identifier = 'ovoplayer'
-    UpdateInterval = 500
-    OnOtherInstance = UniqueInstanceIOtherInstance
-    left = 210
-    top = 144
-  end
   object ilNone: TImageList
     left = 64
     top = 224
