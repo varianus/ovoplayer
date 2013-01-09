@@ -241,6 +241,10 @@ msgstr ""
 msgid "Scan Now"
 msgstr ""
 
+#: tfconfig.brestart.caption
+msgid "Restart Now"
+msgstr ""
+
 #: tfconfig.caption
 msgid "Config"
 msgstr ""
@@ -291,6 +295,10 @@ msgstr ""
 
 #: tfconfig.label6.caption
 msgid "Mplayer Path"
+msgstr ""
+
+#: tfconfig.lbrestart.caption
+msgid "A restart is required for this change to take effect."
 msgstr ""
 
 #: tfconfig.rgaudioengine.caption

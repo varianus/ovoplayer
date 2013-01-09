@@ -29,10 +29,36 @@ uses
 
 function TimeToMSec(Time: double): int64;
 Function isAppRunning(Application:TCustomApplication):Boolean;
+Function Restart(Application:TCustomApplication):Boolean;
+Function CheckRestarting(Application:TCustomApplication):Boolean;
 
 implementation
 uses
-  SimpleIPC, SimpleIPCWrapper;
+ {$IFdef MSWindows}
+  Windows,
+{$ENDIF}
+{$IFDEF unix}
+  BaseUnix,
+{$ENDIF}
+ SimpleIPC, SimpleIPCWrapper,
+ AsyncProcess;
+
+Function Restart(Application:TCustomApplication):Boolean;
+var
+  NewProc: TAsyncProcess;
+begin
+  NewProc:= TAsyncProcess.Create(nil);
+  try
+    NewProc.CommandLine:= format('%s --restart=%d',[Application.ExeName,
+                                                  GetCurrentProcessId]);
+
+    NewProc.Execute;
+  finally
+    NewProc.Free;
+  end;
+  Application.Terminate;
+
+end;
 
 function TimeToMSec(Time: double): int64;
 const
@@ -70,4 +96,58 @@ begin
        Client.free;
      end;
 end;
+
+Function ProcessRunningByPID(Pid:DWORD):Boolean;
+{$IFDEF WINDOWS}
+  var
+    ProcessHandle: THandle;
+  begin
+    Result:= false;
+    ProcessHandle := OpenProcess(SYNCHRONIZE, false, PID);
+    if ProcessHandle<>0 then
+      begin
+        Result:= true;
+        CloseHandle(ProcessHandle);
+      end;
+  end;
+{$ELSE}
+{$IFDEF UNIX}
+  begin
+    Result := fpKill(PID, 0) = 0;
+  end;
+{$ELSE}
+  begin
+    DebugLn('ProcessRunningByPID not implemented for this OS. We just wait 5 seconds');
+    Sleep(1000);
+    Result := false;
+  end;
+{$ENDIF}
+{$ENDIF}
+
+function CheckRestarting(Application: TCustomApplication): Boolean;
+var
+  Pid: Longint;
+  i:Integer;
+  Alive:boolean;
+begin
+  result:=false;
+
+  if not Application.HasOption(#00,'restart') then
+     exit;
+  if not TryStrToInt(application.GetOptionValue(#00,'restart'), pid) then
+     exit;
+
+  i:=0;
+  repeat
+    Alive := ProcessRunningByPID(pid);
+    if Alive then
+       begin
+         sleep(1000);
+         inc(i);
+       end;
+  until (i > 5) or not Alive;
+  result := not alive;
+
+end;
+
 end.

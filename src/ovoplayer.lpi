@@ -527,4 +527,4 @@ if LCLWidgetType = 'win32' then
       </Item4>
     </Exceptions>
   </Debugging>
-</CONFIG>
+</CONFIG>

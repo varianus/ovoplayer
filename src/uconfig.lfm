@@ -1,27 +1,27 @@
 object fConfig: TfConfig
   Left = 391
-  Height = 492
+  Height = 510
   Top = 227
-  Width = 647
+  Width = 702
   Caption = 'Config'
-  ClientHeight = 492
-  ClientWidth = 647
+  ClientHeight = 510
+  ClientWidth = 702
   OnCreate = FormCreate
   OnShow = FormShow
   LCLVersion = '1.1'
   object pcConfig: TPageControl
     Left = 153
-    Height = 446
+    Height = 450
     Top = 0
-    Width = 494
-    ActivePage = tsMediaLibrary
+    Width = 549
+    ActivePage = tsEngine
     Align = alClient
-    TabIndex = 2
+    TabIndex = 1
     TabOrder = 0
     object tsInterface: TTabSheet
       Caption = 'Interfaces'
-      ClientHeight = 418
-      ClientWidth = 486
+      ClientHeight = 391
+      ClientWidth = 462
       object cbMinimizeOnClose: TCheckBox
         Left = 11
         Height = 19
@@ -80,8 +80,8 @@ object fConfig: TfConfig
     end
     object tsEngine: TTabSheet
       Caption = 'Engine'
-      ClientHeight = 410
-      ClientWidth = 490
+      ClientHeight = 422
+      ClientWidth = 541
       object rgAudioEngine: TRadioGroup
         Left = 3
         Height = 162
@@ -110,11 +110,11 @@ object fConfig: TfConfig
         TabIndex = 0
         TabOrder = 1
         object tsMPlayer: TTabSheet
-          ClientHeight = 100
-          ClientWidth = 468
+          ClientHeight = 96
+          ClientWidth = 464
           object MPlayerPath: TFileNameEdit
             Left = 3
-            Height = 26
+            Height = 23
             Top = 25
             Width = 424
             DialogOptions = [ofReadOnly, ofPathMustExist, ofFileMustExist, ofNoTestFileCreate, ofViewDetail]
@@ -202,8 +202,8 @@ object fConfig: TfConfig
     end
     object tsPlaylist: TTabSheet
       Caption = 'Play List'
-      ClientHeight = 410
-      ClientWidth = 490
+      ClientHeight = 422
+      ClientWidth = 541
       object Label5: TLabel
         Left = 11
         Height = 18
@@ -218,7 +218,7 @@ object fConfig: TfConfig
       end
       object seLimit: TSpinEdit
         Left = 279
-        Height = 26
+        Height = 23
         Top = 18
         Width = 58
         MaxValue = 9999
@@ -227,17 +227,17 @@ object fConfig: TfConfig
       end
       object cbRestart: TCheckBox
         Left = 11
-        Height = 24
+        Height = 19
         Top = 56
-        Width = 191
+        Width = 152
         Caption = 'Restart from last position'
         TabOrder = 1
       end
     end
     object tsOSD: TTabSheet
       Caption = 'OSD'
-      ClientHeight = 410
-      ClientWidth = 490
+      ClientHeight = 418
+      ClientWidth = 486
       OnHide = tsOSDHide
       OnShow = tsOSDShow
       object colorBackground: TColorBox
@@ -255,9 +255,9 @@ object fConfig: TfConfig
       end
       object Label2: TLabel
         Left = 27
-        Height = 17
+        Height = 15
         Top = 157
-        Width = 118
+        Width = 97
         Caption = 'BackGround Color'
         ParentColor = False
       end
@@ -288,9 +288,9 @@ object fConfig: TfConfig
       end
       object Label3: TLabel
         Left = 27
-        Height = 17
+        Height = 15
         Top = 199
-        Width = 67
+        Width = 56
         Caption = 'Font Color'
         ParentColor = False
       end
@@ -322,46 +322,26 @@ object fConfig: TfConfig
       end
       object Label4: TLabel
         Left = 27
-        Height = 17
+        Height = 15
         Top = 236
-        Width = 80
+        Width = 66
         Caption = 'Tranparency'
         ParentColor = False
       end
     end
   end
-  object ButtonPanel: TButtonPanel
-    Left = 6
-    Height = 34
-    Top = 452
-    Width = 635
-    OKButton.Name = 'OKButton'
-    OKButton.DefaultCaption = True
-    OKButton.OnClick = OKButtonClick
-    HelpButton.Name = 'HelpButton'
-    HelpButton.DefaultCaption = True
-    HelpButton.Enabled = False
-    CloseButton.Name = 'CloseButton'
-    CloseButton.DefaultCaption = True
-    CloseButton.Enabled = False
-    CancelButton.Name = 'CancelButton'
-    CancelButton.DefaultCaption = True
-    CancelButton.OnClick = CancelButtonClick
-    TabOrder = 1
-    ShowButtons = [pbOK, pbCancel]
-  end
   object GroupBox1: TGroupBox
     Left = 0
-    Height = 446
+    Height = 450
     Top = 0
     Width = 153
     Align = alLeft
     Caption = 'Categories'
-    ClientHeight = 428
+    ClientHeight = 432
     ClientWidth = 149
     Color = clWindow
     ParentColor = False
-    TabOrder = 2
+    TabOrder = 1
     object sbEngine: TSpeedButton
       Left = 0
       Height = 48
@@ -423,6 +403,62 @@ object fConfig: TfConfig
       GroupIndex = 1
       OnClick = sbInterfaceClick
     end
+    object pnlRestart: TPanel
+      Left = 1
+      Height = 136
+      Top = 295
+      Width = 147
+      Align = alBottom
+      BorderSpacing.Around = 1
+      BorderStyle = bsSingle
+      ClientHeight = 132
+      ClientWidth = 143
+      Color = clInfoBk
+      ParentColor = False
+      TabOrder = 0
+      Visible = False
+      object lbRestart: TLabel
+        Left = 4
+        Height = 56
+        Top = 4
+        Width = 135
+        Align = alTop
+        AutoSize = False
+        BorderSpacing.Around = 3
+        Caption = 'A restart is required for this change to take effect.'
+        ParentColor = False
+        WordWrap = True
+      end
+      object bRestart: TButton
+        Left = 32
+        Height = 25
+        Top = 76
+        Width = 75
+        Caption = 'Restart Now'
+        OnClick = bRestartClick
+        TabOrder = 0
+      end
+    end
+  end
+  object ButtonPanel: TButtonPanel
+    Left = 6
+    Height = 48
+    Top = 456
+    Width = 690
+    AutoSize = False
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    OKButton.OnClick = OKButtonClick
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    HelpButton.Enabled = False
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    CancelButton.OnClick = CancelButtonClick
+    TabOrder = 2
+    ShowButtons = [pbOK, pbCancel]
   end
   object FontDialog1: TFontDialog
     MinFontSize = 0

@@ -78,9 +78,11 @@ type
   private
     ConfigFile:    string;
     fConfigDir:    string;
+    FNeedRestart: boolean;
     ResourcesPath: string;
     fIniFiles:     TMemIniFile;
     function ReadColor(const Section, Ident: string; const Default: TColor): TColor;
+    procedure SetNeedRestart(AValue: boolean);
     procedure WriteStringS(Section: string; BaseName: string; Values: TStrings);
     function ReadStrings(Section: string; Name: string; Values: TStrings): integer;
     procedure WriteColor(const Section, Ident: string; const Value: TColor);
@@ -102,6 +104,7 @@ type
 
     function GetResourcesPath: string;
     Property ConfigDir: string read fConfigDir;
+    Property NeedRestart:boolean read FNeedRestart write SetNeedRestart;
     procedure Flush;
     destructor Destroy; override;
   end;
@@ -309,6 +312,12 @@ begin
   tmpString := fIniFiles.ReadString(Section, Ident, IntToHex(Default, 8));
   if not TryStrToInt(tmpString, Result) then
     Result := Default;
+end;
+
+procedure TConfig.SetNeedRestart(AValue: boolean);
+begin
+  if FNeedRestart=AValue then Exit;
+  FNeedRestart:=AValue;
 end;
 
 procedure TConfig.WriteColor(const Section, Ident: string; const Value: TColor);

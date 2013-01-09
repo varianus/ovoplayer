@@ -243,6 +243,10 @@ msgstr "Rimuovi"
 msgid "Scan Now"
 msgstr "Cerca Adesso"
 
+#: tfconfig.brestart.caption
+msgid "Restart Now"
+msgstr "Riavvia ora"
+
 #: tfconfig.caption
 msgid "Config"
 msgstr "Configurazione"
@@ -294,6 +298,10 @@ msgstr "Tracce da estrarre per playlist rapide"
 #: tfconfig.label6.caption
 msgid "Mplayer Path"
 msgstr "Percorso di Mplayer"
+
+#: tfconfig.lbrestart.caption
+msgid "A restart is required for this change to take effect."
+msgstr "È richiesto un riavvio affinché questa modifica abbia effetto."
 
 #: tfconfig.rgaudioengine.caption
 msgctxt "tfconfig.rgaudioengine.caption"

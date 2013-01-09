@@ -37,6 +37,7 @@ type
     bAddDir:    TButton;
     bRemoveDir: TButton;
     bRescanLibrary: TButton;
+    bRestart: TButton;
     ButtonPanel: TButtonPanel;
     cbCaptureMMKeys: TCheckBox;
     cbScanOnStart: TCheckBox;
@@ -45,6 +46,7 @@ type
     cbRestart: TCheckBox;
     colorBackground: TColorBox;
     ColorFont:  TColorBox;
+    lbRestart: TLabel;
     MPlayerPath: TFileNameEdit;
     FontDialog1: TFontDialog;
     GroupBox1:  TGroupBox;
@@ -55,6 +57,7 @@ type
     Label5: TLabel;
     Label6: TLabel;
     lbMLPath:   TListBox;
+    pnlRestart: TPanel;
     pcEngineParams: TPageControl;
     pcConfig:   TPageControl;
     rgKeyCaptureMode: TRadioGroup;
@@ -77,7 +80,7 @@ type
     procedure bAddDirClick(Sender: TObject);
     procedure bRemoveDirClick(Sender: TObject);
     procedure bRescanLibraryClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure bRestartClick(Sender: TObject);
     procedure CancelButtonClick(Sender: TObject);
     procedure cbCaptureMMKeysClick(Sender: TObject);
     procedure colorBackgroundChange(Sender: TObject);
@@ -107,6 +110,7 @@ var
 
 implementation
 {$R *.lfm}
+uses GeneralFunc;
 
 { TfConfig }
 
@@ -137,6 +141,18 @@ end;
 
 procedure TfConfig.rgAudioEngineClick(Sender: TObject);
 begin
+  if rgAudioEngine.Items[rgAudioEngine.ItemIndex] <> BackEnd.AudioEngine.GetEngineName then
+     begin
+       BackEnd.Config.NeedRestart:= true;
+       pnlRestart.Visible:= true;
+     end
+  else
+    begin
+      BackEnd.Config.NeedRestart:= false;
+      pnlRestart.Visible:= false;
+    end;
+
+
   if rgAudioEngine.Items[rgAudioEngine.ItemIndex] = 'MPlayer' then
     begin
       BackEnd.Config.ReadSubParams('MPlayer');
@@ -176,12 +192,19 @@ begin
     BackEnd.MediaLibrary.Scan(lbMLPath.Items);
 end;
 
-procedure TfConfig.Button1Click(Sender: TObject);
+procedure TfConfig.bRestartClick(Sender: TObject);
 begin
-  if FontDialog1.Execute then
+  if Assigned(FOSD) and fOSD.Visible then
     begin
-
+      BackEnd.Config.NotificationParam.X := fOsd.left;
+      BackEnd.Config.NotificationParam.Y := fOsd.top;
+      FreeAndNil(fOSD);
     end;
+
+  MapToConfig;
+  BackEnd.Config.SaveConfig;
+  BackEnd.Config.Flush;
+  Restart(Application);
 end;
 
 procedure TfConfig.CancelButtonClick(Sender: TObject);
@@ -357,6 +380,7 @@ begin
   rgAudioEngine.ItemIndex   := rgAudioEngine.Items.IndexOf(Backend.Config.EngineParam.EngineKind);
 
   //GENERAL
+  pnlRestart.visible := Backend.Config.NeedRestart;
 end;
 
 end.

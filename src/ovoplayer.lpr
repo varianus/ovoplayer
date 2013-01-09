@@ -48,6 +48,8 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
 
 {$R *.res}
 begin
+  CheckRestarting(Application);
+
   if not isAppRunning(Application) then
    begin
       Application.Title:='OVO Player';
