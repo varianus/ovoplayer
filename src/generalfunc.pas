@@ -50,7 +50,7 @@ begin
   NewProc:= TAsyncProcess.Create(nil);
   try
     NewProc.CommandLine:= format('%s --restart=%d',[Application.ExeName,
-                                                  GetCurrentProcessId]);
+                                                      GetProcessID]);
 
     NewProc.Execute;
   finally
@@ -150,4 +150,4 @@ begin
 
 end;
 
-end.
+end.
