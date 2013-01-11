@@ -264,7 +264,10 @@ begin
 end;
 
 class function TAudioEngineXINE.IsAvalaible(ConfigParam: TStrings): boolean;
+var
+  Mustfree: Boolean;
 begin
+  Mustfree:=not isXineLoaded;
   Result := False;
   try
     Loadxine;
@@ -272,7 +275,8 @@ begin
   except
     exit;
   end;
-  Freexine;
+  if Mustfree then
+     Freexine;
 end;
 
 procedure TAudioEngineXINE.PostCommand(Command: TEngineCommand; Param: integer);
@@ -319,4 +323,4 @@ initialization
   RegisterEngineClass(TAudioEngineXINE, 3, false, true);
 
 
-end.
+end.
