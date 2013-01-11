@@ -1,3 +1,4 @@
+{%MainUnit ../multimediakeys.pas}
 {
 This file is part of OvoPlayer
 Copyright (C) 2011 Marco Caselli
