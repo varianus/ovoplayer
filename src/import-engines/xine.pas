@@ -3598,6 +3598,7 @@ type
 {.$endif}
 
 procedure Loadxine;
+function isXineLoaded:boolean;
 procedure Freexine;
 
 implementation
@@ -3608,11 +3609,16 @@ implementation
   var
     hlib : tlibhandle;
 
+  function isXineLoaded: boolean;
+  begin
+    Result := Hlib <> 0;
+  end;
 
   procedure Freexine;
     begin
       if hlib <> 0 then
          FreeLibrary(hlib);
+      hlib:=0;
       xine_get_version_string:=nil;
       xine_get_version:=nil;
       xine_check_version:=nil;
@@ -3865,4 +3871,4 @@ initialization
   hlib := 0;
 finalization
 
-end.
+end.
