@@ -11,6 +11,7 @@
       <UseXPManifest Value="True"/>
       <XPManifest>
         <DpiAware Value="True"/>
+        <UIAccess Value="True"/>
       </XPManifest>
       <Icon Value="0"/>
     </General>
@@ -20,7 +21,7 @@
     </i18n>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
-      <MajorVersionNr Value="1"/>
+      <RevisionNr Value="5"/>
       <StringTable CompanyName="Marco Caselli" ProductVersion=""/>
     </VersionInfo>
     <BuildModes Count="4">
@@ -173,23 +174,18 @@ if LCLWidgetType = 'win32' then
         <LaunchingApplication PathPlusParams="\usr\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="4">
+    <RequiredPackages Count="3">
       <Item1>
-        <PackageName Value="uniqueinstance_package"/>
-        <MinVersion Minor="2" Valid="True"/>
-        <DefaultFilename Value="components\uniqueinstance\uniqueinstance_package.lpk" Prefer="True"/>
+        <PackageName Value="SQLDBLaz"/>
+        <MinVersion Major="1" Release="1" Valid="True"/>
       </Item1>
       <Item2>
-        <PackageName Value="SQLDBLaz"/>
+        <PackageName Value="LCLBase"/>
         <MinVersion Major="1" Release="1" Valid="True"/>
       </Item2>
       <Item3>
-        <PackageName Value="LCLBase"/>
-        <MinVersion Major="1" Release="1" Valid="True"/>
-      </Item3>
-      <Item4>
         <PackageName Value="LCL"/>
-      </Item4>
+      </Item3>
     </RequiredPackages>
     <Units Count="49">
       <Unit0>
@@ -326,134 +322,136 @@ if LCLWidgetType = 'win32' then
         <UnitName Value="uAbout"/>
       </Unit22>
       <Unit23>
-        <Filename Value="audioengine_xine.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="audioengine_Xine"/>
-      </Unit23>
-      <Unit24>
         <Filename Value="Import\xine.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="xine"/>
-      </Unit24>
-      <Unit25>
+      </Unit23>
+      <Unit24>
         <Filename Value="audioengine_vlc.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="audioengine_vlc"/>
-      </Unit25>
-      <Unit26>
+      </Unit24>
+      <Unit25>
         <Filename Value="Import\lazdynamic_bass.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="lazdynamic_bass"/>
-      </Unit26>
-      <Unit27>
+      </Unit25>
+      <Unit26>
         <Filename Value="ovotag\commonfunctions.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="CommonFunctions"/>
-      </Unit27>
-      <Unit28>
+      </Unit26>
+      <Unit27>
         <Filename Value="ovotag\file_flac.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_flac"/>
-      </Unit28>
-      <Unit29>
+      </Unit27>
+      <Unit28>
         <Filename Value="ovotag\file_mp3.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_mp3"/>
-      </Unit29>
-      <Unit30>
+      </Unit28>
+      <Unit29>
         <Filename Value="ovotag\file_wma.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_wma"/>
-      </Unit30>
-      <Unit31>
+      </Unit29>
+      <Unit30>
         <Filename Value="ovotag\tag_id3v2.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_id3v2"/>
-      </Unit31>
-      <Unit32>
+      </Unit30>
+      <Unit31>
         <Filename Value="ovotag\tag_vorbis.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_vorbis"/>
-      </Unit32>
-      <Unit33>
+      </Unit31>
+      <Unit32>
         <Filename Value="ovotag\tag_wma.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_wma"/>
-      </Unit33>
-      <Unit34>
+      </Unit32>
+      <Unit33>
         <Filename Value="ovotag\file_ogg.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_ogg"/>
-      </Unit34>
-      <Unit35>
+      </Unit33>
+      <Unit34>
         <Filename Value="audioengine_dummy.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="audioengine_dummy"/>
-      </Unit35>
-      <Unit36>
+      </Unit34>
+      <Unit35>
         <Filename Value="version.inc"/>
         <IsPartOfProject Value="True"/>
-      </Unit36>
-      <Unit37>
+      </Unit35>
+      <Unit36>
         <Filename Value="ovotag\file_monkey.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_Monkey"/>
-      </Unit37>
-      <Unit38>
+      </Unit36>
+      <Unit37>
         <Filename Value="ovotag\tag_ape.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_APE"/>
-      </Unit38>
-      <Unit39>
+      </Unit37>
+      <Unit38>
         <Filename Value="ovotag\id3v1genres.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ID3v1Genres"/>
-      </Unit39>
-      <Unit40>
+      </Unit38>
+      <Unit39>
         <Filename Value="ovotag\basetag.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="basetag"/>
-      </Unit40>
-      <Unit41>
+      </Unit39>
+      <Unit40>
         <Filename Value="ovotag\song.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="song"/>
-      </Unit41>
-      <Unit42>
+      </Unit40>
+      <Unit41>
         <Filename Value="import-engines\PasLibVlcUnit.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="PasLibVlcUnit"/>
-      </Unit42>
-      <Unit43>
+      </Unit41>
+      <Unit42>
         <Filename Value="customdrawn_ovoplayer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="customdrawn_ovoplayer"/>
-      </Unit43>
-      <Unit44>
+      </Unit42>
+      <Unit43>
         <Filename Value="ovotag\file_dummy.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_Dummy"/>
-      </Unit44>
-      <Unit45>
+      </Unit43>
+      <Unit44>
         <Filename Value="ovotag\tag_dummy.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_Dummy"/>
-      </Unit45>
-      <Unit46>
+      </Unit44>
+      <Unit45>
         <Filename Value="audioengine_dshow.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="audioengine_DShow"/>
-      </Unit46>
-      <Unit47>
+      </Unit45>
+      <Unit46>
         <Filename Value="import-engines\mediadshow.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="mediadshow"/>
-      </Unit47>
-      <Unit48>
+      </Unit46>
+      <Unit47>
         <Filename Value="ucover.pas"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="fCover"/>
         <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCover"/>
+      </Unit47>
+      <Unit48>
+        <Filename Value="audioengine_openlib.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="AudioEngine_OpenLib"/>
       </Unit48>
     </Units>
   </ProjectOptions>
@@ -465,10 +463,13 @@ if LCLWidgetType = 'win32' then
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir);platform\$(TargetOS)"/>
-      <OtherUnitFiles Value="import-engines;ovotag"/>
+      <OtherUnitFiles Value="import-engines;ovotag;components\uniqueinstance"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
-    <Conditionals Value="if TargetOS = 'linux' then
+    <Conditionals Value="if TargetOS = 'darwin' then
+   CustomOptions := '-dUseCThreads';
+
+if TargetOS = 'linux' then
    CustomOptions := '-dUseCThreads -dUseStatusIcon';
 
 if LCLWidgetType = 'gtk2' then
@@ -495,6 +496,7 @@ if LCLWidgetType = 'win32' then
         <DebugInfoType Value="dsDwarf2Set"/>
       </Debugging>
       <Options>
+        <LinkerOptions Value="-Wl,-Bsymbolic-functions -Wl,-z,relro"/>
         <Win32>
           <GraphicApplication Value="True"/>
         </Win32>
@@ -527,4 +529,4 @@ if LCLWidgetType = 'win32' then
       </Item4>
     </Exceptions>
   </Debugging>
-</CONFIG>
+</CONFIG>

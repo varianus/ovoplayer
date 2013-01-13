@@ -34,16 +34,17 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   audioengine, audioengine_dummy, AudioEngine_MPlayer,
   {$IFDEF GSTREAMER} gstreamer, audioengine_gstreamer, {$ENDIF}
   {$IFDEF VLC} PasLibVlcUnit, audioengine_vlc, {$ENDIF}
-  {$IFDEF XINE} xine, audioengine_xine, {$ENDIF}
+  {$IFDEF XINE} xine, audioengine_Xine,{$ENDIF}
   {$IFDEF BASS} lazdynamic_bass, audioengine_bass,{$ENDIF}
   {$IFDEF DSHOW} mediadshow, audioengine_dshow,{$ENDIF}
+  {$IFDEF OPENSOURCELIB} lazdyn_libsndfile, lazdyn_mpg123, lazdyn_portaudio, audioengine_OpenLib,{$ENDIF}
   // ovotag
   song, AudioTag, basetag, file_flac, file_mp3, file_wma,
   tag_wma, tag_vorbis, tag_id3v2, file_ogg, file_monkey, tag_ape,
   file_Wave,  tag_Dummy,
   id3v1genres,
   //
-  UniqueInstanceRaw, uniqueinstance_package, CommonFunctions, file_Dummy,
+  UniqueInstanceRaw, CommonFunctions, file_Dummy,
    DefaultTranslator, ulicense, uCover;
 
 {$R *.res}
@@ -60,4 +61,4 @@ begin
       Application.CreateForm(TfMiniPlayer, fMiniPlayer);
       Application.Run;
    end;
-end.
+end.

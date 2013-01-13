@@ -40,6 +40,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   {$DEFINE VLC} //
   {$DEFINE XINE} //
   {$DEFINE BASS} //
+  {$DEFINE OPENSOURCELIB} //
 {$ENDIF LINUX}
 
 {$IFDEF WINDOWS}
@@ -52,8 +53,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {$IFDEF DARWIN}
   {$DEFINE VLC} //
   {$DEFINE BASS} //
+  {$DEFINE OPENSOURCELIB} //
 {$ENDIF DARWIN}
 
 
 
-
+
