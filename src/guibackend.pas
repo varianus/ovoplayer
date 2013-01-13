@@ -209,7 +209,12 @@ end;
 
 procedure TBackEnd.DataModuleDestroy(Sender: TObject);
 begin
-
+  try
+    SaveState;
+    if Assigned(FOnSaveInterfaceState) then
+       FOnSaveInterfaceState(Sender);
+  except
+  end;
   fMultimediaKeys.Free;
   Manager.Free;
   PlayList.Free;
