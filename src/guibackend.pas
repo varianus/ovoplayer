@@ -196,6 +196,7 @@ begin
       UpdateInterval := 500;
       OnOtherInstance := @UniqueInstanceIOtherInstance;
       Enabled := True;
+      Loaded;
     end;
 
 end;
@@ -667,4 +668,4 @@ end;
 
 initialization
   fBackEnd := nil;
-end.
+end.
