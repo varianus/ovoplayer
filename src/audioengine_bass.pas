@@ -25,7 +25,8 @@ unit audioengine_bass;
 interface
 
 uses
-  Classes, SysUtils, AudioEngine, lazdynamic_bass, Song, lclproc;
+  Classes, SysUtils, AudioEngine, lazdynamic_bass, Song, lclproc,
+  decoupler;
 
 type
 
@@ -38,6 +39,7 @@ type
     Channel:      HSTREAM;
     fSavedVolume: integer;
     fMuted: boolean;
+    fdecoupler: TDecoupler;
     procedure LoadPlugin(FileName: string; Index: integer; Flags: integer);
   protected
     function GetMainVolume: integer; override;
@@ -74,7 +76,7 @@ implementation
 
 procedure PlayEndSync(SyncHandle: HSYNC; Channel, Data, user: DWORD); stdcall;
 begin
-  TAudioEngine(User).PostCommand(ecNext);
+  TAudioEngineBASS(User).PostCommand(ecNext);
 end;
 
 function TAudioEngineBASS.GetMainVolume: integer;
@@ -158,6 +160,8 @@ begin
   //LoadPlugin('BASSCD.DLL', 3, 0);
   //LoadPlugin('BASSMIDI.DLL', 5, 0);
   //LoadPlugin('BASSWV.DLL', 6, 0);
+  fdecoupler := TDecoupler.Create;
+  fdecoupler.OnCommand := ReceivedCommand;
 
 end;
 
@@ -169,6 +173,7 @@ begin
 
   BASS_PluginFree(0);  // Unplugs all plugins
   BASS_Free;
+  fdecoupler.Free;
 
   inherited Destroy;
 end;
@@ -196,7 +201,7 @@ begin
   Flags := 0;
   if Channel <> 0 then
      begin
-       BASS_MusicFree(Channel);
+       BASS_ChannelStop(Channel);
        BASS_StreamFree(Channel);
      end;
 
@@ -268,7 +273,7 @@ end;
 
 procedure TAudioEngineBASS.PostCommand(Command: TEngineCommand; Param: integer);
 begin
-  ReceivedCommand(Self, Command, Param);
+  fdecoupler.SendCommand(Command, Param);
 end;
 
 function TAudioEngineBASS.Playing: boolean;
