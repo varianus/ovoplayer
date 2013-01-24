@@ -341,7 +341,7 @@ begin
     DestStream.Seek(savepos, soFromBeginning);
     Header.page_checksum := crc;
     DestStream.Write(Header, sizeof(Header));
-
+    result := true;
   finally
     MemoryStream.Free;
     SourceStream.Free;
