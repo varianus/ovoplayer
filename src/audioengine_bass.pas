@@ -254,13 +254,15 @@ end;
 
 class function TAudioEngineBASS.IsAvalaible(ConfigParam: TStrings): boolean;
 begin
-  Result:= false;
+  Result:= lazdynamic_bass.isLoaded;
+  if Result then
+     exit;
   try
-     if Load_BASSDLL(BASS_name) then
-        begin
-          result:= true;
-          Unload_BASSDLL;
-        end;
+    if Load_BASSDLL(BASS_name) then
+       begin
+         result:= true;
+         Unload_BASSDLL;
+       end;
   except
     exit;
   end;
