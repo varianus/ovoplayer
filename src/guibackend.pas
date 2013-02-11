@@ -40,6 +40,7 @@ type
   TBackEnd = class(TDataModule)
     actExit: TAction;
     actDummy: TAction;
+    actRestart: TAction;
     actRepeatNone: TAction;
     actRepeatAll: TAction;
     actRepeatAlbum: TAction;
@@ -88,6 +89,7 @@ type
     procedure actRepeatNoneExecute(Sender: TObject);
     procedure actRescanCollectionExecute(Sender: TObject);
     procedure actPlaylistSaveExecute(Sender: TObject);
+    procedure actRestartExecute(Sender: TObject);
     procedure actSkipBackwardExecute(Sender: TObject);
     procedure actSkipForwardExecute(Sender: TObject);
     procedure actStopExecute(Sender: TObject);
@@ -140,7 +142,7 @@ function BackEnd: TBackEnd;
 implementation
 
 {$R *.lfm}
-uses LCLProc, strutils,  FilesSupport, AudioTag, AppConsts;
+uses LCLProc, strutils,  FilesSupport, AudioTag, AppConsts, GeneralFunc;
 
 { TBackEnd }
 
@@ -567,6 +569,11 @@ begin
 
   Manager.SaveToXSPF(SaveDialogPlayList.FileName, PlayList, AudioEngine.Position);
 
+end;
+
+procedure TBackEnd.actRestartExecute(Sender: TObject);
+begin
+  Restart(Application);
 end;
 
 procedure TBackEnd.actSkipBackwardExecute(Sender: TObject);

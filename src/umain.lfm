@@ -773,6 +773,9 @@ object fMainForm: TfMainForm
       object MenuItem15: TMenuItem
         Caption = '-'
       end
+      object MenuItem21: TMenuItem
+        Action = BackEnd.actRestart
+      end
       object MenuItem16: TMenuItem
         Action = BackEnd.actExit
       end

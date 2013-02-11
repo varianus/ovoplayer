@@ -96,6 +96,7 @@ type
     Artist:     TLabel;
     cbGroupBy:  TComboBox;
     FilesTree: TTreeView;
+    MenuItem21: TMenuItem;
     MenuItem38: TMenuItem;
     MenuItem39: TMenuItem;
     MenuItem40: TMenuItem;

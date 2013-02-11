@@ -147,6 +147,11 @@ object BackEnd: TBackEnd
       Category = 'PlayList'
       DisableIfNoHandler = False
     end
+    object actRestart: TAction
+      Category = 'Interface'
+      Caption = 'Restart'
+      OnExecute = actRestartExecute
+    end
   end
   object ilSmall: TImageList
     left = 210
@@ -1764,4 +1769,4 @@ object BackEnd: TBackEnd
     left = 64
     top = 224
   end
-end
+end
