@@ -213,9 +213,13 @@ begin
 
   BASS_ChannelSetSync(Channel, BASS_SYNC_END or BASS_SYNC_ONETIME,
     0, @PlayEndSync, Self);
-  if not Paused then
-    BASS_ChannelPlay(Channel, False);
 
+  if not Paused then
+    begin
+      BASS_ChannelPlay(Channel, False);
+      if offset <> 0 then
+        Seek(offset, true);
+    end;
 end;
 
 procedure TAudioEngineBASS.SetMuted(const AValue: boolean);
