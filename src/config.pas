@@ -101,6 +101,7 @@ type
     procedure SaveSubParams(EngineKind:String='');
     Procedure ReadCustomParams(const Section:string; Params:TStrings);
     procedure SaveCustomParams(const Section:string; Params:TStrings);
+    procedure RemoveSection(const Section:string);
 
     function GetResourcesPath: string;
     Property ConfigDir: string read fConfigDir;
@@ -233,6 +234,11 @@ for i := 0 to Params.Count -1 do
   end;
 end;
 
+procedure TConfig.RemoveSection(const Section: string);
+begin
+  fIniFiles.EraseSection(Section);
+end;
+
 
 procedure TConfig.ReadConfig;
 begin
@@ -279,7 +285,8 @@ begin
 {$endif}
 end;
 
-procedure TConfig.WriteStrings(Section: string; BaseName: string; Values: TStrings);
+procedure TConfig.WriteStringS(Section: string; BaseName: string;
+  Values: TStrings);
 var
   i: integer;
 begin
