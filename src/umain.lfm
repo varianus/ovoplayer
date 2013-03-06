@@ -260,8 +260,8 @@ object fMainForm: TfMainForm
     end
     object tsDirectory: TTabSheet
       Caption = 'Directory'
-      ClientHeight = 646
-      ClientWidth = 235
+      ClientHeight = 638
+      ClientWidth = 237
       OnShow = tsDirectoryShow
       object tbDirectory: TToolBar
         Left = 0
@@ -571,46 +571,39 @@ object fMainForm: TfMainForm
         Align = alClient
         AlternateColor = 15921906
         AutoEdit = False
-        AutoFillColumns = True
         ColCount = 12
         Columns = <        
-          item
-            MinSize = 16
-            MaxSize = 16
-            SizePriority = 0
-            Title.Caption = '    '
-            Width = 16
-          end        
           item
             Alignment = taRightJustify
             SizePriority = 0
             Title.Caption = '#'
             Title.PrefixOption = poHeaderClick
-            Width = 144
+            Width = 88
           end        
           item
+            SizePriority = 0
             Title.Caption = 'Title'
-            Width = 12
+            Width = 88
           end        
           item
             SizePriority = 0
             Title.Caption = 'Album'
-            Width = 144
+            Width = 88
           end        
           item
+            SizePriority = 0
             Title.Caption = 'Artist'
-            Width = 12
+            Width = 88
           end        
           item
-            Alignment = taRightJustify
             SizePriority = 0
             Title.Caption = 'Time'
-            Width = 144
+            Width = 88
           end        
           item
             SizePriority = 0
             Title.Caption = 'Track'
-            Width = 144
+            Width = 88
           end        
           item
             SizePriority = 0
@@ -645,35 +638,39 @@ object fMainForm: TfMainForm
           end>
         DefaultColWidth = 18
         DefaultRowHeight = 18
-        FixedCols = 0
         Flat = True
+        HeaderHotZones = [gzFixedRows]
         MouseWheelOption = mwGrid
-        Options = [goFixedVertLine, goFixedHorzLine, goColSizing, goRowSelect, goSmoothScroll, goFixedRowNumbering, goScrollKeepVisible, goHeaderPushedLook, goDontScrollPartCell, goTruncCellHints]
+        Options = [goColSizing, goRowSelect, goSmoothScroll, goScrollKeepVisible, goHeaderHotTracking, goHeaderPushedLook, goDontScrollPartCell, goTruncCellHints]
         ParentShowHint = False
         RowCount = 2
+        ScrollBars = ssAutoVertical
         ShowHint = True
         TabOrder = 0
         TitleImageList = BackEnd.ilSmall
-        TitleStyle = tsStandard
+        TitleStyle = tsNative
         UseXORFeatures = True
         OnColRowMoved = sgPlayListColRowMoved
         OnContextPopup = sgPlayListContextPopup
         OnDblClick = sgPlayListDblClick
         OnDrawCell = sgPlayListDrawCell
         OnHeaderClick = sgPlayListHeaderClick
+        OnHeaderSized = sgPlayListHeaderSized
+        OnHeaderSizing = sgPlayListHeaderSizing
         OnKeyDown = sgPlayListKeyDown
         OnMouseDown = sgPlayListMouseDown
         OnMouseMove = sgPlayListMouseMove
         OnMouseUp = sgPlayListMouseUp
         OnPrepareCanvas = sgPlayListPrepareCanvas
+        OnResize = sgPlayListResize
         ColWidths = (
-          16
-          144
-          12
-          144
-          12
-          144
-          144
+          88
+          88
+          88
+          88
+          88
+          88
+          88
           0
           0
           0
