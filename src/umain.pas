@@ -258,6 +258,10 @@ type
       aRect: TRect; aState: TGridDrawState);
     procedure sgPlayListHeaderClick(Sender: TObject; IsColumn: Boolean;
       Index: Integer);
+    procedure sgPlayListHeaderSized(Sender: TObject; IsColumn: Boolean;
+      Index: Integer);
+    procedure sgPlayListHeaderSizing(sender: TObject; const IsColumn: boolean;
+      const aIndex, aSize: Integer);
     procedure sgPlayListKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure sgPlayListMouseDown(Sender: TObject; Button: TMouseButton;
@@ -268,6 +272,7 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure sgPlayListPrepareCanvas(sender: TObject; aCol, aRow: Integer;
       aState: TGridDrawState);
+    procedure sgPlayListResize(Sender: TObject);
     procedure slVolumeChange(Sender: TObject);
     procedure btnCloseCollectionStatClick(Sender: TObject);
     procedure TimerTimer(Sender: TObject);
@@ -297,7 +302,8 @@ type
     PlaylistSelected: TRowsSelection;
     MovingSelection : TMovingSelection;
     FAnchor: integer;
-    procedure AutoAdjustColumn(aCol: Integer);
+    fColumnsWidth : array of integer;
+    Function ColumnSize(aCol: Integer):Integer;
     procedure ClearPanelInfo;
     procedure CollectionHandler(Enqueue: boolean);
     procedure LoadDir(Path: string);
@@ -308,7 +314,7 @@ type
     procedure OnMenuItemClick(Sender: TObject);
     procedure PlayListChange(Sender: TObject);
     procedure MediaLibraryScanBegin(Sender: TObject);
-    procedure AdaptSize;
+    procedure AdaptSize(Recalculate: boolean = true);
     function PrepareFields: string;
     function PrepareFilter: string;
     function PrepareImportFilter(Node: TMusicTreeNode): string;
@@ -334,6 +340,11 @@ uses AppConsts, lclType, AudioTag, LCLProc, FilesSupport,
      Math;
 
 type
+
+  THackGrid = Class(TStringGrid)
+    public
+      property Gcache;
+  end;
 
   TSortRow = record
     Kind:      TTagKind;
@@ -697,7 +708,6 @@ procedure TfMainForm.actShowPLMediainfoExecute(Sender: TObject);
 var
   info : TfSongInfo;
   Index: Integer;
-  Index2: integer;
   fileList: TStringList;
 begin
   Index:= PlaylistSelected.FirstSelected;
@@ -955,6 +965,7 @@ begin
 
   cbGroupBy.ItemIndex := BackEnd.Config.InterfaceParam.GroupBy;
   cbGroupBy.OnChange(self);
+  SetLength(fColumnsWidth, 0);
 end;
 
 procedure TfMainForm.FormDestroy(Sender: TObject);
@@ -977,7 +988,7 @@ end;
 
 procedure TfMainForm.FormResize(Sender: TObject);
 begin
-  AdaptSize;
+  //AdaptSize;
 end;
 
 procedure TfMainForm.FormShow(Sender: TObject);
@@ -1044,7 +1055,6 @@ procedure TfMainForm.SaveConfig(Sender: TObject);
 var
   tmpSt: TStringList;
   i: integer;
-  x: string;
 begin
   tmpSt := TStringList.Create;
   try
@@ -1080,11 +1090,17 @@ var
   info: TStringList;
   i: integer;
   Col: integer;
+  Fase :Integer;
+const
+  SectionPlayListGrid = 'PlayListGrid';
+  SectionMainForm = 'MainForm';
+
 begin
   tmpSt := TStringList.Create;
   info  := TStringList.Create;
   try
-    BackEnd.Config.ReadCustomParams('PlayListGrid', tmpSt);
+    Fase := 1;
+    BackEnd.Config.ReadCustomParams(SectionPlayListGrid, tmpSt);
     for i := 1 to tmpSt.Count -1 do
       begin
         info.Clear;
@@ -1097,18 +1113,23 @@ begin
         sgPlayList.Columns[Col].Width:= StrToint(info[3]);
 
       end;
+    Fase := 2;
     tmpSt.Clear;
-    BackEnd.Config.ReadCustomParams('MainForm', tmpSt);
+    BackEnd.Config.ReadCustomParams(SectionMainForm, tmpSt);
 
     Height := StrToIntDef(tmpSt.Values['Height'], Height);
     Width := StrToIntDef(tmpSt.Values['Width'], Width);
     Top := StrToIntDef(tmpSt.Values['Top'], Top);
     Left := StrToIntDef(tmpSt.Values['Left'], Left);
 
-  finally
-    tmpSt.free;
-    info.free;
+  Except
+    // if problem loading columns size, remove that info from config
+    // needed on 0.5 -> 1.0 upgrade
+    if Fase = 1 then BackEnd.Config.RemoveSection(SectionPlayListGrid);
+    if Fase = 2 then BackEnd.Config.RemoveSection(SectionMainForm);
   end;
+  tmpSt.free;
+  info.free;
 
 end;
 
@@ -1246,15 +1267,17 @@ begin
   with TMenuItem(Sender), sgPlayList.Columns[TMenuItem(Sender).Tag] do
   begin
     Visible:= not Checked;
-    AutoAdjustColumn(TMenuItem(Sender).Tag);
+    ColumnSize(TMenuItem(Sender).Tag);
   end;
 
   sgPlayList.Invalidate;
-SaveConfig(self);
+  AdaptSize;
+
+  SaveConfig(self);
 end;
 
 // This function is adapted from Grids.pas
-procedure TfMainForm.AutoAdjustColumn(aCol: Integer);
+function TfMainForm.ColumnSize(aCol: Integer):Integer;
 var
   i,W: Integer;
   Ts: TSize;
@@ -1290,17 +1313,17 @@ begin
 
           ASong := BackEnd.PlayList.Songs[i];
           case aCol of
-             1: Txt := IntToStr(i);
-             2: Txt := ASong.Tags.Title;
-             3: Txt := ASong.Tags.Album;
-             4: Txt := ASong.Tags.Artist;
-             5: Txt := TimeToStr(ASong.Tags.Duration / MSecsPerDay);
-             6: Txt := ASong.Tags.TrackString;
-             7: Txt := ASong.Tags.Genre;
-             8: Txt := ASong.Tags.Year;
-             9: Txt := ASong.Tags.AlbumArtist;
-            10: Txt := ASong.FileName;
-            11: Txt := '5';
+             0: Txt := IntToStr(i);
+             1: Txt := ASong.Tags.Title;
+             2: Txt := ASong.Tags.Album;
+             3: Txt := ASong.Tags.Artist;
+             4: Txt := TimeToStr(ASong.Tags.Duration / MSecsPerDay);
+             5: Txt := ASong.Tags.TrackString;
+             6: Txt := ASong.Tags.Genre;
+             7: Txt := ASong.Tags.Year;
+             8: Txt := ASong.Tags.AlbumArtist;
+             9: Txt := ASong.FileName;
+            10: Txt := '5';
           end;
           Ts := TmpCanvas.TextExtent(txt);
 
@@ -1323,7 +1346,7 @@ begin
       else
         W := W + 8;
 
-      ColWidths[aCol] := W;
+      Result := W;
 
   end;
 end;
@@ -1393,6 +1416,7 @@ var
   aBmp: TBitmap;
   ASong : TSong;
   Txt: String;
+  ts: TTextStyle;
 begin
   if (ACol = 0) and (ARow = BackEnd.PlayList.ItemIndex + 1) then
     begin
@@ -1429,7 +1453,13 @@ begin
     end;
 
    sgPlayList.Canvas.FillRect(aRect);
-   sgPlayList.Canvas.TextOut(aRect.Left, aRect.Top, txt);
+   ts:= sgPlayList.Canvas.textStyle;
+ //  if Acol > sgPlayList.FixedCols then
+ //      ts.Alignment:=sgPlayList.Columns[Acol -sgPlayList.FixedCols].Alignment;
+   ts.Clipping:= true;
+
+//   sgPlayList.Canvas.TextOut(aRect.left, arect.top, txt);;
+   sgPlayList.Canvas.TextRect(aRect, aRect.left+3, arect.top, txt, ts);
 
 end;
 
@@ -1440,6 +1470,9 @@ var
   Direction: TplSortDirection;
   i: integer;
 begin
+
+  if not IsColumn then
+    exit;
 
   if Index < 2 then exit;
 
@@ -1481,6 +1514,106 @@ begin
 
   BackEnd.PlayList.Sort(SortField, Direction);
   PlayListChange(Self);
+
+end;
+
+procedure TfMainForm.sgPlayListHeaderSized(Sender: TObject; IsColumn: Boolean;
+  Index: Integer);
+begin
+  SetLength(fColumnsWidth, 0);
+  sgPlayList.Invalidate;
+end;
+
+procedure TfMainForm.sgPlayListHeaderSizing(sender: TObject;
+  const IsColumn: boolean; const aIndex, aSize: Integer);
+var
+  i            : integer;
+  diffs        : integer;
+  VisibleCount : integer;
+  Steps        : integer;
+  Remains      : integer;
+  LastVisible  : Integer;
+  h: ThackGrid;
+
+begin
+  if not IsColumn then
+    exit;
+
+  h:= THackGrid(sgPlayList);
+
+  if Length(fColumnsWidth) = 0 then
+     begin
+       SetLength(fColumnsWidth, sgPlayList.Columns.Count);
+       for i := 0 to sgPlayList.Columns.Count -1 do
+          fColumnsWidth[i] := sgPlayList.Columns[i].Width;
+     end;
+
+
+  Diffs := (fColumnsWidth[aIndex - sgPlayList.FixedCols] - aSize);
+  IF Diffs = 0 then
+    exit;
+
+  VisibleCount:=0;
+  LastVisible := aIndex - sgPlayList.FixedCols;
+  for i := aindex  to sgPlayList.Columns.Count -1 do
+    if sgPlayList.Columns[i].visible then
+       Begin
+         inc(VisibleCount);
+       end;
+
+  for i := 0  to sgPlayList.Columns.Count -1 do
+    if sgPlayList.Columns[i].visible then
+       Begin
+         LastVisible := I;
+       end;
+
+  dec(VisibleCount);
+
+  IF VisibleCount = -1 then
+     begin
+       sgPlayList.BeginUpdate;
+    //   sgPlayList.Columns[LastVisible].Width := fColumnsWidth[LastVisible];
+    sgPlayList.Columns[LastVisible].Width :=
+        sgPlayList.Columns[LastVisible].Width + (h.GCache.ClientWidth- h.GCache.GridWidth);
+       sgPlayList.EndUpdate(true);
+       exit;
+     end;
+
+  sgPlayList.Columns[aIndex - sgPlayList.FixedCols].Width := ASize;
+
+  if VisibleCount = 0 then
+     begin
+       sgPlayList.Columns[LastVisible].Width := fColumnsWidth[LastVisible] + Diffs;
+       exit
+     end;
+
+  sgPlayList.BeginUpdate;
+
+  Steps := diffs div VisibleCount;
+  remains := diffs mod VisibleCount;
+
+  for i := aindex +1  to sgPlayList.Columns.Count -1 do
+     if sgPlayList.Columns[i].Visible then
+       begin
+         sgPlayList.Columns[i].Width := fColumnsWidth[i] + Steps;
+       end;
+
+  for i := (aindex + 1) to (aindex + Remains) do
+     if sgPlayList.Columns[i].Visible then
+       begin
+         if diffs > 0 then
+            sgPlayList.Columns[i].Width := sgPlayList.Columns[i].Width + 1
+         else
+            sgPlayList.Columns[i].Width := sgPlayList.Columns[i].Width - 1
+       end;
+
+  if h.GCache.GridWidth < h.GCache.ClientWidth then
+     begin
+       sgPlayList.Columns[LastVisible].Width :=
+           sgPlayList.Columns[LastVisible].Width + (h.GCache.ClientWidth- h.GCache.GridWidth);
+     end;
+
+  sgPlayList.EndUpdate(true);
 
 end;
 
@@ -1620,8 +1753,8 @@ end;
 
 procedure TfMainForm.sgPlayListMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
-var
-   mycol, myrow : Integer;
+//var
+//   mycol, myrow : Integer;
 
 begin
   fSourceIndex := -1;
@@ -1648,6 +1781,11 @@ begin
        sgPlayList.Canvas.Brush.Color := clHighlight;
      end;
 
+end;
+
+procedure TfMainForm.sgPlayListResize(Sender: TObject);
+begin
+  AdaptSize(False);
 end;
 
 procedure TfMainForm.slVolumeChange(Sender: TObject);
@@ -1845,9 +1983,9 @@ begin
 end;
 
 procedure TfMainForm.ReloadPlayList;
-var
-  I:     integer;
-  ASong: TSong;
+//var
+  //I:     integer;
+//  ASong: TSong;
 begin
 
 
@@ -1908,14 +2046,72 @@ begin
      Show;
 end;
 
-procedure TfMainForm.AdaptSize;
+procedure TfMainForm.AdaptSize(Recalculate: boolean =true);
 var
   i:integer;
+  ColWidths : array of integer;
+  TotalSize : Integer;
+  diffs     : integer;
+  VisibleCount : integer;
+  Steps        : integer;
+  Remains      : integer;
+  h: ThackGrid;
 begin
+  TotalSize:= 0;
+  VisibleCount:=0;
+  SetLength(ColWidths, sgPlayList.Columns.Count);
+  if Recalculate then
+     begin
+      for I := 0 to sgPlayList.Columns.Count - 1 do
+         if sgPlayList.Columns[i].Visible then
+           begin
+             ColWidths[i] := ColumnSize(i);
+             inc(VisibleCount);
+             inc(TotalSize, ColWidths[i])
+           end
+         else
+           ColWidths[i] := 0;
+     end
+  else
+    begin
+      for I := 0 to sgPlayList.Columns.Count - 1 do
+         if sgPlayList.Columns[i].Visible then
+           begin
+             ColWidths[i] :=  sgPlayList.Columns[i].Width;
+             inc(VisibleCount);
+             inc(TotalSize, ColWidths[i])
+           end
+         else
+           ColWidths[i] := 0;
+    end;
+
+  h:= THackGrid(sgPlayList);
+
+  Diffs := h.gcache.ClientWidth - h.gcache.FixedWidth  - TotalSize -1;
+
+  Steps := diffs div VisibleCount;
+  remains := diffs mod VisibleCount;
+
   for I := 0 to sgPlayList.Columns.Count - 1 do
      if sgPlayList.Columns[i].Visible then
-        AutoAdjustColumn(I);
+       begin
+         ColWidths[i] := ColWidths[i] + Steps;
+       end;
 
+  for I := 0 to Remains - 2 do
+     if sgPlayList.Columns[i].Visible then
+       begin
+         if diffs > 0 then
+            ColWidths[i] := ColWidths[i] + 1
+         else
+            ColWidths[i] := ColWidths[i] - 1
+       end;
+
+  for I := 0 to sgPlayList.Columns.Count - 1 do
+     if sgPlayList.Columns[i].Visible then
+       begin
+         sgPlayList.Columns[i].Width := ColWidths[i];
+       end;
 end;
 
 end.
