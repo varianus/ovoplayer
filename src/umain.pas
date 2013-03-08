@@ -89,6 +89,7 @@ type
 
 
   TfMainForm = class(TForm)
+    actShowLeft: TAction;
     actShowPLMediainfo: TAction;
     actShowAbout: TAction;
     ActShowPreferences: TAction;
@@ -107,6 +108,7 @@ type
     MenuItem45: TMenuItem;
     MenuItem46: TMenuItem;
     MenuItem47: TMenuItem;
+    MenuItem48: TMenuItem;
     slVolume: TCDTrackBar;
     sgPlayList: TStringGrid;
     TrackBar: TCDTrackBar;
@@ -215,6 +217,7 @@ type
     tsCollection: TTabSheet;
     tsDirectory:  TTabSheet;
     procedure actShowAboutExecute(Sender: TObject);
+    procedure actShowLeftExecute(Sender: TObject);
     procedure actShowPLMediainfoExecute(Sender: TObject);
     procedure ActShowPreferencesExecute(Sender: TObject);
     procedure BackEndSongStart(Sender: TObject);
@@ -704,6 +707,11 @@ begin
   theForm.ShowModal;
 end;
 
+procedure TfMainForm.actShowLeftExecute(Sender: TObject);
+begin
+  pcmain.Visible:= actShowLeft.checked;
+end;
+
 procedure TfMainForm.actShowPLMediainfoExecute(Sender: TObject);
 var
   info : TfSongInfo;
@@ -1074,7 +1082,8 @@ begin
     tmpSt.Values['Width']:= IntToStr(Width);
     tmpSt.Values['Top']:= IntToStr(Top);
     tmpSt.Values['Left']:= IntToStr(Left);
-
+    tmpSt.Values['LeftPanelVisible']:= BoolToStr(actShowLeft.checked, true);
+    tmpSt.Values['ActivePage']:= IntToStr(pcMain.ActivePageIndex);
     BackEnd.Config.SaveCustomParams('MainForm', tmpSt);
 
   finally
@@ -1121,6 +1130,11 @@ begin
     Width := StrToIntDef(tmpSt.Values['Width'], Width);
     Top := StrToIntDef(tmpSt.Values['Top'], Top);
     Left := StrToIntDef(tmpSt.Values['Left'], Left);
+
+    actShowLeft.checked := not (StrToBoolDef(tmpSt.Values['LeftPanelVisible'], true));
+    actShowLeft.Execute;
+    pcMain.ActivePageIndex := StrToIntDef(tmpSt.Values['ActivePage'], 0);
+
 
   Except
     // if problem loading columns size, remove that info from config

@@ -337,8 +337,8 @@ object fMainForm: TfMainForm
     end
     object tsPlayList: TTabSheet
       Caption = 'PlayList'
-      ClientHeight = 638
-      ClientWidth = 237
+      ClientHeight = 646
+      ClientWidth = 235
       object PlaylistTree: TTreeView
         Left = 0
         Height = 646
@@ -828,6 +828,10 @@ object fMainForm: TfMainForm
       object MenuItem20: TMenuItem
         Action = ActShowPreferences
       end
+      object MenuItem48: TMenuItem
+        Action = actShowLeft
+        AutoCheck = True
+      end
     end
     object MenuItem25: TMenuItem
       Caption = 'Help'
@@ -1012,6 +1016,12 @@ object fMainForm: TfMainForm
     object actShowPLMediainfo: TAction
       Caption = 'Media Info'
       OnExecute = actShowPLMediainfoExecute
+    end
+    object actShowLeft: TAction
+      AutoCheck = True
+      Caption = 'Show Left Panel'
+      Checked = True
+      OnExecute = actShowLeftExecute
     end
   end
 end
