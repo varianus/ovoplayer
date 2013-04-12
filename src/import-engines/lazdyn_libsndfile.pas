@@ -1,15 +1,14 @@
 {
 
-This is the Dynamic loading version of LibSndFile.pas .
+This is the Dynamic loading version with reference counting of LibSndFile.pas.
  You can choose the folder and file of the LibSndFile library with sf_load() and
  release it with sf_unload().
 
- Fred van Stappen / fiens@hotmail.com / 2012
+ Fred van Stappen / fiens@hotmail.com / 2013
 
  }
 
 unit lazdyn_libsndfile;
-
 
 (*
  - Translation for sndfile.h version 1.0.17 by Ido Kanner idokan at gmail dot com
@@ -456,27 +455,29 @@ type
 }
 ////////////////////////////////////////////////////////////////////////////////////////
 
-var
+function sf_open( path : string; mode : ctypes.cint;
+                var sfinfo : TSF_INFO) : TSNDFILE_HANDLE;
+
    ////// Dynamic load : Vars that will hold our dynamically loaded functions..
- sf_open_native: function( path : pChar; mode : ctypes.cint;sfinfo : PSF_INFO):TSNDFILE_HANDLE ; cdecl;
- sf_open_fd: function(fd: ctypes.cint; mode: ctypes.cint;sfinfo : PSF_INFO; close_desc : ctypes.cint):TSNDFILE_HANDLE ; cdecl;
- sf_open_virtual: function(sfvirtual : PSF_VIRTUAL_IO; mode: ctypes.cint; sfinfo: PSF_INFO; user_data : Pointer):TSNDFILE_HANDLE ; cdecl;
- sf_error: function(sndfile : TSNDFILE_HANDLE): ctypes.cint ; cdecl;
- sf_strerror: function(sndfile : TSNDFILE_HANDLE): pChar ; cdecl;
- sf_error_number: function(errnum : ctypes.cint): pChar ; cdecl;
- sf_perror: function(sndfile : TSNDFILE_HANDLE):  ctypes.cint ; cdecl;
- sf_error_str: function(sndfile : TSNDFILE_HANDLE; str : ctypes.pcchar;len : size_t):  ctypes.cint ; cdecl;
+var sf_open_native: function( path : pChar; mode : ctypes.cint;sfinfo : PSF_INFO):TSNDFILE_HANDLE ; cdecl;
+var sf_open_fd: function(fd: ctypes.cint; mode: ctypes.cint;sfinfo : PSF_INFO; close_desc : ctypes.cint):TSNDFILE_HANDLE ; cdecl;
+var sf_open_virtual: function(sfvirtual : PSF_VIRTUAL_IO; mode: ctypes.cint; sfinfo: PSF_INFO; user_data : Pointer):TSNDFILE_HANDLE ; cdecl;
+var  sf_error: function(sndfile : TSNDFILE_HANDLE): ctypes.cint ; cdecl;
+var  sf_strerror: function(sndfile : TSNDFILE_HANDLE): pChar ; cdecl;
+var  sf_error_number: function(errnum : ctypes.cint): pChar ; cdecl;
+var  sf_perror: function(sndfile : TSNDFILE_HANDLE):  ctypes.cint ; cdecl;
+var  sf_error_str: function(sndfile : TSNDFILE_HANDLE; str : ctypes.pcchar;len : size_t):  ctypes.cint ; cdecl;
 
 ////// In libsndfile there are 4 functions with the same name (sf_command), 3 of them use the parameter "overload".
 ////// In dynamic loading (because of var) we use 4 different names for the 4 functions sf_command :
 ////// sf_command_pointer, sf_command_double, sf_command_array, sf_command_tsf. All that 4 functions gonna point
 ////// to sf_command in libsndfile library.
 
- sf_command_pointer: function(sndfile : TSNDFILE_HANDLE; command  : ctypes.cint; data: Pointer;  datasize : ctypes.cint):  ctypes.cint ; cdecl;
- sf_command_double: function(sndfile : TSNDFILE_HANDLE; command : ctypes.cint; var data: Double;  datasize : ctypes.cint):  ctypes.cint ; cdecl;
- sf_command_array: function(sndfile : TSNDFILE_HANDLE; command: ctypes.cint; var data: Array of Char;  datasize : ctypes.cint):  ctypes.cint ; cdecl;
- sf_command_tsf: function(sndfile : TSNDFILE_HANDLE; command  : ctypes.cint; var data: TSF_BROADCAST_INFO;  datasize : ctypes.cint):  ctypes.cint ; cdecl;
- sf_format_check: function(var info : TSF_INFO):  ctypes.cint ; cdecl;
+var  sf_command_pointer: function(sndfile : TSNDFILE_HANDLE; command  : ctypes.cint; data: Pointer;  datasize : ctypes.cint):  ctypes.cint ; cdecl;
+var  sf_command_double: function(sndfile : TSNDFILE_HANDLE; command : ctypes.cint; var data: Double;  datasize : ctypes.cint):  ctypes.cint ; cdecl;
+var  sf_command_array: function(sndfile : TSNDFILE_HANDLE; command: ctypes.cint; var data: Array of Char;  datasize : ctypes.cint):  ctypes.cint ; cdecl;
+var  sf_command_tsf: function(sndfile : TSNDFILE_HANDLE; command  : ctypes.cint; var data: TSF_BROADCAST_INFO;  datasize : ctypes.cint):  ctypes.cint ; cdecl;
+var  sf_format_check: function(var info : TSF_INFO):  ctypes.cint ; cdecl;
  
 
 {
@@ -572,32 +573,32 @@ var  sf_write_sync: function(sndfile : TSNDFILE_HANDLE)  : ctypes.cint ; cdecl;
 var sf_Handle:TLibHandle; // this will hold our handle for the lib; it functions nicely as a mutli-lib prevention unit as well...
 
 Function sf_Load(const libfilename:string) :boolean; // load the lib
+
 Procedure sf_Unload(); // unload and frees the lib from memory : do not forget to call it before close application.
-function sf_open( path : string; mode : ctypes.cint;
-                var sfinfo : TSF_INFO) : TSNDFILE_HANDLE;
 
        ////////////////////////////////////////////////
 
-
+function sf_IsLoaded : boolean; inline;
 
 
 implementation
+var
+ReferenceCounter : cardinal = 0;  // Reference counter
 
 Function sf_Load (const libfilename:string) :boolean;
 begin
   Result := False;
   if sf_Handle<>0 then
      begin
-       result:=true; {is it already there ?}
-       exit;
-     end;
-
-  if Length(libfilename) = 0 then
-     exit;
-
+     result:=true {is it already there ?};
+      //Reference counting
+    Inc(ReferenceCounter);
+    end
+  else begin {go & load the library}
+    if Length(libfilename) = 0 then exit;
   sf_Handle:=DynLibs.LoadLibrary(libfilename); // obtain the handle we want
-  if sf_Handle = NilHandle then
-     exit;
+  	if sf_Handle <> DynLibs.NilHandle then
+       begin {now we tie the functions to the VARs from above}
 
   Pointer(sf_open_native):=DynLibs.GetProcedureAddress(sf_Handle,PChar('sf_open'));
   Pointer(sf_open_fd):=DynLibs.GetProcedureAddress(sf_Handle,PChar('sf_open_fd'));
@@ -636,17 +637,28 @@ begin
   Pointer(sf_close):=DynLibs.GetProcedureAddress(sf_Handle,PChar('sf_close'));
   Pointer(sf_write_sync):=DynLibs.GetProcedureAddress(sf_Handle,PChar('sf_write_sync'));
 
-  result:=(sf_Handle<>DynLibs.NilHandle);
+   end;
+      Result := sf_IsLoaded;
+    ReferenceCounter:=1;
+  end;
+
 end;
 
-/////////////////////////////
+//////////////////////////////
 Procedure sf_Unload;
 begin
-  if sf_Handle<>DynLibs.NilHandle then
+  // < Reference counting
+  if ReferenceCounter > 0 then
+    dec(ReferenceCounter);
+  if ReferenceCounter > 0 then
+    exit;
+  // >
+  if sf_IsLoaded then
      begin
            DynLibs.UnloadLibrary(sf_Handle);
+       sf_Handle:=DynLibs.NilHandle;
      end;
-  sf_Handle:=DynLibs.NilHandle;
+ 
 end;
 
 /////////////////
@@ -657,6 +669,10 @@ begin
   result:= sf_open_native( pChar( path), mode, @sfinfo);
 end;
 
+function sf_IsLoaded: boolean;
+begin
+ Result := (sf_Handle <> dynlibs.NilHandle);
+end;
 
 end.
 
