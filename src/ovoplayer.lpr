@@ -29,7 +29,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   FilesSupport, MediaLibrary, GeneralFunc, decoupler,
   MultimediaKeys, uConfig, uOSD, Config, AppConsts, uMiniPlayer, uSongInfo,
   GUIBackEnd, uAbout,
-  customdrawn_ovoplayer,
+  customdrawndrawers, customdrawn_ovoplayer,
   // Audio Engines
   audioengine, audioengine_dummy, AudioEngine_MPlayer,
   {$IFDEF GSTREAMER} gstreamer, audioengine_gstreamer, {$ENDIF}
@@ -37,6 +37,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   {$IFDEF XINE} xine, audioengine_Xine,{$ENDIF}
   {$IFDEF BASS} lazdynamic_bass, audioengine_bass,{$ENDIF}
   {$IFDEF DSHOW} mediadshow, audioengine_dshow,{$ENDIF}
+  {$IFDEF MEDIAFOUNDATION} mediafoundation, audioengine_mf,{$ENDIF}
   {$IFDEF OPENSOURCELIB} lazdyn_libsndfile, lazdyn_mpg123, lazdyn_portaudio, audioengine_OpenLib,{$ENDIF}
   // ovotag
   song, AudioTag, basetag, file_flac, file_mp3, file_wma,
@@ -49,6 +50,8 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
 
 {$R *.res}
 begin
+  defaultstyle := dsExtra2;
+
   CheckRestarting(Application);
 
   if not isAppRunning(Application) then
@@ -61,4 +64,4 @@ begin
       Application.CreateForm(TfMiniPlayer, fMiniPlayer);
       Application.Run;
    end;
-end.
+end.

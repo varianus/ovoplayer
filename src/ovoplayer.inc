@@ -45,6 +45,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 {$IFDEF WINDOWS}
   {$DEFINE DSHOW} // Work only on windows
+  {.$DEFINE MEDIAFOUNDATION} // Work only on windows vista and higher
   {$DEFINE VLC} //
   {$DEFINE XINE} //
   {$DEFINE BASS} //
@@ -58,4 +59,4 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
 
-
+
