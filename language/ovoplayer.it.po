@@ -166,6 +166,10 @@ msgstr "Ripeti traccia"
 msgid "Update Collection"
 msgstr "Aggiorna collezione"
 
+#: tbackend.actrestart.caption
+msgid "Restart"
+msgstr "Riavvia"
+
 #: tbackend.actskipbackward.caption
 msgid "Skip Backward"
 msgstr "Salta Avanti"
@@ -392,6 +396,10 @@ msgctxt "TFMAINFORM.ACTSHOWABOUT.CAPTION"
 msgid "About"
 msgstr "Informazioni su"
 
+#: tfmainform.actshowleft.caption
+msgid "Show Left Panel"
+msgstr ""
+
 #: tfmainform.actshowplmediainfo.caption
 msgctxt "TFMAINFORM.ACTSHOWPLMEDIAINFO.CAPTION"
 msgid "Media Info"
@@ -584,69 +592,76 @@ msgid "Restore"
 msgstr "Ripristina"
 
 #: tfmainform.sgplaylist.columns[0].title.caption
-msgid "    "
-msgstr ""
-
-#: tfmainform.sgplaylist.columns[10].title.caption
-msgctxt "tfmainform.sgplaylist.columns[10].title.caption"
-msgid "FileName"
-msgstr "Nome file"
-
-#: tfmainform.sgplaylist.columns[11].title.caption
-msgctxt "tfmainform.sgplaylist.columns[11].title.caption"
-msgid "Rating"
-msgstr "Valutazione"
-
-#: tfmainform.sgplaylist.columns[1].title.caption
+msgctxt "tfmainform.sgplaylist.columns[0].title.caption"
 msgid "#"
 msgstr ""
 
-#: tfmainform.sgplaylist.columns[2].title.caption
-msgctxt "tfmainform.sgplaylist.columns[2].title.caption"
+#: tfmainform.sgplaylist.columns[10].title.caption
+#, fuzzy
+#| msgid "FileName"
+msgctxt "tfmainform.sgplaylist.columns[10].title.caption"
+msgid "Rating"
+msgstr "Nome file"
+
+#: tfmainform.sgplaylist.columns[1].title.caption
+msgctxt "tfmainform.sgplaylist.columns[1].title.caption"
 msgid "Title"
 msgstr "Titolo"
 
-#: tfmainform.sgplaylist.columns[3].title.caption
-msgctxt "tfmainform.sgplaylist.columns[3].title.caption"
+#: tfmainform.sgplaylist.columns[2].title.caption
+#, fuzzy
+#| msgid "Title"
+msgctxt "tfmainform.sgplaylist.columns[2].title.caption"
 msgid "Album"
+msgstr "Titolo"
+
+#: tfmainform.sgplaylist.columns[3].title.caption
+#, fuzzy
+#| msgid "Album"
+msgctxt "tfmainform.sgplaylist.columns[3].title.caption"
+msgid "Artist"
 msgstr "Album"
 
 #: tfmainform.sgplaylist.columns[4].title.caption
+#, fuzzy
+#| msgid "Artist"
 msgctxt "tfmainform.sgplaylist.columns[4].title.caption"
-msgid "Artist"
+msgid "Time"
 msgstr "Artista"
 
 #: tfmainform.sgplaylist.columns[5].title.caption
 #, fuzzy
-#| msgid "Track"
+#| msgid "Time"
 msgctxt "tfmainform.sgplaylist.columns[5].title.caption"
-msgid "Time"
+msgid "Track"
 msgstr "Tempo"
 
 #: tfmainform.sgplaylist.columns[6].title.caption
 #, fuzzy
-#| msgid "Genre"
+#| msgid "Track"
 msgctxt "tfmainform.sgplaylist.columns[6].title.caption"
-msgid "Track"
+msgid "Genre"
 msgstr "Traccia"
 
 #: tfmainform.sgplaylist.columns[7].title.caption
 #, fuzzy
-#| msgid "Year"
+#| msgid "Genre"
 msgctxt "tfmainform.sgplaylist.columns[7].title.caption"
-msgid "Genre"
+msgid "Year"
 msgstr "Genere"
 
 #: tfmainform.sgplaylist.columns[8].title.caption
 #, fuzzy
-#| msgid "Album Artist"
+#| msgid "Year"
 msgctxt "tfmainform.sgplaylist.columns[8].title.caption"
-msgid "Year"
+msgid "Album Artist"
 msgstr "Anno"
 
 #: tfmainform.sgplaylist.columns[9].title.caption
+#, fuzzy
+#| msgid "Album Artist"
 msgctxt "tfmainform.sgplaylist.columns[9].title.caption"
-msgid "Album Artist"
+msgid "FileName"
 msgstr "Artista Album"
 
 #: tfmainform.sgstats.columns[0].title.caption

@@ -1432,7 +1432,7 @@ var
   Txt: String;
   ts: TTextStyle;
 begin
-  if (ACol = 0) and (ARow = BackEnd.PlayList.ItemIndex + 1) then
+  if (ACol = 0) and (Arow > 0) and (ARow = BackEnd.PlayList.ItemIndex + 1) then
     begin
       aBmp := TBitmap.Create;
       if BackEnd.AudioEngine.State = ENGINE_PAUSE then
