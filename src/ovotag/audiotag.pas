@@ -40,6 +40,8 @@ function GetFileTagsObject(FileName: string): TTagReader;
 function IdentifyKind(FileName: string): TTagReaderClass;
 
 implementation
+uses strutils, file_Dummy;
+
 type
   RTagReader = record
     Extensions : String;
@@ -96,8 +98,16 @@ var
   i : Integer;
 begin
   Result := Nil;
+  if AnsiStartsStr('HTTP:\\', UpperCase(FileName)) or
+     AnsiStartsStr('MMS:\\', UpperCase(FileName)) then
+     begin
+       Result := TDummyReader;
+       exit;
+     end;
+
   ext    := lowercase(ExtractFileExt(Filename));
   result := TTagReader;
+
   for i := Low(AReaderList) to High(AReaderList) do
      if Pos(ext, AReaderList[i].Extensions) > 0 then
         begin
