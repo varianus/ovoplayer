@@ -5850,8 +5850,11 @@ end;
 Function Check_libvlc:boolean;
 var
   cdir: string;
+  MustFree :boolean ;
 begin
   // no error
+  MustFree := libvlc_handle = 0;
+
   libvlc_dynamic_dll_init();
   Result:=false;
   // exit, report error
@@ -5863,9 +5866,12 @@ begin
     end
   else
     begin
-      libvlc_dynamic_dll_done;
-      libvlc_handle := 0;
       Result:=true;
+      if MustFree then
+         begin
+           libvlc_dynamic_dll_done;
+           libvlc_handle := 0;
+         end;
     end;
 end;
 
