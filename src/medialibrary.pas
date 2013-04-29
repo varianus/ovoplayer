@@ -72,11 +72,13 @@ type
     procedure AfterScan;
     procedure BeforeScan;
     procedure EndScan(AObject: TObject);
+    function GetDbVersion: Integer;
     procedure SetOnScanComplete(const AValue: TScanComplete);
     procedure SetOnScanStart(const AValue: TNotifyEvent);
     procedure SetupDBConnection;
     procedure CheckDBStructure;
     function TagsFromTable(Table: TSQLQuery): TCommonTags;
+    procedure UpgradeDBStructure(LoadedDBVersion: Integer);
   public
     fAdded, fUpdated, fRemoved, fFailed: integer;
     constructor Create;
@@ -107,6 +109,8 @@ implementation
 uses AppConsts, FilesSupport, AudioTag;
 
 const
+  CURRENTDBVERSION = 1;
+
   CREATESONGTABLE = 'CREATE TABLE songs ('
                  + ' "ID" INTEGER primary key,'
                  + ' "Filename" VARCHAR COLLATE NOCASE,'
@@ -124,6 +128,24 @@ const
                  + ' "LastPlay" DATETIME,'
                  + ' "Added" DATETIME,'
                  + ' "elabflag" CHAR(1) COLLATE NOCASE);';
+
+  CREATESONGINDEX1 = 'CREATE INDEX "idx_artist" on songs (Artist ASC);';
+  CREATESONGINDEX2 = 'CREATE UNIQUE INDEX "idx_filename" on songs (Filename ASC);';
+
+  CREATESTATUSTABLE = 'CREATE TABLE status ('
+                 +    '"Version" INTEGER COLLATE NOCASE'
+                 +    ');';
+
+  UPDATESTATUS = 'UPDATE status SET Version = %d;';
+
+  PRAGMAS_COUNT = 3;
+  PRAGMAS : array [1..PRAGMAS_COUNT] of string =
+            (
+//            'PRAGMA locking_mode = EXCLUSIVE;',
+            'PRAGMA temp_store = MEMORY;',
+            'PRAGMA count_changes = 0;',
+            'PRAGMA encoding = "UTF-8";'
+            );
 
   INSERTINTOSONG = 'INSERT INTO songs ('
                  + ' Filename, TrackString, Track, Title, Album, Artist,'
@@ -149,19 +171,6 @@ const
                  + ' ,elabflag = :elabflag'
                  + ' ,Duration = :Duration'
                  + ' where ID = :ID';
-
-  CREATESONGINDEX1 = 'CREATE INDEX "idx_artist" on songs (Artist ASC);';
-  CREATESONGINDEX2 = 'CREATE UNIQUE INDEX "idx_filename" on songs (Filename ASC);';
-
-  PRAGMAS_COUNT = 3;
-  PRAGMAS : array [1..PRAGMAS_COUNT] of string =
-            (
-//            'PRAGMA locking_mode = EXCLUSIVE;',
-            'PRAGMA temp_store = MEMORY;',
-            'PRAGMA count_changes = 0;',
-            'PRAGMA encoding = "UTF-8";'
-            );
-
 
 { TDirectoryScanner }
 
@@ -234,24 +243,76 @@ begin
 
 end;
 
+function TMediaLibrary.GetDbVersion: Integer;
+var
+  TableList: TStringList;
+begin
+
+  TableList := TStringList.Create;
+  try
+    fDB.GetTableNames(TableList, False);
+    if TableList.IndexOf('status') < 0 then
+        begin
+           Result :=1;
+           fDB.ExecuteDirect(CREATESTATUSTABLE);
+           fDB.ExecuteDirect(format(UPDATESTATUS,[1]));
+        end
+    else
+       begin
+         fWorkQuery.Close;
+         fWorkQuery.SQL.Text := 'SELECT Version FROM status';
+         fWorkQuery.Open;
+         Result := fWorkQuery.Fields[0].AsInteger;
+         fWorkQuery.Close;
+       end;
+  finally
+    TableList.Free;
+  end;
+
+end;
+
 procedure TMediaLibrary.CheckDBStructure;
 var
   TableList: TStringList;
+  LoadedDBVersion : Integer;
 begin
   TableList := TStringList.Create;
     try
     fDB.GetTableNames(TableList, False);
     if TableList.IndexOf('songs') < 0 then
       begin
-      fDB.ExecuteDirect(CREATESONGTABLE);
-      fDB.ExecuteDirect(CREATESONGINDEX1);
-      fDB.ExecuteDirect(CREATESONGINDEX2);
-      ftr.CommitRetaining;
+        fDB.ExecuteDirect(CREATESONGTABLE);
+        fDB.ExecuteDirect(CREATESONGINDEX1);
+        fDB.ExecuteDirect(CREATESONGINDEX2);
+        fDB.ExecuteDirect(CREATESTATUSTABLE);
+        fDB.ExecuteDirect(format(UPDATESTATUS,[CURRENTDBVERSION]));
+        ftr.CommitRetaining;
       end;
 
     finally
-    TableList.Free;
+      TableList.Free;
     end;
+
+   LoadedDBVersion := GetDbVersion;
+    if LoadedDBVersion < CURRENTDBVERSION then
+       UpgradeDBStructure(LoadedDBVersion);
+
+
+end;
+
+procedure TMediaLibrary.UpgradeDBStructure(LoadedDBVersion:Integer);
+begin
+  // if LoadedDBVersion < 2 then
+  //    begin
+  //       sql for upgrade to version 2
+  //    end;
+  //
+  // if LoadedDBVersion < 3 then
+  //    begin
+  //       sql for upgrade to version 3
+  //    end;
+
+  // fDB.ExecuteDirect(format(UPDATESTATUS,[CURRENTDBVERSION]);
 
 end;
 
