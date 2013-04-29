@@ -132,9 +132,10 @@ const
   CREATESONGINDEX1 = 'CREATE INDEX "idx_artist" on songs (Artist ASC);';
   CREATESONGINDEX2 = 'CREATE UNIQUE INDEX "idx_filename" on songs (Filename ASC);';
 
-  CREATESTATUSTABLE = 'CREATE TABLE status ('
+  CREATESTATUSTABLE1 = 'CREATE TABLE status ('
                  +    '"Version" INTEGER COLLATE NOCASE'
                  +    ');';
+  CREATESTATUSTABLE2 = ' INSERT INTO status (Version) VALUES(1);';
 
   UPDATESTATUS = 'UPDATE status SET Version = %d;';
 
@@ -246,24 +247,27 @@ end;
 function TMediaLibrary.GetDbVersion: Integer;
 var
   TableList: TStringList;
+  tmpQuery : TSQLQuery;
 begin
-
   TableList := TStringList.Create;
   try
     fDB.GetTableNames(TableList, False);
     if TableList.IndexOf('status') < 0 then
         begin
            Result :=1;
-           fDB.ExecuteDirect(CREATESTATUSTABLE);
-           fDB.ExecuteDirect(format(UPDATESTATUS,[1]));
+           fDB.ExecuteDirect(CREATESTATUSTABLE1);
+           fDB.ExecuteDirect(CREATESTATUSTABLE2);
+           ftr.CommitRetaining;
         end
     else
        begin
-         fWorkQuery.Close;
-         fWorkQuery.SQL.Text := 'SELECT Version FROM status';
-         fWorkQuery.Open;
-         Result := fWorkQuery.Fields[0].AsInteger;
-         fWorkQuery.Close;
+         tmpQuery := TSQLQuery.Create(fDB);
+         tmpQuery.DataBase := fDB;
+         tmpQuery.Transaction := fTR;
+         tmpQuery.SQL.Text := 'SELECT Version FROM status';
+         tmpQuery.Open;
+         Result := tmpQuery.Fields[0].AsInteger;
+         tmpQuery.Free;
        end;
   finally
     TableList.Free;
@@ -284,7 +288,8 @@ begin
         fDB.ExecuteDirect(CREATESONGTABLE);
         fDB.ExecuteDirect(CREATESONGINDEX1);
         fDB.ExecuteDirect(CREATESONGINDEX2);
-        fDB.ExecuteDirect(CREATESTATUSTABLE);
+        fDB.ExecuteDirect(CREATESTATUSTABLE1);
+        fDB.ExecuteDirect(CREATESTATUSTABLE2);
         fDB.ExecuteDirect(format(UPDATESTATUS,[CURRENTDBVERSION]));
         ftr.CommitRetaining;
       end;
