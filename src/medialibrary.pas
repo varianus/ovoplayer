@@ -51,11 +51,15 @@ type
 
   TScanComplete = procedure(Sender: TObject; Added, Updated, Removed, Failed : integer) of object;
 
-  TExtendedInfo = record
+  { TExtendedInfo }
+
+  TExtendedInfo = Class
     PlayCount : Integer;
     Rating :Integer;
     Added : TDateTime;
     LastPlay : TDateTime;
+  public
+    constructor Create;
   end;
 
   TMediaLibrary = class
@@ -95,6 +99,7 @@ type
     function FullNameFromID(ID: integer): string;
     function IDFromFullName(FileName: TFileName): integer;
     function SetSongPlayed(ID: integer): string;
+    Procedure SetRating(ID: integer; Rating: Integer);
     function TagsFromID(ID: integer): TCommonTags;
     function InfoFromID(ID: integer): TExtendedInfo;
     procedure Update(ID: Integer; Tags: TCommonTags);
@@ -172,6 +177,17 @@ const
                  + ' ,elabflag = :elabflag'
                  + ' ,Duration = :Duration'
                  + ' where ID = :ID';
+
+{ TExtendedInfo }
+
+constructor TExtendedInfo.Create;
+begin
+   PlayCount := -1;
+   Rating := -1;
+   Added := 0;
+   LastPlay := 0;
+
+end;
 
 { TDirectoryScanner }
 
@@ -644,6 +660,19 @@ begin
   fTR.CommitRetaining;
 end;
 
+procedure TMediaLibrary.SetRating(ID: integer; Rating: Integer);
+begin
+  fWorkQuery.Close;
+
+  fWorkQuery.SQL.Text := 'update songs set '
+                       + '  Rating = ' + IntToStr(rating)
+                       + 'where id =' + IntToStr(ID);
+  fWorkQuery.ExecSQL;
+  fWorkQuery.Close;
+  fTR.CommitRetaining;
+
+end;
+
 function TMediaLibrary.TagsFromID(ID: integer): TCommonTags;
 begin
   fWorkQuery.Close;
@@ -663,6 +692,9 @@ begin
   fWorkQuery.SQL.Text := 'select PlayCount, Added, LastPlay, Rating' +
                          ' from songs where id =' + IntToStr(ID);
   fWorkQuery.Open;
+
+  Result := TExtendedInfo.Create;
+
   if fWorkQuery.RecordCount = 0 then
      result.PlayCount:= -1
   else

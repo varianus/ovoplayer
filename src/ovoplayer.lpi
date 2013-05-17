@@ -262,7 +262,7 @@ if LCLWidgetType = 'customdrawn' then
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="50">
+    <Units Count="51">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -533,6 +533,11 @@ if LCLWidgetType = 'customdrawn' then
         <IsPartOfProject Value="True"/>
         <UnitName Value="mediadshow"/>
       </Unit49>
+      <Unit50>
+        <Filename Value="import-engines\uos.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uos"/>
+      </Unit50>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -582,9 +587,7 @@ if LCLWidgetType = 'win32' then
         <DebugInfoType Value="dsDwarf2Set"/>
         <UseExternalDbgSyms Value="True"/>
       </Debugging>
-      <LinkSmart Value="True"/>
       <Options>
-        <LinkerOptions Value="-Wl,-Bsymbolic-functions -Wl,-z,relro"/>
         <Win32>
           <GraphicApplication Value="True"/>
         </Win32>
@@ -614,6 +617,7 @@ if LCLWidgetType = 'win32' then
       </Item3>
       <Item4>
         <Name Value="Exception"/>
+        <Enabled Value="False"/>
       </Item4>
     </Exceptions>
   </Debugging>

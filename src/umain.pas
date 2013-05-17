@@ -27,7 +27,7 @@ interface
 uses
   Classes, types, SysUtils, FileUtil, Forms, Controls, Graphics,
   Dialogs, ComCtrls, Menus, ExtCtrls, Buttons, StdCtrls, Song, uOSD, playlist,
-  AudioEngine, GUIBackEnd, Config,
+  AudioEngine, GUIBackEnd, Config, MediaLibrary,
   DefaultTranslator, Grids, EditBtn, ActnList, customdrawncontrols,
   customdrawn_common, customdrawn_ovoplayer, ucover;
 
@@ -97,6 +97,7 @@ type
     Artist:     TLabel;
     cbGroupBy:  TComboBox;
     FilesTree: TTreeView;
+    RateStars: TImageList;
     MenuItem21: TMenuItem;
     MenuItem38: TMenuItem;
     MenuItem39: TMenuItem;
@@ -109,6 +110,12 @@ type
     MenuItem46: TMenuItem;
     MenuItem47: TMenuItem;
     MenuItem48: TMenuItem;
+    MenuItem49: TMenuItem;
+    MenuItem50: TMenuItem;
+    MenuItem52: TMenuItem;
+    MenuItem53: TMenuItem;
+    MenuItem54: TMenuItem;
+    MenuItem55: TMenuItem;
     slVolume: TCDTrackBar;
     sgPlayList: TStringGrid;
     TrackBar: TCDTrackBar;
@@ -284,6 +291,7 @@ type
     procedure TrackBarChange(Sender: TObject);
     procedure TrackBarMouseMove(Sender: TObject; Shift: TShiftState; X, Y: integer);
     procedure TrackBarMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: integer);
+    procedure TrackDblClick(Sender: TObject);
     procedure TrayIconClick(Sender: TObject);
     procedure TrayIconMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
@@ -306,6 +314,7 @@ type
     MovingSelection : TMovingSelection;
     FAnchor: integer;
     fColumnsWidth : array of integer;
+    RatingBack, RatingFront:TBitmap;
     Function ColumnSize(aCol: Integer):Integer;
     procedure ClearPanelInfo;
     procedure CollectionHandler(Enqueue: boolean);
@@ -905,6 +914,12 @@ begin
   CurrentPath:=EmptyStr;
   ClearPanelInfo;
 
+  //Cache bitmap used for rating column painting
+  RatingBack := TBitmap.Create;
+  RatingFront := TBitmap.Create;
+  RateStars.GetBitmap(1, RatingBack);
+  RateStars.GetBitmap(0, RatingFront);
+
   BackEnd.OnPlayListChange := @PlayListChange;
   BackEnd.AudioEngine.OnSongStart := @BackEndSongStart;
   BackEnd.OnSaveInterfaceState:= @SaveConfig;
@@ -974,12 +989,16 @@ begin
   cbGroupBy.ItemIndex := BackEnd.Config.InterfaceParam.GroupBy;
   cbGroupBy.OnChange(self);
   SetLength(fColumnsWidth, 0);
+
 end;
 
 procedure TfMainForm.FormDestroy(Sender: TObject);
 begin
   PathHistory.Free;
   PlaylistSelected.Free;
+  RatingBack.Free;
+  RatingFront.Free;
+
 end;
 
 procedure TfMainForm.FormDropFiles(Sender: TObject;
@@ -1337,7 +1356,7 @@ begin
              7: Txt := ASong.Tags.Year;
              8: Txt := ASong.Tags.AlbumArtist;
              9: Txt := ASong.FileName;
-            10: Txt := '5';
+            10: Txt := 'WWWWW';
           end;
           Ts := TmpCanvas.TextExtent(txt);
 
@@ -1427,18 +1446,23 @@ end;
 procedure TfMainForm.sgPlayListDrawCell(Sender: TObject; aCol, aRow: Integer;
   aRect: TRect; aState: TGridDrawState);
 var
-  aBmp: TBitmap;
+  aBmp, ABmp2: TBitmap;
   ASong : TSong;
   Txt: String;
+  r1,R2: Trect;
   ts: TTextStyle;
 begin
   if (ACol = 0) and (Arow > 0) and (ARow = BackEnd.PlayList.ItemIndex + 1) then
     begin
       aBmp := TBitmap.Create;
-      if BackEnd.AudioEngine.State = ENGINE_PAUSE then
-         BackEnd.ilSmall.GetBitmap(10, aBmp)
+      case BackEnd.AudioEngine.State of
+         ENGINE_PAUSE: BackEnd.ilSmall.GetBitmap(10, aBmp);
+         ENGINE_STOP : BackEnd.ilSmall.GetBitmap(11, aBmp);
+         ENGINE_PLAY : BackEnd.ilSmall.GetBitmap(6, aBmp);
       else
-         BackEnd.ilSmall.GetBitmap(6, aBmp);
+          BackEnd.ilSmall.GetBitmap(12, aBmp)
+      end;
+
 
       if aBmp = nil then exit;
       sgPlayList.Canvas.Draw(arect.Left, aRect.Top, aBmp);
@@ -1462,7 +1486,7 @@ begin
          8: Txt := ASong.Tags.Year;
          9: Txt := ASong.Tags.AlbumArtist;
         10: Txt := ASong.FileName;
-        11: Txt := '5';
+        11: Txt := '';
         else txt := '';
     end;
 
@@ -1473,7 +1497,24 @@ begin
    ts.Clipping:= true;
 
 //   sgPlayList.Canvas.TextOut(aRect.left, arect.top, txt);;
-   sgPlayList.Canvas.TextRect(aRect, aRect.left+3, arect.top, txt, ts);
+   if ts.Alignment = taRightJustify then
+      aRect.Right:= aRect.Right -3;
+   if ts.Alignment = taLeftJustify then
+      aRect.Left:= aRect.Left +3;
+
+   if (aCol <> 11) or not assigned(ASong.ExtraProperty)  then
+      sgPlayList.Canvas.TextRect(aRect, aRect.left, arect.top, txt, ts)
+   else
+      begin
+        sgPlayList.Canvas.Draw(arect.left, arect.top, RatingBack);
+        r1:=Rect(0,
+                 0,
+                 trunc(RatingBack.width *(TExtendedInfo(ASong.ExtraProperty).Rating /10))-1,
+                 RatingBack.height);
+        r2:=r1;
+        OffsetRect(R2,aRect.Left, aRect.top);
+        sgPlayList.Canvas.CopyRect(r2,RatingFront.Canvas,r1);
+      end;
 
 end;
 
@@ -1742,14 +1783,25 @@ procedure TfMainForm.sgPlayListMouseMove(Sender: TObject; Shift: TShiftState;
   X, Y: Integer);
 var
   ACol, ARow : Integer;
+  R1: TRect;
+  Rating: Integer;
 begin
+
+  sgPlayList.MouseToCell(x, y, ACol, ARow);
+  if (ARow > 0) and (aCol = 11) and assigned(BackEnd.PlayList[ARow-1].ExtraProperty) then
+     begin
+       R1 := sgPlayList.CellRect(ACol, ARow);
+       Rating := trunc(((x - R1.Left) * 10) / RateStars.Width) ;
+
+       TExtendedInfo(BackEnd.PlayList[ARow-1].ExtraProperty).Rating:=rating;
+       sgPlayList.InvalidateCell(ACol, ARow);
+     end;
+
   if fSourceIndex < 1 then
     exit;
 
   if not (ssLeft in Shift) and (not (ssShift in Shift) and not (ssCtrl in Shift)) then
     exit;
-
-  sgPlayList.MouseToCell(x, y, ACol, ARow);
 
   if (Arow < 1) or
      (Arow  = fSourceIndex) then
@@ -1867,9 +1919,22 @@ begin
   SeekIng := False;
 end;
 
+procedure TfMainForm.TrackDblClick(Sender: TObject);
+var
+  info : TfSongInfo;
+begin
+  if not assigned(BackEnd.PlayList.CurrentItem) then
+     exit;
+
+  info := TfSongInfo.Create(Application);
+  info.InitFromFile(BackEnd.PlayList.CurrentItem.FullName);
+  info.Show;
+end;
+
 procedure TfMainForm.TrayIconClick(Sender: TObject);
 begin
-  if Visible then Hide
+  if Visible then
+    Hide
   else
   begin
     Show;

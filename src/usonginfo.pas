@@ -180,7 +180,10 @@ begin
   for i := 0 to lbFiles.Count -1 do
     begin
       if Assigned(fTagList[i].TagReader) then
-         fTagList[i].TagReader.Free;
+         begin
+           FreeAndNil(fTagList[i].ExtendedInfo);
+           fTagList[i].TagReader.Free;
+         end;
     end;
 end;
 

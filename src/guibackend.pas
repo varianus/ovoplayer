@@ -27,7 +27,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, ActnList, Controls, Dialogs, Forms, LResources,
   PopupNotifier, PlayList, AudioEngine, AudioEngine_dummy,
-  PlayListManager, MediaLibrary,
+  PlayListManager, MediaLibrary, Song,
   MultimediaKeys, Config, UniqueInstance;
 
 type
@@ -109,6 +109,7 @@ type
     FOnSaveInterfaceState: TNotifyEvent;
     procedure AudioEngineSongEnd(Sender: TObject);
     procedure onMultimediaKeys(Sender: TObject; Command: TEngineCommand);
+    procedure PlaylistOnSongAdd(Sender: Tobject; Index: Integer; ASong: TSong);
     procedure SetOnEngineCommand(const AValue: TOnEngineCommand);
     procedure SetOnExternalCommand(const AValue: TOnExternalCommand);
     procedure SetOnPlayListChange(const AValue: TNotifyEvent);
@@ -184,6 +185,8 @@ begin
   AudioEngine := Engine.Create;
   AudioEngine.OnSongEnd := @AudioEngineSongEnd;
   AudioEngine.Activate;
+
+  PlayList.OnSongAdd:=@PlaylistOnSongAdd;
 
   if Config.InterfaceParam.CaptureMMKeys then
     begin
@@ -598,6 +601,18 @@ begin
   if Assigned(FOnEngineCommand) then
      FOnEngineCommand(AudioEngine, ecStop);
 
+end;
+
+procedure TBackEnd.PlaylistOnSongAdd(Sender: Tobject; Index: Integer; ASong : TSong);
+var
+  ID: Integer;
+  ExtendedInfo: TExtendedInfo;
+begin
+  ID := mediaLibrary.IDFromFullName(ASong.FullName);
+  if ID = -1 then
+    exit;
+  ExtendedInfo := mediaLibrary.InfoFromID(ID);
+  ASong.ExtraProperty := ExtendedInfo;
 end;
 
 procedure TBackEnd.ApplicationPropertiesDropFiles(Sender: TObject;

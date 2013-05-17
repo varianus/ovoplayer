@@ -30,7 +30,7 @@ uses
 type
 
   TplSortField = (stNone, stTitle, StAlbum, stArtist, stDuration,  stTrack, stGenre,
-                  stYear, stAlbumArtist, stFileName);
+                  stYear, stAlbumArtist, stFileName, stRating);
 
   TplSortDirection = (sdplAscending, sdplDiscending);
   TplRepeat = (rptNone, rptTrack, rptAlbum, rptPlayList);
@@ -38,9 +38,12 @@ type
   { TPlayList }
   TPlayListSortCompare = function (Item1, Item2: Pointer): Integer of object;
 
+  TOnSongAdd = procedure(Sender: Tobject; Index: Integer; Song : TSong) of object;
+
   TPlayList = class(TFPList)
   private
     FItemIndex: integer;
+    FOnSongAdd: TOnSongAdd;
     FRepeatMode: TplRepeat;
     FSortField: TplSortField;
     fUpdating:  boolean;
@@ -53,6 +56,7 @@ type
     function MyCompare(p1, p2: Pointer): integer;
     procedure SetItem(Index: integer; const AValue: TSong);
     procedure SetItemIndex(const AValue: integer);
+    procedure SetOnSongAdd(AValue: TOnSongAdd);
     procedure SetRepeatMode(const AValue: TplRepeat);
     procedure SetSortDirection(const AValue: TplSortDirection);
     procedure SetSortField(const AValue: TplSortField);
@@ -81,6 +85,7 @@ type
     property ItemIndex: integer read FItemIndex write SetItemIndex;
     property Songs[Index: integer]: TSong read GetItem write SetItem; default;
     property TotalTime: double read GetTotalTime;
+    property OnSongAdd: TOnSongAdd read FOnSongAdd write SetOnSongAdd;
   end;
 
 
@@ -136,6 +141,7 @@ begin
     stYear        : result:= CompareStr(s1.tags.Year,s2.tags.Year);
     stAlbumArtist : result:= CompareStr(s1.tags.AlbumArtist,s2.tags.AlbumArtist);
     stFileName    : result:= CompareStr(s1.FileName, s2.FileName);
+    stRating      : result:= 0;
   else
     result:=0;
   end;
@@ -164,6 +170,9 @@ end;
 function TPlayList.Add(ASong: TSong): integer;
 begin
   Result := inherited Add(Pointer(ASong));
+  if Assigned(FOnSongAdd) then
+    FOnSongAdd(self, Result, ASong);
+
 end;
 
 procedure TPlayList.Delete(Index: integer);
@@ -218,6 +227,12 @@ begin
   else
     FItemIndex := AValue;
 
+end;
+
+procedure TPlayList.SetOnSongAdd(AValue: TOnSongAdd);
+begin
+  if FOnSongAdd=AValue then Exit;
+  FOnSongAdd:=AValue;
 end;
 
 procedure TPlayList.SetRepeatMode(const AValue: TplRepeat);
@@ -336,7 +351,7 @@ begin
   fUpdating := False;
 end;
 
-Function TPlayList.CheckItem(Item: integer): integer;
+function TPlayList.CheckItem(Item: integer): integer;
 begin
  if item > count then
     result:=count
@@ -420,4 +435,4 @@ begin
   Sort;
 end;
 
-end.
+end.

@@ -37,6 +37,7 @@ type
 
   TSong = class
   private
+    FExtraProperty: TObject;
     FFullName:  string;
     FName:      string;
     fFilePath:  string;
@@ -45,6 +46,7 @@ type
     FTags:      TCommonTags;
     function GetTags: TCommonTags;
     function GetTitle: string;
+    procedure SetExtraProperty(AValue: TObject);
     procedure SetFullName(const AValue: string);
     procedure SetName(const AValue: string);
     procedure SetTagLoaded(const AValue: boolean);
@@ -59,7 +61,7 @@ type
     property Tags: TCommonTags read GetTags;
     property TagLoaded: boolean read FTagLoaded write SetTagLoaded;
     property FullName: string read FFullName write SetFullName;
-
+    property ExtraProperty :TObject read FExtraProperty write SetExtraProperty;
   end;
 
 function TagValue(Tags: TCommonTags; Kind: TTagKind): string;
@@ -89,6 +91,12 @@ begin
     Result := FTags.Title
   else
     Result := FFileName;
+end;
+
+procedure TSong.SetExtraProperty(AValue: TObject);
+begin
+  if FExtraProperty=AValue then Exit;
+  FExtraProperty:=AValue;
 end;
 
 function TSong.GetTags: TCommonTags;
@@ -133,10 +141,13 @@ begin
   FFullName  := aFileName;
   FTags.ID   := -1;
   FTagLoaded := False;
+  FExtraProperty := nil;
 end;
 
 destructor TSong.Destroy;
 begin
+  if Assigned(FExtraProperty) then
+     FExtraProperty.Free;
   inherited Destroy;
 end;
 
