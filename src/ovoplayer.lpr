@@ -38,7 +38,9 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   {$IFDEF BASS} lazdynamic_bass, audioengine_bass,{$ENDIF}
   {$IFDEF DSHOW} mediadshow, audioengine_dshow,{$ENDIF}
   {$IFDEF MEDIAFOUNDATION} mediafoundation, audioengine_mf,{$ENDIF}
-  {$IFDEF OPENSOURCELIB} lazdyn_libsndfile, lazdyn_mpg123, lazdyn_portaudio, audioengine_OpenLib,{$ENDIF}
+  {$IFDEF OPENSOURCELIB} lazdyn_libsndfile, uos, lazdyn_mpg123, lazdyn_portaudio, audioengine_OpenLib,{$ENDIF}
+  {$IFDEF UOS} UOS, uos_libsndfile, uos_mpg123, uos_portaudio, audioengine_UOS,{$ENDIF}
+  {$IFDEF FFMPEG} audioengine_FFMPEG,{$ENDIF}
   // ovotag
   song, AudioTag, basetag, file_flac, file_mp3, file_wma,
   tag_wma, tag_vorbis, tag_id3v2, file_ogg, file_monkey, tag_ape,

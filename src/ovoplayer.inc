@@ -33,6 +33,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   {$INLINE ON}
 {$ENDIF RELEASE}
 
+// Working Audio engines
+// VLC             - Videolan VLC     - Stable
+// BASS            - Un4Seen          - Stable
+// DSHOW           - Microsoft        - Stable, windows only
+// XINE            - Xine             - Stable, minor issues
+// GSTREAMER       - Gstreamer        - Stable, Linux only, needs glib
+// MPLAYER         - Mplayer          - Stable, minor issues
+
+// Engines under development
+// MEDIAFOUNDATION - Microsoft        - Broken, Windows Vista and later only
+// FFMPEG          - FFMpeg           - Broken
+// UOS             - Various          - Working with major issues
+// OPENSOURCELIB   - Varios           - Working with major issues
+
 {$IFDEF LINUX}
   {$DEFINE NEEDCFGSUBDIR} // Need to add a sub-directory to configuration files directory
   {$DEFINE ASKMMKEYSMODE} // Ask for multimedia keys capture mode
@@ -40,7 +54,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   {$DEFINE VLC} //
   {$DEFINE XINE} //
   {$DEFINE BASS} //
-  {$DEFINE OPENSOURCELIB} //
+  {.$DEFINE OPENSOURCELIB} //
+  {.$DEFINE UOS} //
+  {.$DEFINE FFMPEG}
+
 {$ENDIF LINUX}
 
 {$IFDEF WINDOWS}
@@ -49,12 +66,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   {$DEFINE VLC} //
   {$DEFINE XINE} //
   {$DEFINE BASS} //
+  {.$DEFINE UOS} //
+  {.$DEFINE FFMPEG}
+  {.$DEFINE OPENSOURCELIB} //
 {$ENDIF WINDOWS}
 
 {$IFDEF DARWIN}
   {$DEFINE VLC} //
   {$DEFINE BASS} //
-  {$DEFINE OPENSOURCELIB} //
+  {.$DEFINE OPENSOURCELIB} //
+  {.$DEFINE UOS} //
+  {.$DEFINE FFMPEG}
+
 {$ENDIF DARWIN}
 
 

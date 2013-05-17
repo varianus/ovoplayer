@@ -195,6 +195,7 @@ end;
 
 function TAudioEngineOpenLib.GetSongPos: integer;
 begin
+  exit;
   case CurrentSoundDecoder of
     csdMPG123 : Result := trunc(mpg123_tell(StreamHandle) / (fRate / 1000));
     csdSndFile : Result := trunc(sf_seek(StreamHandle, 0, SEEK_CUR) / (fRate / 1000));
@@ -225,6 +226,12 @@ begin
   sf_Load('libsndfile.so.1');
   Mp_Load('libmpg123.so.0');
   {$ENDIF LINUX}
+  {$IFDEF WINDOWS}
+  Pa_Load('libportaudio.dll');
+  sf_Load('libsndfile.dll');
+  Mp_Load('libmpg123.dll');
+  {$ENDIF LINUX}
+
   {$IFDEF DARWIN}
   Pa_Load('LibPortaudio-32.dylib');
   sf_Load('LibSndFile-32.dylib');
@@ -305,6 +312,13 @@ begin
   else
     begin
       CurrentSoundDecoder:= csdSndFile;
+
+      writeln('sfinfo.frames     ', sfinfo.frames);
+      writeln('sfinfo.samplerate ', sfinfo.samplerate);
+      writeln('sfinfo.channels   ', sfinfo.channels);
+      writeln('sfinfo.format     ', sfinfo.format);
+      writeln('sfinfo.sections   ', sfinfo.sections);
+      writeln('sfinfo.seekable   ', sfinfo.seekable);
       frate:= sfInfo.samplerate;
       pa_OutInfo.channelCount:= sfInfo.channels;
       sf_seek(StreamHandle, 0, SEEK_SET);
@@ -385,6 +399,11 @@ begin
     Result :=   Pa_Load('LibPortaudio-32.dylib') and
                 sf_Load('LibSndFile-32.dylib') and
                 Mp_Load('LibMpg123-32.dylib');
+    {$ENDIF DARWIN}
+    {$IFDEF WINDOWS}
+    Result :=   Pa_Load('LibPortaudio.dll') and
+                sf_Load('LibSndFile.dll') and
+                Mp_Load('LibMpg123.dll');
     {$ENDIF DARWIN}
 
   except
