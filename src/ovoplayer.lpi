@@ -109,11 +109,14 @@
             <Filename Value="..\bin\$(TargetOS)\ovoplayer"/>
           </Target>
           <SearchPaths>
-            <IncludeFiles Value="$(ProjOutDir);platform\$(SrcOS)"/>
-            <OtherUnitFiles Value="import-engines;ovotag"/>
+            <IncludeFiles Value="$(ProjOutDir);platform\$(TargetOS)"/>
+            <OtherUnitFiles Value="import-engines;ovotag;components\uniqueinstance"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
-          <Conditionals Value="if TargetOS = 'linux' then
+          <Conditionals Value="if TargetOS = 'darwin' then
+   CustomOptions := '-dUseCThreads';
+
+if TargetOS = 'linux' then
    CustomOptions := '-dUseCThreads -dUseStatusIcon';
 
 if LCLWidgetType = 'gtk2' then
@@ -131,11 +134,11 @@ if LCLWidgetType = 'win32' then
             </Item1>
           </BuildMacros>
           <CodeGeneration>
-            <Checks>
-              <StackChecks Value="True"/>
-            </Checks>
+            <SmartLinkUnit Value="True"/>
+            <RelocatableUnit Value="True"/>
             <Optimizations>
-              <OptimizationLevel Value="0"/>
+              <VariablesInRegisters Value="True"/>
+              <OptimizationLevel Value="2"/>
             </Optimizations>
           </CodeGeneration>
           <Linking>
@@ -143,7 +146,9 @@ if LCLWidgetType = 'win32' then
               <GenerateDebugInfo Value="False"/>
               <DebugInfoType Value="dsDwarf2"/>
               <UseLineInfoUnit Value="False"/>
+              <StripSymbols Value="True"/>
             </Debugging>
+            <LinkSmart Value="True"/>
             <Options>
               <Win32>
                 <GraphicApplication Value="True"/>
@@ -262,7 +267,7 @@ if LCLWidgetType = 'customdrawn' then
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="51">
+    <Units Count="55">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -538,6 +543,26 @@ if LCLWidgetType = 'customdrawn' then
         <IsPartOfProject Value="True"/>
         <UnitName Value="uos"/>
       </Unit50>
+      <Unit51>
+        <Filename Value="audioengine_uos.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="AudioEngine_UOS"/>
+      </Unit51>
+      <Unit52>
+        <Filename Value="import-engines\uos_libsndfile.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uos_libsndfile"/>
+      </Unit52>
+      <Unit53>
+        <Filename Value="import-engines\uos_mpg123.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uos_mpg123"/>
+      </Unit53>
+      <Unit54>
+        <Filename Value="import-engines\uos_portaudio.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uos_portaudio"/>
+      </Unit54>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -572,11 +597,11 @@ if LCLWidgetType = 'win32' then
       </Item1>
     </BuildMacros>
     <CodeGeneration>
-      <SmartLinkUnit Value="True"/>
-      <RelocatableUnit Value="True"/>
       <Checks>
         <IOChecks Value="True"/>
+        <RangeChecks Value="True"/>
         <OverflowChecks Value="True"/>
+        <StackChecks Value="True"/>
       </Checks>
       <Optimizations>
         <OptimizationLevel Value="0"/>
