@@ -118,7 +118,7 @@ begin
   {$IFDEF LINUX}
   UOS_Init.PA_FileName := 'libportaudio.so.2';
   UOS_Init.SF_FileName := 'libsndfile.so.1';
-  IUOS_Initnit.MP_FileName := 'libmpg123.so.0';
+  UOS_Init.MP_FileName := 'libmpg123.so.0';
   {$ENDIF LINUX}
   {$IFDEF WINDOWS}
   UOS_Init.PA_FileName := 'libportaudio-32.dll';
@@ -331,4 +331,4 @@ initialization
   RegisterEngineClass(TAudioEngineUOS, 1, false, true);
 
 
-end.
+end.
