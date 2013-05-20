@@ -97,13 +97,13 @@ end;
 
 function TAudioEngineUOS.GetSongPos: integer;
 begin
-//  if fState = ENGINE_PLAY then
-//     Result := Trunc(UOS_Player.InputPositionSeconds(0) * 1000);
+  if fState = ENGINE_PLAY then
+     Result := Trunc(UOS_Player.InputPositionSeconds(fStreamIndex) * 1000);
 end;
 
 procedure TAudioEngineUOS.SetSongPos(const AValue: integer);
 begin
-//  UOS_Player.SeekSeconds(0, AValue /1000);
+  UOS_Player.SeekSeconds(fStreamIndex, AValue /1000);
 end;
 
 procedure TAudioEngineUOS.Activate;
@@ -186,10 +186,10 @@ begin
 
   UOS_Player := TUOS_Player.Create(True, self);
   UOS_Player.Priority := tpHighest;
-  UOS_Player.AddIntoDevOut(-1, -1, -1, -1, 0);
+  UOS_Player.AddIntoDevOut(-1, -1, -1, -1, -1);
 
 
-  fStreamIndex:= UOS_Player.AddFromFile(Song.FullName, -1, 0);
+  fStreamIndex:= UOS_Player.AddFromFile(Song.FullName, -1, -1);
   UOS_Player.EndProc:=@EndSong;
 
   fDSPVol := UOS_Player.AddDSPVolumeIn(fStreamIndex, 1, 1);
@@ -242,9 +242,13 @@ begin
 end;
 
 procedure TAudioEngineUOS.EndSong;
+Var
+  oldstate: TEngineState;
 begin
- if fState = ENGINE_SONG_END then
-    PostCommand(ecNext);
+    oldstate:= fState;
+    fState := ENGINE_SONG_END ;
+    if oldstate = ENGINE_PLAY then
+       PostCommand(ecNext);
 end;
 
 class function TAudioEngineUOS.IsAvalaible(ConfigParam: TStrings): boolean;
@@ -307,6 +311,7 @@ end;
 
 procedure TAudioEngineUOS.Stop;
 begin
+  fState := ENGINE_STOP;
   UOS_Player.Stop;
   UOS_Player.WaitFor;
   UOS_Player := nil;

@@ -68,6 +68,14 @@ type
   PArShort = ^TArShort;
   PArLong = ^TArLong;
 
+
+  TLoadableLib = (LoadPA,  // load PortAudio
+                LoadMP,  // load MPg123
+                LoadSF   // load SndFile
+                );
+
+  TLibToLoad = set of TLoadableLib;
+
 const
   ///// error
   noError = 0;
@@ -77,14 +85,10 @@ const
   LoadSFError = 21;
   FileMPError = 30;
   LoadMPError = 31;
+
+
   //////// UOS_load() flag
-  LoadAll = 0;   // load all PortAudio + SndFile + MPG123
-  LoadPA = 1;   // load only PortAudio
-  LoadSF = 2;   // load only SndFile
-  LoadMP = 3;   // load only MPG123
-  LoadPA_SF = 4;   // load only PortAudio + SndFile
-  LoadPA_MP = 5;   // load only PortAudio + MPG123
-  LoadSF_MP = 6;   // load only SndFile + MPG123
+  LoadAll :TLibToLoad = [loadPA,LoadMP,LoadSF];   // load all PortAudio + SndFile + MPG123
   ///// UOS Audio
   Stereo = 2;
   Mono = 1;
@@ -122,7 +126,7 @@ type
     PA_FileName: ansistring;
     SF_FileName: ansistring;
     MP_FileName: ansistring;
-    flag: shortint;     ////// Default is 0 : load all ;
+    flag: TLibToLoad;     ////// Default is 0 : load all ;
     LoadResult: TUOS_LoadResult;
     DefDevOut: PaDeviceIndex;
     DefDevOutInfo: PPaDeviceInfo;
@@ -501,7 +505,7 @@ type
   end;
 
 var
-  UOSLoadFlag: shortint;
+  UOSLoadFlag: TLibToLoad;
   UOSLoadResult: TUOS_LoadResult;
 
       {$IF DEFINED(LCL) or DEFINED(Console)}
@@ -1705,9 +1709,8 @@ begin
   else
     StreamOut[x].Data.SampleRate := SampleRate;
   if Latency = -1 then
-
-//    StreamOut[x].Data.PAParam.SuggestedLatency :=
-//      ((Pa_GetDeviceInfo(StreamOut[x].Data.PAParam.device)^.defaultHighOutputLatency)) * 1
+     StreamOut[x].Data.PAParam.SuggestedLatency :=
+      ((Pa_GetDeviceInfo(StreamOut[x].Data.PAParam.device)^.defaultHighOutputLatency)) * 1
 
   else
     StreamOut[x].Data.PAParam.SuggestedLatency := CDouble(Latency);
@@ -1770,10 +1773,8 @@ begin
     x := Length(StreamIn) - 1;
     err := -1;
     StreamIn[x].Data.LibOpen := -1;
-    if (UOSloadresult.SFloadERROR = 0) and ((UOSloadflag = LoadAll) or
-      (UOSloadflag = LoadSF) or (UOSloadflag = LoadPA_SF) or
-      (UOSloadflag = LoadSF_MP)) then
-
+    if (UOSloadresult.SFloadERROR = 0) and
+      (LoadSF in UOSloadflag) then
     begin
       StreamIn[x].Data.HandleSt := sf_open((FileName), SFM_READ, sfInfo);
       (* try to open the file *)
@@ -1807,9 +1808,9 @@ begin
       end;
     end;
 
-    if ((StreamIn[x].Data.LibOpen = -1)) and (UOSLoadresult.MPloadERROR = 0) and
-      ((UOSloadflag = LoadAll) or (UOSloadflag = LoadMP) or
-      (UOSloadflag = LoadPA_MP) or (UOSloadflag = LoadSF_MP)) then
+    if ((StreamIn[x].Data.LibOpen = -1) and
+        (UOSLoadresult.MPloadERROR = 0) and
+        (LoadMP in UOSloadflag )) then
     begin
       Err := -1;
 
@@ -2257,8 +2258,8 @@ end;
 function TUOS_Init.InitLib(): integer;
 begin
   Result := -1;
-  if (LoadResult.MPloadERROR = 0) and ((flag = LoadAll) or (flag = LoadMP) or
-    (flag = LoadPA_MP) or (flag = LoadSF_MP)) then
+  if (LoadResult.MPloadERROR = 0) and
+    (LoadMP in flag) then
     if mpg123_init() = MPG123_OK then
     begin
       LoadResult.MPinitError := 0;
@@ -2269,8 +2270,8 @@ begin
       Result := -2;
       LoadResult.MPinitError := 1;
     end;
-  if (LoadResult.PAloadERROR = 0) and ((flag = LoadAll) or (flag = LoadPA) or
-    (flag = LoadPA_SF) or (flag = LoadPA_MP)) then
+  if (LoadResult.PAloadERROR = 0) and
+    (LoadPA in flag) then
   begin
     LoadResult.PAinitError := Pa_Initialize();
     if LoadResult.PAinitError = 0 then
@@ -2296,12 +2297,9 @@ begin
   SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide,exOverflow, exUnderflow, exPrecision]);
 
   UOSloadflag := Flag;
-  case flag of
-    LoadAll:
+
+  if loadPA in  flag then
     begin
-      if not fileexists(PA_FileName) then
-        LoadResult.PAloadERROR := 1
-      else
       if Pa_Load(PA_FileName) then
       begin
         Result := 0;
@@ -2309,12 +2307,10 @@ begin
       end
       else
         LoadResult.PAloadERROR := 2;
-      if not fileexists(SF_FileName) then
-      begin
-        Result := -1;
-        LoadResult.SFloadERROR := 1;
-      end
-      else
+   end;
+
+  if loadSF in  flag then
+    begin
       if Sf_Load(SF_FileName) then
       begin
         LoadResult.SFloadERROR := 0;
@@ -2324,12 +2320,10 @@ begin
         LoadResult.SFloadERROR := 2;
         Result := -1;
       end;
-      if not fileexists(MP_FileName) then
-      begin
-        Result := -1;
-        LoadResult.MPloadERROR := 1;
-      end
-      else
+   end;
+
+  if loadSF in  flag then
+     begin
       if mp_Load(Mp_FileName) then
         LoadResult.MPloadERROR := 0
       else
@@ -2339,165 +2333,16 @@ begin
       end;
     end;
 
-    LoadPA:
-      if not fileexists(PA_FileName) then
-      begin
-        Result := -1;
-        LoadResult.PAloadERROR := 1;
-      end
-      else
-      if Pa_Load(PA_FileName) then
-      begin
-        Result := 0;
-        LoadResult.PAloadERROR := 0;
-      end
-      else
-      begin
-        Result := -1;
-        LoadResult.PAloadERROR := 2;
-      end;
-
-    LoadSF:
-      if not fileexists(SF_FileName) then
-      begin
-        Result := -1;
-        LoadResult.SFloadERROR := 1;
-      end
-      else
-      if Sf_Load(SF_FileName) then
-      begin
-        Result := 0;
-        LoadResult.SFloadERROR := 0;
-      end
-      else
-      begin
-        Result := -1;
-        LoadResult.SFloadERROR := 2;
-      end;
-
-    LoadMP:
-      if not fileexists(MP_FileName) then
-      begin
-        Result := -1;
-        LoadResult.MPloadERROR := 1;
-      end
-      else
-      if mp_Load(Mp_FileName) then
-      begin
-        Result := 0;
-        LoadResult.MPloadERROR := 0;
-      end
-      else
-      begin
-        Result := -1;
-        LoadResult.MPloadERROR := 2;
-      end;
-
-    LoadPA_SF:
-    begin
-      if not fileexists(PA_FileName) then
-      begin
-        Result := -1;
-        LoadResult.PAloadERROR := 1;
-      end
-      else
-      if Pa_Load(PA_FileName) then
-      begin
-        Result := 0;
-        LoadResult.PAloadERROR := 0;
-      end
-      else
-      begin
-        Result := -1;
-        LoadResult.PAloadERROR := 2;
-      end;
-      if not fileexists(SF_FileName) then
-      begin
-        Result := -1;
-        LoadResult.SFloadERROR := 1;
-      end
-      else
-      if Sf_Load(SF_FileName) then
-        LoadResult.SFloadERROR := 0
-      else
-      begin
-        Result := -1;
-        LoadResult.SFloadERROR := 2;
-      end;
-    end;
-
-    LoadPA_MP:
-    begin
-      if not fileexists(MP_FileName) then
-      begin
-        Result := -1;
-        LoadResult.MPloadERROR := 1;
-      end
-      else
-      if MP_Load(Mp_FileName) then
-      begin
-        Result := 0;
-        LoadResult.MPloadERROR := 0;
-      end
-      else
-        LoadResult.MPloadERROR := 2;
-      if not fileexists(PA_FileName) then
-      begin
-        Result := -1;
-        LoadResult.PAloadERROR := 1;
-      end
-      else
-      if Pa_Load(PA_FileName) then
-        LoadResult.PAloadERROR := 0
-      else
-      begin
-        Result := -1;
-        LoadResult.PAloadERROR := 2;
-      end;
-    end;
-
-
-    LoadSF_MP:
-    begin
-      if not fileexists(SF_FileName) then
-      begin
-        Result := -1;
-        LoadResult.SFloadERROR := 1;
-      end
-      else
-      if SF_Load(SF_FileName) then
-      begin
-        Result := 0;
-        LoadResult.SFloadERROR := 0;
-      end
-      else
-      begin
-        LoadResult.SFloadERROR := 2;
-        Result := -1;
-      end;
-      if not fileexists(MP_FileName) then
-      begin
-        Result := -1;
-        LoadResult.MPloadERROR := 1;
-      end
-      else
-      if mp_Load(Mp_FileName) then
-        LoadResult.MPloadERROR := 0
-      else
-      begin
-        LoadResult.MPloadERROR := 2;
-      end;
-    end;
-  end;
   if Result = 0 then
     Result := InitLib();
 //  SetExceptionMask(ExceptionMask);
+
 end;
 
 constructor TUOS_Init.Create;
 begin
 
-  flag := 0;
+  flag := LoadAll;
   LoadResult.PAloadERROR := -1;
   LoadResult.SFloadERROR := -1;
   LoadResult.MPloadERROR := -1;
