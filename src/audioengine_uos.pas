@@ -322,7 +322,7 @@ begin
 
   if (GetState() = ENGINE_PAUSE) then
     begin
-        UOS_Player.Pause;
+        UOS_Player.Replay;
         fState:=ENGINE_PLAY;
     end;
 end;
