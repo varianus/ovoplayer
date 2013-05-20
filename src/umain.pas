@@ -423,7 +423,7 @@ procedure TRowsSelection.SelectAll;
 var i :integer;
 begin
   for i := 0 to fDwordSize -1 do
-    fArray^[i] := not DWord($0);
+    fArray^[i] := DWord(not $0);
 end;
 
 procedure TRowsSelection.SetSize(Size: Integer);
@@ -2193,4 +2193,4 @@ begin
        end;
 end;
 
-end.
+end.
