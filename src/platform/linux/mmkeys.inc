@@ -334,7 +334,7 @@ begin
           if (screen <> Nil) then
              root := RootWindowOfScreen (screen);
 
-          for j := 0 to Length(keycodes) do
+          for j := 0 to Length(keycodes) -1 do
             if (keycodes[j] <> 0) then
                begin
                  if (grab) then
