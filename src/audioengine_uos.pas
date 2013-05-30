@@ -311,10 +311,15 @@ end;
 
 procedure TAudioEngineUOS.Stop;
 begin
-  fState := ENGINE_STOP;
-  UOS_Player.Stop;
-  UOS_Player.WaitFor;
-  UOS_Player := nil;
+
+  if Playing then
+    begin
+      UOS_Player.Stop;
+      UOS_Player.WaitFor;
+      UOS_Player := nil;
+
+    end;
+
 end;
 
 procedure TAudioEngineUOS.UnPause;
@@ -331,4 +336,4 @@ initialization
   RegisterEngineClass(TAudioEngineUOS, 1, false, true);
 
 
-end.
+end.
