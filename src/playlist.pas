@@ -394,9 +394,9 @@ procedure TPlayList.Shuffle;
 var
   randomIndex: integer;
   cnt: integer;
-  p: Pointer;
 begin
-  p:= List^[FItemIndex];
+  PushPos;
+
   Randomize;
   for cnt := 0 to Count - 1 do
     begin
@@ -404,22 +404,26 @@ begin
       Swap(cnt, cnt + randomIndex);
     end;
 
-  FItemIndex:=IndexOf(p);
+  PopPos;
 
 end;
 
 procedure TPlayList.Sort;
-var
- p: Pointer;
 begin
-  p:= List^[FItemIndex];
+  PushPos;
+
   IntQuickSort(Self.List, 0, count-1, @MyCompare);
-  FItemIndex:=IndexOf(p);
+
+  PopPos;
 end;
 
 procedure TPlayList.PushPos;
 begin
- fSavedPointer := List^[FItemIndex];
+  if ItemIndex <> -1 then
+    fSavedPointer := List^[FItemIndex]
+  else
+    fSavedPointer := nil;
+
 end;
 
 procedure TPlayList.PopPos;
