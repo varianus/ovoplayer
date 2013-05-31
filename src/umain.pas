@@ -293,6 +293,7 @@ type
     procedure TrackBarMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: integer);
     procedure TrackDblClick(Sender: TObject);
     procedure TrayIconClick(Sender: TObject);
+    procedure TrayIconDblClick(Sender: TObject);
     procedure TrayIconMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure PlaylistTreeDblClick(Sender: TObject);
@@ -337,6 +338,7 @@ type
     procedure ReadConfig(Sender: TObject);
     procedure RemoveSelectionFromPlaylist;
     procedure ScrollIntoView;
+    procedure ShowNotification;
   public
     { public declarations }
   end;
@@ -677,26 +679,39 @@ begin
         end;
      end;
 
-  if BackEnd.Config.NotificationParam.Kind = npkOSD then
-    ShowOSD(BackEnd.PlayList.CurrentItem, imgCover.Picture);
-
-  if BackEnd.Config.NotificationParam.Kind = npkNotifications then
-    begin
-    TrayIcon.BalloonTimeout := BackEnd.Config.NotificationParam.TimeOut;
-    TrayIcon.BalloonTitle   := Song.tags.Title;
-    TrayIcon.BalloonHint    := Song.Tags.Album + LineEnding + Song.Tags.Artist + LineEnding +
-      Song.Tags.TrackString;
-    if trim(TrayIcon.BalloonHint) = '' then
-         TrayIcon.BalloonHint := Song.FileName;
-
-    TrayIcon.ShowBalloonHint;
-    end;
+  ShowNotification;
 
   id:= BackEnd.mediaLibrary.IDFromFullName(BackEnd.PlayList.CurrentItem.FullName);
   if id > -1 then
      BackEnd.mediaLibrary.SetSongPlayed(ID);
 
   ScrollIntoView;
+
+end;
+
+procedure TfMainForm.ShowNotification;
+var
+  ASong: TSong;
+
+begin
+  ASong := BackEnd.PlayList.CurrentItem;
+  if not Assigned(ASong) then
+    exit;
+
+  if BackEnd.Config.NotificationParam.Kind = npkOSD then
+    ShowOSD(ASong, imgCover.Picture);
+
+  if BackEnd.Config.NotificationParam.Kind = npkNotifications then
+    begin
+      TrayIcon.BalloonTimeout := BackEnd.Config.NotificationParam.TimeOut;
+      TrayIcon.BalloonTitle   := ASong.tags.Title;
+      TrayIcon.BalloonHint    := ASong.Tags.Album + LineEnding + ASong.Tags.Artist + LineEnding +
+      ASong.Tags.TrackString;
+      if trim(TrayIcon.BalloonHint) = '' then
+         TrayIcon.BalloonHint := ASong.FileName;
+
+      TrayIcon.ShowBalloonHint;
+    end;
 
 end;
 
@@ -1933,6 +1948,11 @@ end;
 
 procedure TfMainForm.TrayIconClick(Sender: TObject);
 begin
+  ShowNotification;
+end;
+
+procedure TfMainForm.TrayIconDblClick(Sender: TObject);
+begin
   if Visible then
     Hide
   else
@@ -2193,4 +2213,4 @@ begin
        end;
 end;
 
-end.
+end.

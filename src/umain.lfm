@@ -875,6 +875,7 @@ object fMainForm: TfMainForm
     PopUpMenu = TrayMenu
     Visible = True
     OnClick = TrayIconClick
+    OnDblClick = TrayIconDblClick
     OnMouseDown = TrayIconMouseDown
     left = 616
     top = 256

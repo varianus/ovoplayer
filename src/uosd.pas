@@ -338,11 +338,11 @@ end;
 constructor TfOSD.Create(AOwner: Tcomponent);
 begin
   inherited Create(AOwner);
-  timPaint:= TTimer.Create(self);
+  timPaint:= TTimer.Create(nil);
   timPaint.Enabled:=false;
   timPaint.OnTimer:=@timPaintTimer;
   timPaint.Interval:=40;
-  timShow:= TTimer.Create(self);
+  timShow:= TTimer.Create(nil);
   timShow.Enabled:=false;
   timShow.OnTimer:=@timShowTimer;
 
@@ -399,7 +399,7 @@ begin
   if ConfigMode then
      Message.Result := HTCLIENT
   else
-     Message.Result := HTTRANSPARENT;
+     Message.Result := htNowhere;//HTTRANSPARENT;
 end;
 
 
