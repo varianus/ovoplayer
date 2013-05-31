@@ -97,7 +97,7 @@ end;
 
 function TAudioEngineUOS.GetSongPos: integer;
 begin
-  if fState = ENGINE_PLAY then
+  if Assigned(UOS_Player) and (fState = ENGINE_PLAY) then
      Result := Trunc(UOS_Player.InputPositionSeconds(fStreamIndex) * 1000);
 end;
 
@@ -181,7 +181,7 @@ begin
   if Assigned(UOS_Player) then
      begin
        if fState = ENGINE_PLAY then
-          Stop;
+       Stop;
      end;
 
   UOS_Player := TUOS_Player.Create(True, self);
@@ -248,7 +248,7 @@ begin
     oldstate:= fState;
     fState := ENGINE_SONG_END ;
     if oldstate = ENGINE_PLAY then
-       PostCommand(ecNext);
+   PostCommand(ecNext);
 end;
 
 class function TAudioEngineUOS.IsAvalaible(ConfigParam: TStrings): boolean;
@@ -311,8 +311,8 @@ end;
 
 procedure TAudioEngineUOS.Stop;
 begin
-
-  if Playing then
+  fState:= ENGINE_STOP;
+  if Assigned(UOS_Player) then
     begin
       UOS_Player.Stop;
       UOS_Player.WaitFor;
