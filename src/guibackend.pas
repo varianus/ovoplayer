@@ -336,7 +336,7 @@ begin
 
        try
        BuildFileList(IncludeTrailingPathDelimiter(Path) + AllExt,
-         faAnyFile, FileList, True);
+         faAnyFile, FileList, false);
        FileList.Sort;
        if FileList.Count > 0 then
          Result := FileList[0];
@@ -690,4 +690,4 @@ end;
 
 initialization
   fBackEnd := nil;
-end.
+end.
