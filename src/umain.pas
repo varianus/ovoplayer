@@ -647,9 +647,13 @@ begin
   TrackBar.Max      := Song.Tags.Duration;
   TrackBar.Position := BackEnd.AudioEngine.Position;
   TrayIcon.Hint     := Song.tags.Title + LineEnding + Song.Tags.Artist;
+  Caption           := Song.tags.Title + ' - ' + Song.Tags.Artist;;
 
-  if TrayIcon.Hint = '' then
-     TrayIcon.Hint := Song.FileName;
+  if TrayIcon.Hint = LineEnding then
+     begin
+       TrayIcon.Hint := Song.FileName;
+       Caption       := Song.FileName;
+     end;
 
   imgloaded := false;
   if Song.Tags.HasImage then
@@ -2129,6 +2133,7 @@ begin
     DebugLn('[TfMainForm.ClearPanelInfo] File not found: ' + lFile)
   else
     imgCover.Picture.LoadFromFile(lFile);
+  Caption := DisplayAppName;
 end;
 
 procedure TfMainForm.OnEngineCommand(Sender: Tobject; Command: TEngineCommand);
@@ -2213,4 +2218,4 @@ begin
        end;
 end;
 
-end.
+end.

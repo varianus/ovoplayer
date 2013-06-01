@@ -31,7 +31,7 @@ var
    AppNameServerID :string  = 'ovoplayer';
 const
 
-  DisplayAppName = 'OVO Player';
+  DisplayAppName = 'OvoPlayer';
   AppVersion = {$i version.inc};
 
   AppName  = 'ovoplayer';
@@ -69,4 +69,4 @@ initialization
  OnGetApplicationName := @GetAppName;
 
 
-end.
+end.
