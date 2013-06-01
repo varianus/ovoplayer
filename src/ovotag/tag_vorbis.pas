@@ -120,8 +120,11 @@ begin
 
   Size := BetoN(AStream.ReadDWord);
   SetLength(tmpstr, size);
-  AStream.read(tmpstr[0], size);
-  img.Description:=Utf8ToAnsi(strpas(@tmpstr[0]));
+  if size <> 0 then
+     begin
+       AStream.read(tmpstr[0], size);
+       img.Description:=Utf8ToAnsi(strpas(@tmpstr[0]));
+     end;
 
   AStream.ReadDWord; // width
   AStream.ReadDWord; // heigth
@@ -150,6 +153,8 @@ begin
 
   if Result.AlbumArtist = '' then
      Result.AlbumArtist := result.Artist;
+
+  Result.HasImage := ImageCount > 0;
 end;
 
 procedure TVorbisTags.SetCommonTags(CommonTags: TCommonTags);
@@ -221,4 +226,4 @@ begin
 end;
 
 end.
-
+
