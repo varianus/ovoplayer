@@ -58,11 +58,11 @@ msgid "Updated:"
 msgstr ""
 
 #: tbackend.actexit.caption
-msgid "Exit"
+msgid "Quit"
 msgstr ""
 
 #: tbackend.actimportdirectory.caption
-msgid "Import Directory"
+msgid "Import Directory ..."
 msgstr ""
 
 #: tbackend.actmute.caption
@@ -101,7 +101,7 @@ msgstr ""
 
 #: tbackend.actplaylistaddfiles.caption
 msgctxt "TBACKEND.ACTPLAYLISTADDFILES.CAPTION"
-msgid "Add Files"
+msgid "Add Files ..."
 msgstr ""
 
 #: tbackend.actplaylistclear.caption
@@ -109,7 +109,7 @@ msgid "Clear"
 msgstr ""
 
 #: tbackend.actplaylistload.caption
-msgid "Load Playlist"
+msgid "Load Playlist ..."
 msgstr ""
 
 #: tbackend.actplaylistload.hint
@@ -117,7 +117,7 @@ msgid "Load a Playlist"
 msgstr ""
 
 #: tbackend.actplaylistsave.caption
-msgid "Save PlayList"
+msgid "Save PlayList ..."
 msgstr ""
 
 #: tbackend.actplaylistsave.hint
@@ -126,7 +126,7 @@ msgstr ""
 
 #: tbackend.actplaylistshuffle.caption
 msgctxt "TBACKEND.ACTPLAYLISTSHUFFLE.CAPTION"
-msgid "Shuffle PlayList"
+msgid "Shuffle"
 msgstr ""
 
 #: tbackend.actprevious.caption
@@ -206,6 +206,7 @@ msgid "About"
 msgstr ""
 
 #: tfabout.label1.caption
+msgctxt "tfabout.label1.caption"
 msgid "OvoPlayer"
 msgstr ""
 
@@ -404,7 +405,7 @@ msgid "Media Info"
 msgstr ""
 
 #: tfmainform.actshowpreferences.caption
-msgid "Preferences .."
+msgid "Preferences"
 msgstr ""
 
 #: tfmainform.album.caption
@@ -448,7 +449,8 @@ msgid "Up"
 msgstr ""
 
 #: tfmainform.caption
-msgid "OVO Player"
+msgctxt "tfmainform.caption"
+msgid "OvoPlayer"
 msgstr ""
 
 #: tfmainform.cbgroupby.hint
@@ -484,7 +486,7 @@ msgid "-"
 msgstr ""
 
 #: tfmainform.menuitem14.caption
-msgid "Tools"
+msgid "View"
 msgstr ""
 
 #: tfmainform.menuitem15.caption
@@ -542,6 +544,36 @@ msgstr ""
 #: tfmainform.menuitem47.caption
 msgctxt "TFMAINFORM.MENUITEM47.CAPTION"
 msgid "-"
+msgstr ""
+
+#: tfmainform.menuitem49.caption
+msgctxt "TFMAINFORM.MENUITEM49.CAPTION"
+msgid "Rating"
+msgstr ""
+
+#: tfmainform.menuitem50.caption
+msgid "*"
+msgstr ""
+
+#: tfmainform.menuitem51.caption
+msgctxt "TFMAINFORM.MENUITEM51.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfmainform.menuitem52.caption
+msgid "*****"
+msgstr ""
+
+#: tfmainform.menuitem53.caption
+msgid "****"
+msgstr ""
+
+#: tfmainform.menuitem54.caption
+msgid "***"
+msgstr ""
+
+#: tfmainform.menuitem55.caption
+msgid "**"
 msgstr ""
 
 #: tfmainform.menuitem9.caption
