@@ -16,16 +16,16 @@ object fConfig: TfConfig
     Width = 549
     ActivePage = tsEngine
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 0
     object tsInterface: TTabSheet
       Caption = 'Interfaces'
-      ClientHeight = 415
-      ClientWidth = 543
+      ClientHeight = 422
+      ClientWidth = 541
       object cbMinimizeOnClose: TCheckBox
-        Left = 11
+        Left = 12
         Height = 19
-        Top = 50
+        Top = 43
         Width = 118
         Caption = 'Minimize on Close'
         Checked = True
@@ -33,9 +33,9 @@ object fConfig: TfConfig
         TabOrder = 1
       end
       object cbTrayVisible: TCheckBox
-        Left = 11
+        Left = 12
         Height = 19
-        Top = 18
+        Top = 12
         Width = 101
         Caption = 'Show Tray Icon'
         Checked = True
@@ -43,9 +43,9 @@ object fConfig: TfConfig
         TabOrder = 0
       end
       object cbCaptureMMKeys: TCheckBox
-        Left = 11
+        Left = 12
         Height = 19
-        Top = 96
+        Top = 74
         Width = 130
         Caption = 'Use multimedia Keys'
         Checked = True
@@ -54,9 +54,9 @@ object fConfig: TfConfig
         TabOrder = 2
       end
       object rgKeyCaptureMode: TRadioGroup
-        Left = 11
+        Left = 12
         Height = 81
-        Top = 128
+        Top = 108
         Width = 201
         AutoFill = True
         Caption = 'Keys Capture Mode'
@@ -146,8 +146,8 @@ object fConfig: TfConfig
     end
     object tsMediaLibrary: TTabSheet
       Caption = 'Media Library'
-      ClientHeight = 415
-      ClientWidth = 543
+      ClientHeight = 422
+      ClientWidth = 541
       object lbMLPath: TListBox
         Left = 3
         Height = 128
@@ -203,31 +203,31 @@ object fConfig: TfConfig
     end
     object tsPlaylist: TTabSheet
       Caption = 'Play List'
-      ClientHeight = 415
-      ClientWidth = 543
+      ClientHeight = 422
+      ClientWidth = 541
       object Label5: TLabel
-        Left = 11
-        Height = 18
-        Top = 23
+        Left = 12
+        Height = 15
+        Top = 14
         Width = 238
         AutoSize = False
         Caption = 'Tracks to extract for quick playlist'
-        Font.Height = 14
+        Font.Height = 16
         ParentColor = False
         ParentFont = False
         OptimalFill = True
       end
       object seLimit: TSpinEdit
-        Left = 279
+        Left = 267
         Height = 23
-        Top = 18
+        Top = 12
         Width = 58
         MaxValue = 9999
         TabOrder = 0
         Value = 50
       end
       object cbRestart: TCheckBox
-        Left = 11
+        Left = 12
         Height = 19
         Top = 56
         Width = 152
@@ -237,14 +237,14 @@ object fConfig: TfConfig
     end
     object tsOSD: TTabSheet
       Caption = 'OSD'
-      ClientHeight = 415
-      ClientWidth = 543
+      ClientHeight = 422
+      ClientWidth = 541
       OnHide = tsOSDHide
       OnShow = tsOSDShow
       object colorBackground: TColorBox
-        Left = 187
+        Left = 146
         Height = 22
-        Top = 154
+        Top = 136
         Width = 176
         DefaultColorColor = 11955992
         NoneColorColor = clGray
@@ -255,17 +255,17 @@ object fConfig: TfConfig
         TabOrder = 0
       end
       object Label2: TLabel
-        Left = 27
+        Left = 11
         Height = 15
-        Top = 157
+        Top = 139
         Width = 97
         Caption = 'BackGround Color'
         ParentColor = False
       end
       object rgOSDKind: TRadioGroup
-        Left = 3
+        Left = 12
         Height = 105
-        Top = 2
+        Top = 12
         Width = 185
         AutoFill = True
         Caption = 'Notification Kind'
@@ -288,17 +288,17 @@ object fConfig: TfConfig
         TabOrder = 1
       end
       object Label3: TLabel
-        Left = 27
+        Left = 11
         Height = 15
-        Top = 199
+        Top = 174
         Width = 56
         Caption = 'Font Color'
         ParentColor = False
       end
       object ColorFont: TColorBox
-        Left = 187
+        Left = 146
         Height = 22
-        Top = 191
+        Top = 170
         Width = 176
         DefaultColorColor = 11955992
         NoneColorColor = clGray
@@ -308,9 +308,9 @@ object fConfig: TfConfig
         TabOrder = 2
       end
       object tbTransparency: TTrackBar
-        Left = 187
+        Left = 146
         Height = 24
-        Top = 232
+        Top = 204
         Width = 176
         Frequency = 15
         Max = 255
@@ -322,9 +322,9 @@ object fConfig: TfConfig
         TabOrder = 3
       end
       object Label4: TLabel
-        Left = 27
+        Left = 11
         Height = 15
-        Top = 236
+        Top = 204
         Width = 66
         Caption = 'Tranparency'
         ParentColor = False

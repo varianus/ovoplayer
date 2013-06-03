@@ -1,10 +1,10 @@
 object fMainForm: TfMainForm
-  Left = 646
+  Left = 366
   Height = 694
-  Top = 148
+  Top = 132
   Width = 866
   AllowDropFiles = True
-  Caption = 'OVO Player'
+  Caption = 'OvoPlayer'
   ClientHeight = 674
   ClientWidth = 866
   Constraints.MinHeight = 400
@@ -468,12 +468,12 @@ object fMainForm: TfMainForm
           Style = tbsDropDown
         end
         object ToolButton16: TToolButton
-          Left = 286
+          Left = 292
           Top = 0
           Action = BackEnd.actPlaylistLoad
         end
         object ToolButton17: TToolButton
-          Left = 263
+          Left = 266
           Top = 0
           Action = BackEnd.actPlaylistSave
         end
@@ -486,24 +486,24 @@ object fMainForm: TfMainForm
           Style = tbsSeparator
         end
         object ToolButton12: TToolButton
-          Left = 253
+          Left = 256
           Top = 0
           Width = 10
           Style = tbsSeparator
         end
         object ToolButton13: TToolButton
-          Left = 309
+          Left = 318
           Top = 0
           Enabled = False
           ShowCaption = False
         end
         object ToolButton11: TToolButton
-          Left = 332
+          Left = 341
           Top = 0
           Action = BackEnd.actMute
         end
         object slVolume: TCDTrackBar
-          Left = 355
+          Left = 364
           Height = 23
           Top = 0
           Width = 100
@@ -811,11 +811,15 @@ object fMainForm: TfMainForm
       object MenuItem39: TMenuItem
         Action = BackEnd.actPlayListAddFiles
       end
+      object MenuItem51: TMenuItem
+        Caption = '-'
+      end
       object MenuItem41: TMenuItem
         Action = BackEnd.actPlayListShuffle
       end
       object MenuItem42: TMenuItem
         Caption = 'Repeat Mode'
+        ImageIndex = 10
         SubMenuImages = BackEnd.ilNone
         object MenuItem43: TMenuItem
           Action = BackEnd.actRepeatNone
@@ -846,11 +850,11 @@ object fMainForm: TfMainForm
         Action = BackEnd.actRemoveMissing
       end
     end
+    object MenuItem20: TMenuItem
+      Action = ActShowPreferences
+    end
     object MenuItem14: TMenuItem
-      Caption = 'Tools'
-      object MenuItem20: TMenuItem
-        Action = ActShowPreferences
-      end
+      Caption = 'View'
       object MenuItem48: TMenuItem
         Action = actShowLeft
         AutoCheck = True
@@ -1052,7 +1056,7 @@ object fMainForm: TfMainForm
     left = 272
     top = 184
     object ActShowPreferences: TAction
-      Caption = 'Preferences ..'
+      Caption = 'Preferences'
       OnExecute = ActShowPreferencesExecute
     end
     object actShowAbout: TAction

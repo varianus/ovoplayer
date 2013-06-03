@@ -58,7 +58,7 @@ begin
 
   if not isAppRunning(Application) then
    begin
-      Application.Title:='OVO Player';
+      Application.Title:='OvoPlayer';
       Application.Title:=DisplayAppName;
       Application.Initialize;
       Application.CreateForm(TfMainForm, fMainForm);

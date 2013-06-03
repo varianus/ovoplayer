@@ -14,14 +14,14 @@ object BackEnd: TBackEnd
     top = 21
     object actPlaylistLoad: TAction
       Category = 'PlayList'
-      Caption = 'Load Playlist'
+      Caption = 'Load Playlist ...'
       Hint = 'Load a Playlist'
       ImageIndex = 12
       OnExecute = actPlaylistLoadExecute
     end
     object actPlaylistSave: TAction
       Category = 'PlayList'
-      Caption = 'Save PlayList'
+      Caption = 'Save PlayList ...'
       Hint = 'Save current playlist'
       ImageIndex = 13
       OnExecute = actPlaylistSaveExecute
@@ -74,17 +74,17 @@ object BackEnd: TBackEnd
     end
     object actPlayListAddFiles: TAction
       Category = 'PlayList'
-      Caption = 'Add Files'
+      Caption = 'Add Files ...'
       OnExecute = actPlayListAddFilesExecute
     end
     object actImportDirectory: TAction
       Category = 'PlayList'
-      Caption = 'Import Directory'
+      Caption = 'Import Directory ...'
       OnExecute = actImportDirectoryExecute
     end
     object actPlayListShuffle: TAction
       Category = 'PlayList'
-      Caption = 'Shuffle PlayList'
+      Caption = 'Shuffle'
       ImageIndex = 9
       OnExecute = actPlayListShuffleExecute
     end
@@ -102,7 +102,7 @@ object BackEnd: TBackEnd
     end
     object actExit: TAction
       Category = 'Interface'
-      Caption = 'Exit'
+      Caption = 'Quit'
       OnExecute = actExitExecute
     end
     object actRepeatTrack: TAction
