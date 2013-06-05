@@ -97,7 +97,7 @@ end;
 
 function TAudioEngineUOS.GetSongPos: integer;
 begin
-  if Assigned(UOS_Player) and (fState = ENGINE_PLAY) then
+  if Assigned(UOS_Player) and (fState in [ENGINE_PLAY,ENGINE_PAUSE]) then
      Result := Trunc(UOS_Player.InputPositionSeconds(fStreamIndex) * 1000);
 end;
 
@@ -336,4 +336,4 @@ initialization
   RegisterEngineClass(TAudioEngineUOS, 1, false, true);
 
 
-end.
+end.
