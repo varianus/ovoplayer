@@ -59,12 +59,11 @@
             </CompilerMessages>
             <CompilerPath Value="$(CompPath)"/>
           </Other>
-          <LCLWidgetType Value="gtk2"/>
         </CompilerOptions>
       </Item2>
       <Item3 Name="QT">
         <MacroValues Count="1">
-          <Macro1 Name="LCLWidgetType" Value="qt"/>
+          <Macro2 Name="LCLWidgetType" Value="qt"/>
         </MacroValues>
         <CompilerOptions>
           <Version Value="11"/>
@@ -98,7 +97,6 @@
             </CompilerMessages>
             <CompilerPath Value="$(CompPath)"/>
           </Other>
-          <LCLWidgetType Value="qt"/>
         </CompilerOptions>
       </Item3>
       <Item4 Name="Release">
@@ -169,7 +167,7 @@ if LCLWidgetType = 'win32' then
       </Item4>
       <Item5 Name="Custom">
         <MacroValues Count="1">
-          <Macro1 Name="LCLWidgetType" Value="customdrawn"/>
+          <Macro3 Name="LCLWidgetType" Value="customdrawn"/>
         </MacroValues>
         <CompilerOptions>
           <Version Value="11"/>
@@ -239,9 +237,13 @@ if LCLWidgetType = 'customdrawn' then
             </ConfigFile>
             <CompilerPath Value="$(CompPath)"/>
           </Other>
-          <LCLWidgetType Value="customdrawn"/>
         </CompilerOptions>
       </Item5>
+      <SharedMatrixOptions Count="3">
+        <Item1 ID="066772129436" Modes="GTK" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
+        <Item2 ID="410165404427" Modes="QT" Type="IDEMacro" MacroName="LCLWidgetType" Value="qt"/>
+        <Item3 ID="829386383577" Modes="Custom" Type="IDEMacro" MacroName="LCLWidgetType" Value="customdrawn"/>
+      </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
@@ -599,7 +601,6 @@ if LCLWidgetType = 'win32' then
     <CodeGeneration>
       <Checks>
         <IOChecks Value="True"/>
-        <RangeChecks Value="True"/>
         <OverflowChecks Value="True"/>
         <StackChecks Value="True"/>
       </Checks>
@@ -627,6 +628,9 @@ if LCLWidgetType = 'win32' then
         <ConfigFilePath Value="..\extrafpc.cfg"/>
       </ConfigFile>
       <CompilerPath Value="$(CompPath)"/>
+      <ExecuteBefore>
+        <Command Value="$(LazarusDir)/tools/svn2revisioninc$(ExeExt) ../ ovorevision.inc --c=ovoRevision"/>
+      </ExecuteBefore>
     </Other>
   </CompilerOptions>
   <Debugging>

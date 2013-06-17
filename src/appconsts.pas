@@ -25,14 +25,23 @@ unit AppConsts;
 interface
 
 uses
-  Classes, SysUtils;
+  Classes, SysUtils, LCLVersion;
 
 var
    AppNameServerID :string  = 'ovoplayer';
-const
 
+{$i ovorevision.inc}
+
+const
   DisplayAppName = 'OvoPlayer';
   AppVersion = {$i version.inc};
+  BuildDate = {$I %DATE%};
+  lazVersion  = lcl_version;         // Lazarus version (major.minor.micro)
+//  lazRevision = RevisionStr;         // Lazarus SVN revision
+  fpcVersion  = {$I %FPCVERSION%};   // FPC version (major.minor.micro)
+  TargetCPU   = {$I %FPCTARGETCPU%}; // Target CPU of FPC
+  TargetOS    = {$I %FPCTARGETOS%};  // Target Operating System of FPC
+
 
   AppName  = 'ovoplayer';
   DefaultResourceDirectory = '/usr/share/' + AppName + '/';
@@ -69,4 +78,4 @@ initialization
  OnGetApplicationName := @GetAppName;
 
 
-end.
+end.

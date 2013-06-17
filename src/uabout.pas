@@ -39,9 +39,17 @@ type
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
+    Label5: TLabel;
     Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    lbSVNRev: TLabel;
+    lbFPCVersion: TLabel;
+    lbBuildDate: TLabel;
     lVersion: TLabel;
     lHomePage: TLabel;
+    lbLazVersion: TLabel;
     procedure bCloseClick(Sender: TObject);
     procedure bLicenseClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -70,7 +78,12 @@ procedure TfAbout.FormShow(Sender: TObject);
 var
   i:Integer;
 begin
-  lVersion.caption := AppVersion;
+  lVersion.caption     := AppVersion;
+  lbFPCVersion.Caption := fpcVersion;
+  lbLazVersion.Caption := lazVersion;
+  lbBuildDate.Caption  := BuildDate;
+  lbSVNRev.Caption     := ovoRevision;
+
   for i := 0 to ComponentCount -1 do
      if Components[i] is TLabel then
        if Tlabel (Components[i]).OptimalFill then
@@ -123,4 +136,4 @@ end;
 
 
 end.
-
+
