@@ -217,8 +217,6 @@ begin
 end;
 
 procedure TConfig.ReadCustomParams(const Section:string; Params: TStrings);
-var
-  i :Integer;
 begin
   Params.Clear;
   fIniFiles.ReadSectionValues(Section, Params)

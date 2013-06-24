@@ -1953,7 +1953,7 @@ end;
 
 procedure TfMainForm.TrayIconClick(Sender: TObject);
 begin
-  ShowNotification;
+//  ShowNotification;
 end;
 
 procedure TfMainForm.TrayIconDblClick(Sender: TObject);
@@ -1963,7 +1963,7 @@ begin
   else
   begin
     Show;
-    BringToFront;
+   BringToFront;
   end;
 end;
 
@@ -2219,4 +2219,4 @@ begin
        end;
 end;
 
-end.
+end.

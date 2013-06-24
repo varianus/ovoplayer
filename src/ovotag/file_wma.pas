@@ -92,7 +92,7 @@ type
     fTags: TWmaTags;
     fDuration: int64;
     fBitRate: integer;
-    fBPM: integer;
+//    fBPM: integer;
     fChannels: integer;
     fSampling: integer;
     fChannelMode: string;
@@ -105,8 +105,8 @@ type
     function GetTags: TTags; override;
     function GetDuration: int64; override;
     function DumpInfo: TMediaProperty; override;
-    function isUpdateable: boolean; override;
   public
+    function isUpdateable: boolean; override;
     function LoadFromFile(AFileName: Tfilename): boolean; override;
     function SaveToFile(AFileName: Tfilename): boolean; override;
   end;
@@ -204,8 +204,8 @@ var
   FileProperty: TWMAFileProperty;
   StreamProperty: TWMAStreamProperty;
   ContentDescription: TWMAContentDescription;
-  AudioProperty :TWMAAudioProperty;
-  CurrPos: int64;
+//  AudioProperty :TWMAAudioProperty;
+//  CurrPos: int64;
   i: integer;
 begin
   Result := inherited LoadFromFile(AFileName);
@@ -276,8 +276,8 @@ var
 
   Header: TWMaHeader;
   SubObjHeader: TObjectHeader;
-  FileProperty: TWMAFileProperty;
-  StreamProperty: TWMAStreamProperty;
+//  FileProperty: TWMAFileProperty;
+//  StreamProperty: TWMAStreamProperty;
   ContentDescription: TWMAContentDescription;
   NewSize: word;
   fOrigCount : word;

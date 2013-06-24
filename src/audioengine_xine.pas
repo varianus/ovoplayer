@@ -114,12 +114,12 @@ end;
 
 constructor TAudioEngineXINE.Create;
 var
-  args: array[0..0] of PAnsiChar;
-  vo_driver :xine_video_port_s;
-  ss: Pxine_stream_t;
+//  args: array[0..0] of PAnsiChar;
+//  vo_driver :xine_video_port_s;
+//  ss: Pxine_stream_t;
   error : Integer;
-  lst:PPChar;
-  st:TstringList;
+//  lst:PPChar;
+//  st:TstringList;
 begin
   inherited Create;
   Loadxine();
@@ -323,4 +323,4 @@ initialization
   RegisterEngineClass(TAudioEngineXINE, 3, false, true);
 
 
-end.
+end.

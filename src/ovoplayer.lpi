@@ -627,6 +627,7 @@ if LCLWidgetType = 'win32' then
         <CustomConfigFile Value="True"/>
         <ConfigFilePath Value="..\extrafpc.cfg"/>
       </ConfigFile>
+      <CustomOptions Value="-vm5024"/>
       <CompilerPath Value="$(CompPath)"/>
       <ExecuteBefore>
         <Command Value="$(LazarusDir)/tools/svn2revisioninc$(ExeExt) ../ ovorevision.inc --c=ovoRevision"/>

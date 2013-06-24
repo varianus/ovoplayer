@@ -50,7 +50,7 @@ type
 
 implementation
 
-uses tag_id3v2, CommonFunctions;
+uses tag_id3v2;
 
 { TMonkeyReader }
 
@@ -79,8 +79,6 @@ end;
 function TMonkeyReader.LoadFromFile(AFileName: Tfilename): boolean;
 var
   fStream: TFileStream;
-  Start: byte;
-  i:Integer;
   tempTags : TTags;
   HaveID3V2 :boolean;
 
@@ -109,7 +107,7 @@ var
   SourceStream: TFileStream;
   DestStream: TFileStream;
   v1rec : TID3V1Record;
-  offset : integer;
+  offset : cardinal;
   header : TAPEHeader;
 begin
   Result:=inherited SaveToFile(AFileName);
@@ -118,16 +116,16 @@ begin
   DestStream := TFileStream.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
 
   try
-    SourceStream.Seek(SourceStream.Size - SizeOf(V1Rec), soFromBeginning);
-    SourceStream.Read(V1Rec,  SizeOf(V1Rec));
+    SourceStream.Seek(SourceStream.Size - SizeOf(TID3V1Record), soFromBeginning);
+    SourceStream.Read(V1Rec,  SizeOf(TID3V1Record));
 
     if V1Rec.Header <> 'TAG' then
        Offset := 0
     else
        Offset := SizeOf(V1Rec);
 
-    SourceStream.Seek(SourceStream.Size - SizeOf(Header) - offset, soFromBeginning);
-    SourceStream.Read(Header, sizeof(Header));
+    SourceStream.Seek(SourceStream.Size - SizeOf(TAPEHeader) - offset, soFromBeginning);
+    SourceStream.Read(Header, sizeof(TAPEHeader));
 
     if String(Header.Marker) = APE_IDENTIFIER then
       begin

@@ -57,7 +57,7 @@ type
 implementation
 
 { TWMATags }
-uses CommonFunctions;
+//uses CommonFunctions;
 
 function TWMATags.GetCommonTags: TCommonTags;
 begin

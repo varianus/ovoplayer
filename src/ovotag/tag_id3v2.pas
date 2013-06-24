@@ -109,7 +109,7 @@ type
 
 const
   ID3_HEADER_MARKER = 'ID3';
-  ID3_FOOTER_MARKER = '3DI';
+//  ID3_FOOTER_MARKER = '3DI';
 
   TAG_VERSION_2_2 = 2;
   TAG_VERSION_2_3 = 3;
@@ -345,7 +345,7 @@ end;
 function TID3Tags.ReadFromStream(AStream: TStream): boolean;
 var
   header: TID3Header;
-  Transferred: DWord;
+//  Transferred: DWord;
   Frame: TID3Frame;
   Image: TImageElement;
   Stop: boolean;
@@ -455,8 +455,8 @@ function TID3Frame.WriteToStream(AStream: TStream): DWord;
 var
   Header: TID3FrameHeader;
   HeaderOld: TID3FrameHeaderOld;
-  tmpStr: PChar;
-  tmpL: DWord;
+//  tmpStr: PChar;
+//  tmpL: DWord;
   DataSize : DWord;
   headsize : integer;
 

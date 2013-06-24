@@ -211,7 +211,8 @@ msgid "OvoPlayer"
 msgstr ""
 
 #: tfabout.label2.caption
-msgid "Version :"
+msgctxt "tfabout.label2.caption"
+msgid "Version"
 msgstr ""
 
 #: tfabout.label3.caption
@@ -222,8 +223,24 @@ msgstr ""
 msgid "Another free music player"
 msgstr ""
 
+#: tfabout.label5.caption
+msgid "Lazarus"
+msgstr ""
+
 #: tfabout.label6.caption
-msgid "Home Page:"
+msgid "Home Page"
+msgstr ""
+
+#: tfabout.label7.caption
+msgid "FPC"
+msgstr ""
+
+#: tfabout.label8.caption
+msgid "Build Date"
+msgstr ""
+
+#: tfabout.label9.caption
+msgid "SVN rev:"
 msgstr ""
 
 #: tfabout.lhomepage.caption
@@ -231,6 +248,7 @@ msgid "http://code.google.com/p/ovoplayer/"
 msgstr ""
 
 #: tfabout.lversion.caption
+msgctxt "tfabout.lversion.caption"
 msgid "Version"
 msgstr ""
 

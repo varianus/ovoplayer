@@ -297,9 +297,7 @@ end;
 function BuildFolderList(const Path: string; const List: TStrings; Recurring: boolean): boolean;
 var
   SearchRec: TSearchRec;
-  IndexMask: integer;
-  MaskList:  TStringList;
-  Masks, Directory: string;
+  Directory: string;
 begin
   Assert(List <> nil);
   {* extract the Directory *}

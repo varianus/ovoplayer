@@ -47,8 +47,8 @@ type
     function GetDuration: int64; override;
     function GetTags: TTags; override;
     function DumpInfo: TMediaProperty; override;
-    function isUpdateable: boolean; override;
   public
+    function isUpdateable: boolean; override;
     function LoadFromFile(AFileName: Tfilename): boolean; override;
     function SaveToFile(AFileName: Tfilename): boolean; override;
   end;
@@ -62,19 +62,19 @@ const
   OGG_IDENTIFIER: string = 'OggS';
 
 const
-  BLOCK_TYPE_STREAMINFO = 0;
-  BLOCK_TYPE_PADDING = 1;
-  BLOCK_TYPE_APPLICATION = 2;
-  BLOCK_TYPE_SEEKTABLE = 3;
-  BLOCK_TYPE_VORBIS_COMMENT = 4;
-  BLOCK_TYPE_CUESHEET = 5;
-  BLOCK_TYPE_PICTURE = 6;
+//  BLOCK_TYPE_STREAMINFO = 0;
+//  BLOCK_TYPE_PADDING = 1;
+//  BLOCK_TYPE_APPLICATION = 2;
+//  BLOCK_TYPE_SEEKTABLE = 3;
+//  BLOCK_TYPE_VORBIS_COMMENT = 4;
+//  BLOCK_TYPE_CUESHEET = 5;
+//  BLOCK_TYPE_PICTURE = 6;
   VORBIS_PARAMETERS_ID = #1 + 'vorbis';
   VORBIS_TAG_ID = #3 + 'vorbis';
 
-  VORBIS_CM_MONO = 1;                                    { Code for mono mode }
-  VORBIS_CM_STEREO = 2;                                { Code for stereo mode }
-  VORBIS_CM_MULTICHANNEL = 6;                    { Code for Multichannel Mode }
+//  VORBIS_CM_MONO = 1;                                    { Code for mono mode }
+//  VORBIS_CM_STEREO = 2;                                { Code for stereo mode }
+//  VORBIS_CM_MULTICHANNEL = 6;                    { Code for Multichannel Mode }
 
   VORBIS_MODE: array [0..3] of string = ('Unknown', 'Mono', 'Stereo', 'Multichannel');
 
@@ -378,11 +378,11 @@ function TOGGReader.LoadFromFile(AFileName: Tfilename): boolean;
 var
   fStream: TFileStream;
   Header: TOggHeader;
-  Start: byte;
+  //Start: byte;
   BlockHeader: VorbisHeader;
   TagHeader: VorbisTag;
-  BlockLength: integer;
-  BlockType: integer;
+  //BlockLength: integer;
+  //BlockType: integer;
   i: integer;
 
 begin

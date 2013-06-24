@@ -25,7 +25,7 @@ unit AudioEngine_UOS;
 interface
 
 uses
-  Classes, SysUtils, ExtCtrls, decoupler, Process, Song, AudioEngine,  UOS;
+  Classes, SysUtils, ExtCtrls, decoupler, Song, AudioEngine,  UOS;
 
 type
 
@@ -33,12 +33,12 @@ type
 
   TAudioEngineUOS = class(TAudioEngine)
   private
-    StreamName: String;
+//    StreamName: String;
     fdecoupler: TDecoupler;
     fState : TEngineState;
     UOS_Init: TUOS_Init;
     UOS_Player: TUOS_Player;
-    fRate: Cardinal;
+//    fRate: Cardinal;
     fMuted: boolean;
     fSavedVolume: integer;
     fVolume: single;
@@ -75,7 +75,7 @@ type
 
 
 implementation
-uses math;
+//uses math;
 { TAudioEngineUOS }
 
 function TAudioEngineUOS.GetMainVolume: integer;
@@ -336,4 +336,4 @@ initialization
   RegisterEngineClass(TAudioEngineUOS, 1, false, true);
 
 
-end.
+end.

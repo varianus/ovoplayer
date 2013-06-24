@@ -211,7 +211,10 @@ msgid "OvoPlayer"
 msgstr ""
 
 #: tfabout.label2.caption
-msgid "Version :"
+#, fuzzy
+#| msgid "Version :"
+msgctxt "tfabout.label2.caption"
+msgid "Version"
 msgstr "Versione :"
 
 #: tfabout.label3.caption
@@ -222,8 +225,24 @@ msgstr "Autore : Marco Caselli"
 msgid "Another free music player"
 msgstr "Un altro riproduttore musicale libero"
 
+#: tfabout.label5.caption
+msgid "Lazarus"
+msgstr ""
+
 #: tfabout.label6.caption
-msgid "Home Page:"
+msgid "Home Page"
+msgstr ""
+
+#: tfabout.label7.caption
+msgid "FPC"
+msgstr ""
+
+#: tfabout.label8.caption
+msgid "Build Date"
+msgstr ""
+
+#: tfabout.label9.caption
+msgid "SVN rev:"
 msgstr ""
 
 #: tfabout.lhomepage.caption
@@ -231,6 +250,7 @@ msgid "http://code.google.com/p/ovoplayer/"
 msgstr ""
 
 #: tfabout.lversion.caption
+msgctxt "tfabout.lversion.caption"
 msgid "Version"
 msgstr "Versione"
 

@@ -61,12 +61,12 @@ uses
 const
   FLAC_IDENTIFIER = 'fLaC';
 
-  BLOCK_TYPE_STREAMINFO = 0;
-  BLOCK_TYPE_PADDING = 1;
-  BLOCK_TYPE_APPLICATION = 2;
-  BLOCK_TYPE_SEEKTABLE = 3;
+  //BLOCK_TYPE_STREAMINFO = 0;
+  //BLOCK_TYPE_PADDING = 1;
+  //BLOCK_TYPE_APPLICATION = 2;
+  //BLOCK_TYPE_SEEKTABLE = 3;
   BLOCK_TYPE_VORBIS_COMMENT = 4;
-  BLOCK_TYPE_CUESHEET = 5;
+  //BLOCK_TYPE_CUESHEET = 5;
   BLOCK_TYPE_PICTURE = 6;
 
 type
@@ -171,20 +171,20 @@ var
   BlockLength: integer;
   BlockType: integer;
   MemoryStream : TmemoryStream;
-  HaveTags :boolean;
+//  HaveTags :boolean;
 
 begin
   inherited SaveToFile(AFilename);
   SourceStream := TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
   DestStream := TFileStream.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
-
+  Result :=false;
   SourceStream.Read(Header, sizeof(Header));
   if Header.Marker <> FLAC_IDENTIFIER then
     exit;
 
   if (Header.MetaDataBlockHeader[1] and $80) <> 0 then
     exit;
-  HaveTags:= false;
+//  HaveTags:= false;
   DestStream.Write(Header, sizeof(Header));
   repeat
     SourceStream.Read(BlockHeader, SizeOf(BlockHeader));
@@ -194,7 +194,7 @@ begin
     case BlockType of
       BLOCK_TYPE_VORBIS_COMMENT:
       begin
-        HaveTags := true;
+//        HaveTags := true;
         SourceStream.Seek(BlockLength, soFromCurrent);
         MemoryStream := TMemoryStream.Create;
         fTags.WriteToStream(MemoryStream);
@@ -235,7 +235,7 @@ begin
 
   SourceStream.Free;
   DestStream.Free;
-
+  Result :=True;
 end;
 
 function TFlacReader.isUpdateable: boolean;

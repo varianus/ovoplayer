@@ -57,7 +57,7 @@ begin
     NewProc.Free;
   end;
   Application.Terminate;
-
+  result := true;
 end;
 
 function TimeToMSec(Time: double): int64;
@@ -150,4 +150,4 @@ begin
 
 end;
 
-end.
+end.

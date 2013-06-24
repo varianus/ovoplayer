@@ -92,7 +92,7 @@ function TVorbisFrame.WriteToStream(AStream: TStream): DWord;
 var
   fSize:Cardinal;
   Data: String;
-  iSep :Integer;
+//  iSep :Integer;
 begin
   Result := 0;
   Data:= UTF8Encode(ID+'='+fValue);
@@ -182,9 +182,9 @@ end;
 function TVorbisTags.WriteToStream(AStream: TStream): DWord;
 var
   fSize: cardinal;
-  Data: array of char;
+//  Data: array of char;
   i: cardinal;
-  Frame: TVorbisFrame;
+//  Frame: TVorbisFrame;
 begin
   fSize:= Length(Vendor) + 1;
   AStream.WriteDWord(FSize);
@@ -226,4 +226,4 @@ begin
 end;
 
 end.
-
+

@@ -249,7 +249,7 @@ end;
 procedure TfOSD.ShapeControl(AControl: TWinControl);
 var
   ABitmap: TBitmap;
-  ARect: TRect;
+//  ARect: TRect;
 begin
   ABitmap := TBitmap.Create;
   ABitmap.Monochrome := True;

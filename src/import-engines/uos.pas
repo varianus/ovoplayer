@@ -121,7 +121,7 @@ type
 type
   TUOS_Init = class(TObject)
   private
-    old8087cw: word;
+//    old8087cw: word;
   public
     PA_FileName: ansistring;
     SF_FileName: ansistring;

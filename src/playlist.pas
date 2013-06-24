@@ -91,7 +91,7 @@ type
 
 implementation
 uses
-  FPCAdds, math;
+  math;
 
 Procedure IntQuickSort(FList: PPointerList; L, R : Longint;
                      Compare: TPlayListSortCompare);

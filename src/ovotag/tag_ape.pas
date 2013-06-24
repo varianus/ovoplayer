@@ -72,7 +72,7 @@ type
 
 implementation
 uses
-  Commonfunctions, tag_id3v2, id3v1genres;
+  tag_id3v2, id3v1genres;
 
 { TAPEFrame }
 
@@ -100,7 +100,6 @@ var
   fSize:Cardinal;
   Data: array of char;
   NextChar: ansiChar;
-  iSep :Integer;
   fFlags: DWORD;
   tmpName:string;
 begin
@@ -238,8 +237,6 @@ end;
 
 function TAPETags.ReadFromStream(AStream: TStream): boolean;
 var
-  fSize: cardinal;
-  Data: array of char;
   header :  TAPEHeader;
   i: cardinal;
   Frame: TAPEFrame;
@@ -293,11 +290,11 @@ var
   header :  TAPEHeader;
   i: cardinal;
   Totsize: DWOrd;
-  HeaderPos : integer;
+//  HeaderPos : integer;
   MemStream : Tmemorystream;
 begin
 
-  HeaderPos:= AStream.Position;
+//  HeaderPos:= AStream.Position;
   header.Marker := APE_IDENTIFIER;
   header.count:= Count;
   header.versionNumber:=2000;
@@ -321,6 +318,7 @@ begin
   header.flags := 0;
   header.flags :=  header.flags or (1 shl 31);
   AStream.Write(header, SizeOf(header));
+  result := SizeOf(header) * 2 + Totsize;
 
 end;
 

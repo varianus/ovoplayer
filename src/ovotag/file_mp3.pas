@@ -79,8 +79,8 @@ type
     function GetTags: TTags; override;
     function GetDuration: int64; override;
     Function DumpInfo: TMediaProperty; override;
-    function isUpdateable: boolean; override;
   public
+    function isUpdateable: boolean; override;
     function LoadFromFile(AFileName: Tfilename): boolean; override;
     function SaveToFile(AFileName: Tfilename): boolean; override;
   end;
@@ -116,10 +116,10 @@ const
     );
 
   { Sample rate codes }
-  MPEG_SAMPLE_RATE_LEVEL_3 = 0;                                     { Level 3 }
-  MPEG_SAMPLE_RATE_LEVEL_2 = 1;                                     { Level 2 }
-  MPEG_SAMPLE_RATE_LEVEL_1 = 2;                                     { Level 1 }
-  MPEG_SAMPLE_RATE_UNKNOWN = 3;                               { Unknown value }
+  //MPEG_SAMPLE_RATE_LEVEL_3 = 0;                                     { Level 3 }
+  //MPEG_SAMPLE_RATE_LEVEL_2 = 1;                                     { Level 2 }
+  //MPEG_SAMPLE_RATE_LEVEL_1 = 2;                                     { Level 1 }
+  //MPEG_SAMPLE_RATE_UNKNOWN = 3;                               { Unknown value }
 
   { Table for sample rates }
   MPEG_SAMPLE_RATE: array [0..3, 0..3] of word =
@@ -131,26 +131,26 @@ const
     );
 
   { Channel mode codes }
-  MPEG_CM_STEREO = 0;                                                { Stereo }
-  MPEG_CM_JOINT_STEREO = 1;                                    { Joint Stereo }
-  MPEG_CM_DUAL_CHANNEL = 2;                                    { Dual Channel }
+//  MPEG_CM_STEREO = 0;                                                { Stereo }
+//  MPEG_CM_JOINT_STEREO = 1;                                    { Joint Stereo }
+//  MPEG_CM_DUAL_CHANNEL = 2;                                    { Dual Channel }
   MPEG_CM_MONO = 3;                                                    { Mono }
-  MPEG_CM_UNKNOWN = 4;
+//  MPEG_CM_UNKNOWN = 4;
   { Channel mode names }
   MPEG_CM_MODE: array [0..4] of string =
       ('Stereo', 'Joint Stereo', 'Dual Channel', 'Mono', 'Unknown');
 
 
   { MPEG version codes }
-  MPEG_VERSION_2_5 = 0;                                            { MPEG 2.5 }
-  MPEG_VERSION_UNKNOWN = 1;                                 { Unknown version }
-  MPEG_VERSION_2 = 2;                                                { MPEG 2 }
+//  MPEG_VERSION_2_5 = 0;                                            { MPEG 2.5 }
+//  MPEG_VERSION_UNKNOWN = 1;                                 { Unknown version }
+//  MPEG_VERSION_2 = 2;                                                { MPEG 2 }
   MPEG_VERSION_1 = 3;
   MAX_MPEG_FRAME_LENGTH = 1729;                      { Max. MPEG frame length }
-  MIN_MPEG_BIT_RATE = 8;                                { Min. bit rate value }
+//  MIN_MPEG_BIT_RATE = 8;                                { Min. bit rate value }
   { MPEG layer codes }
-  MPEG_LAYER_UNKNOWN = 0;                                     { Unknown layer }
-  MPEG_LAYER_III = 1;                                             { Layer III }
+//  MPEG_LAYER_UNKNOWN = 0;                                     { Unknown layer }
+//  MPEG_LAYER_III = 1;                                             { Layer III }
   MPEG_LAYER_II = 2;                                               { Layer II }
   MPEG_LAYER_I = 3;
 

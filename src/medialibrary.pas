@@ -395,8 +395,6 @@ begin
 end;
 
 procedure TMediaLibrary.Update(ID:Integer; Tags: TCommonTags);
-var
-  AsInteger: Integer;
 begin
 
   fUpdateSong.Params.ParamByName('ID').AsInteger         := ID;
