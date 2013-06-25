@@ -269,7 +269,7 @@ if LCLWidgetType = 'customdrawn' then
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="55">
+    <Units Count="56">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -565,6 +565,11 @@ if LCLWidgetType = 'customdrawn' then
         <IsPartOfProject Value="True"/>
         <UnitName Value="uos_portaudio"/>
       </Unit54>
+      <Unit55>
+        <Filename Value="coreinterfaces.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="coreinterfaces"/>
+      </Unit55>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

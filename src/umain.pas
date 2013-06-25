@@ -550,7 +550,7 @@ begin
   if not Enqueue and (BackEnd.PlayList.Count > 0) then
      begin
        BackEnd.PlayList.ItemIndex:=0;
-       BackEnd.actPlay.Execute;
+       BackEnd.Play;
      end;
 end;
 
@@ -646,7 +646,7 @@ begin
   Album.Caption     := Song.Tags.Album;
   Artist.Caption    := Song.Tags.Artist;
   TrackBar.Max      := Song.Tags.Duration;
-  TrackBar.Position := BackEnd.AudioEngine.Position;
+  TrackBar.Position := BackEnd.GetPosition;
   TrayIcon.Hint     := Song.tags.Title + LineEnding + Song.Tags.Artist;
   Caption           := Song.tags.Title + ' - ' + Song.Tags.Artist;;
 
@@ -1004,7 +1004,7 @@ begin
        TrayIcon.Visible := false;
      end;
 
-  slVolume.Position := BackEnd.AudioEngine.MainVolume;
+  slVolume.Position := BackEnd.GetVolume;
 
   cbGroupBy.ItemIndex := BackEnd.Config.InterfaceParam.GroupBy;
   cbGroupBy.OnChange(self);
@@ -1876,7 +1876,7 @@ end;
 
 procedure TfMainForm.slVolumeChange(Sender: TObject);
 begin
-  BackEnd.AudioEngine.MainVolume := slVolume.Position;
+  BackEnd.SetVolume(slVolume.Position);
 //
 end;
 
@@ -1892,10 +1892,10 @@ begin
   if (BackEnd.AudioEngine.State = ENGINE_PLAY)  then
   begin
     if not seeking then
-      TrackBar.Position := BackEnd.AudioEngine.Position;
+      TrackBar.Position := BackEnd.GetPosition;
   end;
 
-  lbTime.Caption := TimeToStr(BackEnd.AudioEngine.Position / MSecsPerDay);
+  lbTime.Caption := TimeToStr(BackEnd.getPosition / MSecsPerDay);
 end;
 
 procedure TfMainForm.btnUpDirClick(Sender: TObject);
@@ -1911,7 +1911,7 @@ end;
 
 procedure TfMainForm.TrackBarChange(Sender: TObject);
 begin
-  BackEnd.AudioEngine.Position := TrackBar.Position;
+  BackEnd.SetPosition(TrackBar.Position);
 end;
 
 procedure TfMainForm.TrackBarMouseMove(Sender: TObject; Shift: TShiftState; X, Y: integer);
@@ -1925,7 +1925,7 @@ begin
     TrackBar.Cursor := crHSplit;
     newPosition := Round(x * TrackBar.Max / TrackBar.ClientWidth);
     TrackBar.Position := newPosition;
-    BackEnd.AudioEngine.Position := newPosition;
+    BackEnd.SetPosition(newPosition);
   end
   else
   begin

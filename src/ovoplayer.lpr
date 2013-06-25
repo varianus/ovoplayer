@@ -48,7 +48,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   id3v1genres,
   //
   UniqueInstanceRaw, CommonFunctions, file_Dummy,
-   DefaultTranslator, ulicense, uCover;
+   DefaultTranslator, ulicense, uCover, coreinterfaces;
 
 {$R *.res}
 begin

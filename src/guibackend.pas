@@ -26,6 +26,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, ActnList, Controls, Dialogs, Forms, LResources,
+  CoreInterfaces,
   PopupNotifier, PlayList, AudioEngine, AudioEngine_dummy,
   PlayListManager, MediaLibrary, Song,
   MultimediaKeys, Config, UniqueInstance;
@@ -37,7 +38,7 @@ type
 
   { TBackEnd }
 
-  TBackEnd = class(TDataModule)
+  TBackEnd = class(TDataModule, IBackEnd)
     actExit: TAction;
     actDummy: TAction;
     actRestart: TAction;
@@ -101,6 +102,7 @@ type
     procedure UniqueInstanceIOtherInstance(Sender: TObject; ParamCount: Integer;
       Parameters: array of String);
   private
+    { private declarations }
     FOnEngineCommand: TOnEngineCommand;
     FOnExternalCommand: TOnExternalCommand;
     FOnPlayListChange: TNotifyEvent;
@@ -115,14 +117,26 @@ type
     procedure SetOnPlayListChange(const AValue: TNotifyEvent);
     procedure SetOnPlayListLoad(const AValue: TNotifyEvent);
     procedure SetOnSaveInterfaceState(AValue: TNotifyEvent);
-    { private declarations }
+
   public
     PlayList: TPlaylist;
     Manager: TPlayListManager;
     AudioEngine: TAudioEngine;
     mediaLibrary: TMediaLibrary;
     Config: TConfig;
-
+  // IBackEnd methods
+    function GetPosition: int64;
+    function GetVolume: cardinal;
+    procedure SetPosition(AValue: int64);
+    procedure SetVolume(AValue: cardinal);
+    Procedure Play;
+    Procedure Stop;
+    Procedure Pause;
+    Procedure UnPause;
+    Procedure Next;
+    Procedure Previous;
+    Procedure Quit;
+ //
     function GetImageFromfolder(Path: string): string;
     procedure HandleCommand(Command: TEngineCommand; Param: integer);
     procedure SaveState;
@@ -250,17 +264,17 @@ begin
              if tempstr = 'seek-'    then
                 actSkipBackward.Execute  else
              if tempstr = 'play'     then
-               actPlay.Execute           else
+                Play                     else
              if tempstr = 'stop'     then
-                actStop.Execute          else
+                Stop                     else
              if tempstr = 'pause'    then
-                actPause.Execute         else
+                Pause                    else
              if tempstr = 'next'     then
-                actNext.Execute          else
+                Next                     else
              if tempstr = 'previous' then
-                actPrevious.Execute;
+                Previous                 else
              if tempstr = 'close' then
-                actExit.Execute;
+                Quit;
 
              if Assigned(FOnExternalCommand) then
                 FOnExternalCommand(Self, tempstr);
@@ -387,6 +401,98 @@ begin
   FOnSaveInterfaceState:=AValue;
 end;
 
+function TBackEnd.GetPosition: int64;
+begin
+  Result := AudioEngine.Position;
+end;
+
+function TBackEnd.GetVolume: cardinal;
+begin
+  Result:= AudioEngine.MainVolume;
+end;
+
+procedure TBackEnd.SetPosition(AValue: int64);
+begin
+  AudioEngine.Position := AValue;
+end;
+
+procedure TBackEnd.SetVolume(AValue: cardinal);
+begin
+  AudioEngine.MainVolume := AValue;
+end;
+
+procedure TBackEnd.Play;
+begin
+  if AudioEngine.State = ENGINE_PAUSE then
+    AudioEngine.UnPause
+  else
+    begin
+      if PlayList.Count = 0 then
+         exit;
+
+      if PlayList.ItemIndex = -1 then
+        PlayList.ItemIndex := 0;
+
+      PlayList.CurrentItem.Tags;
+      AudioEngine.Play(PlayList.CurrentItem);
+    end;
+
+ if Assigned(FOnEngineCommand) then
+     FOnEngineCommand(AudioEngine, ecPlay);
+
+end;
+
+procedure TBackEnd.Stop;
+begin
+  AudioEngine.Stop;
+  if Assigned(FOnEngineCommand) then
+     FOnEngineCommand(AudioEngine, ecStop);
+
+end;
+
+procedure TBackEnd.Pause;
+begin
+  AudioEngine.Pause;
+  if Assigned(FOnEngineCommand) then
+      FOnEngineCommand(AudioEngine, ecPause);
+
+end;
+
+procedure TBackEnd.UnPause;
+begin
+  Play;
+end;
+
+procedure TBackEnd.Next;
+begin
+  AudioEngine.Play(PlayList.Next);
+  SignalPlayListChange;
+
+  if Assigned(FOnEngineCommand) then
+     FOnEngineCommand(AudioEngine, ecNext);
+
+end;
+
+procedure TBackEnd.Previous;
+begin
+  AudioEngine.Play(PlayList.Previous);
+  SignalPlayListChange;
+
+  if Assigned(FOnEngineCommand) then
+    FOnEngineCommand(AudioEngine, ecPrevious);
+
+end;
+
+procedure TBackEnd.Quit;
+begin
+  SaveState;
+  if Assigned(FOnSaveInterfaceState) then
+     FOnSaveInterfaceState(Self);
+
+  Application.Terminate;
+
+end;
+
 procedure TBackEnd.SignalPlayListChange;
 begin
   if Assigned(OnPlayListChange) then
@@ -417,7 +523,7 @@ end;
 
 procedure TBackEnd.actPlayListClearExecute(Sender: TObject);
 begin
-  actStop.Execute;
+  Stop;
   PlayList.Clear;
   SignalPlayListChange;
 end;
@@ -457,11 +563,7 @@ end;
 
 procedure TBackEnd.actExitExecute(Sender: TObject);
 begin
-  SaveState;
-  if Assigned(FOnSaveInterfaceState) then
-     FOnSaveInterfaceState(Sender);
-
-  Application.Terminate;
+  Quit;
 end;
 
 procedure TBackEnd.actMuteExecute(Sender: TObject);
@@ -481,49 +583,22 @@ end;
 
 procedure TBackEnd.actNextExecute(Sender: TObject);
 begin
-  AudioEngine.Play(PlayList.Next);
-  SignalPlayListChange;
-
-  if Assigned(FOnEngineCommand) then
-     FOnEngineCommand(AudioEngine, ecNext);
+  Next;
 end;
 
 procedure TBackEnd.actPauseExecute(Sender: TObject);
 begin
-  AudioEngine.Pause;
-  if Assigned(FOnEngineCommand) then
-      FOnEngineCommand(AudioEngine, ecPause);
-
+  Pause;
 end;
 
 procedure TBackEnd.actPlayExecute(Sender: TObject);
 begin
-  if AudioEngine.State = ENGINE_PAUSE then
-    AudioEngine.UnPause
-  else
-    begin
-      if PlayList.Count = 0 then
-         exit;
-
-      if PlayList.ItemIndex = -1 then
-        PlayList.ItemIndex := 0;
-
-      PlayList.CurrentItem.Tags;
-      AudioEngine.Play(PlayList.CurrentItem);
-    end;
-
- if Assigned(FOnEngineCommand) then
-     FOnEngineCommand(AudioEngine, ecPlay);
-
+  Play;
 end;
 
 procedure TBackEnd.actPreviousExecute(Sender: TObject);
 begin
-  AudioEngine.Play(PlayList.Previous);
-  SignalPlayListChange;
- if Assigned(FOnEngineCommand) then
-    FOnEngineCommand(AudioEngine, ecPrevious);
-
+ Previous;
 end;
 
 procedure TBackEnd.actRemoveMissingExecute(Sender: TObject);
@@ -597,10 +672,7 @@ end;
 
 procedure TBackEnd.actStopExecute(Sender: TObject);
 begin
-  AudioEngine.Stop;
-  if Assigned(FOnEngineCommand) then
-     FOnEngineCommand(AudioEngine, ecStop);
-
+  Stop;
 end;
 
 procedure TBackEnd.PlaylistOnSongAdd(Sender: Tobject; Index: Integer; ASong : TSong);
@@ -670,24 +742,24 @@ end;
 
 procedure TBackEnd.AudioEngineSongEnd(Sender: TObject);
 begin
-  actNext.Execute;
+  Next;
 end;
 
 procedure TBackEnd.HandleCommand(Command: TEngineCommand; Param: integer);
 begin
   case command of
-    ecNext: actNext.Execute;
-    ecPrevious: actPrevious.Execute;
+    ecNext: Next;
+    ecPrevious: Previous;
     ecPlay: if AudioEngine.State = ENGINE_PLAY then
-        actPause.Execute
+        Pause
       else
-        actPlay.Execute;
-    ecStop: actStop.Execute;
-    ecSeek: AudioEngine.Seek(Param, True);
+        Play;
+    ecStop: Stop;
+    ecSeek: SetPosition(Param);
     end;
 end;
 
 
 initialization
   fBackEnd := nil;
-end.
+end.
