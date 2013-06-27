@@ -25,16 +25,9 @@ unit AudioEngine;
 interface
 
 uses
-  Classes, SysUtils, ExtCtrls, Song;
+  Classes, SysUtils, ExtCtrls, Song, BaseTypes;
 
 type
-  TEngineState = (ENGINE_STOP,
-    ENGINE_PLAY,
-    ENGINE_PAUSE,
-    ENGINE_SONG_END,
-    ENGINE_ON_LINE);
-
-  TEngineCommand = (ecInvalid, ecStop, ecPrevious, ecPlay, ecNext, ecPause, ecSeek);
 
   TAudioEngineClass = class of TAudioEngine;
 

@@ -25,7 +25,7 @@ unit MultimediaKeys;
 interface
 
 uses
-  Classes, SysUtils, AudioEngine;
+  Classes, SysUtils, BaseTypes;
 
 type
 

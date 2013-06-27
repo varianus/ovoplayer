@@ -25,15 +25,10 @@ unit PlayList;
 interface
 
 uses
-  Classes, SysUtils, Song, AudioTag;
+  Classes, SysUtils, Song, AudioTag, BaseTypes;
 
 type
 
-  TplSortField = (stNone, stTitle, StAlbum, stArtist, stDuration,  stTrack, stGenre,
-                  stYear, stAlbumArtist, stFileName, stRating);
-
-  TplSortDirection = (sdplAscending, sdplDiscending);
-  TplRepeat = (rptNone, rptTrack, rptAlbum, rptPlayList);
 
   { TPlayList }
   TPlayListSortCompare = function (Item1, Item2: Pointer): Integer of object;

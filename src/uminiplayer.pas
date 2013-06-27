@@ -61,7 +61,7 @@ var
 implementation
 
 {$R *.lfm}
-uses AudioEngine;
+uses BaseTypes;
 
 { TfMiniPlayer }
 
@@ -114,7 +114,7 @@ end;
 
 procedure TfMiniPlayer.TimerTimer(Sender: TObject);
 begin
- if BackEnd.AudioEngine.State = ENGINE_PLAY then
+ if BackEnd.GetStatus = ENGINE_PLAY then
     begin
       TrackBar.Max := BackEnd.PlayList.CurrentItem.Tags.Duration;
       TrackBar.Position := BackEnd.AudioEngine.Position;
@@ -126,4 +126,4 @@ begin
   BackEnd.AudioEngine.Position := TrackBar.Position;
 end;
 
-end.
+end.

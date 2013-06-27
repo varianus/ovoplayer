@@ -25,7 +25,7 @@ unit AudioEngine_UOS;
 interface
 
 uses
-  Classes, SysUtils, ExtCtrls, decoupler, Song, AudioEngine,  UOS;
+  Classes, SysUtils, ExtCtrls, decoupler, Song, BaseTypes, AudioEngine,  UOS;
 
 type
 

@@ -25,7 +25,7 @@ unit decoupler;
 interface
 
 uses
-  Classes, SysUtils, AudioEngine;
+  Classes, SysUtils, BaseTypes;
 
 type
 

@@ -25,7 +25,7 @@ unit AudioEngine_MPlayer;
 interface
 
 uses
-  Classes, SysUtils, ExtCtrls, Process, UTF8Process, Song, AudioEngine;
+  Classes, SysUtils, ExtCtrls, Process, UTF8Process, Song, BaseTypes, AudioEngine;
 
 type
 

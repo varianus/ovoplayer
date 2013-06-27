@@ -27,7 +27,7 @@ interface
 uses
   Classes, types, SysUtils, FileUtil, Forms, Controls, Graphics,
   Dialogs, ComCtrls, Menus, ExtCtrls, Buttons, StdCtrls, Song, uOSD, playlist,
-  AudioEngine, GUIBackEnd, Config, MediaLibrary,
+  BaseTypes, GUIBackEnd, Config, MediaLibrary,
   DefaultTranslator, Grids, EditBtn, ActnList, customdrawncontrols,
   customdrawn_common, customdrawn_ovoplayer, ucover;
 

@@ -26,7 +26,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, ActnList, Controls, Dialogs, Forms, LResources,
-  CoreInterfaces,
+  BaseTypes, CoreInterfaces,
   PopupNotifier, PlayList, AudioEngine, AudioEngine_dummy,
   PlayListManager, MediaLibrary, Song,
   MultimediaKeys, Config, UniqueInstance;
@@ -125,10 +125,16 @@ type
     mediaLibrary: TMediaLibrary;
     Config: TConfig;
   // IBackEnd methods
+    function GetLooping: TplRepeat;
     function GetPosition: int64;
+    function GetStatus: TEngineState;
     function GetVolume: cardinal;
+    procedure SetLooping(AValue: TplRepeat);
     procedure SetPosition(AValue: int64);
+    procedure SetStatus(AValue: TEngineState);
     procedure SetVolume(AValue: cardinal);
+
+
     Procedure Play;
     Procedure Stop;
     Procedure Pause;
@@ -136,6 +142,7 @@ type
     Procedure Next;
     Procedure Previous;
     Procedure Quit;
+    Procedure OpenURI(URI: String);
  //
     function GetImageFromfolder(Path: string): string;
     procedure HandleCommand(Command: TEngineCommand; Param: integer);
@@ -146,6 +153,7 @@ type
     property OnPlayListLoad: TNotifyEvent read FOnPlayListLoad write SetOnPlayListLoad;
     property OnEngineCommand :TOnEngineCommand read FOnEngineCommand write SetOnEngineCommand;
     property OnExternalCommand :TOnExternalCommand read FOnExternalCommand write SetOnExternalCommand;
+
   end;
 
 var
@@ -292,11 +300,7 @@ begin
                 end else
              if tempstr = 'p=' then
                 begin
-                  PlayList.Clear;
-                  SignalPlayListChange;
-                  idx := PlayList.EnqueueFile(tempparam);
-                  PlayList.ItemIndex:=idx;
-                  AudioEngine.Play(PlayList.CurrentItem);
+                  OpenUri(tempparam)
                 end  else
              if tempstr = 'x=' then
                 begin
@@ -401,9 +405,21 @@ begin
   FOnSaveInterfaceState:=AValue;
 end;
 
+function TBackEnd.GetLooping: TplRepeat;
+begin
+  if Assigned(PlayList) then
+     Result := PlayList.RepeatMode;
+end;
+
 function TBackEnd.GetPosition: int64;
 begin
   Result := AudioEngine.Position;
+end;
+
+function TBackEnd.GetStatus: TEngineState;
+begin
+  if Assigned(AudioEngine) then
+     Result := AudioEngine.State;
 end;
 
 function TBackEnd.GetVolume: cardinal;
@@ -411,9 +427,19 @@ begin
   Result:= AudioEngine.MainVolume;
 end;
 
+procedure TBackEnd.SetLooping(AValue: TplRepeat);
+begin
+ PlayList.RepeatMode:= AValue;
+end;
+
 procedure TBackEnd.SetPosition(AValue: int64);
 begin
   AudioEngine.Position := AValue;
+end;
+
+procedure TBackEnd.SetStatus(AValue: TEngineState);
+begin
+  // ??
 end;
 
 procedure TBackEnd.SetVolume(AValue: cardinal);
@@ -490,6 +516,18 @@ begin
      FOnSaveInterfaceState(Self);
 
   Application.Terminate;
+
+end;
+
+procedure TBackEnd.OpenURI(URI: String);
+var
+  idx:Integer;
+begin
+  PlayList.Clear;
+  SignalPlayListChange;
+  idx := PlayList.EnqueueFile(URI);
+  PlayList.ItemIndex:=idx;
+  AudioEngine.Play(PlayList.CurrentItem);
 
 end;
 
@@ -704,7 +742,7 @@ begin
     st.free;
   end;
 end;
-
+{
 procedure DumpExceptionCallStack(E: Exception);
 var
   I: Integer;
@@ -729,9 +767,58 @@ begin
   for I := 0 to ExceptFrameCount - 1 do
     Report := Report + LineEnding + BackTraceStrFunc (Frames[I] );
   msg.Text:=Report;
+  msg.SaveToFile('ovoplayer.err');
   msg.free;
   DumpStack;
 end;
+
+}
+procedure DumpExceptionCallStack(e:exception);
+var
+  f: System.Text;
+  afileName:String;
+begin
+  afileName:='ovoplayer.err';
+  if (aFileName <> EmptyStr)  then
+  begin
+    AssignFile(f, UTF8ToSys(aFileName));
+    {$PUSH}{$I-}
+    if not FileExists(aFileName) then
+      Rewrite(f)
+    else
+      Append(f);
+    {$POP}
+    if (TextRec(f).mode <> fmClosed) and (IOResult = 0) then
+    begin
+      WriteLn(f, '--------------- ',
+                 FormatDateTime('dd-mm-yyyy, hh:nn:ss', SysUtils.Now),
+                 ' ---------------');
+      WriteLn(f, '| DC v', AppVersion, ' Rev. ', AppVersion);
+//                 ' -- ', TargetCPU + '-' + TargetOS + '-' + TargetWS);
+//      if WSVersion <> EmptyStr then
+//        WriteLn(f, '| ', OSVersion, ' -- ', WSVersion)
+//      else
+//        WriteLn(f, '| ', OSVersion);
+
+        if Assigned(e) then
+          WriteLn(f, 'Unhandled exception: ',
+                     Exception(e).ClassName, ': ',
+                     Exception(e).Message)
+        else
+          WriteLn(f, 'Unhandled exception');
+        WriteLn(f, '  Stack trace:');
+
+        System.DumpExceptionBackTrace(f);
+
+
+      // Make one empty line.
+      WriteLn(f);
+
+      CloseFile(f);
+    end;
+  end;
+end;
+
 
 procedure TBackEnd.ApplicationPropertiesException(Sender: TObject; E: Exception
   );

@@ -25,7 +25,7 @@ unit audioengine_bass;
 interface
 
 uses
-  Classes, SysUtils, AudioEngine, lazdynamic_bass, Song, lclproc,
+  Classes, SysUtils, BaseTypes, AudioEngine, lazdynamic_bass, Song, lclproc,
   decoupler;
 
 type

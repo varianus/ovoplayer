@@ -25,7 +25,7 @@ unit audioengine_dummy;
 interface
 
 uses
-  Classes, SysUtils, AudioEngine, Song;
+  Classes, SysUtils, BaseTypes, AudioEngine, Song;
 
 type
 

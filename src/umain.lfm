@@ -468,12 +468,12 @@ object fMainForm: TfMainForm
           Style = tbsDropDown
         end
         object ToolButton16: TToolButton
-          Left = 292
+          Left = 286
           Top = 0
           Action = BackEnd.actPlaylistLoad
         end
         object ToolButton17: TToolButton
-          Left = 266
+          Left = 263
           Top = 0
           Action = BackEnd.actPlaylistSave
         end
@@ -486,24 +486,24 @@ object fMainForm: TfMainForm
           Style = tbsSeparator
         end
         object ToolButton12: TToolButton
-          Left = 256
+          Left = 253
           Top = 0
           Width = 10
           Style = tbsSeparator
         end
         object ToolButton13: TToolButton
-          Left = 318
+          Left = 309
           Top = 0
           Enabled = False
           ShowCaption = False
         end
         object ToolButton11: TToolButton
-          Left = 341
+          Left = 332
           Top = 0
           Action = BackEnd.actMute
         end
         object slVolume: TCDTrackBar
-          Left = 364
+          Left = 355
           Height = 23
           Top = 0
           Width = 100
