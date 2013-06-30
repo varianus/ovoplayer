@@ -25,7 +25,8 @@ unit audioengine_gstreamer;
 interface
 
 uses
-  Classes, SysUtils, AudioEngine, gstreamer, Song, uriparser, decoupler;
+  Classes, SysUtils, BaseTypes,
+  AudioEngine, gstreamer, Song, uriparser, decoupler;
 
 type
 

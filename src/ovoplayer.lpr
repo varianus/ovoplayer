@@ -25,11 +25,22 @@ program ovoplayer;
 uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   cthreads, {$ENDIF} {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, uMain, PlayList, PlayListManager,
-  FilesSupport, MediaLibrary, GeneralFunc, decoupler,
-  MultimediaKeys, uConfig, uOSD, Config, AppConsts, uMiniPlayer, uSongInfo,
-  GUIBackEnd, uAbout,
+  Forms,
+  // Application forms and related
+  uMain, uAbout, ulicense,
+  uConfig, uOSD, uMiniPlayer, uSongInfo,
+  uCover,
   customdrawndrawers, customdrawn_ovoplayer,
+  DefaultTranslator,
+  // general functions
+  AppConsts, GeneralFunc, decoupler, FilesSupport,
+  CommonFunctions,
+  // Core player objects
+  PlayList, PlayListManager,
+  MediaLibrary,
+  MultimediaKeys,  Config,
+  BaseTypes, coreinterfaces, GUIBackEnd,
+  UniqueInstanceRaw,
   // Audio Engines
   audioengine, audioengine_dummy, AudioEngine_MPlayer,
   {$IFDEF GSTREAMER} gstreamer, audioengine_gstreamer, {$ENDIF}
@@ -41,14 +52,12 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   {$IFDEF OPENSOURCELIB} lazdyn_libsndfile, uos, lazdyn_mpg123, lazdyn_portaudio, audioengine_OpenLib,{$ENDIF}
   {$IFDEF UOS} UOS, uos_libsndfile, uos_mpg123, uos_portaudio, audioengine_UOS,{$ENDIF}
   {$IFDEF FFMPEG} audioengine_FFMPEG,{$ENDIF}
+  {$IFDEF MPRIS2} mpris2,{$ENDIF}
   // ovotag
   song, AudioTag, basetag, file_flac, file_mp3, file_wma,
   tag_wma, tag_vorbis, tag_id3v2, file_ogg, file_monkey, tag_ape,
-  file_Wave,  tag_Dummy,
-  id3v1genres,
-  //
-  UniqueInstanceRaw, CommonFunctions, file_Dummy,
-   DefaultTranslator, ulicense, uCover, coreinterfaces, BaseTypes;
+  file_Wave,  tag_Dummy, file_Dummy,
+  id3v1genres;
 
 {$R *.res}
 begin
@@ -66,4 +75,4 @@ begin
       Application.CreateForm(TfMiniPlayer, fMiniPlayer);
       Application.Run;
    end;
-end.
+end.

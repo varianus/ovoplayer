@@ -8,3 +8,6 @@ Hidden=false
 Icon=ovoplayer.png
 Terminal=false
 Type=Application
+MimeType=application/x-ogg;application/ogg;audio/x-vorbis+ogg;audio/x-scpls;audio/x-mp3;audio/x-mpeg;audio/mpeg;audio/x-mpegurl;audio/x-flac
+X-DBUS-ServiceName=org.mpris.MediaPlayer2.ovoplayer
+X-GNOME-UsesNotifications=true

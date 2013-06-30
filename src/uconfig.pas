@@ -40,6 +40,7 @@ type
     bRestart: TButton;
     ButtonPanel: TButtonPanel;
     cbCaptureMMKeys: TCheckBox;
+    cbEnableSoundMenu: TCheckBox;
     cbScanOnStart: TCheckBox;
     cbTrayVisible: TCheckBox;
     cbMinimizeOnClose: TCheckBox;
@@ -276,7 +277,7 @@ begin
   {$IFDEF ASKMMKEYSMODE}
     rgKeyCaptureMode.Visible:=True;
   {$ELSE}
-    rgKeyCaptureMode.Visible:=False;;
+    rgKeyCaptureMode.Visible:=False;
   {$ENDIF ASKMMKEYSMODE}
 
 end;
@@ -332,23 +333,24 @@ begin
   BackEnd.Config.MediaLibraryParam.CheckOnStart := cbScanOnStart.Checked;
 
   // NOTIFICATION
-  BackEnd.Config.NotificationParam.Kind         := rgOSDKind.ItemIndex;
-  BackEnd.Config.NotificationParam.BackColor    := ColorBackground.Selected;
-  BackEnd.Config.NotificationParam.FontColor    := ColorFont.Selected;
-  BackEnd.Config.NotificationParam.Transparency := tbTransparency.Position;
+  BackEnd.Config.NotificationParam.Kind           := rgOSDKind.ItemIndex;
+  BackEnd.Config.NotificationParam.BackColor      := ColorBackground.Selected;
+  BackEnd.Config.NotificationParam.FontColor      := ColorFont.Selected;
+  BackEnd.Config.NotificationParam.Transparency   := tbTransparency.Position;
 
   // INTERFACE
-  BackEnd.Config.InterfaceParam.MinimizeOnClose := cbMinimizeOnClose.checked;
-  BackEnd.Config.InterfaceParam.ShowTrayIcon    := cbTrayVisible.checked;
-  BackEnd.Config.InterfaceParam.CaptureMMKeys   := cbCaptureMMKeys.checked;
-  BackEnd.Config.InterfaceParam.CaptureMMkeysMode:= rgKeyCaptureMode.ItemIndex;
+  BackEnd.Config.InterfaceParam.MinimizeOnClose   := cbMinimizeOnClose.checked;
+  BackEnd.Config.InterfaceParam.ShowTrayIcon      := cbTrayVisible.checked;
+  BackEnd.Config.InterfaceParam.CaptureMMKeys     := cbCaptureMMKeys.checked;
+  BackEnd.Config.InterfaceParam.CaptureMMkeysMode := rgKeyCaptureMode.ItemIndex;
+  BackEnd.Config.InterfaceParam.EnableSoundMenu   := cbEnableSoundMenu.Checked;
 
   // PLAYLIST
-  BackEnd.Config.PlayListParam.LimitTrack       := seLimit.Value;
-  BackEnd.Config.PlayListParam.Restart          := cbRestart.Checked;
+  BackEnd.Config.PlayListParam.LimitTrack         := seLimit.Value;
+  BackEnd.Config.PlayListParam.Restart            := cbRestart.Checked;
 
   // ENGINE
-  BackEnd.Config.EngineParam.EngineKind         := rgAudioEngine.Items[rgAudioEngine.ItemIndex];
+  BackEnd.Config.EngineParam.EngineKind           := rgAudioEngine.Items[rgAudioEngine.ItemIndex];
 
   //GENERAL
 end;
@@ -370,7 +372,7 @@ begin
   cbTrayVisible.checked      := BackEnd.Config.InterfaceParam.ShowTrayIcon;
   cbCaptureMMKeys.checked    := BackEnd.Config.InterfaceParam.CaptureMMKeys;
   rgKeyCaptureMode.ItemIndex := BackEnd.Config.InterfaceParam.CaptureMMkeysMode;
-
+  cbEnableSoundMenu.Checked  := BackEnd.Config.InterfaceParam.EnableSoundMenu;
 
   // PLAYLIST
   seLimit.Value             := BackEnd.Config.PlayListParam.LimitTrack;
@@ -383,4 +385,4 @@ begin
   pnlRestart.visible := Backend.Config.NeedRestart;
 end;
 
-end.
+end.

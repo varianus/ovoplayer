@@ -50,12 +50,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {$IFDEF LINUX}
   {$DEFINE NEEDCFGSUBDIR} // Need to add a sub-directory to configuration files directory
   {$DEFINE ASKMMKEYSMODE} // Ask for multimedia keys capture mode
+  {.$DEFINE MPRIS2} // MPRIS V2 Interface
+  {$IFDEF LCLGTK2}
+     {$DEFINE LIBNOTIFY} // use gnome notification lib
+  {$ENDIF LCLGTK2}
+//
   {$DEFINE GSTREAMER} // GStreamer need glib
   {$DEFINE VLC} //
   {$DEFINE XINE} //
   {$DEFINE BASS} //
+
+
+
   {.$DEFINE OPENSOURCELIB} //
-  {.$DEFINE UOS} //
+  {$DEFINE UOS} //
   {.$DEFINE FFMPEG}
 
 {$ENDIF LINUX}
@@ -82,4 +90,4 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
 
-
+

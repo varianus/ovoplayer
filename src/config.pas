@@ -54,6 +54,7 @@ type
     GroupBy: Integer;
     CaptureMMKeys: boolean;
     CaptureMMkeysMode: Integer;
+    EnableSoundMenu: boolean;
   end;
 
   TPlayListParam = record
@@ -171,6 +172,7 @@ begin
   fIniFiles.WriteInteger('Interface', 'GroupBy', InterfaceParam.GroupBy);
   fIniFiles.WriteBool('Interface', 'CaptureMMKeys', InterfaceParam.CaptureMMKeys);
   fIniFiles.WriteInteger('Interface', 'CaptureMMKeysMode', InterfaceParam.CaptureMMkeysMode);
+  fIniFiles.WriteBool('Interface', 'EnableSoundMenu', InterfaceParam.EnableSoundMenu);
 
   // PLAYLIST
   fIniFiles.WriteInteger('PlayList', 'TrackLimit', PlayListParam.LimitTrack);
@@ -259,6 +261,7 @@ begin
   InterfaceParam.GroupBy := fIniFiles.ReadInteger('Interface', 'GroupBy', 0);
   InterfaceParam.CaptureMMKeys := fIniFiles.ReadBool('Interface', 'CaptureMMKeys', False);
   InterfaceParam.CaptureMMkeysMode := fIniFiles.ReadInteger('Interface', 'CaptureMMkeysMode', 0);
+  InterfaceParam.EnableSoundMenu := fIniFiles.ReadBool('Interface', 'EnableSoundMenu', True);
 
   // PLAYLIST
   PlayListParam.LimitTrack :=  fIniFiles.ReadInteger('PlayList', 'TrackLimit', 50);
@@ -363,4 +366,4 @@ begin
 
 end;
 
-end.
+end.

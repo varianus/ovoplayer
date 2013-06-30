@@ -276,6 +276,10 @@ msgstr ""
 msgid "Use multimedia Keys"
 msgstr ""
 
+#: tfconfig.cbenablesoundmenu.caption
+msgid "Show in Sound Menu"
+msgstr ""
+
 #: tfconfig.cbminimizeonclose.caption
 msgid "Minimize on Close"
 msgstr ""

@@ -24,8 +24,8 @@ type
   { TDBUSThread }
 
   TDBUSThread = class (TThread)
-    fBus: PDBusConnection;
   public
+    fBus: PDBusConnection;
      procedure Execute; override;
     destructor Destroy; override;
 
@@ -126,11 +126,6 @@ end;
 { TDBUSThread }
 
 procedure TDBUSThread.Execute;
-var
-  msg: PDBusMessage;
-  args: DBusMessageIter;
-  sigvalue: Pchar;
-
 begin
   while not Terminated do
     begin

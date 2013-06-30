@@ -254,7 +254,6 @@ if LCLWidgetType = 'customdrawn' then
       <local>
         <FormatVersion Value="1"/>
         <CommandLineParams Value="C:\Media\Recorded\2013-06-19_14_10_36-LineIn.ogg"/>
-        <LaunchingApplication PathPlusParams="\usr\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
     <RequiredPackages Count="3">
@@ -270,7 +269,7 @@ if LCLWidgetType = 'customdrawn' then
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="57">
+    <Units Count="58">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -567,15 +566,20 @@ if LCLWidgetType = 'customdrawn' then
         <UnitName Value="uos_portaudio"/>
       </Unit54>
       <Unit55>
+        <Filename Value="platform\linux\mpris2.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="mpris2"/>
+      </Unit55>
+      <Unit56>
         <Filename Value="coreinterfaces.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="coreinterfaces"/>
-      </Unit55>
-      <Unit56>
+      </Unit56>
+      <Unit57>
         <Filename Value="basetypes.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="BaseTypes"/>
-      </Unit56>
+      </Unit57>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -586,7 +590,7 @@ if LCLWidgetType = 'customdrawn' then
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir);platform\$(TargetOS)"/>
-      <OtherUnitFiles Value="import-engines;ovotag;components\uniqueinstance"/>
+      <OtherUnitFiles Value="import-engines;ovotag;components\uniqueinstance;platform\$(TargetOS)"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Conditionals Value="if TargetOS = 'darwin' then
@@ -641,7 +645,7 @@ if LCLWidgetType = 'win32' then
       <CustomOptions Value="-vm5024"/>
       <CompilerPath Value="$(CompPath)"/>
       <ExecuteBefore>
-        <Command Value="$(LazarusDir)/tools/svn2revisioninc$(ExeExt) ../ ovorevision.inc --c=ovoRevision"/>
+        <Command Value="$(LazarusDir)\tools\svn2revisioninc$(ExeExt) ..\ ovorevision.inc --c=ovoRevision"/>
       </ExecuteBefore>
     </Other>
   </CompilerOptions>
@@ -662,4 +666,4 @@ if LCLWidgetType = 'win32' then
       </Item4>
     </Exceptions>
   </Debugging>
-</CONFIG>
+</CONFIG>

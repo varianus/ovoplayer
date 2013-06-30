@@ -29,7 +29,11 @@ uses
   Dialogs, ComCtrls, Menus, ExtCtrls, Buttons, StdCtrls, Song, uOSD, playlist,
   BaseTypes, GUIBackEnd, Config, MediaLibrary,
   DefaultTranslator, Grids, EditBtn, ActnList, customdrawncontrols,
-  customdrawn_common, customdrawn_ovoplayer, ucover;
+  customdrawn_common, customdrawn_ovoplayer,
+  {$IFDEF MPRIS2}
+  Mpris2,
+  {$ENDIF MPRIS}
+  ucover;
 
 type
   TSortFields = record
@@ -352,6 +356,9 @@ implementation
 {$R *.lfm}
 uses AppConsts, lclType, AudioTag, LCLProc, FilesSupport,
      uConfig, uMiniPlayer, uSongInfo, uAbout, baseTag,
+     {$IFDEF LIBNOTIFY} libnotify,
+     {$ENDIF}
+
      Math;
 
 type
@@ -697,6 +704,10 @@ end;
 procedure TfMainForm.ShowNotification;
 var
   ASong: TSong;
+  {$IFDEF LIBNOTIFY}
+  hello : PNotifyNotification;
+  {$ENDIF}
+
 
 begin
   ASong := BackEnd.PlayList.CurrentItem;
@@ -708,6 +719,15 @@ begin
 
   if BackEnd.Config.NotificationParam.Kind = npkNotifications then
     begin
+     {$IFDEF LIBNOTIFY} // Use libnotify when avalaible
+     notify_init(argv[0]);
+     hello := notify_notification_new (
+             pchar(ASong.tags.Title),
+             PCHAr(ASong.Tags.Album + LineEnding + ASong.Tags.Artist + LineEnding +  ASong.Tags.TrackString),
+             'audio-x-generic');
+             notify_notification_show (hello, nil);
+     notify_uninit;
+     {$ELSE} // Use standard balloon hint on other widgetset
       TrayIcon.BalloonTimeout := BackEnd.Config.NotificationParam.TimeOut;
       TrayIcon.BalloonTitle   := ASong.tags.Title;
       TrayIcon.BalloonHint    := ASong.Tags.Album + LineEnding + ASong.Tags.Artist + LineEnding +
@@ -716,6 +736,8 @@ begin
          TrayIcon.BalloonHint := ASong.FileName;
 
       TrayIcon.ShowBalloonHint;
+     {$ENDIF}
+
     end;
 
 end;
@@ -920,6 +942,11 @@ procedure TfMainForm.FormCreate(Sender: TObject);
 var
   tmpIcon : TIcon;
   tmpSize : TSize;
+  {$IFDEF MPRIS2}
+  Mpris : TMpris2;
+  {$ENDIF MPRIS}
+
+
 begin
   PlaylistSelected := TRowsSelection.Create;
   PathHistory := TStringList.Create;
@@ -1009,6 +1036,15 @@ begin
   cbGroupBy.ItemIndex := BackEnd.Config.InterfaceParam.GroupBy;
   cbGroupBy.OnChange(self);
   SetLength(fColumnsWidth, 0);
+
+  {$IFDEF MPRIS2}
+  if BackEnd.Config.InterfaceParam.EnableSoundMenu then
+    begin
+      Mpris := TMpris2.Create;
+      Mpris.Activate(BackEnd);
+    end;
+  {$ENDIF MPRIS}
+
 
 end;
 
@@ -2219,4 +2255,4 @@ begin
        end;
 end;
 
-end.
+end.

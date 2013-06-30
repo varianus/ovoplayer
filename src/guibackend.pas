@@ -28,7 +28,7 @@ uses
   Classes, SysUtils, FileUtil, ActnList, Controls, Dialogs, Forms, LResources,
   BaseTypes, CoreInterfaces,
   PopupNotifier, PlayList, AudioEngine, AudioEngine_dummy,
-  PlayListManager, MediaLibrary, Song,
+  PlayListManager, MediaLibrary, basetag, Song,
   MultimediaKeys, Config, UniqueInstance;
 
 type
@@ -109,6 +109,7 @@ type
     FOnPlayListLoad:   TNotifyEvent;
     fMultimediaKeys:   TMultimediaKeys;
     FOnSaveInterfaceState: TNotifyEvent;
+    ObserverList : TInterfaceList;
     procedure AudioEngineSongEnd(Sender: TObject);
     procedure onMultimediaKeys(Sender: TObject; Command: TEngineCommand);
     procedure PlaylistOnSongAdd(Sender: Tobject; Index: Integer; ASong: TSong);
@@ -143,6 +144,11 @@ type
     Procedure Previous;
     Procedure Quit;
     Procedure OpenURI(URI: String);
+    Function GetMetadata: TCommonTags;
+    Procedure Attach(observer: iObserver);
+    Procedure Remove(observer: iObserver);
+    procedure Seek(AValue: int64);
+    Procedure Notify(Kind:  TChangedProperty);
  //
     function GetImageFromfolder(Path: string): string;
     procedure HandleCommand(Command: TEngineCommand; Param: integer);
@@ -207,7 +213,6 @@ begin
   AudioEngine := Engine.Create;
   AudioEngine.OnSongEnd := @AudioEngineSongEnd;
   AudioEngine.Activate;
-
   PlayList.OnSongAdd:=@PlaylistOnSongAdd;
 
   if Config.InterfaceParam.CaptureMMKeys then
@@ -215,6 +220,7 @@ begin
       fMultimediaKeys := TMultimediaKeys.Create(Config.InterfaceParam.CaptureMMkeysMode);
       fMultimediaKeys.OnMMKey := @OnMultimediaKeys;
     end;
+
 
   UniqueInstanceI:= TUniqueInstance.Create(Self);
   with UniqueInstanceI do
@@ -430,11 +436,13 @@ end;
 procedure TBackEnd.SetLooping(AValue: TplRepeat);
 begin
  PlayList.RepeatMode:= AValue;
+ Notify(cpLooping);
 end;
 
 procedure TBackEnd.SetPosition(AValue: int64);
 begin
   AudioEngine.Position := AValue;
+  Notify(cpPosition);
 end;
 
 procedure TBackEnd.SetStatus(AValue: TEngineState);
@@ -445,6 +453,7 @@ end;
 procedure TBackEnd.SetVolume(AValue: cardinal);
 begin
   AudioEngine.MainVolume := AValue;
+  Notify(cpVolume);
 end;
 
 procedure TBackEnd.Play;
@@ -465,7 +474,7 @@ begin
 
  if Assigned(FOnEngineCommand) then
      FOnEngineCommand(AudioEngine, ecPlay);
-
+ Notify(cpStatus);
 end;
 
 procedure TBackEnd.Stop;
@@ -473,7 +482,7 @@ begin
   AudioEngine.Stop;
   if Assigned(FOnEngineCommand) then
      FOnEngineCommand(AudioEngine, ecStop);
-
+  Notify(cpStatus);
 end;
 
 procedure TBackEnd.Pause;
@@ -481,12 +490,13 @@ begin
   AudioEngine.Pause;
   if Assigned(FOnEngineCommand) then
       FOnEngineCommand(AudioEngine, ecPause);
-
+  Notify(cpStatus);
 end;
 
 procedure TBackEnd.UnPause;
 begin
   Play;
+  Notify(cpStatus);
 end;
 
 procedure TBackEnd.Next;
@@ -497,6 +507,7 @@ begin
   if Assigned(FOnEngineCommand) then
      FOnEngineCommand(AudioEngine, ecNext);
 
+  Notify(cpStatus);
 end;
 
 procedure TBackEnd.Previous;
@@ -506,7 +517,7 @@ begin
 
   if Assigned(FOnEngineCommand) then
     FOnEngineCommand(AudioEngine, ecPrevious);
-
+  Notify(cpStatus);
 end;
 
 procedure TBackEnd.Quit;
@@ -529,6 +540,43 @@ begin
   PlayList.ItemIndex:=idx;
   AudioEngine.Play(PlayList.CurrentItem);
 
+end;
+
+function TBackEnd.GetMetadata: TCommonTags;
+begin
+  If Assigned(PlayList.CurrentItem) then
+     Result:=PlayList.CurrentItem.Tags;
+end;
+
+procedure TBackEnd.Seek(AValue: int64);
+begin
+  AudioEngine.Seek(AValue,False);
+  Notify(cpPosition);
+end;
+
+procedure TBackEnd.Attach(observer: iObserver);
+begin
+  if not Assigned(ObserverList) then
+     ObserverList := TInterfaceList.create;
+  ObserverList.Add(observer);
+
+end;
+
+procedure TBackEnd.Remove(observer: iObserver);
+begin
+  Remove(observer);
+  if ObserverList.Count = 0 then
+    FreeAndNil(ObserverList);
+
+end;
+
+procedure TBackEnd.Notify(Kind: TChangedProperty);
+var
+  i:integer;
+begin
+  if Assigned(ObserverList) then
+     for i := 0 to ObserverList.Count -1 do
+       IObserver(ObserverList[i]).Update(Kind);
 end;
 
 procedure TBackEnd.SignalPlayListChange;
@@ -617,26 +665,31 @@ begin
        actMute.ImageIndex := 18;
      end;
   actMute.Checked := not actMute.Checked;
+  Notify(cpVoLume);
 end;
 
 procedure TBackEnd.actNextExecute(Sender: TObject);
 begin
   Next;
+  Notify(cpStatus);
 end;
 
 procedure TBackEnd.actPauseExecute(Sender: TObject);
 begin
   Pause;
+  Notify(cpStatus);
 end;
 
 procedure TBackEnd.actPlayExecute(Sender: TObject);
 begin
   Play;
+  Notify(cpStatus);
 end;
 
 procedure TBackEnd.actPreviousExecute(Sender: TObject);
 begin
  Previous;
+ Notify(cpStatus);
 end;
 
 procedure TBackEnd.actRemoveMissingExecute(Sender: TObject);
@@ -649,6 +702,7 @@ begin
   PlayList.RepeatMode := rptTrack;
   actRepeatTrack.Checked := true;
   Config.PlayListParam.RepeatMode := Ord(PlayList.RepeatMode);
+  Notify(cpLooping);
 end;
 
 procedure TBackEnd.actRepeatAlbumExecute(Sender: TObject);
@@ -656,6 +710,7 @@ begin
   PlayList.RepeatMode := rptAlbum;
   actRepeatAlbum.Checked:=true;
   Config.PlayListParam.RepeatMode := Ord(PlayList.RepeatMode);
+  Notify(cpLooping);
 end;
 
 procedure TBackEnd.actRepeatAllExecute(Sender: TObject);
@@ -663,6 +718,7 @@ begin
   PlayList.RepeatMode := rptPlayList;
    actRepeatAll.Checked:=true;
    Config.PlayListParam.RepeatMode := Ord(PlayList.RepeatMode);
+   Notify(cpLooping);
 end;
 
 procedure TBackEnd.actRepeatNoneExecute(Sender: TObject);
@@ -670,6 +726,7 @@ begin
   PlayList.RepeatMode := rptNone;
   actRepeatNone.Checked:=true;
   Config.PlayListParam.RepeatMode := Ord(PlayList.RepeatMode);
+  Notify(cpLooping);
 end;
 
 procedure TBackEnd.actRescanCollectionExecute(Sender: TObject);
@@ -849,4 +906,4 @@ end;
 
 initialization
   fBackEnd := nil;
-end.
+end.
