@@ -102,6 +102,7 @@ type
     cbGroupBy:  TComboBox;
     FilesTree: TTreeView;
     MenuItem51: TMenuItem;
+    MenuItem56: TMenuItem;
     RateStars: TImageList;
     MenuItem21: TMenuItem;
     MenuItem38: TMenuItem;
@@ -264,6 +265,7 @@ type
     procedure pmdirectoriesPopup(Sender: TObject);
     procedure pnCollectionPopup(Sender: TObject);
     procedure pnHeaderPlaylistPopup(Sender: TObject);
+    procedure sgPlayListClick(Sender: TObject);
     procedure sgPlayListColRowMoved(Sender: TObject; IsColumn: Boolean; sIndex,
       tIndex: Integer);
     procedure sgPlayListContextPopup(Sender: TObject; MousePos: TPoint;
@@ -1459,6 +1461,27 @@ begin
 
 end;
 
+procedure TfMainForm.sgPlayListClick(Sender: TObject);
+var
+  ACol,ARow: integer;
+  p: Tpoint;
+  Rating: integer;
+  r1: Trect;
+begin
+  p:= sgPlayList.ScreenToControl(Mouse.CursorPos);
+  sgPlayList.MouseToCell(p.x, p.y, ACol, ARow);
+  if (ARow > 0) and (aCol = 11) and assigned(BackEnd.PlayList[ARow-1].ExtraProperty) then
+     begin
+       R1 := sgPlayList.CellRect(ACol, ARow);
+       Rating := trunc(((p.x - R1.Left) * 10) / RateStars.Width) ;
+       TExtendedInfo(BackEnd.PlayList[ARow-1].ExtraProperty).Rating:=rating;
+       TExtendedInfo(BackEnd.PlayList[ARow-1].ExtraProperty).TmpRating:=-1;
+       BackEnd.mediaLibrary.SetRating(TExtendedInfo(BackEnd.PlayList[ARow-1].ExtraProperty).ID, Rating);
+       sgPlayList.InvalidateCell(ACol, ARow);
+       abort;
+     end;
+end;
+
 procedure TfMainForm.sgPlayListColRowMoved(Sender: TObject; IsColumn: Boolean;
   sIndex, tIndex: Integer);
 begin
@@ -1507,6 +1530,7 @@ var
   Txt: String;
   r1,R2: Trect;
   ts: TTextStyle;
+  CurrRating : integer;
 begin
   if (ACol = 0) and (Arow > 0) and (ARow = BackEnd.PlayList.ItemIndex + 1) then
     begin
@@ -1563,9 +1587,13 @@ begin
    else
       begin
         sgPlayList.Canvas.Draw(arect.left, arect.top, RatingBack);
+        CurrRating := TExtendedInfo(ASong.ExtraProperty).TmpRating;
+        if CurrRating = -1 then
+           CurrRating := TExtendedInfo(ASong.ExtraProperty).Rating;
+        TExtendedInfo(ASong.ExtraProperty).TmpRating := -1;
         r1:=Rect(0,
                  0,
-                 trunc(RatingBack.width *(TExtendedInfo(ASong.ExtraProperty).Rating /10))-1,
+                 trunc(RatingBack.width *(CurrRating /10))-1,
                  RatingBack.height);
         r2:=r1;
         OffsetRect(R2,aRect.Left, aRect.top);
@@ -1803,6 +1831,8 @@ var
   idx :integer;
 begin
   sgPlayList.MouseToCell(X, Y, ACol, ARow);
+  if ACol = 11 then
+    exit;
 
   if (button = mbLeft) and (not (ssShift in Shift) and not (ssCtrl in Shift)) then
     begin
@@ -1848,8 +1878,7 @@ begin
      begin
        R1 := sgPlayList.CellRect(ACol, ARow);
        Rating := trunc(((x - R1.Left) * 10) / RateStars.Width) ;
-
-       TExtendedInfo(BackEnd.PlayList[ARow-1].ExtraProperty).Rating:=rating;
+       TExtendedInfo(BackEnd.PlayList[ARow-1].ExtraProperty).TmpRating:=rating;
        sgPlayList.InvalidateCell(ACol, ARow);
      end;
 
@@ -2255,4 +2284,4 @@ begin
        end;
 end;
 
-end.
+end.

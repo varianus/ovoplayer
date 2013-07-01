@@ -54,8 +54,10 @@ type
   { TExtendedInfo }
 
   TExtendedInfo = Class
+    Id: Integer;
     PlayCount : Integer;
     Rating :Integer;
+    tmpRating: integer;
     Added : TDateTime;
     LastPlay : TDateTime;
   public
@@ -184,6 +186,7 @@ constructor TExtendedInfo.Create;
 begin
    PlayCount := -1;
    Rating := -1;
+   tmpRating := -1;
    Added := 0;
    LastPlay := 0;
 
@@ -660,11 +663,13 @@ end;
 
 procedure TMediaLibrary.SetRating(ID: integer; Rating: Integer);
 begin
+  if id = -1 then
+    exit;
   fWorkQuery.Close;
 
   fWorkQuery.SQL.Text := 'update songs set '
-                       + '  Rating = ' + IntToStr(rating)
-                       + 'where id =' + IntToStr(ID);
+                       + ' Rating = ' + IntToStr(rating)
+                       + ' where id =' + IntToStr(ID);
   fWorkQuery.ExecSQL;
   fWorkQuery.Close;
   fTR.CommitRetaining;
@@ -697,6 +702,7 @@ begin
      result.PlayCount:= -1
   else
      begin
+       Result.Id:= ID;
        Result.PlayCount:=fWorkQuery.Fields[0].AsInteger;
        Result.Added:=fWorkQuery.Fields[1].AsDateTime;
        Result.LastPlay:=fWorkQuery.Fields[2].AsDateTime;
@@ -707,4 +713,4 @@ begin
 
 end;
 
-end.
+end.
