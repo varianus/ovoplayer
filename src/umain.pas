@@ -997,18 +997,24 @@ begin
        BackEnd.Manager.ImportFromXSPF(Backend.Config.ConfigDir + LASTPLAYLISTNAME, BackEnd.PlayList)
     else
        BackEnd.PlayList.clear;
-    OnLoaded(self);
     if (BackEnd.Manager.SavedTime <> 0) and
        BackEnd.Config.PlayListParam.Restart and
        (BackEnd.PlayList.CurrentItem <> nil) then
       begin
+         Application.ProcessMessages;
          BackEnd.AudioEngine.Play(BackEnd.PlayList.CurrentItem, BackEnd.Manager.SavedTime);
          ScrollIntoView;
          Application.ProcessMessages;
       end;
   except
-     BackEnd.PlayList.clear;
+     on e: Exception do
+       begin
+          DebugLn(e.Message);
+          BackEnd.PlayList.clear;
+       end;
   end;
+
+  OnLoaded(self);
 
   if BackEnd.Config.InterfaceParam.ShowTrayIcon then
     begin
@@ -1063,7 +1069,7 @@ procedure TfMainForm.FormDropFiles(Sender: TObject;
   const FileNames: array of String);
 begin
   BackEnd.Manager.ImportFromStringArray(FileNames, BackEnd.PlayList);
-  BackEnd. SignalPlayListChange;
+  BackEnd.SignalPlayListChange;
 end;
 
 procedure TfMainForm.FormHide(Sender: TObject);
@@ -1078,7 +1084,7 @@ end;
 
 procedure TfMainForm.FormShow(Sender: TObject);
 begin
-   ScrollIntoView;
+  ScrollIntoView;
 
   if (BackEnd.AudioEngine = nil) or (BackEnd.AudioEngine.GetEngineName = 'dummy') then
      begin
@@ -1133,9 +1139,29 @@ begin
 end;
 
 procedure TfMainForm.ScrollIntoView;
+var
+  aRow,
+  iTopRow,
+  visRows,
+  lastRow : integer;
 begin
-  sgplaylist.Row:= BackEnd.PlayList.ItemIndex +1;
+  ARow := BackEnd.PlayList.ItemIndex +1;
+  if (ARow > -1) and (ARow < sgplaylist.RowCount) then
+     begin
+       Arow := Arow +1;
+       iTopRow := sgplaylist.TopRow;
+       visRows := sgplaylist.VisibleRowCount;
+       lastRow := iTopRow +visRows -1;
+       if ARow < iTopRow then
+          sgplaylist.TopRow := ARow
+       else
+         if ARow > lastRow then
+           sgplaylist.TopRow := ARow -visRows;
+  end;
 end;
+//begin
+//  sgplaylist.Row:= BackEnd.PlayList.ItemIndex +1;
+//end;
 procedure TfMainForm.SaveConfig(Sender: TObject);
 var
   tmpSt: TStringList;
@@ -1478,7 +1504,6 @@ begin
        TExtendedInfo(BackEnd.PlayList[ARow-1].ExtraProperty).TmpRating:=-1;
        BackEnd.mediaLibrary.SetRating(TExtendedInfo(BackEnd.PlayList[ARow-1].ExtraProperty).ID, Rating);
        sgPlayList.InvalidateCell(ACol, ARow);
-       abort;
      end;
 end;
 
@@ -1550,7 +1575,7 @@ begin
       exit;
     end;
 
-   if aRow = 0 then
+    if aRow = 0 then
       exit;
 
     ASong := BackEnd.PlayList.Songs[Arow -1];
@@ -2152,35 +2177,15 @@ begin
 end;
 
 procedure TfMainForm.ReloadPlayList;
-//var
-  //I:     integer;
-//  ASong: TSong;
 begin
-
 
   sgPlayList.Clear;
   sgPlayList.RowCount:=BackEnd.PlayList.Count+1 ;
   PlaylistSelected.SetSize(sgPlayList.RowCount -1);
   PlaylistSelected.Clearall;
 
-
-  //for i := 1 to BackEnd.PlayList.Count  do
-  //  begin
-  //    ASong := BackEnd.PlayList.Songs[i-1];
-  //    sgPlayList.Cells[ 1,i]:= IntToStr(i);
-  //    sgPlayList.Cells[ 2,i]:= ASong.Tags.Title;
-  //    sgPlayList.Cells[ 3,i]:= ASong.Tags.Album;
-  //    sgPlayList.Cells[ 4,i]:= TimeToStr(ASong.Tags.Duration / MSecsPerDay);
-  //    sgPlayList.Cells[ 5,i]:= ASong.Tags.TrackString;
-  //    sgPlayList.Cells[ 6,i]:= ASong.Tags.Genre;
-  //    sgPlayList.Cells[ 7,i]:= ASong.Tags.Year;
-  //    sgPlayList.Cells[ 8,i]:= ASong.Tags.AlbumArtist;
-  //    sgPlayList.Cells[ 9,i]:= ASong.FileName;
-  //    sgPlayList.Cells[10,i]:= '5';
-  //    end;
   AdaptSize;
   sgPlayList.Repaint;
-
 
 end;
 
