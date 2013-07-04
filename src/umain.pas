@@ -78,17 +78,21 @@ type
       fDwordSize: integer;
       fsize:integer;
       function GetSelected(Index: integer): boolean;
+      function PreviousSelected(index: Integer=-1): integer;
       procedure SetSelected(Index: integer; AValue: boolean);
+      Procedure SetSize(Size:Integer);
     public
       Constructor Create;
       Procedure ClearAll;
       Procedure SelectAll;
-      Procedure SetSize(Size:Integer);
-      function  FirstSelected : integer;
-      function  NextSelected(index:Integer=-1) : integer;
-      Function  isMultiselection:boolean;
-      property Selected[Index:integer]:boolean read GetSelected write SetSelected; default;
+      function FirstSelected : integer;
+      function LastSelected: integer;
+      function NextSelected(index:Integer=-1) : integer;
+      Function isMultiselection:boolean;
       Procedure SelectRange(Var Anchor: Integer;OldRow, NewRow: integer);
+      Property Size : Integer read FSize write SetSize;
+      property Selected[Index:integer]:boolean read GetSelected write SetSelected; default;
+
   end;
 
 
@@ -434,8 +438,13 @@ end;
 procedure TRowsSelection.SelectAll;
 var i :integer;
 begin
-  for i := 0 to fDwordSize -1 do
+  for i := 0 to fDwordSize -2 do
     fArray^[i] := DWord(not $0);
+
+  if fDwordSize > 0 then
+   // Clean up unused bits so LastSelected work give right result
+     fArray^[fDwordSize-1] := not ( $ffffffff shl (size mod 32)) ;
+
 end;
 
 procedure TRowsSelection.SetSize(Size: Integer);
@@ -451,7 +460,7 @@ const
   fSkippableValue= $00000000;
 var
   DWordIndex, BitIndex:Integer;
-  tmpDWord: integer;
+  tmpDWord: DWORD;
 
 begin
   Result   := -1;
@@ -466,6 +475,32 @@ begin
         begin
          tmpDWord:=tmpDWord shr 1;
          inc(BitIndex);
+        end;
+      Result := DWordIndex * 32 + BitIndex;
+      exit;
+    end;
+end;
+
+function TRowsSelection.LastSelected: integer;
+const
+  fSkippableValue= $00000000;
+var
+  DWordIndex, BitIndex:Integer;
+  tmpDWord: DWORD;
+
+begin
+  Result   := -1;
+  BitIndex := 31;
+  for DWordIndex := fDwordSize -1 downto 0 do
+    begin
+      if fArray^[DWordIndex] = fSkippableValue then
+         Continue;
+      tmpDWord:= fArray^[DWordIndex];
+      BitIndex := 31;
+      while  (tmpDWord and $80000000) = 0 do
+        begin
+         tmpDWord:=tmpDWord shl 1;
+         dec(BitIndex);
         end;
       Result := DWordIndex * 32 + BitIndex;
       exit;
@@ -492,6 +527,24 @@ begin
         end;
 end;
 
+function TRowsSelection.PreviousSelected(index:Integer=-1): integer;
+var i:integer;
+begin
+   Result := -1;
+   if index = -1 then
+      begin
+         Result := LastSelected;
+         exit;
+      end;
+
+   for i := index-1 downto 0 do
+     if GetSelected(i) then
+        begin
+          Result:= i;
+          exit;
+        end;
+end;
+
 function TRowsSelection.isMultiselection: boolean;
 var
   idx : integer;
@@ -501,7 +554,8 @@ begin
 
 end;
 
-procedure TRowsSelection.SelectRange(Var Anchor: Integer;OldRow, NewRow: integer);
+procedure TRowsSelection.SelectRange(var Anchor: Integer; OldRow,
+  NewRow: integer);
 var
   dir: integer;
   sel: boolean;
@@ -1128,11 +1182,12 @@ procedure TfMainForm.RemoveSelectionFromPlaylist;
 var
   Index: Integer;
 begin
-  index := PlaylistSelected.FirstSelected;
+  // Work in reverse order. Removing an item on playlist shift up remaining ones..
+  index := PlaylistSelected.LastSelected ;
   While Index > -1 do
     begin
       BackEnd.PlayList.Delete(Index);
-      index:= PlaylistSelected.NextSelected(index);
+      index:= PlaylistSelected.PreviousSelected(index);
     end;
 
   OnLoaded(sgPlayList);
@@ -1145,6 +1200,10 @@ var
   visRows,
   lastRow : integer;
 begin
+  // sgplaylist.Row:= BackEnd.PlayList.ItemIndex +1;
+  // above code trigger a Click event in grid. This was breaking
+  // code for editing Rating columns
+
   ARow := BackEnd.PlayList.ItemIndex +1;
   if (ARow > -1) and (ARow < sgplaylist.RowCount) then
      begin
@@ -1159,9 +1218,7 @@ begin
            sgplaylist.TopRow := ARow -visRows;
   end;
 end;
-//begin
-//  sgplaylist.Row:= BackEnd.PlayList.ItemIndex +1;
-//end;
+
 procedure TfMainForm.SaveConfig(Sender: TObject);
 var
   tmpSt: TStringList;
@@ -1831,6 +1888,7 @@ procedure TfMainForm.sgPlayListKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 var
   CurrRow: integer;
+  h: THackGrid;
 begin
   CurrRow := sgPlayList.Row -1;
 
@@ -1840,11 +1898,45 @@ begin
     VK_SPACE:
        if (ssCtrl in Shift) then
           PlaylistSelected[CurrRow] := not PlaylistSelected[CurrRow];
+    VK_A:
+       if (ssCtrl in Shift) then
+          PlaylistSelected.SelectAll;
     VK_UP :
        MoveSelection(msUp, Shift, CurrRow);
     VK_DOWN :
        MoveSelection(msDown, Shift, CurrRow);
-    end;
+    VK_PRIOR:
+       if (ssShift in Shift) then
+        begin
+          h:= THackGrid(sgPlayList);
+          CurrRow := h.GCache.FullVisibleGrid.Top -1;
+          PlaylistSelected.ClearAll;
+          PlaylistSelected.SelectRange(FAnchor, FAnchor, CurrRow);
+        end;
+    VK_NEXT :
+       if (ssShift in Shift) then
+        begin
+          h:= THackGrid(sgPlayList);
+          CurrRow := h.GCache.FullVisibleGrid.Bottom +1;
+          PlaylistSelected.ClearAll;
+          PlaylistSelected.SelectRange(FAnchor, FAnchor, CurrRow);
+        end;
+    VK_HOME:
+       if (ssShift in Shift) then
+        begin
+          CurrRow := 0;
+          PlaylistSelected.ClearAll;
+          PlaylistSelected.SelectRange(FAnchor, FAnchor, CurrRow);
+        end;
+    VK_END :
+       if (ssShift in Shift) then
+        begin
+          CurrRow := PlaylistSelected.size;
+          PlaylistSelected.ClearAll;
+          PlaylistSelected.SelectRange(FAnchor, FAnchor, CurrRow);
+        end;
+     end;
+
 
   sgPlaylist.invalidate;
 end;
