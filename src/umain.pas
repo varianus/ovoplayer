@@ -1722,7 +1722,7 @@ begin
     end;
 
   for i := 0 to sgPlayList.Columns.Count -1 do
-    if i = Index then
+    if i = (Index -1) then
        begin
          if Direction = sdplDiscending then
            sgPlayList.Columns[i].Title.ImageIndex:= 8

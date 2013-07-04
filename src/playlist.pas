@@ -131,6 +131,9 @@ begin
                  result:= CompareStr(s1.Tags.Album, s2.Tags.Album);
                  if result = 0 then
                     result:= CompareValue(s1.Tags.Track, s2.Tags.Track);
+                 if result = 0 then
+                    result:= CompareStr(s1.Tags.TrackString, s2.Tags.TrackString);
+
               end;
     stGenre       : result:= CompareStr(s1.tags.Genre,s2.tags.Genre);
     stYear        : result:= CompareStr(s1.tags.Year,s2.tags.Year);
@@ -204,7 +207,7 @@ end;
 
 function TPlayList.GetItem(Index: integer): TSong;
 begin
-  Result := TSong(inherited Get(Index));
+   Result := TSong(inherited Get(Index));
 end;
 
 procedure TPlayList.SetItem(Index: integer; const AValue: TSong);
@@ -434,4 +437,4 @@ begin
   Sort;
 end;
 
-end.
+end.
