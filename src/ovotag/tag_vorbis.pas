@@ -57,6 +57,7 @@ type
 
 
 implementation
+uses CommonFunctions;
 { TVorbisFrame }
 
 function TVorbisFrame.GetAsString: string;
@@ -147,7 +148,7 @@ begin
   Result.Comment := GetFrameValue('COMMENT');
   Result.Genre := GetFrameValue('GENRE');
   Result.Title := GetFrameValue('TITLE');
-  Result.Track := StrToIntDef(GetFrameValue('TRACKNUMBER'),0);;
+  Result.Track := ExtractTrack(GetFrameValue('TRACKNUMBER'));
   Result.TrackString := GetFrameValue('TRACKNUMBER');
   Result.Year := GetFrameValue('DATE');
 

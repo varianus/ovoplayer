@@ -57,7 +57,7 @@ type
 implementation
 
 { TWMATags }
-//uses CommonFunctions;
+uses CommonFunctions;
 
 function TWMATags.GetCommonTags: TCommonTags;
 begin
@@ -69,7 +69,7 @@ begin
   Result.Comment := GetFrameValue('WM/DESCRIPTION');
   Result.Genre := GetFrameValue('WM/GENRE');
   Result.Title := GetFrameValue('TITLE');
-  Result.Track := StrToIntDef(GetFrameValue('WM/TRACKNUMBER'),0);;
+  Result.Track := ExtractTrack(GetFrameValue('WM/TRACKNUMBER'));
   Result.TrackString := GetFrameValue('WM/TRACKNUMBER');
   Result.Year := GetFrameValue('WM/YEAR');
   if Result.AlbumArtist = '' then

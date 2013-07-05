@@ -72,7 +72,7 @@ type
 
 implementation
 uses
-  tag_id3v2, id3v1genres;
+  tag_id3v2, id3v1genres, CommonFunctions;
 
 { TAPEFrame }
 
@@ -203,7 +203,7 @@ begin
   Result.Comment := GetFrameValue('COMMENT');
   Result.Genre := GetFrameValue('GENRE');
   Result.Title := GetFrameValue('TITLE');
-  Result.Track := StrToIntDef(GetFrameValue('TRACK'),0);
+  Result.Track := ExtractTrack(GetFrameValue('TRACK'));
   Result.TrackString := GetFrameValue('TRACK');
   Result.Year := GetFrameValue('DATE');
   if Result.Year = '' then
