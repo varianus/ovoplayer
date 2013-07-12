@@ -699,6 +699,7 @@ var
   imgLoaded : boolean;
 
 begin
+  Application.ProcessMessages;
   pnlPlayInfo.visible:=true;
   song := BackEnd.PlayList.CurrentItem;
 // mcmcmcmc scrollinto
@@ -754,7 +755,7 @@ begin
      BackEnd.mediaLibrary.SetSongPlayed(ID);
 
   ScrollIntoView;
-
+  Application.ProcessMessages;
 end;
 
 procedure TfMainForm.ShowNotification;
@@ -781,7 +782,7 @@ begin
              pchar(ASong.tags.Title),
              PCHAr(ASong.Tags.Album + LineEnding + ASong.Tags.Artist + LineEnding +  ASong.Tags.TrackString),
              'audio-x-generic');
-             notify_notification_show (hello, nil);
+     notify_notification_show (hello, nil);
      notify_uninit;
      {$ELSE} // Use standard balloon hint on other widgetset
       TrayIcon.BalloonTimeout := BackEnd.Config.NotificationParam.TimeOut;
@@ -2277,7 +2278,8 @@ begin
   PlaylistSelected.Clearall;
 
   AdaptSize;
-  sgPlayList.Repaint;
+  sgPlayList.Invalidate;
+//  Application.ProcessMessages;
 
 end;
 
@@ -2381,4 +2383,4 @@ begin
        end;
 end;
 
-end.
+end.

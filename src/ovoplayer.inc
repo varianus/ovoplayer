@@ -40,17 +40,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 // XINE            - Xine             - Stable, minor issues
 // GSTREAMER       - Gstreamer        - Stable, Linux only, needs glib
 // MPLAYER         - Mplayer          - Stable, minor issues
+// UOS             - Various          - Stable, minor issues
 
 // Engines under development
 // MEDIAFOUNDATION - Microsoft        - Broken, Windows Vista and later only
 // FFMPEG          - FFMpeg           - Broken
-// UOS             - Various          - Working with major issues
 // OPENSOURCELIB   - Varios           - Working with major issues
 
 {$IFDEF LINUX}
   {$DEFINE NEEDCFGSUBDIR} // Need to add a sub-directory to configuration files directory
   {$DEFINE ASKMMKEYSMODE} // Ask for multimedia keys capture mode
-  {.$DEFINE MPRIS2} // MPRIS V2 Interface
+  {$DEFINE MPRIS2} // MPRIS V2 Interface
   {$IFDEF LCLGTK2}
      {$DEFINE LIBNOTIFY} // use gnome notification lib
   {$ENDIF LCLGTK2}
@@ -61,9 +61,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   {$DEFINE BASS} //
 
 
-
   {.$DEFINE OPENSOURCELIB} //
-  {$DEFINE UOS} //
+  {.$DEFINE UOS} //
   {.$DEFINE FFMPEG}
 
 {$ENDIF LINUX}

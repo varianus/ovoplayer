@@ -51,6 +51,7 @@ type
     Procedure Next;
     Procedure Previous;
     Procedure Quit;
+    procedure HandleCommand(Command: TEngineCommand; Param: integer = 0);
     Procedure OpenURI(URI: String);
     procedure Seek(AValue: int64);
     Function GetMetadata: TCommonTags;

@@ -18,18 +18,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 }
-uses DBUS, LCLProc, AppConsts, x,  xlib, gdk2;
+uses DBUS, LCLProc, AppConsts, x,  xlib, gdk2, gdk2x, DbusExtension;
 
 type
-  { TDBUSThread }
-
-  TDBUSThread = class (TThread)
-  public
-    fBus: PDBusConnection;
-     procedure Execute; override;
-    destructor Destroy; override;
-
-  end;
 
   { TkeyCaptureDBUS }
 
@@ -38,7 +29,7 @@ type
     fBus: PDBusConnection;
     fGrabbed: boolean;
     SettingsActive :Boolean;
-    DBUSThread : TDBUSThread;
+//    DBUSThread : TDBUSThread;
   protected
    function GetGrabbed: Boolean; override;
   public
@@ -109,8 +100,8 @@ begin
 	        if Command = 'play'     then wp := ecPlay else
 	        if Command = 'previous' then wp := ecPrevious else
 	        if Command = 'next'     then wp := ecNext;
-	        if (wp <> ecInvalid) and Assigned(obj.owner.OnMMKey) then
-	           obj.Owner.OnMMKey(obj.Owner, wp);
+	        if (wp <> ecInvalid) and Assigned(obj.owner.fBackEnd) then
+	           obj.Owner.fBackEnd.HandleCommand(wp);
 	      end;
   	   Result:= DBUS_HANDLER_RESULT_HANDLED;
   	end
@@ -120,23 +111,6 @@ begin
        end;
 
    dbus_error_free(@err);
-end;
-
-
-{ TDBUSThread }
-
-procedure TDBUSThread.Execute;
-begin
-  while not Terminated do
-    begin
-       dbus_connection_read_write(fBus, 150);
-    end;
-
-end;
-
-destructor TDBUSThread.Destroy;
-begin
-  inherited Destroy;
 end;
 
 function TkeyCaptureDBUS.GetGrabbed: Boolean;
@@ -154,6 +128,7 @@ begin
   dbus_error_init(@Err);
 
   fBus := dbus_bus_get(DBUS_BUS_SESSION, @err);
+  dbus_connection_setup_with_g_main(fBus, nil);
 
   dbus_connection_set_exit_on_disconnect(fBus,dbus_bool_t(false));
 
@@ -166,13 +141,13 @@ begin
   dbus_message_append_args(msg, DBUS_TYPE_UINT32,[@i]);
   i:=1;
   fGrabbed:=Boolean(dbus_connection_send(fBus,msg,@i));
-  if fGrabbed then
-     begin
-       DBUSThread := TDBUSThread.Create(True);
-       DBUSThread.fBus:=fBus;
-       DBUSThread.Start;
-
-     end;
+  //if fGrabbed then
+  //   begin
+  //     DBUSThread := TDBUSThread.Create(True);
+  //     DBUSThread.fBus:=fBus;
+  //     DBUSThread.Start;
+  //
+  //   end;
 end;
 
 procedure TkeyCaptureDBUS.EndGrab;
@@ -181,10 +156,10 @@ var
   TMPF: DBusHandleMessageFunction;
   msg: PDBusMessage;
   i:integer;
-  pl : pchar = 'appname';
+  pl : pchar = appname;
 
 begin
-  DBUSThread.Terminate;
+//  DBUSThread.Terminate;
   dbus_error_init(@Err);
   msg := dbus_message_new_method_call(GNOME_SETTINGS_DAEMON_NAME,GNOME_SETTINGS_DAEMON_PATH,GNOME_SETTINGS_DAEMON_INTERFACE,'ReleaseMediaPlayerKeys');
   dbus_message_append_args(msg, DBUS_TYPE_STRING,[@pl]);
@@ -209,7 +184,7 @@ begin
 
     XGrabKey (dsply, key_code,
               0,
-               (root), 1,
+              (root), 1,
               GrabModeAsync, GrabModeAsync);
     XGrabKey (dsply, key_code,
               Mod2Mask,
@@ -300,8 +275,8 @@ begin
 
         Result := GDK_FILTER_REMOVE;
 
-        if (wp <> ecInvalid) and Assigned(obj.owner.OnMMKey) then
-           obj.Owner.OnMMKey(obj.Owner, wp);
+        if (wp <> ecInvalid) and Assigned(obj.owner.fBackEnd) then
+           obj.Owner.fBackEnd.HandleCommand(wp);
 
 
 end;
@@ -310,39 +285,34 @@ procedure TkeyCaptureXGrab.GrabKeys(Grab:boolean);
 var
   keycodes : array [0..4] of integer;
   screen : PScreen;
-  root :TWindow;
+  root :PGdkWindow;
   i, j :Integer;
 
 begin
 
-
+    fGrabbed := true;
     keycodes[0] := XKeysymToKeycode (DISPLAY, XF86XK_AudioPlay);
     keycodes[1] := XKeysymToKeycode (DISPLAY, XF86XK_AudioStop);
     keycodes[2] := XKeysymToKeycode (DISPLAY, XF86XK_AudioPrev);
     keycodes[3] := XKeysymToKeycode (DISPLAY, XF86XK_AudioNext);
     keycodes[4] := XKeysymToKeycode (DISPLAY, XF86XK_AudioPause);
 
-    for i := 0 to ScreenCount(display) -1  do
-        begin
-          screen := ScreenOfDisplay (display, i);
+    root := gdk_get_default_root_window ();
+    Display := GDK_WINDOW_XDISPLAY (root);
 
-          if (screen <> Nil) then
-             root := RootWindowOfScreen (screen);
+    for j := 0 to Length(keycodes) -1 do
+      if (keycodes[j] <> 0) then
+         begin
+           if (grab) then
+              fGrabbed := fGrabbed and grab_mmkey (display, keycodes[j], gdk_x11_drawable_get_xid(root))
+           else
+              ungrab_mmkey (display, keycodes[j], gdk_x11_drawable_get_xid(root));
+         end;
 
-          for j := 0 to Length(keycodes) -1 do
-            if (keycodes[j] <> 0) then
-               begin
-                 if (grab) then
-                    fGrabbed := grab_mmkey (display, keycodes[j], root)
-                 else
-                    ungrab_mmkey (display, keycodes[j], root);
-               end;
-
-            if (grab) and fGrabbed  then
-                gdk_window_add_filter (nil, @filter_mmkeys, self)
-            else
-                gdk_window_remove_filter (nil, @filter_mmkeys, self);
-        end;
+    if (grab) and fGrabbed  then
+       gdk_window_add_filter (root, @filter_mmkeys, self)
+    else
+       gdk_window_remove_filter (root, @filter_mmkeys, self);
 
 end;
 
@@ -364,7 +334,7 @@ begin
   XCloseDisplay(display);
 end;
 
-constructor TMultimediaKeys.Create(Mode:Integer);
+constructor TMultimediaKeys.Create(Mode:Integer; BackEnd: IBackEnd);
 begin
   fMode := Mode;
   if fMode = 0 then
@@ -372,6 +342,7 @@ begin
   else
     KeyCapture := TkeyCaptureXGrab.Create;
 
+  fBackEnd := BackEnd;
   KeyCapture.Owner:= Self;
   KeyCapture.BeginGrab;
 end;

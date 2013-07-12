@@ -110,8 +110,8 @@ type
     fMultimediaKeys:   TMultimediaKeys;
     FOnSaveInterfaceState: TNotifyEvent;
     ObserverList : TInterfaceList;
+
     procedure AudioEngineSongEnd(Sender: TObject);
-    procedure onMultimediaKeys(Sender: TObject; Command: TEngineCommand);
     procedure PlaylistOnSongAdd(Sender: Tobject; Index: Integer; ASong: TSong);
     procedure SetOnEngineCommand(const AValue: TOnEngineCommand);
     procedure SetOnExternalCommand(const AValue: TOnExternalCommand);
@@ -149,9 +149,10 @@ type
     Procedure Remove(observer: iObserver);
     procedure Seek(AValue: int64);
     Procedure Notify(Kind:  TChangedProperty);
+    procedure HandleCommand(Command: TEngineCommand; Param: integer);
+
  //
     function GetImageFromfolder(Path: string): string;
-    procedure HandleCommand(Command: TEngineCommand; Param: integer);
     procedure SaveState;
     procedure SignalPlayListChange;
     property OnSaveInterfaceState: TNotifyEvent read FOnSaveInterfaceState write SetOnSaveInterfaceState;
@@ -162,9 +163,6 @@ type
 
   end;
 
-var
-  fBackEnd: TBackEnd;
-
 
 function BackEnd: TBackEnd;
 
@@ -172,6 +170,10 @@ implementation
 
 {$R *.lfm}
 uses LCLProc, strutils,  FilesSupport, AudioTag, AppConsts, GeneralFunc;
+
+var
+  fBackEnd: TBackEnd;
+
 
 { TBackEnd }
 
@@ -217,8 +219,7 @@ begin
 
   if Config.InterfaceParam.CaptureMMKeys then
     begin
-      fMultimediaKeys := TMultimediaKeys.Create(Config.InterfaceParam.CaptureMMkeysMode);
-      fMultimediaKeys.OnMMKey := @OnMultimediaKeys;
+      fMultimediaKeys := TMultimediaKeys.Create(Config.InterfaceParam.CaptureMMkeysMode, self);
     end;
 
 
@@ -231,6 +232,9 @@ begin
       Enabled := True;
       Loaded;
     end;
+
+  //fdecoupler := TDecoupler.Create;
+  //fdecoupler.OnCommand := @HandleCommand;
 
 end;
 
@@ -373,11 +377,6 @@ begin
     Result := Config.GetResourcesPath + 'nocover.png';
 end;
 
-
-procedure TBackEnd.onMultimediaKeys(Sender: TObject; Command: TEngineCommand);
-begin
-  HandleCommand(Command, 0);
-end;
 
 procedure TBackEnd.SetOnEngineCommand(const AValue: TOnEngineCommand);
 begin
@@ -906,4 +905,4 @@ end;
 
 initialization
   fBackEnd := nil;
-end.
+end.

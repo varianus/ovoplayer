@@ -600,6 +600,10 @@ msgstr ""
 msgid "**"
 msgstr ""
 
+#: tfmainform.menuitem56.caption
+msgid "None"
+msgstr ""
+
 #: tfmainform.menuitem9.caption
 msgctxt "TFMAINFORM.MENUITEM9.CAPTION"
 msgid "-"

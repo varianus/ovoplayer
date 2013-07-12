@@ -59,9 +59,9 @@ begin
   case uMsg of
     WM_HOTKEY : begin
                   i := TKeyCaptureWin(GetWindowLongPtr(HWindow,GWL_USERDATA));
-                  if Assigned(i.owner.OnMMKey) then
-                     i.Owner.OnMMKey(i.Owner, TEngineCommand(wp));
-                end;
+                  if Assigned(obj.owner.fBackEnd) then
+                 obj.Owner.fBackEnd.HandleCommand(TEngineCommand(wp));        
+                    end;
   else
       Result := DefWindowProc(hw, uMsg, wp, lp);
     end; // Case
@@ -127,11 +127,12 @@ begin
   DestroyWindow(hwindow);
 end;
 
-constructor TMultimediaKeys.Create(Mode: Integer);
+constructor TMultimediaKeys.Create(Mode:Integer; BackEnd: IBackEnd);
 begin
   fMode := Mode;
   KeyCapture := TkeyCaptureWin.Create;
   KeyCapture.Owner:= Self;
+  fBackEnd := BackEnd;     
   KeyCapture.BeginGrab;
 end;
 

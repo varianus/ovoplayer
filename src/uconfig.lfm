@@ -14,9 +14,9 @@ object fConfig: TfConfig
     Height = 450
     Top = 0
     Width = 549
-    ActivePage = tsInterface
+    ActivePage = tsEngine
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     object tsInterface: TTabSheet
       Caption = 'Interfaces'
@@ -116,13 +116,13 @@ object fConfig: TfConfig
         Height = 104
         Top = 184
         Width = 472
-        ActivePage = tsNone
+        ActivePage = tsMPlayer
         ShowTabs = False
-        TabIndex = 1
+        TabIndex = 0
         TabOrder = 1
         object tsMPlayer: TTabSheet
-          ClientHeight = 100
-          ClientWidth = 468
+          ClientHeight = 69
+          ClientWidth = 466
           object MPlayerPath: TFileNameEdit
             Left = 3
             Height = 27

@@ -269,7 +269,7 @@ if LCLWidgetType = 'customdrawn' then
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="58">
+    <Units Count="59">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -580,6 +580,11 @@ if LCLWidgetType = 'customdrawn' then
         <IsPartOfProject Value="True"/>
         <UnitName Value="BaseTypes"/>
       </Unit57>
+      <Unit58>
+        <Filename Value="platform\linux\dbusextension.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DbusExtension"/>
+      </Unit58>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -626,7 +631,6 @@ if LCLWidgetType = 'win32' then
     <Linking>
       <Debugging>
         <DebugInfoType Value="dsDwarf2Set"/>
-        <UseExternalDbgSyms Value="True"/>
       </Debugging>
       <Options>
         <Win32>
@@ -666,4 +670,4 @@ if LCLWidgetType = 'win32' then
       </Item4>
     </Exceptions>
   </Debugging>
-</CONFIG>
+</CONFIG>

@@ -25,7 +25,7 @@ unit MultimediaKeys;
 interface
 
 uses
-  Classes, SysUtils, BaseTypes;
+  Classes, SysUtils, BaseTypes, coreinterfaces;
 
 type
 
@@ -43,22 +43,17 @@ type
     Property Grabbed: Boolean read GetGrabbed;
   end;
 
-  TOnMMKeys = procedure(Sender: TObject; Command: TEngineCommand) of object;
-
   { TMultimediaKeys }
 
   TMultimediaKeys = class
   private
     fMode: integer;
-    FOnMMKey:   TOnMMKeys;
     KeyCapture: TKeyCapture;
-
-    procedure SetOnMMKey(const AValue: TOnMMKeys);
+    fBackEnd: IBackEnd;
   public
-    constructor Create(Mode:Integer);
+    constructor Create(Mode:Integer; BackEnd: IBackEnd);
     destructor Destroy; override;
     property Mode:integer read fMode;
-    property OnMMKey: TOnMMKeys read FOnMMKey write SetOnMMKey;
 
   end;
 
@@ -72,12 +67,5 @@ begin
   result:=False;
 end;
 
-procedure TMultimediaKeys.SetOnMMKey(const AValue: TOnMMKeys);
-begin
-  if FOnMMKey = AValue then
-    exit;
-  FOnMMKey := AValue;
-end;
 
-
-end.
+end.

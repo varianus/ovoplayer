@@ -34,13 +34,6 @@ uses
   DBUS, ctypes, BaseTypes, coreinterfaces;
 
 type
-  TDBUSThread = class(TThread)
-  public
-    fBus: PDBusConnection;
-    procedure Execute; override;
-    destructor Destroy; override;
-
-  end;
 
   { TMpris2 }
 
@@ -50,7 +43,6 @@ type
     mpris_connection: PDBusConnection;
     ret: cint;
     fBackEnd: IBackEnd;
-    DBUSThread: TDBUSThread;
     procedure mpris_send_signal_PlaybackStatus;
     procedure mpris_send_signal_Seeked;
     procedure mpris_send_signal_Updated_Metadata;
@@ -67,29 +59,11 @@ type
 
 implementation
 
-uses LCLProc, AppConsts, BaseTag, uMain;
+uses LCLProc, AppConsts, BaseTag, uMain, URIParser, DbusExtension;
 
 const
   MyTrue: dword = 1;
   MyFalse: dword = 0;
-
-
-{ TDBUSThread }
-
-procedure TDBUSThread.Execute;
-begin
-  while not Terminated do
-    begin
-    //       dbus_connection_dispatch(fBus);
-    dbus_connection_read_write_dispatch(fBus, 150);
-    end;
-
-end;
-
-destructor TDBUSThread.Destroy;
-begin
-  inherited Destroy;
-end;
 
 
 const
@@ -174,14 +148,8 @@ begin
   property_ := ('mpris:trackid');
   dbus_message_iter_append_basic(@dict_entry, DBUS_TYPE_STRING, @property_);
 
-  //    if (gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)) == nil
-  //        || !gtk_list_store_iter_is_valid(playliststore, @iter)) begin
-  //        s_val = ('/org/mpris/MediaPlayer2/TrackList/NoTrack');
-  //    end; else begin
-  //        gtk_tree_model_get(GTK_TREE_MODEL(playliststore), @iter, ADD_ORDER_COLUMN, @i, -1);
-  s_val := '/org/mpris/MediaPlayer2/Track/1';
-  //        s_val := g_strdup_printf('/org/mpris/MediaPlayer2/Track/%i', i);
-  //    end;
+  s_val := PChar('/org/mpris/MediaPlayer2/Track/' + IntToStr(tags.Track));
+
   dbus_message_iter_open_container(@dict_entry, DBUS_TYPE_VARIANT, 'o', @dict_val);
   dbus_message_iter_append_basic(@dict_val, DBUS_TYPE_OBJECT_PATH, @s_val);
   dbus_message_iter_close_container(@dict_entry, @dict_val);
@@ -190,22 +158,11 @@ begin
   dbus_message_iter_open_container(@dict, DBUS_TYPE_DICT_ENTRY, nil, @dict_entry);
   property_ := ('xesam:url');
   dbus_message_iter_append_basic(@dict_entry, DBUS_TYPE_STRING, @property_);
-  s_val := PChar(Tags.FileName);
+  s_val := PChar(FilenameToURI(Tags.FileName));
   dbus_message_iter_open_container(@dict_entry, DBUS_TYPE_VARIANT, 's', @dict_val);
   dbus_message_iter_append_basic(@dict_val, DBUS_TYPE_STRING, @s_val);
   dbus_message_iter_close_container(@dict_entry, @dict_val);
   dbus_message_iter_close_container(@dict, @dict_entry);
-
-  //if (cover_art_uri != nil) begin
-  //    dbus_message_iter_open_container(@dict, DBUS_TYPE_DICT_ENTRY, nil, @dict_entry);
-  //    property_ = ('mpris:artUrl');
-  //    dbus_message_iter_append_basic(@dict_entry, DBUS_TYPE_STRING, @property_);
-  //    s_val = (gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)));
-  //    dbus_message_iter_open_container(@dict_entry, DBUS_TYPE_VARIANT, 's', @dict_val);
-  //    dbus_message_iter_append_basic(@dict_val, DBUS_TYPE_STRING, @cover_art_uri);
-  //    dbus_message_iter_close_container(@dict_entry, @dict_val);
-  //    dbus_message_iter_close_container(@dict, @dict_entry);
-  //end;
 
   dbus_message_iter_open_container(@dict, DBUS_TYPE_DICT_ENTRY, nil, @dict_entry);
   property_ := ('xesam:title');
@@ -244,18 +201,27 @@ begin
   dbus_message_iter_close_container(@dict_entry, @dict_val);
   dbus_message_iter_close_container(@dict, @dict_entry);
 
-  //if (gtk_list_store_iter_is_valid(playliststore, @iter)) begin
-  //    dbus_message_iter_open_container(@dict, DBUS_TYPE_DICT_ENTRY, nil, @dict_entry);
-  //    property_ := ('xesam:trackNumber');
-  //    dbus_message_iter_append_basic(@dict_entry, DBUS_TYPE_STRING, @property_);
-  //    gtk_tree_model_get(GTK_TREE_MODEL(playliststore), @iter, ADD_ORDER_COLUMN, @i, -1);
-  //    dbus_message_iter_open_container(@dict_entry, DBUS_TYPE_VARIANT, 'i', @dict_val);
-  //    dbus_message_iter_append_basic(@dict_val, DBUS_TYPE_INT32, @i);
-  //    dbus_message_iter_close_container(@dict_entry, @dict_val);
-  //    dbus_message_iter_close_container(@dict, @dict_entry);
-  //    g_free(property_);
-  //end;
+  dbus_message_iter_open_container(@dict, DBUS_TYPE_DICT_ENTRY, nil, @dict_entry);
+  property_ := ('xesam:albumArtist');
+  dbus_message_iter_append_basic(@dict_entry, DBUS_TYPE_STRING, @property_);
+  if tags.Album = '' then
+    s_val := ('Unknown Album')
+  else
+    s_val := PChar(tags.AlbumArtist);
+  dbus_message_iter_open_container(@dict_entry, DBUS_TYPE_VARIANT, 's', @dict_val);
+  dbus_message_iter_append_basic(@dict_val, DBUS_TYPE_STRING, @s_val);
+  dbus_message_iter_close_container(@dict_entry, @dict_val);
+  dbus_message_iter_close_container(@dict, @dict_entry);
 
+
+  dbus_message_iter_open_container(@dict, DBUS_TYPE_DICT_ENTRY, nil, @dict_entry);
+  property_ := ('xesam:trackNumber');
+  dbus_message_iter_append_basic(@dict_entry, DBUS_TYPE_STRING, @property_);
+  i := tags.Track;
+  dbus_message_iter_open_container(@dict_entry, DBUS_TYPE_VARIANT, 'i', @dict_val);
+  dbus_message_iter_append_basic(@dict_val, DBUS_TYPE_INT32, @i);
+  dbus_message_iter_close_container(@dict_entry, @dict_val);
+  dbus_message_iter_close_container(@dict, @dict_entry);
 
   dbus_message_iter_close_container(@array_, @dict);
   dbus_message_iter_close_container(messageIter, @array_);
@@ -353,7 +319,7 @@ begin
           dbus_message_iter_close_container(@sub1, @sub2);
 
           dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
-          b_val := myFalse;       // gtk_widget_get_sensitive(fs_event_box);
+          b_val := myFalse;
           s := 'CanSetFullscreen';
           dbus_message_iter_append_basic(@sub2, DBUS_TYPE_STRING, @s);
           dbus_message_iter_open_container(@sub2, DBUS_TYPE_VARIANT, 'b', @sub3);
@@ -397,7 +363,184 @@ begin
           dbus_message_iter_close_container(@sub2, @sub3);
           dbus_message_iter_close_container(@sub1, @sub2);
 
+(*          dbus_message_iter_open_container(&sub1, DBUS_TYPE_DICT_ENTRY, NULL, &sub2);
+          property = g_strdup("SupportedMimeTypes");
+          dbus_message_iter_append_basic(&sub2, DBUS_TYPE_STRING, &property);
+          dbus_message_iter_open_container(&sub2, DBUS_TYPE_VARIANT, "as", &sub3);
+          dbus_message_iter_open_container(&sub3, DBUS_TYPE_ARRAY, "s", &sub4);
 
+          for (i = 0; i < G_N_ELEMENTS(mime_types); i++) {
+              s_val = g_strdup(mime_types[i]);
+              dbus_message_iter_append_basic(&sub4, DBUS_TYPE_STRING, &s_val);
+              g_free(s_val);
+          }
+
+          dbus_message_iter_close_container(&sub3, &sub4);
+          dbus_message_iter_close_container(&sub2, &sub3);
+          g_free(property);
+          dbus_message_iter_close_container(&sub1, &sub2);  *)
+
+          dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
+          s := 'PlaybackStatus';
+          case backend.GetStatus of
+            engine_play: s_val := ('Playing');
+            engine_pause: s_val := ('Paused');
+            else
+              s_val := ('Stopped');
+            end;
+          dbus_message_iter_append_basic(@sub2, DBUS_TYPE_STRING, @s);
+          dbus_message_iter_open_container(@sub2, DBUS_TYPE_VARIANT, 's', @sub3);
+          dbus_message_iter_append_basic(@sub3, DBUS_TYPE_STRING, @s_val);
+          dbus_message_iter_close_container(@sub2, @sub3);
+          dbus_message_iter_close_container(@sub1, @sub2);
+
+          dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
+          property_ := ('Volume');
+          d_val := BackEnd.GetVolume / 256;
+          dbus_message_iter_append_basic(@sub2, DBUS_TYPE_STRING, @property_);
+          dbus_message_iter_open_container(@sub2, DBUS_TYPE_VARIANT, 'd', @sub3);
+          dbus_message_iter_append_basic(@sub3, DBUS_TYPE_DOUBLE, @d_val);
+          dbus_message_iter_close_container(@sub2, @sub3);
+
+          dbus_message_iter_close_container(@sub1, @sub2);
+
+          dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
+          property_ := ('Rate');
+          d_val := 1.0;
+          dbus_message_iter_append_basic(@sub2, DBUS_TYPE_STRING, @property_);
+          dbus_message_iter_open_container(@sub2, DBUS_TYPE_VARIANT, 'd', @sub3);
+          dbus_message_iter_append_basic(@sub3, DBUS_TYPE_DOUBLE, @d_val);
+          dbus_message_iter_close_container(@sub2, @sub3);
+
+          dbus_message_iter_close_container(@sub1, @sub2);
+
+          dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
+          property_ := ('MinimumRate');
+          d_val := 1.0;
+          dbus_message_iter_append_basic(@sub2, DBUS_TYPE_STRING, @property_);
+          dbus_message_iter_open_container(@sub2, DBUS_TYPE_VARIANT, 'd', @sub3);
+          dbus_message_iter_append_basic(@sub3, DBUS_TYPE_DOUBLE, @d_val);
+          dbus_message_iter_close_container(@sub2, @sub3);
+
+          dbus_message_iter_close_container(@sub1, @sub2);
+
+          dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
+          property_ := ('MaximumRate');
+          d_val := 1.0;
+          dbus_message_iter_append_basic(@sub2, DBUS_TYPE_STRING, @property_);
+          dbus_message_iter_open_container(@sub2, DBUS_TYPE_VARIANT, 'd', @sub3);
+          dbus_message_iter_append_basic(@sub3, DBUS_TYPE_DOUBLE, @d_val);
+          dbus_message_iter_close_container(@sub2, @sub3);
+
+          dbus_message_iter_close_container(@sub1, @sub2);
+
+          dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
+          property_ := ('Position');
+          dbus_message_iter_append_basic(@sub2, DBUS_TYPE_STRING, @property_);
+          dbus_message_iter_open_container(@sub2, DBUS_TYPE_VARIANT, 'x', @sub3);
+          x_val := BackEnd.GetPosition * 1000000;
+          dbus_message_iter_append_basic(@sub3, DBUS_TYPE_INT64, @x_val);
+          dbus_message_iter_close_container(@sub2, @sub3);
+
+          dbus_message_iter_close_container(@sub1, @sub2);
+
+          dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
+          property_ := ('CanGoNext');
+          b_val := MyTrue;
+          dbus_message_iter_append_basic(@sub2, DBUS_TYPE_STRING, @property_);
+          dbus_message_iter_open_container(@sub2, DBUS_TYPE_VARIANT, 'b', @sub3);
+          dbus_message_iter_append_basic(@sub3, DBUS_TYPE_BOOLEAN, @b_val);
+          dbus_message_iter_close_container(@sub2, @sub3);
+
+          dbus_message_iter_close_container(@sub1, @sub2);
+
+          dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
+          property_ := ('CanGoPrevious');
+          b_val := MyTrue;
+          dbus_message_iter_append_basic(@sub2, DBUS_TYPE_STRING, @property_);
+          dbus_message_iter_open_container(@sub2, DBUS_TYPE_VARIANT, 'b', @sub3);
+          dbus_message_iter_append_basic(@sub3, DBUS_TYPE_BOOLEAN, @b_val);
+          dbus_message_iter_close_container(@sub2, @sub3);
+
+          dbus_message_iter_close_container(@sub1, @sub2);
+
+          dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
+          property_ := ('CanPlay');
+          b_val := MyTrue;
+          dbus_message_iter_append_basic(@sub2, DBUS_TYPE_STRING, @property_);
+          dbus_message_iter_open_container(@sub2, DBUS_TYPE_VARIANT, 'b', @sub3);
+          dbus_message_iter_append_basic(@sub3, DBUS_TYPE_BOOLEAN, @b_val);
+          dbus_message_iter_close_container(@sub2, @sub3);
+
+          dbus_message_iter_close_container(@sub1, @sub2);
+
+          dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
+          property_ := ('CanPause');
+          b_val := MyTrue;
+          dbus_message_iter_append_basic(@sub2, DBUS_TYPE_STRING, @property_);
+          dbus_message_iter_open_container(@sub2, DBUS_TYPE_VARIANT, 'b', @sub3);
+          dbus_message_iter_append_basic(@sub3, DBUS_TYPE_BOOLEAN, @b_val);
+          dbus_message_iter_close_container(@sub2, @sub3);
+
+          dbus_message_iter_close_container(@sub1, @sub2);
+
+          dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
+          property_ := ('CanSeek');
+          b_val := MyTrue;
+          dbus_message_iter_append_basic(@sub2, DBUS_TYPE_STRING, @property_);
+          dbus_message_iter_open_container(@sub2, DBUS_TYPE_VARIANT, 'b', @sub3);
+          dbus_message_iter_append_basic(@sub3, DBUS_TYPE_BOOLEAN, @b_val);
+          dbus_message_iter_close_container(@sub2, @sub3);
+
+          dbus_message_iter_close_container(@sub1, @sub2);
+
+          dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
+          property_ := ('CanControl');
+          b_val := MyTrue;
+          dbus_message_iter_append_basic(@sub2, DBUS_TYPE_STRING, @property_);
+          dbus_message_iter_open_container(@sub2, DBUS_TYPE_VARIANT, 'b', @sub3);
+          dbus_message_iter_append_basic(@sub3, DBUS_TYPE_BOOLEAN, @b_val);
+          dbus_message_iter_close_container(@sub2, @sub3);
+
+          dbus_message_iter_close_container(@sub1, @sub2);
+
+          dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
+          property_ := ('CanEditTracks');
+          b_val := MyFalse;
+          dbus_message_iter_append_basic(@sub2, DBUS_TYPE_STRING, @property_);
+          dbus_message_iter_open_container(@sub2, DBUS_TYPE_VARIANT, 'b', @sub3);
+          dbus_message_iter_append_basic(@sub3, DBUS_TYPE_BOOLEAN, @b_val);
+          dbus_message_iter_close_container(@sub2, @sub3);
+
+          dbus_message_iter_close_container(@sub1, @sub2);
+
+(*                    dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
+                    property_ := ('Tracks');
+                    dbus_message_iter_append_basic(@sub2, DBUS_TYPE_STRING, @property_);
+                    dbus_message_iter_open_container(@sub2, DBUS_TYPE_VARIANT, 'ao', @sub3);
+                    dbus_message_iter_open_container(@sub3, DBUS_TYPE_ARRAY, 'o', @sub4);
+
+                    gtk_tree_model_get_iter_first(GTK_TREE_MODEL(playliststore), @localiter);
+                    if (gtk_list_store_iter_is_valid(playliststore, @localiter)) {
+                        do {
+                            gtk_tree_model_get(GTK_TREE_MODEL(playliststore), @localiter, ADD_ORDER_COLUMN, @i, -1);
+                            s_val := _printf('/org/mpris/MediaPlayer2/Track/%i', i);
+                            dbus_message_iter_append_basic(@sub4, DBUS_TYPE_OBJECT_PATH, @s_val);
+                            g_free(s_val);
+                        } while (gtk_tree_model_iter_next(GTK_TREE_MODEL(playliststore), @localiter));
+                    }
+
+                    dbus_message_iter_close_container(@sub3, @sub4);
+                    dbus_message_iter_close_container(@sub2, @sub3);
+
+                    dbus_message_iter_close_container(@sub1, @sub2);        *)
+
+
+          dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
+          property_ := ('Metadata');
+          dbus_message_iter_append_basic(@sub2, DBUS_TYPE_STRING, @property_);
+          append_metadata_array(@sub2, BackEnd.GetMetadata);
+          dbus_message_iter_close_container(@sub1, @sub2);
           dbus_message_iter_close_container(@sub0, @sub1);
 
           dbus_connection_send(mpris_connection, reply_message, nil);
@@ -436,7 +579,11 @@ begin
           end;
         if (dbus_message_is_method_call(message_, 'org.mpris.MediaPlayer2.Player', 'PlayPause')) > 0 then
           begin
-          BackEnd.Pause;
+          if BackEnd.GetStatus = ENGINE_PLAY then
+            BackEnd.Pause
+          else
+            BackEnd.Play;
+
           reply_message := dbus_message_new_method_return(message_);
           dbus_connection_send(mpris_connection, reply_message, nil);
           dbus_message_unref(reply_message);
@@ -843,6 +990,8 @@ begin
 
   dbus_error_init(@error);
   mpris_connection := dbus_bus_get(DBUS_BUS_SESSION, @error);
+  dbus_connection_setup_with_g_main(mpris_connection, nil);
+
 
   path := ('org.mpris.MediaPlayer2.ovoplayer');
   ret := dbus_bus_request_name(mpris_connection, path, 0, nil);
@@ -866,13 +1015,7 @@ begin
 
   dbus_connection_flush(mpris_connection);
 
-  DBUSThread := TDBUSThread.Create(True);
-  DBUSThread.fBus := mpris_connection;
-
   fBackEnd.Attach(Self);
-  DBUSThread.Start;
-
-
   Result := True;
 
 end;
@@ -882,7 +1025,6 @@ begin
   if Assigned(mpris_connection) then
     begin
     fBackEnd.Remove(Self);
-    DBUSThread.Terminate;
     dbus_connection_unref(mpris_connection);
     mpris_connection := nil;
     end;
@@ -890,13 +1032,16 @@ end;
 
 procedure TMpris2.Update(Kind: TChangedProperty);
 begin
-
-   case kind of
-     cpStatus : mpris_send_signal_PlaybackStatus ;
-     cpVolume : mpris_send_signal_VolumeChanged;
-     cpPosition : mpris_send_signal_Seeked;
-     cpMetadata: mpris_send_signal_Updated_Metadata;
-   end;
+  case kind of
+    cpStatus:
+      begin
+      mpris_send_signal_Updated_Metadata;
+      mpris_send_signal_PlaybackStatus;
+      end;
+    cpVolume: mpris_send_signal_VolumeChanged;
+    cpPosition: mpris_send_signal_Seeked;
+    cpMetadata: mpris_send_signal_Updated_Metadata;
+    end;
 end;
 
 procedure TMpris2.mpris_send_signal_PlaybackStatus;
@@ -941,48 +1086,49 @@ var
   message: PDBusMessage;
   iter, dict, dict_entry, dict_val: DBusMessageIter;
   path, interface_, property_, s_val: PChar;
-  b_val:dword;
+  b_val: dword;
 begin
-  if (mpris_connection <> nil) then  begin
-        path := ('/org/mpris/MediaPlayer2');
-        interface_ := ('org.mpris.MediaPlayer2.Player');
-        message := dbus_message_new_signal(path, 'org.freedesktop.DBus.Properties', 'PropertiesChanged');
-        dbus_message_iter_init_append(message, @iter);
-        dbus_message_iter_append_basic(@iter, DBUS_TYPE_STRING, @interface_);
-        dbus_message_iter_open_container(@iter, DBUS_TYPE_ARRAY, '{sv}', @dict);
-        dbus_message_iter_open_container(@dict, DBUS_TYPE_DICT_ENTRY, nil, @dict_entry);
-        property_ := ('Metadata');
-        dbus_message_iter_append_basic(@dict_entry, DBUS_TYPE_STRING, @property_);
-        append_metadata_array(@dict_entry, fBackEnd.GetMetadata);
-        dbus_message_iter_close_container(@dict, @dict_entry);
+  if (mpris_connection <> nil) then
+    begin
+    path := ('/org/mpris/MediaPlayer2');
+    interface_ := ('org.mpris.MediaPlayer2.Player');
+    message := dbus_message_new_signal(path, 'org.freedesktop.DBus.Properties', 'PropertiesChanged');
+    dbus_message_iter_init_append(message, @iter);
+    dbus_message_iter_append_basic(@iter, DBUS_TYPE_STRING, @interface_);
+    dbus_message_iter_open_container(@iter, DBUS_TYPE_ARRAY, '{sv}', @dict);
+    dbus_message_iter_open_container(@dict, DBUS_TYPE_DICT_ENTRY, nil, @dict_entry);
+    property_ := ('Metadata');
+    dbus_message_iter_append_basic(@dict_entry, DBUS_TYPE_STRING, @property_);
+    append_metadata_array(@dict_entry, fBackEnd.GetMetadata);
+    dbus_message_iter_close_container(@dict, @dict_entry);
 
-        dbus_message_iter_open_container(@dict, DBUS_TYPE_DICT_ENTRY, nil, @dict_entry);
-        property_ := ('CanSeek');
-        dbus_message_iter_append_basic(@dict_entry, DBUS_TYPE_STRING, @property_);
-        dbus_message_iter_open_container(@dict_entry, DBUS_TYPE_VARIANT, 'b', @dict_val);
-        b_val := MyTrue;
-        dbus_message_iter_append_basic(@dict_val, DBUS_TYPE_BOOLEAN, @b_val);
-        dbus_message_iter_close_container(@dict_entry, @dict_val);
-        dbus_message_iter_close_container(@dict, @dict_entry);
+    dbus_message_iter_open_container(@dict, DBUS_TYPE_DICT_ENTRY, nil, @dict_entry);
+    property_ := ('CanSeek');
+    dbus_message_iter_append_basic(@dict_entry, DBUS_TYPE_STRING, @property_);
+    dbus_message_iter_open_container(@dict_entry, DBUS_TYPE_VARIANT, 'b', @dict_val);
+    b_val := MyTrue;
+    dbus_message_iter_append_basic(@dict_val, DBUS_TYPE_BOOLEAN, @b_val);
+    dbus_message_iter_close_container(@dict_entry, @dict_val);
+    dbus_message_iter_close_container(@dict, @dict_entry);
 
-        dbus_message_iter_open_container(@dict, DBUS_TYPE_DICT_ENTRY, nil, @dict_entry);
-        property_ := ('PlaybackStatus');
-        case fbackend.GetStatus of
-          engine_play: s_val := ('Playing');
-          engine_pause: s_val := ('Paused');
-          else
-            s_val := ('Stopped');
-          end;
-        dbus_message_iter_append_basic(@dict_entry, DBUS_TYPE_STRING, @property_);
-        dbus_message_iter_open_container(@dict_entry, DBUS_TYPE_VARIANT, 's', @dict_val);
-        dbus_message_iter_append_basic(@dict_val, DBUS_TYPE_STRING, @s_val);
-        dbus_message_iter_close_container(@dict_entry, @dict_val);
-        dbus_message_iter_close_container(@dict, @dict_entry);
-        dbus_message_iter_close_container(@iter, @dict);
-        dbus_message_iter_open_container(@iter, DBUS_TYPE_ARRAY, 's', @dict);
-        dbus_message_iter_close_container(@iter, @dict);
-        dbus_connection_send(mpris_connection, message, nil);
-        dbus_message_unref(message);
+    dbus_message_iter_open_container(@dict, DBUS_TYPE_DICT_ENTRY, nil, @dict_entry);
+    property_ := ('PlaybackStatus');
+    case fbackend.GetStatus of
+      engine_play: s_val := ('Playing');
+      engine_pause: s_val := ('Paused');
+      else
+        s_val := ('Stopped');
+      end;
+    dbus_message_iter_append_basic(@dict_entry, DBUS_TYPE_STRING, @property_);
+    dbus_message_iter_open_container(@dict_entry, DBUS_TYPE_VARIANT, 's', @dict_val);
+    dbus_message_iter_append_basic(@dict_val, DBUS_TYPE_STRING, @s_val);
+    dbus_message_iter_close_container(@dict_entry, @dict_val);
+    dbus_message_iter_close_container(@dict, @dict_entry);
+    dbus_message_iter_close_container(@iter, @dict);
+    dbus_message_iter_open_container(@iter, DBUS_TYPE_ARRAY, 's', @dict);
+    dbus_message_iter_close_container(@iter, @dict);
+    dbus_connection_send(mpris_connection, message, nil);
+    dbus_message_unref(message);
     end;
 end;
 
@@ -991,17 +1137,18 @@ var
   message: PDBusMessage;
   iter: DBusMessageIter;
   path, interface_: PChar;
-  x_val : Int64;
+  x_val: int64;
 begin
-  if (mpris_connection <> nil) then begin
-        path := ('/org/mpris/MediaPlayer2');
-        interface_ := ('org.mpris.MediaPlayer2.Player');
-        message := dbus_message_new_signal(path, interface_, 'Seeked');
-        dbus_message_iter_init_append(message, @iter);
-        x_val := fbackend.getposition * 1000000;
-        dbus_message_iter_append_basic(@iter, DBUS_TYPE_INT64, @x_val);
-        dbus_connection_send(mpris_connection, message, nil);
-        dbus_message_unref(message);
+  if (mpris_connection <> nil) then
+    begin
+    path := ('/org/mpris/MediaPlayer2');
+    interface_ := ('org.mpris.MediaPlayer2.Player');
+    message := dbus_message_new_signal(path, interface_, 'Seeked');
+    dbus_message_iter_init_append(message, @iter);
+    x_val := fbackend.getposition * 1000000;
+    dbus_message_iter_append_basic(@iter, DBUS_TYPE_INT64, @x_val);
+    dbus_connection_send(mpris_connection, message, nil);
+    dbus_message_unref(message);
     end;
 end;
 
@@ -1010,30 +1157,30 @@ var
   message: PDBusMessage;
   iter, dict, dict_entry, dict_val: DBusMessageIter;
   path, interface_, property_, s_val: PChar;
-  D_val:double;
+  D_val: double;
 begin
 
-
-    if (mpris_connection <> nil) then begin
-        path := ('/org/mpris/MediaPlayer2');
-        interface_ := ('org.mpris.MediaPlayer2.Player');
-        message := dbus_message_new_signal(path, 'org.freedesktop.DBus.Properties', 'PropertiesChanged');
-        dbus_message_iter_init_append(message, @iter);
-        dbus_message_iter_append_basic(@iter, DBUS_TYPE_STRING, @interface_);
-        dbus_message_iter_open_container(@iter, DBUS_TYPE_ARRAY, '{sv}', @dict);
-        dbus_message_iter_open_container(@dict, DBUS_TYPE_DICT_ENTRY, nil, @dict_entry);
-        property_ := ('Volume');
-        dbus_message_iter_append_basic(@dict_entry, DBUS_TYPE_STRING, @property_);
-        dbus_message_iter_open_container(@dict_entry, DBUS_TYPE_VARIANT, 'd', @dict_val);
-        d_val := fBackend.GetVolume / 256;
-        dbus_message_iter_append_basic(@dict_val, DBUS_TYPE_DOUBLE, @d_val);
-        dbus_message_iter_close_container(@dict_entry, @dict_val);
-        dbus_message_iter_close_container(@dict, @dict_entry);
-        dbus_message_iter_close_container(@iter, @dict);
-        dbus_message_iter_open_container(@iter, DBUS_TYPE_ARRAY, 's', @dict);
-        dbus_message_iter_close_container(@iter, @dict);
-        dbus_connection_send(mpris_connection, message, nil);
-        dbus_message_unref(message);
+  if (mpris_connection <> nil) then
+    begin
+    path := ('/org/mpris/MediaPlayer2');
+    interface_ := ('org.mpris.MediaPlayer2.Player');
+    message := dbus_message_new_signal(path, 'org.freedesktop.DBus.Properties', 'PropertiesChanged');
+    dbus_message_iter_init_append(message, @iter);
+    dbus_message_iter_append_basic(@iter, DBUS_TYPE_STRING, @interface_);
+    dbus_message_iter_open_container(@iter, DBUS_TYPE_ARRAY, '{sv}', @dict);
+    dbus_message_iter_open_container(@dict, DBUS_TYPE_DICT_ENTRY, nil, @dict_entry);
+    property_ := ('Volume');
+    dbus_message_iter_append_basic(@dict_entry, DBUS_TYPE_STRING, @property_);
+    dbus_message_iter_open_container(@dict_entry, DBUS_TYPE_VARIANT, 'd', @dict_val);
+    d_val := fBackend.GetVolume / 256;
+    dbus_message_iter_append_basic(@dict_val, DBUS_TYPE_DOUBLE, @d_val);
+    dbus_message_iter_close_container(@dict_entry, @dict_val);
+    dbus_message_iter_close_container(@dict, @dict_entry);
+    dbus_message_iter_close_container(@iter, @dict);
+    dbus_message_iter_open_container(@iter, DBUS_TYPE_ARRAY, 's', @dict);
+    dbus_message_iter_close_container(@iter, @dict);
+    dbus_connection_send(mpris_connection, message, nil);
+    dbus_message_unref(message);
     end;
 end;
 
