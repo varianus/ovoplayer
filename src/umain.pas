@@ -327,6 +327,10 @@ type
     FAnchor: integer;
     fColumnsWidth : array of integer;
     RatingBack, RatingFront:TBitmap;
+    {$IFDEF MPRIS2}
+    Mpris : TMpris2;
+    {$ENDIF MPRIS}
+
     Function ColumnSize(aCol: Integer):Integer;
     procedure ClearPanelInfo;
     procedure CollectionHandler(Enqueue: boolean);
@@ -350,6 +354,7 @@ type
     procedure RemoveSelectionFromPlaylist;
     procedure ScrollIntoView;
     procedure ShowNotification;
+
   public
     { public declarations }
   end;
@@ -999,10 +1004,6 @@ procedure TfMainForm.FormCreate(Sender: TObject);
 var
   tmpIcon : TIcon;
   tmpSize : TSize;
-  {$IFDEF MPRIS2}
-  Mpris : TMpris2;
-  {$ENDIF MPRIS}
-
 
 begin
   PlaylistSelected := TRowsSelection.Create;
@@ -1113,11 +1114,18 @@ end;
 
 procedure TfMainForm.FormDestroy(Sender: TObject);
 begin
+  {$IFDEF MPRIS2}
+  if Assigned(Mpris) then
+     begin
+      Mpris.Deactivate;
+      Mpris.Free;
+     end;
+  {$ENDIF MPRIS}
+
   PathHistory.Free;
   PlaylistSelected.Free;
   RatingBack.Free;
   RatingFront.Free;
-
 end;
 
 procedure TfMainForm.FormDropFiles(Sender: TObject;
