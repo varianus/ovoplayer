@@ -87,8 +87,10 @@ begin
             FilesInParm := TStringList.Create;
             Application.CheckOptions('', nil, nil, FilesInParm);
             for i := 0 to FilesinParm.Count - 1 do
+              begin  
                SendStringMessage(1, 'file:x='+FilesInParm[i] +'|');
-            DebugLn(FilesInParm[i]);
+               DebugLn(FilesInParm[i]);
+              end;
             SendStringMessage(1, 'action:activate|');
           end;
 
@@ -150,4 +152,4 @@ begin
 
 end;
 
-end.
+end.
