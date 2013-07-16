@@ -33,6 +33,10 @@ uses
   {$IFDEF MPRIS2}
   Mpris2,
   {$ENDIF MPRIS}
+  {$IFDEF NOTIFYDBUS}
+   notification,
+  {$ENDIF NOTIFYDBUS}
+
   ucover;
 
 type
@@ -330,6 +334,10 @@ type
     {$IFDEF MPRIS2}
     Mpris : TMpris2;
     {$ENDIF MPRIS}
+    {$IFDEF NOTIFYDBUS}
+    Notifier : TNotificationClient;
+    MyNotification: RNotification;
+    {$ENDIF NOTIFYDBUS}
 
     Function ColumnSize(aCol: Integer):Integer;
     procedure ClearPanelInfo;
@@ -367,9 +375,6 @@ implementation
 {$R *.lfm}
 uses AppConsts, lclType, AudioTag, LCLProc, FilesSupport,
      uConfig, uMiniPlayer, uSongInfo, uAbout, baseTag,
-     {$IFDEF LIBNOTIFY} libnotify,
-     {$ENDIF}
-
      Math;
 
 type
@@ -766,10 +771,6 @@ end;
 procedure TfMainForm.ShowNotification;
 var
   ASong: TSong;
-  {$IFDEF LIBNOTIFY}
-  hello : PNotifyNotification;
-  {$ENDIF}
-
 
 begin
   ASong := BackEnd.PlayList.CurrentItem;
@@ -781,14 +782,22 @@ begin
 
   if BackEnd.Config.NotificationParam.Kind = npkNotifications then
     begin
-     {$IFDEF LIBNOTIFY} // Use libnotify when avalaible
-     notify_init(argv[0]);
-     hello := notify_notification_new (
-             pchar(ASong.tags.Title),
-             PCHAr(ASong.Tags.Album + LineEnding + ASong.Tags.Artist + LineEnding +  ASong.Tags.TrackString),
-             'audio-x-generic');
-     notify_notification_show (hello, nil);
-     notify_uninit;
+     {$IFDEF NOTIFYDBUS}
+      MyNotification.Summary:=ASong.tags.Title;
+      MyNotification.IconName:='audio-x-generic';
+      MyNotification.Body:=ASong.Tags.Album + LineEnding + ASong.Tags.Artist + LineEnding +  ASong.Tags.TrackString;
+      MyNotification.TimeOut:= NOTIFY_EXPIRES_DEFAULT;
+      MyNotification.Urgency:= NOTIFY_URGENCY_NORMAL;
+
+      with TNotificationClient.Create do
+        begin
+          init(DisplayAppName);
+          ShowNotification(MyNotification);
+          UnInit;
+          free;
+        end;
+
+
      {$ELSE} // Use standard balloon hint on other widgetset
       TrayIcon.BalloonTimeout := BackEnd.Config.NotificationParam.TimeOut;
       TrayIcon.BalloonTitle   := ASong.tags.Title;

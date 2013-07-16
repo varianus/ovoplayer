@@ -253,7 +253,6 @@ if LCLWidgetType = 'customdrawn' then
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <CommandLineParams Value="C:\Media\Recorded\2013-06-19_14_10_36-LineIn.ogg"/>
       </local>
     </RunParams>
     <RequiredPackages Count="3">
@@ -269,7 +268,7 @@ if LCLWidgetType = 'customdrawn' then
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="59">
+    <Units Count="60">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -585,6 +584,11 @@ if LCLWidgetType = 'customdrawn' then
         <IsPartOfProject Value="True"/>
         <UnitName Value="DbusExtension"/>
       </Unit58>
+      <Unit59>
+        <Filename Value="platform\linux\notification.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="notification"/>
+      </Unit59>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

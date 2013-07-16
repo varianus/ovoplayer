@@ -17,10 +17,29 @@ type
     fBus: PDBusConnection;
      procedure Execute; override;
     destructor Destroy; override;
-
   end;
 
+ type
+   EDbusError =  EXception;
+
+Function HandleDbusError(Error: DBusError; RaiseException:boolean): boolean;
+
 implementation
+uses LCLProc;
+
+function HandleDbusError(Error: DBusError; RaiseException: boolean): boolean;
+begin
+  if dbus_error_is_set(@Error) <> 0 then
+  try
+    if RaiseException then
+       Raise EDbusError.Create('DBUS Error:' + Error.message)
+    else
+       DebugLn('DBUS Error:' + Error.message);
+  finally
+    dbus_error_free(@Error);
+  end;
+
+end;
 
 { TDBUSThread }
 
