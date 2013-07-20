@@ -25,11 +25,11 @@ unit GUIBackEnd;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, ActnList, Controls, Dialogs, Forms, LResources,
-  BaseTypes, CoreInterfaces,
-  PopupNotifier, PlayList, AudioEngine, AudioEngine_dummy,
+  Classes, SysUtils, FileUtil,
+  BaseTypes, CoreInterfaces,  forms,
+  PlayList, AudioEngine, AudioEngine_dummy,
   PlayListManager, MediaLibrary, basetag, Song,
-  MultimediaKeys, Config, UniqueInstance;
+  MultimediaKeys, Config;
 
 type
 
@@ -38,69 +38,7 @@ type
 
   { TBackEnd }
 
-  TBackEnd = class(TDataModule, IBackEnd)
-    actExit: TAction;
-    actDummy: TAction;
-    actRestart: TAction;
-    actRepeatNone: TAction;
-    actRepeatAll: TAction;
-    actRepeatAlbum: TAction;
-    actMute: TAction;
-    actRemoveMissing: TAction;
-    actRepeatTrack: TAction;
-    actSkipBackward: TAction;
-    actSkipForward: TAction;
-    actPlayListClear:    TAction;
-    actPlayListAddFiles: TAction;
-    actImportDirectory: TAction;
-    actPlayListShuffle: TAction;
-    actRescanCollection: TAction;
-    actPause:    TAction;
-    actPrevious: TAction;
-    actNext:     TAction;
-    actStop:     TAction;
-    actPlay:     TAction;
-    actPlaylistSave: TAction;
-    actPlaylistLoad: TAction;
-    ActionList:  TActionList;
-    ApplicationProperties: TApplicationProperties;
-    ilButtons:   TImageList;
-    ilSmall:     TImageList;
-    ilNone: TImageList;
-    OpenDialogPlaylist: TOpenDialog;
-    OpenDialogFiles: TOpenDialog;
-    SaveDialogPlayList: TSaveDialog;
-    SelectDirectoryDialog: TSelectDirectoryDialog;
-    UniqueInstanceI: TUniqueInstance;
-    procedure actExitExecute(Sender: TObject);
-    procedure actMuteExecute(Sender: TObject);
-    procedure actPlayListAddFilesExecute(Sender: TObject);
-    procedure actPlayListClearExecute(Sender: TObject);
-    procedure actImportDirectoryExecute(Sender: TObject);
-    procedure actPlayListShuffleExecute(Sender: TObject);
-    procedure actPlaylistLoadExecute(Sender: TObject);
-    procedure actNextExecute(Sender: TObject);
-    procedure actPauseExecute(Sender: TObject);
-    procedure actPlayExecute(Sender: TObject);
-    procedure actRepeatTrackExecute(Sender: TObject);
-    procedure actPreviousExecute(Sender: TObject);
-    procedure actRemoveMissingExecute(Sender: TObject);
-    procedure actRepeatAlbumExecute(Sender: TObject);
-    procedure actRepeatAllExecute(Sender: TObject);
-    procedure actRepeatNoneExecute(Sender: TObject);
-    procedure actRescanCollectionExecute(Sender: TObject);
-    procedure actPlaylistSaveExecute(Sender: TObject);
-    procedure actRestartExecute(Sender: TObject);
-    procedure actSkipBackwardExecute(Sender: TObject);
-    procedure actSkipForwardExecute(Sender: TObject);
-    procedure actStopExecute(Sender: TObject);
-    procedure ApplicationPropertiesDropFiles(Sender: TObject;
-      const FileNames: array of String);
-    procedure ApplicationPropertiesException(Sender: TObject; E: Exception);
-    procedure DataModuleCreate(Sender: TObject);
-    procedure DataModuleDestroy(Sender: TObject);
-    procedure UniqueInstanceIOtherInstance(Sender: TObject; ParamCount: Integer;
-      Parameters: array of String);
+  TBackEnd = class(TInterfacedObject, IBackEnd)
   private
     { private declarations }
     FOnEngineCommand: TOnEngineCommand;
@@ -120,11 +58,16 @@ type
     procedure SetOnSaveInterfaceState(AValue: TNotifyEvent);
 
   public
+
     PlayList: TPlaylist;
     Manager: TPlayListManager;
     AudioEngine: TAudioEngine;
     mediaLibrary: TMediaLibrary;
     Config: TConfig;
+
+    Constructor Create;
+    Destructor Destroy; override;
+
   // IBackEnd methods
     function GetLooping: TplRepeat;
     function GetPosition: int64;
@@ -151,7 +94,6 @@ type
     Procedure Notify(Kind:  TChangedProperty);
     procedure HandleCommand(Command: TEngineCommand; Param: integer);
 
- //
     function GetImageFromfolder(Path: string): string;
     procedure SaveState;
     procedure SignalPlayListChange;
@@ -168,8 +110,7 @@ function BackEnd: TBackEnd;
 
 implementation
 
-{$R *.lfm}
-uses LCLProc, strutils,  FilesSupport, AudioTag, AppConsts, GeneralFunc;
+uses LCLProc, FilesSupport, AudioTag, AppConsts;
 
 var
   fBackEnd: TBackEnd;
@@ -180,18 +121,16 @@ var
 function BackEnd: TBackEnd;
 begin
   if fBackEnd = nil then
-    fBackEnd := TBackEnd.Create(Application);
+    fBackEnd := TBackEnd.Create;
 
   Result := fBackEnd;
 end;
 
-procedure TBackEnd.DataModuleCreate(Sender: TObject);
+constructor TBackEnd.Create;
 var
   Engine : TAudioEngineClass;
 begin
-  Application.OnException := @ApplicationPropertiesException;
   Config := TConfig.Create;
-
   Manager  := TPlayListManager.Create;
   Playlist := TPlayList.Create;
   PlayList.RepeatMode :=  TplRepeat(Config.PlayListParam.RepeatMode);
@@ -222,35 +161,22 @@ begin
       fMultimediaKeys := TMultimediaKeys.Create(Config.InterfaceParam.CaptureMMkeysMode, self);
     end;
 
-
-  UniqueInstanceI:= TUniqueInstance.Create(Self);
-  with UniqueInstanceI do
-    begin
-      Identifier := AppNameServerID;
-      UpdateInterval := 500;
-      OnOtherInstance := @UniqueInstanceIOtherInstance;
-      Enabled := True;
-      Loaded;
-    end;
-
-  //fdecoupler := TDecoupler.Create;
-  //fdecoupler.OnCommand := @HandleCommand;
-
 end;
 
 procedure TBackEnd.SaveState;
 begin
   Manager.SaveToXSPF(Config.ConfigDir + 'lastplaylist.xspf', PlayList, AudioEngine.Position);
-  BackEnd.Config.EngineParam.Volume := AudioEngine.MainVolume;
+  Config.EngineParam.Volume := AudioEngine.MainVolume;
 
 end;
 
-procedure TBackEnd.DataModuleDestroy(Sender: TObject);
+destructor TBackEnd.Destroy;
 begin
+
   try
     SaveState;
     if Assigned(FOnSaveInterfaceState) then
-       FOnSaveInterfaceState(Sender);
+       FOnSaveInterfaceState(Self);
   except
   end;
   fMultimediaKeys.Free;
@@ -260,70 +186,9 @@ begin
   mediaLibrary.Free;
   Config.Free;
 
+  Inherited Destroy;
 end;
 
-procedure TBackEnd.UniqueInstanceIOtherInstance(Sender: TObject;
-  ParamCount: Integer; Parameters: array of String);
-var
-  i:integer;
-  tempstr: string;
-  idx: integer;
-  tempparam: string;
-begin
-  //
-  if ParamCount > 0 then
-    for i:= 0 to ParamCount - 1 do
-      begin
-         if AnsiStartsStr('action:', Parameters[i]) then
-           begin
-             tempstr:=copy(Parameters[i], 8, Length(Parameters[i]));
-             if tempstr = 'seek+'    then
-                actSkipForward.Execute   else
-             if tempstr = 'seek-'    then
-                actSkipBackward.Execute  else
-             if tempstr = 'play'     then
-                Play                     else
-             if tempstr = 'stop'     then
-                Stop                     else
-             if tempstr = 'pause'    then
-                Pause                    else
-             if tempstr = 'next'     then
-                Next                     else
-             if tempstr = 'previous' then
-                Previous                 else
-             if tempstr = 'close' then
-                Quit;
-
-             if Assigned(FOnExternalCommand) then
-                FOnExternalCommand(Self, tempstr);
-
-           end;
-
-         if AnsiStartsStr('file:', Parameters[i]) then
-           begin
-             tempstr:=copy(Parameters[i], 6, 2);
-             tempparam:=copy(Parameters[i], 8, Length(Parameters[i]));
-             if tempstr = 'e=' then
-                begin
-                  idx := PlayList.EnqueueFile(tempparam);
-                  SignalPlayListChange;
-                end else
-             if tempstr = 'p=' then
-                begin
-                  OpenUri(tempparam)
-                end  else
-             if tempstr = 'x=' then
-                begin
-                  idx := PlayList.EnqueueFile(tempparam);
-                  PlayList.ItemIndex:=idx;
-                  AudioEngine.Play(PlayList.CurrentItem);
-                  SignalPlayListChange;
-                end;
-
-           end;
-      end;
-
-end;
 
 
 function TBackEnd.GetImageFromfolder(Path: string): string;
@@ -563,7 +428,7 @@ end;
 
 procedure TBackEnd.Remove(observer: iObserver);
 begin
-  Remove(observer);
+  ObserverList.Remove(observer);
   if ObserverList.Count = 0 then
     FreeAndNil(ObserverList);
 
@@ -585,188 +450,9 @@ begin
 
 end;
 
-procedure TBackEnd.actPlaylistLoadExecute(Sender: TObject);
-begin
-  if OpenDialogPlaylist.Execute then
-    begin
-    PlayList.clear;
-    Manager.LoadPlayList(OpenDialogPlaylist.FileName, PlayList);
-    PlayList.LoadAllTags;
-    if Assigned(OnPlayListLoad) then
-      OnPlayListLoad(self);
-
-    if (Manager.SavedTime <> 0) and
-        Config.PlayListParam.Restart and
-       (PlayList.CurrentItem <> nil) then
-      begin
-         AudioEngine.Play(PlayList.CurrentItem, Manager.SavedTime);
-      end;
-
-    end;
-
-end;
-
-procedure TBackEnd.actPlayListClearExecute(Sender: TObject);
-begin
-  Stop;
-  PlayList.Clear;
-  SignalPlayListChange;
-end;
-
-procedure TBackEnd.actImportDirectoryExecute(Sender: TObject);
-begin
- SelectDirectoryDialog.FileName := Config.GeneralParam.LastImportFolder;
- if SelectDirectoryDialog.Execute then
-   begin
-     Manager.ImportFromDirectory(SelectDirectoryDialog.FileName,true, PlayList);
-     Config.GeneralParam.LastImportFolder := SelectDirectoryDialog.FileName;
-   end;
- SignalPlayListChange;
-end;
-
-procedure TBackEnd.actPlayListShuffleExecute(Sender: TObject);
-begin
-  PlayList.Shuffle;
-  SignalPlayListChange;
-end;
-
-procedure TBackEnd.actPlayListAddFilesExecute(Sender: TObject);
-var
-  i: integer;
-begin
-  OpenDialogFiles.Filter := format(rAllFiles, [supportedExtension]);
-
-  if not OpenDialogFiles.Execute then
-    exit;
-
-  for i := 0 to OpenDialogFiles.Files.Count - 1 do
-    PlayList.EnqueueFile(OpenDialogFiles.Files[i]);
-
-  SignalPlayListChange;
-
-end;
-
-procedure TBackEnd.actExitExecute(Sender: TObject);
-begin
-  Quit;
-end;
-
-procedure TBackEnd.actMuteExecute(Sender: TObject);
-begin
-  if actMute.Checked then
-     begin
-       AudioEngine.Muted := False;
-       actMute.ImageIndex := 19;
-     end
-  else
-     begin
-       AudioEngine.Muted := true;
-       actMute.ImageIndex := 18;
-     end;
-  actMute.Checked := not actMute.Checked;
-  Notify(cpVoLume);
-end;
-
-procedure TBackEnd.actNextExecute(Sender: TObject);
+procedure TBackEnd.AudioEngineSongEnd(Sender: TObject);
 begin
   Next;
-  Notify(cpStatus);
-end;
-
-procedure TBackEnd.actPauseExecute(Sender: TObject);
-begin
-  Pause;
-  Notify(cpStatus);
-end;
-
-procedure TBackEnd.actPlayExecute(Sender: TObject);
-begin
-  Play;
-  Notify(cpStatus);
-end;
-
-procedure TBackEnd.actPreviousExecute(Sender: TObject);
-begin
- Previous;
- Notify(cpStatus);
-end;
-
-procedure TBackEnd.actRemoveMissingExecute(Sender: TObject);
-begin
-  mediaLibrary.RemoveMissing;
-end;
-
-procedure TBackEnd.actRepeatTrackExecute(Sender: TObject);
-begin
-  PlayList.RepeatMode := rptTrack;
-  actRepeatTrack.Checked := true;
-  Config.PlayListParam.RepeatMode := Ord(PlayList.RepeatMode);
-  Notify(cpLooping);
-end;
-
-procedure TBackEnd.actRepeatAlbumExecute(Sender: TObject);
-begin
-  PlayList.RepeatMode := rptAlbum;
-  actRepeatAlbum.Checked:=true;
-  Config.PlayListParam.RepeatMode := Ord(PlayList.RepeatMode);
-  Notify(cpLooping);
-end;
-
-procedure TBackEnd.actRepeatAllExecute(Sender: TObject);
-begin
-  PlayList.RepeatMode := rptPlayList;
-   actRepeatAll.Checked:=true;
-   Config.PlayListParam.RepeatMode := Ord(PlayList.RepeatMode);
-   Notify(cpLooping);
-end;
-
-procedure TBackEnd.actRepeatNoneExecute(Sender: TObject);
-begin
-  PlayList.RepeatMode := rptNone;
-  actRepeatNone.Checked:=true;
-  Config.PlayListParam.RepeatMode := Ord(PlayList.RepeatMode);
-  Notify(cpLooping);
-end;
-
-procedure TBackEnd.actRescanCollectionExecute(Sender: TObject);
-
-begin
-  MediaLibrary.Scan(Config.MediaLibraryParam.LibraryPaths);
-end;
-
-procedure TBackEnd.actPlaylistSaveExecute(Sender: TObject);
-begin
-  if not SaveDialogPlayList.Execute then
-    exit;
-
-  Manager.SaveToXSPF(SaveDialogPlayList.FileName, PlayList, AudioEngine.Position);
-
-end;
-
-procedure TBackEnd.actRestartExecute(Sender: TObject);
-begin
-  Restart(Application);
-end;
-
-procedure TBackEnd.actSkipBackwardExecute(Sender: TObject);
-begin
-  BackEnd.AudioEngine.Seek(-10, False);
-  if Assigned(FOnEngineCommand) then
-     FOnEngineCommand(AudioEngine, ecSeek);
-
-end;
-
-procedure TBackEnd.actSkipForwardExecute(Sender: TObject);
-begin
-  BackEnd.AudioEngine.Seek(+10, False);
-  if Assigned(FOnEngineCommand) then
-     FOnEngineCommand(AudioEngine, ecSeek);
-
-end;
-
-procedure TBackEnd.actStopExecute(Sender: TObject);
-begin
-  Stop;
 end;
 
 procedure TBackEnd.PlaylistOnSongAdd(Sender: Tobject; Index: Integer; ASong : TSong);
@@ -779,113 +465,6 @@ begin
     exit;
   ExtendedInfo := mediaLibrary.InfoFromID(ID);
   ASong.ExtraProperty := ExtendedInfo;
-end;
-
-procedure TBackEnd.ApplicationPropertiesDropFiles(Sender: TObject;
-  const FileNames: array of String);
-var
-  st:TstringList;
-  i :Integer;
-begin
-  st:=TStringList.Create ;
-  try
-    for i:= Low(FileNames) to High(FileNames) do
-      if pos ('.' + ExtractFileExt(FileNames[i]) + ';', SupportedExtension) > 0 then
-         st.Add(FileNames[i]);
-
-    Manager.ImportFromStrings(st, PlayList);
-  finally
-    st.free;
-  end;
-end;
-{
-procedure DumpExceptionCallStack(E: Exception);
-var
-  I: Integer;
-  Frames: PPointer;
-  Report: string;
-  func,
-  source : shortstring;
-  hs     : string[32];
-  line   : longint;
-  Success : boolean;
-  Msg: TstringList;
-begin
-  msg:= TstringList.create;
-  Report := 'Program exception! ' + LineEnding +
-    'Stacktrace:' + LineEnding + LineEnding;
-  if E <> nil then begin
-    Report := Report + 'Exception class: ' + E.ClassName + LineEnding +
-    'Message: ' + E.Message + LineEnding;
-  end;
-  Report := Report + BackTraceStrFunc (ExceptAddr);
-  Frames := ExceptFrames;
-  for I := 0 to ExceptFrameCount - 1 do
-    Report := Report + LineEnding + BackTraceStrFunc (Frames[I] );
-  msg.Text:=Report;
-  msg.SaveToFile('ovoplayer.err');
-  msg.free;
-  DumpStack;
-end;
-
-}
-procedure DumpExceptionCallStack(e:exception);
-var
-  f: System.Text;
-  afileName:String;
-begin
-  afileName:='ovoplayer.err';
-  if (aFileName <> EmptyStr)  then
-  begin
-    AssignFile(f, UTF8ToSys(aFileName));
-    {$PUSH}{$I-}
-    if not FileExists(aFileName) then
-      Rewrite(f)
-    else
-      Append(f);
-    {$POP}
-    if (TextRec(f).mode <> fmClosed) and (IOResult = 0) then
-    begin
-      WriteLn(f, '--------------- ',
-                 FormatDateTime('dd-mm-yyyy, hh:nn:ss', SysUtils.Now),
-                 ' ---------------');
-      WriteLn(f, '| DC v', AppVersion, ' Rev. ', AppVersion);
-//                 ' -- ', TargetCPU + '-' + TargetOS + '-' + TargetWS);
-//      if WSVersion <> EmptyStr then
-//        WriteLn(f, '| ', OSVersion, ' -- ', WSVersion)
-//      else
-//        WriteLn(f, '| ', OSVersion);
-
-        if Assigned(e) then
-          WriteLn(f, 'Unhandled exception: ',
-                     Exception(e).ClassName, ': ',
-                     Exception(e).Message)
-        else
-          WriteLn(f, 'Unhandled exception');
-        WriteLn(f, '  Stack trace:');
-
-        System.DumpExceptionBackTrace(f);
-
-
-      // Make one empty line.
-      WriteLn(f);
-
-      CloseFile(f);
-    end;
-  end;
-end;
-
-
-procedure TBackEnd.ApplicationPropertiesException(Sender: TObject; E: Exception
-  );
-begin
-  DumpExceptionCallStack(e);
-  Halt; // End of program execution
-end;
-
-procedure TBackEnd.AudioEngineSongEnd(Sender: TObject);
-begin
-  Next;
 end;
 
 procedure TBackEnd.HandleCommand(Command: TEngineCommand; Param: integer);
@@ -905,4 +484,4 @@ end;
 
 initialization
   fBackEnd := nil;
-end.
+end.
