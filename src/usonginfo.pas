@@ -26,8 +26,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls, ButtonPanel, Spin, ComCtrls, Buttons, AudioTag, types,
-  BaseTag, contnrs, FilesSupport, MediaLibrary;
+  StdCtrls, ButtonPanel, ComCtrls, Buttons, AudioTag,
+  BaseTag, FilesSupport, MediaLibrary;
 
 type
 
@@ -147,13 +147,11 @@ var
 implementation
 
 {$R *.lfm}
-  uses AppConsts, GUIBackEnd, CommonFunctions, ID3v1Genres;
+  uses AppConsts, GUIBackEnd, ID3v1Genres;
 
 { TfSongInfo }
 
 procedure TfSongInfo.FormClose(Sender: TObject; var CloseAction: TCloseAction);
-var
-  i:Integer;
 begin
   CloseAction := caFree;
 
@@ -510,8 +508,6 @@ begin
 end;
 
 procedure TfSongInfo.ShowTags(Tags: TCommonTags; Modified: TIDFieldsSet);
-var
-  int: integer;
 begin
   if fTagList[lbFiles.ItemIndex].TagReader.isUpdateable then
     begin
@@ -770,4 +766,4 @@ begin
 end;
 
 
-end.
+end.

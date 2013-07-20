@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
     <Version Value="9"/>
@@ -135,7 +135,6 @@ if LCLWidgetType = 'win32' then
             <SmartLinkUnit Value="True"/>
             <RelocatableUnit Value="True"/>
             <Optimizations>
-              <VariablesInRegisters Value="True"/>
               <OptimizationLevel Value="2"/>
             </Optimizations>
           </CodeGeneration>
@@ -268,7 +267,7 @@ if LCLWidgetType = 'customdrawn' then
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="60">
+    <Units Count="61">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -589,6 +588,14 @@ if LCLWidgetType = 'customdrawn' then
         <IsPartOfProject Value="True"/>
         <UnitName Value="notification"/>
       </Unit59>
+      <Unit60>
+        <Filename Value="udm.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="DM"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="DataModule"/>
+        <UnitName Value="uDM"/>
+      </Unit60>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

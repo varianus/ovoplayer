@@ -111,7 +111,7 @@ var
 
 implementation
 {$R *.lfm}
-uses GeneralFunc;
+uses udm, GeneralFunc;
 
 { TfConfig }
 
@@ -177,8 +177,8 @@ end;
 
 procedure TfConfig.bAddDirClick(Sender: TObject);
 begin
-  if BackEnd.SelectDirectoryDialog.Execute then
-    lbMLPath.Items.Add(BackEnd.SelectDirectoryDialog.FileName);
+  if dm.SelectDirectoryDialog.Execute then
+    lbMLPath.Items.Add(dm.SelectDirectoryDialog.FileName);
 end;
 
 procedure TfConfig.bRemoveDirClick(Sender: TObject);
@@ -240,7 +240,6 @@ end;
 procedure TfConfig.FormCreate(Sender: TObject);
 var
   i: integer;
-  avail :boolean;
   tmpstr: string;
 begin
   rgAudioEngine.Items.clear;

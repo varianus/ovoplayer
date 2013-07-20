@@ -54,6 +54,7 @@ type
     constructor Create(aFileName: string);
     destructor Destroy; override;
     procedure SetTags(const AValue: TCommonTags);
+    Function LoadTags: boolean;
   public
     property FilePath: string read FFilePath;
     property FileName: TFileName read FFileName;
@@ -102,7 +103,7 @@ end;
 function TSong.GetTags: TCommonTags;
 begin
   if not FTagLoaded then
-    LoadTags(Self);
+    AudioTag.LoadTags(Self);
 
   Result := FTags;
 
@@ -126,12 +127,18 @@ procedure TSong.SetTagLoaded(const AValue: boolean);
 begin
   if FTagLoaded = AValue then
     exit;
-  FTagLoaded := AValue;
+  FTagLoaded := aValue;
 end;
 
 procedure TSong.SetTags(const AValue: TCommonTags);
 begin
   FTags := AValue;
+end;
+
+function TSong.LoadTags: boolean;
+begin
+  Result := AudioTag.LoadTags(Self);
+
 end;
 
 constructor TSong.Create(aFileName: string);
@@ -151,4 +158,4 @@ begin
   inherited Destroy;
 end;
 
-end.
+end.

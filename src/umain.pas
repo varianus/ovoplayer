@@ -26,7 +26,7 @@ interface
 
 uses
   Classes, types, SysUtils, FileUtil, Forms, Controls, Graphics,
-  Dialogs, ComCtrls, Menus, ExtCtrls, Buttons, StdCtrls, Song, uOSD, playlist,
+  Dialogs, ComCtrls, Menus, ExtCtrls, Buttons, StdCtrls, Song, uOSD,
   BaseTypes, GUIBackEnd, Config, MediaLibrary,
   DefaultTranslator, Grids, EditBtn, ActnList, customdrawncontrols,
   customdrawn_common, customdrawn_ovoplayer,
@@ -375,7 +375,7 @@ implementation
 {$R *.lfm}
 uses AppConsts, lclType, AudioTag, LCLProc, FilesSupport,
      uConfig, uMiniPlayer, uSongInfo, uAbout, baseTag,
-     Math;
+     Math, udm;
 
 type
 
@@ -604,7 +604,7 @@ begin
   while Node <> nil do
   begin
     if not Enqueue then
-       BackEnd.actPlayListClear.Execute;
+       BackEnd.PlayList.Clear;
 
     case node.Kind of
       tkSong:
@@ -1051,10 +1051,10 @@ begin
   ReadConfig(Self);
 
   case TplRepeat(BackEnd.Config.PlayListParam.RepeatMode) of
-    rptNone : BackEnd.actRepeatNone.Checked := true;
-    rptTrack : BackEnd.actRepeatTrack.Checked := true;
-    rptAlbum : BackEnd.actRepeatAlbum.Checked := true;
-    rptPlayList : BackEnd.actRepeatAll.Checked := true;
+    rptNone : dm.actRepeatNone.Checked := true;
+    rptTrack : dm.actRepeatTrack.Checked := true;
+    rptAlbum : dm.actRepeatAlbum.Checked := true;
+    rptPlayList : dm.actRepeatAll.Checked := true;
   end;
 
   try
@@ -1127,7 +1127,7 @@ begin
   if Assigned(Mpris) then
      begin
       Mpris.Deactivate;
-      Mpris.Free;
+//      Mpris.Free;
      end;
   {$ENDIF MPRIS}
 
@@ -1135,6 +1135,7 @@ begin
   PlaylistSelected.Free;
   RatingBack.Free;
   RatingFront.Free;
+
 end;
 
 procedure TfMainForm.FormDropFiles(Sender: TObject;
@@ -1636,11 +1637,11 @@ begin
     begin
       aBmp := TBitmap.Create;
       case BackEnd.AudioEngine.State of
-         ENGINE_PAUSE: BackEnd.ilSmall.GetBitmap(10, aBmp);
-         ENGINE_STOP : BackEnd.ilSmall.GetBitmap(11, aBmp);
-         ENGINE_PLAY : BackEnd.ilSmall.GetBitmap(6, aBmp);
+         ENGINE_PAUSE: dm.ilSmall.GetBitmap(10, aBmp);
+         ENGINE_STOP : dm.ilSmall.GetBitmap(11, aBmp);
+         ENGINE_PLAY : dm.ilSmall.GetBitmap(6, aBmp);
       else
-          BackEnd.ilSmall.GetBitmap(12, aBmp)
+          dm.ilSmall.GetBitmap(12, aBmp)
       end;
 
 
@@ -1655,6 +1656,7 @@ begin
 
     ASong := BackEnd.PlayList.Songs[Arow -1];
     if ASong = nil then exit;
+    ASong.LoadTags;
     case aCol of
          1: Txt := IntToStr(Arow);
          2: Txt := ASong.Title;

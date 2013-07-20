@@ -27,7 +27,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   Interfaces, // this includes the LCL widgetset
   Forms,
   // Application forms and related
-  uMain, uAbout, ulicense,
+  Udm,uMain, uAbout, ulicense,
   uConfig, uOSD, uMiniPlayer, uSongInfo,
   uCover,
   customdrawndrawers, customdrawn_ovoplayer,
@@ -70,6 +70,7 @@ begin
       Application.Title:='OvoPlayer';
       Application.Title:=DisplayAppName;
       Application.Initialize;
+      Application.CreateForm(TDM, dm);
       Application.CreateForm(TfMainForm, fMainForm);
       fMainForm.show;
       Application.CreateForm(TfMiniPlayer, fMiniPlayer);
