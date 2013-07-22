@@ -52,15 +52,15 @@ type
 function WinProc(hw: HWND; uMsg: UINT; wp: WPARAM; lp: LPARAM): LRESULT;
   stdcall; export;
 var
-  i: TKeyCaptureWin;
+ obj : TKeyCaptureWin;
 begin
 
   Result := 0;
   case uMsg of
     WM_HOTKEY : begin
-                  i := TKeyCaptureWin(GetWindowLongPtr(HWindow,GWL_USERDATA));
+                  obj := TKeyCaptureWin(GetWindowLongPtr(HWindow,GWL_USERDATA));
                   if Assigned(obj.owner.fBackEnd) then
-                 obj.Owner.fBackEnd.HandleCommand(TEngineCommand(wp));        
+                     obj.Owner.fBackEnd.HandleCommand(TEngineCommand(wp));
                     end;
   else
       Result := DefWindowProc(hw, uMsg, wp, lp);
