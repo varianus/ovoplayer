@@ -41,6 +41,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   MultimediaKeys,  Config,
   BaseTypes, coreinterfaces, GUIBackEnd,
   UniqueInstanceRaw,
+
   // Audio Engines
   audioengine, audioengine_dummy, AudioEngine_MPlayer,
   {$IFDEF GSTREAMER} gstreamer, audioengine_gstreamer, {$ENDIF}
@@ -52,12 +53,16 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   {$IFDEF OPENSOURCELIB} lazdyn_libsndfile, uos, lazdyn_mpg123, lazdyn_portaudio, audioengine_OpenLib,{$ENDIF}
   {$IFDEF UOS} UOS, uos_libsndfile, uos_mpg123, uos_portaudio, audioengine_UOS,{$ENDIF}
   {$IFDEF FFMPEG} audioengine_FFMPEG,{$ENDIF}
+
+  // Platform related
   {$IFDEF MPRIS2} mpris2,{$ENDIF}
+  {$IFDEF NOTIFYDBUS}notification,{$ENDIF}
+
   // ovotag
   song, AudioTag, basetag, file_flac, file_mp3, file_wma,
   tag_wma, tag_vorbis, tag_id3v2, file_ogg, file_monkey, tag_ape,
   file_Wave,  tag_Dummy, file_Dummy,
-  id3v1genres, notification;
+  id3v1genres;
 
 {$R *.res}
 begin
@@ -76,4 +81,4 @@ begin
       Application.CreateForm(TfMiniPlayer, fMiniPlayer);
       Application.Run;
    end;
-end.
+end.
