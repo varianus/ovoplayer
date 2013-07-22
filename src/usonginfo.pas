@@ -26,8 +26,12 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls, ButtonPanel, ComCtrls, Buttons, AudioTag,
-  BaseTag, FilesSupport, MediaLibrary;
+  StdCtrls, ButtonPanel, ComCtrls, Buttons,
+  {$IFDEF SUPPORT_LISTBOX_HINT}
+  LCLIntf,
+  {$ENDIF}
+
+  AudioTag,BaseTag, FilesSupport, MediaLibrary;
 
 type
 
@@ -766,4 +770,4 @@ begin
 end;
 
 
-end.
+end.
