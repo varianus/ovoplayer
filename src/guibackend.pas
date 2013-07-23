@@ -145,7 +145,7 @@ begin
       if Engine = nil then
          engine:=TAudioEngineDummy
       else
-        Config.EngineParam.EngineKind := Engine.getEngineNAme;;
+        Config.EngineParam.EngineKind := Engine.getEngineNAme;
     end;
 
   if not Engine.IsAvalaible(Config.EngineSubParams) then
@@ -154,6 +154,7 @@ begin
   AudioEngine := Engine.Create;
   AudioEngine.OnSongEnd := @AudioEngineSongEnd;
   AudioEngine.Activate;
+  AudioEngine.MainVolume:= Config.EngineParam.Volume;
   PlayList.OnSongAdd:=@PlaylistOnSongAdd;
 
   if Config.InterfaceParam.CaptureMMKeys then
@@ -316,6 +317,7 @@ end;
 
 procedure TBackEnd.SetVolume(AValue: cardinal);
 begin
+  DebugLn('TBackend.setvolume','->',IntToStr(AValue));
   AudioEngine.MainVolume := AValue;
   Notify(cpVolume);
 end;

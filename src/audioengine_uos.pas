@@ -76,23 +76,27 @@ type
 
 implementation
 //uses math;
+Const
+   UOSMAXVOLUME = 1;
 { TAudioEngineUOS }
 
 function TAudioEngineUOS.GetMainVolume: integer;
 begin
-  Result := trunc(fVolume * 100);
+  Result := trunc(fVolume * (255 / UOSMAXVOLUME));
 end;
 
 procedure TAudioEngineUOS.SetMainVolume(const AValue: integer);
 begin
- fVolume:= AValue / 100;
- UOS_Player.SetDSPVolumeIn(fStreamIndex,fDSPVol,fVolume,fVolume, true);
+
+ fVolume := AValue * (UOSMAXVOLUME / 255);
+ if (fState in [ENGINE_PLAY,ENGINE_PAUSE]) then
+    UOS_Player.SetDSPVolumeIn(fStreamIndex,fDSPVol,fVolume,fVolume, true);
 
 end;
 
 function TAudioEngineUOS.GetMaxVolume: integer;
 begin
-  Result:= 100;
+  Result:= 1;
 end;
 
 function TAudioEngineUOS.GetSongPos: integer;
@@ -108,7 +112,7 @@ end;
 
 procedure TAudioEngineUOS.Activate;
 begin
-
+  fStreamIndex:= -1;
 end;
 
 constructor TAudioEngineUOS.Create;
@@ -171,8 +175,6 @@ begin
 end;
 
 procedure TAudioEngineUOS.DoPlay(Song: TSong; offset:Integer);
-Var
-  savedVolume: Integer;
 begin
   // create new media
   if Not FileExists(Song.FullName) then
@@ -193,11 +195,11 @@ begin
   UOS_Player.EndProc:=@EndSong;
 
   fDSPVol := UOS_Player.AddDSPVolumeIn(fStreamIndex, 1, 1);
+  UOS_Player.SetDSPVolumeIn(fStreamIndex,fDSPVol,fVolume,fVolume, true);
 
   UOS_Player.Play;
   fState:= ENGINE_PLAY;
 
-  savedVolume := 100;
   if offset <> 0 then
     Seek(offset, true);
 end;

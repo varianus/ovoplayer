@@ -81,8 +81,10 @@ type
 
 implementation
 
-
 uses strutils, FileUtil, lclproc;
+Const
+  MPLAYERMAXVOLUME = 100;
+
 
 const
   TIMEPOSOUT = 'A: ';
@@ -155,7 +157,6 @@ end;
 function TAudioEngineMPlayer.GetMainVolume: integer;
 begin
   Result := fMainVolume;
-  ;
 end;
 
 function TAudioEngineMPlayer.GetSongPos: integer;
@@ -168,12 +169,12 @@ begin
   if AValue = fMainVolume then
     exit;
   fMainVolume := AValue;
-  SendMPlayerCommand('volume ' + IntToStr(fMainVolume) + ' 1');
+  SendMPlayerCommand('volume ' + IntToStr(trunc(fMainVolume + MPLAYERMAXVOLUME /255) + ' 1');
 end;
 
 function TAudioEngineMPlayer.GetMaxVolume: integer;
 begin
-  Result:= 255;
+  Result:= MPLAYERMAXVOLUME;
 end;
 
 

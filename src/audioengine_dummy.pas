@@ -68,8 +68,7 @@ implementation
 
 function TAudioEnginedummy.GetMainVolume: integer;
 begin
-  Result := 100;
-
+  Result := 255;
 end;
 
 procedure TAudioEnginedummy.SetMainVolume(const AValue: integer);
@@ -79,7 +78,7 @@ end;
 
 function TAudioEnginedummy.GetMaxVolume: integer;
 begin
-  Result:=100;
+  Result:=255;
 end;
 
 function TAudioEnginedummy.GetSongPos: integer;

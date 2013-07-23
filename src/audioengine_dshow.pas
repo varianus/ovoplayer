@@ -73,7 +73,8 @@ type
 
 implementation
 uses windows, math;
-
+Const
+  DSHOWMAXVOLUME = 10000;
 var
 
   WindowClassAtom: ATOM; // RegisterWindowClass yields an atom if successful.
@@ -83,14 +84,20 @@ var
 
 { TAudioEngineDShow }
 
+
 function GetBasicAudioVolume(Value : integer) : integer;
 begin
-  Result := Round(Power(10,Value / 2500) * 10001 - 1);
+  Result := Round(Power(10,(Value * 255 / DSHOWMAXVOLUME) / 2500) * (DSHOWMAXVOLUME +1) - 1);
 end;
 
 function SetBasicAudioVolume(Value : integer) : integer;
 begin
-  Result := Round(Log10((Value+1) / 10000) * 2500);
+  Result := Round(Log10(((Value / 255 * DSHOWMAXVOLUME )+1) / DSHOWMAXVOLUME) * 2500);
+end;
+
+function TAudioEngineDShow.GetMaxVolume: integer;
+begin
+  Result:=DSHOWMAXVOLUME;
 end;
 
 function WinProc(hw: HWND; uMsg: UINT; wp: WPARAM; lp: LPARAM): LRESULT;
@@ -168,11 +175,6 @@ end;
 procedure TAudioEngineDShow.SetMainVolume(const AValue: integer);
 begin
   AudioControl.put_Volume( SetBasicAudioVolume(Avalue));
-end;
-
-function TAudioEngineDShow.GetMaxVolume: integer;
-begin
-  Result:=10000;
 end;
 
 function TAudioEngineDShow.GetSongPos: integer;

@@ -27,7 +27,7 @@ interface
 uses
   Classes, types, SysUtils, FileUtil, Forms, Controls, Graphics,
   Dialogs, ComCtrls, Menus, ExtCtrls, Buttons, StdCtrls, Song, uOSD,
-  BaseTypes, GUIBackEnd, Config, MediaLibrary,
+  BaseTypes, GUIBackEnd, Config, MediaLibrary, coreinterfaces,
   DefaultTranslator, Grids, EditBtn, ActnList, customdrawncontrols,
   customdrawn_common, customdrawn_ovoplayer,
   {$IFDEF MPRIS2}
@@ -100,7 +100,7 @@ type
   end;
 
 
-  TfMainForm = class(TForm)
+  TfMainForm = class(TForm, IObserver)
     actShowLeft: TAction;
     actShowPLMediainfo: TAction;
     actShowAbout: TAction;
@@ -362,6 +362,7 @@ type
     procedure RemoveSelectionFromPlaylist;
     procedure ScrollIntoView;
     procedure ShowNotification;
+    procedure Update(Kind: TChangedProperty);
 
   public
     { public declarations }
@@ -813,6 +814,18 @@ begin
 
 end;
 
+procedure TfMainForm.Update(Kind: TChangedProperty);
+begin
+  case kind of
+    cpVolume: begin
+                DebugLn('TfMainForm.Update','->',IntToStr(BackEnd.GetVolume));
+                slVolume.Position:= BackEnd.GetVolume;
+              end;
+    end;
+
+
+end;
+
 procedure TfMainForm.ActShowPreferencesExecute(Sender: TObject);
 var
   TheForm: TfConfig;
@@ -1045,8 +1058,8 @@ begin
   BackEnd.mediaLibrary.OnScanComplete := @MediaLibraryScanComplete;
   BackEnd.mediaLibrary.OnScanStart:=@MediaLibraryScanBegin;
 
+  slVolume.Max:= 255;//BackEnd.AudioEngine.MaxVolume;
   slVolume.Position := BackEnd.Config.EngineParam.Volume;
-  slVolume.Max:= BackEnd.AudioEngine.MaxVolume;
 
   ReadConfig(Self);
 
@@ -1105,6 +1118,7 @@ begin
      end;
 
   slVolume.Position := BackEnd.GetVolume;
+  BackEnd.Attach(Self);
 
   cbGroupBy.ItemIndex := BackEnd.Config.InterfaceParam.GroupBy;
   cbGroupBy.OnChange(self);
@@ -2078,6 +2092,7 @@ end;
 
 procedure TfMainForm.slVolumeChange(Sender: TObject);
 begin
+  DebugLn('TfMainForm.slVolumeChange','->',IntToStr(slVolume.Position));
   BackEnd.SetVolume(slVolume.Position);
 //
 end;
@@ -2402,4 +2417,4 @@ begin
        end;
 end;
 
-end.
+end.

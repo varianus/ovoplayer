@@ -72,6 +72,8 @@ type
 
 implementation
 
+Const
+  BASSMAXVOLUME = 1;
 { TAudioEngineBASS }
 
 procedure PlayEndSync(SyncHandle: HSYNC; Channel, Data, user: DWORD); stdcall;
@@ -80,20 +82,25 @@ begin
 end;
 
 function TAudioEngineBASS.GetMainVolume: integer;
+var
+  tmpVol: single;
 begin
   Result := -1;
-  Result := Trunc(BASS_GetVolume() * 10000);
+  BASS_ChannelGetAttribute(Channel,BASS_ATTRIB_VOL, tmpVol);
+  Result := trunc(tmpVol  * (255 / BASSMAXVOLUME));
 
 end;
 
 procedure TAudioEngineBASS.SetMainVolume(const AValue: integer);
 begin
-  BASS_SetVolume(AValue / 10000);
+//  BASS_SetVolume(AValue * (BASSMAXVOLUME / 255));
+    BASS_ChannelSetAttribute(Channel,BASS_ATTRIB_VOL, AValue * (BASSMAXVOLUME / 255));
+
 end;
 
 function TAudioEngineBASS.GetMaxVolume: integer;
 begin
-  Result:=10000;
+  Result:= BASSMAXVOLUME;
 end;
 
 function TAudioEngineBASS.GetSongPos: integer;

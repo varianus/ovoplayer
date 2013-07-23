@@ -70,6 +70,10 @@ type
 
 implementation
 uses math;
+
+Const
+   VLCMAXVOLUME = 100;
+
 { TAudioEngineVLC }
 
 procedure lib_vlc_player_event_hdlr(p_event: libvlc_event_t_ptr; Data: Pointer); cdecl;
@@ -91,7 +95,7 @@ begin
   Result := -1;
   if (p_mi = nil) then
     exit;
-  Result := libvlc_audio_get_volume(p_mi);
+  Result := trunc(libvlc_audio_get_volume(p_mi) * ( 255 / VLCMAXVOLUME));
 
 end;
 
@@ -99,16 +103,12 @@ procedure TAudioEngineVLC.SetMainVolume(const AValue: integer);
 begin
   if (p_mi = nil) then
     exit;
-  if (AValue < 0) then
-    exit;
-  if (AValue > 200) then
-    exit;
-  libvlc_audio_set_volume(p_mi, AValue);
+  libvlc_audio_set_volume(p_mi, trunc(AValue * (VLCMAXVOLUME / 255)));
 end;
 
 function TAudioEngineVLC.GetMaxVolume: integer;
 begin
-  Result:= 255;
+  Result:= VLCMAXVOLUME;
 end;
 
 function TAudioEngineVLC.GetSongPos: integer;
