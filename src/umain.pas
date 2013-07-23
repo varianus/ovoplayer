@@ -818,7 +818,7 @@ procedure TfMainForm.Update(Kind: TChangedProperty);
 begin
   case kind of
     cpVolume: begin
-                DebugLn('TfMainForm.Update','->',IntToStr(BackEnd.GetVolume));
+//                DebugLn('TfMainForm.Update','->',IntToStr(BackEnd.GetVolume));
                 slVolume.Position:= BackEnd.GetVolume;
               end;
     end;
@@ -2092,7 +2092,7 @@ end;
 
 procedure TfMainForm.slVolumeChange(Sender: TObject);
 begin
-  DebugLn('TfMainForm.slVolumeChange','->',IntToStr(slVolume.Position));
+//  DebugLn('TfMainForm.slVolumeChange','->',IntToStr(slVolume.Position));
   BackEnd.SetVolume(slVolume.Position);
 //
 end;

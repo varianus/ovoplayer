@@ -317,7 +317,7 @@ end;
 
 procedure TBackEnd.SetVolume(AValue: cardinal);
 begin
-  DebugLn('TBackend.setvolume','->',IntToStr(AValue));
+//  DebugLn('TBackend.setvolume','->',IntToStr(AValue));
   AudioEngine.MainVolume := AValue;
   Notify(cpVolume);
 end;

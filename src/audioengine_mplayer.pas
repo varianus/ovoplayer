@@ -169,7 +169,7 @@ begin
   if AValue = fMainVolume then
     exit;
   fMainVolume := AValue;
-  SendMPlayerCommand('volume ' + IntToStr(trunc(fMainVolume + MPLAYERMAXVOLUME /255) + ' 1');
+  SendMPlayerCommand('volume ' + IntToStr(trunc(fMainVolume + MPLAYERMAXVOLUME /255)) + ' 1');
 end;
 
 function TAudioEngineMPlayer.GetMaxVolume: integer;
