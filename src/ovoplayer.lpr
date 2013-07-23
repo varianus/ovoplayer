@@ -37,7 +37,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   CommonFunctions,
   // Core player objects
   PlayList, PlayListManager,
-  MediaLibrary,
+  ExtendedInfo, MediaLibrary,
   MultimediaKeys,  Config,
   BaseTypes, coreinterfaces, GUIBackEnd,
   UniqueInstanceRaw,

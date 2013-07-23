@@ -31,7 +31,7 @@ uses
   LCLIntf,
   {$ENDIF}
 
-  AudioTag,BaseTag, FilesSupport, MediaLibrary;
+  AudioTag, BaseTag, FilesSupport, ExtendedInfo, MediaLibrary;
 
 type
 

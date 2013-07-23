@@ -28,6 +28,7 @@ uses
   Classes, types, SysUtils, FileUtil, Forms, Controls, Graphics,
   Dialogs, ComCtrls, Menus, ExtCtrls, Buttons, StdCtrls, Song, uOSD,
   BaseTypes, GUIBackEnd, Config, MediaLibrary, coreinterfaces,
+  ExtendedInfo,
   DefaultTranslator, Grids, EditBtn, ActnList, customdrawncontrols,
   customdrawn_common, customdrawn_ovoplayer,
   {$IFDEF MPRIS2}
@@ -399,6 +400,7 @@ const
     (Kind: tkSong; FieldName: 'Title'; ImageIndex: 2),
     (Kind: tkYear; FieldName: 'Year'; ImageIndex: 3),
     (Kind: tkGenre; FieldName: 'Genre'; ImageIndex: 4)
+//    (Kind: tkRating; FieldName: 'Rating'; ImageIndex: 5)
     );
 
 { TRowsSelection }
@@ -1741,6 +1743,7 @@ begin
     8 : SortField := stYear;
     9 : SortField := stAlbumArtist;
    10 : SortField := stFileName;
+   11 : SortField := stRating;
   else
     SortField:= stNone;
   end;

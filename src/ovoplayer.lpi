@@ -267,7 +267,7 @@ if LCLWidgetType = 'customdrawn' then
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="61">
+    <Units Count="62">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -596,6 +596,11 @@ if LCLWidgetType = 'customdrawn' then
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="uDM"/>
       </Unit60>
+      <Unit61>
+        <Filename Value="extendedinfo.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ExtendedInfo"/>
+      </Unit61>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -681,4 +686,4 @@ if LCLWidgetType = 'win32' then
       </Item4>
     </Exceptions>
   </Debugging>
-</CONFIG>
+</CONFIG>

@@ -86,7 +86,7 @@ type
 
 implementation
 uses
-  math;
+  math, ExtendedInfo;
 
 Procedure IntQuickSort(FList: PPointerList; L, R : Longint;
                      Compare: TPlayListSortCompare);
@@ -122,6 +122,7 @@ function TPlayList.MyCompare(p1, p2: Pointer): integer;
 var S1: TSong absolute p1;
     S2: TSong absolute p2;
 begin
+  result :=0;
   case FSortField of
     stTitle      : result:= CompareStr(s1.Title,s2.Title);
     StAlbum      : result:= CompareStr(s1.Tags.Album, s2.Tags.Album);
@@ -139,7 +140,16 @@ begin
     stYear        : result:= CompareStr(s1.tags.Year,s2.tags.Year);
     stAlbumArtist : result:= CompareStr(s1.tags.AlbumArtist,s2.tags.AlbumArtist);
     stFileName    : result:= CompareStr(s1.FileName, s2.FileName);
-    stRating      : result:= 0;
+
+    stRating      : begin
+                    if not assigned(S1.ExtraProperty) then
+                       Result := 1;
+                    if (Result <> 1) and assigned(S2.ExtraProperty) then
+                       result:= CompareValue(TExtendedInfo(S1.ExtraProperty).Rating,
+                                             TExtendedInfo(S2.ExtraProperty).Rating)
+                    else
+                      result := -1;
+                    end;
   else
     result:=0;
   end;

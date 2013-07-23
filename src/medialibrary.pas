@@ -25,7 +25,7 @@ unit MediaLibrary;
 interface
 
 uses
-  Classes, SysUtils, DB, sqlite3conn, sqldb, lclproc, basetag;
+  Classes, SysUtils, DB, sqlite3conn, sqldb, lclproc, basetag, extendedinfo;
 
 type
 
@@ -50,19 +50,6 @@ type
   end;
 
   TScanComplete = procedure(Sender: TObject; Added, Updated, Removed, Failed : integer) of object;
-
-  { TExtendedInfo }
-
-  TExtendedInfo = Class
-    Id: Integer;
-    PlayCount : Integer;
-    Rating :Integer;
-    tmpRating: integer;
-    Added : TDateTime;
-    LastPlay : TDateTime;
-  public
-    constructor Create;
-  end;
 
   TMediaLibrary = class
   private
@@ -179,18 +166,6 @@ const
                  + ' ,elabflag = :elabflag'
                  + ' ,Duration = :Duration'
                  + ' where ID = :ID';
-
-{ TExtendedInfo }
-
-constructor TExtendedInfo.Create;
-begin
-   PlayCount := -1;
-   Rating := -1;
-   tmpRating := -1;
-   Added := 0;
-   LastPlay := 0;
-
-end;
 
 { TDirectoryScanner }
 
@@ -630,8 +605,11 @@ begin
   fWorkQuery.Close;
   fWorkQuery.SQL.Text := 'select filename from songs where id =' + IntToStr(ID);
   fWorkQuery.Open;
-  Result := UTF8Decode(fWorkQuery.Fields[0].AsString);
-  fWorkQuery.Close;
+  if fWorkQuery.eof then
+     Result:=''
+  else
+     Result := UTF8Decode(fWorkQuery.Fields[0].AsString);
+ fWorkQuery.Close;
 end;
 
 function TMediaLibrary.IDFromFullName(FileName: TFileName): integer;

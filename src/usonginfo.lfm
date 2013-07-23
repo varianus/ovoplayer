@@ -1,7 +1,7 @@
 object fSongInfo: TfSongInfo
-  Left = 485
+  Left = 359
   Height = 407
-  Top = 303
+  Top = 286
   Width = 759
   BorderStyle = bsDialog
   Caption = 'Song Information'
@@ -18,9 +18,9 @@ object fSongInfo: TfSongInfo
     Height = 357
     Top = 0
     Width = 591
-    ActivePage = tsTags
+    ActivePage = tsMediaProperty
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     object tsTags: TTabSheet
       Caption = 'Tags'

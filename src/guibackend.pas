@@ -110,7 +110,7 @@ function BackEnd: TBackEnd;
 
 implementation
 
-uses LCLProc, FilesSupport, AudioTag, AppConsts;
+uses LCLProc, FilesSupport, AudioTag, AppConsts, ExtendedInfo;
 
 var
   fBackEnd: TBackEnd;
