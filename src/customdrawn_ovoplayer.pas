@@ -38,9 +38,9 @@ function TCDDrawerOvoPlayer.GetMeasures(AMeasureID: Integer): Integer;
 begin
   case AMeasureID of
   //
-  TCDTRACKBAR_LEFT_SPACING: Result := 7;
-  TCDTRACKBAR_RIGHT_SPACING: Result := 7;
-  TCDTRACKBAR_TOP_SPACING: Result := 5;
+  TCDTRACKBAR_LEFT_SPACING: Result := DPIAdjustment(7);
+  TCDTRACKBAR_RIGHT_SPACING: Result := DPIAdjustment(7);
+  TCDTRACKBAR_TOP_SPACING: Result := DPIAdjustment(5);
   TCDTRACKBAR_FRAME_HEIGHT: Result := DPIAdjustment(14);
   else
     result := Inherited  GetMeasures(AMeasureID);
