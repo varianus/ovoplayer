@@ -107,6 +107,7 @@ type
 
 
 function BackEnd: TBackEnd;
+Procedure FreeBackend;
 
 implementation
 
@@ -124,6 +125,21 @@ begin
     fBackEnd := TBackEnd.Create;
 
   Result := fBackEnd;
+end;
+
+procedure FreeBackend;
+var
+  i: integer;
+begin
+  if Assigned(fBackEnd.ObserverList) then
+     for i := 0 to fBackEnd.ObserverList.Count -1 do
+        fBackEnd.remove(IObserver(fBackEnd.ObserverList[i]));
+
+  for i := 0 to fBackEnd.RefCount -1 do
+      fBackEnd._Release;
+
+  fBackEnd := nil;
+
 end;
 
 constructor TBackEnd.Create;
@@ -392,7 +408,7 @@ begin
   if Assigned(FOnSaveInterfaceState) then
      FOnSaveInterfaceState(Self);
 
-  Application.Terminate;
+  Notify(cpClosing);
 
 end;
 

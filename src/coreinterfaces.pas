@@ -13,7 +13,7 @@ const
 type
 
   TChangedProperty = (cpStatus, cpVolume, cpPosition, cpMetadata,
-                      cpLooping, cpCurrentItem);
+                      cpLooping, cpCurrentItem, cpClosing);
 
   { IBackEnd }
 
@@ -61,4 +61,4 @@ type
 implementation
 
 end.
-
+

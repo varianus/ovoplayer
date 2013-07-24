@@ -332,6 +332,7 @@ type
     FAnchor: integer;
     fColumnsWidth : array of integer;
     RatingBack, RatingFront:TBitmap;
+    Quitting: boolean;
     {$IFDEF MPRIS2}
     Mpris : TMpris2;
     {$ENDIF MPRIS}
@@ -689,7 +690,7 @@ end;
 
 procedure TfMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
-  if BackEnd.Config.InterfaceParam.MinimizeOnClose then
+  if (BackEnd.Config.InterfaceParam.MinimizeOnClose) and not Quitting then
     begin
       Application.ShowMainForm:=False;
       CloseAction:=caHide;
@@ -823,6 +824,12 @@ begin
 //                DebugLn('TfMainForm.Update','->',IntToStr(BackEnd.GetVolume));
                 slVolume.Position:= BackEnd.GetVolume;
               end;
+    cpClosing: begin
+//                DebugLn('TfMainForm.Update','->',IntToStr(BackEnd.GetVolume));
+                Quitting:= true;
+                Close;
+              end;
+
     end;
 
 
@@ -1030,6 +1037,7 @@ var
   tmpSize : TSize;
 
 begin
+  Quitting := false;
   PlaylistSelected := TRowsSelection.Create;
   PathHistory := TStringList.Create;
   PathHistory.Duplicates := dupIgnore;
@@ -1143,7 +1151,6 @@ begin
   if Assigned(Mpris) then
      begin
       Mpris.Deactivate;
-//      Mpris.Free;
      end;
   {$ENDIF MPRIS}
 
@@ -1151,6 +1158,8 @@ begin
   PlaylistSelected.Free;
   RatingBack.Free;
   RatingFront.Free;
+  DM.Free;
+  FreeBackEnd;
 
 end;
 
