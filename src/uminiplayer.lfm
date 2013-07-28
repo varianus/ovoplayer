@@ -15,7 +15,7 @@ object fMiniPlayer: TfMiniPlayer
   OnHide = FormHide
   OnMouseLeave = FormMouseLeave
   OnShow = FormShow
-  LCLVersion = '0.9.31'
+  LCLVersion = '1.1'
   object Panel1: TPanel
     Left = 0
     Height = 58
@@ -38,43 +38,43 @@ object fMiniPlayer: TfMiniPlayer
       EdgeInner = esNone
       EdgeOuter = esNone
       Flat = False
-      Images = BackEnd.ilButtons
+      Images = DM.ilButtons
       ParentColor = False
       TabOrder = 0
       object ToolButton1: TToolButton
         Left = 1
         Top = 0
-        Action = BackEnd.actPrevious
+        Action = DM.actPrevious
       end
       object ToolButton2: TToolButton
-        Left = 53
+        Left = 47
         Top = 0
-        Action = BackEnd.actPlay
+        Action = DM.actPlay
       end
       object ToolButton3: TToolButton
-        Left = 105
+        Left = 93
         Top = 0
-        Action = BackEnd.actStop
+        Action = DM.actStop
       end
       object ToolButton4: TToolButton
-        Left = 157
+        Left = 139
         Top = 0
-        Action = BackEnd.actNext
+        Action = DM.actNext
       end
       object ToolButton5: TToolButton
-        Left = 79
+        Left = 70
         Top = 0
-        Action = BackEnd.actPause
+        Action = DM.actPause
       end
       object ToolButton6: TToolButton
-        Left = 27
+        Left = 24
         Top = 0
-        Action = BackEnd.actSkipBackward
+        Action = DM.actSkipBackward
       end
       object ToolButton7: TToolButton
-        Left = 131
+        Left = 116
         Top = 0
-        Action = BackEnd.actSkipForward
+        Action = DM.actSkipForward
       end
     end
     object TrackBar: TCDTrackBar
@@ -93,6 +93,6 @@ object fMiniPlayer: TfMiniPlayer
   object Timer: TTimer
     Interval = 333
     OnTimer = TimerTimer
-    left = 112
+    left = 96
   end
 end
