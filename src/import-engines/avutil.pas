@@ -1,154 +1,299 @@
 (*
  * copyright (c) 2006 Michael Niedermayer <michaelni@gmx.at>
  *
- * This file is part of FFmpeg.
- *
- * FFmpeg is free software; you can redistribute it and/or
+ * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 2 of the License, or (at your option) any later version.
  *
- * FFmpeg is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with FFmpeg; if not, write to the Free Software
+ * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
-
-   ===
-
-   revision 15272, 08-sep-2008
-
-   delphi conversion of libavcodec/avutil.h
-
-   slightly.fat.hamster@gmail.com, originally by Victor Zinetz
-
-   24-sept-2008
-
-   ===
-
+ *
+ * This is a part of Pascal porting of ffmpeg.
+ * - Originally by Victor Zinetz for Delphi and Free Pascal on Windows.
+ * - For Mac OS X, some modifications were made by The Creative CAT, denoted as CAT
+ *   in the source codes.
+ * - Changes and updates by the UltraStar Deluxe Team
+ *
+ * Conversions of
+ *
+ * libavutil/avutil.h:
+ * version: 51.73.101
+ *
  *)
 
 unit avutil;
 
+{$IFDEF FPC}
+  {$MODE DELPHI}
+  {$PACKENUM 4}    (* use 4-byte enums *)
+  {$PACKRECORDS C} (* C/C++-compatible record packing *)
+{$ELSE}
+  {$MINENUMSIZE 4} (* use 4-byte enums *)
+{$ENDIF}
+
+{$IFDEF DARWIN}
+  {$linklib libavutil}
+{$ENDIF}
+
 interface
 
 uses
-  windows;
-//#include "common.h"
-//  mathematics,
-//  rational,
-//  intfloat_readwrite,
-  //log;
+  ctypes,
+  rational,
+  {$IFDEF UNIX}
+  BaseUnix,
+  {$ENDIF}
+  FFMPEGConfig;
 
 const
-  dll_name = 'avutil.dll';
+  (* Max. supported version by this header *)
+  LIBAVUTIL_MAX_VERSION_MAJOR   = 51;
+  LIBAVUTIL_MAX_VERSION_MINOR   = 73;
+  LIBAVUTIL_MAX_VERSION_RELEASE = 101;
+  LIBAVUTIL_MAX_VERSION = (LIBAVUTIL_MAX_VERSION_MAJOR * VERSION_MAJOR) +
+                          (LIBAVUTIL_MAX_VERSION_MINOR * VERSION_MINOR) +
+                          (LIBAVUTIL_MAX_VERSION_RELEASE * VERSION_RELEASE);
 
-  LIBAVUTIL_VERSION_MAJOR = 49;
-  LIBAVUTIL_VERSION_MINOR = 10;
-  LIBAVUTIL_VERSION_MICRO = 0;
+  (* Min. supported version by this header *)
+  LIBAVUTIL_MIN_VERSION_MAJOR   = 51;
+  LIBAVUTIL_MIN_VERSION_MINOR   = 73;
+  LIBAVUTIL_MIN_VERSION_RELEASE = 0;
+  LIBAVUTIL_MIN_VERSION = (LIBAVUTIL_MIN_VERSION_MAJOR * VERSION_MAJOR) +
+                          (LIBAVUTIL_MIN_VERSION_MINOR * VERSION_MINOR) +
+                          (LIBAVUTIL_MIN_VERSION_RELEASE * VERSION_RELEASE);
 
-  LIBAVUTIL_VERSION_INT   = LIBAVUTIL_VERSION_MAJOR shl 16 +
-                            LIBAVUTIL_VERSION_MINOR shl 8 +
-                            LIBAVUTIL_VERSION_MICRO;
+(* Check if linked versions are supported *)
+{$IF (LIBAVUTIL_VERSION < LIBAVUTIL_MIN_VERSION)}
+  {$MESSAGE Error 'Linked version of libavutil is too old!'}
+{$IFEND}
+
+{$IF (LIBAVUTIL_VERSION > LIBAVUTIL_MAX_VERSION)}
+  {$MESSAGE Error 'Linked version of libavutil is not yet supported!'}
+{$IFEND}
 
 type
+{$IFNDEF FPC}
+  // defines for Delphi
+  size_t = cardinal;
+{$ENDIF}
+  Psize_t = ^size_t;
+
 (**
- * Pixel format. Notes:
- *
- * PIX_FMT_RGB32 is handled in an endian-specific manner. A RGBA
- * color is put together as:
- *  (A << 24) | (R << 16) | (G << 8) | B
- * This is stored as BGRA on little endian CPU architectures and ARGB on
- * big endian CPUs.
- *
- * When the pixel format is palettized RGB (PIX_FMT_PAL8), the palettized
- * image data is stored in AVFrame.data[0]. The palette is transported in
- * AVFrame.data[1] and, is 1024 bytes long (256 4-byte entries) and is
- * formatted the same as in PIX_FMT_RGB32 described above (i.e., it is
- * also endian-specific). Note also that the individual RGB palette
- * components stored in AVFrame.data[1] should be in the range 0..255.
- * This is important as many custom PAL8 video codecs that were designed
- * to run on the IBM VGA graphics adapter use 6-bit palette components.
+ * Return the LIBAVUTIL_VERSION_INT constant.
  *)
-  PPixelFormat = ^TPixelFormat;
-  TPixelFormat = (
-    PIX_FMT_NONE= -1,
-    PIX_FMT_YUV420P,   ///< Planar YUV 4:2:0, 12bpp, (1 Cr & Cb sample per 2x2 Y samples)
-    PIX_FMT_YUYV422,   ///< Packed YUV 4:2:2, 16bpp, Y0 Cb Y1 Cr
-    PIX_FMT_RGB24,     ///< Packed RGB 8:8:8, 24bpp, RGBRGB...
-    PIX_FMT_BGR24,     ///< Packed RGB 8:8:8, 24bpp, BGRBGR...
-    PIX_FMT_YUV422P,   ///< Planar YUV 4:2:2, 16bpp, (1 Cr & Cb sample per 2x1 Y samples)
-    PIX_FMT_YUV444P,   ///< Planar YUV 4:4:4, 24bpp, (1 Cr & Cb sample per 1x1 Y samples)
-    PIX_FMT_RGB32,     ///< Packed RGB 8:8:8, 32bpp, (msb)8A 8R 8G 8B(lsb), in cpu endianness
-    PIX_FMT_YUV410P,   ///< Planar YUV 4:1:0,  9bpp, (1 Cr & Cb sample per 4x4 Y samples)
-    PIX_FMT_YUV411P,   ///< Planar YUV 4:1:1, 12bpp, (1 Cr & Cb sample per 4x1 Y samples)
-    PIX_FMT_RGB565,    ///< Packed RGB 5:6:5, 16bpp, (msb)   5R 6G 5B(lsb), in cpu endianness
-    PIX_FMT_RGB555,    ///< Packed RGB 5:5:5, 16bpp, (msb)1A 5R 5G 5B(lsb), in cpu endianness most significant bit to 0
-    PIX_FMT_GRAY8,     ///<        Y        ,  8bpp
-    PIX_FMT_MONOWHITE, ///<        Y        ,  1bpp, 0 is white, 1 is black
-    PIX_FMT_MONOBLACK, ///<        Y        ,  1bpp, 0 is black, 1 is white
-    PIX_FMT_PAL8,      ///< 8 bit with PIX_FMT_RGB32 palette
-    PIX_FMT_YUVJ420P,  ///< Planar YUV 4:2:0, 12bpp, full scale (jpeg)
-    PIX_FMT_YUVJ422P,  ///< Planar YUV 4:2:2, 16bpp, full scale (jpeg)
-    PIX_FMT_YUVJ444P,  ///< Planar YUV 4:4:4, 24bpp, full scale (jpeg)
-    PIX_FMT_XVMC_MPEG2_MC,///< XVideo Motion Acceleration via common packet passing(xvmc_render.h)
-    PIX_FMT_XVMC_MPEG2_IDCT,
-    PIX_FMT_UYVY422,   ///< Packed YUV 4:2:2, 16bpp, Cb Y0 Cr Y1
-    PIX_FMT_UYYVYY411, ///< Packed YUV 4:1:1, 12bpp, Cb Y0 Y1 Cr Y2 Y3
-    PIX_FMT_BGR32,     ///< Packed RGB 8:8:8, 32bpp, (msb)8A 8B 8G 8R(lsb), in cpu endianness
-    PIX_FMT_BGR565,    ///< Packed RGB 5:6:5, 16bpp, (msb)   5B 6G 5R(lsb), in cpu endianness
-    PIX_FMT_BGR555,    ///< Packed RGB 5:5:5, 16bpp, (msb)1A 5B 5G 5R(lsb), in cpu endianness most significant bit to 1
-    PIX_FMT_BGR8,      ///< Packed RGB 3:3:2,  8bpp, (msb)2B 3G 3R(lsb)
-    PIX_FMT_BGR4,      ///< Packed RGB 1:2:1,  4bpp, (msb)1B 2G 1R(lsb)
-    PIX_FMT_BGR4_BYTE, ///< Packed RGB 1:2:1,  8bpp, (msb)1B 2G 1R(lsb)
-    PIX_FMT_RGB8,      ///< Packed RGB 3:3:2,  8bpp, (msb)2R 3G 3B(lsb)
-    PIX_FMT_RGB4,      ///< Packed RGB 1:2:1,  4bpp, (msb)2R 3G 3B(lsb)
-    PIX_FMT_RGB4_BYTE, ///< Packed RGB 1:2:1,  8bpp, (msb)2R 3G 3B(lsb)
-    PIX_FMT_NV12,      ///< Planar YUV 4:2:0, 12bpp, 1 plane for Y and 1 for UV
-    PIX_FMT_NV21,      ///< as above, but U and V bytes are swapped
+function avutil_version(): cuint;
+  cdecl; external av__util;
 
-    PIX_FMT_RGB32_1,   ///< Packed RGB 8:8:8, 32bpp, (msb)8R 8G 8B 8A(lsb), in cpu endianness
-    PIX_FMT_BGR32_1,   ///< Packed RGB 8:8:8, 32bpp, (msb)8B 8G 8R 8A(lsb), in cpu endianness
+(**
+ * Return the libavutil build-time configuration.
+ *)
+function avutil_configuration(): PAnsiChar;
+  cdecl; external av__util;
 
-    PIX_FMT_GRAY16BE,  ///<        Y        , 16bpp, big-endian
-    PIX_FMT_GRAY16LE,  ///<        Y        , 16bpp, little-endian
-    PIX_FMT_YUV440P,   ///< Planar YUV 4:4:0 (1 Cr & Cb sample per 1x2 Y samples)
-    PIX_FMT_YUVJ440P,  ///< Planar YUV 4:4:0 full scale (jpeg)
-    PIX_FMT_YUVA420P,  ///< Planar YUV 4:2:0, 20bpp, (1 Cr & Cb sample per 2x2 Y & A samples)
-    PIX_FMT_NB,        ///< number of pixel formats, DO NOT USE THIS if you want to link with shared libav* because the number of formats might differ between versions
-    PIX_FMT_FAKE = $FFFFFF
+(**
+ * Return the libavutil license.
+ *)
+function avutil_license(): PAnsiChar;
+  cdecl; external av__util;
+
+(**
+ * @addtogroup lavu_media Media Type
+ * @brief Media Type
+ *)
+
+type
+  TAVMediaType = (
+    AVMEDIA_TYPE_UNKNOWN = -1,  ///< Usually treated as AVMEDIA_TYPE_DATA
+    AVMEDIA_TYPE_VIDEO,
+    AVMEDIA_TYPE_AUDIO,
+    AVMEDIA_TYPE_DATA,          ///< Opaque data information usually continuous
+    AVMEDIA_TYPE_SUBTITLE,
+    AVMEDIA_TYPE_ATTACHMENT,    ///< Opaque data information usually sparse
+    AVMEDIA_TYPE_NB
   );
 
-const
-{$ifdef WORDS_BIGENDIAN}
-  PIX_FMT_RGBA  = PIX_FMT_RGB32_1
-  PIX_FMT_BGRA  = PIX_FMT_BGR32_1
-  PIX_FMT_ARGB  = PIX_FMT_RGB32
-  PIX_FMT_ABGR  = PIX_FMT_BGR32
-  PIX_FMT_GRAY16 = PIX_FMT_GRAY16BE
-{$else}
-  PIX_FMT_RGBA = PIX_FMT_BGR32;
-  PIX_FMT_BGRA = PIX_FMT_RGB32;
-  PIX_FMT_ARGB = PIX_FMT_BGR32_1;
-  PIX_FMT_ABGR = PIX_FMT_RGB32_1;
-  PIX_FMT_GRAY16 = PIX_FMT_GRAY16LE;
-{$endif}
+(**
+ * Return a string describing the media_type enum, NULL if media_type
+ * is unknown.
+ *)
+function av_get_media_type_string(media_type: TAVMediaType): PAnsiChar;
+  cdecl; external av__util;
 
-{$if LIBAVUTIL_VERSION_INT < (3276800)}
-  PIX_FMT_UYVY411 = PIX_FMT_UYYVYY411;
-  PIX_FMT_RGBA32  = PIX_FMT_RGB32;
-  PIX_FMT_YUV422  = PIX_FMT_YUYV422;
-{$ifend}
+const
+  FF_LAMBDA_SHIFT = 7;
+  FF_LAMBDA_SCALE = (1 shl FF_LAMBDA_SHIFT);
+  FF_QP2LAMBDA    = 118; ///< factor to convert from H.263 QP to lambda
+  FF_LAMBDA_MAX   = (256*128-1);
+ 
+  FF_QUALITY_SCALE = FF_LAMBDA_SCALE; //FIXME maybe remove
+ 
+(**
+ * @brief Undefined timestamp value
+ *
+ * Usually reported by demuxer that work on containers that do not provide
+ * either pts or dts.
+ *)
+
+  AV_NOPTS_VALUE   = $8000000000000000;
 
 (**
- * Returns the LIBAVUTIL_VERSION_INT constant.
+ * Internal time base represented as integer
  *)
-function avutil_version (): cardinal;
-  cdecl; external dll_name;
+
+  AV_TIME_BASE     = 1000000;
+  
+(**
+ * Internal time base represented as fractional value
+ *)
+
+  AV_TIME_BASE_Q   : TAVRational = (num: 1; den: AV_TIME_BASE);
+
+(**
+ * @}
+ * @}
+ * @defgroup lavu_picture Image related
+ *
+ * AVPicture types, pixel formats and basic image planes manipulation.
+ *
+ * @{
+ *)
+
+type
+  TAVPictureType = (
+    AV_PICTURE_TYPE_NONE = 0, ///< Undefined
+    AV_PICTURE_TYPE_I,     ///< Intra
+    AV_PICTURE_TYPE_P,     ///< Predicted
+    AV_PICTURE_TYPE_B,     ///< Bi-dir predicted
+    AV_PICTURE_TYPE_S,     ///< S(GMC)-VOP MPEG4
+    AV_PICTURE_TYPE_SI,    ///< Switching Intra
+    AV_PICTURE_TYPE_SP,    ///< Switching Predicted
+    AV_PICTURE_TYPE_BI     ///< BI type
+  );
+
+(**
+ * Return a single letter to describe the given picture type
+ * pict_type.
+ *
+ * @param[in] pict_type the picture type @return a single character
+ * representing the picture type, '?' if pict_type is unknown
+ *)
+function av_get_picture_type_char(pict_type: TAVPictureType): PAnsiChar;
+  cdecl; external av__util;
+
+(**
+ * Return x default pointer in case p is NULL.
+ *)
+function av_x_if_null(p: {const} pointer; x: {const} pointer): pointer; {$IFDEF HasInline}inline;{$ENDIF}
+
+{$INCLUDE libavutil/cpu.pas}
+
+{$INCLUDE libavutil/dict.pas}
+
+{$INCLUDE libavutil/error.pas}
+
+{$INCLUDE libavutil/mathematics.pas}
+
+{$INCLUDE libavutil/mem.pas}
+
+{$INCLUDE libavutil/log.pas}
+
+{$INCLUDE libavutil/opt.pas}
+
+{$INCLUDE libavutil/pixfmt.pas}
+
+{$INCLUDE libavutil/samplefmt.pas}
+
+(* libavutil/common.h *) // until now MKTAG and MKBETAG is all from common.h KMS 19/5/2010
+
+(**
+ * MKTAG and MKBETAG are usually used to convert a magic string to an enumeration index.
+ * In Pascal this can probably not be used and the functions could be removed.
+ * KMS 8/6/2012
+ *)
+function MKTAG  (a, b, c, d: AnsiChar): integer; {$IFDEF HasInline}inline;{$ENDIF}
+function MKBETAG(a, b, c, d: AnsiChar): integer; {$IFDEF HasInline}inline;{$ENDIF}
 
 implementation
+
+uses
+  SysUtils;
+
+function av_x_if_null(p: {const} pointer; x: {const} pointer): pointer; {$IFDEF HasInline}inline;{$ENDIF}
+begin
+  if p = nil then
+    Result := x
+  else
+    Result := p;
+end;
+
+(* libavutil/common.h *)
+
+function MKTAG(a, b, c, d: AnsiChar): integer; {$IFDEF HasInline}inline;{$ENDIF}
+begin
+  Result := (ord(a) or (ord(b) shl 8) or (ord(c) shl 16) or (ord(d) shl 24));
+end;
+
+function MKBETAG(a, b, c, d: AnsiChar): integer; {$IFDEF HasInline}inline;{$ENDIF}
+begin
+  Result := (ord(d) or (ord(c) shl 8) or (ord(b) shl 16) or (ord(a) shl 24));
+end;
+
+function av_size_mult(a: size_t; b: size_t; r: Psize_t): size_t;
+  cdecl; external av__util;
+(* To Be Implemented, March 2012 KMS *)
+//function av_size_mult(a: size_t; b: size_t; r: pointer): size_t;
+//begin
+//    {
+//    size_t t = a * b;
+//    /* Hack inspired from glibc: only try the division if nelem and elsize
+//     * are both greater than sqrt(SIZE_MAX). */
+//    if ((a | b) >= ((size_t)1 << (sizeof(size_t) * 4)) && a && t / a != b)
+//        return AVERROR(EINVAL);
+//    *r = t;
+//    return 0;
+//}
+//end;
+
+(* libavutil/error.h *)
+
+function av_make_error_string(errbuf: Pchar; errbuf_size: size_t; errnum: cint): Pchar; {$IFDEF HasInline}inline;{$ENDIF}
+begin
+  av_strerror(errnum, errbuf, errbuf_size);
+  av_make_error_string := errbuf;
+end;
+
+function av_err2str(errnum: cint): pchar; {$IFDEF HasInline}inline;{$ENDIF}
+var
+  errbuf: Pchar;
+begin
+  errbuf := stralloc(AV_ERROR_MAX_STRING_SIZE);
+  av_make_error_string(errbuf, AV_ERROR_MAX_STRING_SIZE, errnum);
+  av_err2str := errbuf
+end;
+
+(* libavutil/mem.h *)
+
+function av_malloc_array(nmemb: size_t; size: size_t): pointer; {$IFDEF HasInline}inline;{$ENDIF} {av_alloc_size(1,2)}
+begin
+  if (size <= 0 ) or (nmemb >= maxint / size) then
+    av_malloc_array := NIL
+  else
+    av_malloc_array := av_malloc(nmemb * size);
+end;
+
+function av_mallocz_array(nmemb: size_t; size: size_t): pointer; {$IFDEF HasInline}inline;{$ENDIF} {av_alloc_size(1,2)}
+begin
+  if (size <= 0 ) or (nmemb >= maxint / size) then
+    av_mallocz_array := NIL
+  else
+    av_mallocz_array := av_mallocz(nmemb * size);
+end;
 
 end.

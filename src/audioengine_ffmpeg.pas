@@ -25,14 +25,12 @@ unit AudioEngine_FFMpeg;
 interface
 
 uses
-  Classes, SysUtils, ExtCtrls, decoupler, song, AudioEngine,
-  avcodec, avformat, lazdyn_portaudio;
+  lclproc,Classes, SysUtils, ExtCtrls, decoupler, song, Basetypes, AudioEngine,
+  avcodec, avformat, avutil, swscale, lazdyn_portaudio, ctypes;
 
 type
 
   { TAudioEngineFFMpeg }
-
-  TCurrentSoundDecoder = (csdMPG123, csdSndFile);
 
   TDecodingThread = class;
 
@@ -42,11 +40,12 @@ type
     fdecoupler: TDecoupler;
     fState : TEngineState;
     fdevice : PaDeviceIndex;
-    CurrentSoundDecoder : TCurrentSoundDecoder;
-    sfInfo : TSF_INFO;
-    mpInfo : Tmpg123_frameinfo;
     pa_OutInfo : PaStreamParameters;
-    StreamHandle: pointer;
+    fAVFormatContext: PAVFormatContext;
+    audioStream: pAVStream;
+    frame : PAVFrame;
+    fCodec:     PAVCodec;
+    codecContext: pAVCodecContext;
     Stream_out: PaStream;
     DecodingThread : TDecodingThread;
     fRate: Cardinal;
@@ -89,6 +88,7 @@ type
  Private
    evPause: PRTLEvent;
    fOwner : TAudioEngineFFMpeg;
+   packet: TAVPacket;
  protected
    procedure Execute; override;
 
@@ -106,19 +106,23 @@ uses math;
 procedure TDecodingThread.Execute;
 var
   OutBuf : array [0..$ffff] of Word;
-  OutFrames :Size_t;
-  err: hresult;
-  wantframes :Size_t;
+  OutFrames :cint;
+  Result: cint;
+  wantframes :cint;
   Divider: integer;
-  i: integer;
+  i,j: integer;
+  pError: PaError;
 type
   TShortIntArray = array[0..$ffff] of Word;
   PShortIntArray = ^TShortIntArray;
 var
-  pp: PShortIntArray;
+  pp, PP1: TShortIntArray;
 
+  decodingPacket :  TAVPacket;
+  frame: PAVFrame;
+  xfr : TAVFrame;
 begin
-  Pa_StartStream(fOwner.Stream_out);
+  pError := Pa_StartStream(fOwner.Stream_out);
   repeat
      RTLeventWaitFor(evPause);
      if Terminated then
@@ -126,29 +130,45 @@ begin
 
      RTLeventSetEvent(evPause);
      wantframes := Length(OutBuf) div 2;
-     case  fOwner.CurrentSoundDecoder of
-      csdSndFile: begin
-                    OutFrames := sf_readf_short(fOwner.StreamHandle, @outbuf[0], wantframes);
-                    if fOwner.fvolume <> 1 then
-                     begin
-                       pp := @outbuf[0];
-                       for i := 0 to (Outframes * 2) - 1 do
-                         pp^[i] := NtoLE(round(LEtoN(pp^[i]) * fOwner.fvolume));
-                     end;
-                    Divider := 1;
-                  end;
-      csdMPG123 : begin
-                     Err := mpg123_read(fOwner.StreamHandle, @outbuf[0], wantframes, outframes);
-                     Divider:= 4;
-                  end;
-    end;
-    if OutFrames < wantframes then
+     Frame := avcodec_alloc_frame;
+     Result := av_read_frame(fowner.fAVFormatContext, Packet);
+     decodingPacket := packet;
+     if (decodingPacket.stream_index = fOwner.audioStream^.index) then
+        while (decodingPacket.size > 0) do
+          begin
+            Result:= avcodec_decode_audio4(fOwner.codecContext, frame, @OutFrames, @decodingPacket);
+        //    DebugLn(IntToStr(Result));
+            dec(decodingPacket.size, Result);
+            inc(decodingPacket.data, Result);
+            divider := 1;
+          end
+     else
+       OutFrames := 0;
+
+     if (Result < 0 ) and (OutFrames = 0)  then
        begin
          fOwner.fState := ENGINE_SONG_END;
        end;
 
-   if OutFrames > 0 then
-      Pa_WriteStream(fowner.Stream_out, @outbuf[0], outframes div Divider);
+     if OutFrames > 0 then
+       begin
+         xfr:=frame^;
+          //for i := 0 to frame^.nb_samples -1 do
+          //  for j:= 0 to av_frame_get_channels(frame) -1 do
+          //    pp[i*2 +J] := pShortIntArray(frame^.data[0])^[i];
+
+           //for j:= 0 to av_frame_get_channels(frame) -1 do
+           //   pp[i*2 + j] := pShortIntArray(frame^.data[j])^[i];
+           //
+         // DebugLn(IntToStr(frame^.nb_samples ));
+//          Pa_WriteStream(fowner.Stream_out, @pp[0], OutFrames div Divider);
+          for i := 0 to frame^.nb_samples -1 do
+               pp[i] := pShortIntArray(frame^.data[0])^[i];
+          Pa_WriteStream(fowner.Stream_out, @pp, frame^.nb_samples);
+
+
+       end;
+      avcodec_free_frame(@frame);
 
   until Terminated or (fOwner.fState in [ENGINE_STOP,ENGINE_SONG_END]);
 
@@ -164,6 +184,7 @@ begin
   inherited Create(CreateSuspended);
   fOwner := OWner;
   evPause := RTLEventCreate;
+  av_init_packet(packet);
 end;
 
 destructor TDecodingThread.Destroy;
@@ -182,9 +203,9 @@ end;
 procedure TAudioEngineFFMpeg.SetMainVolume(const AValue: integer);
 begin
  fVolume:= AValue / 100;
-  case CurrentSoundDecoder of
-    csdMPG123 : mpg123_volume(StreamHandle, fVolume);
-  end;
+  //case CurrentSoundDecoder of
+  //  csdMPG123 : mpg123_volume(StreamHandle, fVolume);
+  //end;
 
 end;
 
@@ -195,18 +216,19 @@ end;
 
 function TAudioEngineFFMpeg.GetSongPos: integer;
 begin
-  case CurrentSoundDecoder of
-    csdMPG123 : Result := trunc(mpg123_tell(StreamHandle) / (fRate / 1000));
-    csdSndFile : Result := trunc(sf_seek(StreamHandle, 0, SEEK_CUR) / (fRate / 1000));
-  end;
+  result := 100;
+  //case CurrentSoundDecoder of
+  //  csdMPG123 : Result := trunc(mpg123_tell(StreamHandle) / (fRate / 1000));
+  //  csdSndFile : Result := trunc(sf_seek(StreamHandle, 0, SEEK_CUR) / (fRate / 1000));
+  //end;
 end;
 
 procedure TAudioEngineFFMpeg.SetSongPos(const AValue: integer);
 begin
-  case CurrentSoundDecoder of
-    csdMPG123 : mpg123_seek(StreamHandle,trunc( AValue * (fRate / 1000)), SEEK_SET);
-    csdSndFile : sf_seek(StreamHandle, trunc(AValue * (fRate / 1000)), SEEK_SET);
-  end;
+  //case CurrentSoundDecoder of
+  //  csdMPG123 : mpg123_seek(StreamHandle,trunc( AValue * (fRate / 1000)), SEEK_SET);
+  //  csdSndFile : sf_seek(StreamHandle, trunc(AValue * (fRate / 1000)), SEEK_SET);
+  //end;
 
 end;
 
@@ -219,21 +241,26 @@ end;
 constructor TAudioEngineFFMpeg.Create;
 begin
   inherited Create;
-  {  }
   {$IFDEF LINUX}
   Pa_Load('libportaudio.so.2');
-  sf_Load('libsndfile.so.1');
-  Mp_Load('libmpg123.so.0');
   {$ENDIF LINUX}
+  {$IFDEF WINDOWS}
+  Pa_Load('LibPortaudio-32.dll');
+
+  {$ENDIF LINUX}
+
   {$IFDEF DARWIN}
   Pa_Load('LibPortaudio-32.dylib');
-  sf_Load('LibSndFile-32.dylib');
-  Mp_Load('LibMpg123-32.dylib');
   {$ENDIF DARWIN}
+
+  avcodec_register_all();
+  av_register_all();
 
   Pa_Initialize();
   fdevice := Pa_GetDefaultOutputDevice();
-  mpg123_init;
+
+  // Initialize FFmpeg
+
   fVolume:=100;
   fdecoupler := TDecoupler.Create;
 
@@ -245,9 +272,6 @@ destructor TAudioEngineFFMpeg.Destroy;
 begin
   Stop;
   Pa_Unload();
-  sf_Unload();
-  Mp_Unload();
-
   fdecoupler.Free;
   inherited Destroy;
 end;
@@ -278,6 +302,7 @@ Var
   savedVolume: Integer;
   err : integer;
   Fchannels, Fencoding:Integer;
+  i: integer;
 begin
   // create new media
   if Not FileExists(Song.FullName) then
@@ -288,40 +313,45 @@ begin
        DecodingThread.Terminate;
        FreeAndNil(DecodingThread);
      end;
-  pa_OutInfo.device:= fdevice;
-  StreamHandle := sf_open(Song.FullName, SFM_READ, sfInfo);
-  if StreamHandle = nil then
-    begin
-      CurrentSoundDecoder:= csdMPG123;
-      err :=0;
-      StreamHandle:= mpg123_new(nil,err);
-      mpg123_open(StreamHandle, pChar(Song.FullName));
-      mpg123_getformat(StreamHandle, Frate, Fchannels, Fencoding);
-      mpg123_format_none(StreamHandle);
-      mpg123_format(StreamHandle, Frate, Fchannels, Fencoding);
-      mpg123_seek_frame(StreamHandle, 0, SEEK_SET);
-      pa_OutInfo.channelCount:=Fchannels;
-    end
-  else
-    begin
-      CurrentSoundDecoder:= csdSndFile;
-      frate:= sfInfo.samplerate;
-      pa_OutInfo.channelCount:= sfInfo.channels;
-      sf_seek(StreamHandle, 0, SEEK_SET);
-    end;
 
-  pa_OutInfo.channelCount:=2;
+  pa_OutInfo.device:= fdevice;
+
+  frame := avcodec_alloc_frame;
+
+  err := avformat_open_input(@fAVFormatContext, pchar(Song.FullName), nil, nil);
+
+  err := avformat_find_stream_info(fAVFormatContext, nil);
+
+  av_dump_format(fAVFormatContext, 0, pchar(Song.FullName), 0);
+
+  for i := 0 to fAVFormatContext^.nb_streams -1 do
+    if fAVFormatContext^.streams[i]^.codec^.codec_type = AVMEDIA_TYPE_AUDIO then
+      begin
+        audioStream:= fAVFormatContext^.streams[i];
+      end;
+
+  codecContext:= audioStream^.codec;
+
+  fcodec := avcodec_find_decoder(codecContext^.codec_id);
+  codecContext^.workaround_bugs := FF_BUG_AUTODETECT;
+
+  err := avcodec_open2(codecContext, fcodec, nil);
+
+  pa_OutInfo.channelCount:=codecContext^.channels;
+  fRate:= codecContext^.sample_rate;
+  DebugLn(IntToStr(frATE));
   pa_OutInfo.sampleFormat:=paInt16;
   pa_OutInfo.hostApiSpecificStreamInfo:=nil;
   pa_OutInfo.suggestedLatency:=Pa_GetDeviceInfo(fdevice)^.defaultHighOutputLatency * 1;
 
-  Pa_OpenStream(@Stream_out,
+  err:=Pa_OpenStream(@Stream_out,
                 nil,
                 @pa_OutInfo,
                 fRate,
-                0,
+                4092,
                 paClipOff, nil,self);
-
+  if err <> 0 then
+    DebugLn(Pa_GetErrorText(err));
   DecodingThread := TDecodingThread.Create(False, self);
 
   fState:= ENGINE_PLAY;
@@ -358,7 +388,7 @@ end;
 
 class function TAudioEngineFFMpeg.GetEngineName: String;
 begin
-  Result:='OpenSourceLibs';
+  Result:='FFMPEG';
 end;
 
 procedure TAudioEngineFFMpeg.ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0);
@@ -374,26 +404,25 @@ end;
 
 class function TAudioEngineFFMpeg.IsAvalaible(ConfigParam: TStrings): boolean;
 begin
-  Result := false;
+  Result := true;
   try
-    {$IFDEF LINUX}
-    Result :=   Pa_Load('libportaudio.so.2') and
-                sf_Load('libsndfile.so.1')  and
-                Mp_Load('libmpg123.so.0');
-    {$ENDIF LINUX}
-    {$IFDEF DARWIN}
-    Result :=   Pa_Load('LibPortaudio-32.dylib') and
-                sf_Load('LibSndFile-32.dylib') and
-                Mp_Load('LibMpg123-32.dylib');
-    {$ENDIF DARWIN}
+     {$IFDEF LINUX}
+     Pa_Load('libportaudio.so.2');
+     {$ENDIF LINUX}
+     {$IFDEF WINDOWS}
+     Pa_Load('LibPortaudio-32.dll');
+     {$ENDIF LINUX}
+
+     {$IFDEF DARWIN}
+     Pa_Load('LibPortaudio-32.dylib');
+     {$ENDIF DARWIN}
 
   except
   end;
 
   try
      Pa_Unload();
-     sf_Unload();
-     Mp_Unload();
+
   except
   end;
 end;
