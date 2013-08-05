@@ -51,7 +51,7 @@ type
     procedure SetName(const AValue: string);
     procedure SetTagLoaded(const AValue: boolean);
   public
-    constructor Create(aFileName: string);
+    constructor Create(aFileName: string); virtual;
     destructor Destroy; override;
     procedure SetTags(const AValue: TCommonTags);
     Function LoadTags: boolean;
@@ -158,4 +158,4 @@ begin
   inherited Destroy;
 end;
 
-end.
+end.

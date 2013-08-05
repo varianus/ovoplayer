@@ -14,7 +14,6 @@ type
     Id: Integer;
     PlayCount : Integer;
     Rating :Integer;
-    tmpRating: integer;
     Added : TDateTime;
     LastPlay : TDateTime;
   public
@@ -30,10 +29,8 @@ constructor TExtendedInfo.Create;
 begin
    PlayCount := -1;
    Rating := -1;
-   tmpRating := -1;
    Added := 0;
    LastPlay := 0;
-
 end;
 
 

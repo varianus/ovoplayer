@@ -52,7 +52,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   {$IFDEF MEDIAFOUNDATION} mediafoundation, audioengine_mf,{$ENDIF}
   {$IFDEF OPENSOURCELIB} lazdyn_libsndfile, uos, lazdyn_mpg123, lazdyn_portaudio, audioengine_OpenLib,{$ENDIF}
   {$IFDEF UOS} UOS, uos_libsndfile, uos_mpg123, uos_portaudio, audioengine_UOS,{$ENDIF}
-  {$IFDEF FFMPEG} audioengine_FFMPEG,{$ENDIF}
+  {$IFDEF FFMPEG} avcodec, avformat, audioengine_FFMPEG,{$ENDIF}
 
   // Platform related
   {$IFDEF MPRIS2} mpris2,{$ENDIF}
@@ -62,7 +62,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   song, AudioTag, basetag, file_flac, file_mp3, file_wma,
   tag_wma, tag_vorbis, tag_id3v2, file_ogg, file_monkey, tag_ape,
   file_Wave,  tag_Dummy, file_Dummy,
-  id3v1genres;
+  id3v1genres, CustomSong;
 
 {$R *.res}
 begin
@@ -78,7 +78,6 @@ begin
       Application.CreateForm(TDM, dm);
       Application.CreateForm(TfMainForm, fMainForm);
       fMainForm.show;
-      Application.CreateForm(TfMiniPlayer, fMiniPlayer);
       Application.Run;
    end;
 end.

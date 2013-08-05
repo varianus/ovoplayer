@@ -25,7 +25,7 @@ unit MediaLibrary;
 interface
 
 uses
-  Classes, SysUtils, DB, sqlite3conn, sqldb, lclproc, basetag, extendedinfo;
+  Classes, SysUtils, DB, sqlite3conn, sqldb, lclproc, basetag, Customsong, extendedinfo;
 
 type
 
@@ -91,6 +91,7 @@ type
     Procedure SetRating(ID: integer; Rating: Integer);
     function TagsFromID(ID: integer): TCommonTags;
     function InfoFromID(ID: integer): TExtendedInfo;
+    procedure AddInfoToSong(ID: Integer; ASong:TCustomSong);
     procedure Update(ID: Integer; Tags: TCommonTags);
 
     property OnScanComplete: TScanComplete read FOnScanComplete write SetOnScanComplete;
@@ -677,7 +678,10 @@ begin
   Result := TExtendedInfo.Create;
 
   if fWorkQuery.RecordCount = 0 then
-     result.PlayCount:= -1
+     begin
+       Result.Id := -1;
+       result.PlayCount:= -1
+     end
   else
      begin
        Result.Id:= ID;
@@ -689,6 +693,21 @@ begin
 
   fWorkQuery.Close;
 
+end;
+
+procedure TMediaLibrary.AddInfoToSong(ID: Integer; ASong:TCustomSong);
+Var
+ extendedinfo : TExtendedInfo;
+begin
+   extendedinfo := InfoFromID(Id);
+   try
+     ASong.Id:=ExtendedInfo.Id;
+     ASong.Added:=ExtendedInfo.Added;
+     ASong.LastPlay:=ExtendedInfo.LastPlay;
+     ASong.Rating:=ExtendedInfo.Rating;
+   finally
+     ExtendedInfo.free;
+   end;
 end;
 
 end.

@@ -28,7 +28,7 @@ uses
   Classes, SysUtils, FileUtil,
   BaseTypes, CoreInterfaces,  forms,
   PlayList, AudioEngine, AudioEngine_dummy,
-  PlayListManager, MediaLibrary, basetag, Song,
+  PlayListManager, MediaLibrary, basetag, CustomSong,
   MultimediaKeys, Config;
 
 type
@@ -50,7 +50,7 @@ type
     ObserverList : TInterfaceList;
 
     procedure AudioEngineSongEnd(Sender: TObject);
-    procedure PlaylistOnSongAdd(Sender: Tobject; Index: Integer; ASong: TSong);
+    procedure PlaylistOnSongAdd(Sender: Tobject; Index: Integer; ASong: TCustomSong);
     procedure SetOnEngineCommand(const AValue: TOnEngineCommand);
     procedure SetOnExternalCommand(const AValue: TOnExternalCommand);
     procedure SetOnPlayListChange(const AValue: TNotifyEvent);
@@ -473,16 +473,21 @@ begin
   Next;
 end;
 
-procedure TBackEnd.PlaylistOnSongAdd(Sender: Tobject; Index: Integer; ASong : TSong);
+procedure TBackEnd.PlaylistOnSongAdd(Sender: Tobject; Index: Integer; ASong : TcustomSong);
 var
   ID: Integer;
   ExtendedInfo: TExtendedInfo;
 begin
   ID := mediaLibrary.IDFromFullName(ASong.FullName);
   if ID = -1 then
-    exit;
-  ExtendedInfo := mediaLibrary.InfoFromID(ID);
-  ASong.ExtraProperty := ExtendedInfo;
+     exit;
+  mediaLibrary.AddInfoToSong(Id, ASong);
+
+//
+//  if ID = -1 then
+//    exit;
+//  ExtendedInfo := mediaLibrary.InfoFromID(ID);
+
 end;
 
 procedure TBackEnd.HandleCommand(Command: TEngineCommand; Param: integer);

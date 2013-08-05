@@ -26,9 +26,8 @@ interface
 
 uses
   Classes, types, SysUtils, FileUtil, Forms, Controls, Graphics,
-  Dialogs, ComCtrls, Menus, ExtCtrls, Buttons, StdCtrls, Song, uOSD,
+  Dialogs, ComCtrls, Menus, ExtCtrls, Buttons, StdCtrls, Song, CustomSong, uOSD,
   BaseTypes, GUIBackEnd, Config, MediaLibrary, coreinterfaces,
-  ExtendedInfo,
   DefaultTranslator, Grids, EditBtn, ActnList, customdrawncontrols,
   customdrawn_common, customdrawn_ovoplayer,
   {$IFDEF MPRIS2}
@@ -292,6 +291,7 @@ type
       Shift: TShiftState);
     procedure sgPlayListMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure sgPlayListMouseLeave(Sender: TObject);
     procedure sgPlayListMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
     procedure sgPlayListMouseUp(Sender: TObject; Button: TMouseButton;
@@ -601,7 +601,7 @@ end;
 procedure TfMainForm.CollectionHandler(Enqueue:boolean);
 var
   Node:     TMusicTreeNode;
-  aSong:    TSong;
+  aSong:    TCustomSong;
 
 begin
   Node := TMusicTreeNode(tvCollection.GetFirstMultiSelected);
@@ -613,7 +613,7 @@ begin
     case node.Kind of
       tkSong:
         begin
-        aSong := TSong.Create(BackEnd.mediaLibrary.FullNameFromID(Node.ID));
+        aSong := TCustomSong.Create(BackEnd.mediaLibrary.FullNameFromID(Node.ID));
         BackEnd.PlayList.Add(ASong);
         end
       else
@@ -1153,6 +1153,8 @@ begin
       Mpris.Deactivate;
      end;
   {$ENDIF MPRIS}
+  if Assigned(fMiniPlayer) then
+    FreeAndNil(fMiniPlayer);
 
   PathHistory.Free;
   PlaylistSelected.Free;
@@ -1597,13 +1599,13 @@ var
 begin
   p:= sgPlayList.ScreenToControl(Mouse.CursorPos);
   sgPlayList.MouseToCell(p.x, p.y, ACol, ARow);
-  if (ARow > 0) and (aCol = 11) and assigned(BackEnd.PlayList[ARow-1].ExtraProperty) then
+  if (ARow > 0) and (aCol = 11) and (BackEnd.PlayList[ARow-1].ID <> -1) then
      begin
        R1 := sgPlayList.CellRect(ACol, ARow);
        Rating := trunc(((p.x - R1.Left) * 10) / RateStars.Width) ;
-       TExtendedInfo(BackEnd.PlayList[ARow-1].ExtraProperty).Rating:=rating;
-       TExtendedInfo(BackEnd.PlayList[ARow-1].ExtraProperty).TmpRating:=-1;
-       BackEnd.mediaLibrary.SetRating(TExtendedInfo(BackEnd.PlayList[ARow-1].ExtraProperty).ID, Rating);
+       BackEnd.PlayList[ARow-1].Rating:=rating;
+       BackEnd.PlayList[ARow-1].TmpRating:=-1;
+       BackEnd.mediaLibrary.SetRating(BackEnd.PlayList[ARow-1].ID, Rating);
        sgPlayList.InvalidateCell(ACol, ARow);
      end;
 end;
@@ -1652,7 +1654,7 @@ procedure TfMainForm.sgPlayListDrawCell(Sender: TObject; aCol, aRow: Integer;
   aRect: TRect; aState: TGridDrawState);
 var
   aBmp, ABmp2: TBitmap;
-  ASong : TSong;
+  ASong : TCustomSong;
   Txt: String;
   r1,R2: Trect;
   ts: TTextStyle;
@@ -1709,15 +1711,15 @@ begin
    if ts.Alignment = taLeftJustify then
       aRect.Left:= aRect.Left +3;
 
-   if (aCol <> 11) or not assigned(ASong.ExtraProperty)  then
+   if (aCol <> 11) or (ASong.ID = -1)  then
       sgPlayList.Canvas.TextRect(aRect, aRect.left, arect.top, txt, ts)
    else
       begin
         sgPlayList.Canvas.Draw(arect.left, arect.top, RatingBack);
-        CurrRating := TExtendedInfo(ASong.ExtraProperty).TmpRating;
+        CurrRating := ASong.TmpRating;
         if CurrRating = -1 then
-           CurrRating := TExtendedInfo(ASong.ExtraProperty).Rating;
-        TExtendedInfo(ASong.ExtraProperty).TmpRating := -1;
+           CurrRating := ASong.Rating;
+        ASong.TmpRating := -1;
         r1:=Rect(0,
                  0,
                  trunc(RatingBack.width *(CurrRating /10))-1,
@@ -2028,6 +2030,17 @@ begin
 
 end;
 
+procedure TfMainForm.sgPlayListMouseLeave(Sender: TObject);
+var
+  i: Integer;
+begin
+ for i := 0 to BackEnd.PlayList.Count -1 do
+     begin
+       BackEnd.PlayList[i].TmpRating:=-1;
+     end;
+
+end;
+
 procedure TfMainForm.sgPlayListMouseMove(Sender: TObject; Shift: TShiftState;
   X, Y: Integer);
 var
@@ -2037,11 +2050,11 @@ var
 begin
 
   sgPlayList.MouseToCell(x, y, ACol, ARow);
-  if (ARow > 0) and (aCol = 11) and assigned(BackEnd.PlayList[ARow-1].ExtraProperty) then
+  if (ARow > 0) and (aCol = 11) and (BackEnd.PlayList[ARow-1].ID <> -1) then
      begin
        R1 := sgPlayList.CellRect(ACol, ARow);
        Rating := trunc(((x - R1.Left) * 10) / RateStars.Width) ;
-       TExtendedInfo(BackEnd.PlayList[ARow-1].ExtraProperty).TmpRating:=rating;
+       BackEnd.PlayList[ARow-1].TmpRating:=rating;
        sgPlayList.InvalidateCell(ACol, ARow);
      end;
 
@@ -2204,6 +2217,9 @@ begin
   if Button = mbMiddle then
     begin
       pt:=TrayIcon.GetPosition;
+      if not Assigned(fMiniPlayer) then
+        fMiniPlayer:= TfMiniPlayer.Create(Self);
+
       if fMiniPlayer.Visible then
          fMiniPlayer.Hide
       else

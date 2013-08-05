@@ -25,15 +25,14 @@ unit PlayList;
 interface
 
 uses
-  Classes, SysUtils, Song, AudioTag, BaseTypes;
+  Classes, SysUtils, CustomSong, AudioTag, BaseTypes;
 
 type
-
 
   { TPlayList }
   TPlayListSortCompare = function (Item1, Item2: Pointer): Integer of object;
 
-  TOnSongAdd = procedure(Sender: Tobject; Index: Integer; Song : TSong) of object;
+  TOnSongAdd = procedure(Sender: Tobject; Index: Integer; Song : TCustomSong) of object;
 
   TPlayList = class(TFPList)
   private
@@ -45,11 +44,11 @@ type
     fSortDirection : TplSortDirection;
     fSavedPointer :Pointer;
     function CheckItem(Item: integer): integer;
-    function GetCurrentItem: TSong;
-    function GetItem(Index: integer): TSong;
+    function GetCurrentItem: TCustomSong;
+    function GetItem(Index: integer): TCustomSong;
     function GetTotalTime: double;
     function MyCompare(p1, p2: Pointer): integer;
-    procedure SetItem(Index: integer; const AValue: TSong);
+    procedure SetItem(Index: integer; const AValue: TCustomSong);
     procedure SetItemIndex(const AValue: integer);
     procedure SetOnSongAdd(AValue: TOnSongAdd);
     procedure SetRepeatMode(const AValue: TplRepeat);
@@ -58,11 +57,11 @@ type
   public
     Constructor Create;
     function EnqueueFile(FileName: TFileName): integer;
-    function Add(ASong: TSong): integer;
+    function Add(ASong: TCustomSong): integer;
     procedure Delete(Index: integer);
     procedure Clear;//  override;
-    function Next: TSong;
-    function Previous: TSong;
+    function Next: TCustomSong;
+    function Previous: TCustomSong;
     Function FindByName(FileName: TFileName): integer;
     procedure Swap(Item1, Item2: integer);
     procedure BeginUpdate;
@@ -76,9 +75,9 @@ type
     Property RepeatMode: TplRepeat read FRepeatMode write SetRepeatMode;
     property SortField: TplSortField Read FSortField Write SetSortField;
     property SortDirection : TplSortDirection read FSortDirection write SetSortDirection;
-    property CurrentItem: TSong read GetCurrentItem;
+    property CurrentItem: TCustomSong read GetCurrentItem;
     property ItemIndex: integer read FItemIndex write SetItemIndex;
-    property Songs[Index: integer]: TSong read GetItem write SetItem; default;
+    property Songs[Index: integer]: TCustomSong read GetItem write SetItem; default;
     property TotalTime: double read GetTotalTime;
     property OnSongAdd: TOnSongAdd read FOnSongAdd write SetOnSongAdd;
   end;
@@ -119,8 +118,8 @@ begin
 end;
 
 function TPlayList.MyCompare(p1, p2: Pointer): integer;
-var S1: TSong absolute p1;
-    S2: TSong absolute p2;
+var S1: TCustomSong absolute p1;
+    S2: TCustomSong absolute p2;
 begin
   result :=0;
   case FSortField of
@@ -164,18 +163,18 @@ end;
 
 function TPlayList.EnqueueFile(FileName: TFileName): integer;
 var
-  Song: TSong;
+  Song: TCustomSong;
 begin
   if FileExists(FileName) then
      begin
-      song   := TSong.Create(FileName);
+      song   := TCustomSong.Create(FileName);
       Result := Add(Song);
      end
   else
     Result := -1;
 end;
 
-function TPlayList.Add(ASong: TSong): integer;
+function TPlayList.Add(ASong: TCustomSong): integer;
 begin
   Result := inherited Add(Pointer(ASong));
   if Assigned(FOnSongAdd) then
@@ -215,12 +214,12 @@ begin
     Result := Result + Songs[i].Tags.Duration;
 end;
 
-function TPlayList.GetItem(Index: integer): TSong;
+function TPlayList.GetItem(Index: integer): TCustomSong;
 begin
-   Result := TSong(inherited Get(Index));
+   Result := TCustomSong(inherited Get(Index));
 end;
 
-procedure TPlayList.SetItem(Index: integer; const AValue: TSong);
+procedure TPlayList.SetItem(Index: integer; const AValue: TCustomSong);
 begin
   Put(Index, Pointer(AValue));
 end;
@@ -268,15 +267,15 @@ begin
   fSavedPointer:=nil;;
 end;
 
-function TPlayList.GetCurrentItem: TSong;
+function TPlayList.GetCurrentItem: TCustomSong;
 begin
   if ItemIndex <> -1 then
-    Result := TSong(Items[ItemIndex])
+    Result := TCustomSong(Items[ItemIndex])
   else
     Result := nil;
 end;
 
-function TPlayList.Next: TSong;
+function TPlayList.Next: TCustomSong;
 var
   Album: string;
 begin
@@ -325,7 +324,7 @@ begin
 
 end;
 
-function TPlayList.Previous: TSong;
+function TPlayList.Previous: TCustomSong;
 begin
   if ItemIndex < 1 then
     ItemIndex := Count - 1
@@ -388,7 +387,7 @@ end;
 procedure TPlayList.LoadAllTags;
 var
   i:     integer;
-  ASong: Tsong;
+  ASong: TCustomSong;
 begin
   for i := 0 to Count - 1 do
     begin
