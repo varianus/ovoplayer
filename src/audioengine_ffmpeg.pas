@@ -303,7 +303,6 @@ Var
   err : integer;
   Fchannels, Fencoding:Integer;
   i: integer;
-  xa: TAVFormatContext;
 begin
   // create new media
   if Not FileExists(Song.FullName) then
@@ -320,10 +319,10 @@ begin
 //  frame := avcodec_alloc_frame;
   fAVFormatContext :=nil;
   err := avformat_open_input(@fAVFormatContext, pchar(Song.FullName), nil, nil);
-  xa := fAVFormatContext^;
+
   err := avformat_find_stream_info(fAVFormatContext, nil);
 
-  av_dump_format(fAVFormatContext, 0, pchar(Song.FullName), 0);
+// av_dump_format(fAVFormatContext, 0, pchar(Song.FullName), 0);
 
   for i := 0 to fAVFormatContext^.nb_streams -1 do
     if fAVFormatContext^.streams[i]^.codec^.codec_type = AVMEDIA_TYPE_AUDIO then
