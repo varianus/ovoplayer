@@ -33,7 +33,7 @@ function SupportedExtension: string;
 Procedure RegisterTagReader(const Extensions: string;
                             const TagReader: TTagReaderClass);
 
-function LoadTags(var Song: Tsong): boolean;
+function LoadTags(Song: TSong): boolean;
 function ExtractTags(FileName: string): TCommonTags; overload;
 function ExtractTags(FileTags: TTagReader): TCommonTags; overload;
 function GetFileTagsObject(FileName: string): TTagReader;
@@ -72,7 +72,7 @@ begin
   AReaderList[High(AReaderList)] := tr;
 end;
 
-function LoadTags(var Song: Tsong): boolean;
+function LoadTags(Song: Tsong): boolean;
 begin
   Result := FileExists(Song.FullName);
   if result then

@@ -679,6 +679,7 @@ object fMainForm: TfMainForm
         OnHeaderSizing = sgPlayListHeaderSizing
         OnKeyDown = sgPlayListKeyDown
         OnMouseDown = sgPlayListMouseDown
+        OnMouseLeave = sgPlayListMouseLeave
         OnMouseMove = sgPlayListMouseMove
         OnMouseUp = sgPlayListMouseUp
         OnPrepareCanvas = sgPlayListPrepareCanvas
