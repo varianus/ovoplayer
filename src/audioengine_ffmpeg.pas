@@ -107,7 +107,7 @@ procedure TDecodingThread.Execute;
 var
   OutBuf : array [0..$ffff] of Word;
   OutFrames :cint;
-  Result: cint;
+  Res: cint;
   wantframes :cint;
   Divider: integer;
   i,j: integer;
@@ -120,7 +120,6 @@ var
 
   decodingPacket :  TAVPacket;
   frame: PAVFrame;
-  xfr : TAVFrame;
 begin
   pError := Pa_StartStream(fOwner.Stream_out);
   repeat
@@ -131,40 +130,38 @@ begin
      RTLeventSetEvent(evPause);
      wantframes := Length(OutBuf) div 2;
      Frame := avcodec_alloc_frame;
-     Result := av_read_frame(fowner.fAVFormatContext, Packet);
-     decodingPacket := packet;
-     if (decodingPacket.stream_index = fOwner.audioStream^.index) then
-        while (decodingPacket.size > 0) do
-          begin
-            Result:= avcodec_decode_audio4(fOwner.codecContext, frame, @OutFrames, @decodingPacket);
-        //    DebugLn(IntToStr(Result));
-            dec(decodingPacket.size, Result);
-            inc(decodingPacket.data, Result);
-            divider := 1;
-          end
-     else
-       OutFrames := 0;
-
-     if (Result < 0 ) and (OutFrames = 0)  then
+     Res := av_read_frame(fowner.fAVFormatContext, Packet);
+     if (Res < 0 ) then
        begin
          fOwner.fState := ENGINE_SONG_END;
        end;
 
+     decodingPacket := packet;
+     if (decodingPacket.stream_index = fOwner.audioStream^.index) then
+        while (decodingPacket.size > 0) do
+          begin
+            Res:= avcodec_decode_audio4(fOwner.codecContext, frame, @OutFrames, @decodingPacket);
+            if Res > 0 then
+               begin
+                dec(decodingPacket.size, Res);
+                inc(decodingPacket.data, Res);
+               end
+            else
+               begin
+                 decodingPacket.size := 0;
+                 OutFrames := -1;
+               end;
+          end
+     else
+       OutFrames := -1;
+
      if OutFrames > 0 then
        begin
-         xfr:=frame^;
-          //for i := 0 to frame^.nb_samples -1 do
-          //  for j:= 0 to av_frame_get_channels(frame) -1 do
-          //    pp[i*2 +J] := pShortIntArray(frame^.data[0])^[i];
+//          for i := 0 to frame^.nb_samples -1 do
+ //              pp[i] := pShortIntArray(frame^.data[0])^[i];
+//          Pa_WriteStream(fowner.Stream_out, @pp, frame^.nb_samples);
 
-           //for j:= 0 to av_frame_get_channels(frame) -1 do
-           //   pp[i*2 + j] := pShortIntArray(frame^.data[j])^[i];
-           //
-         // DebugLn(IntToStr(frame^.nb_samples ));
-//          Pa_WriteStream(fowner.Stream_out, @pp[0], OutFrames div Divider);
-          for i := 0 to frame^.nb_samples -1 do
-               pp[i] := pShortIntArray(frame^.data[0])^[i];
-          Pa_WriteStream(fowner.Stream_out, @pp, frame^.nb_samples);
+             Pa_WriteStream(fowner.Stream_out, pShortIntArray(frame^.data[0]), frame^.nb_samples);
 
 
        end;
@@ -174,6 +171,8 @@ begin
 
   Pa_StopStream(fOwner.Stream_out);
   Pa_CloseStream(fOwner.Stream_out);
+  avcodec_close(Fowner.codecContext);
+  av_close_input_file(fOwner.fAVFormatContext);
   if  fOwner.fState = ENGINE_SONG_END then
       fOwner.PostCommand(ecNext);
 
@@ -217,6 +216,7 @@ end;
 function TAudioEngineFFMpeg.GetSongPos: integer;
 begin
   result := 100;
+
   //case CurrentSoundDecoder of
   //  csdMPG123 : Result := trunc(mpg123_tell(StreamHandle) / (fRate / 1000));
   //  csdSndFile : Result := trunc(sf_seek(StreamHandle, 0, SEEK_CUR) / (fRate / 1000));
@@ -303,6 +303,7 @@ Var
   err : integer;
   Fchannels, Fencoding:Integer;
   i: integer;
+  xa: TAVFormatContext;
 begin
   // create new media
   if Not FileExists(Song.FullName) then
@@ -316,10 +317,10 @@ begin
 
   pa_OutInfo.device:= fdevice;
 
-  frame := avcodec_alloc_frame;
-
+//  frame := avcodec_alloc_frame;
+  fAVFormatContext :=nil;
   err := avformat_open_input(@fAVFormatContext, pchar(Song.FullName), nil, nil);
-
+  xa := fAVFormatContext^;
   err := avformat_find_stream_info(fAVFormatContext, nil);
 
   av_dump_format(fAVFormatContext, 0, pchar(Song.FullName), 0);
@@ -412,7 +413,6 @@ begin
      {$IFDEF WINDOWS}
      Pa_Load('LibPortaudio-32.dll');
      {$ENDIF LINUX}
-
      {$IFDEF DARWIN}
      Pa_Load('LibPortaudio-32.dylib');
      {$ENDIF DARWIN}
