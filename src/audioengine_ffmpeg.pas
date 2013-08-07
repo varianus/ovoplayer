@@ -101,11 +101,14 @@ type
 implementation
 uses math;
 
+Const
+   FFMPEGMAXVOLUME = 1;
+
 { TDecodingThread }
 
 procedure TDecodingThread.Execute;
 var
-  OutBuf : array [0..$ffff] of Word;
+  OutBuf : array [0..$ffff] of cint16;
   OutFrames :cint;
   Res: cint;
   wantframes :cint;
@@ -113,7 +116,7 @@ var
   i,j: integer;
   pError: PaError;
 type
-  TShortIntArray = array[0..$ffff] of Word;
+  TShortIntArray = array[0..$ffff] of cint16;
   PShortIntArray = ^TShortIntArray;
 var
   pp, PP1: TShortIntArray;
@@ -154,12 +157,15 @@ begin
           end
      else
        OutFrames := -1;
+     av_free_packet(@packet);
 
      if OutFrames > 0 then
        begin
 //          for i := 0 to frame^.nb_samples -1 do
  //              pp[i] := pShortIntArray(frame^.data[0])^[i];
 //          Pa_WriteStream(fowner.Stream_out, @pp, frame^.nb_samples);
+            for i := 0 to frame^.nb_samples -1 do
+                pShortIntArray(frame^.data[0])^[i] := trunc(pShortIntArray(frame^.data[0])^[i] * fOwner.fVolume);
 
              Pa_WriteStream(fowner.Stream_out, pShortIntArray(frame^.data[0]), frame^.nb_samples);
 
@@ -196,15 +202,12 @@ end;
 
 function TAudioEngineFFMpeg.GetMainVolume: integer;
 begin
-  Result := trunc(fVolume * 100);
+  Result := trunc(fVolume * (255 / FFMPEGMAXVOLUME));
 end;
 
 procedure TAudioEngineFFMpeg.SetMainVolume(const AValue: integer);
 begin
- fVolume:= AValue / 100;
-  //case CurrentSoundDecoder of
-  //  csdMPG123 : mpg123_volume(StreamHandle, fVolume);
-  //end;
+  fVolume := AValue * (FFMPEGMAXVOLUME / 255);
 
 end;
 
