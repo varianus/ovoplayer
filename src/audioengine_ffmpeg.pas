@@ -26,7 +26,7 @@ interface
 
 uses
   lclproc,Classes, SysUtils, ExtCtrls, decoupler, song, Basetypes, AudioEngine,
-  avcodec, avformat, avutil, swscale, lazdyn_portaudio, ctypes;
+  ffmpeg, lazdyn_portaudio, ctypes;
 
 type
 
@@ -41,8 +41,10 @@ type
     fState : TEngineState;
     fdevice : PaDeviceIndex;
     pa_OutInfo : PaStreamParameters;
+
     fAVFormatContext: PAVFormatContext;
-    audioStream: pAVStream;
+//    audioStream: pAVStream;
+    sIndex: Cint;
     frame : PAVFrame;
     fCodec:     PAVCodec;
     codecContext: pAVCodecContext;
@@ -89,6 +91,8 @@ type
    evPause: PRTLEvent;
    fOwner : TAudioEngineFFMpeg;
    packet: TAVPacket;
+   OutputInitilized: boolean;
+   procedure InitializeOutput;
  protected
    procedure Execute; override;
 
@@ -103,36 +107,71 @@ uses math;
 
 Const
    FFMPEGMAXVOLUME = 1;
+type
+  TShortIntArray = array[0..$ffff] of cint16;
+  PShortIntArray = ^TShortIntArray;
 
 { TDecodingThread }
+
+procedure TDecodingThread.InitializeOutput;
+var
+  err :cint;
+  pError: PaError;
+  ChannelCount: integer; SampleRate:Integer;
+  Out_Val:cint64;
+begin
+  av_opt_get_int(fOwner.codecContext, 'ac', 1, @Out_Val);
+  ChannelCount:= Out_Val;
+  DebugLn(IntToStr(Out_Val));
+
+  av_opt_get_int(fOwner.codecContext, 'ar', 1, @Out_Val);
+  SampleRate:= Out_Val;
+  DebugLn(IntToStr(Out_Val));
+
+  fOwner.pa_OutInfo.channelCount:= ChannelCount;
+  fOwner.pa_OutInfo.sampleFormat:=paInt16;
+  fOwner.pa_OutInfo.hostApiSpecificStreamInfo:=nil;
+  fOwner.pa_OutInfo.suggestedLatency:=Pa_GetDeviceInfo(fOwner.fdevice)^.defaultHighOutputLatency * 1;
+
+  err:=Pa_OpenStream(@(fOwner.Stream_out),
+                nil,
+                @(fOwner.pa_OutInfo),
+                SampleRate,
+                4092,
+                paClipOff, nil, fOwner);
+  if err <> 0 then
+    DebugLn(Pa_GetErrorText(err));
+
+  pError := Pa_StartStream(fOwner.Stream_out);
+  if err <> 0 then
+    DebugLn(Pa_GetErrorText(pError));
+
+  OutputInitilized:= true;;
+
+end;
 
 procedure TDecodingThread.Execute;
 var
   OutBuf : array [0..$ffff] of cint16;
   OutFrames :cint;
   Res: cint;
-  wantframes :cint;
   Divider: integer;
   i,j: integer;
   pError: PaError;
-type
-  TShortIntArray = array[0..$ffff] of cint16;
-  PShortIntArray = ^TShortIntArray;
-var
   pp, PP1: TShortIntArray;
-
+  out_val: cint64;
   decodingPacket :  TAVPacket;
   frame: PAVFrame;
 begin
-  pError := Pa_StartStream(fOwner.Stream_out);
+  av_init_packet(packet);
+
   repeat
      RTLeventWaitFor(evPause);
      if Terminated then
         Break;
 
      RTLeventSetEvent(evPause);
-     wantframes := Length(OutBuf) div 2;
-     Frame := avcodec_alloc_frame;
+     Frame := avcodec_alloc_frame();
      Res := av_read_frame(fowner.fAVFormatContext, Packet);
      if (Res < 0 ) then
        begin
@@ -140,7 +179,7 @@ begin
        end;
 
      decodingPacket := packet;
-     if (decodingPacket.stream_index = fOwner.audioStream^.index) then
+     if (decodingPacket.stream_index = Fowner.sIndex) then
         while (decodingPacket.size > 0) do
           begin
             Res:= avcodec_decode_audio4(fOwner.codecContext, frame, @OutFrames, @decodingPacket);
@@ -157,28 +196,30 @@ begin
           end
      else
        OutFrames := -1;
+
      av_free_packet(@packet);
 
      if OutFrames > 0 then
        begin
+            if not OutputInitilized then
+              InitializeOutput();
+
 //          for i := 0 to frame^.nb_samples -1 do
- //              pp[i] := pShortIntArray(frame^.data[0])^[i];
+//              pp[i] := pShortIntArray(frame^.data[0])^[i];
 //          Pa_WriteStream(fowner.Stream_out, @pp, frame^.nb_samples);
-            for i := 0 to frame^.nb_samples -1 do
+            for i := 0 to frame^.linesize[0] div 4 -1 do
                 pShortIntArray(frame^.data[0])^[i] := trunc(pShortIntArray(frame^.data[0])^[i] * fOwner.fVolume);
 
-             Pa_WriteStream(fowner.Stream_out, pShortIntArray(frame^.data[0]), frame^.nb_samples);
-
-
+             Pa_WriteStream(fowner.Stream_out, pShortIntArray(frame^.data[0]),  frame^.linesize[0] div 4);
+     //        avcodec_free_frame(@frame);
        end;
-      avcodec_free_frame(@frame);
 
   until Terminated or (fOwner.fState in [ENGINE_STOP,ENGINE_SONG_END]);
 
   Pa_StopStream(fOwner.Stream_out);
   Pa_CloseStream(fOwner.Stream_out);
   avcodec_close(Fowner.codecContext);
-  av_close_input_file(fOwner.fAVFormatContext);
+  avformat_close_input(@(fOwner.fAVFormatContext));
   if  fOwner.fState = ENGINE_SONG_END then
       fOwner.PostCommand(ecNext);
 
@@ -189,7 +230,7 @@ begin
   inherited Create(CreateSuspended);
   fOwner := OWner;
   evPause := RTLEventCreate;
-  av_init_packet(packet);
+  OutputInitilized:=false;
 end;
 
 destructor TDecodingThread.Destroy;
@@ -256,15 +297,21 @@ begin
   Pa_Load('LibPortaudio-32.dylib');
   {$ENDIF DARWIN}
 
+  // Initialize FFmpeg
+  libFFMPEG_dynamic_dll_init;
+  if libFFMPEG_dynamic_dll_error <> '' then
+    raise Exception.Create(libFFMPEG_dynamic_dll_error);
+
+  SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide,exOverflow, exUnderflow, exPrecision]);
+
   avcodec_register_all();
   av_register_all();
 
   Pa_Initialize();
   fdevice := Pa_GetDefaultOutputDevice();
 
-  // Initialize FFmpeg
 
-  fVolume:=100;
+  fVolume:=1;
   fdecoupler := TDecoupler.Create;
 
   fdecoupler.OnCommand := @ReceivedCommand;
@@ -276,6 +323,7 @@ begin
   Stop;
   Pa_Unload();
   fdecoupler.Free;
+  libFFMPEG_dynamic_dll_done;
   inherited Destroy;
 end;
 
@@ -306,6 +354,9 @@ Var
   err : integer;
   Fchannels, Fencoding:Integer;
   i: integer;
+  out_val: cint64;
+  p: pAnsichar;
+  Packet: TAVPacket;
 begin
   // create new media
   if Not FileExists(Song.FullName) then
@@ -319,42 +370,29 @@ begin
 
   pa_OutInfo.device:= fdevice;
 
-//  frame := avcodec_alloc_frame;
   fAVFormatContext :=nil;
   err := avformat_open_input(@fAVFormatContext, pchar(Song.FullName), nil, nil);
-
+ // av_dump_format(fAVFormatContext, 0, pchar(Song.FullName), 0);
   err := avformat_find_stream_info(fAVFormatContext, nil);
+  Sindex:=av_find_best_stream(fAVFormatContext,
+                     AVMEDIA_TYPE_AUDIO,
+                     -1,
+                     -1,
+                     @fcodec,
+                     0);
 
-// av_dump_format(fAVFormatContext, 0, pchar(Song.FullName), 0);
-
-  for i := 0 to fAVFormatContext^.nb_streams -1 do
-    if fAVFormatContext^.streams[i]^.codec^.codec_type = AVMEDIA_TYPE_AUDIO then
-      begin
-        audioStream:= fAVFormatContext^.streams[i];
-      end;
-
-  codecContext:= audioStream^.codec;
-
-  fcodec := avcodec_find_decoder(codecContext^.codec_id);
-  codecContext^.workaround_bugs := FF_BUG_AUTODETECT;
+  codecContext := avcodec_alloc_context3(fCodec);
 
   err := avcodec_open2(codecContext, fcodec, nil);
 
-  pa_OutInfo.channelCount:=codecContext^.channels;
-  fRate:= codecContext^.sample_rate;
-  DebugLn(IntToStr(frATE));
-  pa_OutInfo.sampleFormat:=paInt16;
-  pa_OutInfo.hostApiSpecificStreamInfo:=nil;
-  pa_OutInfo.suggestedLatency:=Pa_GetDeviceInfo(fdevice)^.defaultHighOutputLatency * 1;
+// Now seek back to the beginning of the stream
+//  av_seek_frame(fAVFormatContext, Sindex, 0, AVSEEK_FLAG_ANY);
 
-  err:=Pa_OpenStream(@Stream_out,
-                nil,
-                @pa_OutInfo,
-                fRate,
-                4092,
-                paClipOff, nil,self);
-  if err <> 0 then
-    DebugLn(Pa_GetErrorText(err));
+
+(*  seek
+     avcodec_flush_buffers(is->audio_st->codec);
+ *)
+
   DecodingThread := TDecodingThread.Create(False, self);
 
   fState:= ENGINE_PLAY;
@@ -408,6 +446,7 @@ end;
 class function TAudioEngineFFMpeg.IsAvalaible(ConfigParam: TStrings): boolean;
 begin
   Result := true;
+  (*
   try
      {$IFDEF LINUX}
      Pa_Load('libportaudio.so.2');
@@ -423,10 +462,10 @@ begin
   end;
 
   try
-     Pa_Unload();
+  //   Pa_Unload();
 
   except
-  end;
+  end;*)
 end;
 
 procedure TAudioEngineFFMpeg.PostCommand(Command: TEngineCommand; Param: integer);
@@ -458,9 +497,14 @@ end;
 
 procedure TAudioEngineFFMpeg.Stop;
 begin
-  DecodingThread.Terminate;
-  DecodingThread.WaitFor;
-  FreeAndNil(DecodingThread);
+  fState:= ENGINE_STOP;
+  if Assigned(DecodingThread) then
+    begin
+        DecodingThread.Terminate;
+        DecodingThread.WaitFor;
+        FreeAndNil(DecodingThread);
+    end;
+
 end;
 
 procedure TAudioEngineFFMpeg.UnPause;
@@ -477,4 +521,4 @@ initialization
   RegisterEngineClass(TAudioEngineFFMpeg, 1, false, true);
 
 
-end.
+end.
