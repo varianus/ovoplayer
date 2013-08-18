@@ -267,16 +267,16 @@ procedure TDM.actMuteExecute(Sender: TObject);
 begin
   if actMute.Checked then
      begin
-       Backend.AudioEngine.Muted := False;
+       Backend.Mute;
        actMute.ImageIndex := 19;
      end
   else
      begin
-       Backend.AudioEngine.Muted := true;
+       Backend.UnMute;
        actMute.ImageIndex := 18;
      end;
   actMute.Checked := not actMute.Checked;
-  Backend.Notify(cpVoLume);
+
 end;
 
 procedure TDM.actNextExecute(Sender: TObject);

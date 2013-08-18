@@ -51,6 +51,8 @@ type
     Procedure Next;
     Procedure Previous;
     Procedure Quit;
+    Procedure Mute;
+    Procedure UnMute;
     procedure HandleCommand(Command: TEngineCommand; Param: integer = 0);
     Procedure OpenURI(URI: String);
     procedure Seek(AValue: int64);

@@ -86,6 +86,8 @@ type
     Procedure Next;
     Procedure Previous;
     Procedure Quit;
+    Procedure Mute;
+    Procedure UnMute;
     Procedure OpenURI(URI: String);
     Function GetMetadata: TCommonTags;
     Procedure Attach(observer: iObserver);
@@ -409,6 +411,19 @@ begin
      FOnSaveInterfaceState(Self);
 
   Notify(cpClosing);
+
+end;
+
+procedure TBackEnd.Mute;
+begin
+  AudioEngine.Muted := true;
+  Backend.Notify(cpVoLume);
+end;
+
+procedure TBackEnd.UnMute;
+begin
+  AudioEngine.Muted := False;
+  Backend.Notify(cpVoLume);
 
 end;
 

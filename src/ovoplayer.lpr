@@ -52,7 +52,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   {$IFDEF MEDIAFOUNDATION} mediafoundation, audioengine_mf,{$ENDIF}
   {$IFDEF OPENSOURCELIB} lazdyn_libsndfile, uos, lazdyn_mpg123, lazdyn_portaudio, audioengine_OpenLib,{$ENDIF}
   {$IFDEF UOS} UOS, uos_libsndfile, uos_mpg123, uos_portaudio, audioengine_UOS,{$ENDIF}
-  {$IFDEF FFMPEG} avcodec, avformat, audioengine_FFMPEG,{$ENDIF}
+  {$IFDEF FFMPEG} ffmpeg, audioengine_FFMPEG,{$ENDIF}
 
   // Platform related
   {$IFDEF MPRIS2} mpris2,{$ENDIF}
@@ -80,4 +80,4 @@ begin
       fMainForm.show;
       Application.Run;
    end;
-end.
+end.

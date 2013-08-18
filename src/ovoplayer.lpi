@@ -267,7 +267,7 @@ if LCLWidgetType = 'customdrawn' then
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="62">
+    <Units Count="64">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -601,6 +601,16 @@ if LCLWidgetType = 'customdrawn' then
         <IsPartOfProject Value="True"/>
         <UnitName Value="ExtendedInfo"/>
       </Unit61>
+      <Unit62>
+        <Filename Value="ffmpeg.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ffmpeg"/>
+      </Unit62>
+      <Unit63>
+        <Filename Value="audioengine_ffmpeg.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="AudioEngine_FFMpeg"/>
+      </Unit63>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -648,6 +658,7 @@ if LCLWidgetType = 'win32' then
       <Debugging>
         <DebugInfoType Value="dsDwarf2Set"/>
       </Debugging>
+      <LinkSmart Value="True"/>
       <Options>
         <Win32>
           <GraphicApplication Value="True"/>
@@ -686,4 +697,4 @@ if LCLWidgetType = 'win32' then
       </Item4>
     </Exceptions>
   </Debugging>
-</CONFIG>
+</CONFIG>
