@@ -265,17 +265,18 @@ end;
 
 procedure TDM.actMuteExecute(Sender: TObject);
 begin
+  actMute.Checked := not actMute.Checked;
+
   if actMute.Checked then
      begin
+       actMute.ImageIndex := 18;
        Backend.Mute;
-       actMute.ImageIndex := 19;
      end
   else
      begin
+       actMute.ImageIndex := 19;
        Backend.UnMute;
-       actMute.ImageIndex := 18;
      end;
-  actMute.Checked := not actMute.Checked;
 
 end;
 
