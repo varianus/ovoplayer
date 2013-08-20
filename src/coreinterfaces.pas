@@ -19,7 +19,7 @@ type
 
   IObserver = interface
     [SObserver]
-   Procedure Update(Kind: TChangedProperty);
+   Procedure UpdateProperty(Kind: TChangedProperty);
   end;
 
 
