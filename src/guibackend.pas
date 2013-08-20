@@ -29,7 +29,7 @@ uses
   BaseTypes, CoreInterfaces,  forms,
   PlayList, AudioEngine, AudioEngine_dummy,
   PlayListManager, MediaLibrary, basetag, CustomSong,
-  MultimediaKeys, Config;
+  MultimediaKeys, Config, NullInterfacedObject;
 
 type
 
@@ -38,7 +38,7 @@ type
 
   { TBackEnd }
 
-  TBackEnd = class(TInterfacedObject, IBackEnd)
+  TBackEnd = class(TNullInterfacedObject, IBackEnd)
   private
     { private declarations }
     FOnEngineCommand: TOnEngineCommand;
@@ -137,9 +137,7 @@ begin
      for i := 0 to fBackEnd.ObserverList.Count -1 do
         fBackEnd.remove(IObserver(fBackEnd.ObserverList[i]));
 
-  for i := 0 to fBackEnd.RefCount -1 do
-      fBackEnd._Release;
-
+  fBackEnd.Free;
   fBackEnd := nil;
 
 end;
@@ -473,7 +471,7 @@ var
 begin
   if Assigned(ObserverList) then
      for i := 0 to ObserverList.Count -1 do
-       IObserver(ObserverList[i]).Update(Kind);
+       IObserver(ObserverList[i]).UpdateProperty(Kind);
 end;
 
 procedure TBackEnd.SignalPlayListChange;

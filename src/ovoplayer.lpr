@@ -62,7 +62,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   song, AudioTag, basetag, file_flac, file_mp3, file_wma,
   tag_wma, tag_vorbis, tag_id3v2, file_ogg, file_monkey, tag_ape,
   file_Wave,  tag_Dummy, file_Dummy,
-  id3v1genres, CustomSong;
+  id3v1genres, CustomSong, NullInterfacedObject;
 
 {$R *.res}
 begin
