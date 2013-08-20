@@ -47,6 +47,7 @@ type
     fSavedVolume: integer;
     fDecoupler: TDecoupler;
 
+    Source: IUnknown;
     pVolume: IMFSimpleAudioVolume;
     pSession: ImfMediaSession;
     pSource: IMFMediaSource;
@@ -105,6 +106,9 @@ var
 begin
   Result := S_OK;
   xevent := nil;
+  if not Assigned(TheEngine.pSession) then
+    exit;
+
   hr := TheEngine.pSession.EndGetEvent(pAsyncResult, xEvent);
 
   if SUCCEEDED(hr) then
@@ -201,8 +205,6 @@ begin
 
   MFStartup(MF_VERSION, MFSTARTUP_FULL);
 
-  EventHandler := TMFEventHandler.Create;
-
   fDecoupler := TDecoupler.Create;
   fdecoupler.OnCommand := @ReceivedCommand;
 
@@ -215,10 +217,16 @@ var
 begin
   if Assigned(pSession) then
     begin
-    pSession.EndGetEvent(pAsyncResult, xEvent);
-    //      pSession.Shutdown;
+    pSession.Shutdown;
     pSession := nil;
+    EventHandler:= nil;
     end;
+  if Assigned(pSource) then
+     begin
+       pSource.Shutdown;
+       pSource:= nil;
+     end;
+
 end;
 
 destructor TAudioEngineMediaFoundation.Destroy;
@@ -257,7 +265,6 @@ procedure TAudioEngineMediaFoundation.DoPlay(Song: TSong; offset: integer);
 var
   Hr: HRESULT;
   ObjectType: MF_Object_type;
-  Source: IUnknown;
   pResolver: IMFSourceResolver;
   varStart: PropVariant;
 var
@@ -305,7 +312,6 @@ begin
   hr := ptop.AddNode(dstNode);
   hr := srcNode.ConnectOutput(0, dstNode, 0);
   hr := psession.SetTopology(0, ptop);
-  EventHandler.TheEngine := self;
 
   varStart.vt := 0;
   varStart.hVal.QuadPart := 0;
@@ -316,6 +322,9 @@ begin
   Seek(offset, True);
 //  hr := MFGetService(pSession, MR_POLICY_VOLUME_SERVICE, IID_IMFSimpleAudioVolume, tmp);
 //  pVolume := tmp as IMFSimpleAudioVolume;
+
+  EventHandler := TMFEventHandler.Create;
+  EventHandler.TheEngine := self;
 
   hr := pSession.BeginGetEvent(EventHandler, nil);
 
