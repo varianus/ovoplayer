@@ -288,7 +288,8 @@ begin
   hr := MFCreateTopologyNode(MF_TOPOLOGY_SOURCESTREAM_NODE, srcNode);
   hr := MFCreateTopologyNode(MF_TOPOLOGY_OUTPUT_NODE, dstNode);
 
-  hr := pResolver.CreateObjectFromURL(PWideChar(WideString(song.FullName)), MF_RESOLUTION_MEDIASOURCE,
+  hr := pResolver.CreateObjectFromURL(PWideChar(WideString(song.FullName)),
+        MF_RESOLUTION_MEDIASOURCE or MF_RESOLUTION_CONTENT_DOES_NOT_HAVE_TO_MATCH_EXTENSION_OR_MIME_TYPE,
     nil, ObjectType, Source);
 
   hr := Source.QueryInterface(IID_IMFMediaSource, pSource);
