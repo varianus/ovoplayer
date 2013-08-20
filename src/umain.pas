@@ -364,7 +364,7 @@ type
     procedure RemoveSelectionFromPlaylist;
     procedure ScrollIntoView;
     procedure ShowNotification;
-    procedure Update(Kind: TChangedProperty);
+    procedure UpdateProperty(Kind: TChangedProperty);
 
   public
     { public declarations }
@@ -817,7 +817,7 @@ begin
 
 end;
 
-procedure TfMainForm.Update(Kind: TChangedProperty);
+procedure TfMainForm.UpdateProperty(Kind: TChangedProperty);
 begin
   case kind of
     cpVolume: begin
@@ -1161,6 +1161,7 @@ begin
   RatingBack.Free;
   RatingFront.Free;
   DM.Free;
+
   FreeBackEnd;
 
 end;
