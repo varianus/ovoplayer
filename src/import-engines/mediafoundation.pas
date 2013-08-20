@@ -1,3 +1,28 @@
+{
+This file is part of OvoPlayer
+Copyright (C) 2011 Marco Caselli
+
+OvoPlayer is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+}
+{ Almost all of this code is taken from mfpack-media-foundation project
+    URL : http://code.google.com/p/mfpack-media-foundation/
+  Many thanks to the developers.
+
+}
+
 unit mediafoundation;
 
 {$mode objfpc}{$H+}
@@ -19,25 +44,19 @@ const
 
 
   IID_IMFMediaSource: TGUID = '{279a808d-aec7-40c8-9c6b-a6b492c78a66}';
-  IID_IMFPresentationClock: TGUID =
-    '{868CE85C-8EA9-4f55-AB82-B009A910A805}';
-  IID_IMFAsyncCallback: TGUID =
-    '{a27003cf-2354-4f2a-8d6a-ab7cff15437e}';
+  IID_IMFPresentationClock: TGUID = '{868CE85C-8EA9-4f55-AB82-B009A910A805}';
+  IID_IMFAsyncCallback: TGUID = '{a27003cf-2354-4f2a-8d6a-ab7cff15437e}';
+  IID_IMFSimpleAudioVolume: TGUID = '{089EDF13-CF71-4338-8D13-9E569DBDC319}';
 
-  MF_TOPONODE_SOURCE: TGUID =
-    '{835c58ec-e075-4bc7-bcba-4de000df9ae6}';
-  MF_TOPONODE_PRESENTATION_DESCRIPTOR: TGUID =
-    '{835c58ed-e075-4bc7-bcba-4de000df9ae6}';
-  MF_TOPONODE_STREAM_DESCRIPTOR: TGUID =
-    '{835c58ee-e075-4bc7-bcba-4de000df9ae6}';
-  MF_TOPONODE_SEQUENCE_ELEMENTID: TGUID =
-    '{835c58ef-e075-4bc7-bcba-4de000df9ae6}';
-  MF_TOPONODE_TRANSFORM_OBJECTID: TGUID =
-    '{88dcc0c9-293e-4e8b-9aeb-0ad64cc016b0}';
-  MF_TOPONODE_STREAMID: TGUID =
-    '{14932f9b-9087-4bb4-8412-5167145cbe04}';
-  MF_TOPONODE_NOSHUTDOWN_ON_REMOVE: TGUID =
-    '{14932f9c-9087-4bb4-8412-5167145cbe04}';
+  MR_POLICY_VOLUME_SERVICE: TGUID = '{1abaa2ac-9d3b-47c6-ab48-c59506de784d}';
+
+  MF_TOPONODE_SOURCE: TGUID = '{835c58ec-e075-4bc7-bcba-4de000df9ae6}';
+  MF_TOPONODE_PRESENTATION_DESCRIPTOR: TGUID = '{835c58ed-e075-4bc7-bcba-4de000df9ae6}';
+  MF_TOPONODE_STREAM_DESCRIPTOR: TGUID = '{835c58ee-e075-4bc7-bcba-4de000df9ae6}';
+  MF_TOPONODE_SEQUENCE_ELEMENTID: TGUID = '{835c58ef-e075-4bc7-bcba-4de000df9ae6}';
+  MF_TOPONODE_TRANSFORM_OBJECTID: TGUID = '{88dcc0c9-293e-4e8b-9aeb-0ad64cc016b0}';
+  MF_TOPONODE_STREAMID: TGUID = '{14932f9b-9087-4bb4-8412-5167145cbe04}';
+  MF_TOPONODE_NOSHUTDOWN_ON_REMOVE: TGUID = '{14932f9c-9087-4bb4-8412-5167145cbe04}';
 
 type
   TOPOID = UInt64;
@@ -55,7 +74,14 @@ type
   MF_TOPOLOGY_TYPE = cardinal;
   MF_OBJECT_TYPE = cardinal;
   MFTIME = LONGLONG;
-  MF_CLOCK_STATE = integer;
+  _MFCLOCK_STATE = (
+    MFCLOCK_STATE_INVALID = 0,
+    MFCLOCK_STATE_RUNNING = (1),
+    MFCLOCK_STATE_STOPPED = (2),
+    MFCLOCK_STATE_PAUSED = (3)
+    );
+
+  MF_CLOCK_STATE = _MFCLOCK_STATE;
 
   REFGUID = GUID;
   MediaEventType = DWord;
@@ -66,13 +92,7 @@ type
     d: double;
   end;
 
-  PROPVARIANT = packed record
-    vt: TVarType;
-    wReserved1: byte;
-    wReserved2: byte;
-    wReserved3: uLong;
-    Something: int64;
-  end;
+  PROPVARIANT = Tpropvariant;
 
   MF_ATTRIBUTES_MATCH_TYPE = (
     MF_ATTRIBUTES_MATCH_OUR_ITEMS = 0,
@@ -109,17 +129,15 @@ type
     function GetGUID(const guidKey: REFGUID; out pguidValue: TGuid): HResult; stdcall;
     function GetStringLength(const guidKey: REFGUID; out pcchLength: UINT32): HResult;
       stdcall;
-    function GetString(const guidKey: REFGUID; out pwszValue: LPWSTR;
-      out cchBufSize: UINT32; var pcchLength: UINT32): HResult; stdcall;
+    function GetString(const guidKey: REFGUID; out pwszValue: LPWSTR; out cchBufSize: UINT32;
+      var pcchLength: UINT32): HResult; stdcall;
     function GetAllocatedString(const guidKey: REFGUID; out ppwszValue: LPWSTR;
       out pcchLength: UINT32): HResult; stdcall;
     function GetBlobSize(const guidKey: REFGUID; out pcbBlobSize: UINT32): HResult; stdcall;
     function GetBlob(const guidKey: REFGUID; out pBuf: UINT8; out cbBufSize: UINT32;
       var pcbBlobSize: UINT32): HResult; stdcall;
-    function GetAllocatedBlob(const guidKey: REFGUID; out ppBuf: UINT8;
-      out pcbSize: UINT32): HResult; stdcall;
-    function GetUnknown(const guidKey: REFGUID; const riid: REFIID;
-      out ppv: Pointer): HResult; stdcall;
+    function GetAllocatedBlob(const guidKey: REFGUID; out ppBuf: UINT8; out pcbSize: UINT32): HResult; stdcall;
+    function GetUnknown(const guidKey: REFGUID; const riid: REFIID; out ppv: Pointer): HResult; stdcall;
     function SetItem(const guidKey: REFGUID; const Value: REFPROPVARIANT): HResult;
       stdcall;
     function DeleteItem(const guidKey: REFGUID): HResult; stdcall;
@@ -129,8 +147,7 @@ type
     function SetDouble(const guidKey: REFGUID; const fValue: double): HResult; stdcall;
     function SetGUID(const guidKey: REFGUID; const guidValue: REFGUID): HResult; stdcall;
     function SetString(const guidKey: REFGUID; const wszValue: LPCWSTR): HResult; stdcall;
-    function SetBlob(const guidKey: REFGUID; const pBuf: UINT8;
-      const cbBufSize: UINT32): HResult; stdcall;
+    function SetBlob(const guidKey: REFGUID; const pBuf: UINT8; const cbBufSize: UINT32): HResult; stdcall;
     function SetUnknown(const guidKey: REFGUID; const pUnknown: IUnknown): HResult; stdcall;
     function LockStore(): HResult; stdcall;
     function UnlockStore(): HResult; stdcall;
@@ -156,7 +173,7 @@ type
     function Invoke(const pAsyncResult: IMFAsyncResult): HResult; stdcall;
   end;
 
-  IMFMediaEvent = interface(IUnknown)
+  IMFMediaEvent = interface(IMFAttributes)
     ['{DF598932-F10C-4E39-BBA2-C308F101DAA3}']
     function GetType(out pmet: MediaEventType): HResult; stdcall;
     function GetExtendedType(out pguidExtendedType: TGuid): HResult; stdcall;
@@ -168,11 +185,9 @@ type
   IMFCollection = interface(IUnknown)
     ['{5BC8A76B-869A-46a3-9B03-FA218A66AEBE}']
     function GetElementCount(out pcElements: DWord): HResult; stdcall;
-    function GetElement(const dwElementIndex: DWord;
-      out ppUnkElement: IUnknown): HResult; stdcall;
+    function GetElement(const dwElementIndex: DWord; out ppUnkElement: IUnknown): HResult; stdcall;
     function AddElement(const pUnkElement: IUnknown): HResult; stdcall;
-    function RemoveElement(const dwElementIndex: DWord;
-      ppUnkElement: IUnknown): HResult; stdcall;
+    function RemoveElement(const dwElementIndex: DWord; ppUnkElement: IUnknown): HResult; stdcall;
     function InsertElementAt(const dwIndex: DWord; const pUnknown: IUnknown): HResult;
       stdcall;
     function RemoveAllElements(): HResult; stdcall;
@@ -182,10 +197,8 @@ type
     ['{2CD0BD52-BCD5-4B89-B62C-EADC0C031E7D}']
     function GetEvent(const dwFlags: DWord; out ppEvent: IMFMediaEvent): HResult;
       stdcall;
-    function BeginGetEvent(const pCallback: IMFAsyncCallback;
-      const punkState: IUnknown): HResult; stdcall;
-    function EndGetEvent(const pResult: IMFAsyncResult;
-      out ppEvent: IMFMediaEvent): HResult; stdcall;
+    function BeginGetEvent(const pCallback: IMFAsyncCallback; const punkState: IUnknown): HResult; stdcall;
+    function EndGetEvent(const pResult: IMFAsyncResult; out ppEvent: IMFMediaEvent): HResult; stdcall;
     function QueueEvent(const met: MediaEventType; const guidExtendedType: REFGUID;
       hrStatus: HRESULT; const pvValue: PROPVARIANT): HResult; stdcall;
   end;
@@ -195,8 +208,7 @@ type
     function GetMajorType(out pguidMajorType: TGuid): HResult; stdcall;
     function IsCompressedFormat(out pfCompressed: boolean): HResult; stdcall;
     function IsEqual(const pIMediaType: IMFMediaType; out pdwFlags: DWord): HResult; stdcall;
-    function GetRepresentation(const guidRepresentation: TGuid;
-      out ppvRepresentation: Pointer): HResult; stdcall;
+    function GetRepresentation(const guidRepresentation: TGuid; out ppvRepresentation: Pointer): HResult; stdcall;
     function FreeRepresentation(const guidRepresentation: TGuid;
       const pvRepresentation: Pointer): HResult; stdcall;
   end;
@@ -217,14 +229,10 @@ type
       out pdwOutputIndexOnUpstreamNode: DWord): HResult; stdcall;
     function GetOutput(const dwOutputIndex: DWord; out ppDownstreamNode: IMFTopologyNode;
       out pdwInputIndexOnDownstreamNode: DWord): HResult; stdcall;
-    function SetOutputPrefType(const dwOutputIndex: DWord;
-      const pType: IMFMediaType): HResult; stdcall;
-    function GetOutputPrefType(const dwOutputIndex: DWord;
-      out ppType: IMFMediaType): HResult; stdcall;
-    function SetInputPrefType(const dwInputIndex: DWord;
-      const pType: IMFMediaType): HResult; stdcall;
-    function GetInputPrefType(const dwInputIndex: DWord;
-      out ppType: IMFMediaType): HResult; stdcall;
+    function SetOutputPrefType(const dwOutputIndex: DWord; const pType: IMFMediaType): HResult; stdcall;
+    function GetOutputPrefType(const dwOutputIndex: DWord; out ppType: IMFMediaType): HResult; stdcall;
+    function SetInputPrefType(const dwInputIndex: DWord; const pType: IMFMediaType): HResult; stdcall;
+    function GetInputPrefType(const dwInputIndex: DWord; out ppType: IMFMediaType): HResult; stdcall;
     function CloneFrom(const pNode: IMFTopologyNode): HResult; stdcall;
   end;
 
@@ -237,8 +245,7 @@ type
     function GetNode(const wIndex: word; out ppNode: IMFTopologyNode): HResult; stdcall;
     function Clear(): HResult; stdcall;
     function CloneFrom(const pTopology: IMFTopology): HResult; stdcall;
-    function GetNodeByID(const qwTopoNodeID: TOPOID;
-      out ppNode: IMFTopologyNode): HResult; stdcall;
+    function GetNodeByID(const qwTopoNodeID: TOPOID; out ppNode: IMFTopologyNode): HResult; stdcall;
     function GetSourceNodeCollection(out ppCollection: IMFCollection): HResult; stdcall;
     function GetOutputNodeCollection(out ppCollection: IMFCollection): HResult; stdcall;
   end;
@@ -256,19 +263,17 @@ type
 
   IMFMediaSession = interface(IMFMediaEventGenerator)
     ['{90377834-21D0-4dee-8214-BA2E3E6C1127}']
-    function SetTopology(const dwSetTopologyFlags: Dword;
-      const pTopology: IMFTopology): HResult; stdcall;
+    function SetTopology(const dwSetTopologyFlags: Dword; const pTopology: IMFTopology): HResult; stdcall;
     function ClearTopologies(): HResult; stdcall;
-    function Start(const pguidTimeFormat: TGUID;
-      const pvarStartPosition: PROPVARIANT): HResult; stdcall;
+    function Start(const pguidTimeFormat: TGUID; const pvarStartPosition: PROPVARIANT): HResult; stdcall;
     function Pause(): HResult; stdcall;
     function Stop(): HResult; stdcall;
     function Close(): HResult; stdcall;
     function Shutdown(): HResult; stdcall;
     function GetClock(out ppClock: IMFClock): HResult; stdcall;
     function GetSessionCapabilities(out pdwCaps: DWord): HResult; stdcall;
-    function GetFullTopology(const dwGetFullTopologyFlags: DWord;
-      const TopoId: TOPOID; out ppFullTopology: IMFTopology): HResult; stdcall;
+    function GetFullTopology(const dwGetFullTopologyFlags: DWord; const TopoId: TOPOID;
+      out ppFullTopology: IMFTopology): HResult; stdcall;
   end;
 
   IPropertyStore = interface(IUnknown)
@@ -284,18 +289,17 @@ type
   IMFSourceResolver = interface(IUnknown)
     ['{90377834-21D0-4dee-8214-BA2E3E6C1127}']
     function CreateObjectFromURL(const pwszURLL: LPCWSTR; const dwFlags: DWord;
-      const pProps: IPropertyStore; out pObjectType: MF_OBJECT_TYPE;
-      out ppObject: IUnknown): HResult; stdcall;
+      const pProps: IPropertyStore; out pObjectType: MF_OBJECT_TYPE; out ppObject: IUnknown): HResult; stdcall;
     //function CreateObjectFromByteStream(const pByteStream: IMFByteStream;
     //  const pwszURL: LPCWSTR; const dwFlags: DWord;
     //  const pProps: IPropertyStore;
     //  out pObjectType: MF_OBJECT_TYPE;
     //  out ppObject: IUnknown): HResult; stdcall;
     function BeginCreateObjectFromURL(const pwszURL: LPCWSTR; const dwFlags: DWord;
-      const pProps: IPropertyStore; out ppIUnknownCancelCookie: IUnknown;
-      const pCallback: IMFAsyncCallback; const punkState: IUnknown): HResult; stdcall;
-    function EndCreateObjectFromURL(const pResult: IMFAsyncResult;
-      out pObjectType: MF_OBJECT_TYPE; ppObject: IUnknown): HResult; stdcall;
+      const pProps: IPropertyStore; out ppIUnknownCancelCookie: IUnknown; const pCallback: IMFAsyncCallback;
+      const punkState: IUnknown): HResult; stdcall;
+    function EndCreateObjectFromURL(const pResult: IMFAsyncResult; out pObjectType: MF_OBJECT_TYPE;
+      ppObject: IUnknown): HResult; stdcall;
     //function BeginCreateObjectFromByteStream(const pByteStream: IMFByteStream;
     //  const pwszURL: LPCWSTR;
     //  const dwFlags: DWord; const pProps: IPropertyStore;
@@ -303,8 +307,8 @@ type
     //  const pCallback: IMFAsyncCallback;
     //  const punkState: IUnknown): HResult;
     //  stdcall;
-    function EndCreateObjectFromByteStream(const pResult: IMFAsyncResult;
-      out pObjectType: MF_OBJECT_TYPE; out ppObject: IUnknown): HResult; stdcall;
+    function EndCreateObjectFromByteStream(const pResult: IMFAsyncResult; out pObjectType: MF_OBJECT_TYPE;
+      out ppObject: IUnknown): HResult; stdcall;
     function CancelObjectCreation(const pIUnknownCancelCookie: IUnknown): HResult;
       stdcall;
   end;
@@ -312,11 +316,10 @@ type
   //Interface IMFMediaTypeHandler
   IMFMediaTypeHandler = interface(IUnknown)
     ['{e93dcf6c-4b07-4e1e-8123-aa16ed6eadf5}']
-    function IsMediaTypeSupported(const pMediaType: IMFMediaType;
-      out ppMediaType: IMFMediaType): HResult; stdcall;
+    function IsMediaTypeSupported(const pMediaType: IMFMediaType; out ppMediaType: IMFMediaType): HResult;
+      stdcall;
     function GetMediaTypeCount(out pdwTypeCount: DWord): HResult; stdcall;
-    function GetMediaTypeByIndex(const dwIndex: DWord;
-      out ppType: IMFMediaType): HResult; stdcall;
+    function GetMediaTypeByIndex(const dwIndex: DWord; out ppType: IMFMediaType): HResult; stdcall;
     function SetCurrentMediaType(const pMediaType: IMFMediaType): HResult; stdcall;
     function GetCurrentMediaType(out ppMediaType: IMFMediaType): HResult; stdcall;
     function GetMajorType(out pguidMajorType: TGuid): HResult; stdcall;
@@ -343,10 +346,10 @@ type
   IMFMediaSource = interface(IMFMediaEventGenerator)
     ['{90377834-21D0-4dee-8214-BA2E3E6C1127}']
     function GetCharacteristics(out pdwCharacteristics: DWord): HResult; stdcall;
-    function CreatePresentationDescriptor(out ppPresentationDescriptor:
-      IMFPresentationDescriptor): HResult; stdcall;
-    function Start(const pPresentationDescriptor: IMFPresentationDescriptor;
-      const pguidTimeFormat: TGuid; pvarStartPosition: PROPVARIANT): HResult; stdcall;
+    function CreatePresentationDescriptor(out ppPresentationDescriptor: IMFPresentationDescriptor): HResult;
+      stdcall;
+    function Start(const pPresentationDescriptor: IMFPresentationDescriptor; const pguidTimeFormat: TGuid;
+      pvarStartPosition: PROPVARIANT): HResult; stdcall;
     function Stop(): HResult; stdcall;
     function Pause(): HResult; stdcall;
     function Shutdown(): HResult; stdcall;
@@ -364,7 +367,7 @@ type
     function GetUnderlyingClock(out ppClock: IMFClock): HResult; stdcall;
   end;
 
-  IMFPresentationClock = interface(IUnknown)
+  IMFPresentationClock = interface(IMFClock)
     ['{868CE85C-8EA9-4f55-AB82-B009A910A805}']
     function SetTimeSource(const pTimeSource: IMFPresentationTimeSource): HResult;
       stdcall;
@@ -378,70 +381,171 @@ type
     function Pause(): HResult; stdcall;
   end;
 
-function MFStartup(const Version: ULONG; const dwFlags: DWORD): HRESULT; stdcall;
-function MFShutdown: HRESULT; stdcall;
-function MFCreateMediaSession(const pConfiguration: IMFAttributes;
-  out ppMediaSession: IMFMediaSession): HResult; stdcall;
+  IMFSimpleAudioVolume = interface(IUnknown)
+    ['{089EDF13-CF71-4338-8D13-9E569DBDC319}']
+    function SetMasterVolume(const fLevel: single): HResult; stdcall;
+    function GetMasterVolume(out pfLevel: single): HResult; stdcall;
+    function SetMute(const bMute: Bool): HResult; stdcall;   //todo: Convert to CBool
+    function GetMute(out pbMute: Bool): HResult; stdcall;    //todo: Convert to CBool
+  end;
 
-function MFCreateSourceResolver(out ppISourceResolver: IMFSourceResolver): HResult;
-  stdcall;
 
-function MFCreateTopology(out ppTopo: IMFTopology): HResult; stdcall;
-function MFCreateTopologyNode(const NodeType: MF_TOPOLOGY_TYPE;
-  out ppNode: IMFTopologyNode): HResult; stdcall;
-function MFCreateAudioRendererActivate(out ppActivate: IMFActivate): HResult; stdcall;
+type
+  MFStartup_t = function(const Version: ULONG; const dwFlags: DWORD): HRESULT; stdcall;
+  MFShutdown_t = function: HRESULT; stdcall;
+  MFCreateMediaSession_t = function(const pConfiguration: IMFAttributes;
+    out ppMediaSession: IMFMediaSession): HResult; stdcall;
 
-function MFCreateSystemTimeSource(out ppSystemTimeSource: IMFPresentationTimeSource): HResult;
-  stdcall;
-function CoInitialize(pvReserved: Pointer): HResult; stdcall;
-  external 'ole32.dll' Name 'CoInitialize';
-procedure CoUninitialize; stdcall; external 'ole32.dll' Name 'CoUninitialize';
-function CoCreateInstance(const clsid: TCLSID; unkOuter: IUnknown; dwClsContext: longint;
-  const iid: TIID; out pv): HResult;
-  stdcall; external 'ole32.dll' Name 'CoCreateInstance';
+  MFCreateSourceResolver_t = function(out ppISourceResolver: IMFSourceResolver): HResult;
+    stdcall;
 
+  MFCreateTopology_t = function(out ppTopo: IMFTopology): HResult; stdcall;
+  MFCreateTopologyNode_t = function(const NodeType: MF_TOPOLOGY_TYPE;
+    out ppNode: IMFTopologyNode): HResult; stdcall;
+  MFCreateAudioRendererActivate_t = function(out ppActivate: IMFActivate): HResult; stdcall;
+
+  MFGetService_t = function(const punkObject: IUnknown; const guidService: tGUID; const riid: tGUID;
+    out ppvObject: IMFSimpleAudioVolume): HResult; stdcall;
+
+
+var
+  MFStartup: MFStartup_t;
+  MFShutdown: MFShutdown_t;
+  MFCreateMediaSession: MFCreateMediaSession_t;
+  MFCreateSourceResolver: MFCreateSourceResolver_t;
+  MFCreateTopology: MFCreateTopology_t;
+  MFCreateTopologyNode: MFCreateTopologyNode_t;
+  MFCreateAudioRendererActivate: MFCreateAudioRendererActivate_t;
+  MFGetService: MFGetService_t;
+
+var
+  libMF_dynamic_dll_error: string;
+
+function CheckMF: boolean;
+procedure libMF_dynamic_dll_init;
+procedure libMF_dynamic_dll_Done;
 
 //----------------------------------------------------------------------------//
 implementation
+
+uses
+  SysUtils, dynlibs;
+
+const
+  LIBMF_DLL_NAME = 'MF.dll';
+  LIBMFplat_DLL_NAME = 'MFplat.dll';
+
+var
+  LibMF_Handle: Thandle;
+  LibMFPLat_Handle: Thandle;
+
+function CheckMF: boolean;
+var
+  cdir: string;
+  MustFree: boolean;
+  OsVer: TOSVERSIONINFO;
+
+begin
+  // Media foundation is avalaible only for Vista and later Windows versions
+  GetVersionEx(OsVer);
+  if OsVer.dwMajorVersion < 6 then
+    exit;
+
+  // no error
+  MustFree := LibMF_Handle = 0;
+
+  libMF_dynamic_dll_init();
+  Result := False;
+  // exit, report error
+  if (LibMF_Handle = 0) then
+    begin
+    libMF_dynamic_dll_error :=
+      'Library not found ' + LIBMF_DLL_NAME + ', ' + 'GetLastError() = ' + IntToStr(GetLastOSError);
+    end
+  else
+    begin
+    Result := True;
+    if MustFree then
+      begin
+      libMF_dynamic_dll_done;
+      LibMF_Handle := 0;
+      end;
+    end;
+end;
+
+
+function libMF_dll_get_proc_addr(Handle: THandle; var addr: Pointer; const Name: PAnsiChar): boolean;
+begin
+  addr := GetProcedureAddress(Handle, Name);
+  Result := (addr <> nil);
+  if not Result then
+    begin
+    libMF_dynamic_dll_error := 'Procedure "' + Name + '" not found!';
+    end;
+end;
+
+procedure libMF_dynamic_dll_init;
+begin
+  if (LibMF_Handle <> 0) then
+    exit;
+
+  LibMF_Handle := LoadLibrary(PAnsiChar(LIBMF_DLL_NAME));
+  // exit, report error
+  if (LibMF_Handle = 0) then
+    begin
+    libMF_dynamic_dll_error :=
+      'Library not found ' + LIBMF_DLL_NAME + ', ' + 'GetLastError() = ' + IntToStr(GetLastOSError);
+    exit;
+    end;
+
+  LibMFPLat_Handle := LoadLibrary(PAnsiChar(LIBMFplat_DLL_NAME));
+  if (LibMFPLat_Handle = 0) then
+    begin
+    libMF_dynamic_dll_error :=
+      'Library not found ' + LIBMFplat_DLL_NAME + ', ' + 'GetLastError() = ' + IntToStr(GetLastOSError);
+    exit;
+    end;
+
+  if not libMF_dll_get_proc_addr(LibMF_Handle, pointer(MFCreateMediaSession), 'MFCreateMediaSession') then
+    exit;
+  if not libMF_dll_get_proc_addr(LibMF_Handle, pointer(MFCreateSourceResolver), 'MFCreateSourceResolver') then
+    exit;
+  if not libMF_dll_get_proc_addr(LibMF_Handle, pointer(MFCreateTopology), 'MFCreateTopology') then
+    exit;
+  if not libMF_dll_get_proc_addr(LibMF_Handle, pointer(MFCreateAudioRendererActivate),
+    'MFCreateAudioRendererActivate') then
+    exit;
+  if not libMF_dll_get_proc_addr(LibMF_Handle, pointer(MFCreateTopologyNode), 'MFCreateTopologyNode') then
+    exit;
+  if not libMF_dll_get_proc_addr(LibMF_Handle, pointer(MFGetService), 'MFGetService') then
+    exit;
+
+  if not libMF_dll_get_proc_addr(LibMFPLat_Handle, pointer(MFShutdown), 'MFShutdown') then
+    exit;
+  if not libMF_dll_get_proc_addr(LibMFPLat_Handle, pointer(MFStartup), 'MFStartup') then
+    exit;
+
+end;
+
+procedure libMF_dynamic_dll_Done;
+begin
+  if (LibMF_Handle <> 0) then
+    FreeLibrary(LibMF_Handle);
+  LibMF_Handle := 0;
+  if (LibMFPLat_Handle <> 0) then
+    FreeLibrary(LibMFPLat_Handle);
+  LibMFPLat_Handle := 0;
+
+end;
 //----------------------------------------------------------------------------//
 
 
-function MFStartup(const Version: ULONG; const dwFlags: DWORD): HRESULT;
-  stdcall; external 'Mfplat.dll' Name 'MFStartup';
-function MFShutdown: HRESULT; stdcall; external 'Mfplat.dll' Name 'MFShutdown';
-
-function MFCreateMediaSession(const pConfiguration: IMFAttributes;
-  out ppMediaSession: IMFMediaSession): HResult; stdcall;
-  external 'Mf.dll' Name 'MFCreateMediaSession';
-
-function MFCreateSourceResolver(out ppISourceResolver: IMFSourceResolver): HResult;
-  stdcall;
-  external 'Mf.dll' Name 'MFCreateSourceResolver';
-
-function MFCreateTopology(out ppTopo: IMFTopology): HResult; stdcall;
-  external 'Mf.dll' Name 'MFCreateTopology';
-
-function MFCreateAudioRendererActivate(out ppActivate: IMFActivate): HResult; stdcall;
-  external 'Mf.dll' Name 'MFCreateAudioRendererActivate';
-
-function MFCreateTopologyNode(const NodeType: MF_TOPOLOGY_TYPE;
-  out ppNode: IMFTopologyNode): HResult; stdcall;
-  external 'Mf.dll' Name 'MFCreateTopologyNode';
-
-function MFCreateSystemTimeSource(out ppSystemTimeSource: IMFPresentationTimeSource): HResult;
-  stdcall;
-
-
-
-
-
-
-
-
-  external 'Mfplat.dll' Name 'MFCreateSystemTimeSource';
 
 initialization
   CoInitialize(nil);
+  LibMF_Handle := 0;
+  LibMFPLat_Handle := 0;
+
 
 finalization
   CoUninitialize;

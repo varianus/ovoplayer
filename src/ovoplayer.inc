@@ -41,9 +41,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 // GSTREAMER       - Gstreamer        - Stable, Linux only, needs glib
 // MPLAYER         - Mplayer          - Stable, minor issues
 // UOS             - Various          - Stable, minor issues
+// MEDIAFOUNDATION - Microsoft        - Stable, minor seeking issues, Windows Vista and later only
+
 
 // Engines under development
-// MEDIAFOUNDATION - Microsoft        - Broken, Windows Vista and later only
 // FFMPEG          - FFMpeg           - Broken
 // OPENSOURCELIB   - Varios           - Working with major issues
 
@@ -69,7 +70,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 {$IFDEF WINDOWS}
   {$DEFINE DSHOW} // Work only on windows
-  {.$DEFINE MEDIAFOUNDATION} // Work only on windows vista and higher
+  {$DEFINE MEDIAFOUNDATION} // Work only on windows vista and higher
   {$DEFINE VLC} //
   {$DEFINE XINE} //
   {$DEFINE BASS} //
@@ -89,4 +90,4 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
 
-
+

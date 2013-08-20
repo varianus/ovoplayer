@@ -26,7 +26,7 @@ unit mediadshow;
 
 interface
 uses
-  Windows;
+  Windows, Activex;
 
 const
   CLSCTX_INPROC_SERVER     = 1;
@@ -245,10 +245,6 @@ type
     function GetNotifyFlags(out lplNoNotifyFlags): HResult; stdcall;
   end;
 
-function CoInitialize(pvReserved: Pointer): HResult; stdcall; external 'ole32.dll' name 'CoInitialize';
-procedure CoUninitialize; stdcall; external 'ole32.dll' name 'CoUninitialize';
-function CoCreateInstance(const clsid: TCLSID; unkOuter: IUnknown;
-  dwClsContext: Longint; const iid: TIID; out pv): HResult; stdcall;  external 'ole32.dll' name 'CoCreateInstance';
 
 const
   IID_IGraphBuilder  : TGUID = '{56A868A9-0AD4-11CE-B03A-0020AF0BA770}';
