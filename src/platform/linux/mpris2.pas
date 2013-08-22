@@ -50,10 +50,10 @@ type
   public
     function Activate(BackEnd: IBackEnd): boolean;
     procedure DeActivate;
-    procedure Update(Kind: TChangedProperty);
+    procedure UpdateProperty(Kind: TChangedProperty);
 
     constructor Create;
-    destructor Destroy;
+    destructor Destroy; override;
 
   end;
 
@@ -1030,7 +1030,7 @@ begin
     end;
 end;
 
-procedure TMpris2.Update(Kind: TChangedProperty);
+procedure TMpris2.UpdateProperty(Kind: TChangedProperty);
 begin
   case kind of
     cpStatus:
