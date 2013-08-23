@@ -1,32 +1,52 @@
 @ECHO OFF
 setlocal
 
-:: Set path where lazarus is installed
+:: Set path where Lazarus is installed
 set LAZARUS_DIR=c:\ex-d\lazarus
-set FPC_BIN=C:\Ex-D\lazarus\fpc\2.6.0\bin\i386-Win32
-:: 
-if "%BASE%" == "" ( SET BASE=%CD%)
-   
-if not "%OS_TARGET%" == "" ( set DC_ARCH=%DC_ARCH% --os=%OS_TARGET%) ELSE (for /f "usebackq delims=" %%i in (`%FPC_BIN%\fpc -iSO`) do set DC_ARCH=%DC_ARCH% --os=%%i)  
-   
-if not "%CPU_TARGET%" == "" ( set DC_ARCH=%DC_ARCH% --cpu=%CPU_TARGET% ) ELSE (for /f "usebackq delims=" %%i in (`%FPC_BIN%\fpc -iTP`) do set DC_ARCH=%DC_ARCH% --cpu=%%i)  
+:: Set path where FPC binaries are installed
+set FPC_BIN=C:\Ex-D\lazarus\fpc\2.6.2\bin\i386-Win32
+::  Primary config path - needed if you have installed lazarus with fpcup or have multiple installation
+set CONFIG_PATH=
 
+:: Checks
+if not exist "%LAZARUS_DIR%\lazbuild.exe" (echo === ERROR ===
+	                                       Echo Missing "%LAZARUS_DIR%\lazbuild.exe". Please edit "%~nx0" and set correct paths
+                                           goto :close_bad) 
+
+if not exist "%FPC_BIN%\strip.exe" (Echo echo === ERROR ===
+                                         Missing "%FPC_BIN%\strip.exe". Please edit "%~nx0" and set correct paths
+                                         goto :close_bad) 
+
+:: Building process
+:build
+if "%BASE_SRC%" == "" ( SET BASE_SRC=%CD%)
+if not "%OS_TARGET%" == "" ( set DC_ARCH=%DC_ARCH% --os=%OS_TARGET%) ELSE (for /f "usebackq delims=" %%i in (`%FPC_BIN%\fpc -iSO`) do set DC_ARCH=%DC_ARCH% --os=%%i)  
+if not "%CPU_TARGET%" == "" ( set DC_ARCH=%DC_ARCH% --cpu=%CPU_TARGET% ) ELSE (for /f "usebackq delims=" %%i in (`%FPC_BIN%\fpc -iTP`) do set DC_ARCH=%DC_ARCH% --cpu=%%i)  
 if not "%WIDGETSET_TARGET%" == "" (  set DC_ARCH=%DC_ARCH% --ws=%WIDGETSET_TARGET% )   
+if not "%CONFIG_PATH%" == "" ( set PCP=--pcp="%CONFIG_PATH%") else (set PCP=)
 
 set NONE=-l
 :: clean build files
-del /Q /S %BASE%\src\lib\*.*
-del /Q /S %BASE%\src\components\lib\*.*
-del /Q /S %BASE%\tools\ovoplayerctrl\lib\*.*
+del /Q /S %BASE_SRC%\src\lib\*.*
+del /Q /S %BASE_SRC%\src\components\lib\*.*
+del /Q /S %BASE_SRC%\tools\ovoplayerctrl\lib\*.*
 
 del /Q ovoplayer.exe
 del /Q ovoplayerctrl.exe
 ::
-copy /Y %BASE%\release.cfg  %BASE%\extrafpc.cfg
-%LAZARUS_DIR%\lazbuild -B -r %BASE%\src\ovoplayer.lpi %DC_ARCH%
-%LAZARUS_DIR%\lazbuild -B -r %BASE%\tools\ovoplayerctrl\ovoplayerctrl.lpi %DC_ARCH%
-%FPC_BIN%\strip --strip-all %BASE%\bin\win32\ovoplayer.exe
-%FPC_BIN%\strip --strip-all %BASE%\bin\win32\ovoplayerctrl.exe
+copy /Y %BASE_SRC%\release.cfg  %BASE_SRC%\extrafpc.cfg
+%LAZARUS_DIR%\lazbuild -B -r %PCP% --lazarusdir=%LAZARUS_DIR% %DC_ARCH% %BASE_SRC%\src\ovoplayer.lpi 
+if ERRORLEVEL 1 goto :close_bad
+%LAZARUS_DIR%\lazbuild -B -r %PCP% --lazarusdir=%LAZARUS_DIR% %DC_ARCH% %BASE_SRC%\tools\ovoplayerctrl\ovoplayerctrl.lpi
+if ERRORLEVEL 1 goto :close_bad
+%FPC_BIN%\strip --strip-all %BASE_SRC%\bin\win32\ovoplayer.exe
+if ERRORLEVEL 1 goto :close_bad
+%FPC_BIN%\strip --strip-all %BASE_SRC%\bin\win32\ovoplayerctrl.exe
+if ERRORLEVEL 1 goto :close_bad
 
-echo %none% > %BASE%\extrafpc.cfg
+goto :close
+:close_bad
+exit /b 1
+:close
+echo %none% > %BASE_SRC%\extrafpc.cfg
 ENDLOCAL

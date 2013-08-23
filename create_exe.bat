@@ -1,13 +1,21 @@
 @ECHO OFF
 setlocal
-::
+:: Set path to Innos Setup compiler
 set INNOCOMPILER="C:\Program Files (x86)\Inno Setup 5\iscc.exe"
-::
-if "%BASE%" == "" (SET BASE=%CD%)
-set PACKAGES_DIR=%BASE%\packages
 
-call %BASE%\buildwin.bat
+:: Checks
+if not exist %INNOCOMPILER% (echo === ERROR ===
+							 Echo Missing %INNOCOMPILER%. Please edit "%~nx0" and set correct paths
+                             goto :close) 
+
+::Compiling
+if "%BASE_SRC%" == "" (SET BASE_SRC=%CD%)
+set PACKAGES_DIR=%BASE_SRC%\packages
+
+call %BASE_SRC%\buildwin.bat
+IF ERRORLEVEL 1 goto close
 
 call %INNOCOMPILER%  %PACKAGES_DIR%\ovoplayer.iss
 
+:close
 endlocal
