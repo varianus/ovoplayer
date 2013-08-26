@@ -26,7 +26,7 @@ interface
 
 uses
   lclproc,Classes, SysUtils, ExtCtrls, decoupler, song, Basetypes, AudioEngine,
-  ffmpeg, lazdyn_portaudio, ctypes;
+  ffmpeg, UOS_portaudio, ctypes;
 
 type
 
@@ -521,4 +521,4 @@ initialization
   RegisterEngineClass(TAudioEngineFFMpeg, 1, false, true);
 
 
-end.
+end.

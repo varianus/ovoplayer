@@ -46,24 +46,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 // Engines under development
 // FFMPEG          - FFMpeg           - Broken
-// OPENSOURCELIB   - Varios           - Working with major issues
+// OPENSOURCELIB   - Varios           - Working with major issues, lighter alternative to UOS
 
 {$IFDEF LINUX}
   {$DEFINE NEEDCFGSUBDIR} // Need to add a sub-directory to configuration files directory
   {$DEFINE ASKMMKEYSMODE} // Ask for multimedia keys capture mode
   {$DEFINE MPRIS2} // MPRIS V2 Interface
-  {$IFDEF LCLGTK2}
-     {$DEFINE NOTIFYDBUS} // use DBus notification
-  {$ENDIF LCLGTK2}
+  {$DEFINE NOTIFYDBUS} // use DBus notification
 //
   {$DEFINE GSTREAMER} // GStreamer need glib
   {$DEFINE VLC} //
   {$DEFINE XINE} //
   {$DEFINE BASS} //
-
+  {$DEFINE UOS} //
 
   {.$DEFINE OPENSOURCELIB} //
-  {$DEFINE UOS} //
   {.$DEFINE FFMPEG}
 
 {$ENDIF LINUX}
@@ -75,13 +72,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   {$DEFINE XINE} //
   {$DEFINE BASS} //
   {$DEFINE UOS} //
-  {.$DEFINE FFMPEG}
+
   {.$DEFINE OPENSOURCELIB} //
+  {.$DEFINE FFMPEG} //
+
 {$ENDIF WINDOWS}
 
 {$IFDEF DARWIN}
   {$DEFINE VLC} //
   {$DEFINE BASS} //
+
   {.$DEFINE OPENSOURCELIB} //
   {.$DEFINE UOS} //
   {.$DEFINE FFMPEG}

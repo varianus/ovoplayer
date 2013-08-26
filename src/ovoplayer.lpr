@@ -26,16 +26,12 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   cthreads, {$ENDIF} {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms,
-  // Application forms and related
-  Udm,uMain, uAbout, ulicense,
-  uConfig, uOSD, uMiniPlayer, uSongInfo,
-  uCover,
-  customdrawndrawers, customdrawn_ovoplayer,
-  DefaultTranslator,
   // general functions
   AppConsts, GeneralFunc, decoupler, FilesSupport,
   CommonFunctions,
   // Core player objects
+  NullInterfacedObject,
+  CustomSong,
   PlayList, PlayListManager,
   ExtendedInfo, MediaLibrary,
   MultimediaKeys,  Config,
@@ -50,7 +46,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   {$IFDEF BASS} lazdynamic_bass, audioengine_bass,{$ENDIF}
   {$IFDEF DSHOW} mediadshow, audioengine_dshow,{$ENDIF}
   {$IFDEF MEDIAFOUNDATION} mediafoundation, audioengine_mf,{$ENDIF}
-  {$IFDEF OPENSOURCELIB} lazdyn_libsndfile, uos, lazdyn_mpg123, lazdyn_portaudio, audioengine_OpenLib,{$ENDIF}
+  {$IFDEF OPENSOURCELIB} uos_libsndfile, uos_mpg123, uos_portaudio, audioengine_OpenLib,{$ENDIF}
   {$IFDEF UOS} UOS, uos_libsndfile, uos_mpg123, uos_portaudio, audioengine_UOS,{$ENDIF}
   {$IFDEF FFMPEG} ffmpeg, audioengine_FFMPEG,{$ENDIF}
 
@@ -59,10 +55,21 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   {$IFDEF NOTIFYDBUS}notification,{$ENDIF}
 
   // ovotag
-  song, AudioTag, basetag, file_flac, file_mp3, file_wma,
-  tag_wma, tag_vorbis, tag_id3v2, file_ogg, file_monkey, tag_ape,
-  file_Wave,  tag_Dummy, file_Dummy,
-  id3v1genres, CustomSong, NullInterfacedObject;
+  song, AudioTag, basetag,
+  tag_vorbis, file_flac, file_ogg,
+  id3v1genres, tag_id3v2, file_mp3,
+  tag_wma,file_wma,
+  file_monkey, tag_ape,
+  tag_Dummy, file_Wave, file_Dummy,
+
+    // Application forms and related
+  Udm,uMain, uAbout, ulicense,
+  uConfig, uOSD, uMiniPlayer, uSongInfo,
+  uCover,
+  customdrawndrawers, customdrawn_ovoplayer,
+  DefaultTranslator, customdrawn;
+
+
 
 {$R *.res}
 begin
@@ -80,4 +87,4 @@ begin
       fMainForm.show;
       Application.Run;
    end;
-end.
+end.

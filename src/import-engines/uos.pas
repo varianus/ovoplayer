@@ -53,10 +53,6 @@ unit uos;
 interface
 
 uses
-  {$IF DEFINED(LCL) or DEFINED(Console)}
-     {$else}
-  fpg_base, fpg_main,
-    {$endif}
   Classes, ctypes, Math, SysUtils, uos_portaudio,
   uos_LibSndFile, uos_Mpg123;
 

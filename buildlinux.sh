@@ -13,11 +13,11 @@ if [ ! "$OS_TARGET" = "" ]; then
 fi
    
 if [ ! "$CPU_TARGET" = "" ]; then
- DC_ARCH="$DC_ARCH% --cpu=$CPU_TARGET"
+ DC_ARCH="$DC_ARCH --cpu=$CPU_TARGET"
 fi 
 
 if [ ! "$WIDGETSET_TARGET" = "" ]; then
- DC_ARCH="$DC_ARCH% --cpu=$WIDGETSET_TARGET"
+ DC_ARCH="$DC_ARCH --cpu=$WIDGETSET_TARGET"
 fi 
 
 NONE=-l

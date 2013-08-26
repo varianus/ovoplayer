@@ -25,8 +25,9 @@ unit AudioEngine_OpenLib;
 interface
 
 uses
-  Classes, SysUtils, ExtCtrls, decoupler, Process, Song, AudioEngine,
-  lazdyn_libsndfile, lazdyn_mpg123, lazdyn_portaudio;
+  Classes, SysUtils, ExtCtrls, decoupler, Process, Song,
+  AudioEngine, basetypes,
+  UOS_libsndfile, UOS_mpg123, UOS_portaudio;
 
 type
 
@@ -312,13 +313,6 @@ begin
   else
     begin
       CurrentSoundDecoder:= csdSndFile;
-
-      writeln('sfinfo.frames     ', sfinfo.frames);
-      writeln('sfinfo.samplerate ', sfinfo.samplerate);
-      writeln('sfinfo.channels   ', sfinfo.channels);
-      writeln('sfinfo.format     ', sfinfo.format);
-      writeln('sfinfo.sections   ', sfinfo.sections);
-      writeln('sfinfo.seekable   ', sfinfo.seekable);
       frate:= sfInfo.samplerate;
       pa_OutInfo.channelCount:= sfInfo.channels;
       sf_seek(StreamHandle, 0, SEEK_SET);

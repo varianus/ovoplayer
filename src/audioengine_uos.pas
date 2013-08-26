@@ -96,7 +96,7 @@ end;
 
 function TAudioEngineUOS.GetMaxVolume: integer;
 begin
-  Result:= 1;
+  Result:= trunc(UOSMAXVOLUME * (255 / UOSMAXVOLUME));
 end;
 
 function TAudioEngineUOS.GetSongPos: integer;

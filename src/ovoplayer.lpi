@@ -21,85 +21,12 @@
     </i18n>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
-      <RevisionNr Value="5"/>
+      <MajorVersionNr Value="1"/>
       <StringTable CompanyName="Marco Caselli" ProductVersion=""/>
     </VersionInfo>
-    <BuildModes Count="5">
-      <Item1 Name="NATIVE" Default="True"/>
-      <Item2 Name="GTK">
-        <MacroValues Count="1">
-          <Macro1 Name="LCLWidgetType" Value="gtk2"/>
-        </MacroValues>
-        <CompilerOptions>
-          <Version Value="11"/>
-          <PathDelim Value="\"/>
-          <Target>
-            <Filename Value="..\bin\$(TargetOS)\ovoplayer"/>
-          </Target>
-          <SearchPaths>
-            <IncludeFiles Value="$(ProjOutDir);platform\$(SrcOS)"/>
-            <OtherUnitFiles Value="modifiedATL;Import;ovotag;import-engines"/>
-            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
-          </SearchPaths>
-          <Linking>
-            <Debugging>
-              <DebugInfoType Value="dsDwarf2Set"/>
-              <UseExternalDbgSyms Value="True"/>
-            </Debugging>
-            <LinkSmart Value="True"/>
-            <Options>
-              <Win32>
-                <GraphicApplication Value="True"/>
-              </Win32>
-            </Options>
-          </Linking>
-          <Other>
-            <CompilerMessages>
-              <UseMsgFile Value="True"/>
-            </CompilerMessages>
-            <CompilerPath Value="$(CompPath)"/>
-          </Other>
-        </CompilerOptions>
-      </Item2>
-      <Item3 Name="QT">
-        <MacroValues Count="1">
-          <Macro2 Name="LCLWidgetType" Value="qt"/>
-        </MacroValues>
-        <CompilerOptions>
-          <Version Value="11"/>
-          <PathDelim Value="\"/>
-          <Target>
-            <Filename Value="bin\$(LCLWidgetType)\ovoplayer"/>
-          </Target>
-          <SearchPaths>
-            <IncludeFiles Value="$(ProjOutDir);platform\$(SrcOS)"/>
-            <OtherUnitFiles Value="modifiedATL;Import"/>
-            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
-          </SearchPaths>
-          <CodeGeneration>
-            <SmartLinkUnit Value="True"/>
-          </CodeGeneration>
-          <Linking>
-            <Debugging>
-              <DebugInfoType Value="dsDwarf2Set"/>
-              <UseExternalDbgSyms Value="True"/>
-            </Debugging>
-            <LinkSmart Value="True"/>
-            <Options>
-              <Win32>
-                <GraphicApplication Value="True"/>
-              </Win32>
-            </Options>
-          </Linking>
-          <Other>
-            <CompilerMessages>
-              <UseMsgFile Value="True"/>
-            </CompilerMessages>
-            <CompilerPath Value="$(CompPath)"/>
-          </Other>
-        </CompilerOptions>
-      </Item3>
-      <Item4 Name="Release">
+    <BuildModes Count="2">
+      <Item1 Name="Debug" Default="True"/>
+      <Item2 Name="Release">
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
@@ -108,23 +35,14 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir);platform\$(TargetOS)"/>
-            <OtherUnitFiles Value="import-engines;ovotag;components\uniqueinstance"/>
+            <OtherUnitFiles Value="import-engines;ovotag;components\uniqueinstance;platform\$(TargetOS)"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Conditionals Value="if TargetOS = 'darwin' then
    CustomOptions := '-dUseCThreads';
 
 if TargetOS = 'linux' then
-   CustomOptions := '-dUseCThreads -dUseStatusIcon';
-
-if LCLWidgetType = 'gtk2' then
-   TargetFile := 'bin/GTK/ovoplayer';
-
-if LCLWidgetType = 'qt' then
-   TargetFile  := 'bin/QT/ovoplayer';
-
-if LCLWidgetType = 'win32' then
-   TargetFile := 'bin/WIN32/ovoplayer';"/>
+   CustomOptions := '-dUseCThreads -dUseStatusIcon';"/>
           <BuildMacros>
             <Count Value="1"/>
             <Item1>
@@ -135,98 +53,28 @@ if LCLWidgetType = 'win32' then
             <SmartLinkUnit Value="True"/>
             <RelocatableUnit Value="True"/>
             <Optimizations>
-              <OptimizationLevel Value="2"/>
+              <OptimizationLevel Value="3"/>
             </Optimizations>
           </CodeGeneration>
           <Linking>
             <Debugging>
               <GenerateDebugInfo Value="False"/>
-              <DebugInfoType Value="dsDwarf2"/>
-              <UseLineInfoUnit Value="False"/>
-              <StripSymbols Value="True"/>
-            </Debugging>
-            <LinkSmart Value="True"/>
-            <Options>
-              <Win32>
-                <GraphicApplication Value="True"/>
-              </Win32>
-            </Options>
-          </Linking>
-          <Other>
-            <CompilerMessages>
-              <UseMsgFile Value="True"/>
-            </CompilerMessages>
-            <ConfigFile>
-              <CustomConfigFile Value="True"/>
-              <ConfigFilePath Value="..\extrafpc.cfg"/>
-            </ConfigFile>
-            <CompilerPath Value="$(CompPath)"/>
-          </Other>
-        </CompilerOptions>
-      </Item4>
-      <Item5 Name="Custom">
-        <MacroValues Count="1">
-          <Macro3 Name="LCLWidgetType" Value="customdrawn"/>
-        </MacroValues>
-        <CompilerOptions>
-          <Version Value="11"/>
-          <PathDelim Value="\"/>
-          <Target>
-            <Filename Value="..\bin\$(TargetOS)\ovoplayer"/>
-          </Target>
-          <SearchPaths>
-            <IncludeFiles Value="$(ProjOutDir);platform\$(TargetOS)"/>
-            <OtherUnitFiles Value="import-engines;ovotag;components\uniqueinstance"/>
-            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
-          </SearchPaths>
-          <Conditionals Value="if TargetOS = 'darwin' then
-   CustomOptions := '-dUseCThreads';
-
-if TargetOS = 'linux' then
-   CustomOptions := '-dUseCThreads -dUseStatusIcon';
-
-if LCLWidgetType = 'gtk2' then
-   TargetFile := 'bin/GTK/ovoplayer';
-
-if LCLWidgetType = 'qt' then
-   TargetFile  := 'bin/QT/ovoplayer';
-
-if LCLWidgetType = 'win32' then
-   TargetFile := 'bin/WIN32/ovoplayer';
-
-if LCLWidgetType = 'customdrawn' then
-   TargetFile := 'bin/cd/ovoplayer';"/>
-          <BuildMacros>
-            <Count Value="1"/>
-            <Item1>
-              <Identifier Value="Macro"/>
-            </Item1>
-          </BuildMacros>
-          <CodeGeneration>
-            <SmartLinkUnit Value="True"/>
-            <RelocatableUnit Value="True"/>
-            <Checks>
-              <IOChecks Value="True"/>
-              <OverflowChecks Value="True"/>
-            </Checks>
-            <Optimizations>
-              <OptimizationLevel Value="0"/>
-            </Optimizations>
-          </CodeGeneration>
-          <Linking>
-            <Debugging>
               <DebugInfoType Value="dsDwarf2Set"/>
-              <UseExternalDbgSyms Value="True"/>
             </Debugging>
             <LinkSmart Value="True"/>
             <Options>
-              <LinkerOptions Value="-Wl,-Bsymbolic-functions -Wl,-z,relro"/>
               <Win32>
                 <GraphicApplication Value="True"/>
               </Win32>
             </Options>
           </Linking>
           <Other>
+            <Verbosity>
+              <ShowNotes Value="False"/>
+              <ShowHints Value="False"/>
+              <ShowGenInfo Value="False"/>
+            </Verbosity>
+            <WriteFPCLogo Value="False"/>
             <CompilerMessages>
               <UseMsgFile Value="True"/>
             </CompilerMessages>
@@ -234,14 +82,18 @@ if LCLWidgetType = 'customdrawn' then
               <CustomConfigFile Value="True"/>
               <ConfigFilePath Value="..\extrafpc.cfg"/>
             </ConfigFile>
+            <CustomOptions Value="-vm5024"/>
             <CompilerPath Value="$(CompPath)"/>
+            <ExecuteBefore>
+              <Command Value="$(LazarusDir)\tools\svn2revisioninc$(ExeExt) ..\ ovorevision.inc --c=ovoRevision"/>
+            </ExecuteBefore>
           </Other>
         </CompilerOptions>
-      </Item5>
+      </Item2>
       <SharedMatrixOptions Count="3">
-        <Item1 ID="066772129436" Modes="GTK" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
-        <Item2 ID="410165404427" Modes="QT" Type="IDEMacro" MacroName="LCLWidgetType" Value="qt"/>
-        <Item3 ID="829386383577" Modes="Custom" Type="IDEMacro" MacroName="LCLWidgetType" Value="customdrawn"/>
+        <Item1 ID="066772129436" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
+        <Item2 ID="410165404427" Type="IDEMacro" MacroName="LCLWidgetType" Value="qt"/>
+        <Item3 ID="829386383577" Type="IDEMacro" MacroName="LCLWidgetType" Value="customdrawn"/>
       </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
@@ -254,20 +106,23 @@ if LCLWidgetType = 'customdrawn' then
         <FormatVersion Value="1"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="3">
+    <RequiredPackages Count="4">
       <Item1>
-        <PackageName Value="SQLDBLaz"/>
-        <MinVersion Major="1" Release="1" Valid="True"/>
+        <PackageName Value="customdrawn"/>
       </Item1>
       <Item2>
-        <PackageName Value="LCLBase"/>
+        <PackageName Value="SQLDBLaz"/>
         <MinVersion Major="1" Release="1" Valid="True"/>
       </Item2>
       <Item3>
-        <PackageName Value="LCL"/>
+        <PackageName Value="LCLBase"/>
+        <MinVersion Major="1" Release="1" Valid="True"/>
       </Item3>
+      <Item4>
+        <PackageName Value="LCL"/>
+      </Item4>
     </RequiredPackages>
-    <Units Count="64">
+    <Units Count="68">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -350,267 +205,287 @@ if LCLWidgetType = 'customdrawn' then
         <UnitName Value="Config"/>
       </Unit13>
       <Unit14>
-        <Filename Value="audiotag.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="AudioTag"/>
-      </Unit14>
-      <Unit15>
         <Filename Value="filessupport.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="FilesSupport"/>
-      </Unit15>
-      <Unit16>
+      </Unit14>
+      <Unit15>
         <Filename Value="uminiplayer.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fMiniPlayer"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uMiniPlayer"/>
-      </Unit16>
-      <Unit17>
+      </Unit15>
+      <Unit16>
         <Filename Value="uconfig.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fConfig"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uConfig"/>
-      </Unit17>
-      <Unit18>
-        <Filename Value="guibackend.lfm"/>
-        <IsPartOfProject Value="True"/>
-      </Unit18>
-      <Unit19>
+      </Unit16>
+      <Unit17>
         <Filename Value="decoupler.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="decoupler"/>
-      </Unit19>
-      <Unit20>
+      </Unit17>
+      <Unit18>
         <Filename Value="generalfunc.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="GeneralFunc"/>
-      </Unit20>
-      <Unit21>
+      </Unit18>
+      <Unit19>
         <Filename Value="ovoplayer.inc"/>
         <IsPartOfProject Value="True"/>
-      </Unit21>
-      <Unit22>
+      </Unit19>
+      <Unit20>
         <Filename Value="uabout.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fAbout"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uAbout"/>
-      </Unit22>
-      <Unit23>
-        <Filename Value="Import\xine.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="xine"/>
-      </Unit23>
-      <Unit24>
+      </Unit20>
+      <Unit21>
         <Filename Value="audioengine_vlc.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="audioengine_vlc"/>
-      </Unit24>
-      <Unit25>
-        <Filename Value="Import\lazdynamic_bass.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="lazdynamic_bass"/>
-      </Unit25>
-      <Unit26>
+      </Unit21>
+      <Unit22>
         <Filename Value="ovotag\commonfunctions.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="CommonFunctions"/>
-      </Unit26>
-      <Unit27>
+      </Unit22>
+      <Unit23>
         <Filename Value="ovotag\file_flac.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_flac"/>
-      </Unit27>
-      <Unit28>
+      </Unit23>
+      <Unit24>
         <Filename Value="ovotag\file_mp3.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_mp3"/>
-      </Unit28>
-      <Unit29>
+      </Unit24>
+      <Unit25>
         <Filename Value="ovotag\file_wma.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_wma"/>
-      </Unit29>
-      <Unit30>
+      </Unit25>
+      <Unit26>
         <Filename Value="ovotag\tag_id3v2.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_id3v2"/>
-      </Unit30>
-      <Unit31>
+      </Unit26>
+      <Unit27>
         <Filename Value="ovotag\tag_vorbis.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_vorbis"/>
-      </Unit31>
-      <Unit32>
+      </Unit27>
+      <Unit28>
         <Filename Value="ovotag\tag_wma.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_wma"/>
-      </Unit32>
-      <Unit33>
+      </Unit28>
+      <Unit29>
         <Filename Value="ovotag\file_ogg.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_ogg"/>
-      </Unit33>
-      <Unit34>
+      </Unit29>
+      <Unit30>
         <Filename Value="audioengine_dummy.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="audioengine_dummy"/>
-      </Unit34>
-      <Unit35>
+      </Unit30>
+      <Unit31>
         <Filename Value="version.inc"/>
         <IsPartOfProject Value="True"/>
-      </Unit35>
-      <Unit36>
+      </Unit31>
+      <Unit32>
         <Filename Value="ovotag\file_monkey.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_Monkey"/>
-      </Unit36>
-      <Unit37>
+      </Unit32>
+      <Unit33>
         <Filename Value="ovotag\tag_ape.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_APE"/>
-      </Unit37>
-      <Unit38>
+      </Unit33>
+      <Unit34>
         <Filename Value="ovotag\id3v1genres.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ID3v1Genres"/>
-      </Unit38>
-      <Unit39>
+      </Unit34>
+      <Unit35>
         <Filename Value="ovotag\basetag.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="basetag"/>
-      </Unit39>
-      <Unit40>
+      </Unit35>
+      <Unit36>
         <Filename Value="ovotag\song.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="song"/>
-      </Unit40>
-      <Unit41>
+      </Unit36>
+      <Unit37>
         <Filename Value="import-engines\PasLibVlcUnit.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="PasLibVlcUnit"/>
-      </Unit41>
-      <Unit42>
+      </Unit37>
+      <Unit38>
         <Filename Value="customdrawn_ovoplayer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="customdrawn_ovoplayer"/>
-      </Unit42>
-      <Unit43>
+      </Unit38>
+      <Unit39>
         <Filename Value="ovotag\file_dummy.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_Dummy"/>
-      </Unit43>
-      <Unit44>
+      </Unit39>
+      <Unit40>
         <Filename Value="ovotag\tag_dummy.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_Dummy"/>
-      </Unit44>
-      <Unit45>
+      </Unit40>
+      <Unit41>
         <Filename Value="audioengine_dshow.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="audioengine_DShow"/>
-      </Unit45>
-      <Unit46>
+      </Unit41>
+      <Unit42>
         <Filename Value="import-engines\mediafoundation.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="mediafoundation"/>
-      </Unit46>
-      <Unit47>
+      </Unit42>
+      <Unit43>
         <Filename Value="ucover.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fCover"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCover"/>
-      </Unit47>
-      <Unit48>
+      </Unit43>
+      <Unit44>
         <Filename Value="audioengine_openlib.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AudioEngine_OpenLib"/>
-      </Unit48>
-      <Unit49>
+      </Unit44>
+      <Unit45>
         <Filename Value="import-engines\mediadshow.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="mediadshow"/>
-      </Unit49>
-      <Unit50>
+      </Unit45>
+      <Unit46>
         <Filename Value="import-engines\uos.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uos"/>
-      </Unit50>
-      <Unit51>
+      </Unit46>
+      <Unit47>
         <Filename Value="audioengine_uos.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AudioEngine_UOS"/>
-      </Unit51>
-      <Unit52>
+      </Unit47>
+      <Unit48>
         <Filename Value="import-engines\uos_libsndfile.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uos_libsndfile"/>
-      </Unit52>
-      <Unit53>
+      </Unit48>
+      <Unit49>
         <Filename Value="import-engines\uos_mpg123.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uos_mpg123"/>
-      </Unit53>
-      <Unit54>
+      </Unit49>
+      <Unit50>
         <Filename Value="import-engines\uos_portaudio.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="uos_portaudio"/>
-      </Unit54>
-      <Unit55>
+      </Unit50>
+      <Unit51>
         <Filename Value="platform\linux\mpris2.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="mpris2"/>
-      </Unit55>
-      <Unit56>
+      </Unit51>
+      <Unit52>
         <Filename Value="coreinterfaces.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="coreinterfaces"/>
-      </Unit56>
-      <Unit57>
+      </Unit52>
+      <Unit53>
         <Filename Value="basetypes.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="BaseTypes"/>
-      </Unit57>
-      <Unit58>
+      </Unit53>
+      <Unit54>
         <Filename Value="platform\linux\dbusextension.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DbusExtension"/>
-      </Unit58>
-      <Unit59>
+      </Unit54>
+      <Unit55>
         <Filename Value="platform\linux\notification.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="notification"/>
-      </Unit59>
-      <Unit60>
+      </Unit55>
+      <Unit56>
         <Filename Value="udm.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="DM"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="uDM"/>
-      </Unit60>
-      <Unit61>
+      </Unit56>
+      <Unit57>
         <Filename Value="extendedinfo.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ExtendedInfo"/>
-      </Unit61>
-      <Unit62>
-        <Filename Value="ffmpeg.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="ffmpeg"/>
-      </Unit62>
-      <Unit63>
+      </Unit57>
+      <Unit58>
         <Filename Value="audioengine_ffmpeg.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AudioEngine_FFMpeg"/>
+      </Unit58>
+      <Unit59>
+        <Filename Value="import-engines\ffmpeg.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ffmpeg"/>
+      </Unit59>
+      <Unit60>
+        <Filename Value="audioengine_mf.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="audioengine_mf"/>
+      </Unit60>
+      <Unit61>
+        <Filename Value="nullinterfacedobject.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="NullInterfacedObject"/>
+      </Unit61>
+      <Unit62>
+        <Filename Value="ovotag\audiotag.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="AudioTag"/>
+      </Unit62>
+      <Unit63>
+        <Filename Value="import-engines\lazdynamic_bass.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="lazdynamic_bass"/>
       </Unit63>
+      <Unit64>
+        <Filename Value="audioengine_gstreamer.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="audioengine_gstreamer"/>
+      </Unit64>
+      <Unit65>
+        <Filename Value="audioengine_xine.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="audioengine_xine"/>
+      </Unit65>
+      <Unit66>
+        <Filename Value="import-engines\ctypes.inc"/>
+        <IsPartOfProject Value="True"/>
+      </Unit66>
+      <Unit67>
+        <Filename Value="import-engines\gstreamer.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="gstreamer"/>
+      </Unit67>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -620,7 +495,7 @@ if LCLWidgetType = 'customdrawn' then
       <Filename Value="..\bin\$(TargetOS)\ovoplayer"/>
     </Target>
     <SearchPaths>
-      <IncludeFiles Value="$(ProjOutDir);platform\$(TargetOS)"/>
+      <IncludeFiles Value="$(ProjOutDir);platform\$(TargetOS);import-engines"/>
       <OtherUnitFiles Value="import-engines;ovotag;components\uniqueinstance;platform\$(TargetOS)"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
@@ -628,22 +503,18 @@ if LCLWidgetType = 'customdrawn' then
    CustomOptions := '-dUseCThreads';
 
 if TargetOS = 'linux' then
-   CustomOptions := '-dUseCThreads -dUseStatusIcon';
-
-if LCLWidgetType = 'gtk2' then
-   TargetFile := 'bin/GTK/ovoplayer';
-
-if LCLWidgetType = 'qt' then
-   TargetFile  := 'bin/QT/ovoplayer';
-
-if LCLWidgetType = 'win32' then
-   TargetFile := 'bin/WIN32/ovoplayer';"/>
+   CustomOptions := '-dUseCThreads -dUseStatusIcon';"/>
     <BuildMacros>
       <Count Value="1"/>
       <Item1>
         <Identifier Value="Macro"/>
       </Item1>
     </BuildMacros>
+    <Parsing>
+      <SyntaxOptions>
+        <IncludeAssertionCode Value="True"/>
+      </SyntaxOptions>
+    </Parsing>
     <CodeGeneration>
       <Checks>
         <IOChecks Value="True"/>
@@ -658,7 +529,6 @@ if LCLWidgetType = 'win32' then
       <Debugging>
         <DebugInfoType Value="dsDwarf2Set"/>
       </Debugging>
-      <LinkSmart Value="True"/>
       <Options>
         <Win32>
           <GraphicApplication Value="True"/>
@@ -670,14 +540,10 @@ if LCLWidgetType = 'win32' then
         <UseMsgFile Value="True"/>
       </CompilerMessages>
       <ConfigFile>
-        <CustomConfigFile Value="True"/>
         <ConfigFilePath Value="..\extrafpc.cfg"/>
       </ConfigFile>
-      <CustomOptions Value="-vm5024"/>
+      <CustomOptions Value="-vm5024 -Xm"/>
       <CompilerPath Value="$(CompPath)"/>
-      <ExecuteBefore>
-        <Command Value="$(LazarusDir)\tools\svn2revisioninc$(ExeExt) ..\ ovorevision.inc --c=ovoRevision"/>
-      </ExecuteBefore>
     </Other>
   </CompilerOptions>
   <Debugging>
@@ -697,4 +563,4 @@ if LCLWidgetType = 'win32' then
       </Item4>
     </Exceptions>
   </Debugging>
-</CONFIG>
+</CONFIG>
