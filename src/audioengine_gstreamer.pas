@@ -44,8 +44,7 @@ type
     function GetSongPos: integer; override;
     procedure SetSongPos(const AValue: integer); override;
     function GetState: TEngineState; override;
-    procedure DoPlay(Song: TSong; offset:Integer); override;
-    procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
+    Function DoPlay(Song: TSong; offset:Integer):boolean;
     procedure SetMuted(const AValue: boolean);  override;
     Function GetMuted: boolean; override;
   public
@@ -192,19 +191,28 @@ begin
   xx:= gst_element_set_state((playbin), GST_STATE_PAUSED);
 end;
 
-procedure TAudioEngineGStreamer.DoPlay(Song: TSong; offset:Integer);
+Function TAudioEngineGStreamer.DoPlay(Song: TSong; offset:Integer):boolean;
 var
  tmp:string;
+ hr : integer;
 begin
-  gst_element_set_state(playbin, GST_STATE_READY);
+  result:= false;
+
+  hr := gst_element_set_state(playbin, GST_STATE_READY);
+  if hr = 0 then
+    exit;
+
   tmp:=  g_filename_to_uri(pchar(Song.FullName),nil,nil);
   g_object_set(G_OBJECT(playbin), 'uri', pchar(tmp), nil);
-  gst_element_set_state(playbin, GST_STATE_PLAYING);
+
+  hr := gst_element_set_state(playbin, GST_STATE_PLAYING);
+  if hr = 0 then
+    exit;
 
   if offset <> 0 then
     PostCommand(ecSeek);
 
-
+  result := true;
 
 end;
 
@@ -231,15 +239,6 @@ end;
 class function TAudioEngineGStreamer.GetEngineName: String;
 begin
   Result:='GStreamer';
-end;
-
-procedure TAudioEngineGStreamer.ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0);
-begin
-  case Command of
-    ecNext: if Assigned(OnSongEnd) then
-        OnSongEnd(Self);
-    ecSeek: Seek(Param, True);
-    end;
 end;
 
 class function TAudioEngineGStreamer.IsAvalaible(ConfigParam: TStrings): boolean;

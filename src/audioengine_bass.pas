@@ -48,10 +48,9 @@ type
     function GetSongPos: integer; override;
     procedure SetSongPos(const AValue: integer); override;
     function GetState: TEngineState; override;
-    procedure DoPlay(Song: TSong; offset:Integer); override;
+    Function DoPlay(Song: TSong; offset:Integer):boolean; override;
     procedure SetMuted(const AValue: boolean);  override;
     Function GetMuted: boolean; override;
-    procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
   public
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
     class Function GetEngineName: String; override;
@@ -201,11 +200,12 @@ begin
   BASS_ChannelPause(Channel);
 end;
 
-procedure TAudioEngineBASS.DoPlay(Song: TSong; offset:Integer);
+Function TAudioEngineBASS.DoPlay(Song: TSong; offset:Integer):boolean;
 var
   Flags: DWORD;
 begin
   Flags := 0;
+  result:=false;
   if Channel <> 0 then
      begin
        BASS_ChannelStop(Channel);
@@ -223,10 +223,12 @@ begin
 
   if not Paused then
     begin
-      BASS_ChannelPlay(Channel, False);
+      if not BASS_ChannelPlay(Channel, False) then
+         exit;
       if offset <> 0 then
         Seek(offset, true);
     end;
+  result:= true;
 end;
 
 procedure TAudioEngineBASS.SetMuted(const AValue: boolean);
@@ -250,17 +252,6 @@ end;
 function TAudioEngineBASS.GetMuted: boolean;
 begin
   Result:=fMuted;
-end;
-
-procedure TAudioEngineBASS.ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0);
-begin
-  case Command of
-    ecNext: if Assigned(OnSongEnd) then
-        OnSongEnd(Self);
-
-    ecSeek: Seek(Param, True);
-
-    end;
 end;
 
 class function TAudioEngineBASS.IsAvalaible(ConfigParam: TStrings): boolean;

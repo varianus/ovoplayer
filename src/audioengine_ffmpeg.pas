@@ -61,10 +61,9 @@ type
     function GetSongPos: integer; override;
     procedure SetSongPos(const AValue: integer); override;
     function GetState: TEngineState; override;
-    procedure DoPlay(Song: TSong; offset:Integer); override;
+    Function DoPlay(Song: TSong; offset:Integer):boolean;
     procedure SetMuted(const AValue: boolean);  override;
     Function GetMuted: boolean; override;
-    procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
   public
     class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
@@ -348,7 +347,7 @@ begin
 
 end;
 
-procedure TAudioEngineFFMpeg.DoPlay(Song: TSong; offset:Integer);
+Function TAudioEngineFFMpeg.DoPlay(Song: TSong; offset:Integer):boolean;
 Var
   savedVolume: Integer;
   err : integer;
@@ -358,6 +357,7 @@ Var
   p: pAnsichar;
   Packet: TAVPacket;
 begin
+  result:= false;
   // create new media
   if Not FileExists(Song.FullName) then
      exit;
@@ -372,8 +372,14 @@ begin
 
   fAVFormatContext :=nil;
   err := avformat_open_input(@fAVFormatContext, pchar(Song.FullName), nil, nil);
+  if err < 0 then
+    exit;
+
  // av_dump_format(fAVFormatContext, 0, pchar(Song.FullName), 0);
   err := avformat_find_stream_info(fAVFormatContext, nil);
+  if err < 0 then
+    exit;
+
   Sindex:=av_find_best_stream(fAVFormatContext,
                      AVMEDIA_TYPE_AUDIO,
                      -1,
@@ -384,6 +390,8 @@ begin
   codecContext := avcodec_alloc_context3(fCodec);
 
   err := avcodec_open2(codecContext, fcodec, nil);
+  if err < 0 then
+    exit;
 
 // Now seek back to the beginning of the stream
 //  av_seek_frame(fAVFormatContext, Sindex, 0, AVSEEK_FLAG_ANY);
@@ -402,6 +410,7 @@ begin
   savedVolume := 100;
   if offset <> 0 then
     Seek(offset, true);
+  Result := true;
 end;
 
 procedure TAudioEngineFFMpeg.SetMuted(const AValue: boolean);
@@ -430,17 +439,6 @@ end;
 class function TAudioEngineFFMpeg.GetEngineName: String;
 begin
   Result:='FFMPEG';
-end;
-
-procedure TAudioEngineFFMpeg.ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0);
-begin
-  case Command of
-    ecNext: if Assigned(OnSongEnd) then
-        OnSongEnd(Self);
-
-    ecSeek: Seek(Param, True);
-
-    end;
 end;
 
 class function TAudioEngineFFMpeg.IsAvalaible(ConfigParam: TStrings): boolean;

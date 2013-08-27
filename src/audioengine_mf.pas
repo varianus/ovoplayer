@@ -62,10 +62,9 @@ type
     function GetSongPos: integer; override;
     procedure SetSongPos(const AValue: integer); override;
     function GetState: TEngineState; override;
-    procedure DoPlay(Song: TSong; offset: integer); override;
+    Function DoPlay(Song: TSong; offset:Integer):boolean; override;
     procedure SetMuted(const AValue: boolean); override;
     function GetMuted: boolean; override;
-    procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
   public
     class function IsAvalaible(ConfigParam: TStrings): boolean; override;
     class function GetEngineName: string; override;
@@ -261,7 +260,7 @@ begin
   pSession.Pause;
 end;
 
-procedure TAudioEngineMediaFoundation.DoPlay(Song: TSong; offset: integer);
+Function TAudioEngineMediaFoundation.DoPlay(Song: TSong; offset:Integer):boolean;
 var
   Hr: HRESULT;
   ObjectType: MF_Object_type;
@@ -280,22 +279,49 @@ var
   tmp: IUnknown;
 begin
 
+  result := false;
   Activate;
 
   hr := MFCreateSourceResolver(pResolver);
+  try
+  if not Succeeded(Hr) then
+    exit;
+
   hr := MFCreateTopology(pTop);
+  if not Succeeded(Hr) then
+    exit;
+
   hr := MFCreateAudioRendererActivate(pactivate);
+  if not Succeeded(Hr) then
+    exit;
+
   hr := MFCreateTopologyNode(MF_TOPOLOGY_SOURCESTREAM_NODE, srcNode);
+    if not Succeeded(Hr) then
+    exit;
+
   hr := MFCreateTopologyNode(MF_TOPOLOGY_OUTPUT_NODE, dstNode);
+    if not Succeeded(Hr) then
+    exit;
 
   hr := pResolver.CreateObjectFromURL(PWideChar(WideString(song.FullName)),
         MF_RESOLUTION_MEDIASOURCE or MF_RESOLUTION_CONTENT_DOES_NOT_HAVE_TO_MATCH_EXTENSION_OR_MIME_TYPE,
     nil, ObjectType, Source);
 
+  if not Succeeded(Hr) then
+      exit;
+
   hr := Source.QueryInterface(IID_IMFMediaSource, pSource);
+  if not Succeeded(Hr) then
+    exit;
+
   hr := pSource.CreatePresentationDescriptor(pPD);
+  if not Succeeded(Hr) then
+    exit;
 
   hr := ppd.GetStreamDescriptorByIndex(0, fSelected, sd);
+  if not Succeeded(Hr) then
+    exit;
+
 {
           if (FAILED(pd->GetStreamDescriptorByIndex(0, &selected, &sd))) return NULL;
           if (FAILED(sd->GetMediaTypeHandler(&typeHandler))) return NULL;
@@ -303,23 +329,59 @@ begin
           if (majorType != MFMediaType_Audio) return NULL;               }
 
   hr := srcNode.SetUnknown(MF_TOPONODE_SOURCE, psource);
+  if not Succeeded(Hr) then
+    exit;
+
   hr := srcNode.SetUnknown(MF_TOPONODE_PRESENTATION_DESCRIPTOR, ppd);
+  if not Succeeded(Hr) then
+    exit;
+
   hr := srcNode.SetUnknown(MF_TOPONODE_STREAM_DESCRIPTOR, sd);
+  if not Succeeded(Hr) then
+    exit;
 
   hr := ptop.AddNode(srcNode);
+  if not Succeeded(Hr) then
+    exit;
+
   hr := dstNode.SetObject(pactivate);
+  if not Succeeded(Hr) then
+    exit;
+
   hr := dstNode.SetUINT32(MF_TOPONODE_STREAMID, 0);
+  if not Succeeded(Hr) then
+    exit;
+
   hr := dstNode.SetUINT32(MF_TOPONODE_NOSHUTDOWN_ON_REMOVE, longword(True));
+  if not Succeeded(Hr) then
+    exit;
+
   hr := ptop.AddNode(dstNode);
+  if not Succeeded(Hr) then
+    exit;
+
   hr := srcNode.ConnectOutput(0, dstNode, 0);
+  if not Succeeded(Hr) then
+    exit;
+
   hr := psession.SetTopology(0, ptop);
+  if not Succeeded(Hr) then
+    exit;
 
   varStart.vt := 0;
   varStart.hVal.QuadPart := 0;
-  pSession.Start(GUID_NULL, varStart);
+  hr:= pSession.Start(GUID_NULL, varStart);
+  if not Succeeded(Hr) then
+    exit;
 
   hr := pSession.GetClock(xClock);
+  if not Succeeded(Hr) then
+    exit;
+
   hr := xClock.QueryInterface(IID_IMFPresentationClock, pClock);
+  if not Succeeded(Hr) then
+    exit;
+
   Seek(offset, True);
 //  hr := MFGetService(pSession, MR_POLICY_VOLUME_SERVICE, IID_IMFSimpleAudioVolume, tmp);
 //  pVolume := tmp as IMFSimpleAudioVolume;
@@ -328,7 +390,20 @@ begin
   EventHandler.TheEngine := self;
 
   hr := pSession.BeginGetEvent(EventHandler, nil);
-
+  if not Succeeded(Hr) then
+    exit;
+  result:=true;
+  finally
+    if not Succeeded(Hr) then
+      begin
+        EventHandler := nil;
+        xClock := nil;
+        ptop := nil;
+        pactivate := nil;
+        pSession := nil;
+        pSource := nil;
+      end;
+  end;
 
 end;
 
@@ -342,17 +417,6 @@ var
   b: bool;
 begin
   pVolume.GetMute(b);
-end;
-
-procedure TAudioEngineMediaFoundation.ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0);
-begin
-  case Command of
-    ecNext: if Assigned(OnSongEnd) then
-        OnSongEnd(Self);
-
-    ecSeek: Seek(Param, True);
-
-    end;
 end;
 
 class function TAudioEngineMediaFoundation.IsAvalaible(ConfigParam: TStrings): boolean;

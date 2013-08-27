@@ -55,11 +55,10 @@ type
     function GetMaxVolume: integer; override;
     function GetSongPos: integer; override;
     procedure SetSongPos(const AValue: integer); override;
-    procedure DoPlay(Song: TSong; offset:Integer); override;
+    Function DoPlay(Song: TSong; offset:Integer):boolean;override;
     function GetState: TEngineState; override;
     procedure SetMuted(const AValue: boolean);  override;
     Function GetMuted: boolean; override;
-    procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
     // see: mplayer -input cmdlist and http://www.mplayerhq.hu/DOCS/tech/slave.txt
 
   public
@@ -229,7 +228,7 @@ begin
   fPlayerProcess.Terminate(0);
 end;
 
-procedure TAudioEngineMPlayer.DoPlay(Song: TSong; offset:Integer);
+Function TAudioEngineMPlayer.DoPlay(Song: TSong; offset:Integer):boolean;
 var
   Params: string;
 begin
@@ -249,8 +248,7 @@ begin
   Seek(offset, true);
   fTimer.Enabled:=true;
 
-  if Assigned(OnSongStart) then
-    OnSongStart(self);
+  Result := fPlayerProcess.Running;
 
 end;
 procedure TAudioEngineMPlayer.Activate;
@@ -318,18 +316,6 @@ end;
 class function TAudioEngineMPlayer.GetEngineName: String;
 begin
   Result:='MPlayer';
-end;
-
-procedure TAudioEngineMPlayer.ReceivedCommand(Sender: TObject;
-  Command: TEngineCommand; Param: integer);
-begin
-    case Command of
-    ecNext: if Assigned(OnSongEnd) then
-        OnSongEnd(Self);
-
-    ecSeek: Seek(Param, True);
-
-    end;
 end;
 
 class function TAudioEngineMPlayer.IsAvalaible(ConfigParam: TStrings): boolean;

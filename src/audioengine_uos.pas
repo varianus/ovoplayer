@@ -50,10 +50,9 @@ type
     function GetSongPos: integer; override;
     procedure SetSongPos(const AValue: integer); override;
     function GetState: TEngineState; override;
-    procedure DoPlay(Song: TSong; offset:Integer); override;
+    Function DoPlay(Song: TSong; offset:Integer):boolean;
     procedure SetMuted(const AValue: boolean);  override;
     Function GetMuted: boolean; override;
-    procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
     procedure EndSong;
   public
     class Function GetEngineName: String; override;
@@ -174,9 +173,13 @@ begin
 
 end;
 
-procedure TAudioEngineUOS.DoPlay(Song: TSong; offset:Integer);
+Function TAudioEngineUOS.DoPlay(Song: TSong; offset:Integer):boolean;
+var
+  hr: hresult;
 begin
   // create new media
+  Result := false;
+
   if Not FileExists(Song.FullName) then
      exit;
 
@@ -192,16 +195,24 @@ begin
 
 
   fStreamIndex:= UOS_Player.AddFromFile(Song.FullName, -1, -1);
+  if fStreamIndex < 0 then
+     exit;
+
   UOS_Player.EndProc:=@EndSong;
 
   fDSPVol := UOS_Player.AddDSPVolumeIn(fStreamIndex, 1, 1);
   UOS_Player.SetDSPVolumeIn(fStreamIndex,fDSPVol,fVolume,fVolume, true);
 
-  UOS_Player.Play;
+  hr := UOS_Player.Play;
+  if hr < 0 then
+     exit;
+
   fState:= ENGINE_PLAY;
 
   if offset <> 0 then
     Seek(offset, true);
+
+  Result:= True;
 end;
 
 procedure TAudioEngineUOS.SetMuted(const AValue: boolean);
@@ -230,17 +241,6 @@ end;
 class function TAudioEngineUOS.GetEngineName: String;
 begin
   Result:='UnitedOpenlibSound';
-end;
-
-procedure TAudioEngineUOS.ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0);
-begin
-  case Command of
-    ecNext: if Assigned(OnSongEnd) then
-        OnSongEnd(Self);
-
-    ecSeek: Seek(Param, True);
-
-    end;
 end;
 
 procedure TAudioEngineUOS.EndSong;

@@ -45,10 +45,9 @@ type
     function GetSongPos: integer; override;
     procedure SetSongPos(const AValue: integer); override;
     function GetState: TEngineState; override;
-    procedure DoPlay(Song: TSong; offset:Integer); override;
+    Function DoPlay(Song: TSong; offset:Integer):boolean;  override;
     procedure SetMuted(const AValue: boolean);  override;
     Function GetMuted: boolean; override;
-    procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
   public
     class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
@@ -229,40 +228,54 @@ begin
 
 end;
 
-procedure TAudioEngineVLC.DoPlay(Song: TSong; offset:Integer);
+Function TAudioEngineVLC.DoPlay(Song: TSong; offset:Integer):boolean;
 Var
   savedVolume: Integer;
+  hr: hResult;
 begin
   // create new media
+  Result := false;
   if FileExists(Song.FullName) then
     begin
-    p_md := libvlc_media_new_path(p_li, PAnsiChar(System.UTF8Encode(Song.FullName)));
+      p_md := libvlc_media_new_path(p_li, PAnsiChar(System.UTF8Encode(Song.FullName)));
     end
   else
     begin
-    p_md := libvlc_media_new_location(p_li, PAnsiChar(System.UTF8Encode(Song.FullName)));
+      p_md := libvlc_media_new_location(p_li, PAnsiChar(System.UTF8Encode(Song.FullName)));
     end;
-  // assign media to player
-  libvlc_media_player_set_media(p_mi, p_md);
 
-  // play
-  savedVolume := libvlc_audio_get_volume(p_mi);
-  libvlc_audio_set_mute(p_mi, ord(true));
+  try
+    if not Assigned(p_md) then
+      exit;
 
-  libvlc_media_player_play(p_mi);
+    // assign media to player
+    libvlc_media_player_set_media(p_mi, p_md);
+
+    // play
+    savedVolume := libvlc_audio_get_volume(p_mi);
+    libvlc_audio_set_mute(p_mi, ord(true));
+
+    hr := libvlc_media_player_play(p_mi);
+    if hr < 0 then
+       exit;
+
     if offset <> 0 then
-     Seek(offset, true);
+       Seek(offset, true);
 
-  libvlc_audio_set_mute(p_mi, ord(false));
-  libvlc_audio_set_volume(p_mi, savedVolume);
+    libvlc_audio_set_mute(p_mi, ord(false));
+    libvlc_audio_set_volume(p_mi, savedVolume);
+    result:= true;
+
+  finally
+    // release media
+    if (p_md <> nil) then
+      begin
+        libvlc_media_release(p_md);
+        p_md := nil;
+      end;
+  end;
 
 
-  // release media
-  if (p_md <> nil) then
-    begin
-    libvlc_media_release(p_md);
-    p_md := nil;
-    end;
 end;
 
 procedure TAudioEngineVLC.SetMuted(const AValue: boolean);
@@ -278,17 +291,6 @@ end;
 class function TAudioEngineVLC.GetEngineName: String;
 begin
   Result:='VLC';
-end;
-
-procedure TAudioEngineVLC.ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0);
-begin
-  case Command of
-    ecNext: if Assigned(OnSongEnd) then
-        OnSongEnd(Self);
-
-    ecSeek: Seek(Param, True);
-
-    end;
 end;
 
 class function TAudioEngineVLC.IsAvalaible(ConfigParam: TStrings): boolean;

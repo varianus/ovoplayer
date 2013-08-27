@@ -46,10 +46,9 @@ type
     function GetSongPos: integer; override;
     procedure SetSongPos(const AValue: integer); override;
     function GetState: TEngineState; override;
-    procedure DoPlay(Song: TSong; offset:Integer); override;
+    Function DoPlay(Song: TSong; offset:Integer):boolean; override;
     procedure SetMuted(const AValue: boolean);  override;
     Function GetMuted: boolean; override;
-    procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
   public
     class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
@@ -221,18 +220,24 @@ begin
 
 end;
 
-procedure TAudioEngineXINE.DoPlay(Song: TSong; offset:Integer);
+Function TAudioEngineXINE.DoPlay(Song: TSong; offset:Integer):boolean;
+var
+  hr: HRESULT;
 begin
+  result := false;
   // create new media
   if FileExists(Song.FullName) then
     begin
-       xine_open(XINEStream, PChar(Song.FullName));
+       hr:= xine_open(XINEStream, PChar(Song.FullName));
+       if hr = 0 then
+         exit;
     end;
   // play
-   xine_play(XINEStream,0,0);
+  hr:= xine_play(XINEStream,0,0);
+  if hr = 0 then
+    exit;
 
-  if Assigned(OnSongStart) then
-    OnSongStart(self);
+  Result:= true;
 
 end;
 
@@ -250,17 +255,6 @@ end;
 class function TAudioEngineXINE.GetEngineName: String;
 begin
   Result:='Xine';
-end;
-
-procedure TAudioEngineXINE.ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0);
-begin
-  case Command of
-    ecNext: if Assigned(OnSongEnd) then
-        OnSongEnd(Self);
-
-    ecSeek: Seek(Param, True);
-
-    end;
 end;
 
 class function TAudioEngineXINE.IsAvalaible(ConfigParam: TStrings): boolean;

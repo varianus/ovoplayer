@@ -56,8 +56,8 @@ type
     procedure SetPaused(const AValue: boolean);
     procedure SetSongPos(const AValue: integer); virtual; abstract;
     function GetState: TEngineState; virtual; abstract;
-    procedure DoPlay(Song: TSong; offset:Integer); virtual; abstract;
-    procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); virtual; abstract;
+    Function DoPlay(Song: TSong; offset:Integer):boolean; virtual; abstract;
+    procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); virtual;
     procedure SetMuted(const AValue: boolean); virtual; abstract;
     Function GetMuted: boolean; virtual; abstract;
   public
@@ -192,6 +192,18 @@ begin
 
 end;
 
+procedure TAudioEngine.ReceivedCommand(Sender: TObject;
+  Command: TEngineCommand; Param: integer);
+begin
+  case Command of
+    ecNext: if Assigned(fOnSongEnd) then
+        fOnSongEnd(Self);
+
+    ecSeek: Seek(Param, True);
+
+    end;
+end;
+
 constructor TAudioEngine.Create;
 begin
   inherited Create;
@@ -219,9 +231,15 @@ begin
        exit;
      end;
 
-  DoPlay(song, offset);
-  if Assigned(FOnSongStart) then
-    FOnSongStart(self);
+  if DoPlay(song, offset) then
+     begin
+       if Assigned(FOnSongStart) then
+         FOnSongStart(self);
+     end
+  else
+    begin
+      PostCommand(ecNext);
+    end;
 end;
 
 initialization

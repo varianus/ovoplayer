@@ -49,10 +49,9 @@ type
     function GetSongPos: integer; override;
     procedure SetSongPos(const AValue: integer); override;
     function GetState: TEngineState; override;
-    procedure DoPlay(Song: TSong; offset:Integer); override;
+    Function DoPlay(Song: TSong; offset:Integer):boolean; override;
     procedure SetMuted(const AValue: boolean);  override;
     Function GetMuted: boolean; override;
-    procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
   public
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
     class Function GetEngineName: String; override;
@@ -259,11 +258,21 @@ begin
   MediaControl.Pause;
 end;
 
-procedure TAudioEngineDShow.DoPlay(Song: TSong; offset:Integer);
+Function TAudioEngineDShow.DoPlay(Song: TSong; offset:Integer):boolean;
+var
+  hr: HResult;
 begin
   Activate;
-  MediaControl.RenderFile( PWideChar( WideString( Song.FullName) ) );
-  MediaControl.Run;
+  result := false;
+
+  hr:= MediaControl.RenderFile( PWideChar( WideString( Song.FullName) ) );
+  if not Succeeded(HR) then
+    exit;
+
+  hr:= MediaControl.Run;
+  if not Succeeded(HR) then
+    exit;
+
   Seek(offset, True);
 end;
 
@@ -288,17 +297,6 @@ end;
 function TAudioEngineDShow.GetMuted: boolean;
 begin
   Result:=fMuted;
-end;
-
-procedure TAudioEngineDShow.ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0);
-begin
-  case Command of
-    ecNext: if Assigned(OnSongEnd) then
-        OnSongEnd(Self);
-
-    ecSeek: Seek(Param, True);
-
-    end;
 end;
 
 class function TAudioEngineDShow.IsAvalaible(ConfigParam: TStrings): boolean;

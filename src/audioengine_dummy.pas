@@ -40,10 +40,9 @@ type
     function GetSongPos: integer; override;
     procedure SetSongPos(const AValue: integer); override;
     function GetState: TEngineState; override;
-    procedure DoPlay(Song: TSong; offset:Integer); override;
+    Function DoPlay(Song: TSong; offset:Integer):boolean; override;
     procedure SetMuted(const AValue: boolean);  override;
     Function GetMuted: boolean; override;
-    procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
   public
     class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
@@ -117,8 +116,9 @@ begin
 
 end;
 
-procedure TAudioEnginedummy.DoPlay(Song: TSong; offset:Integer);
+Function TAudioEnginedummy.DoPlay(Song: TSong; offset:Integer):boolean;
 begin
+  Result := true;
 end;
 
 procedure TAudioEnginedummy.SetMuted(const AValue: boolean);
@@ -133,14 +133,6 @@ end;
 class function TAudioEnginedummy.GetEngineName: String;
 begin
   Result:='dummy';
-end;
-
-procedure TAudioEnginedummy.ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0);
-begin
-  case Command of
-    ecNext: if Assigned(OnSongEnd) then
-        OnSongEnd(Self);
-    end;
 end;
 
 class function TAudioEnginedummy.IsAvalaible(ConfigParam: TStrings): boolean;

@@ -64,7 +64,6 @@ type
     procedure DoPlay(Song: TSong; offset:Integer); override;
     procedure SetMuted(const AValue: boolean);  override;
     Function GetMuted: boolean; override;
-    procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
   public
     class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
@@ -367,17 +366,6 @@ end;
 class function TAudioEngineOpenLib.GetEngineName: String;
 begin
   Result:='OpenSourceLibs';
-end;
-
-procedure TAudioEngineOpenLib.ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0);
-begin
-  case Command of
-    ecNext: if Assigned(OnSongEnd) then
-        OnSongEnd(Self);
-
-    ecSeek: Seek(Param, True);
-
-    end;
 end;
 
 class function TAudioEngineOpenLib.IsAvalaible(ConfigParam: TStrings): boolean;
