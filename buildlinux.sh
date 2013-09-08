@@ -1,7 +1,8 @@
 #!/bin/bash
 # set -x
 #Set path where lazarus is installed
-LAZARUS_DIR=~/lazarus/lazarus
+LAZARUS_DIR=~/development/lazarus
+CONFIG_PATH=
 
 # 
 if [ "$BASE" = "" ]; then
@@ -21,6 +22,10 @@ if [ ! "$WIDGETSET_TARGET" = "" ]; then
 fi 
 
 NONE=-l
+if [ ! "$CONFIG_PATH" = "" ]; then
+ PCP=--pcp="$CONFIG_PATH"
+fi
+
 # clean build files
 rm -Rf $BASE/src/lib/*
 rm -Rf $BASE/src/components/lib/*.*
@@ -29,8 +34,8 @@ rm -Rf $BASE/tools/ovoplayerctrl/lib/*.*
 rm -Rf $BASE/bin/linux
 #
 cp $BASE/release.cfg  $BASE/extrafpc.cfg
-$LAZARUS_DIR/lazbuild -B -r $BASE/src/ovoplayer.lpi $DC_ARCH
-$LAZARUS_DIR/lazbuild -B -r $BASE/tools/ovoplayerctrl/ovoplayerctrl.lpi $DC_ARCH
+$LAZARUS_DIR/lazbuild -B -r $PCP --build-mode=Release $BASE/src/ovoplayer.lpi $DC_ARCH
+$LAZARUS_DIR/lazbuild -B -r $PCP $BASE/tools/ovoplayerctrl/ovoplayerctrl.lpi $DC_ARCH
 strip --strip-all $BASE/bin/linux/ovoplayer
 strip --strip-all $BASE/bin/linux/ovoplayerctrl
 
