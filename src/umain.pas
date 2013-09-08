@@ -29,7 +29,7 @@ uses
   Dialogs, ComCtrls, Menus, ExtCtrls, Buttons, StdCtrls, Song, CustomSong, uOSD,
   BaseTypes, GUIBackEnd, Config, MediaLibrary, coreinterfaces,
   DefaultTranslator, Grids, EditBtn, ActnList, customdrawncontrols,
-  customdrawn_common, customdrawn_ovoplayer,
+  customdrawn_common, customdrawn_ovoplayer, LCLIntf, Lmessages,
   {$IFDEF MPRIS2}
   Mpris2,
   {$ENDIF MPRIS}
@@ -821,17 +821,13 @@ procedure TfMainForm.UpdateProperty(Kind: TChangedProperty);
 begin
   case kind of
     cpVolume: begin
-//                DebugLn('TfMainForm.Update','->',IntToStr(BackEnd.GetVolume));
                 slVolume.Position:= BackEnd.GetVolume;
               end;
     cpClosing: begin
-//                DebugLn('TfMainForm.Update','->',IntToStr(BackEnd.GetVolume));
                 Quitting:= true;
-                Close;
+                LCLIntf.PostMessage(Self.Handle, LM_CLOSEQUERY, 0, 0);
               end;
-
     end;
-
 
 end;
 
@@ -1147,6 +1143,7 @@ end;
 
 procedure TfMainForm.FormDestroy(Sender: TObject);
 begin
+
   {$IFDEF MPRIS2}
   if Assigned(Mpris) then
      begin
@@ -2376,6 +2373,7 @@ procedure TfMainForm.OnExternalCommand(Sender: Tobject; Command: String);
 begin
   if Command = 'activate' then
      Show;
+
 end;
 
 procedure TfMainForm.AdaptSize(Recalculate: boolean =true);
@@ -2446,4 +2444,4 @@ begin
        end;
 end;
 
-end.
+end.

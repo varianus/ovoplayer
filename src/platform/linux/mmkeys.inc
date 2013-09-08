@@ -29,7 +29,6 @@ type
     fBus: PDBusConnection;
     fGrabbed: boolean;
     SettingsActive :Boolean;
-//    DBUSThread : TDBUSThread;
   protected
    function GetGrabbed: Boolean; override;
   public
@@ -331,7 +330,7 @@ end;
 procedure TkeyCaptureXGrab.EndGrab;
 begin
   GrabKeys(False);
-  XCloseDisplay(display);
+//  XCloseDisplay(display);
 end;
 
 constructor TMultimediaKeys.Create(Mode:Integer; BackEnd: IBackEnd);

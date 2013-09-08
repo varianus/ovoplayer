@@ -1024,9 +1024,9 @@ procedure TMpris2.DeActivate;
 begin
   if Assigned(mpris_connection) then
     begin
-    fBackEnd.Remove(Self);
-    dbus_connection_unref(mpris_connection);
-    mpris_connection := nil;
+     dbus_connection_unref(mpris_connection);
+     mpris_connection := nil;
+     fBackEnd.Remove(Self);
     end;
 end;
 
