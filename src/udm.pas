@@ -163,7 +163,7 @@ begin
                 Backend.Next                     else
              if tempstr = 'previous' then
                 Backend.Previous                 else
-             if tempstr = 'close' then
+             if tempstr = 'quit' then
                 Backend.Quit;
 
              if Assigned(Backend.OnExternalCommand) then

@@ -91,6 +91,7 @@ begin
   AddOptions('p:','playsong:');
   AddOptions('e:','enqueue:');
   AddOptions('x:','enqplay:');
+  AddOptions('q','quit');
 
   for i := 0 to MediaControlCount -1 do
      AddOptions(MediaControl[i]);
@@ -124,6 +125,9 @@ begin
 
   if HasOption('x','enqplay') then
      PostCommand(ctFile, 'x', GetOptionValue('x','enqplay'));
+
+  if HasOption('q','quit') then
+     PostCommand(ctAction, 'quit', '');
 
 
   // stop program loop
@@ -181,6 +185,9 @@ begin
           '    ' + 'Play song and clear current playlist');
   writeln('-x <filename>, --enqplay=<filename>' + sLineBreak +
           '    ' + 'Enqueue current playlist AND begin play a song');
+  writeln('-q , --quit' + sLineBreak +
+          '    ' + 'Close ovoplayer');
+
 
 end;
 
@@ -194,4 +201,4 @@ begin
   Application.Run;
   Application.Free;
 end.
-
+
