@@ -22,15 +22,17 @@ type
  type
    EDbusError =  EXception;
 
-Function HandleDbusError(Error: DBusError; RaiseException:boolean): boolean;
+Function CheckDbusError(Error: DBusError; RaiseException:boolean): boolean;
 
 implementation
 uses LCLProc;
 
-function HandleDbusError(Error: DBusError; RaiseException: boolean): boolean;
+function CheckDbusError(Error: DBusError; RaiseException: boolean): boolean;
 begin
+  Result := true;
   if dbus_error_is_set(@Error) <> 0 then
   try
+    Result := false;
     if RaiseException then
        Raise EDbusError.Create('DBUS Error:' + Error.message)
     else

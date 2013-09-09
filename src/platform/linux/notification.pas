@@ -85,7 +85,7 @@ begin
   fAppName := AppName;
   dbus_error_init(@Err);
   fBus := dbus_bus_get(DBUS_BUS_SESSION, @err);
-  Result := HandleDbusError(Err, false);
+  Result := CheckDbusError(Err, false);
   dbus_connection_set_exit_on_disconnect(fBus,dbus_bool_t(true));
   FInitialized:= Result;
 end;
@@ -146,8 +146,8 @@ begin
   dbus_error_init(@Err);
 // Expected signature
 //  (susssasa{sv}i)
-  Reply := dbus_connection_send_with_reply_and_block(fBus, msg, 100000, @Err);
-  HandleDbusError(Err, true);
+  Reply := dbus_connection_send_with_reply_and_block(fBus, msg, -1, @Err);
+  CheckDbusError(Err, true);
 
   if (dbus_message_iter_init(Reply, @args) > 0) then
     if (DBUS_TYPE_UINT32 = dbus_message_iter_get_arg_type(@args)) then

@@ -120,8 +120,9 @@ end;
 procedure TkeyCaptureDBUS.BeginGrab;
 var
   err: DBusError;
-  msg: PDBusMessage;
-  i:integer;
+  reply, msg: PDBusMessage;
+  i:dword;
+  args: DBusMessageIter;
   pl : pchar = appname;
 begin
   dbus_error_init(@Err);
@@ -131,22 +132,32 @@ begin
 
   dbus_connection_set_exit_on_disconnect(fBus,dbus_bool_t(false));
 
-  dbus_bus_add_match (fBus,'type=''signal'',interface=''org.gnome.SettingsDaemon.MediaKeys'',sender=''org.gnome.SettingsDaemon'',path=''/org/gnome/SettingsDaemon/MediaKeys''',@err);
-  dbus_connection_add_filter (fBus, @filter_func, self, nil);
-
   msg:= dbus_message_new_method_call(GNOME_SETTINGS_DAEMON_NAME,GNOME_SETTINGS_DAEMON_PATH,GNOME_SETTINGS_DAEMON_INTERFACE,'GrabMediaPlayerKeys');
-  dbus_message_append_args(msg, DBUS_TYPE_STRING,[@pl]);
-  i:=10;
-  dbus_message_append_args(msg, DBUS_TYPE_UINT32,[@i]);
-  i:=1;
-  fGrabbed:=Boolean(dbus_connection_send(fBus,msg,@i));
-  //if fGrabbed then
-  //   begin
-  //     DBUSThread := TDBUSThread.Create(True);
-  //     DBUSThread.fBus:=fBus;
-  //     DBUSThread.Start;
-  //
-  //   end;
+  if not CheckDbusError(err, false) then
+     exit;
+
+  dbus_message_iter_init_append(msg, @args);
+  dbus_message_iter_append_basic(@args, DBUS_TYPE_STRING,@pl);
+  i:=0;
+  dbus_message_iter_append_basic(@args, DBUS_TYPE_UINT32,@i);
+
+  Reply := dbus_connection_send_with_reply_and_block(fBus, msg, -1, @Err);
+
+  if (not CheckDbusError(err, false)) and (Assigned(reply) and (dbus_message_iter_init(Reply, @args) > 0)) then
+     begin
+       begin
+         fGrabbed:= boolean(i);
+         dbus_bus_add_match (fBus,'type=''signal'',interface=''org.gnome.SettingsDaemon.MediaKeys'',sender=''org.gnome.SettingsDaemon'',path=''/org/gnome/SettingsDaemon/MediaKeys''',@err);
+         dbus_connection_add_filter (fBus, @filter_func, self, nil);
+       end;
+
+     end;
+
+
+  dbus_connection_flush(fBus);
+  dbus_message_unref(msg);
+  dbus_message_unref(reply);
+
 end;
 
 procedure TkeyCaptureDBUS.EndGrab;
@@ -156,24 +167,24 @@ var
   msg: PDBusMessage;
   i:integer;
   pl : pchar = appname;
+  args: DBusMessageIter;
 
 begin
 //  DBUSThread.Terminate;
   dbus_error_init(@Err);
   msg := dbus_message_new_method_call(GNOME_SETTINGS_DAEMON_NAME,GNOME_SETTINGS_DAEMON_PATH,GNOME_SETTINGS_DAEMON_INTERFACE,'ReleaseMediaPlayerKeys');
-  dbus_message_append_args(msg, DBUS_TYPE_STRING,[@pl]);
-  i:=10;
-  dbus_message_append_args(msg, DBUS_TYPE_UINT32,[@i]);
-  i:=2;
+  dbus_message_iter_init_append(msg, @args);
+  dbus_message_iter_append_basic(@args, DBUS_TYPE_STRING,@pl);
+  i:=1;
   dbus_connection_send(fBus,msg,@i);
+  TMPF:= DBusHandleMessageFunction(@filter_func);
+  dbus_connection_Remove_filter (fBus, TMPF, self);
 
   dbus_bus_remove_match (fBus,
  			    'type=''signal'',' +
   			    'interface=''org.gnome.SettingsDaemon.MediaKeys'',' +
   			    'sender=''org.gnome.SettingsDaemon'',' +
   			    'path=''/org/gnome/SettingsDaemon/MediaKeys''', @err);
-  TMPF:= DBusHandleMessageFunction(@filter_func);
-  dbus_connection_Remove_filter (fBus, TMPF, self);
 end;
 
 { TkeyCaptureXGrab }
