@@ -82,7 +82,7 @@ type
 
 function TFlacReader.GetDuration: int64;
 begin
-  if (FSampleRate > 0) then
+  if (FSampleRate > 0) and (FSamples > 0) then
   begin
     Result := trunc((FSamples / FSampleRate) * 1000);
   end
