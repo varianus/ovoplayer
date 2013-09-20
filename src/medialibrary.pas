@@ -62,6 +62,7 @@ type
     fUpdateSong: TSQLQuery;
     fLoadTable: TSQLQuery;
     fWorkQuery: TSQLQuery;
+    fScanning: boolean;
     procedure AfterScan;
     procedure BeforeScan;
     procedure EndScan(AObject: TObject);
@@ -318,6 +319,7 @@ end;
 
 constructor TMediaLibrary.Create;
 begin
+  fScanning := true;
   SetupDBConnection;
   CheckDBStructure;
 
@@ -354,6 +356,8 @@ begin
   fWorkQuery.Transaction := fTR;
 
   fLoadTable := nil;
+
+  fScanning := False;
   ;
 
 end;
@@ -444,6 +448,8 @@ begin
 
   if Assigned(FOnScanComplete) then
     FOnScanComplete(Self, fAdded, fUpdated, fRemoved, fFailed);
+
+  fScanning:= false;
 end;
 
 procedure TMediaLibrary.SetOnScanComplete(const AValue: TScanComplete);
@@ -488,6 +494,11 @@ procedure TMediaLibrary.Scan(paths: TStrings);
 var
   Scanner: TDirectoryScanner;
 begin
+  if fScanning then
+     exit;
+
+  fScanning := true;
+
   fAdded   := 0;
   fFailed  := 0;
   fUpdated := 0;
