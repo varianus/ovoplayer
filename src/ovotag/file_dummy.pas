@@ -28,7 +28,8 @@ uses
   Classes, SysUtils, AudioTag, baseTag, tag_Dummy;
 
 const
-  DummyFileMask: string    = '*.aac;';
+  DummyFileMask: string    = '';
+//  DummyFileMask: string    = '*.aac;*.m4a';
 
 type
 
@@ -74,6 +75,7 @@ begin
 end;
 
 initialization
-  RegisterTagReader(DummyFileMask, TDummyReader);
+// Moved to Audiotag unit because this must be always registered
+//  RegisterTagReader(DummyFileMask, TDummyReader);
 end.
-
+
