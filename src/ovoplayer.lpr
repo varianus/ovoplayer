@@ -60,6 +60,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   id3v1genres, tag_id3v2, file_mp3,
   tag_wma,file_wma,
   file_monkey, tag_ape,
+  tag_MP4, file_Mp4,
   tag_Dummy, file_Wave, file_Dummy,
 
     // Application forms and related
@@ -79,7 +80,6 @@ begin
 
   if not isAppRunning(Application) then
    begin
-      Application.Title:='OvoPlayer';
       Application.Title:=DisplayAppName;
       Application.Initialize;
       Application.CreateForm(TDM, dm);
@@ -87,4 +87,4 @@ begin
       fMainForm.show;
       Application.Run;
    end;
-end.
+end.
