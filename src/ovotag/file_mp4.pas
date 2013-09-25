@@ -25,18 +25,48 @@ unit file_Mp4;
 interface
 
 uses
-  Classes, SysUtils, AudioTag, baseTag, tag_Mp4;
+  Classes, SysUtils, AudioTag, baseTag, fgl, tag_Mp4;
 
 const
-  Mp4FileMask: string    = '*.aac;*.m4a';
+  Mp4FileMask: string    = '*.aac;*.m4a;';
 
 type
+  AtomName = array [0..3] of char;
+
   RAtomHeader = record
     Size: dword;
-    Name: array [0..3] of char;
+    Name: AtomName;
   end;
 
+
 type
+  { TMp4Atom }
+
+  TMp4Atom = class;
+
+  { TMP4AtomList }
+
+  TMP4AtomList = class(TFPList)
+  private
+  public
+    function Find(Name0: AtomName='';Name1: AtomName='';Name2: AtomName='';Name3: AtomName=''): TMp4Atom;
+    constructor Create(Stream: TStream); overload;
+    constructor Create;  overload;
+
+    Destructor Destroy; override;
+  end;
+
+  TMp4Atom = class
+    Public
+      Offset: int64;
+      AtomLength: int64;
+      children : TMP4AtomList;
+      Name: string;
+      function Find(Name0: AtomName='';Name1: AtomName='';Name2: AtomName='';Name3: AtomName='') :TMp4Atom;
+      function FindAll(AName:AtomName; Recursive:boolean=false) :TMp4AtomList;
+      constructor Create(Stream: TStream);
+      Destructor Destroy; override;
+  end;
 
   { TMp4Reader }
 
@@ -45,8 +75,8 @@ type
     fTags: TTags;
     FSampleRate: integer;
     FSamples: int64;
-    function FindAtom(Stream: TFileStream; AtomName: string;
-      var Atom: RAtomHeader): boolean;
+    fDuration : int64;
+    //function FindAtom(Stream: TFileStream; AtomName: string; var Atom: RAtomHeader): boolean;
   protected
     function GetDuration: int64; override;
     function GetTags: TTags; override;
@@ -58,11 +88,191 @@ type
 
 implementation
 
+{ TMp4Atom }
+const
+   containers: array [0..10] of string = (
+    'moov', 'udta', 'mdia', 'meta', 'ilst',
+    'stbl', 'minf', 'moof', 'traf', 'trak',
+    'stsd');
+
+  numContainers= 11;
+
+{ TMP4AtomList }
+
+constructor TMP4AtomList.Create(Stream: TStream);
+var
+  end_:Int64;
+  Atom : TMp4Atom;
+begin
+  Inherited Create;
+  end_ := Stream.Size;
+  Stream.Seek(0, soFromBeginning);
+  while Stream.Position +8 <= end_ do
+    begin
+      Atom := TMp4Atom.Create(Stream);
+      Add(Atom);
+      if Atom.AtomLength = 0 then
+        Break;
+
+    end;
+
+
+end;
+
+destructor TMP4AtomList.Destroy;
+var
+  i: integer;
+begin
+  for i := 0 to Count -1 do
+    TMp4Atom(Items[i]).Free;
+  Clear;
+  inherited Destroy;
+end;
+
+function TMP4AtomList.Find(Name0: AtomName='';Name1: AtomName='';Name2: AtomName='';Name3: AtomName=''): TMp4Atom;
+var
+  i: Integer;
+begin
+  for i := 0 to Count -1 do
+    if (TMp4Atom(Items[i]).name = name0) then
+      begin
+         result:= TMp4Atom(Items[i]).find(Name1,name2,name3);
+         exit;
+      end;
+
+  result := nil;
+end;
+
+function TMp4Atom.Find(Name0: AtomName='';Name1: AtomName='';Name2: AtomName='';Name3: AtomName=''): TMp4Atom;
+var
+  i: Integer;
+begin
+  if name0 = '' then
+    begin
+     result := self;
+     exit;
+  end;
+  for i := 0 to children.Count -1 do
+    if TMp4Atom(children[i]).name = name0 then
+      begin
+         result:= TMp4Atom(children[i]).find(Name1,name2,name3);
+         exit;
+      end;
+
+  result := nil;
+end;
+
+function TMp4Atom.FindAll(AName: AtomName; Recursive: boolean): TMp4AtomList;
+var
+  i,j: Integer;
+  tmpList : TMp4AtomList;
+begin
+  Result := TMP4AtomList.Create;
+  for  i := 0 to children.count -1 do
+    begin
+    if (TMp4Atom(children[i]).name = Aname) then
+      result.add(children[i]);
+
+    if (recursive) then
+      begin
+        TmpList := TMp4Atom(children[i]).findall(Aname, recursive);
+        for j := 0 to tmpList.Count -1 do
+          Result.Add(tmpList[j]);
+        tmpList.Free;
+      end;
+  end;
+end;
+
+
+constructor TMp4Atom.Create(Stream: TStream);
+var
+  Header: RAtomHeader;
+  Transferred: Integer;
+  i: Integer;
+  Child : TMp4Atom;
+  longLength: Int64;
+begin
+  offset := Stream.Position;
+  Transferred := Stream.Read(Header, SizeOf(Header));
+  if Transferred < 8 then
+    begin
+      AtomLength:=0;
+      Stream.Seek(0, soFromEnd);
+      exit;
+    end;
+
+  AtomLength:=BEtoN(Header.Size);
+
+  if (AtomLength = 1) then
+    begin
+      longLength:=beton(Stream.ReadQWord);
+      if (longLength >= 8)  and (longLength <= $FFFFFFFF) then
+          // The atom has a 64-bit AtomLength, but it's actually a 32-bit value
+          AtomLength := longLength
+      else
+        begin
+          //debug("MP4: 64-bit atoms are not supported");
+          AtomLength := 0;
+          Stream.seek(0, soFromEnd);
+          exit;
+        end;
+  end;
+
+  if (AtomLength < 8) then
+    begin
+//    debug("MP4: Invalid atom size");
+       AtomLength := 0;
+       Stream.seek(0, soFromEnd);
+       exit;
+  end;
+
+  Name := Header.Name;
+  children:= TMP4AtomList.Create;
+
+  for  i := 0 to  numContainers -1 do
+     begin
+     if (name = containers[i]) then
+       begin
+         if (name = 'meta') then
+           stream.seek(4, soFromCurrent)
+         else if (name = 'stsd') then
+           stream.seek(8, soFromCurrent);
+
+        while (Stream.Position < offset + AtomLength) do
+          begin
+            child := TMP4Atom.Create(Stream);
+            children.Add(child);
+            if (child.AtomLength = 0) then
+              exit;
+          end;
+         exit;
+       end;
+     end;
+
+   stream.seek(offset + AtomLength, soFromBeginning);
+end;
+
+constructor TMp4AtomList.Create;
+begin
+  clear;
+end;
+
+destructor TMp4Atom.Destroy;
+var
+  i : Integer;
+begin
+  for i := 0 to children.Count -1 do
+     TMp4Atom(children[i]).Free;
+  children.Clear;
+
+end;
+
+
 { TMp4Reader }
 
 function TMp4Reader.GetDuration: int64;
 begin
-  Result := 0;
+  Result := fDuration;
 end;
 
 function TMp4Reader.GetTags: TTags;
@@ -70,57 +280,72 @@ begin
   Result := fTags;
 end;
 
-function TMp4Reader.FindAtom(Stream:TFileStream; AtomName:string; var Atom: RAtomHeader ): boolean;
-var
-  Found:boolean;
-  fAtom :RAtomHeader;
-  Transferred:Integer;
-
-begin
-  Result:= false;
-  found:= false;
-  repeat
-    Transferred:= Stream.Read(fAtom, SizeOf(RAtomHeader));
-    fAtom.Size:= BEtoN(fAtom.Size);
-    if fAtom.Name = AtomName then
-       begin
-         Result:= true;
-         Atom:= Fatom;
-         Found:= true;
-       end
-    else
-      Stream.Seek(fAtom.Size -8, soCurrent);
-
-  until (fatom.size= 0) or found or (Transferred < SizeOf(RAtomHeader));
-
-end;
+//function TMp4Reader.FindAtom(Stream:TFileStream; AtomName:string; var Atom: RAtom ): boolean;
+//var
+//  Found:boolean;
+//  fAtom :RAtomHeader;
+//  Transferred:Integer;
+//
+//begin
+//  Result:= false;
+//  found:= false;
+//  repeat
+//    Transferred:= Stream.Read(fAtom, SizeOf(RAtomHeader));
+//    fAtom.Size:= BEtoN(fAtom.Size);
+//    if fAtom.Name = AtomName then
+//       begin
+//         Result:= true;
+//         Atom.Header := Fatom;
+//         atom.Position:= Stream.Position;
+//         Found:= true;
+//       end
+//    else
+//      Stream.Seek(fAtom.Size -8, soCurrent);
+//
+//  until (fatom.size= 0) or found or (Transferred < SizeOf(RAtomHeader));
+//
+//end;
 
 function TMp4Reader.LoadFromFile(AFileName: Tfilename): boolean;
 var
   fStream: TFileStream;
   Transferred: DWord;
-  Atom:RAtomHeader;
+  AtomList, traks:TMP4AtomList;
   vers: DWord;
-
+  moov, trak, mdhd: TMp4Atom;
+  Data: array of byte;
+  version:byte;
+  unit_, length_:int64;
 begin
   Result := inherited LoadFromFile(AFileName);
   fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
   fTags := TMp4Tags.Create;
+  AtomList:=TMP4AtomList.Create(fStream);
+  moov := AtomList.Find('moov');
+  trak:= moov.Find('trak');
+  mdhd:=trak.find('mdia','mdhd');
+  SetLength(Data, mdhd.AtomLength);
+  fStream.Seek(mdhd.Offset, soFromBeginning);
+  Transferred := fStream.Read(Data[0], mdhd.AtomLength);
+  Version := Data[8];
+  if version = 1 then
+    begin
+       unit_ := beton(pInt64(@data[28])^);
+       length_ := beton(pInt64(@data[36])^);
+       fDuration:= length_ div unit_;
 
-  while FindAtom(fStream, 'moov', atom) do
-     while FindAtom(fStream, 'udta', atom) do
-        while FindAtom(fStream, 'meta', atom) do
-          begin
-          Vers := fStream.ReadDWord;
-          if FindAtom(fStream, 'ilst', atom) then
-           begin
-             fTags.ReadFromStream(fStream);
-           end;
+    end
+  else
+    begin
+      unit_ := beton(PInteger(@data[20])^);
+      length_ := beton(PInteger(@data[24])^);
+      fDuration:= length_ div unit_;
 
-          end;
+    end ;
+
+
 
   fstream.Free;
-
 
 end;
 
