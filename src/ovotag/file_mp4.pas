@@ -25,7 +25,7 @@ unit file_Mp4;
 interface
 
 uses
-  Classes, SysUtils, AudioTag, baseTag, fgl, tag_Mp4;
+  Classes, SysUtils, AudioTag, baseTag, tag_Mp4;
 
 const
   Mp4FileMask: string    = '*.aac;*.m4a;';
@@ -94,6 +94,11 @@ const
     'moov', 'udta', 'mdia', 'meta', 'ilst',
     'stbl', 'minf', 'moof', 'traf', 'trak',
     'stsd');
+
+   knowntag: array [0..8] of string = (
+    #a9'nam', #a9'cmt', #9'day', #a9'ART', #a9'trk',
+    #a9'alb', #a9'gen',  'gnre',   'trkn'
+    );
 
   numContainers= 11;
 
@@ -280,39 +285,14 @@ begin
   Result := fTags;
 end;
 
-//function TMp4Reader.FindAtom(Stream:TFileStream; AtomName:string; var Atom: RAtom ): boolean;
-//var
-//  Found:boolean;
-//  fAtom :RAtomHeader;
-//  Transferred:Integer;
-//
-//begin
-//  Result:= false;
-//  found:= false;
-//  repeat
-//    Transferred:= Stream.Read(fAtom, SizeOf(RAtomHeader));
-//    fAtom.Size:= BEtoN(fAtom.Size);
-//    if fAtom.Name = AtomName then
-//       begin
-//         Result:= true;
-//         Atom.Header := Fatom;
-//         atom.Position:= Stream.Position;
-//         Found:= true;
-//       end
-//    else
-//      Stream.Seek(fAtom.Size -8, soCurrent);
-//
-//  until (fatom.size= 0) or found or (Transferred < SizeOf(RAtomHeader));
-//
-//end;
-
 function TMp4Reader.LoadFromFile(AFileName: Tfilename): boolean;
 var
   fStream: TFileStream;
   Transferred: DWord;
   AtomList, traks:TMP4AtomList;
   vers: DWord;
-  moov, trak, mdhd: TMp4Atom;
+  i: integer;
+  moov, trak, mdhd, ilst: TMp4Atom;
   Data: array of byte;
   version:byte;
   unit_, length_:int64;
@@ -330,20 +310,28 @@ begin
   Version := Data[8];
   if version = 1 then
     begin
-       unit_ := beton(pInt64(@data[28])^);
-       length_ := beton(pInt64(@data[36])^);
+       unit_ := beton(pInt64(@data[28])^) * 1000;
+       length_ := beton(pInt64(@data[36])^) * 1000;
        fDuration:= length_ div unit_;
 
     end
   else
     begin
-      unit_ := beton(PInteger(@data[20])^);
-      length_ := beton(PInteger(@data[24])^);
+      unit_ := beton(PInteger(@data[20])^) * 1000;
+      length_ := beton(PInteger(@data[24])^) * 1000;
       fDuration:= length_ div unit_;
-
     end ;
 
+  ilst := AtomList.find('moov', 'udta', 'meta', 'ilst');
+  if Assigned(ilst) then
+     for i := 0 to ilst.children.Count -1 do
+       begin
 
+       end;
+
+
+  AtomList.Free;
+  SetLength(Data, 0);
 
   fstream.Free;
 
