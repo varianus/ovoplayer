@@ -96,8 +96,8 @@ const
     'stsd');
 
    knowntag: array [0..8] of string = (
-    #a9'nam', #a9'cmt', #9'day', #a9'ART', #a9'trk',
-    #a9'alb', #a9'gen',  'gnre',   'trkn'
+    #169+'nam', #169+'cmt', #169+'day', #169'ART', #169+'trk',
+    #169+'alb', #169+'gen',  'gnre',   'trkn'
     );
 
   numContainers= 11;
@@ -310,16 +310,16 @@ begin
   Version := Data[8];
   if version = 1 then
     begin
-       unit_ := beton(pInt64(@data[28])^) * 1000;
-       length_ := beton(pInt64(@data[36])^) * 1000;
-       fDuration:= length_ div unit_;
+       unit_ := beton(pInt64(@data[28])^);
+       length_ := beton(pInt64(@data[36])^);
+       fDuration:= (length_ div unit_) * 1000;
 
     end
   else
     begin
-      unit_ := beton(PInteger(@data[20])^) * 1000;
-      length_ := beton(PInteger(@data[24])^) * 1000;
-      fDuration:= length_ div unit_;
+      unit_ := beton(PInteger(@data[20])^);
+      length_ := beton(PInteger(@data[24])^);
+      fDuration:= (length_ div unit_) * 1000;
     end ;
 
   ilst := AtomList.find('moov', 'udta', 'meta', 'ilst');
