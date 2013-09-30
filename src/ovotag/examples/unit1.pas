@@ -143,6 +143,9 @@ begin
   edAlbumArtist.Caption := CommonTags.AlbumArtist;
   edGenre.Caption := CommonTags.Genre;
   edTitle.Caption := CommonTags.Title;
+  meComment.Lines.Clear;
+  meComment.Lines.Add(CommonTags.Comment);
+
   i := 0;
   TryStrToInt(CommonTags.Year, i);
   seYear.Value := i;
@@ -168,6 +171,12 @@ var
 begin
   if TagReader = nil then
     exit;
+
+  if not TagReader.isUpdateable then
+    begin
+      ShowMessage('Not implemented for this file format!');
+      exit;
+    end;
   SaveDialog1.FileName := ExtractFileNameOnly(TagReader.GetCommonTags.FileName) +
                           '.new' +
                           ExtractFileExt(TagReader.GetCommonTags.FileName);
@@ -183,6 +192,12 @@ end;
 
 procedure TForm1.bSave1Click(Sender: TObject);
 begin
+  if not TagReader.isUpdateable then
+    begin
+      ShowMessage('Not implemented for this file format!');
+      exit;
+    end;
+
   MapToTags;
   TagReader.SetCommonTags(CommonTags);
   TagReader.UpdateFile;
