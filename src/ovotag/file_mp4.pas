@@ -72,7 +72,7 @@ type
 
   TMp4Reader = class(TTagReader)
   private
-    fTags: TTags;
+    fTags: TMp4Tags;
     FSampleRate: integer;
     FSamples: int64;
     fDuration : int64;
@@ -94,11 +94,6 @@ const
     'moov', 'udta', 'mdia', 'meta', 'ilst',
     'stbl', 'minf', 'moof', 'traf', 'trak',
     'stsd');
-
-   knowntag: array [0..8] of string = (
-    #169+'nam', #169+'cmt', #169+'day', #169'ART', #169+'trk',
-    #169+'alb', #169+'gen',  'gnre',   'trkn'
-    );
 
   numContainers= 11;
 
@@ -291,15 +286,14 @@ var
   Transferred: DWord;
   AtomList, traks:TMP4AtomList;
   vers: DWord;
-  i: integer;
-  moov, trak, mdhd, ilst: TMp4Atom;
+  i,j: integer;
+  moov, trak, mdhd, ilst, CurrAtom: TMp4Atom;
   Data: array of byte;
   version:byte;
   unit_, length_:int64;
 begin
   Result := inherited LoadFromFile(AFileName);
   fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
-  fTags := TMp4Tags.Create;
   AtomList:=TMP4AtomList.Create(fStream);
   moov := AtomList.Find('moov');
   trak:= moov.Find('trak');
@@ -310,26 +304,22 @@ begin
   Version := Data[8];
   if version = 1 then
     begin
-       unit_ := beton(pInt64(@data[28])^);
-       length_ := beton(pInt64(@data[36])^);
+       unit_ := BEtoN(pInt64(@data[28])^);
+       length_ := BEtoN(pInt64(@data[36])^);
        fDuration:= (length_ div unit_) * 1000;
 
     end
   else
     begin
-      unit_ := beton(PInteger(@data[20])^);
-      length_ := beton(PInteger(@data[24])^);
+      unit_ := BEtoN(PInteger(@data[20])^);
+      length_ := BEtoN(PInteger(@data[24])^);
       fDuration:= (length_ div unit_) * 1000;
     end ;
 
   ilst := AtomList.find('moov', 'udta', 'meta', 'ilst');
-  if Assigned(ilst) then
-     for i := 0 to ilst.children.Count -1 do
-       begin
 
-       end;
-
-
+  fTags := TMp4Tags.Create;
+  fTags.ReadFromStream(fStream, ilst);
   AtomList.Free;
   SetLength(Data, 0);
 

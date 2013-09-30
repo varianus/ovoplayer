@@ -50,7 +50,7 @@ function DecodeChannelNumber(Channels:integer): string;
 
 function GetContent(const Content1, Content2: string): string;
 function ExtractYear(const YearString, DateString: string): string;
-function ExtractGenre(const GenreString: string): string;
+function ExtractGenre(const GenreString: string; offset:integer=0): string;
 function ExtractText(const SourceString: string; LanguageID: boolean): string;
 function SyncSafe_Decode(const SyncDWord: DWord): DWord;
 function SyncSafe_Encode(const SyncDWord: DWord): DWord;
@@ -124,7 +124,7 @@ end;
 
 { --------------------------------------------------------------------------- }
 
-function ExtractGenre(const GenreString: string): string;
+function ExtractGenre(const GenreString: string; offset:integer=0): string;
 var
   GenreNumber: integer;
 begin
@@ -132,7 +132,7 @@ begin
   Result := GetANSI(GenreString);
   GenreNumber:=255;
   if TryStrToInt(Result, GenreNumber) and (GenreNumber <= ID3_MaxGenreExtended) then
-     Result := v1Genres[GenreNumber];
+     Result := v1Genres[GenreNumber + offset];
 
   if Pos(')', Result) > 0 then
     Delete(Result, 1, LastDelimiter(')', Result));

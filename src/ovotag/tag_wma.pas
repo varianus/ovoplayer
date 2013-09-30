@@ -39,7 +39,7 @@ type
     DataType: Word;
     function GetAsString: string; override;
     procedure SetAsString(AValue: string); override;
-    function ReadFromStream(AStream: TStream): boolean; override;
+    function ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean; override;
     function WriteToStream(AStream: TStream): DWord; override;
   end;
 
@@ -49,7 +49,7 @@ type
   public
     Function GetCommonTags: TCommonTags; override;
     Procedure SetCommonTags(CommonTags: TCommonTags); override;
-    function ReadFromStream(AStream: TStream): boolean; override;
+    function ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean; override;
     function WriteToStream(AStream: TStream): DWord; override;
   end;
 
@@ -99,7 +99,7 @@ begin
 end;
 
 
-function TWMATags.ReadFromStream(AStream: TStream): boolean;
+function TWMATags.ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean;
 var
   ContentCount: word;
   i: word;
@@ -156,7 +156,7 @@ begin
 
 end;
 
-function TWMAFrame.ReadFromStream(AStream: TStream): boolean;
+function TWMAFrame.ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean;
 var
   DataLength: word;
   tmpValue: array of char;

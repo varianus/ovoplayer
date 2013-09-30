@@ -80,7 +80,7 @@ type
     constructor Create; virtual; Overload;
     constructor Create(ID:String); virtual; Overload;
     destructor Destroy; override;
-    function ReadFromStream(AStream:TStream):boolean; virtual; abstract;
+    function ReadFromStream(AStream:TStream;ExtInfo:pointer=nil):boolean; virtual; abstract;
     function WriteToStream(AStream:TStream):DWord; virtual; abstract;
 
   public
@@ -108,7 +108,7 @@ type
 
     constructor Create; override;
     destructor Destroy; override;
-    function ReadFromStream(AStream:TStream):boolean; override;
+    function ReadFromStream(AStream:TStream; ExtInfo:pointer=nil):boolean; override;
     Property FrameRef: TFrameElement read FFrameRef write SetFrameRef;
     Property Image: TStream read FImage write SetImage;
   end;
@@ -131,7 +131,7 @@ type
   public
     constructor Create; virtual;
     destructor Destroy; override;
-    function ReadFromStream(AStream:TStream):boolean; virtual; abstract;
+    function ReadFromStream(AStream:TStream; ExtInfo:pointer=nil):boolean; virtual; abstract;
     function WriteToStream(AStream:TStream):DWord; virtual; abstract;
     Procedure Add(Frame: TFrameElement);
     Procedure Remove(Frame: TFrameElement);
@@ -265,7 +265,7 @@ procedure TImageElement.SetAsString(AValue: string);
 begin
 end;
 
-function TImageElement.ReadFromStream(AStream: TStream): boolean;
+function TImageElement.ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean;
 begin
   Result:=False;
 end;

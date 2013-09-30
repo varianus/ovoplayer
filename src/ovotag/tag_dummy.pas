@@ -34,7 +34,7 @@ type
   public
     Function GetCommonTags: TCommonTags; override;
     procedure SetCommonTags(CommonTags: TCommonTags); override;
-    function ReadFromStream(AStream: TStream): boolean; override;
+    function ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean; override;
     function WriteToStream(AStream: TStream): DWord; override;
   end;
 
@@ -52,7 +52,7 @@ begin
   inherited SetCommonTags(CommonTags);
 end;
 
-function TDummyTags.ReadFromStream(AStream: TStream): boolean;
+function TDummyTags.ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean;
 begin
   Clear;
   result := false;

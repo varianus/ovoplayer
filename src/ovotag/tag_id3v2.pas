@@ -57,7 +57,7 @@ type
     destructor Destroy; override;
     function GetAsString: string; override;
     procedure SetAsString(AValue: string); override;
-    function ReadFromStream(AStream: TStream): boolean; override;
+    function ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean; override;
     function WriteToStream(AStream: TStream): DWord; override;
   end;
 
@@ -77,7 +77,7 @@ type
     property Size: integer read fSize;
     function GetCommonTags: TCommonTags; override;
     procedure SetCommonTags(CommonTags: TCommonTags); override;
-    function ReadFromStream(AStream: TStream): boolean; override;
+    function ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean; override;
     function WriteToStream(AStream: TStream): DWord; override;
   end;
 
@@ -342,7 +342,7 @@ begin
   Result := tmpSize + 10;
 end;
 
-function TID3Tags.ReadFromStream(AStream: TStream): boolean;
+function TID3Tags.ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean;
 var
   header: TID3Header;
 //  Transferred: DWord;
@@ -489,7 +489,7 @@ begin
   Result := fSize + headsize;
 end;
 
-function TID3Frame.ReadFromStream(AStream: TStream): boolean;
+function TID3Frame.ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean;
 var
   Header: TID3FrameHeader;
   HeaderOld: TID3FrameHeaderOld;

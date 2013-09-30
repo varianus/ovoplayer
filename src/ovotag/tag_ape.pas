@@ -52,7 +52,7 @@ type
     function GetAsString: string;  override;
     procedure SetAsString(AValue: string); override;
   public
-    function ReadFromStream(AStream: TStream): boolean; override;
+    function ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean; override;
     function WriteToStream(AStream: TStream): DWord; override;
   end;
 
@@ -65,7 +65,7 @@ type
     FromV1: Boolean;
     Function GetCommonTags: TCommonTags; override;
     procedure SetCommonTags(CommonTags: TCommonTags); override;
-    function ReadFromStream(AStream: TStream): boolean; override;
+    function ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean; override;
     function WriteToStream(AStream: TStream): DWord; override;
   end;
 
@@ -95,7 +95,7 @@ begin
   end;
 end;
 
-function TAPEFrame.ReadFromStream(AStream: TStream): boolean;
+function TAPEFrame.ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean;
 var
   fSize:Cardinal;
   Data: array of char;
@@ -235,7 +235,7 @@ begin
 
 end;
 
-function TAPETags.ReadFromStream(AStream: TStream): boolean;
+function TAPETags.ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean;
 var
   header :  TAPEHeader;
   i: cardinal;

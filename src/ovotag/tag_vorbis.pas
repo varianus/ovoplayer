@@ -38,7 +38,7 @@ type
     function GetAsString: string;  override;
     procedure SetAsString(AValue: string); override;
   public
-    function ReadFromStream(AStream: TStream): boolean; override;
+    function ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean; override;
     function WriteToStream(AStream: TStream): DWord; override;
   end;
 
@@ -51,7 +51,7 @@ type
     function ReadImageFromStream(AStream: TStream): boolean;
     Function GetCommonTags: TCommonTags; override;
     Procedure SetCommonTags(CommonTags :TCommonTags); override;
-    function ReadFromStream(AStream: TStream): boolean; override;
+    function ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean; override;
     function WriteToStream(AStream: TStream): DWord; override;
   end;
 
@@ -70,7 +70,7 @@ begin
   fValue:= AValue;
 end;
 
-function TVorbisFrame.ReadFromStream(AStream: TStream): boolean;
+function TVorbisFrame.ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean;
 var
   fSize:Cardinal;
   Data: array of char;
@@ -199,7 +199,7 @@ begin
 
 end;
 
-function TVorbisTags.ReadFromStream(AStream: TStream): boolean;
+function TVorbisTags.ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean;
 var
   fSize: cardinal;
   Data: array of char;
