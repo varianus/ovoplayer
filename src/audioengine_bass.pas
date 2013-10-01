@@ -75,7 +75,7 @@ Const
   BASSMAXVOLUME = 1;
 { TAudioEngineBASS }
 
-procedure PlayEndSync(SyncHandle: HSYNC; Channel, Data, user: DWORD); stdcall;
+procedure PlayEndSync(SyncHandle: HSYNC; Channel, Data: DWORD;user:pointer); stdcall;
 begin
   TAudioEngineBASS(User).PostCommand(ecNext);
 end;
@@ -158,14 +158,20 @@ begin
   for I := 0 to 9 do
      Plugins[i] := 0;
   //
+  {$IFDEF WINDOWS}
   LoadPlugin('BASSWMA.DLL', 0, 0);
   LoadPlugin('BASSFLAC.DLL', 1, 0);
-
-  //LoadPlugin('BASS_AAC.DLL', 1, 0);
-  //LoadPlugin('BASS_AC3.DLL', 2, 0);
-  //LoadPlugin('BASSCD.DLL', 3, 0);
+  LoadPlugin('BASS_AAC.DLL', 2, 0);
+  //LoadPlugin('BASS_AC3.DLL', 3, 0);
+  //LoadPlugin('BASSCD.DLL', 4, 0);
   //LoadPlugin('BASSMIDI.DLL', 5, 0);
   //LoadPlugin('BASSWV.DLL', 6, 0);
+  {$ENDIF WINDOWS}
+  {$IFDEF LINUX}
+  LoadPlugin('libbassflac.so', 1, 0);
+  //LoadPlugin('BASS_AAC.DLL', 1, 0);
+  {$ENDIF LINUX}
+
   fdecoupler := TDecoupler.Create;
   fdecoupler.OnCommand := ReceivedCommand;
 
