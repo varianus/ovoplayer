@@ -440,7 +440,10 @@ end;
 function TBackEnd.GetMetadata: TCommonTags;
 begin
   If Assigned(PlayList.CurrentItem) then
-     Result:=PlayList.CurrentItem.Tags;
+     Result:=PlayList.CurrentItem.Tags
+  else
+     ClearTags(Result);
+
 end;
 
 procedure TBackEnd.Seek(AValue: int64);
