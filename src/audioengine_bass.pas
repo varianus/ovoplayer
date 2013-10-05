@@ -70,7 +70,7 @@ type
 
 
 implementation
-
+uses dl;
 Const
   BASSMAXVOLUME = 1;
 { TAudioEngineBASS }
@@ -134,12 +134,16 @@ procedure TAudioEngineBASS.LoadPlugin(FileName: string; Index: integer; Flags: i
 
 var
   Info: BASS_PLUGININFO;
-  i:    integer;
 begin
-  Plugins[Index] := BASS_PluginLoad(PAnsiChar(AnsiString(FileName)), Flags);
+
+  Plugins[Index] := BASS_PluginLoad(PChar(FileName), Flags);
   if Plugins[index] = 0  then
-     exit;
+     begin
+        DebugLn('Bass plugin error: ',dlerror());
+        exit;
+     end;
   Info := BASS_PluginGetInfo(Plugins[Index])^;
+
 //  for I := 0 to info.formatc - 1 do
 //    AddInfo(Info.formats[i].Name, Info.formats[i].Exts);
 end;
@@ -162,14 +166,15 @@ begin
   LoadPlugin('BASSWMA.DLL', 0, 0);
   LoadPlugin('BASSFLAC.DLL', 1, 0);
   LoadPlugin('BASS_AAC.DLL', 2, 0);
-  //LoadPlugin('BASS_AC3.DLL', 3, 0);
+  LoadPlugin('BASS_APE.DLL', 3, 0);
   //LoadPlugin('BASSCD.DLL', 4, 0);
   //LoadPlugin('BASSMIDI.DLL', 5, 0);
   //LoadPlugin('BASSWV.DLL', 6, 0);
   {$ENDIF WINDOWS}
   {$IFDEF LINUX}
   LoadPlugin('libbassflac.so', 1, 0);
-  //LoadPlugin('BASS_AAC.DLL', 1, 0);
+  LoadPlugin('libbass_aac.so', 2, 0);
+  LoadPlugin('libbass_ape.so', 3, 0);
   {$ENDIF LINUX}
 
   fdecoupler := TDecoupler.Create;
@@ -323,4 +328,4 @@ end;
 initialization
   RegisterEngineClass(TAudioEngineBASS, 3, false, true);
 
-end.
+end.

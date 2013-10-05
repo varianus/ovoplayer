@@ -841,6 +841,9 @@ function BASS_SetEAXPreset(env: Integer): BOOL;
 }
 
 implementation
+{$IFDEF LINUX}
+uses dl;
+{$ENDIF}
 
 Function isLoaded :boolean;
 begin
@@ -853,7 +856,12 @@ begin
   if IsLoaded then result:=true {is it already there ?}
   else begin {go & load the library}
     if Length(dllfilename) = 0 then exit;
-    BASS_Handle:=DynLibs.LoadLibrary(dllfilename); // obtain the handle we want
+    {$IFDEF LINUX}
+       BASS_Handle:= PtrInt(dlopen(pchar(dllfilename), RTLD_GLOBAL + RTLD_NOW));
+    {$ELSE}
+       BASS_Handle:= DynLibs.LoadLibrary(dllfilename); // obtain the handle we want
+    {$ENDIF}
+
 
     if BASS_Handle <> DynLibs.NilHandle then
        begin {now we tie the functions to the VARs from above}
@@ -1165,4 +1173,4 @@ end;
 
 initialization
   BASS_Handle := DynLibs.NilHandle;
-end.
+end.
