@@ -70,7 +70,9 @@ type
 
 
 implementation
-uses dl;
+uses
+  dynlibs;
+
 Const
   BASSMAXVOLUME = 1;
 { TAudioEngineBASS }
@@ -139,7 +141,7 @@ begin
   Plugins[Index] := BASS_PluginLoad(PChar(FileName), Flags);
   if Plugins[index] = 0  then
      begin
-        DebugLn('Bass plugin error: ',dlerror());
+        DebugLn('Bass plugin error: ',GetLoadErrorStr);
         exit;
      end;
   Info := BASS_PluginGetInfo(Plugins[Index])^;
@@ -328,4 +330,4 @@ end;
 initialization
   RegisterEngineClass(TAudioEngineBASS, 3, false, true);
 
-end.
+end.
