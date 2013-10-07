@@ -18,7 +18,7 @@ object fMainForm: TfMainForm
   OnResize = FormResize
   OnShow = FormShow
   ShowHint = True
-  LCLVersion = '1.1'
+  LCLVersion = '1.3'
   object pcMain: TPageControl
     Left = 0
     Height = 674
@@ -878,7 +878,6 @@ object fMainForm: TfMainForm
   object TrayIcon: TTrayIcon
     BalloonFlags = bfInfo
     BalloonTitle = 'Now Playing'
-    PopUpMenu = TrayMenu
     Visible = True
     OnClick = TrayIconClick
     OnDblClick = TrayIconDblClick

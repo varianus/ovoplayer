@@ -2212,9 +2212,9 @@ procedure TfMainForm.TrayIconMouseDown(Sender: TObject; Button: TMouseButton;
 var
   pt : Tpoint;
 begin
-  if Button = mbMiddle then
+  pt:=TrayIcon.GetPosition;
+  if button = mbMiddle then
     begin
-      pt:=TrayIcon.GetPosition;
       if not Assigned(fMiniPlayer) then
         fMiniPlayer:= TfMiniPlayer.Create(Self);
 
@@ -2222,7 +2222,23 @@ begin
          fMiniPlayer.Hide
       else
         fMiniPlayer.ShowAtPos(pt.x,pt.y);
-    end;
+     end;
+
+  {$IFDEF WINDOWS}
+   if Button = mbRight then
+      begin
+        SetForegroundWindow(TrayIcon.Handle);
+        PostMessage(TrayIcon.Handle, 0, 0, 0);
+        TrayMenu.PopUp(x,y);
+      end;
+  {$ENDIF}
+  {$IFDEF LINUX}
+  if Button = mbLeft then
+     begin
+       TrayMenu.PopUp(x,y);
+     end;
+  {$ENDIF}
+
 end;
 
 procedure TfMainForm.PlaylistTreeDblClick(Sender: TObject);
@@ -2444,4 +2460,4 @@ begin
        end;
 end;
 
-end.
+end.
