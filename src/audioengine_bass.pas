@@ -87,6 +87,7 @@ var
   tmpVol: single;
 begin
   Result := -1;
+  if Channel = 0 then exit;
   BASS_ChannelGetAttribute(Channel,BASS_ATTRIB_VOL, tmpVol);
   Result := trunc(tmpVol  * (255 / BASSMAXVOLUME));
 
@@ -110,6 +111,9 @@ var
   MilliSec: integer;
   FloatPos: FLOAT;
 begin
+  result := 0;
+  if Channel = 0 then
+     exit;
   SongPos  := BASS_ChannelGetPosition(Channel, BASS_POS_BYTE);
   FloatPos := BASS_ChannelBytes2Seconds(Channel, SongPos);
   MilliSec := round(1000 * FloatPos);
@@ -123,6 +127,7 @@ var
   Songpos:Integer;
 begin
   Songpos := AValue;
+  if Channel = 0 then exit;
   SongPos := BASS_ChannelSeconds2Bytes(Channel, SongPos / 1000);
   BASS_ChannelSetPosition(Channel, SongPos, BASS_POS_BYTE);
 end;
@@ -317,7 +322,10 @@ end;
 
 procedure TAudioEngineBASS.Stop;
 begin
+  if Channel <> 0 then
   BASS_ChannelStop(Channel);
+  BASS_StreamFree(Channel);
+  Channel :=0;
 
 end;
 
@@ -330,4 +338,4 @@ end;
 initialization
   RegisterEngineClass(TAudioEngineBASS, 3, false, true);
 
-end.
+end.
