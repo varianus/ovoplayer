@@ -110,8 +110,8 @@ begin
   AStream.Read(wName, 4);
   fflags := BEtoN(AStream.ReadDWord);
   AStream.ReadDWord;
-  SetLength(Data, Atom.AtomLength - 8);
-  AStream.Read(Data[0], Atom.AtomLength - 16);
+  SetLength(Data, fSize - 16 + 1);
+  AStream.Read(Data[0], fSize - 16+1 );
 
   Result:= true;
 
