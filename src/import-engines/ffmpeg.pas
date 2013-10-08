@@ -32,7 +32,7 @@ uses
   ctypes;
 
 const
-  AV_NUM_DATA_POINTERS = 4;
+  AV_NUM_DATA_POINTERS = 8;
 const
   AVSEEK_FLAG_BACKWARD = 1; ///< seek backward
   AVSEEK_FLAG_BYTE     = 2; ///< seeking based on position in bytes
@@ -218,9 +218,16 @@ uses
   Classes, SysUtils, dynlibs;
 
 const
+{$IFDEF WINDOWS}
+  av_codec = 'avcodec-54.dll';
+  av_format = 'avformat-54.dll';
+  av_util = 'avutil-51.dll';
+{$ENDIF}
+{$IFDEF LINUX}
   av_codec = 'libavcodec.so.53';
   av_format = 'libavformat.so.53';
   av_util = 'libavutil.so.51';
+{$ENDIF}
 
 var
   av_codec_handle : THandle;

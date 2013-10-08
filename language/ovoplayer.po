@@ -58,14 +58,17 @@ msgid "Updated:"
 msgstr ""
 
 #: tbackend.actexit.caption
+msgctxt "tbackend.actexit.caption"
 msgid "Quit"
 msgstr ""
 
 #: tbackend.actimportdirectory.caption
+msgctxt "tbackend.actimportdirectory.caption"
 msgid "Import Directory ..."
 msgstr ""
 
 #: tbackend.actmute.caption
+msgctxt "tbackend.actmute.caption"
 msgid "Mute"
 msgstr ""
 
@@ -105,22 +108,27 @@ msgid "Add Files ..."
 msgstr ""
 
 #: tbackend.actplaylistclear.caption
+msgctxt "tbackend.actplaylistclear.caption"
 msgid "Clear"
 msgstr ""
 
 #: tbackend.actplaylistload.caption
+msgctxt "tbackend.actplaylistload.caption"
 msgid "Load Playlist ..."
 msgstr ""
 
 #: tbackend.actplaylistload.hint
+msgctxt "tbackend.actplaylistload.hint"
 msgid "Load a Playlist"
 msgstr ""
 
 #: tbackend.actplaylistsave.caption
+msgctxt "tbackend.actplaylistsave.caption"
 msgid "Save PlayList ..."
 msgstr ""
 
 #: tbackend.actplaylistsave.hint
+msgctxt "tbackend.actplaylistsave.hint"
 msgid "Save current playlist"
 msgstr ""
 
@@ -140,18 +148,22 @@ msgid "Previous"
 msgstr ""
 
 #: tbackend.actremovemissing.caption
+msgctxt "tbackend.actremovemissing.caption"
 msgid "Remove Missing"
 msgstr ""
 
 #: tbackend.actrepeatalbum.caption
+msgctxt "tbackend.actrepeatalbum.caption"
 msgid "Repeat Album"
 msgstr ""
 
 #: tbackend.actrepeatall.caption
+msgctxt "tbackend.actrepeatall.caption"
 msgid "Repeat Playlist"
 msgstr ""
 
 #: tbackend.actrepeatnone.caption
+msgctxt "tbackend.actrepeatnone.caption"
 msgid "Not Repeat"
 msgstr ""
 
@@ -161,18 +173,22 @@ msgid "Repeat track"
 msgstr ""
 
 #: tbackend.actrescancollection.caption
+msgctxt "tbackend.actrescancollection.caption"
 msgid "Update Collection"
 msgstr ""
 
 #: tbackend.actrestart.caption
+msgctxt "tbackend.actrestart.caption"
 msgid "Restart"
 msgstr ""
 
 #: tbackend.actskipbackward.caption
+msgctxt "tbackend.actskipbackward.caption"
 msgid "Skip Backward"
 msgstr ""
 
 #: tbackend.actskipforward.caption
+msgctxt "tbackend.actskipforward.caption"
 msgid "Skip Forward"
 msgstr ""
 
@@ -193,6 +209,161 @@ msgstr ""
 
 #: tbackend.opendialogplaylist.title
 msgctxt "TBACKEND.OPENDIALOGPLAYLIST.TITLE"
+msgid "Open Playlist"
+msgstr ""
+
+#: tdm.actexit.caption
+msgctxt "TDM.ACTEXIT.CAPTION"
+msgid "Quit"
+msgstr ""
+
+#: tdm.actimportdirectory.caption
+msgctxt "TDM.ACTIMPORTDIRECTORY.CAPTION"
+msgid "Import Directory ..."
+msgstr ""
+
+#: tdm.actmute.caption
+msgctxt "TDM.ACTMUTE.CAPTION"
+msgid "Mute"
+msgstr ""
+
+#: tdm.actnext.caption
+msgctxt "TDM.ACTNEXT.CAPTION"
+msgid "Next"
+msgstr ""
+
+#: tdm.actnext.hint
+msgctxt "TDM.ACTNEXT.HINT"
+msgid "Next"
+msgstr ""
+
+#: tdm.actpause.caption
+msgctxt "TDM.ACTPAUSE.CAPTION"
+msgid "Pause"
+msgstr ""
+
+#: tdm.actpause.hint
+msgctxt "TDM.ACTPAUSE.HINT"
+msgid "Pause"
+msgstr ""
+
+#: tdm.actplay.caption
+msgctxt "TDM.ACTPLAY.CAPTION"
+msgid "Play"
+msgstr ""
+
+#: tdm.actplay.hint
+msgctxt "TDM.ACTPLAY.HINT"
+msgid "Play"
+msgstr ""
+
+#: tdm.actplaylistaddfiles.caption
+msgctxt "TDM.ACTPLAYLISTADDFILES.CAPTION"
+msgid "Add Files ..."
+msgstr ""
+
+#: tdm.actplaylistclear.caption
+msgctxt "TDM.ACTPLAYLISTCLEAR.CAPTION"
+msgid "Clear"
+msgstr ""
+
+#: tdm.actplaylistload.caption
+msgctxt "TDM.ACTPLAYLISTLOAD.CAPTION"
+msgid "Load Playlist ..."
+msgstr ""
+
+#: tdm.actplaylistload.hint
+msgctxt "TDM.ACTPLAYLISTLOAD.HINT"
+msgid "Load a Playlist"
+msgstr ""
+
+#: tdm.actplaylistsave.caption
+msgctxt "TDM.ACTPLAYLISTSAVE.CAPTION"
+msgid "Save PlayList ..."
+msgstr ""
+
+#: tdm.actplaylistsave.hint
+msgctxt "TDM.ACTPLAYLISTSAVE.HINT"
+msgid "Save current playlist"
+msgstr ""
+
+#: tdm.actplaylistshuffle.caption
+msgctxt "TDM.ACTPLAYLISTSHUFFLE.CAPTION"
+msgid "Shuffle"
+msgstr ""
+
+#: tdm.actprevious.caption
+msgctxt "TDM.ACTPREVIOUS.CAPTION"
+msgid "Previous"
+msgstr ""
+
+#: tdm.actprevious.hint
+msgctxt "TDM.ACTPREVIOUS.HINT"
+msgid "Previous"
+msgstr ""
+
+#: tdm.actremovemissing.caption
+msgctxt "TDM.ACTREMOVEMISSING.CAPTION"
+msgid "Remove Missing"
+msgstr ""
+
+#: tdm.actrepeatalbum.caption
+msgctxt "TDM.ACTREPEATALBUM.CAPTION"
+msgid "Repeat Album"
+msgstr ""
+
+#: tdm.actrepeatall.caption
+msgctxt "TDM.ACTREPEATALL.CAPTION"
+msgid "Repeat Playlist"
+msgstr ""
+
+#: tdm.actrepeatnone.caption
+msgctxt "TDM.ACTREPEATNONE.CAPTION"
+msgid "Not Repeat"
+msgstr ""
+
+#: tdm.actrepeattrack.caption
+msgctxt "TDM.ACTREPEATTRACK.CAPTION"
+msgid "Repeat track"
+msgstr ""
+
+#: tdm.actrescancollection.caption
+msgctxt "TDM.ACTRESCANCOLLECTION.CAPTION"
+msgid "Update Collection"
+msgstr ""
+
+#: tdm.actrestart.caption
+msgctxt "TDM.ACTRESTART.CAPTION"
+msgid "Restart"
+msgstr ""
+
+#: tdm.actskipbackward.caption
+msgctxt "TDM.ACTSKIPBACKWARD.CAPTION"
+msgid "Skip Backward"
+msgstr ""
+
+#: tdm.actskipforward.caption
+msgctxt "TDM.ACTSKIPFORWARD.CAPTION"
+msgid "Skip Forward"
+msgstr ""
+
+#: tdm.actstop.caption
+msgctxt "TDM.ACTSTOP.CAPTION"
+msgid "Stop"
+msgstr ""
+
+#: tdm.actstop.hint
+msgctxt "TDM.ACTSTOP.HINT"
+msgid "Stop"
+msgstr ""
+
+#: tdm.opendialogfiles.title
+msgctxt "TDM.OPENDIALOGFILES.TITLE"
+msgid "Open Playlist"
+msgstr ""
+
+#: tdm.opendialogplaylist.title
+msgctxt "TDM.OPENDIALOGPLAYLIST.TITLE"
 msgid "Open Playlist"
 msgstr ""
 

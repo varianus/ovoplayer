@@ -145,13 +145,13 @@ begin
       Application.ShowMainForm := False;
       //Calling Terminate directly here would cause a crash under gtk2 in LCL < 0.9.31
       //todo: remove the workaround after a release with LCL > 0.9.31
-      //Application.Terminate;
+      Application.Terminate;
 
       //calling as an async call will not work also since it will lead to a zombie process
       //Application.QueueAsyncCall(@TerminateApp, 0);
 
       //New try:
-      Application.AddOnIdleHandler(@TerminateApp);
+      //Application.AddOnIdleHandler(@TerminateApp);
     end
     else
     begin

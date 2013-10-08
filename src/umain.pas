@@ -2036,7 +2036,7 @@ begin
      begin
        BackEnd.PlayList[i].TmpRating:=-1;
      end;
-
+   sgPlayList.invalidate;
 end;
 
 procedure TfMainForm.sgPlayListMouseMove(Sender: TObject; Shift: TShiftState;
@@ -2053,7 +2053,8 @@ begin
        R1 := sgPlayList.CellRect(ACol, ARow);
        Rating := trunc(((x - R1.Left) * 10) / RateStars.Width) ;
        BackEnd.PlayList[ARow-1].TmpRating:=rating;
-       sgPlayList.InvalidateCell(ACol, ARow);
+//       sgPlayList.InvalidateCell(ACol, ARow);
+       sgPlayList.Invalidate;
      end;
 
   if fSourceIndex < 1 then

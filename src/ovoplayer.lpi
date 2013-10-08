@@ -475,7 +475,7 @@ if TargetOS = 'linux' then
       <Unit65>
         <Filename Value="audioengine_xine.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="audioengine_xine"/>
+        <UnitName Value="audioengine_Xine"/>
       </Unit65>
       <Unit66>
         <Filename Value="import-engines\ctypes.inc"/>
@@ -573,4 +573,4 @@ if TargetOS = 'linux' then
       </Item4>
     </Exceptions>
   </Debugging>
-</CONFIG>
+</CONFIG>

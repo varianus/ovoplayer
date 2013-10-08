@@ -80,7 +80,7 @@ begin
 
   if not isAppRunning(Application) then
    begin
-      Application.Title:=DisplayAppName;
+      Application.Title:='OvoPlayer';
       Application.Initialize;
       Application.CreateForm(TDM, dm);
       Application.CreateForm(TfMainForm, fMainForm);
