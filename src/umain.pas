@@ -2213,7 +2213,6 @@ procedure TfMainForm.TrayIconMouseDown(Sender: TObject; Button: TMouseButton;
 var
   pt : Tpoint;
 begin
-  pt:=TrayIcon.GetPosition;
   if button = mbMiddle then
     begin
       if not Assigned(fMiniPlayer) then
@@ -2222,7 +2221,10 @@ begin
       if fMiniPlayer.Visible then
          fMiniPlayer.Hide
       else
-        fMiniPlayer.ShowAtPos(pt.x,pt.y);
+        begin
+          pt:=TrayIcon.GetPosition;
+          fMiniPlayer.ShowAtPos(pt.x,pt.y);
+        end;
      end;
 
   {$IFDEF WINDOWS}
@@ -2236,7 +2238,8 @@ begin
   {$IFDEF LINUX}
   if Button = mbLeft then
      begin
-       TrayMenu.PopUp(x,y);
+       pt:=Mouse.CursorPos; // X and Y from event are sometimes wrong on gtk2
+       TrayMenu.PopUp(pt.x,pt.y);
      end;
   {$ENDIF}
 
@@ -2461,4 +2464,4 @@ begin
        end;
 end;
 
-end.
+end.
