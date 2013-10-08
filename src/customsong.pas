@@ -16,14 +16,12 @@ type
     FAdded: TDateTime;
     FId: Integer;
     FLastPlay: TDateTime;
-    FMissing: boolean;
     FPlayCount: Integer;
     FRating: Integer;
     FtmpRating: integer;
     procedure SetAdded(AValue: TDateTime);
     procedure SetId(AValue: Integer);
     procedure SetLastPlay(AValue: TDateTime);
-    procedure SetMissing(AValue: boolean);
     procedure SetPlayCount(AValue: Integer);
     procedure SetRating(AValue: Integer);
     procedure SettmpRating(AValue: integer);
@@ -36,7 +34,6 @@ type
     Property tmpRating: integer read FtmpRating write SettmpRating;
     Property Added : TDateTime read FAdded write SetAdded;
     Property LastPlay : TDateTime read FLastPlay write SetLastPlay;
-    Property Missing: boolean read FMissing write SetMissing;
 
   end;
 
@@ -60,12 +57,6 @@ procedure TCustomSong.SetLastPlay(AValue: TDateTime);
 begin
   if FLastPlay=AValue then Exit;
   FLastPlay:=AValue;
-end;
-
-procedure TCustomSong.SetMissing(AValue: boolean);
-begin
-  if FMissing=AValue then Exit;
-  FMissing:=AValue;
 end;
 
 procedure TCustomSong.SetPlayCount(AValue: Integer);
