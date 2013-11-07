@@ -109,6 +109,7 @@ type
     constructor Create; override;
     destructor Destroy; override;
     function ReadFromStream(AStream:TStream; ExtInfo:pointer=nil):boolean; override;
+    function WriteToStream(AStream:TStream):DWord; override;
     Property FrameRef: TFrameElement read FFrameRef write SetFrameRef;
     Property Image: TStream read FImage write SetImage;
   end;
@@ -268,6 +269,11 @@ end;
 function TImageElement.ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean;
 begin
   Result:=False;
+end;
+
+function TImageElement.WriteToStream(AStream: TStream): DWord;
+begin
+  result := 0;
 end;
 
 constructor TImageElement.Create;
