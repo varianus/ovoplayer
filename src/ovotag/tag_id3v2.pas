@@ -66,7 +66,7 @@ type
 
   TID3Tags = class(TTags)
   private
-    fSize: integer;
+    fSize: DWORD;
     procedure DecodeFrameToImage(Frame: TID3Frame; Image: TImageElement);
     function GetBestMatch(Index1, Index2: integer; NewFrame: boolean): string;
     function ImportFromID3V1(AStream: TStream): boolean;
@@ -74,7 +74,7 @@ type
     Version: word;
     FromV1: boolean;
   public
-    property Size: integer read fSize;
+    property Size: DWORD read fSize;
     function GetCommonTags: TCommonTags; override;
     procedure SetCommonTags(CommonTags: TCommonTags); override;
     function ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean; override;
@@ -458,7 +458,7 @@ var
 //  tmpStr: PChar;
 //  tmpL: DWord;
   DataSize : DWord;
-  headsize : integer;
+  headsize : DWord;
 
 begin
   if fSize = 0 then
