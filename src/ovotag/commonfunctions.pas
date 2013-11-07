@@ -79,7 +79,6 @@ end;
 
 function SyncSafe_Encode(const SyncDWord: DWord): DWord;
 var
-   b: array [0..3] of byte absolute SyncDWord;
    tmp : DWord;
 begin
 //
@@ -94,8 +93,6 @@ result := NtoBE((tmp and $7F) or ((tmp and $3F80) shl 1)
 end;
 
 function SyncSafe_Decode(const SyncDWord: DWord): DWord;
-var
-   b: array [0..3] of byte absolute SyncDWord;
 begin
  result:=((SyncDWord and $000000ff) shl 21) xor
          ((SyncDWord and $0000ff00) shl  6) xor
@@ -309,12 +306,12 @@ end;
 
 function SetBit(const Value: DWord; const Bit: byte): DWord;
 begin
-  Result := Value or (1 shl Bit);
+  Result := Value or DWord(1 shl Bit);
 end;
 
 function EnableBit(const Value: DWord; const Bit: byte; const TurnOn: boolean): DWord;
 begin
-  Result := (Value or (1 shl Bit)) xor (integer(not TurnOn) shl Bit);
+  Result := (Value or DWord(1 shl Bit)) xor DWord(integer(not TurnOn) shl Bit);
 end;
 
 end.
