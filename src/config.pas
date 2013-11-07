@@ -125,8 +125,13 @@ const
   IdentResourcesPath = 'ResourcesPath';
 
 const
+ {$ifdef UNIX}
   DefaultDirectory = '/usr/share/ovoplayer/';
+ {$endif}
+
+ {$ifdef DARWIN}
   BundleResourcesDirectory = '/Contents/Resources/';
+ {$endif}
 
   SectionGeneral = 'General';
 
@@ -366,4 +371,4 @@ begin
 
 end;
 
-end.
+end.
