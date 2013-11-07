@@ -348,7 +348,7 @@ end;
 function FindFrame(const Data: array of byte; var VBR: VBRData): FrameData;
 var
   HeaderData: array [1..4] of byte;
-  Iterator, VBRIdx: integer;
+  Iterator, VBRIdx: DWORD;
 begin
   { Search for valid frame }
   FillChar(Result, SizeOf(Result), 0);

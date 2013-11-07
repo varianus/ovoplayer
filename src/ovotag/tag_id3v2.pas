@@ -312,12 +312,12 @@ end;
 function TID3Tags.WriteToStream(AStream: TStream): Dword;
 var
   header: TID3Header;
-  tmpSize: integer;
+  tmpSize: DWORD;
   i: integer;
-  pos: integer;
   HeadSize : integer;
+//  CurrPos: int64;
 begin
-  pos := AStream.Position;
+//  CurrPos := AStream.Position;
   header.Marker := ID3_HEADER_MARKER;
   Header.Version := Version;
   if Version >= TAG_VERSION_2_3 then

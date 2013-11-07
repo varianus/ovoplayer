@@ -118,9 +118,6 @@ begin
 end;
 
 procedure TForm1.MapToTags;
-var
-  i: integer;
-  ImageStream: TMemoryStream;
 begin
   CommonTags.FileName    := leFileName.Caption;
   CommonTags.Artist      := edArtist.Caption;
@@ -166,8 +163,6 @@ begin
 end;
 
 procedure TForm1.bSaveAsClick(Sender: TObject);
-var
-  i: integer;
 begin
   if TagReader = nil then
     exit;

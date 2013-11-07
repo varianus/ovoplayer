@@ -212,7 +212,7 @@ begin
    dec(size);
    size:=size and $fffffffe;
    l:=0;
-   while (l<size) and (pword(PtrUInt(p)+l)^<>0) do inc(l,2);
+   while (l<size) and (pword(p+l)^<>0) do inc(l,2);
    if l=0 then
     be:=false
    else begin
@@ -239,7 +239,7 @@ begin
    inc(p);
    dec(size);
    l:=0;
-   while (l<size) and (pbyte(PtrUInt(p)+l)^<>0) do inc(l);
+   while (l<size) and (pbyte(p+l)^<>0) do inc(l);
    result:=UTF8Decode(copy(pchar(p),1,l));
   end;
  end;

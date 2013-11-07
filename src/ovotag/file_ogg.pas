@@ -228,7 +228,7 @@ var
   crc, savepos, offs, OldSize: DWORD;
   LacingArray: array [1..$FF] of byte;
 
-  procedure SetLacingValues(const NewTagSize: integer);
+  procedure SetLacingValues(const NewTagSize: DWORD);
   var
     Index, Position, Value: integer;
     Buffer: array [1..$FF] of byte;

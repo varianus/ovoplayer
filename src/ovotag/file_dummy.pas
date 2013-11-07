@@ -25,7 +25,7 @@ unit file_Dummy;
 interface
 
 uses
-  Classes, SysUtils, AudioTag, baseTag, tag_Dummy;
+  Classes, SysUtils, baseTag, tag_Dummy;
 
 const
   DummyFileMask: string    = '';
@@ -38,8 +38,6 @@ type
   TDummyReader = class(TTagReader)
   private
     fTags: TTags;
-    FSampleRate: integer;
-    FSamples: int64;
   protected
     function GetDuration: int64; override;
     function GetTags: TTags; override;
