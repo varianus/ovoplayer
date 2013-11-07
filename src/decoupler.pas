@@ -99,7 +99,7 @@ constructor TDecoupler.Create;
 begin
   DecoupThread := TDecoupThread.Create;
   DecoupThread.Owner := self;
-  DecoupThread.Resume;
+  DecoupThread.Start;
 end;
 
 destructor TDecoupler.Destroy;
