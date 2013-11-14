@@ -46,7 +46,7 @@ uses
 implementation
 
 uses
-  SimpleIpc, SimpleIPCWrapper, UniqueInstanceBase;
+  SimpleIpc, UniqueInstanceBase;
   
 function InstanceRunning(const Identifier: String; SendParameters: Boolean; DoInitServer: Boolean): Boolean;
   
@@ -58,7 +58,7 @@ begin
   with Client do
   try
     ServerId := GetServerId(Identifier);
-    Result := IsServerRunning(Client);
+    Result := Client.ServerRunning;
     if not Result then
     begin
       if DoInitServer then

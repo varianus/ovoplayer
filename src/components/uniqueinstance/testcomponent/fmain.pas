@@ -50,11 +50,14 @@ procedure TForm1.UniqueInstance1OtherInstance(Sender: TObject; Count: Integer;
 var
   i:Integer;
 begin
-  Label1.Caption:='A new instance was created. '+ IntToStr(Count)+' Parameters';
+  Label1.Caption:=Format('A new instance was created with %d parameter(s):', [Count]);
   ListBox1.Clear;
   for i := 0 to Count - 1 do
     ListBox1.Items.Add(Parameters[i]);
   BringToFront;
+  //hack to force app bring to front
+  FormStyle := fsSystemStayOnTop;
+  FormStyle := fsNormal;
 end;
 
 procedure TForm1.ButCrashAppClick(Sender: TObject);

@@ -2392,7 +2392,11 @@ end;
 procedure TfMainForm.OnExternalCommand(Sender: Tobject; Command: String);
 begin
   if Command = 'activate' then
-     Show;
+    begin
+       FormStyle := fsSystemStayOnTop;
+       FormStyle := fsNormal;
+       Show;
+    end;
 
 end;
 
@@ -2464,4 +2468,4 @@ begin
        end;
 end;
 
-end.
+end.

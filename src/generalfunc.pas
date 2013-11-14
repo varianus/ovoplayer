@@ -40,8 +40,7 @@ uses
 {$IFDEF unix}
   BaseUnix,
 {$ENDIF}
- SimpleIPC, SimpleIPCWrapper,
- AsyncProcess;
+ SimpleIPC, AsyncProcess;
 
 Function Restart(Application:TCustomApplication):Boolean;
 var
@@ -80,7 +79,7 @@ begin
    with Client do
      try
        ServerId := BaseServerId + AppName;
-       Result := IsServerRunning(Client);
+       Result := Client.ServerRunning;
        if result then
           begin
             Active := true;
@@ -152,4 +151,4 @@ begin
 
 end;
 
-end.
+end.

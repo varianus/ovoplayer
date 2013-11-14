@@ -21,9 +21,6 @@ function GetServerId(const Identifier: String): String;
 
 implementation
 
-uses
-  SimpleIPCWrapper;
-
 const
   BaseServerId = 'tuniqueinstance_';
 
@@ -35,7 +32,7 @@ begin
     FIPCServer := TSimpleIPCServer.Create(nil);
     FIPCServer.ServerID := ServerId;
     FIPCServer.Global := True;
-    InitServer(FIPCServer);
+    FIPCServer.StartServer;
   end;
 end;
 

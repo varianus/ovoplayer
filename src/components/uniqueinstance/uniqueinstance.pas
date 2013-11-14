@@ -39,7 +39,7 @@ interface
 
 uses
   Forms, Classes, SysUtils, simpleipc, ExtCtrls;
-  
+
 type
 
   TOnOtherInstance = procedure (Sender : TObject; ParamCount: Integer; Parameters: array of String) of object;
@@ -52,8 +52,8 @@ type
     FOnOtherInstance: TOnOtherInstance;
     FUpdateInterval: Cardinal;
     FEnabled: Boolean;
+FPriorInstanceRunning: Boolean;
     procedure ReceiveMessage(Sender: TObject);
-    procedure TerminateApp(Sender: TObject; var Done: Boolean);
     {$ifdef unix}
     procedure CheckMessage(Sender: TObject);
     {$endif}
@@ -61,6 +61,7 @@ type
     procedure Loaded; override;
   public
     constructor Create(AOwner: TComponent); override;
+property PriorInstanceRunning: Boolean read FPriorInstanceRunning;
   published
     property Enabled: Boolean read FEnabled write FEnabled default False;
     property Identifier: String read FIdentifier write FIdentifier;
@@ -71,7 +72,7 @@ type
 implementation
 
 uses
-  StrUtils, SimpleIPCWrapper, UniqueInstanceBase;
+StrUtils, UniqueInstanceBase;
 
 { TUniqueInstance }
 
@@ -115,13 +116,6 @@ begin
 end;
 {$endif}
 
-procedure TUniqueInstance.TerminateApp(Sender: TObject; var Done: Boolean);
-begin
-  Application.Terminate;
-  //necessary to avoid being a zombie
-  Done := False;
-end;
-
 procedure TUniqueInstance.Loaded;
 var
   IPCClient: TSimpleIPCClient;
@@ -133,8 +127,10 @@ begin
   begin
     IPCClient := TSimpleIPCClient.Create(Self);
     IPCClient.ServerId := GetServerId(FIdentifier);
-    if IsServerRunning(IPCClient) then
+    if IPCClient.ServerRunning then
     begin
+      //A older instance is running.
+      FPriorInstanceRunning := True;
       //A instance is already running
       //Send a message and then exit
       if Assigned(FOnOtherInstance) then
@@ -143,15 +139,7 @@ begin
         IPCClient.SendStringMessage(ParamCount, GetFormattedParams);
       end;
       Application.ShowMainForm := False;
-      //Calling Terminate directly here would cause a crash under gtk2 in LCL < 0.9.31
-      //todo: remove the workaround after a release with LCL > 0.9.31
-      //Application.Terminate;
-
-      //calling as an async call will not work also since it will lead to a zombie process
-      //Application.QueueAsyncCall(@TerminateApp, 0);
-
-      //New try:
-      Application.AddOnIdleHandler(@TerminateApp);
+      Application.Terminate;
     end
     else
     begin
