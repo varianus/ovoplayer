@@ -764,6 +764,7 @@ begin
 
   ShowNotification;
 
+
   id:= BackEnd.mediaLibrary.IDFromFullName(BackEnd.PlayList.CurrentItem.FullName);
   if id > -1 then
      BackEnd.mediaLibrary.SetSongPlayed(ID);
@@ -792,16 +793,14 @@ begin
       MyNotification.Body:=ASong.Tags.Album + LineEnding + ASong.Tags.Artist + LineEnding +  ASong.Tags.TrackString;
       MyNotification.TimeOut:= NOTIFY_EXPIRES_DEFAULT;
       MyNotification.Urgency:= NOTIFY_URGENCY_NORMAL;
-
-      with TNotificationClient.Create do
-        begin
-          init(DisplayAppName);
-          ShowNotification(MyNotification);
-          UnInit;
-          free;
-        end;
-
-
+      Notifier :=TNotificationClient.Create;
+      try
+        Notifier.init(DisplayAppName);
+        Notifier.ShowNotification(MyNotification);
+        Notifier.UnInit;
+      finally
+        Notifier.free;
+      end;
      {$ELSE} // Use standard balloon hint on other widgetset
       TrayIcon.BalloonTimeout := BackEnd.Config.NotificationParam.TimeOut;
       TrayIcon.BalloonTitle   := ASong.tags.Title;
@@ -1154,6 +1153,8 @@ begin
     FreeAndNil(fMiniPlayer);
 
   PathHistory.Free;
+  PlaylistSelected.ClearAll;
+  PlaylistSelected.SetSize(0);
   PlaylistSelected.Free;
   RatingBack.Free;
   RatingFront.Free;
@@ -2238,6 +2239,7 @@ begin
   {$IFDEF LINUX}
   if Button = mbLeft then
      begin
+       TrayMenu.Close;
        pt:=Mouse.CursorPos; // X and Y from event are sometimes wrong on gtk2
        TrayMenu.PopUp(pt.x,pt.y);
      end;
@@ -2468,4 +2470,4 @@ begin
        end;
 end;
 
-end.
+end.
