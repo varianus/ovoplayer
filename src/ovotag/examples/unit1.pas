@@ -56,6 +56,7 @@ type
     procedure bSave1Click(Sender: TObject);
     procedure bSaveAsClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure ReadTag(Sender: TObject);
   private
     TagReader: TTagReader;
@@ -202,6 +203,13 @@ end;
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   TagReader := nil;
+end;
+
+procedure TForm1.FormDestroy(Sender: TObject);
+begin
+ if Assigned(TagReader) then
+    TagReader.Free;
+
 end;
 
 end.

@@ -265,6 +265,8 @@ begin
      TMp4Atom(children[i]).Free;
   children.Clear;
 
+  children.free;
+
 end;
 
 

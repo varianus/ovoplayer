@@ -43,6 +43,7 @@ type
     function GetSize: DWord; override;
   public
     constructor Create; override;
+    destructor Destroy; override;
     function ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean; override;
     function WriteToStream(AStream: TStream): DWord; override;
   end;
@@ -100,11 +101,18 @@ begin
   inherited Create;
 end;
 
+destructor TMp4Frame.Destroy;
+begin
+  SetLength(Data, 0);
+  inherited Destroy;
+end;
+
 function TMp4Frame.ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean;
 var
   Atom: TMp4Atom;
   wName: AtomName;
 begin
+  SetLength(Data, 0);
   Atom := TMp4Atom(ExtInfo);
   fSize := BEtoN(AStream.ReadDWord);
   AStream.Read(wName, 4);
@@ -112,7 +120,6 @@ begin
   AStream.ReadDWord;
   SetLength(Data, fSize - 16 + 1);
   AStream.Read(Data[0], fSize - 16+1 );
-
   Result:= true;
 
 end;
