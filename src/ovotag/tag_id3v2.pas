@@ -447,6 +447,7 @@ end;
 destructor TID3Frame.Destroy;
 begin
   self.Tagger := nil;
+  SetLength(Data, 0);
   inherited Destroy;
 end;
 

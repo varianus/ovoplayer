@@ -359,6 +359,7 @@ end;
 destructor TfSongInfo.Destroy;
 begin
   SetLength(fTagList, 0);
+  SetLength(fOriginalTag, 0);
   inherited Destroy;
 
 end;

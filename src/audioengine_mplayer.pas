@@ -135,6 +135,7 @@ var
         BytesAvailable := fPlayerProcess.Output.NumBytesAvailable;
         NoMoreOutput   := False;
         end;
+      SetLength(Buffer, 0);
       end
   end;
 

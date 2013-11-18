@@ -193,7 +193,7 @@ begin
     SetLength(tmpValue, ContentDescription.RatingLength);
     AStream.Read(tmpValue[0], ContentDescription.RatingLength);
   end;
-
+ SetLength(tmpValue, 0);
 end;
 
 function TWMAReader.LoadFromFile(AFileName: Tfilename): boolean;

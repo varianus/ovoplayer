@@ -56,6 +56,7 @@ type
     procedure SetSortField(const AValue: TplSortField);
   public
     Constructor Create;
+    Destructor Destroy; override;
     function EnqueueFile(FileName: TFileName): integer;
     function Add(ASong: TCustomSong): integer;
     procedure Delete(Index: integer);
@@ -265,6 +266,12 @@ constructor TPlayList.Create;
 begin
   inherited Create;
   fSavedPointer:=nil;;
+end;
+
+destructor TPlayList.Destroy;
+begin
+ Clear;
+ inherited Destroy;
 end;
 
 function TPlayList.GetCurrentItem: TCustomSong;

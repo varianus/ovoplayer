@@ -136,4 +136,6 @@ end;
 initialization
   setlength(AReaderList, 0);
   RegisterTagReader(DummyFileMask, TDummyReader);
+finalization
+  setlength(AReaderList, 0);
 end.

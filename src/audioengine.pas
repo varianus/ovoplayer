@@ -217,7 +217,7 @@ end;
 
 procedure TAudioEngine.Pause;
 begin
-
+ //
 end;
 
 procedure TAudioEngine.Play(Song: TSong; offset:Integer=0);
@@ -243,5 +243,7 @@ begin
 end;
 
 initialization
+  setlength(EngineArray, 0);
+Finalization
   setlength(EngineArray, 0);
 end.
