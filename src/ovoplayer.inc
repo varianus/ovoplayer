@@ -17,22 +17,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 }
-// Master include File for OVOPlayer Apps
+// Master include File for OVOPlayer application
 //
-{$IFDEF WINDOWS}
-  {$DEFINE SUPPORT_SHAPING} // seems to work only on windows
-{$ENDIF WINDOWS}
-
-{$IFDEF LCLWin32}
-  {$DEFINE SUPPORT_LISTBOX_HINT} // GTK2 have some problems
-{$ENDIF LCLWin32}
-
-//if release is defined, try to be quiet and efficient...
-{$IFDEF RELEASE}
-  {$HINTS OFF}
-  {$INLINE ON}
-{$ENDIF RELEASE}
-
 // Working Audio engines
 // VLC             - Videolan VLC     - Stable
 // BASS            - Un4Seen          - Stable
@@ -42,17 +28,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 // MPLAYER         - Mplayer          - Stable, minor issues
 // UOS             - Various          - Stable, minor issues
 // MEDIAFOUNDATION - Microsoft        - Stable, minor seeking issues, Windows Vista and later only
-
-
+//
 // Engines under development
-// FFMPEG          - FFMpeg           - Broken
-// OPENSOURCELIB   - Varios           - Working with major issues, lighter alternative to UOS
+// FFMPEG          - FFMpeg           - Working, but FFMPEG changes data structures so often that I disabled this
+// OPENSOURCELIB   - Various          - Working with major issues, lighter alternative to UOS
 
 {$IFDEF LINUX}
-  {$DEFINE NEEDCFGSUBDIR} // Need to add a sub-directory to configuration files directory
-  {$DEFINE ASKMMKEYSMODE} // Ask for multimedia keys capture mode
-  {$DEFINE MPRIS2} // MPRIS V2 Interface
-  {$DEFINE NOTIFYDBUS} // use DBus notification
 //
   {$DEFINE GSTREAMER} // GStreamer need glib
   {$DEFINE VLC} //
@@ -87,6 +68,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   {.$DEFINE FFMPEG}
 
 {$ENDIF DARWIN}
+
+// Platform-dependent features
+{$IFDEF LINUX}
+  {$DEFINE NEEDCFGSUBDIR} // Need to add a sub-directory to configuration files directory
+  {$DEFINE ASKMMKEYSMODE} // Ask for multimedia keys capture mode
+  {$DEFINE MPRIS2} // MPRIS V2 Interface
+  {$DEFINE NOTIFYDBUS} // use DBus notification
+{$ENDIF LINUX}  
+
+{$IFDEF WINDOWS}
+  {$DEFINE SUPPORT_SHAPING} // seems to work only on windows
+{$ENDIF WINDOWS}
+
+{$IFDEF LCLWin32}
+  {$DEFINE SUPPORT_LISTBOX_HINT} // GTK2 have some problems
+{$ENDIF LCLWin32}
+
+//if release is defined, try to be quiet and efficient...
+{$IFDEF RELEASE}
+  {$HINTS OFF}
+  {$INLINE ON}
+{$ENDIF RELEASE}
+
 
 
 
