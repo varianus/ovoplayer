@@ -58,14 +58,17 @@ msgid "Updated:"
 msgstr "Aggiornati:"
 
 #: tbackend.actexit.caption
+msgctxt "tbackend.actexit.caption"
 msgid "Quit"
 msgstr "Esci"
 
 #: tbackend.actimportdirectory.caption
+msgctxt "tbackend.actimportdirectory.caption"
 msgid "Import Directory ..."
 msgstr "Importa Directory ..."
 
 #: tbackend.actmute.caption
+msgctxt "tbackend.actmute.caption"
 msgid "Mute"
 msgstr "Silenzia"
 
@@ -105,22 +108,27 @@ msgid "Add Files ..."
 msgstr "Aggiungi files ..."
 
 #: tbackend.actplaylistclear.caption
+msgctxt "tbackend.actplaylistclear.caption"
 msgid "Clear"
 msgstr "Pulisci"
 
 #: tbackend.actplaylistload.caption
+msgctxt "tbackend.actplaylistload.caption"
 msgid "Load Playlist ..."
 msgstr "Carica Playlist ..."
 
 #: tbackend.actplaylistload.hint
+msgctxt "tbackend.actplaylistload.hint"
 msgid "Load a Playlist"
 msgstr "Carica una playlist"
 
 #: tbackend.actplaylistsave.caption
+msgctxt "tbackend.actplaylistsave.caption"
 msgid "Save PlayList ..."
 msgstr "Salva Playlist ..."
 
 #: tbackend.actplaylistsave.hint
+msgctxt "tbackend.actplaylistsave.hint"
 msgid "Save current playlist"
 msgstr "Salva Playlist corrente"
 
@@ -140,18 +148,22 @@ msgid "Previous"
 msgstr "Precedente"
 
 #: tbackend.actremovemissing.caption
+msgctxt "tbackend.actremovemissing.caption"
 msgid "Remove Missing"
 msgstr "Rimuovi Mancanti"
 
 #: tbackend.actrepeatalbum.caption
+msgctxt "tbackend.actrepeatalbum.caption"
 msgid "Repeat Album"
 msgstr "Ripeti Album"
 
 #: tbackend.actrepeatall.caption
+msgctxt "tbackend.actrepeatall.caption"
 msgid "Repeat Playlist"
 msgstr "Ripeti playlist"
 
 #: tbackend.actrepeatnone.caption
+msgctxt "tbackend.actrepeatnone.caption"
 msgid "Not Repeat"
 msgstr "Non ripetere"
 
@@ -161,18 +173,22 @@ msgid "Repeat track"
 msgstr "Ripeti traccia"
 
 #: tbackend.actrescancollection.caption
+msgctxt "tbackend.actrescancollection.caption"
 msgid "Update Collection"
 msgstr "Aggiorna collezione"
 
 #: tbackend.actrestart.caption
+msgctxt "tbackend.actrestart.caption"
 msgid "Restart"
 msgstr "Riavvia"
 
 #: tbackend.actskipbackward.caption
+msgctxt "tbackend.actskipbackward.caption"
 msgid "Skip Backward"
 msgstr "Salta Avanti"
 
 #: tbackend.actskipforward.caption
+msgctxt "tbackend.actskipforward.caption"
 msgid "Skip Forward"
 msgstr "Slata indietro"
 
@@ -193,6 +209,161 @@ msgstr "Apri Playlist"
 
 #: tbackend.opendialogplaylist.title
 msgctxt "TBACKEND.OPENDIALOGPLAYLIST.TITLE"
+msgid "Open Playlist"
+msgstr "Apri Playlist"
+
+#: tdm.actexit.caption
+msgctxt "tdm.actexit.caption"
+msgid "Quit"
+msgstr "Esci"
+
+#: tdm.actimportdirectory.caption
+msgctxt "tdm.actimportdirectory.caption"
+msgid "Import Directory ..."
+msgstr "Importa Directory ..."
+
+#: tdm.actmute.caption
+msgctxt "tdm.actmute.caption"
+msgid "Mute"
+msgstr "Silenzia"
+
+#: tdm.actnext.caption
+msgctxt "tdm.actnext.caption"
+msgid "Next"
+msgstr "Prossimo"
+
+#: tdm.actnext.hint
+msgctxt "tdm.actnext.hint"
+msgid "Next"
+msgstr "Prossimo"
+
+#: tdm.actpause.caption
+msgctxt "tdm.actpause.caption"
+msgid "Pause"
+msgstr "Pausa"
+
+#: tdm.actpause.hint
+msgctxt "tdm.actpause.hint"
+msgid "Pause"
+msgstr "Pausa"
+
+#: tdm.actplay.caption
+msgctxt "tdm.actplay.caption"
+msgid "Play"
+msgstr "Riproduci"
+
+#: tdm.actplay.hint
+msgctxt "tdm.actplay.hint"
+msgid "Play"
+msgstr "Riproduci"
+
+#: tdm.actplaylistaddfiles.caption
+msgctxt "tdm.actplaylistaddfiles.caption"
+msgid "Add Files ..."
+msgstr "Aggiungi files ..."
+
+#: tdm.actplaylistclear.caption
+msgctxt "tdm.actplaylistclear.caption"
+msgid "Clear"
+msgstr "Pulisci"
+
+#: tdm.actplaylistload.caption
+msgctxt "tdm.actplaylistload.caption"
+msgid "Load Playlist ..."
+msgstr "Carica Playlist ..."
+
+#: tdm.actplaylistload.hint
+msgctxt "tdm.actplaylistload.hint"
+msgid "Load a Playlist"
+msgstr "Carica una playlist"
+
+#: tdm.actplaylistsave.caption
+msgctxt "tdm.actplaylistsave.caption"
+msgid "Save PlayList ..."
+msgstr "Salva Playlist ..."
+
+#: tdm.actplaylistsave.hint
+msgctxt "tdm.actplaylistsave.hint"
+msgid "Save current playlist"
+msgstr "Salva Playlist corrente"
+
+#: tdm.actplaylistshuffle.caption
+msgctxt "tdm.actplaylistshuffle.caption"
+msgid "Shuffle"
+msgstr "Mescola"
+
+#: tdm.actprevious.caption
+msgctxt "tdm.actprevious.caption"
+msgid "Previous"
+msgstr "Precedente"
+
+#: tdm.actprevious.hint
+msgctxt "tdm.actprevious.hint"
+msgid "Previous"
+msgstr "Precedente"
+
+#: tdm.actremovemissing.caption
+msgctxt "tdm.actremovemissing.caption"
+msgid "Remove Missing"
+msgstr "Rimuovi Mancanti"
+
+#: tdm.actrepeatalbum.caption
+msgctxt "tdm.actrepeatalbum.caption"
+msgid "Repeat Album"
+msgstr "Ripeti Album"
+
+#: tdm.actrepeatall.caption
+msgctxt "tdm.actrepeatall.caption"
+msgid "Repeat Playlist"
+msgstr "Ripeti playlist"
+
+#: tdm.actrepeatnone.caption
+msgctxt "tdm.actrepeatnone.caption"
+msgid "Not Repeat"
+msgstr "Non ripetere"
+
+#: tdm.actrepeattrack.caption
+msgctxt "tdm.actrepeattrack.caption"
+msgid "Repeat track"
+msgstr "Ripeti traccia"
+
+#: tdm.actrescancollection.caption
+msgctxt "tdm.actrescancollection.caption"
+msgid "Update Collection"
+msgstr "Aggiorna collezione"
+
+#: tdm.actrestart.caption
+msgctxt "tdm.actrestart.caption"
+msgid "Restart"
+msgstr "Riavvia"
+
+#: tdm.actskipbackward.caption
+msgctxt "tdm.actskipbackward.caption"
+msgid "Skip Backward"
+msgstr "Salta Avanti"
+
+#: tdm.actskipforward.caption
+msgctxt "tdm.actskipforward.caption"
+msgid "Skip Forward"
+msgstr "Slata indietro"
+
+#: tdm.actstop.caption
+msgctxt "tdm.actstop.caption"
+msgid "Stop"
+msgstr "Stop"
+
+#: tdm.actstop.hint
+msgctxt "tdm.actstop.hint"
+msgid "Stop"
+msgstr "Stop"
+
+#: tdm.opendialogfiles.title
+msgctxt "tdm.opendialogfiles.title"
+msgid "Open Playlist"
+msgstr "Apri Playlist"
+
+#: tdm.opendialogplaylist.title
+msgctxt "tdm.opendialogplaylist.title"
 msgid "Open Playlist"
 msgstr "Apri Playlist"
 
