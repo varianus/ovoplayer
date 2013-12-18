@@ -239,7 +239,7 @@ end;
 
 procedure TfConfig.FormCreate(Sender: TObject);
 var
-  i: integer;
+  i,j: integer;
   tmpstr: string;
 begin
   rgAudioEngine.Items.clear;
@@ -249,15 +249,17 @@ begin
       tmpstr:= tmpstr + EngineArray[i].Name + sLineBreak;
     end;
   rgAudioEngine.Items.Text:=tmpstr;
-
+  j:= -1;
   for i:= 0 to rgAudioEngine.items.count -1 do
     begin
-       if not(rgAudioEngine.Controls[i] is TRadioButton) then
+       if not(rgAudioEngine.Controls[i] is TRadioButton) or not rgAudioEngine.Controls[i].Visible then
           continue;
-      if EngineArray[i].ForceSelection then
+      inc(j);
+
+      if EngineArray[j].ForceSelection then
          TRadioButton(rgAudioEngine.Controls[i]).Enabled:=true
       else
-         TRadioButton(rgAudioEngine.Controls[i]).Enabled := EngineArray[i].Engine.IsAvalaible(nil);
+         TRadioButton(rgAudioEngine.Controls[i]).Enabled := EngineArray[j].Engine.IsAvalaible(nil);
     end;
 end;
 

@@ -8,7 +8,7 @@ object fConfig: TfConfig
   ClientWidth = 702
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '1.1'
+  LCLVersion = '1.3'
   object pcConfig: TPageControl
     Left = 153
     Height = 450
@@ -93,10 +93,10 @@ object fConfig: TfConfig
       ClientHeight = 415
       ClientWidth = 543
       object rgAudioEngine: TRadioGroup
-        Left = 3
-        Height = 4
-        Top = 8
-        Width = 5
+        Left = 4
+        Height = 52
+        Top = 0
+        Width = 220
         AutoFill = True
         AutoSize = True
         Caption = 'Audio Engine'
@@ -108,6 +108,11 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
+        ClientHeight = 33
+        ClientWidth = 216
+        Items.Strings = (
+          'Sample row for builded engine'
+        )
         OnClick = rgAudioEngineClick
         TabOrder = 0
       end
@@ -121,7 +126,7 @@ object fConfig: TfConfig
         TabIndex = 0
         TabOrder = 1
         object tsMPlayer: TTabSheet
-          ClientHeight = 69
+          ClientHeight = 98
           ClientWidth = 466
           object MPlayerPath: TFileNameEdit
             Left = 3
