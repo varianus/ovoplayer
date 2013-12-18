@@ -130,7 +130,7 @@ uses
   Classes, SysUtils, dynlibs;
 
 const
-libgst_name = 'libgstbase-0.10.so';
+libgst_name = 'libgstbase-0.10.so.0';
 
 var
 libgst_handle: THandle;
