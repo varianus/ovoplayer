@@ -25,7 +25,7 @@ unit MediaLibrary;
 interface
 
 uses
-  Classes, SysUtils, DB, sqlite3conn, sqldb, lclproc, basetag, Customsong, extendedinfo;
+  Classes, SysUtils, DB,  sqlite3dyn, sqlite3conn, sqldb, lclproc, basetag, Customsong, extendedinfo;
 
 type
 
@@ -721,4 +721,8 @@ begin
    end;
 end;
 
-end.
+initialization
+ {$IFDEF LINUX}
+   sqlite3dyn.SQLiteDefaultLibrary :='libsqlite3.so.0';
+ {$ENDIF}
+end.
