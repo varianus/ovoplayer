@@ -4,7 +4,9 @@ if [ "$BASE" = "" ]; then
   BASE=$(pwd)
 fi 
 
-#bash $BASE/buildlinux.sh
+ARCH=$(./get_architecture.sh )
+
+bash $BASE/buildlinux.sh
 
 PROG_VER=$(sed -e "s/[^0-9.a-zA-Z]//g" $BASE/src/version.inc)
 BIN_DIR=$BASE/bin/linux
@@ -57,7 +59,7 @@ cd $DEBSRCDIR
 find usr -type f | xargs md5sum >> $DEBSRCDIR/DEBIAN/md5sums
 chmod 0644 $DEBSRCDIR/DEBIAN/md5sums
 
-fakeroot dpkg --build $DEBSRCDIR $PACKAGES_DIR/ovoplayer-$PROG_VER-gtk2-amd64.deb
+fakeroot dpkg --build $DEBSRCDIR $PACKAGES_DIR/ovoplayer-$PROG_VER-gtk2-$ARCH.deb
 
 
 

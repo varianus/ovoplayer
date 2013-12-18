@@ -3,7 +3,6 @@
 #Set path where lazarus is installed
 LAZARUS_DIR=~/development/lazarus
 CONFIG_PATH=
-
 # 
 if [ "$BASE" = "" ]; then
   BASE=$(pwd)
@@ -35,7 +34,7 @@ rm -Rf $BASE/bin/linux
 #
 cp $BASE/release.cfg  $BASE/extrafpc.cfg
 $LAZARUS_DIR/lazbuild -B -r $PCP --build-mode=Release $BASE/src/ovoplayer.lpi $DC_ARCH
-$LAZARUS_DIR/lazbuild -B -r $PCP $BASE/tools/ovoplayerctrl/ovoplayerctrl.lpi $DC_ARCH
+$LAZARUS_DIR/lazbuild -B -r $PCP --build-mode=Release $BASE/tools/ovoplayerctrl/ovoplayerctrl.lpi $DC_ARCH
 strip --strip-all $BASE/bin/linux/ovoplayer
 strip --strip-all $BASE/bin/linux/ovoplayerctrl
 
