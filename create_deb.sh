@@ -17,6 +17,16 @@ MKDIR="install -m 755 -d "
 INSTALLFILE="install -c -m 644"
 INSTALLEXE="install -c -m 755"
 
+
+##
+copylanguage()
+{
+$MKDIR $DEBSRCDIR/usr/share/locale/$1
+$MKDIR $DEBSRCDIR/usr/share/locale/$1/LC_MESSAGES
+$INSTALLFILE  $BASE/language/ovoplayer.$1.po $DEBSRCDIR/usr/share/locale/$1/LC_MESSAGES/ovoplayer.po
+}
+
+
 rm -Rf $DEBSRCDIR
 $MKDIR $DEBSRCDIR
 $MKDIR $DEBSRCDIR/usr
@@ -29,16 +39,22 @@ $MKDIR $DEBSRCDIR/usr/share/applications
 $MKDIR $DEBSRCDIR/usr/share/pixmaps
 $MKDIR $DEBSRCDIR/usr/share/man
 $MKDIR $DEBSRCDIR/usr/share/man/man1
+$MKDIR $DEBSRCDIR/usr/share/locale
+
 $MKDIR $DEBSRCDIR/DEBIAN
 
 $INSTALLEXE  -s $BIN_DIR/ovoplayer $DEBSRCDIR/usr/bin
 $INSTALLEXE  -s $BIN_DIR/ovoplayerctrl $DEBSRCDIR/usr/bin
-#cp   $BASE/language/*.po $DEBSRCDIR/locale
 $INSTALLFILE  $BASE/images/logo.png $DEBSRCDIR/usr/share/pixmaps/ovoplayer.png
+$INSTALLFILE  $BASE/images/logo.png $DEBSRCDIR/usr/share/ovoplayer
 $INSTALLFILE  $BASE/images/nocover.png $DEBSRCDIR/usr/share/ovoplayer
 $INSTALLFILE  $BASE/images/volume-slider.png $DEBSRCDIR/usr/share/ovoplayer
 $INSTALLFILE  $BASE/images/volume-slider-mask.png $DEBSRCDIR/usr/share/ovoplayer
 $INSTALLFILE  $PACKAGES_DIR/ovoplayer.desktop $DEBSRCDIR/usr/share/applications
+
+##  Add language files
+copylanguage it
+##
 
 $INSTALLFILE  $PACKAGES_DIR/copyright $DEBSRCDIR/usr/share/doc/ovoplayer
 
