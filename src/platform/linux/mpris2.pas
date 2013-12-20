@@ -991,18 +991,14 @@ begin
   dbus_error_init(@error);
   mpris_connection := dbus_bus_get(DBUS_BUS_SESSION, @error);
   dbus_connection_setup_with_g_main(mpris_connection, nil);
-
-
-  path := ('org.mpris.MediaPlayer2.ovoplayer');
-  ret := dbus_bus_request_name(mpris_connection, path, 0, nil);
-
   if (mpris_connection = nil) then
     begin
-    DebugLn(format('Failed to open connection to %s message bus: %s', ['session', error.message]));
-    dbus_error_free(@error);
-    Result := False;
-    exit;
+      DebugLn(format('Failed to open connection to %s message bus: %s', ['session', error.message]));
+      dbus_error_free(@error);
+      Result := False;
+      exit;
     end;
+
   match := 'type=''signal'',interface=''org.mpris.MediaPlayer2''';
   dbus_bus_add_match(mpris_connection, match, @error);
   dbus_error_free(@error);
@@ -1010,6 +1006,9 @@ begin
   match := 'type=''signal'',interface=''org.mpris.MediaPlayer2.Player''';
   dbus_bus_add_match(mpris_connection, match, @error);
   dbus_error_free(@error);
+
+  path := BUS_NAME;
+  ret := dbus_bus_request_name(mpris_connection, path, 0, nil);
 
   dbus_connection_add_filter(mpris_connection, @mpris_filter_func, self, nil);
 
