@@ -103,7 +103,8 @@ var
   reply : PDBusMessage;
   args: DBusMessageIter;
   s_val : pchar;
-  i_val : UInt32;
+  i_val : Int32;
+  U_val : UInt32;
   x_val : Int64;
   array_, dict, dict_entry, dict_val, variant_array: DBusMessageIter;
   property_: PChar;
@@ -115,7 +116,7 @@ begin
   dbus_message_iter_init_append(msg, @args);
   s_val:= pchar(fAppName);
   dbus_message_iter_append_basic(@args, DBUS_TYPE_STRING, @s_val );
-  i_val:= Notification.id;
+  U_val:= Notification.id;
   dbus_message_iter_append_basic(@args, DBUS_TYPE_UINT32, @i_val );
   s_val:= pchar(Notification.IconName);
   dbus_message_iter_append_basic(@args, DBUS_TYPE_STRING, @s_val );
