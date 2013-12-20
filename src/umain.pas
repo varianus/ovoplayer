@@ -333,6 +333,7 @@ type
     fColumnsWidth : array of integer;
     RatingBack, RatingFront:TBitmap;
     Quitting: boolean;
+    TrayMenuActive:boolean;
     {$IFDEF MPRIS2}
     Mpris : TMpris2;
     {$ENDIF MPRIS}
@@ -341,6 +342,7 @@ type
     MyNotification: RNotification;
     {$ENDIF NOTIFYDBUS}
 
+    function AdjustPos(pt: tpoint): Tpoint;
     Function ColumnSize(aCol: Integer):Integer;
     procedure ClearPanelInfo;
     procedure CollectionHandler(Enqueue: boolean);
@@ -1032,6 +1034,7 @@ var
   tmpSize : TSize;
 
 begin
+  TrayMenuActive:=False;
   Quitting := false;
   PlaylistSelected := TRowsSelection.Create;
   PathHistory := TStringList.Create;
@@ -2194,8 +2197,10 @@ begin
 end;
 
 procedure TfMainForm.TrayIconClick(Sender: TObject);
+var
+  pt: Tpoint;
 begin
-//  ShowNotification;
+  //  ShowNotification;
 end;
 
 procedure TfMainForm.TrayIconDblClick(Sender: TObject);
@@ -2209,10 +2214,27 @@ begin
   end;
 end;
 
+Function TfMainForm.AdjustPos(pt:tpoint):Tpoint;
+begin
+
+  result.x := pt.x;
+
+  if pt.y < Screen.Monitors[0].WorkareaRect.Top then
+     result.y := Screen.Monitors[0].WorkareaRect.Top
+  else
+     if pt.y > Screen.Monitors[0].WorkareaRect.bottom then
+        result.y := Screen.Monitors[0].WorkareaRect.bottom
+     else
+        result.y := pt.y;
+
+end;
+
+
 procedure TfMainForm.TrayIconMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 var
   pt : Tpoint;
+  r:Trect;
 begin
   if button = mbMiddle then
     begin
@@ -2237,13 +2259,18 @@ begin
       end;
   {$ENDIF}
   {$IFDEF LINUX}
-  if Button = mbLeft then
+  if (Button = mbLeft) then
+     if not TrayMenuActive  then
      begin
-       TrayMenu.Close;
-       pt:=Mouse.CursorPos; // X and Y from event are sometimes wrong on gtk2
+       pt:=AdjustPos(TrayIcon.GetPosition); //Mouse.CursorPos;
+       TrayMenuActive:=true;
        TrayMenu.PopUp(pt.x,pt.y);
-     end;
+     end
+     else
+       TrayMenuActive:=False;
+
   {$ENDIF}
+
 
 end;
 
