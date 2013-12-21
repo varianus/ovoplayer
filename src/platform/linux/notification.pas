@@ -117,7 +117,7 @@ begin
   s_val:= pchar(fAppName);
   dbus_message_iter_append_basic(@args, DBUS_TYPE_STRING, @s_val );
   U_val:= Notification.id;
-  dbus_message_iter_append_basic(@args, DBUS_TYPE_UINT32, @i_val );
+  dbus_message_iter_append_basic(@args, DBUS_TYPE_UINT32, @u_val );
   s_val:= pchar(Notification.IconName);
   dbus_message_iter_append_basic(@args, DBUS_TYPE_STRING, @s_val );
   s_val:= pchar(Notification.Summary);
@@ -153,9 +153,9 @@ begin
   if (dbus_message_iter_init(Reply, @args) > 0) then
     if (DBUS_TYPE_UINT32 = dbus_message_iter_get_arg_type(@args)) then
        begin
-         dbus_message_iter_get_basic(@args, @i_val);
-         Result:= i_val;
-         Notification.id:= i_val;
+         dbus_message_iter_get_basic(@args, @u_val);
+         Result:= u_val;
+         Notification.id:= u_val;
        end;
 
   dbus_connection_flush(fBus);
