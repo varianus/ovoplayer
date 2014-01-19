@@ -67,8 +67,8 @@ chmod 0644 $DEBSRCDIR/usr/share/man/man1/ovoplayer.1.gz
 gzip -c --best $PACKAGES_DIR/changelog > $DEBSRCDIR/usr/share/doc/ovoplayer/changelog.gz
 chmod 0644 $DEBSRCDIR/usr/share/doc/ovoplayer/changelog.gz
 
-INSTALLEDSIZE=$(du -xs --apparent-size --block-size=1024 $DEBSRCDIR/usr | sed -e '$s/[^0-9]//g')
-sed -e 's/:INSTALLEDSIZE/'$INSTALLEDSIZE'/;s/:VERSION/'$PROG_VER'/' $BASE/packages/control > $DEBSRCDIR/DEBIAN/control
+INSTALLEDSIZE=$(du -0 -xs --apparent-size --block-size=1024 $DEBSRCDIR/usr | cut -f 1)
+sed -e 's/:INSTALLEDSIZE/'$INSTALLEDSIZE'/;s/:VERSION/'$PROG_VER'/;s/:ARCHITECTURE/'$ARCH'/' $BASE/packages/control > $DEBSRCDIR/DEBIAN/control
 chmod 0644 $DEBSRCDIR/DEBIAN/control
 
 cd $DEBSRCDIR

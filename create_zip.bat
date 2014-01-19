@@ -26,6 +26,7 @@ MKDIR %ZIPSRCDIR%\locale
 MKDIR %ZIPSRCDIR%\resources		
 copy /Y  %BIN_DIR%\ovoplayer.exe %ZIPSRCDIR%
 copy /Y  %BIN_DIR%\ovoplayerctrl.exe %ZIPSRCDIR%
+copy /Y  %BIN_DIR%\sqlite3.dll %ZIPSRCDIR%
 copy /Y  %BASE_SRC%\language\*.po %ZIPSRCDIR%\locale
 copy /Y  %BASE_SRC%\images\logo.png %ZIPSRCDIR%\resources		
 copy /Y  %BASE_SRC%\images\nocover.png %ZIPSRCDIR%\resources
