@@ -232,9 +232,14 @@ Function TAudioEngineVLC.DoPlay(Song: TSong; offset:Integer):boolean;
 Var
   savedVolume: Integer;
   hr: hResult;
+  ExceptionMask : TFPUExceptionMask;
+
 begin
   // create new media
   Result := false;
+  ExceptionMask:= GetExceptionMask;
+  SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide,exOverflow, exUnderflow, exPrecision]);
+
   if FileExists(Song.FullName) then
     begin
       p_md := libvlc_media_new_path(p_li, PAnsiChar(System.UTF8Encode(Song.FullName)));
@@ -268,6 +273,7 @@ begin
 
   finally
     // release media
+    SetExceptionMask(ExceptionMask);
     if (p_md <> nil) then
       begin
         libvlc_media_release(p_md);
