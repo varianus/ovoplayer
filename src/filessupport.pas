@@ -32,6 +32,9 @@ type
    ModifyDate: TDateTime;
  end;
 
+ TFileInfoObject = class
+   public info: TFileInfo;
+ end;
 
 
 Function GetFileInfo(FileName: String): TFileInfo;
@@ -226,7 +229,6 @@ function GetFileInfo(FileName: String): TFileInfo;
 begin
   Result.Size:= FileSize(FileName);
   result.CreationDate:= FileDateToDateTime(FileAgeUTF8(FileName));
-
 end;
 
 function BuildFileList(const Path: string; const Attr: integer; const List: TStrings; Recurring: boolean): boolean;
@@ -235,6 +237,8 @@ var
   IndexMask: integer;
   MaskList:  TStringList;
   Masks, Directory: string;
+  info :TFileInfoObject;
+
 begin
   Assert(List <> nil);
   MaskList := TStringList.Create;
@@ -273,7 +277,10 @@ begin
             ((SearchRec.Attr and Attr) = (SearchRec.Attr and faAnyFile)) and
             IsFileNameMatch(SearchRec.Name, MaskList.Strings[IndexMask], False) then
             begin
-            List.Add(Directory + SearchRec.Name);
+              info := TFileInfoObject.Create;
+              info.info.Size:= SearchRec.Size;
+              info.info.ModifyDate:= FileDateToDateTime(SearchRec.Time);
+              List.AddObject(Directory + SearchRec.Name, info);
             Break;
             end;
 

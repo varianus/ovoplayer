@@ -37,6 +37,7 @@ type
   TDM = class(TDataModule)
     actExit: TAction;
     actDummy: TAction;
+    actFastScan: TAction;
     actRestart: TAction;
     actRepeatNone: TAction;
     actRepeatAll: TAction;
@@ -69,6 +70,7 @@ type
     SelectDirectoryDialog: TSelectDirectoryDialog;
     UniqueInstanceI: TUniqueInstance;
     procedure actExitExecute(Sender: TObject);
+    procedure actFastScanExecute(Sender: TObject);
     procedure actMuteExecute(Sender: TObject);
     procedure actPlayListAddFilesExecute(Sender: TObject);
     procedure actPlayListClearExecute(Sender: TObject);
@@ -246,13 +248,13 @@ procedure TDM.actPlayListAddFilesExecute(Sender: TObject);
 var
   i: integer;
 begin
-  OpenDialogFiles.Filter := format(rAllFiles, [supportedExtension]);
+  OpenDialogFiles.Filter := format(rAllFiles, [supportedExtension])+'|All Files|*.*';
 
   if not OpenDialogFiles.Execute then
     exit;
 
   for i := 0 to OpenDialogFiles.Files.Count - 1 do
-    Backend.PlayList.EnqueueFile(OpenDialogFiles.Files[i]);
+    Backend.PlayList.EnqueueFile(UTF8ToSys(OpenDialogFiles.Files[i]));
 
   Backend.SignalPlayListChange;
 
@@ -261,6 +263,11 @@ end;
 procedure TDM.actExitExecute(Sender: TObject);
 begin
   Backend.Quit;
+end;
+
+procedure TDM.actFastScanExecute(Sender: TObject);
+begin
+  Backend.MediaLibrary.Scan(Backend.Config.MediaLibraryParam.LibraryPaths, false);
 end;
 
 procedure TDM.actMuteExecute(Sender: TObject);

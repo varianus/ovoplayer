@@ -111,6 +111,7 @@ type
     FilesTree: TTreeView;
     MenuItem51: TMenuItem;
     MenuItem56: TMenuItem;
+    MenuItem57: TMenuItem;
     RateStars: TImageList;
     MenuItem21: TMenuItem;
     MenuItem38: TMenuItem;
@@ -1015,6 +1016,7 @@ end;
 
 procedure TfMainForm.MediaLibraryScanComplete(Sender: TObject; _Added, _Updated, _Removed, _Failed : integer);
 begin
+  //debugln(DateTimeToStr(now), ' - ' ,'Stop');
   sgStats.Clean;
   sgStats.RowCount := 4;
   sgStats.Cells[0,0] := rAddedTrack;   sgStats.Cells[1,0] := IntToStr(_Added);
@@ -1224,6 +1226,7 @@ begin
   sgstats.cells[0,0]:=rBeginCollectionScan;
   gbStats.Visible:=True;
   Application.ProcessMessages;
+  //debugln(DateTimeToStr(now), ' - ' ,'Begin');
 end;
 
 procedure TfMainForm.RemoveSelectionFromPlaylist;

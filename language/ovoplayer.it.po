@@ -217,6 +217,10 @@ msgctxt "tdm.actexit.caption"
 msgid "Quit"
 msgstr "Esci"
 
+#: tdm.actfastscan.caption
+msgid "Fast Scan"
+msgstr ""
+
 #: tdm.actimportdirectory.caption
 msgctxt "tdm.actimportdirectory.caption"
 msgid "Import Directory ..."

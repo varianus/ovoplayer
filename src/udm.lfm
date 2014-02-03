@@ -5,7 +5,7 @@ object DM: TDM
   left = 474
   top = 218
   Height = 376
-  HorizontalOffset = 901
+  HorizontalOffset = 749
   VerticalOffset = 295
   Width = 481
   object ActionList: TActionList
@@ -151,6 +151,11 @@ object DM: TDM
       Category = 'Interface'
       Caption = 'Restart'
       OnExecute = actRestartExecute
+    end
+    object actFastScan: TAction
+      Category = 'Collection'
+      Caption = 'Fast Scan'
+      OnExecute = actFastScanExecute
     end
   end
   object ilSmall: TImageList
@@ -1848,6 +1853,8 @@ object DM: TDM
     }
   end
   object OpenDialogFiles: TOpenDialog
+    Width = 840
+    Height = 630
     Title = 'Open Playlist'
     Filter = 'All Known Files|*.xspf;*,m3u;*.bsp;*.mpc;*.asx;*.pls'
     FilterIndex = 0

@@ -299,7 +299,7 @@ begin
 
         if fTagList[i].ID <> -1 then  // if song is in media library
           begin
-             BackEnd.mediaLibrary.Update(fTagList[i].ID, fTagList[i].Tags);
+             BackEnd.mediaLibrary.Update(fTagList[i].ID, fTagList[i].Tags, fTagList[i].FileInfo);
           end;
     end;
   Close;
