@@ -49,10 +49,10 @@ type
 const
   GroupCount = 4;
   ArrayGroup: array  [0 .. GroupCount -1] of TSortFields =
-    ((F1: tkAlbumArtist; F2: tkAlbum; F3: tkSong),
-     (F1: tkArtist;      F2: tkAlbum; F3: tkSong),
-     (F1: tkYear;        F2: tkAlbum; F3: tkSong),
-     (F1: tkGenre;       F2: tkAlbum; F3: tkSong));
+    ((F1: tkAlbumArtist; F2: tkAlbum; F3: tkTrack),
+     (F1: tkArtist;      F2: tkAlbum; F3: tkTrack),
+     (F1: tkYear;        F2: tkAlbum; F3: tkTrack),
+     (F1: tkGenre;       F2: tkAlbum; F3: tkTrack));
 
 type
   { TfMainForm }
@@ -397,13 +397,14 @@ type
   end;
 
 const
-  SortArray: array [tkAlbum..tkGenre] of TSortRow =
+  SortArray: array [tkAlbum..tkTracK] of TSortRow =
     ((Kind: tkAlbum; FieldName: 'Album'; ImageIndex: 1),
     (Kind: tkAlbumArtist; FieldName: 'AlbumArtist'; ImageIndex: 0),
     (Kind: tkArtist; FieldName: 'Artist'; ImageIndex: 0),
     (Kind: tkSong; FieldName: 'Title'; ImageIndex: 2),
     (Kind: tkYear; FieldName: 'Year'; ImageIndex: 3),
-    (Kind: tkGenre; FieldName: 'Genre'; ImageIndex: 4)
+    (Kind: tkGenre; FieldName: 'Genre'; ImageIndex: 4),
+    (Kind: tkTracK; FieldName: '(case track when 0 then coalesce(trackstring,0) else track end)'; ImageIndex: -1)
 //    (Kind: tkRating; FieldName: 'Rating'; ImageIndex: 5)
     );
 
@@ -620,7 +621,7 @@ begin
         BackEnd.PlayList.Add(ASong);
         end
       else
-        BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList, PrepareImportFilter(Node));
+        BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList, PrepareImportFilter(Node), PrepareFields);
       end;
    Node:= TMusicTreeNode(node.GetNextMultiSelected);
   end;
@@ -938,7 +939,8 @@ begin
   if filter <> '' then
     Result := format(' %0:s like ''%%%3:s%%'''
                 + ' or %1:s like ''%%%3:s%%'''
-                + ' or %2:s like ''%%%3:s%%''',
+                + ' or %2:s like ''%%%3:s%%'''
+                + ' or Title like ''%%%3:s%%''',
                [SortArray[SortFields.F1].FieldName,
                 SortArray[SortFields.F2].FieldName,
                 SortArray[SortFields.F3].FieldName,
@@ -1001,8 +1003,8 @@ begin
              L2Item.Kind := SortFields.F2;
            end;
 
-        L3Item   := TMusicTreeNode(TVCollection.Items.AddChild(L2Item, TagValue(Tags, SortFields.F3)));
-        L3Item.Kind := SortFields.F3;
+        L3Item   := TMusicTreeNode(TVCollection.Items.AddChild(L2Item, TagValue(Tags, tkSong)));
+        L3Item.Kind := tkSong;
         L3Item.ID := tags.ID;
         Finalize(Tags);
         BackEnd.mediaLibrary.NextItem;
@@ -1011,6 +1013,7 @@ begin
     finally
     tvCollection.EndUpdate;
   end;
+  tvCollection.Repaint;
 
 end;
 

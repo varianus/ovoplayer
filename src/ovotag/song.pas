@@ -28,7 +28,7 @@ uses
   Classes, SysUtils, basetag;
 
 type
-  TTagKind = (tkNone, tkAlbum, tkAlbumArtist, tkArtist, tkSong, tkYear, tkGenre);
+  TTagKind = (tkNone, tkAlbum, tkAlbumArtist, tkArtist, tkSong, tkYear, tkGenre, tkTrack);
 
 type
   { TSong }
@@ -81,6 +81,7 @@ begin
     tkSong: Result   := Tags.Title;
     tkYear: Result   := Tags.Year;
     tkGenre: Result  := Tags.Genre;
+    tkTrack: Result  := tags.TrackString;
     tkNone: Result   := '';
 
     end;
@@ -158,4 +159,4 @@ begin
   inherited Destroy;
 end;
 
-end.
+end.
