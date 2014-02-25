@@ -764,7 +764,7 @@ begin
   begin
     LoadFromFile(FileNameS[i], fTagList[i]);
     fOriginalTag[i] := fTagList[i].Tags;
-    lbFiles.Items.Add(AnsitoUTF8(ExtractFileName(FileNameS[i])));
+    lbFiles.Items.Add((ExtractFileName(FileNameS[i])));
   end;
 
 

@@ -35,7 +35,7 @@ const
 function ExtractTrack(const TrackString: string): word;
 
 function GetANSI(const Source: string): string;
-function ExtractString(p:pbyte; size:cardinal): widestring;
+function ExtractString(p:pbyte; size:cardinal): string;
 procedure EncodeString(s:widestring; var e:pchar; var l:cardinal);
 
 procedure FixTrack(const TrackString: string; const TrackNr: integer;
@@ -194,16 +194,28 @@ procedure EncodeString(s:widestring; var e:pchar; var l:cardinal);
 var
   t:string;
 begin
-  t:=UTF8Encode(s);
+  t:=UTF8Decode(s);
   l:=length(t)+1;
   getmem(pointer(e),l);
   pbyte(e)^:=0;
   if l<>1 then move(t[1],(e+1)^,l-1);
 end;
 
-function ExtractString(p:pbyte; size:cardinal):widestring;
-var l,i:cardinal; be:boolean;
+procedure WideSwapEndian(PWC: PWideChar;size:integer);
 begin
+  while size >= sizeof(widechar) do
+  begin
+    PWC^ := WideChar(SwapEndian(Word(PWC^)));
+    inc(PWC);
+    dec(size,sizeof(widechar));
+  end;
+end;
+
+function ExtractString(p:pbyte; size:cardinal):string;
+var l,i:cardinal; be:boolean;
+    ws: widestring;
+begin
+
  if size<>0 then begin
   if p^=0 then begin
    result:=AnsiToUtf8(string(pchar(p)+1))
@@ -227,25 +239,27 @@ begin
     end else
      be:=p^=2;
    end;
-   setlength(result,l div 2);
+   setlength(ws,l div 2);
    if be then begin
     for i:=1 to l div 2 do begin
-     word(result[i]):=BeToN(pword(p)^);
+     word(ws[i]):=BeToN(pword(p)^);
      inc(p,2);
     end;
    end else
-    move(p^,result[1],l);
+    move(p^,ws[1],l);
+    result := UTF16ToUTF8(ws);
   end else if p^=3 then begin
    inc(p);
    dec(size);
    l:=0;
    while (l<size) and (pbyte(p+l)^<>0) do inc(l);
-   result:=UTF8Decode(copy(pchar(p),1,l));
+   result:=(copy(pchar(p),1,l));
   end;
  end;
  l:=length(result);
  while (l>0) and (result[l]=#0) do dec(l);
  setlength(result,l);
+
 end;
 
 procedure FixTrack(const TrackString: string; const TrackNr: integer;

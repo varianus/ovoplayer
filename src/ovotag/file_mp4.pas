@@ -25,7 +25,7 @@ unit file_Mp4;
 interface
 
 uses
-  Classes, SysUtils, AudioTag, baseTag, tag_Mp4;
+  Classes, lazutf8classes, SysUtils, AudioTag, baseTag, tag_Mp4;
 
 const
   Mp4FileMask: string    = '*.aac;*.m4a;';
@@ -76,7 +76,7 @@ type
     FSampleRate: integer;
     FSamples: int64;
     fDuration : int64;
-    //function FindAtom(Stream: TFileStream; AtomName: string; var Atom: RAtomHeader): boolean;
+    //function FindAtom(Stream: TFileStreamUTF8; AtomName: string; var Atom: RAtomHeader): boolean;
   protected
     function GetDuration: int64; override;
     function GetTags: TTags; override;
@@ -284,7 +284,7 @@ end;
 
 function TMp4Reader.LoadFromFile(AFileName: Tfilename): boolean;
 var
-  fStream: TFileStream;
+  fStream: TFileStreamUTF8;
   Transferred: DWord;
   AtomList, traks:TMP4AtomList;
   vers: DWord;
@@ -295,7 +295,7 @@ var
   unit_, length_:int64;
 begin
   Result := inherited LoadFromFile(AFileName);
-  fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
+  fStream := TFileStreamUTF8.Create(fileName, fmOpenRead or fmShareDenyNone);
   AtomList:=TMP4AtomList.Create(fStream);
   moov := AtomList.Find('moov');
   trak:= moov.Find('trak');

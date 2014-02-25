@@ -69,7 +69,7 @@ type
 
 
 implementation
-
+uses FileUtil;
 { TAudioEngineXINE }
 
 procedure XineEventCB(user_data:Pointer; event: Pxine_event_t); cdecl;
@@ -226,7 +226,7 @@ var
 begin
   result := false;
   // create new media
-  if FileExists(Song.FullName) then
+  if FileExistsUTF8(Song.FullName) then
     begin
        hr:= xine_open(XINEStream, PChar(Song.FullName));
        if hr = 0 then

@@ -25,7 +25,7 @@ unit file_wma;
 interface
 
 uses
-  Classes, SysUtils, AudioTag, basetag, tag_wma, LCLProc;
+  Classes, lazutf8classes, SysUtils, AudioTag, basetag, tag_wma, LCLProc;
 
 const
   WMAFileMask: string = '*.wma;';
@@ -160,7 +160,7 @@ begin
     begin
       Frame := TWMAFrame.Create('Title');
       Frame.DataType := 0;
-      Frame.AsString := trim(WideString(tmpValue));
+      Frame.AsWideString := trim(WideString(tmpValue));
       fTags.Add(Frame);
     end;
   end;
@@ -173,7 +173,7 @@ begin
     begin
       Frame := TWMAFrame.Create('Author');
       Frame.DataType := 0;
-      Frame.AsString := trim(WideString(tmpValue));
+      Frame.AsWideString := trim(WideString(tmpValue));
       fTags.Add(Frame);
     end;
   end;
@@ -198,7 +198,7 @@ end;
 
 function TWMAReader.LoadFromFile(AFileName: Tfilename): boolean;
 var
-  fStream: TFileStream;
+  fStream: TFileStreamUTF8;
   Header: TWMaHeader;
   SubObjHeader: TObjectHeader;
   FileProperty: TWMAFileProperty;
@@ -211,7 +211,7 @@ begin
   Result := inherited LoadFromFile(AFileName);
 
   try
-    fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
+    fStream := TFileStreamUTF8.Create(fileName, fmOpenRead or fmShareDenyNone);
 
     fStream.ReadBuffer(Header, SizeOf(Header));
     fTags := TWMATags.Create;
@@ -270,8 +270,8 @@ end;
 
 function TWMAReader.SaveToFile(AFileName: Tfilename): boolean;
 var
-  SourceStream: TFileStream;
-  DestStream: TFileStream;
+  SourceStream: TFileStreamUTF8;
+  DestStream: TFileStreamUTF8;
   MemoryStream : TmemoryStream;
 
   Header: TWMaHeader;
@@ -287,8 +287,8 @@ begin
 
   try
     DebugLn(FileName,'-->',AFileName);
-    SourceStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
-    DestStream := TFileStream.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
+    SourceStream := TFileStreamUTF8.Create(fileName, fmOpenRead or fmShareDenyNone);
+    DestStream := TFileStreamUTF8.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
 
     SourceStream.ReadBuffer(Header, SizeOf(Header));
     fOrigCount := Header.ObjectCount;

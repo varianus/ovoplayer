@@ -25,7 +25,7 @@ unit AudioTag;
 interface
 
 uses
-  Classes, SysUtils, Song,
+  Classes, SysUtils,  Song,
   baseTag;
 
 function SupportedExtension: string;
@@ -40,7 +40,7 @@ function GetFileTagsObject(FileName: string): TTagReader;
 function IdentifyKind(FileName: string): TTagReaderClass;
 
 implementation
-uses strutils, file_Dummy;
+uses strutils, fileUtil, file_Dummy;
 
 type
   RTagReader = record
@@ -74,7 +74,7 @@ end;
 
 function LoadTags(Song: Tsong): boolean;
 begin
-  Result := FileExists(Song.FullName);
+  Result := FileExistsUTF8(Song.FullName);
   if result then
      begin
        Song.SetTags(ExtractTags(Song.FullName));

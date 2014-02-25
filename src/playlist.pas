@@ -86,7 +86,7 @@ type
 
 implementation
 uses
-  math, ExtendedInfo;
+  math, FileUtil, ExtendedInfo;
 
 Procedure IntQuickSort(FList: PPointerList; L, R : Longint;
                      Compare: TPlayListSortCompare);
@@ -166,7 +166,7 @@ function TPlayList.EnqueueFile(FileName: TFileName): integer;
 var
   Song: TCustomSong;
 begin
-  if FileExists(FileName) then
+  if FileExistsUTF8(FileName) then
      begin
       song   := TCustomSong.Create(FileName);
       Result := Add(Song);

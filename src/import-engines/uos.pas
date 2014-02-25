@@ -53,7 +53,7 @@ unit uos;
 interface
 
 uses
-  Classes, ctypes, Math, SysUtils, uos_portaudio,
+  Classes,  lazutf8classes, ctypes, Math, SysUtils, uos_portaudio,
   uos_LibSndFile, uos_Mpg123;
 
 type
@@ -512,7 +512,7 @@ const
 
 
 implementation
-
+uses fileutil;
 function FormatBuf(Inbuf: TArFloat; format: shortint): TArFloat;
 var
   x: integer;
@@ -589,7 +589,7 @@ end;
 
 function WriteWave(FileName: ansistring; Data: TUOS_FileBuffer): word;
 var
-  f: TFileStream;
+  f: TFileStreamUTF8;
   wFileSize: cardinal;
   wChunkSize: cardinal;
   ID: array[0..3] of char;
@@ -598,7 +598,7 @@ begin
   Result := noError;
   f := nil;
   try
-    f := TFileStream.Create(FileName, fmCreate);
+    f := TFileStreamUTF8.Create(FileName, fmCreate);
     f.Seek(0, soFromBeginning);
     ID := 'RIFF';
     f.WriteBuffer(ID, 4);
@@ -1758,7 +1758,7 @@ var
 
 begin
   Result := -1;
-  if not fileexists(filename) then
+  if not FileExistsUTF8(filename) then
     Result := -5
   else
   begin

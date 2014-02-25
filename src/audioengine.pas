@@ -99,7 +99,7 @@ var
   EngineArray : array of RAudioEngine;
 
 implementation
-
+uses FileUtil;
 
 procedure RegisterEngineClass(const EngineClass: TAudioEngineClass;
                               const Priority: Integer;
@@ -225,7 +225,7 @@ begin
   if Song = nil then
      exit;
 
-  if not FileExists( Song.FullName) then
+  if not FileExistsUTF8( Song.FullName) then
      begin
        PostCommand(ecNext);
        exit;

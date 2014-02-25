@@ -68,7 +68,7 @@ type
 
 
 implementation
-uses math;
+uses math, fileutil;
 
 Const
    VLCMAXVOLUME = 100;
@@ -240,7 +240,7 @@ begin
   ExceptionMask:= GetExceptionMask;
   SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide,exOverflow, exUnderflow, exPrecision]);
 
-  if FileExists(Song.FullName) then
+  if FileExistsUTF8(Song.FullName) then
     begin
       p_md := libvlc_media_new_path(p_li, PAnsiChar(System.UTF8Encode(Song.FullName)));
     end

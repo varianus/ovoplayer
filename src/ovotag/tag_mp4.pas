@@ -73,7 +73,7 @@ const
 function TMp4Frame.GetAsString: string;
 begin
   if (fFlags and $00ffffff) = 1 then
-    Result := GetANSI(#00+String(Data));
+    Result := (String(Data));
 
   if (fFlags and $00ffffff) = 0 then
     begin

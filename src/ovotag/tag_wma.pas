@@ -38,9 +38,11 @@ type
   public
     DataType: Word;
     function GetAsString: string; override;
-    procedure SetAsString(AValue: string); override;
+    procedure SetAsString(AValue: string); override; 
+    procedure SetAsWideString(AValue: Widestring);
     function ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean; override;
     function WriteToStream(AStream: TStream): DWord; override;
+    property AsWideString: WideString write SetAsWideString;
   end;
 
   { TWMATags }
@@ -139,7 +141,7 @@ end;
 function TWMAFrame.GetAsString: string;
 begin
   case DataType of
-    0: Result := fValue;
+    0: Result := Utf16toUtf8(fValue);
     1: Result := '<bytes>';
     2..5: Result := IntToStr(fValueInt);
   end;
@@ -149,11 +151,20 @@ end;
 procedure TWMAFrame.SetAsString(AValue: string);
 begin
   case DataType of
-    0: fValue := AValue;
+    0: fValue := Utf8ToUtf16(AValue);
     1: raise Exception.Create('Unsupported');
     2..5: fValueInt := StrToInt(AValue);
   end;
 
+end;
+
+procedure TWMAFrame.SetAsWideString(AValue: Widestring);
+begin
+ case DataType of
+   0: fValue := AValue;
+   1: raise Exception.Create('Unsupported');
+   2..5: fValueInt := StrToInt(AValue);
+ end;
 end;
 
 function TWMAFrame.ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean;

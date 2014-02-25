@@ -359,7 +359,7 @@ Var
 begin
   result:= false;
   // create new media
-  if Not FileExists(Song.FullName) then
+  if Not FileExistsUTF8(Song.FullName) then
      exit;
 
   if Assigned(DecodingThread) then

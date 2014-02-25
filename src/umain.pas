@@ -1084,7 +1084,7 @@ begin
   end;
 
   try
-    if FileExists(Backend.Config.ConfigDir + LASTPLAYLISTNAME) then
+    if FileExistsUTF8(Backend.Config.ConfigDir + LASTPLAYLISTNAME) then
        BackEnd.Manager.ImportFromXSPF(Backend.Config.ConfigDir + LASTPLAYLISTNAME, BackEnd.PlayList)
     else
        BackEnd.PlayList.clear;
@@ -2409,7 +2409,7 @@ begin
   TrackBar.Position := 0;
   lbTime.caption    := TimeToStr(0);
   lFile := backend.Config.GetResourcesPath + 'logo.png';
-  if not FileExists(lFile) then
+  if not FileExistsUTF8(lFile) then
     DebugLn('[TfMainForm.ClearPanelInfo] File not found: ' + lFile)
   else
     imgCover.Picture.LoadFromFile(lFile);
@@ -2503,4 +2503,4 @@ begin
        end;
 end;
 
-end.
+end.

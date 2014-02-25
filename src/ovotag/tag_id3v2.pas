@@ -404,23 +404,43 @@ end;
 
 
 procedure TID3Frame.SetAsString(AValue: string);
+var
+  xValue: UTf8String;
+  wValue: UnicodeString;
 begin
   if copy(ID, 1, 3) = 'COM' then
       Avalue := Space(3) + AValue;
 
-  Avalue:= UTF8toSys(AValue);
-  fSize := Length(AValue);
+  xValue := (AValue);
+  fSize := Length(xValue);
   if fSize = 0 then
   begin
     SetLength(Data, 0);
     exit;
   end;
-  inc(fSize,2);
+  inc(fSize,3);
 
-  SetLength(Data, fSize);
-  Data[0] := #00;
-  StrPCopy(@(Data[1]), AValue);
-  Data[fSize-1] := #00;
+  if TID3Tags(Tagger).Version >= TAG_VERSION_2_4 then
+     begin
+       SetLength(Data, fSize);
+       Data[0] := #03;
+       StrPCopy(@(Data[1]), xValue);
+       Data[fSize-1] := #00;
+       Data[fSize-2] := #00;
+     end
+  else
+     begin
+       inc(fSize,2);
+       SetLength(Data, fSize);
+       Data[0] := #01;
+       Data[1] := #255;
+       Data[2] := #254;
+       wvalue := UTF8ToUTF16(xValue);
+       StrPCopy(@(Data[3]), pWideChar(wValue));
+       Data[fSize-1] := #00;
+       Data[fSize-2] := #00;
+
+     end;
 
 end;
 

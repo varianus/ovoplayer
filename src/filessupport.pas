@@ -260,7 +260,7 @@ begin
     StrToStrings(Masks, ';', MaskList, False);
 
     {* search all files in the directory *}
-    Result := FindFirst(Directory + AllFilesMask, faAnyFile, SearchRec) = 0;
+    Result := FindFirstUTF8(Directory + AllFilesMask, faAnyFile, SearchRec) = 0;
 
     List.BeginUpdate;
       try
@@ -284,7 +284,7 @@ begin
             Break;
             end;
 
-        case FindNext(SearchRec) of
+        case FindNextUTF8(SearchRec) of
           0: ;
           2: //ERROR_NO_MORE_FILES:
             Break;
@@ -293,7 +293,7 @@ begin
           end;
         end;
       finally
-      SysUtils.FindClose(SearchRec);
+      FindCloseUTF8(SearchRec);
       List.EndUpdate;
       end;
     finally
@@ -317,7 +317,7 @@ begin
     end;
 
   {* search all files in the directory *}
-  Result := FindFirst(Directory + AllFilesMask, faDirectory, SearchRec) = 0;
+  Result := FindFirstUTF8(Directory + AllFilesMask, faDirectory, SearchRec) = 0;
 
   List.BeginUpdate;
   try
@@ -330,7 +330,7 @@ begin
           List.Add(Directory + SearchRec.Name);
           end;
 
-      case FindNext(SearchRec) of
+      case FindNextUTF8(SearchRec) of
         0: ;
         2: //ERROR_NO_MORE_FILES:
           Break;
@@ -339,7 +339,7 @@ begin
         end;
       end;
   finally
-    SysUtils.FindClose(SearchRec);
+    FindCloseUTF8(SearchRec);
     List.EndUpdate;
   end;
 end;

@@ -4418,7 +4418,7 @@ uses
   {$IFDEF MSWINDOWS}
   Windows, Registry,
   {$ENDIF}
-  SysUtils, Classes;
+  SysUtils, fileutil, Classes;
 
 const
   {$IFDEF UNIX}
@@ -4456,7 +4456,7 @@ begin
   begin
     if not DirectoryExists(pathLst[pathIdx]) then continue;
     // look for libvlc.so
-    if FileExists(pathLst[pathIdx] + PathDelim + LIBVLC_DLL_NAME) then
+    if FileExistsUTF8(pathLst[pathIdx] + PathDelim + LIBVLC_DLL_NAME) then
     begin
       Result := pathLst[pathIdx];
       exit;
@@ -4464,7 +4464,7 @@ begin
     // look for libvlc.so.9, .. libvlc.so.0
     for suffIdx := 9 downto 0 do
     begin
-      if FileExists(pathLst[pathIdx] + PathDelim + LIBVLC_DLL_NAME + '.' + IntToStr(suffIdx)) then
+      if FileExistsUTF8(pathLst[pathIdx] + PathDelim + LIBVLC_DLL_NAME + '.' + IntToStr(suffIdx)) then
       begin
         Result := pathLst[pathIdx];
         exit;
@@ -4502,12 +4502,12 @@ begin
   begin
     Result := LIBVLC_DLL_NAME;
     // look for libvlc.so
-    if FileExists(libvlc_install_path + PathDelim + Result) then exit;
+    if FileExistsUTF8(libvlc_install_path + PathDelim + Result) then exit;
     // look for libvlc.so.9, .. libvlc.s0.0
     for suffIdx := 9 downto 0 do
     begin
       Result := LIBVLC_DLL_NAME + '.' + IntToStr(suffIdx);
-      if FileExists(libvlc_install_path + PathDelim + Result) then exit;
+      if FileExistsUTF8(libvlc_install_path + PathDelim + Result) then exit;
     end;
   end;
   Result := '';

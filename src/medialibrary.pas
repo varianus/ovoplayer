@@ -109,7 +109,7 @@ type
 
 implementation
 
-uses AppConsts, AudioTag, dateutils;
+uses AppConsts, AudioTag, fileutil, dateutils;
 
 const
   CURRENTDBVERSION = 2;
@@ -216,7 +216,7 @@ begin
     (info.Size = CurrInfo.info.Size ) and
     (CompareDateTime(info.ModifyDate, CurrInfo.info.ModifyDate) =0) then
     begin
-     Medialibrary.fDB.ExecuteDirect('update songs set elabflag = null where FileName = '+QuotedStr(CurrSong));
+     Medialibrary.fDB.ExecuteDirect('update songs set elabflag = null where FileName = '+QuotedStr(utf8Encode(CurrSong)));
      exit;
     end;
 
@@ -591,7 +591,7 @@ begin
     while not ReadComplete do
       begin
         Tags:=ReadItem;
-        if Not FileExists(Tags.Filename) then
+        if Not FileExistsUTF8(Tags.Filename) then
           begin
              qtmp.Params.Items[0].AsInteger:=Tags.ID;
              qtmp.ExecSQL;

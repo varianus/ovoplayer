@@ -84,7 +84,7 @@ begin
   if iSep > 0 then
      begin
        ID :=UpperCase(Copy(string(Data), 1, iSep - 1));
-       fValue := UTF8Decode(Copy(string(Data), iSep + 1, MaxInt));
+       fValue := Copy(string(Data), iSep + 1, MaxInt);
        Result:=true;
      end;
 end;
@@ -96,7 +96,7 @@ var
 //  iSep :Integer;
 begin
   Result := 0;
-  Data:= UTF8Encode(ID+'='+fValue);
+  Data:= (ID+'='+fValue);
   fSize:= Length(Data);
   AStream.WriteDWord(fSize);
   AStream.Write(Data[1], fSize);
@@ -187,9 +187,17 @@ var
   i: cardinal;
 //  Frame: TVorbisFrame;
 begin
-  fSize:= Length(Vendor) + 1;
-  AStream.WriteDWord(FSize);
-  AStream.Write(Vendor[1], fSize);
+  fSize:= Length(Vendor);
+
+  if fSize = 0 then
+     AStream.WriteDWord(FSize)
+  else
+    begin
+      inc(fSize);
+      AStream.WriteDWord(FSize);
+      AStream.Write(Vendor[1], fSize);
+    end;
+
 
   AStream.WriteDWord(Count);
   for i := 0 to Count - 1 do
@@ -209,9 +217,12 @@ var
 begin
   Clear;
   fSize := AStream.ReadDWord;
-  SetLength(Data, fSize);
-  AStream.Read(Data[0], fSize);
-  Vendor := string(Data);
+  if fsize <> 0 then
+     begin
+       SetLength(Data, fSize);
+       AStream.Read(Data[0], fSize);
+       Vendor := string(Data);
+     end;
 
   FrameCount := AStream.ReadDWord;
 

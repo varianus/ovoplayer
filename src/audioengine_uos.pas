@@ -74,7 +74,7 @@ type
 
 
 implementation
-//uses math;
+uses FileUtil;
 Const
    UOSMAXVOLUME = 1;
 { TAudioEngineUOS }
@@ -180,7 +180,7 @@ begin
   // create new media
   Result := false;
 
-  if Not FileExists(Song.FullName) then
+  if Not FileExistsUTF8(Song.FullName) then
      exit;
 
   if Assigned(UOS_Player) then
@@ -338,4 +338,4 @@ initialization
   RegisterEngineClass(TAudioEngineUOS, 1, false, true);
 
 
-end.
+end.

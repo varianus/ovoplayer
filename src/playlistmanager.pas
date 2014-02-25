@@ -25,7 +25,7 @@ unit PlayListManager;
 interface
 
 uses
-  Classes, SysUtils, Playlist, AudioTag, MediaLibrary;
+  Classes, lazutf8classes, SysUtils, Playlist, AudioTag, MediaLibrary;
 
 const
   XSPF_VERSION = 'http://ovoplayer.altervista.org/ovoplayer/0/1/';
@@ -85,7 +85,7 @@ type
 implementation
 
 uses
-  DOM, XMLRead, XMLWrite, URIParser, IniFiles, filesSupport, LCLProc, basetag;
+  DOM, XMLRead, XMLWrite, URIParser, IniFiles, fileutil, filesSupport, LCLProc, basetag;
 
 const
   //  GenDelims  = [':', '/', '?', '#', '[', ']', '@'];
@@ -456,7 +456,7 @@ var
   Root, Node: TDOMelement;
   TrackNode, PropNode: TDOMelement;
   i: integer;
-  Str: TfileStream;
+  Str: TFileStreamUTF8;
 
 begin
   XMLDoc := TXMLDocument.Create;
@@ -496,7 +496,7 @@ begin
 
   end;
 
-  Str := TFileStream.Create(FileName, fmCreate);
+  Str := TFileStreamUTF8.Create(FileName, fmCreate);
   WriteXMLFile(XMLDoc, Str);
   Str.Free;
   XMLDoc.Free;
@@ -509,7 +509,7 @@ var
   s, fe: string;
 begin
   Result := pltUnknown;
-  if fileexists(FileName) then
+  if FileExistsUTF8(FileName) then
   begin
     assignfile(f, FileName);
     reset(f);

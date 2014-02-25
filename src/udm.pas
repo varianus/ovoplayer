@@ -254,7 +254,7 @@ begin
     exit;
 
   for i := 0 to OpenDialogFiles.Files.Count - 1 do
-    Backend.PlayList.EnqueueFile(UTF8ToSys(OpenDialogFiles.Files[i]));
+    Backend.PlayList.EnqueueFile((OpenDialogFiles.Files[i]));
 
   Backend.SignalPlayListChange;
 
@@ -443,7 +443,7 @@ begin
   begin
     AssignFile(f, UTF8ToSys(aFileName));
     {$PUSH}{$I-}
-    if not FileExists(aFileName) then
+    if not FileExistsUTF8(aFileName) then
       Rewrite(f)
     else
       Append(f);
