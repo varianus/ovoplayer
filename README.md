@@ -1,9 +1,9 @@
 #*OvoPlayer is a music player for various audio formats.*
 
-Download is avalaible for Windows, Linux 64 bit and Linux 32 bit .
+Download is avalaible for Windows, Linux 64 bit and Linux 32 bit.
 
 ### Current version
-*0.0.5*
+*1.1.0*
 
 ### Binary downloads
  Windows installer and Debian packages are avalaible [here](http://code.google.com/p/ovoplayer/downloads/list)
@@ -21,14 +21,14 @@ Download is avalaible for Windows, Linux 64 bit and Linux 32 bit .
   * BASS - complete, tested on Windows and linux
   * GStreamer - almost complete, Linux only
   * DirectShow - complete, Windows only (may need third-party codec)
+  * MediaFoundation - complete, Windows only (may need third-party codec)
   
 ### To Do
-  * support libmpg123 + libsndfile + portaudio - working on
   * Mac OSX port - working on
   * Streaming
 
 ### Screenshot
-![Screenshot](https://sites.google.com/site/marcocas/_/rsrc/1321969731833/home/ovoplayer-scr1.png)
+![Screenshot](http://ovoplayer.altervista.org/images/OVOPlayer_scrn1.png)
 
 ### License
 Copyright (C) 2011 Marco Caselli
