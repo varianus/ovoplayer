@@ -7,7 +7,7 @@ unit uniqueinstance_package;
 interface
 
 uses
-  UniqueInstance, UniqueInstanceRaw, registeruniqueinstance, SimpleIPCWrapper, 
+  UniqueInstance, UniqueInstanceRaw, registeruniqueinstance, 
   UniqueInstanceBase, LazarusPackageIntf;
 
 implementation

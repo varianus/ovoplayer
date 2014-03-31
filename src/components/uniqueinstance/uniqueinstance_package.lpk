@@ -31,7 +31,7 @@
     <Description Value="UniqueInstance provides a component to limits one instance per application"/>
     <License Value="Modified LGPL"/>
     <Version Major="1"/>
-    <Files Count="5">
+    <Files Count="4">
       <Item1>
         <Filename Value="uniqueinstance.pas"/>
         <UnitName Value="UniqueInstance"/>
@@ -46,13 +46,9 @@
         <UnitName Value="registeruniqueinstance"/>
       </Item3>
       <Item4>
-        <Filename Value="simpleipcwrapper.pas"/>
-        <UnitName Value="SimpleIPCWrapper"/>
-      </Item4>
-      <Item5>
         <Filename Value="uniqueinstancebase.pas"/>
-        <UnitName Value="uniqueinstancebase"/>
-      </Item5>
+        <UnitName Value="UniqueInstanceBase"/>
+      </Item4>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="1">
