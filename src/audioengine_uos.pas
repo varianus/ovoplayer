@@ -36,7 +36,6 @@ type
 //    StreamName: String;
     fdecoupler: TDecoupler;
     fState : TEngineState;
-    UOS_Init: TUOS_Init;
     UOS_Player: TUOS_Player;
 //    fRate: Cardinal;
     fMuted: boolean;
@@ -117,16 +116,16 @@ end;
 constructor TAudioEngineUOS.Create;
 begin
   inherited Create;
-  UOS_Init := TUOS_Init.Create;
   {$IFDEF LINUX}
   UOS_Init.PA_FileName := 'libportaudio.so.2';
   UOS_Init.SF_FileName := 'libsndfile.so.1';
   UOS_Init.MP_FileName := 'libmpg123.so.0';
   {$ENDIF LINUX}
   {$IFDEF WINDOWS}
-  UOS_Init.PA_FileName := 'libportaudio-32.dll';
-  UOS_Init.SF_FileName := 'libsndfile-32.dll';
-  UOS_Init.MP_FileName := 'libmpg123-32.dll';
+  uos_loadlib('libportaudio-32.dll',
+              'libsndfile-32.dll',
+              'libmpg123-32.dll',
+              nil);
   {$ENDIF LINUX}
 
   {$IFDEF DARWIN}
@@ -134,8 +133,6 @@ begin
   UOS_Init.SF_FileName := 'LibSndFile.dylib';
   UOS_Init.MP_FileName := 'LibMpg123.dylib';
   {$ENDIF DARWIN}
-  UOS_Init.flag:=LoadAll;
-  UOS_Init.LoadLib;
   fVolume:=100;
   fdecoupler := TDecoupler.Create;
 
@@ -147,7 +144,7 @@ end;
 destructor TAudioEngineUOS.Destroy;
 begin
   Stop;
-  UOS_Init.UnloadLib;
+  UOS_UnloadLib;
   fdecoupler.Free;
   inherited Destroy;
 end;
@@ -189,12 +186,12 @@ begin
        Stop;
      end;
 
-  UOS_Player := TUOS_Player.Create(True, self);
+  UOS_Player := TUOS_Player.Create(True);
   UOS_Player.Priority := tpHighest;
-  UOS_Player.AddIntoDevOut(-1, -1, -1, -1, -1);
+  UOS_Player.AddIntoDevOut(-1, -1, -1, -1, -1, -1);
 
 
-  fStreamIndex:= UOS_Player.AddFromFile(Song.FullName, -1, -1);
+  fStreamIndex:= UOS_Player.AddFromFile(pchar(Song.FullName), -1, -1, -1);
   if fStreamIndex < 0 then
      exit;
 
@@ -203,9 +200,7 @@ begin
   fDSPVol := UOS_Player.AddDSPVolumeIn(fStreamIndex, 1, 1);
   UOS_Player.SetDSPVolumeIn(fStreamIndex,fDSPVol,fVolume,fVolume, true);
 
-  hr := UOS_Player.Play;
-  if hr < 0 then
-     exit;
+  UOS_Player.Play;
 
   fState:= ENGINE_PLAY;
 

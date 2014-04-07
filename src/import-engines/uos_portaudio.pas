@@ -1,8 +1,8 @@
 
 unit uos_portaudio;
 
-{This is the Dynamic loading version of PortAudio.pas from the HuMuS team.
- You can choose the folder and file of the PortAudio library with Pa_load() and
+{This is the Dynamic loading version of PortAudio Pascal Wrapper.
+ Load the PortAudio library with Pa_load() and
  release it with Pa_unload().
 
  Fred van Stappen / fiens@hotmail.com
@@ -17,7 +17,6 @@ unit uos_portaudio;
 }
 {
   PortAudio bindings for FPC by the HuMuS team.
-  Latest version available at: http://sourceforge.net/apps/trac/humus/
 
   Copyright (c) 2009-2010 HuMuS Project
   Maintained by Roland Schaefer

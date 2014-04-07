@@ -1,7 +1,8 @@
 {
 
 This is the Dynamic loading version with reference counting of LibSndFile.pas.
- You can choose the folder and file of the LibSndFile library with sf_load() and
+With reference counter too.
+ Load the LibSndFile library with sf_load() and
  release it with sf_unload().
 
  Fred van Stappen / fiens@hotmail.com / 2013
