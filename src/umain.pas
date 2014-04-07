@@ -1266,7 +1266,7 @@ begin
        visRows := sgplaylist.VisibleRowCount;
        lastRow := iTopRow +visRows -1;
        if ARow < iTopRow then
-          sgplaylist.TopRow := ARow
+          sgplaylist.TopRow := ARow  -1
        else
          if ARow > lastRow then
            sgplaylist.TopRow := ARow -visRows;
@@ -2501,6 +2501,7 @@ begin
        begin
          sgPlayList.Columns[i].Width := ColWidths[i];
        end;
+  ScrollIntoView;
 end;
 
 end.
