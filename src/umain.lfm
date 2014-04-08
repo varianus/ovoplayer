@@ -307,6 +307,7 @@ object fMainForm: TfMainForm
           OnAcceptDirectory = ePathAcceptDirectory
           ShowHidden = False
           ButtonWidth = 23
+          DirectInput = False
           NumGlyphs = 1
           MaxLength = 0
           TabOrder = 0
@@ -660,7 +661,7 @@ object fMainForm: TfMainForm
         Flat = True
         HeaderHotZones = [gzFixedRows]
         MouseWheelOption = mwGrid
-        Options = [goColSizing, goRowSelect, goSmoothScroll, goScrollKeepVisible, goHeaderHotTracking, goHeaderPushedLook, goDontScrollPartCell, goTruncCellHints]
+        Options = [goColSizing, goRowSelect, goSmoothScroll, goHeaderHotTracking, goHeaderPushedLook, goDontScrollPartCell, goTruncCellHints]
         ParentShowHint = False
         RowCount = 2
         ScrollBars = ssAutoVertical

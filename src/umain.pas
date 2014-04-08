@@ -1265,7 +1265,7 @@ begin
        iTopRow := sgplaylist.TopRow;
        visRows := sgplaylist.VisibleRowCount;
        lastRow := iTopRow +visRows -1;
-       if ARow < iTopRow then
+       if ARow <= iTopRow then
           sgplaylist.TopRow := ARow  -1
        else
          if ARow > lastRow then
@@ -2385,14 +2385,18 @@ begin
 end;
 
 procedure TfMainForm.ReloadPlayList;
+var
+  oldtop: integer;
 begin
 
+  oldtop:=sgPlayList.TopRow;
   sgPlayList.Clear;
   sgPlayList.RowCount:=BackEnd.PlayList.Count+1 ;
   PlaylistSelected.SetSize(sgPlayList.RowCount -1);
   PlaylistSelected.Clearall;
 
   AdaptSize;
+  sgPlayList.TopRow := oldtop;
   sgPlayList.Invalidate;
 //  Application.ProcessMessages;
 
@@ -2445,7 +2449,9 @@ var
   Steps        : integer;
   Remains      : integer;
   h: ThackGrid;
+  oldTop: Integer;
 begin
+  oldtop:= sgPlayList.TopRow;
   TotalSize:= 0;
   VisibleCount:=0;
   SetLength(ColWidths, sgPlayList.Columns.Count);
@@ -2501,7 +2507,7 @@ begin
        begin
          sgPlayList.Columns[i].Width := ColWidths[i];
        end;
-  ScrollIntoView;
+  sgPlayList.TopRow := oldtop;
 end;
 
 end.
