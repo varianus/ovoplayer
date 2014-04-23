@@ -5,7 +5,7 @@ set INNOCOMPILER="C:\Program Files (x86)\Inno Setup 5\iscc.exe"
 
 :: Checks
 if not exist %INNOCOMPILER% (echo === ERROR ===
-							 Echo Missing %INNOCOMPILER%. Please edit "%~nx0" and set correct paths
+						                 echo Missing %INNOCOMPILER%. Please edit "%~nx0" and set correct paths
                              goto :close) 
 
 ::Compiling

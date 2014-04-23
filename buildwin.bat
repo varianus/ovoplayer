@@ -4,18 +4,18 @@ setlocal
 :: Set path where Lazarus is installed
 set LAZARUS_DIR=c:\ex-d\lazarus
 :: Set path where FPC binaries are installed
-set FPC_BIN=C:\Ex-D\lazarus\fpc\2.6.2\bin\i386-Win32
+set FPC_BIN=C:\Ex-D\lazarus\fpc\2.6.4\bin\i386-Win32
 ::  Primary config path - needed if you have installed lazarus with fpcup or have multiple installation
 set CONFIG_PATH=
 
 :: Checks
 if not exist "%LAZARUS_DIR%\lazbuild.exe" (echo === ERROR ===
-	                                       Echo Missing "%LAZARUS_DIR%\lazbuild.exe". Please edit "%~nx0" and set correct paths
+  	                                       echo Missing "%LAZARUS_DIR%\lazbuild.exe". Please edit "%~nx0" and set correct paths
                                            goto :close_bad) 
 
-if not exist "%FPC_BIN%\strip.exe" (Echo echo === ERROR ===
-                                         Missing "%FPC_BIN%\strip.exe". Please edit "%~nx0" and set correct paths
-                                         goto :close_bad) 
+if not exist "%FPC_BIN%\strip.exe" ( echo === ERROR ===
+                                     echo Missing "%FPC_BIN%\strip.exe". Please edit "%~nx0" and set correct paths
+                                     goto :close_bad) 
 
 :: Building process
 :build
