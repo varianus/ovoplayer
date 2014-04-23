@@ -117,9 +117,10 @@ constructor TAudioEngineUOS.Create;
 begin
   inherited Create;
   {$IFDEF LINUX}
-  UOS_Init.PA_FileName := 'libportaudio.so.2';
-  UOS_Init.SF_FileName := 'libsndfile.so.1';
-  UOS_Init.MP_FileName := 'libmpg123.so.0';
+    uos_loadlib('libportaudio.so.2',
+                'libsndfile.so.1',
+                'libmpg123.so.0',
+              nil);
   {$ENDIF LINUX}
   {$IFDEF WINDOWS}
   uos_loadlib('libportaudio-32.dll',
@@ -129,9 +130,10 @@ begin
   {$ENDIF LINUX}
 
   {$IFDEF DARWIN}
-  UOS_Init.PA_FileName := 'LibPortaudio.dylib';
-  UOS_Init.SF_FileName := 'LibSndFile.dylib';
-  UOS_Init.MP_FileName := 'LibMpg123.dylib';
+  uos_loadlib('LibPortaudio.dylib',
+              'LibSndFile.dylib',
+              'LibMpg123.dylib',
+              nil);
   {$ENDIF DARWIN}
   fVolume:=100;
   fdecoupler := TDecoupler.Create;
