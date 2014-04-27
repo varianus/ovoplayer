@@ -40,6 +40,8 @@ $MKDIR $DEBSRCDIR/usr/share/pixmaps
 $MKDIR $DEBSRCDIR/usr/share/man
 $MKDIR $DEBSRCDIR/usr/share/man/man1
 $MKDIR $DEBSRCDIR/usr/share/locale
+$MKDIR $DEBSRCDIR/usr/share/lintian
+$MKDIR $DEBSRCDIR/usr/share/lintian/overrides
 
 $MKDIR $DEBSRCDIR/DEBIAN
 
@@ -57,6 +59,7 @@ copylanguage it
 ##
 
 $INSTALLFILE  $PACKAGES_DIR/copyright $DEBSRCDIR/usr/share/doc/ovoplayer
+$INSTALLFILE  $PACKAGES_DIR/lintian-overrides $DEBSRCDIR/usr/share/lintian/overrides/ovoplayer
 
 gzip -c --best $BASE/DOC/manpages/ovoplayerctrl.1 > $DEBSRCDIR/usr/share/man/man1/ovoplayerctrl.1.gz
 chmod 0644 $DEBSRCDIR/usr/share/man/man1/ovoplayerctrl.1.gz

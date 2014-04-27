@@ -18,4 +18,5 @@ Description: Free multiplatform audio player
    * VLC - preferred choice, tested on Linux and Windows.
    * MPlayer - play almost any format, tested on Linux and Windows.
    * XINE - almost complete (some performance issues), tested on Linux.
-   * BASS - complete, tested on Windows.
+   * BASS - complete.
+   * GStreamer - complete.

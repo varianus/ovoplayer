@@ -5,7 +5,7 @@ Name=OvoPlayer
 Categories=Application;AudioVideo;Audio
 Exec=env LIBOVERLAY_SCROLLBAR=0 /usr/bin/ovoplayer
 Hidden=false
-Icon=ovoplayer.png
+Icon=/usr/share/pixmaps/ovoplayer.png
 Terminal=false
 Type=Application
 MimeType=application/x-ogg;application/ogg;audio/x-vorbis+ogg;audio/x-scpls;audio/x-mp3;audio/x-mpeg;audio/mpeg;audio/x-mpegurl;audio/x-flac

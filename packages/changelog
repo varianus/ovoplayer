@@ -1,5 +1,6 @@
-ovoplayer (0.0.2); urgency=low
+ovoplayer (1.1.0); urgency=low
 
-  * First release
+  * Full Unicode Support
+  * Fast Scan of music library
 
- -- Marco Caselli <marcocas@gmail.com>  2012-01-10
+ -- Marco Caselli <marcocas@gmail.com>  2014-04-25
