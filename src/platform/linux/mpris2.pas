@@ -123,15 +123,18 @@ const
 
 { TMpris2 }
 
-procedure append_metadata_array(messageIter: PDBusMessageIter; Tags: TCommonTags);
+procedure append_metadata_array(messageIter: PDBusMessageIter; Backend: IBackend);
 var
   array_, dict, dict_entry, dict_val, variant_array: DBusMessageIter;
   property_: PChar;
   i_val: int64;
   s_val: PChar;
   i: integer;
+  tags : TCommonTags;
+  tmp: string;
 
 begin
+  Tags:= Backend.GetMetadata;
   dbus_message_iter_open_container(messageIter, DBUS_TYPE_VARIANT, 'a{sv}', @array_);
   dbus_message_iter_open_container(@array_, DBUS_TYPE_ARRAY, '{sv}', @dict);
 
@@ -173,6 +176,7 @@ begin
   dbus_message_iter_close_container(@dict_entry, @dict_val);
   dbus_message_iter_close_container(@dict, @dict_entry);
 
+
   dbus_message_iter_open_container(@dict, DBUS_TYPE_DICT_ENTRY, nil, @dict_entry);
   property_ := ('xesam:artist');
   dbus_message_iter_append_basic(@dict_entry, DBUS_TYPE_STRING, @property_);
@@ -180,12 +184,19 @@ begin
     s_val := ('Unknown Artist')
   else
     s_val := PChar(tags.Artist);
-
   dbus_message_iter_open_container(@dict_entry, DBUS_TYPE_VARIANT, 'as', @dict_val);
   dbus_message_iter_open_container(@dict_val, DBUS_TYPE_ARRAY, 's', @variant_array);
-
   dbus_message_iter_append_basic(@variant_array, DBUS_TYPE_STRING, @s_val);
   dbus_message_iter_close_container(@dict_val, @variant_array);
+  dbus_message_iter_close_container(@dict_entry, @dict_val);
+  dbus_message_iter_close_container(@dict, @dict_entry);
+
+  dbus_message_iter_open_container(@dict, DBUS_TYPE_DICT_ENTRY, nil, @dict_entry);
+  property_ := ('mpris:artUrl');
+  dbus_message_iter_append_basic(@dict_entry, DBUS_TYPE_STRING, @property_);
+  s_val := PChar(backend.GetCoverURL);
+  dbus_message_iter_open_container(@dict_entry, DBUS_TYPE_VARIANT, 's', @dict_val);
+  dbus_message_iter_append_basic(@dict_val, DBUS_TYPE_STRING, @s_val);
   dbus_message_iter_close_container(@dict_entry, @dict_val);
   dbus_message_iter_close_container(@dict, @dict_entry);
 
@@ -246,6 +257,7 @@ var
   dontplaynext: boolean;
   interface_, Property_: PChar;
   BackEnd: IBackEnd;
+  i: integer;
 begin
 
   mpris_connection := TMpris2(user_data).mpris_connection;
@@ -363,22 +375,19 @@ begin
           dbus_message_iter_close_container(@sub2, @sub3);
           dbus_message_iter_close_container(@sub1, @sub2);
 
-(*          dbus_message_iter_open_container(&sub1, DBUS_TYPE_DICT_ENTRY, NULL, &sub2);
-          property = g_strdup("SupportedMimeTypes");
-          dbus_message_iter_append_basic(&sub2, DBUS_TYPE_STRING, &property);
-          dbus_message_iter_open_container(&sub2, DBUS_TYPE_VARIANT, "as", &sub3);
-          dbus_message_iter_open_container(&sub3, DBUS_TYPE_ARRAY, "s", &sub4);
+          dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
+          s := 'SupportedMimeTypes';
+          dbus_message_iter_append_basic(@sub2, DBUS_TYPE_STRING, @s);
+          dbus_message_iter_open_container(@sub2, DBUS_TYPE_VARIANT, 'as', @sub3);
+          dbus_message_iter_open_container(@sub3, DBUS_TYPE_ARRAY, 's', @sub4);
 
-          for (i = 0; i < G_N_ELEMENTS(mime_types); i++) {
-              s_val = g_strdup(mime_types[i]);
-              dbus_message_iter_append_basic(&sub4, DBUS_TYPE_STRING, &s_val);
-              g_free(s_val);
-          }
+          for i := 0 to 8 do
+              s_val :=pchar(mimetypes[i]);
+              dbus_message_iter_append_basic(@sub4, DBUS_TYPE_STRING, @s_val);
 
-          dbus_message_iter_close_container(&sub3, &sub4);
-          dbus_message_iter_close_container(&sub2, &sub3);
-          g_free(property);
-          dbus_message_iter_close_container(&sub1, &sub2);  *)
+          dbus_message_iter_close_container(@sub3, @sub4);
+          dbus_message_iter_close_container(@sub2, @sub3);
+          dbus_message_iter_close_container(@sub1, @sub2);
 
           dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
           s := 'PlaybackStatus';
@@ -539,7 +548,7 @@ begin
           dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
           property_ := ('Metadata');
           dbus_message_iter_append_basic(@sub2, DBUS_TYPE_STRING, @property_);
-          append_metadata_array(@sub2, BackEnd.GetMetadata);
+          append_metadata_array(@sub2, BackEnd);
           dbus_message_iter_close_container(@sub1, @sub2);
           dbus_message_iter_close_container(@sub0, @sub1);
 
@@ -962,7 +971,7 @@ begin
                 begin
                 reply_message := dbus_message_new_method_return(message_);
                 dbus_message_iter_init_append(reply_message, @sub0);
-                append_metadata_array(@sub0, BackEnd.GetMetadata);
+                append_metadata_array(@sub0, BackEnd);
                 dbus_connection_send(mpris_connection, reply_message, nil);
                 dbus_message_unref(reply_message);
                 Result := DBUS_HANDLER_RESULT_HANDLED;
@@ -1034,8 +1043,8 @@ begin
   case kind of
     cpStatus:
       begin
-      mpris_send_signal_Updated_Metadata;
-      mpris_send_signal_PlaybackStatus;
+        mpris_send_signal_Updated_Metadata;
+        mpris_send_signal_PlaybackStatus;
       end;
     cpVolume: mpris_send_signal_VolumeChanged;
     cpPosition: mpris_send_signal_Seeked;
@@ -1098,7 +1107,7 @@ begin
     dbus_message_iter_open_container(@dict, DBUS_TYPE_DICT_ENTRY, nil, @dict_entry);
     property_ := ('Metadata');
     dbus_message_iter_append_basic(@dict_entry, DBUS_TYPE_STRING, @property_);
-    append_metadata_array(@dict_entry, fBackEnd.GetMetadata);
+    append_metadata_array(@dict_entry, fBackEnd);
     dbus_message_iter_close_container(@dict, @dict_entry);
 
     dbus_message_iter_open_container(@dict, DBUS_TYPE_DICT_ENTRY, nil, @dict_entry);

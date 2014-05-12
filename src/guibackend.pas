@@ -77,7 +77,7 @@ type
     procedure SetPosition(AValue: int64);
     procedure SetStatus(AValue: TEngineState);
     procedure SetVolume(AValue: cardinal);
-
+    Function GetCoverURL: String;
 
     Procedure Play;
     Procedure Stop;
@@ -113,7 +113,7 @@ Procedure FreeBackend;
 
 implementation
 
-uses LCLProc, FilesSupport, AudioTag, AppConsts, ExtendedInfo;
+uses Graphics, LCLProc, FilesSupport, AudioTag, AppConsts, ExtendedInfo, uriparser;
 
 var
   fBackEnd: TBackEnd;
@@ -338,6 +338,44 @@ begin
   Notify(cpVolume);
 end;
 
+function TBackEnd.GetCoverURL: String;
+var
+  Picture: TPicture;
+  imgLoaded : boolean;
+  Song: TCustomSong;
+  f: TTagReader;
+begin
+  result := '';
+  Song :=  PlayList.CurrentItem;
+  if not assigned(song) then exit;
+
+  imgloaded := false;
+  if Song.Tags.HasImage then
+     begin
+       f := GetFileTagsObject(Song.Tags.FileName);
+       f.Tags.Images[0].image.Position:=0;
+       try
+          Picture:= tpicture.Create;
+          Picture.LoadFromStream(f.Tags.Images[0].image);
+          result :=GetTempDir(true)+'ovoplayer-tmp-cover'+'.png';
+          Picture.SaveToFile(result);
+          Picture.free;
+          imgLoaded:= true;
+       Except
+       end;
+       f.Free;
+     end;
+
+  if not imgLoaded then
+     begin
+      result := BackEnd.GetImageFromfolder(IncludeTrailingPathDelimiter(Song.FilePath));
+     end;
+
+  if Result <> '' then
+     result := FilenameToURI(result);
+
+end;
+
 procedure TBackEnd.Play;
 begin
   if AudioEngine.State = ENGINE_PAUSE then
@@ -489,7 +527,8 @@ begin
   Next;
 end;
 
-procedure TBackEnd.PlaylistOnSongAdd(Sender: Tobject; Index: Integer; ASong : TcustomSong);
+procedure TBackEnd.PlaylistOnSongAdd(Sender: Tobject; Index: Integer;
+  ASong: TCustomSong);
 var
   ID: Integer;
   ExtendedInfo: TExtendedInfo;

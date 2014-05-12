@@ -57,10 +57,11 @@ type
     Procedure OpenURI(URI: String);
     procedure Seek(AValue: int64);
     Function GetMetadata: TCommonTags;
+    Function GetCoverURL: String;
   end;
 
 
 implementation
 
 end.
-
+

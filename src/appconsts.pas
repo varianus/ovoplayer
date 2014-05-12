@@ -50,6 +50,18 @@ const
 
   MediaLibraryName = 'medialibrary.db';
 
+  MimeTypes : array [0..8] of string =(
+    'application/x-ogg',
+    'application/ogg',
+    'audio/x-vorbis+ogg',
+    'audio/x-scpls',
+    'audio/x-mp3',
+    'audio/x-mpeg',
+    'audio/mpeg',
+    'audio/x-mpegurl',
+    'audio/x-flac');
+
+
 Resourcestring
   rEmptyTag = '<none>';
   rMissing = '<missing>';
@@ -67,6 +79,7 @@ Resourcestring
   rMultipleValue = '<Multiple Value>';
   rDragToChangePosition = 'Drag to change position';
 
+
 implementation
 
 Function GetAppName : String;
@@ -78,4 +91,4 @@ initialization
  OnGetApplicationName := @GetAppName;
 
 
-end.
+end.
