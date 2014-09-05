@@ -238,7 +238,6 @@ var
   MaskList:  TStringList;
   Masks, Directory: string;
   info :TFileInfoObject;
-
 begin
   Assert(List <> nil);
   MaskList := TStringList.Create;
@@ -280,7 +279,7 @@ begin
               info := TFileInfoObject.Create;
               info.info.Size:= SearchRec.Size;
               info.info.ModifyDate:= FileDateToDateTime(SearchRec.Time);
-              List.AddObject(Directory + SearchRec.Name, info);
+              List.AddObject(SysToUTF8(Directory + SearchRec.Name), info);
             Break;
             end;
 

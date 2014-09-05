@@ -484,7 +484,7 @@ procedure TDM.ApplicationPropertiesException(Sender: TObject; E: Exception
   );
 begin
   DumpExceptionCallStack(e);
-  Halt; // End of program execution
+//  Halt; // End of program execution
 end;
 
 initialization

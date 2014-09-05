@@ -36,7 +36,7 @@ type
     fValue :string;
   protected
     function GetAsString: string;  override;
-    procedure SetAsString(AValue: string); override;
+    procedure SetAsString(const AValue: string); override;
   public
     function ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean; override;
     function WriteToStream(AStream: TStream): DWord; override;
@@ -65,7 +65,7 @@ begin
   Result:=fValue;
 end;
 
-procedure TVorbisFrame.SetAsString(AValue: string);
+procedure TVorbisFrame.SetAsString(const AValue: string);
 begin
   fValue:= AValue;
 end;
@@ -73,18 +73,20 @@ end;
 function TVorbisFrame.ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean;
 var
   fSize:Cardinal;
-  Data: array of char;
+  Data: RawByteString;
   iSep :Integer;
+  TmpSt:String;
 begin
   Result := false;
   fSize:= AStream.ReadDWord;
-  SetLength(Data, fSize+1);
-  AStream.Read(Data[0], fSize);
-  iSep := pos('=',String(data));
+  SetLength(Data, fSize);
+  AStream.Read(Data[1], fSize);
+  tmpst := (data);
+  iSep := pos('=',tmpst);
   if iSep > 0 then
      begin
-       ID :=UpperCase(Copy(string(Data), 1, iSep - 1));
-       fValue := Copy(string(Data), iSep + 1, MaxInt);
+       ID :=UpperCase(Copy(tmpst, 1, iSep - 1));
+       fValue := Copy(tmpst, iSep + 1, MaxInt);
        Result:=true;
      end;
 end;

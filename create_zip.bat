@@ -1,12 +1,12 @@
 @ECHO OFF
 setlocal
 :: Set path where FPC binaries are installed
-set ZIPCMD="C:\Ex-D\lazarus\fpc\2.6.2\bin\i386-Win32\zip.exe"
+set ZIPCMD="C:\Ex-D\lazarus\fpc\2.6.4\bin\i386-Win32\zip.exe"
 
 :: Checks
 
 if not exist %ZIPCMD% (echo === ERROR ===
-					   Echo Missing %ZIPCMD% . Please edit "%~nx0" and set correct paths
+		       Echo Missing %ZIPCMD% . Please edit "%~nx0" and set correct paths
                        goto :close) 
 										   
 :: 

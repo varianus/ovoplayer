@@ -35,11 +35,11 @@ type
   TMp4Frame =  class(TFrameElement)
   Private
     fFlags: DWord;
-    Data: array of Ansichar;
+    Data: RawByteString;
     fSize: Integer;
   protected
     function GetAsString: string;  override;
-    procedure SetAsString(AValue: string); override;
+    procedure SetAsString(const AValue: string); override;
     function GetSize: DWord; override;
   public
     constructor Create; override;
@@ -73,20 +73,20 @@ const
 function TMp4Frame.GetAsString: string;
 begin
   if (fFlags and $00ffffff) = 1 then
-    Result := (String(Data));
+    Result := (Data);
 
   if (fFlags and $00ffffff) = 0 then
     begin
       if fSize = 24 then
-         Result := Inttostr(BEtoN(PDWord(@data[0])^))
+         Result := Inttostr(BEtoN(PDWord(@data[1])^))
       else
-         Result := Inttostr(BEtoN(PWord(@data[0])^));
+         Result := Inttostr(BEtoN(PWord(@data[1])^));
     end;
 
 
 end;
 
-procedure TMp4Frame.SetAsString(AValue: string);
+procedure TMp4Frame.SetAsString(const AValue: string);
 begin
   //
 end;
@@ -119,7 +119,7 @@ begin
   fflags := BEtoN(AStream.ReadDWord);
   AStream.ReadDWord;
   SetLength(Data, fSize - 16 + 1);
-  AStream.Read(Data[0], fSize - 16+1 );
+  AStream.Read(Data[1], fSize - 16+1 );
   Result:= true;
 
 end;

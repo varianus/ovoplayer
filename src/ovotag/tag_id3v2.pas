@@ -29,14 +29,14 @@ uses
 
 type
 
-  TID3V1Record = record
-    Header: array [1..3] of char;
-    Title: array [1..30] of char;
-    Artist: array [1..30] of char;
-    Album: array [1..30] of char;
-    Year: array [1..4] of char;
-    Comment: array [1..28] of char;
-    Stopper: char;
+  TID3V1Record = packed record
+    Header: array [1..3] of AnsiChar;
+    Title: array [1..30] of AnsiChar;
+    Artist: array [1..30] of AnsiChar;
+    Album: array [1..30] of AnsiChar;
+    Year: array [1..4] of AnsiChar;
+    Comment: array [1..28] of AnsiChar;
+    Stopper: AnsiChar;
     Track: byte;
     Genre: byte;
   end;
@@ -49,14 +49,14 @@ type
   private
     fSize: DWord;
     fFlags: DWord;
-    Data: array of Ansichar;
+    Data: RawByteString;
     function IsValid: boolean;
   protected
     function GetSize: DWord; override;
   public
     destructor Destroy; override;
     function GetAsString: string; override;
-    procedure SetAsString(AValue: string); override;
+    procedure SetAsString(const AValue: string); override;
     function ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean; override;
     function WriteToStream(AStream: TStream): DWord; override;
   end;
@@ -96,14 +96,14 @@ type
     size: dword;
   end;
 
-  TID3FrameHeader = record
+  TID3FrameHeader = packed record
     ID: array [0..3] of char;
     Size: DWord;
     Flags: word;
   end;
 
-  TID3FrameHeaderOld = record
-    ID: array [0..2] of char;
+  TID3FrameHeaderOld = packed record
+    ID: array [0..2] of ansichar;
     Size: array [0..2] of byte;
   end;
 
@@ -117,7 +117,7 @@ const
   ID3V2_FRAME_COUNT = 18;
 
   { Names of supported tag frames (ID3v2.3.x & ID3v2.4.x) }
-  ID3V2_KNOWNFRAME: array [1..ID3V2_FRAME_COUNT, boolean] of string = (
+  ID3V2_KNOWNFRAME: array [1..ID3V2_FRAME_COUNT, boolean] of ansistring = (
     ('TIT2', 'TT2'),
     ('TPE1', 'TP1'),
     ('TALB', 'TAL'),
@@ -395,48 +395,49 @@ function TID3Frame.GetAsString: string;
 begin
   case
      ID[1] of
-     'T', 'W' : Result := ExtractString(pByte(Data), size);
-     'C' : Result := ExtractText(string(Data), true);
+     'T', 'W' : Result := ExtractString(pbyte(@Data[1]), size);
+     'C' : Result :=      ExtractString(pbyte(@Data[1]), size, True);
   else
     Result := '?';
   end;
 end;
 
 
-procedure TID3Frame.SetAsString(AValue: string);
+procedure TID3Frame.SetAsString(Const AValue: string);
 var
   xValue: UTf8String;
   wValue: UnicodeString;
 begin
-  if copy(ID, 1, 3) = 'COM' then
-      Avalue := Space(3) + AValue;
-
   xValue := (AValue);
-  fSize := Length(xValue);
+
+  if copy(ID, 1, 3) = 'COM' then
+      Xvalue := Space(3) + XValue;
+
+  fSize := UTF8Length(xValue);
   if fSize = 0 then
   begin
     SetLength(Data, 0);
     exit;
   end;
-  inc(fSize,3);
 
   if TID3Tags(Tagger).Version >= TAG_VERSION_2_4 then
      begin
+       inc(fSize,3);
        SetLength(Data, fSize);
-       Data[0] := #03;
-       StrPCopy(@(Data[1]), xValue);
+       Data[1] := #03;
+       StrPCopy(@(Data[2]), xValue);
        Data[fSize-1] := #00;
        Data[fSize-2] := #00;
      end
   else
      begin
-       inc(fSize,2);
-       SetLength(Data, fSize);
-       Data[0] := #01;
-       Data[1] := #255;
-       Data[2] := #254;
        wvalue := UTF8ToUTF16(xValue);
-       StrPCopy(@(Data[3]), pWideChar(wValue));
+       fSize:=Length(wValue) * sizeof( UnicodeChar ) + 5;
+       SetLength(Data, fSize);
+       Data[1] := #01;
+       Data[2] := #$FF;
+       Data[3] := #$FE;
+       StrPCopy(@(Data[4]), pWideChar(wValue));
        Data[fSize-1] := #00;
        Data[fSize-2] := #00;
 
@@ -506,7 +507,7 @@ begin
     headsize:= 6;
     AStream.Write(HeaderOld, headsize);
   end;
-  AStream.Write(Data[0], fSize);
+  AStream.Write(Data[1], fSize);
   Result := fSize + headsize;
 end;
 
@@ -543,8 +544,8 @@ begin
     exit; // Corruption protection
 
   SetLength(Data, DataSize + 1);
-  FillByte(Data[0], DataSize + 1, 0);
-  AStream.Read(Data[0], DataSize);
+  FillByte(Data[1], DataSize + 1, 0);
+  AStream.Read(Data[1], DataSize);
   fSize := DataSize;
   Result := True;
 end;

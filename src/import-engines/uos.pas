@@ -3234,8 +3234,8 @@ end;
 
 constructor Tuos_Init.Create;
 begin
-  SetExceptionMask(GetExceptionMask + [exZeroDivide] + [exInvalidOp] +
-    [exDenormalized] + [exOverflow] + [exPrecision]);
+//  SetExceptionMask(GetExceptionMask + [exZeroDivide] + [exInvalidOp] +
+//    [exDenormalized] + [exOverflow] + [exPrecision]);
   uosLoadResult.PAloadERROR := -1;
   uosLoadResult.SFloadERROR := -1;
   uosLoadResult.STloadERROR := -1;

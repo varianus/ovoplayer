@@ -1514,32 +1514,34 @@ var
   ASong:TSong;
   txt:string;
 begin
-  with sgPlayList do
-  begin
-      if (aCol<0) or (aCol>ColCount-1) then
+
+      if (aCol<0) or (aCol>sgPlayList.ColCount-1) then
         Exit;
 
-      tmpCanvas := GetWorkingCanvas(Canvas);
+      tmpCanvas := GetWorkingCanvas(sgPlayList.Canvas);
 
-      C := Columns[(aCol)];
+      C := sgPlayList.Columns[(aCol)];
 
       try
         W:=0;
-        for i := TopRow to (TopRow + VisibleRowCount-2) do begin
+        for i := sgPlayList.TopRow to (sgPlayList.TopRow + sgPlayList.VisibleRowCount-2) do begin
 
           if C<>nil then begin
-            if i<FixedRows then
+            if i<sgPlayList.FixedRows then
               tmpCanvas.Font := C.Title.Font
             else
               tmpCanvas.Font := C.Font;
           end else begin
-            if i<FixedRows then
-              tmpCanvas.Font := TitleFont
+            if i<sgPlayList.FixedRows then
+              tmpCanvas.Font := sgPlayList.TitleFont
             else
               tmpCanvas.Font := Font;
           end;
 
           ASong := BackEnd.PlayList.Songs[i];
+          if ASong = nil then
+             DebugLn('nessuno');
+
           case aCol of
              0: Txt := IntToStr(i);
              1: Txt := ASong.Tags.Title;
@@ -1553,6 +1555,8 @@ begin
              9: Txt := ASong.FileName;
             10: Txt := 'WWWWW';
           end;
+          if txt = '' then
+            txt:='.';
           Ts := TmpCanvas.TextExtent(txt);
 
           if Ts.Cx>W then
@@ -1570,13 +1574,12 @@ begin
       end;
 
       if W=0 then
-        W := DefaultColWidth
+        W := sgPlayList.DefaultColWidth
       else
         W := W + 8;
 
       Result := W;
 
-  end;
 end;
 
 

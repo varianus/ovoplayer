@@ -74,7 +74,7 @@ uses
   dynlibs;
 
 Const
-  BASSMAXVOLUME = 1;
+  BASSMAXVOLUME = 1.0;
 { TAudioEngineBASS }
 
 procedure PlayEndSync(SyncHandle: HSYNC; Channel, Data: DWORD;user:pointer); stdcall;
@@ -102,7 +102,7 @@ end;
 
 function TAudioEngineBASS.GetMaxVolume: integer;
 begin
-  Result:= BASSMAXVOLUME;
+  Result:= Trunc(BASSMAXVOLUME * 255);
 end;
 
 function TAudioEngineBASS.GetSongPos: integer;
@@ -338,4 +338,4 @@ end;
 initialization
   RegisterEngineClass(TAudioEngineBASS, 3, false, true);
 
-end.
+end.

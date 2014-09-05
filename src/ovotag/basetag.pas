@@ -74,7 +74,7 @@ type
     function GetID: string; virtual;
     procedure SetID(AValue: string);
     function GetAsString: string; virtual; abstract;
-    procedure SetAsString(AValue: string); virtual; abstract;
+    procedure SetAsString(const AValue: string); virtual; abstract;
   public
     Tagger : TTags;
     constructor Create; virtual; Overload;
@@ -100,7 +100,7 @@ type
     procedure SetImage(AValue: TStream);
   protected
     function GetAsString: string;  override;
-    procedure SetAsString(AValue: string); override;
+    procedure SetAsString(const AValue: string); override;
   Public
     Description: String;
     MIMEType: String;
@@ -181,7 +181,7 @@ function GetTagByID(Tags:TcommonTags; Field: TIDFields):string; inline;
 Procedure SetTagByID(var Tags:TcommonTags; Field: TIDFields; Value :string); inline;
 
 implementation
-uses FileUtil;
+uses FileUtil, lclProc;
 
 operator = (t1 : TCommonTags; t2 : TCommonTags) b : boolean;
 begin
@@ -262,7 +262,7 @@ begin
   Result:= '';
 end;
 
-procedure TImageElement.SetAsString(AValue: string);
+procedure TImageElement.SetAsString(const AValue: string);
 begin
 end;
 
@@ -307,9 +307,12 @@ begin
 end;
 
 destructor TTagReader.Destroy;
+var
+   tmptags: TTags;
 begin
-  if Tags <> nil then
-     tags.free;
+  tmptags := Tags;
+  if Assigned(tmptags) then
+     freeAndNil(tmptags);
 
   inherited Destroy;
 end;
@@ -377,12 +380,12 @@ end;
 function TTags.GetFrameByID(ID: string): TFrameElement;
 var
   i:Integer;
-  fid: Integer;
+  fid: integer;
 begin
   fid:= -1;
   for i:=0 to FramesList.Count -1 do
     begin
-      if UpperCase(TFrameElement(FramesList[i]).ID) = UpperCase(id) then
+      if  AnsiCompareText(TFrameElement(FramesList[i]).id, id) = 0 then
          begin
            fid:=i;
            break;
@@ -437,15 +440,19 @@ end;
 constructor TTags.Create;
 begin
   FramesList := TFPObjectList.Create(True);
+
   ImagesList := TFPObjectList.Create(True);
 end;
 
 destructor TTags.Destroy;
 begin
   FreeAndNil(FramesList);
-  FreeAndNil(ImagesList);
-  inherited Destroy;
 
+  FreeAndNil(ImagesList);
+
+
+  inherited Destroy;
+  self :=nil;
 end;
 
 procedure TTags.Add(Frame: TFrameElement);

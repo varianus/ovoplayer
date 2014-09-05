@@ -68,7 +68,8 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   uConfig, uOSD, uMiniPlayer, uSongInfo,
   uCover,
   customdrawndrawers, customdrawn_ovoplayer,
-  DefaultTranslator, customdrawn;
+  DefaultTranslator, customdrawn,
+  Math;
 
 
 
@@ -80,11 +81,11 @@ begin
 
   if not isAppRunning(Application) then
    begin
-      Application.Title:=DisplayAppName;
+      Application.Title:='OvoPlayer';
       Application.Initialize;
       Application.CreateForm(TDM, dm);
       Application.CreateForm(TfMainForm, fMainForm);
       fMainForm.show;
       Application.Run;
    end;
-end.
+end.

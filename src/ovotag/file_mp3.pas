@@ -37,7 +37,7 @@ const
 type
 
   { TMP3Reader }
-  VBRData = record
+  VBRData = packed record
     Found: boolean;                                { True if VBR header found }
     ID: array [1..4] of char;                   { Header ID: "Xing" or "VBRI" }
     Frames: integer;                                 { Total number of frames }
@@ -47,7 +47,7 @@ type
   end;
 
   { MPEG frame header data}
-  FrameData = record
+  FrameData = packed record
     Found: boolean;                                     { True if frame found }
     Position: integer;                           { Frame position in the file }
     Size: word;                                          { Frame size (bytes) }
@@ -426,9 +426,8 @@ var
 
 begin
   Result := inherited LoadFromFile(AFileName);
-
+  fStream := TFileStreamUTF8.Create(fileName, fmOpenRead or fmShareDenyNone);
   try
-    fStream := TFileStreamUTF8.Create(fileName, fmOpenRead or fmShareDenyNone);
     ftags := TID3Tags.Create;
     fTags.ReadFromStream(fStream);
 
@@ -453,6 +452,8 @@ begin
   finally
     fStream.Free;
   end;
+
+
 end;
 
 function TMP3Reader.SaveToFile(AFileName: Tfilename): boolean;

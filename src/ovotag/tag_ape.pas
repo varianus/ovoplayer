@@ -50,7 +50,7 @@ type
   protected
     DataType: Word;
     function GetAsString: string;  override;
-    procedure SetAsString(AValue: string); override;
+    procedure SetAsString(const AValue: string); override;
   public
     function ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean; override;
     function WriteToStream(AStream: TStream): DWord; override;
@@ -86,7 +86,7 @@ begin
   end;
 end;
 
-procedure TAPEFrame.SetAsString(AValue: string);
+procedure TAPEFrame.SetAsString(const AValue: string);
 begin
   case DataType of
     0: fValue := UTF8Encode(AValue);

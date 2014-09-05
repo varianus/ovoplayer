@@ -86,12 +86,12 @@ var
 
 function GetBasicAudioVolume(Value : integer) : integer;
 begin
-  Result := Round(Power(10,(Value * 255 / DSHOWMAXVOLUME) / 2500) * (DSHOWMAXVOLUME +1) - 1);
+  Result := Round(Power(10,((Value * 255) / DSHOWMAXVOLUME) / 2500) * (DSHOWMAXVOLUME +1) - 1);
 end;
 
 function SetBasicAudioVolume(Value : integer) : integer;
 begin
-  Result := Round(Log10(((Value / 255 * DSHOWMAXVOLUME )+1) / DSHOWMAXVOLUME) * 2500);
+  Result := Round(Log10((((Value / 255) * DSHOWMAXVOLUME )+1) / DSHOWMAXVOLUME) * 2500);
 end;
 
 function TAudioEngineDShow.GetMaxVolume: integer;

@@ -34,8 +34,9 @@ const
 
 function ExtractTrack(const TrackString: string): word;
 
-function GetANSI(const Source: string): string;
-function ExtractString(p:pbyte; size:cardinal): string;
+//function GetANSI(const Source: string): string;
+function ExtractString(p:pbyte; size:cardinal; LanguageID:boolean=false):string;
+
 procedure EncodeString(s:widestring; var e:pchar; var l:cardinal);
 
 procedure FixTrack(const TrackString: string; const TrackNr: integer;
@@ -51,7 +52,7 @@ function DecodeChannelNumber(Channels:integer): string;
 function GetContent(const Content1, Content2: string): string;
 function ExtractYear(const YearString, DateString: string): string;
 function ExtractGenre(const GenreString: string; offset:integer=0): string;
-function ExtractText(const SourceString: string; LanguageID: boolean): string;
+//function ExtractText(const SourceString: string; LanguageID: boolean): string;
 function SyncSafe_Decode(const SyncDWord: DWord): DWord;
 function SyncSafe_Encode(const SyncDWord: DWord): DWord;
 
@@ -64,7 +65,7 @@ function EnableBit(const Value: DWord; const Bit: byte;
 
 
 implementation
-uses ID3v1Genres;
+uses ID3v1Genres, lazutf8;
 { --------------------------------------------------------------------------- }
 
 function DecodeChannelNumber(Channels:integer): string;
@@ -104,9 +105,9 @@ end;
 function GetContent(const Content1, Content2: string): string;
 begin
   { Get content preferring the first content }
-  Result := GetANSI(Content1);
+  Result := Content1;
   if Result = '' then
-    Result := GetANSI(Content2);
+    Result := Content2;
 end;
 
 { --------------------------------------------------------------------------- }
@@ -114,9 +115,9 @@ end;
 function ExtractYear(const YearString, DateString: string): string;
 begin
   { Extract year from strings }
-  Result := GetANSI(YearString);
+  Result := (YearString);
   if Result = '' then
-    Result := Copy(GetANSI(DateString), 1, 4);
+    Result := Copy((DateString), 1, 4);
 end;
 
 { --------------------------------------------------------------------------- }
@@ -126,7 +127,7 @@ var
   GenreNumber: integer;
 begin
   { Extract genre from string }
-  Result := GetANSI(GenreString);
+  Result := (GenreString);
   GenreNumber:=255;
   if TryStrToInt(Result, GenreNumber) and (GenreNumber <= ID3_MaxGenreExtended) then
      Result := v1Genres[GenreNumber + offset];
@@ -137,24 +138,24 @@ end;
 
 { --------------------------------------------------------------------------- }
 
-function ExtractText(const SourceString: string; LanguageID: boolean): string;
-var
-  Source: string;
-  EncodingID: char;
-begin
-  { Extract significant text data from a complex field }
-  Source := SourceString;
-  Result := '';
-  if Length(Source) > 0 then
-  begin
-    EncodingID := Source[1];
-    if LanguageID then
-      Delete(Source, 1, 4)
-    else
-      Delete(Source, 1, 1);
-    Result := GetANSI(EncodingID + Source);
-  end;
-end;
+//function ExtractText(const SourceString: string; LanguageID: boolean): string;
+//var
+//  Source: string;
+//  EncodingID: char;
+//begin
+//  { Extract significant text data from a complex field }
+//  Source := SourceString;
+//  Result := '';
+//  if Length(Source) > 0 then
+//  begin
+//    EncodingID := Source[1];
+//    if LanguageID then
+//      Delete(Source, 1, 4)
+//    else
+//      Delete(Source, 1, 1);
+//    Result := GetANSI(EncodingID + Source);
+//  end;
+//end;
 
 function Swap32(const Figure: DWORD): DWORD;
 var
@@ -164,31 +165,31 @@ begin
     ByteArray[1] shr 24 + ByteArray[2] shr 16 + ByteArray[3] shr 8 + ByteArray[4];
 end;
 
-function GetANSI(const Source: string): string;
-var
-  Index: integer;
-  FirstByte, SecondByte: byte;
-  UnicodeChar: widechar;
-begin
-  { Convert string from unicode if needed and trim spaces }
-  if (Length(Source) > 0) and (Source[1] = UNICODE_ID) then
-    begin
-    Result := '';
-    for Index := 1 to ((Length(Source) - 1) div 2) do
-      begin
-      FirstByte   := Ord(Source[Index * 2]);
-      SecondByte  := Ord(Source[Index * 2 + 1]);
-      UnicodeChar := widechar(FirstByte or (SecondByte shl 8));
-      if UnicodeChar = #0 then
-        break;
-      if FirstByte < $FF then
-        Result := Result + UnicodeChar;
-      end;
-    Result := Trim(Result);
-    end
-  else
-    Result := Trim(Source);
-end;
+//function GetANSI(const Source: string): string;
+//var
+//  Index: integer;
+//  FirstByte, SecondByte: byte;
+//  UnicodeChar: widechar;
+//begin
+//  { Convert string from unicode if needed and trim spaces }
+//  if (Length(Source) > 0) and (Source[1] = UNICODE_ID) then
+//    begin
+//    Result := '';
+//    for Index := 1 to ((Length(Source) - 1) div 2) do
+//      begin
+//      FirstByte   := Ord(Source[Index * 2]);
+//      SecondByte  := Ord(Source[Index * 2 + 1]);
+//      UnicodeChar := widechar(FirstByte or (SecondByte shl 8));
+//      if UnicodeChar = #0 then
+//        break;
+//      if FirstByte < $FF then
+//        Result := Result + UnicodeChar;
+//      end;
+//    Result := Trim(Result);
+//    end
+//  else
+//    Result := Trim(Source);
+//end;
 
 procedure EncodeString(s:widestring; var e:pchar; var l:cardinal);
 var
@@ -211,20 +212,31 @@ begin
   end;
 end;
 
-function ExtractString(p:pbyte; size:cardinal):string;
+function ExtractString(p:pbyte; size:cardinal; LanguageID:boolean=false):string;
 var l,i:cardinal; be:boolean;
     ws: widestring;
 begin
 
  if size<>0 then begin
   if p^=0 then begin
-   result:=AnsiToUtf8(string(pchar(p)+1))
+   result:=AnsiToUtf8(ANSIstring(pchar(p)+1))
   end else if p^ in [1,2] then begin
    inc(p);
    dec(size);
    size:=size and $fffffffe;
    l:=0;
    while (l<size) and (pword(p+l)^<>0) do inc(l,2);
+   if LanguageID then
+     begin
+      inc(p,3);
+      dec(l,3);
+      if pword(p+2)^=0 then
+         begin
+           inc(p,4);
+           dec(l,4)
+         end;
+     end;
+
    if l=0 then
     be:=false
    else begin
@@ -283,7 +295,7 @@ begin
   TrackNrFixed := TrackNr;
 
   if (TrackNrFixed = 0) and (TrackStringFixed <> '') then
-    TrackNrFixed := ExtractTrack(TrackStringFixed)
+    TrackNrFixed := ExtractTrack(UTF8Encode(TrackStringFixed))
   else
   if (TrackNrFixed <> 0) and (TrackStringFixed = '') then
     TrackStringFixed := IntToStr(TrackNrFixed);
@@ -296,7 +308,7 @@ var
   Index, Value, Code: integer;
 begin
   { Extract track from string }
-  Track := GetANSI(TrackString);
+  Track := (TrackString);
   Index := Pos('/', Track);
   if Index = 0 then
     Val(Track, Value, Code)

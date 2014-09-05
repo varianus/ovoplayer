@@ -38,7 +38,7 @@ type
   public
     DataType: Word;
     function GetAsString: string; override;
-    procedure SetAsString(AValue: string); override; 
+    procedure SetAsString(const AValue: string); override;
     procedure SetAsWideString(AValue: Widestring);
     function ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean; override;
     function WriteToStream(AStream: TStream): DWord; override;
@@ -148,7 +148,7 @@ begin
 
 end;
 
-procedure TWMAFrame.SetAsString(AValue: string);
+procedure TWMAFrame.SetAsString(const AValue: string);
 begin
   case DataType of
     0: fValue := Utf8ToUtf16(AValue);

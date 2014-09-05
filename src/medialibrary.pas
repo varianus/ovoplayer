@@ -639,15 +639,15 @@ end;
 function TMediaLibrary.TagsFromTable(Table:TSQLQuery): TCommonTags;
 begin
   Result.ID          := Table.FieldByName('ID').AsInteger;
-  Result.FileName    := UTF8Decode(Table.FieldByName('Filename').AsString);
+  Result.FileName    := (Table.FieldByName('Filename').AsString);
   Result.Track       := Table.FieldByName('Track').AsInteger;
-  Result.TrackString := UTF8Decode(Table.FieldByName('TrackString').AsString);
-  Result.Title       := UTF8Decode(Table.FieldByName('Title').AsString);
-  Result.Album       := UTF8Decode(Table.FieldByName('Album').AsString);
-  Result.AlbumArtist := UTF8Decode(Table.FieldByName('AlbumArtist').AsString);
-  Result.Artist      := UTF8Decode(Table.FieldByName('Artist').AsString);
-  Result.Genre       := UTF8Decode(Table.FieldByName('Genre').AsString);
-  Result.Year        := UTF8Decode(Table.FieldByName('year').AsString);
+  Result.TrackString := (Table.FieldByName('TrackString').AsString);
+  Result.Title       := (Table.FieldByName('Title').AsString);
+  Result.Album       := (Table.FieldByName('Album').AsString);
+  Result.AlbumArtist := (Table.FieldByName('AlbumArtist').AsString);
+  Result.Artist      := (Table.FieldByName('Artist').AsString);
+  Result.Genre       := (Table.FieldByName('Genre').AsString);
+  Result.Year        := (Table.FieldByName('year').AsString);
   Result.Duration    := Table.FieldByName('Duration').AsInteger;
 
 end;
@@ -679,7 +679,7 @@ begin
   if fWorkQuery.eof then
      Result:=''
   else
-     Result := UTF8Decode(fWorkQuery.Fields[0].AsString);
+     Result := (fWorkQuery.Fields[0].AsString);
  fWorkQuery.Close;
 end;
 

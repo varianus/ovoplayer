@@ -154,10 +154,10 @@ begin
     begin
     raise Exception.Create(libvlc_dynamic_dll_error);
     end;
-  ExceptionMask:= GetExceptionMask;
+//  ExceptionMask:= GetExceptionMask;
   SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide,exOverflow, exUnderflow, exPrecision]);
   p_li := libvlc_new(ArgsNumber, @args);
-  SetExceptionMask(ExceptionMask);
+//  SetExceptionMask(ExceptionMask);
 
   p_mi := libvlc_media_player_new(p_li);
 
@@ -237,8 +237,8 @@ Var
 begin
   // create new media
   Result := false;
-  ExceptionMask:= GetExceptionMask;
-  SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide,exOverflow, exUnderflow, exPrecision]);
+//  ExceptionMask:= GetExceptionMask;
+//  SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide,exOverflow, exUnderflow, exPrecision]);
 
   if FileExistsUTF8(Song.FullName) then
     begin
@@ -273,7 +273,7 @@ begin
 
   finally
     // release media
-    SetExceptionMask(ExceptionMask);
+//    SetExceptionMask(ExceptionMask);
     if (p_md <> nil) then
       begin
         libvlc_media_release(p_md);

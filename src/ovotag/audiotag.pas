@@ -130,7 +130,7 @@ var
 begin
   InteTags:= GetFileTagsObject(FileName);
   result := ExtractTags(InteTags);
-  freeAndNil(InteTags);
+  InteTags.free;
 end;
 
 initialization

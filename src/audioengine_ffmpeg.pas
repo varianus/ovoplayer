@@ -301,7 +301,7 @@ begin
   if libFFMPEG_dynamic_dll_error <> '' then
     raise Exception.Create(libFFMPEG_dynamic_dll_error);
 
-  SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide,exOverflow, exUnderflow, exPrecision]);
+//  SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide,exOverflow, exUnderflow, exPrecision]);
 
   avcodec_register_all();
   av_register_all();

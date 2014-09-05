@@ -31,13 +31,13 @@ const
   Mp4FileMask: string    = '*.aac;*.m4a;';
 
 type
-  AtomName = array [0..3] of char;
+  AtomName = array[1..4] of ansichar;
 
-  RAtomHeader = record
+  RAtomHeader =  packed record
     Size: dword;
     Name: AtomName;
   end;
-
+const EmptyAtom :AtomName =(#0,#0,#0,#0);
 
 type
   { TMp4Atom }
@@ -49,7 +49,7 @@ type
   TMP4AtomList = class(TFPList)
   private
   public
-    function Find(Name0: AtomName='';Name1: AtomName='';Name2: AtomName='';Name3: AtomName=''): TMp4Atom;
+    function Find(Name0: AtomName;Name1: AtomName;Name2: AtomName;Name3: AtomName): TMp4Atom;
     constructor Create(Stream: TStream); overload;
     constructor Create;  overload;
 
@@ -62,7 +62,7 @@ type
       AtomLength: int64;
       children : TMP4AtomList;
       Name: string;
-      function Find(Name0: AtomName='';Name1: AtomName='';Name2: AtomName='';Name3: AtomName='') :TMp4Atom;
+      function Find(Name0: AtomName;Name1: AtomName;Name2: AtomName;Name3: AtomName) :TMp4Atom;
       function FindAll(AName:AtomName; Recursive:boolean=false) :TMp4AtomList;
       constructor Create(Stream: TStream);
       Destructor Destroy; override;
@@ -129,25 +129,25 @@ begin
   inherited Destroy;
 end;
 
-function TMP4AtomList.Find(Name0: AtomName='';Name1: AtomName='';Name2: AtomName='';Name3: AtomName=''): TMp4Atom;
+function TMP4AtomList.Find(Name0: AtomName;Name1: AtomName;Name2: AtomName;Name3: AtomName): TMp4Atom;
 var
   i: Integer;
 begin
   for i := 0 to Count -1 do
     if (TMp4Atom(Items[i]).name = name0) then
       begin
-         result:= TMp4Atom(Items[i]).find(Name1,name2,name3);
+         result:= TMp4Atom(Items[i]).find(Name1,name2,name3, EmptyAtom);
          exit;
       end;
 
   result := nil;
 end;
 
-function TMp4Atom.Find(Name0: AtomName='';Name1: AtomName='';Name2: AtomName='';Name3: AtomName=''): TMp4Atom;
+function TMp4Atom.Find(Name0: AtomName;Name1: AtomName;Name2: AtomName;Name3: AtomName): TMp4Atom;
 var
   i: Integer;
 begin
-  if name0 = '' then
+  if name0 = EmptyAtom then
     begin
      result := self;
      exit;
@@ -155,7 +155,7 @@ begin
   for i := 0 to children.Count -1 do
     if TMp4Atom(children[i]).name = name0 then
       begin
-         result:= TMp4Atom(children[i]).find(Name1,name2,name3);
+         result:= TMp4Atom(children[i]).find(Name1,name2,name3, EmptyAtom);
          exit;
       end;
 
@@ -297,9 +297,19 @@ begin
   Result := inherited LoadFromFile(AFileName);
   fStream := TFileStreamUTF8.Create(fileName, fmOpenRead or fmShareDenyNone);
   AtomList:=TMP4AtomList.Create(fStream);
-  moov := AtomList.Find('moov');
-  trak:= moov.Find('trak');
-  mdhd:=trak.find('mdia','mdhd');
+  try
+  Result:=False;
+  moov := AtomList.Find('moov',EmptyAtom,EmptyAtom,EmptyAtom);
+  if not Assigned(moov) then
+     exit;
+
+  trak:= moov.Find('trak',EmptyAtom,EmptyAtom,EmptyAtom);
+  if not Assigned(trak) then
+     exit;
+  mdhd:=trak.find('mdia','mdhd',EmptyAtom,EmptyAtom);
+  if not Assigned(mdhd) then
+     exit;
+
   SetLength(Data, mdhd.AtomLength);
   fStream.Seek(mdhd.Offset, soFromBeginning);
   Transferred := fStream.Read(Data[0], mdhd.AtomLength);
@@ -319,13 +329,17 @@ begin
     end ;
 
   ilst := AtomList.find('moov', 'udta', 'meta', 'ilst');
+  if not Assigned(ilst) then
+     exit;
 
   fTags := TMp4Tags.Create;
   fTags.ReadFromStream(fStream, ilst);
-  AtomList.Free;
-  SetLength(Data, 0);
-
-  fstream.Free;
+  Result:=true;
+  finally
+    AtomList.Free;
+    SetLength(Data, 0);
+    fstream.Free;
+  end;
 
 end;
 

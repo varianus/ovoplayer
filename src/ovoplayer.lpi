@@ -74,15 +74,11 @@ if TargetOS = 'linux' then
               <ShowGenInfo Value="False"/>
             </Verbosity>
             <WriteFPCLogo Value="False"/>
-            <CompilerMessages>
-              <UseMsgFile Value="True"/>
-            </CompilerMessages>
             <ConfigFile>
               <CustomConfigFile Value="True"/>
               <ConfigFilePath Value="..\extrafpc.cfg"/>
             </ConfigFile>
             <CustomOptions Value="-vm5024"/>
-            <CompilerPath Value="$(CompPath)"/>
             <ExecuteBefore>
               <Command Value="$(LazarusDir)\tools\svn2revisioninc$(ExeExt) .. ovorevision.inc --c=ovoRevision"/>
             </ExecuteBefore>
@@ -105,6 +101,11 @@ if TargetOS = 'linux' then
       <local>
         <FormatVersion Value="1"/>
       </local>
+      <environment>
+        <UserOverrides Count="1">
+          <Variable0 Name="HEAPTRC" Value="log=&quot;c:\ovoheap.txt&quot;"/>
+        </UserOverrides>
+      </environment>
     </RunParams>
     <RequiredPackages Count="4">
       <Item1>
@@ -141,12 +142,10 @@ if TargetOS = 'linux' then
         <ComponentName Value="fSongInfo"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="uSongInfo"/>
       </Unit2>
       <Unit3>
         <Filename Value="appconsts.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="AppConsts"/>
       </Unit3>
       <Unit4>
         <Filename Value="guibackend.pas"/>
@@ -162,12 +161,10 @@ if TargetOS = 'linux' then
         <ComponentName Value="fOSD"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="uOSD"/>
       </Unit5>
       <Unit6>
         <Filename Value="playlist.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="PlayList"/>
       </Unit6>
       <Unit7>
         <Filename Value="audioengine.pas"/>
@@ -177,32 +174,26 @@ if TargetOS = 'linux' then
       <Unit8>
         <Filename Value="audioengine_mplayer.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="AudioEngine_MPlayer"/>
       </Unit8>
       <Unit9>
         <Filename Value="audioengine_bass.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="audioengine_bass"/>
       </Unit9>
       <Unit10>
         <Filename Value="playlistmanager.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="PlayListManager"/>
       </Unit10>
       <Unit11>
         <Filename Value="medialibrary.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="MediaLibrary"/>
       </Unit11>
       <Unit12>
         <Filename Value="multimediakeys.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="MultimediaKeys"/>
       </Unit12>
       <Unit13>
         <Filename Value="config.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="Config"/>
       </Unit13>
       <Unit14>
         <Filename Value="filessupport.pas"/>
@@ -215,7 +206,6 @@ if TargetOS = 'linux' then
         <ComponentName Value="fMiniPlayer"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="uMiniPlayer"/>
       </Unit15>
       <Unit16>
         <Filename Value="uconfig.pas"/>
@@ -223,17 +213,14 @@ if TargetOS = 'linux' then
         <ComponentName Value="fConfig"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="uConfig"/>
       </Unit16>
       <Unit17>
         <Filename Value="decoupler.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="decoupler"/>
       </Unit17>
       <Unit18>
         <Filename Value="generalfunc.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="GeneralFunc"/>
       </Unit18>
       <Unit19>
         <Filename Value="ovoplayer.inc"/>
@@ -245,7 +232,6 @@ if TargetOS = 'linux' then
         <ComponentName Value="fAbout"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="uAbout"/>
       </Unit20>
       <Unit21>
         <Filename Value="audioengine_vlc.pas"/>
@@ -255,7 +241,6 @@ if TargetOS = 'linux' then
       <Unit22>
         <Filename Value="ovotag\commonfunctions.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="CommonFunctions"/>
       </Unit22>
       <Unit23>
         <Filename Value="ovotag\file_flac.pas"/>
@@ -270,7 +255,6 @@ if TargetOS = 'linux' then
       <Unit25>
         <Filename Value="ovotag\file_wma.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="file_wma"/>
       </Unit25>
       <Unit26>
         <Filename Value="ovotag\tag_id3v2.pas"/>
@@ -285,17 +269,14 @@ if TargetOS = 'linux' then
       <Unit28>
         <Filename Value="ovotag\tag_wma.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="tag_wma"/>
       </Unit28>
       <Unit29>
         <Filename Value="ovotag\file_ogg.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="file_ogg"/>
       </Unit29>
       <Unit30>
         <Filename Value="audioengine_dummy.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="audioengine_dummy"/>
       </Unit30>
       <Unit31>
         <Filename Value="version.inc"/>
@@ -304,17 +285,14 @@ if TargetOS = 'linux' then
       <Unit32>
         <Filename Value="ovotag\file_monkey.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="file_Monkey"/>
       </Unit32>
       <Unit33>
         <Filename Value="ovotag\tag_ape.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="tag_APE"/>
       </Unit33>
       <Unit34>
         <Filename Value="ovotag\id3v1genres.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="ID3v1Genres"/>
       </Unit34>
       <Unit35>
         <Filename Value="ovotag\basetag.pas"/>
@@ -334,27 +312,22 @@ if TargetOS = 'linux' then
       <Unit38>
         <Filename Value="customdrawn_ovoplayer.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="customdrawn_ovoplayer"/>
       </Unit38>
       <Unit39>
         <Filename Value="ovotag\file_dummy.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="file_Dummy"/>
       </Unit39>
       <Unit40>
         <Filename Value="ovotag\tag_dummy.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="tag_Dummy"/>
       </Unit40>
       <Unit41>
         <Filename Value="audioengine_dshow.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="audioengine_DShow"/>
       </Unit41>
       <Unit42>
         <Filename Value="import-engines\mediafoundation.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="mediafoundation"/>
       </Unit42>
       <Unit43>
         <Filename Value="ucover.pas"/>
@@ -362,17 +335,14 @@ if TargetOS = 'linux' then
         <ComponentName Value="fCover"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="uCover"/>
       </Unit43>
       <Unit44>
         <Filename Value="audioengine_openlib.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="AudioEngine_OpenLib"/>
       </Unit44>
       <Unit45>
         <Filename Value="import-engines\mediadshow.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="mediadshow"/>
       </Unit45>
       <Unit46>
         <Filename Value="import-engines\uos.pas"/>
@@ -382,17 +352,14 @@ if TargetOS = 'linux' then
       <Unit47>
         <Filename Value="audioengine_uos.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="AudioEngine_UOS"/>
       </Unit47>
       <Unit48>
         <Filename Value="import-engines\uos_libsndfile.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="uos_libsndfile"/>
       </Unit48>
       <Unit49>
         <Filename Value="import-engines\uos_mpg123.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="uos_mpg123"/>
       </Unit49>
       <Unit50>
         <Filename Value="import-engines\uos_portaudio.pas"/>
@@ -402,27 +369,22 @@ if TargetOS = 'linux' then
       <Unit51>
         <Filename Value="platform\linux\mpris2.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="mpris2"/>
       </Unit51>
       <Unit52>
         <Filename Value="coreinterfaces.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="coreinterfaces"/>
       </Unit52>
       <Unit53>
         <Filename Value="basetypes.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="BaseTypes"/>
       </Unit53>
       <Unit54>
         <Filename Value="platform\linux\dbusextension.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="DbusExtension"/>
       </Unit54>
       <Unit55>
         <Filename Value="platform\linux\notification.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="notification"/>
       </Unit55>
       <Unit56>
         <Filename Value="udm.pas"/>
@@ -435,27 +397,22 @@ if TargetOS = 'linux' then
       <Unit57>
         <Filename Value="extendedinfo.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="ExtendedInfo"/>
       </Unit57>
       <Unit58>
         <Filename Value="audioengine_ffmpeg.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="AudioEngine_FFMpeg"/>
       </Unit58>
       <Unit59>
         <Filename Value="import-engines\ffmpeg.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="ffmpeg"/>
       </Unit59>
       <Unit60>
         <Filename Value="audioengine_mf.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="audioengine_mf"/>
       </Unit60>
       <Unit61>
         <Filename Value="nullinterfacedobject.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="NullInterfacedObject"/>
       </Unit61>
       <Unit62>
         <Filename Value="ovotag\audiotag.pas"/>
@@ -465,17 +422,14 @@ if TargetOS = 'linux' then
       <Unit63>
         <Filename Value="import-engines\lazdynamic_bass.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="lazdynamic_bass"/>
       </Unit63>
       <Unit64>
         <Filename Value="audioengine_gstreamer.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="audioengine_gstreamer"/>
       </Unit64>
       <Unit65>
         <Filename Value="audioengine_xine.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="audioengine_xine"/>
       </Unit65>
       <Unit66>
         <Filename Value="import-engines\ctypes.inc"/>
@@ -484,17 +438,14 @@ if TargetOS = 'linux' then
       <Unit67>
         <Filename Value="import-engines\gstreamer.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="gstreamer"/>
       </Unit67>
       <Unit68>
         <Filename Value="ovotag\file_mp4.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="file_Mp4"/>
       </Unit68>
       <Unit69>
         <Filename Value="ovotag\tag_mp4.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="tag_MP4"/>
       </Unit69>
     </Units>
   </ProjectOptions>
@@ -531,11 +482,11 @@ if TargetOS = 'linux' then
         <OverflowChecks Value="True"/>
         <StackChecks Value="True"/>
       </Checks>
-      <Optimizations>
-        <OptimizationLevel Value="0"/>
-      </Optimizations>
     </CodeGeneration>
     <Linking>
+      <Debugging>
+        <DebugInfoType Value="dsDwarf2"/>
+      </Debugging>
       <Options>
         <Win32>
           <GraphicApplication Value="True"/>
@@ -543,14 +494,9 @@ if TargetOS = 'linux' then
       </Options>
     </Linking>
     <Other>
-      <CompilerMessages>
-        <UseMsgFile Value="True"/>
-      </CompilerMessages>
       <ConfigFile>
         <ConfigFilePath Value="..\extrafpc.cfg"/>
       </ConfigFile>
-      <CustomOptions Value="-vm5024 -Xm"/>
-      <CompilerPath Value="$(CompPath)"/>
     </Other>
   </CompilerOptions>
   <Debugging>
