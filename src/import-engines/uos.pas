@@ -1,5 +1,6 @@
 unit uos;
-{.$DEFINE library}   // uncomment it for building uos library
+{.$DEFINE library}   // uncomment it for building uos library (native and java)
+{.$DEFINE java}   // uncomment it for building uos java library
 {.$DEFINE ConsoleApp} // if FPC version < 2.7.1 uncomment it for console application
 
 {*******************************************************************************
@@ -32,6 +33,7 @@ unit uos;
 * 13 th changes: 2014-02-01 (Added Plugin + Dynamic Buffer => uos version 1.0) *
 * 14 th changes: 2014-03-01 (String=>PChar, GetSampleRale, => uos version 1.2) *
 * 15 th changes: 2014-03-16 (uos_flat + uos => uos version 1.3)                *
+* 16 th changes: 2014-06-16 (Java uos library compatible)                      *
 *                                                                              *
 ********************************************************************************}
 
@@ -60,12 +62,17 @@ uses
    {$IF (FPC_FULLVERSION >= 20701) or DEFINED(LCL) or DEFINED(ConsoleApp) or DEFINED(Windows) or DEFINED(Library)}
      {$else}
   fpg_base, fpg_main,  //// for fpGUI and fpc < 2.7.1
-    {$endif}
+     {$endif}
+
+   {$IF DEFINED(Java)}
+   uos_jni,
+   {$endif}
+
   Classes, ctypes, Math, SysUtils, uos_portaudio,
   uos_LibSndFile, uos_Mpg123, uos_soundtouch;
 
 const
-  uos_version : LongInt = 130140416 ;
+  uos_version : LongInt = 130140616 ;
 
 type
   TDArFloat = array of cfloat;
@@ -98,7 +105,7 @@ type
   Tuos_Init = class(TObject)
   public
   constructor Create;
-  private
+   private
     PA_FileName: pchar; // PortAudio
     SF_FileName: pchar; // SndFile
     MP_FileName: pchar; // Mpg123
@@ -112,7 +119,6 @@ type
     function loadlib: LongInt;
     procedure unloadlib;
     procedure unloadlibCust(PortAudio, SndFile, Mpg123, SoundTouch: boolean);
-
     function InitLib: LongInt;
   end;
 
@@ -171,7 +177,7 @@ type
     LevelLeft, LevelRight: cfloat;
 
     levelArrayEnable : LongInt;
-     {$if defined(cpu64)}
+    {$if defined(cpu64)}
     Wantframes: Tsf_count_t;
     OutFrames: Tsf_count_t;
     {$else}
@@ -221,10 +227,11 @@ type
 
 type
   TFunc = function(Data: Tuos_Data; FFT: Tuos_FFT): TDArFloat;
-    {$IF not DEFINED(Library)}
+
+   {$if DEFINED(java)}
+  TProc = JMethodID ;
+    {$else}
   TProc = procedure of object;
-   {$else}
-  TProc = procedure ;
     {$endif}
 
   TPlugFunc = function(bufferin: TDArFloat; plugHandle: THandle; NumProceed : LongInt;
@@ -240,6 +247,10 @@ type
     LoopProc: TProc;     //// External Procedure after buffer is filled
     ////////////// for FFT
     fftdata: Tuos_FFT;
+
+     {$IF DEFINED(Java)}
+    procedure LoopProcjava;
+        {$endif}
     destructor Destroy; override;
 
   end;
@@ -250,6 +261,9 @@ type
     Data: Tuos_Data;
     DSP: array of Tuos_DSP;
     LoopProc: TProc;    //// external procedure to execute in loop
+       {$IF DEFINED(Java)}
+    procedure LoopProcjava;
+        {$endif}
     destructor Destroy; override;
   end;
 
@@ -259,6 +273,9 @@ type
     Data: Tuos_Data;
     DSP: array of Tuos_DSP;
     LoopProc: TProc;    //// external procedure to execute in loop
+       {$IF DEFINED(Java)}
+    procedure LoopProcjava;
+        {$endif}
     destructor Destroy; override;
   end;
 
@@ -284,10 +301,10 @@ type
     procedure Execute; override;
     procedure onTerminate;
   public
-
     isAssigned: boolean ;
     Status: LongInt;
     Index: LongInt;
+
     BeginProc: TProc;
     //// external procedure to execute at begin of thread
 
@@ -303,6 +320,15 @@ type
     StreamIn: array of Tuos_InStream;
     StreamOut: array of Tuos_OutStream;
     PlugIn: array of Tuos_Plugin;
+
+     {$IF DEFINED(Java)}
+     PEnv : PJNIEnv;
+    Obj:JObject;
+    procedure beginprocjava;
+    procedure endprocjava;
+    procedure LoopBeginProcjava;
+    procedure LoopEndProcjava;
+      {$endif}
 
      {$IF (FPC_FULLVERSION >= 20701) or DEFINED(LCL) or DEFINED(Windows) or DEFINED(ConsoleApp) or DEFINED(Library)}
       constructor Create(CreateSuspended: boolean;
@@ -581,9 +607,11 @@ type
 
 //////////// General public procedure/function (accessible for library uos too)
 
+
+
 procedure uos_GetInfoDevice();
 
-function uos_GetInfoDeviceStr() : Pchar ;
+function uos_GetInfoDeviceStr() : Pansichar ;
 
 function uos_loadlib(PortAudioFileName, SndFileFileName, Mpg123FileName, SoundTouchFileName: PChar) : LongInt;
         ////// load libraries... if libraryfilename = '' =>  do not load it...  You may load what and when you want...
@@ -593,7 +621,6 @@ procedure uos_unloadlib();
 
 procedure uos_unloadlibCust(PortAudio, SndFile, Mpg123, SoundTouch: boolean);
            ////// Custom Unload libraries... if true, then delete the library. You may unload what and when you want...
-
 
 function uos_GetVersion() : LongInt ;             //// version of uos
 
@@ -631,6 +658,7 @@ const
     {$endif}
 
 var
+
   uosPlayers: array of Tuos_Player;
   uosPlayersStat : array of LongInt;
   uosLevelArray : TDArIARFloat ;
@@ -642,6 +670,9 @@ var
   uosDefaultDeviceOut: LongInt;
   uosInit: Tuos_Init;
   old8087cw: word;
+   {$IF DEFINED(Java)}
+  theclass : JClass;
+    {$endif}
 
 
 implementation
@@ -1214,6 +1245,7 @@ begin
           StreamIn[InputIndex].DSP[FilterIndex].fftdata.C *
           StreamIn[InputIndex].DSP[FilterIndex].fftdata.C);
         StreamIn[InputIndex].DSP[FilterIndex].fftdata.a3[1] :=
+
           -2 * StreamIn[InputIndex].DSP[FilterIndex].fftdata.a3[0];
         StreamIn[InputIndex].DSP[FilterIndex].fftdata.a3[2] :=
           StreamIn[InputIndex].DSP[FilterIndex].fftdata.a3[0];
@@ -1509,7 +1541,7 @@ begin
     2:
     begin
       ps := @Data.Buffer;
-      for x := 0 to (Data.OutFrames) do
+      for x := 0 to (Data.OutFrames)-1 do
         if odd(x) then
           ps^[x] := trunc(ps^[x] * vright)
         else
@@ -1518,7 +1550,7 @@ begin
     1:
     begin
       pl := @Data.Buffer;
-      for x := 0 to (Data.OutFrames) do
+      for x := 0 to (Data.OutFrames)-1 do
         if odd(x) then
           pl^[x] := trunc(pl^[x] * vright)
         else
@@ -2369,7 +2401,7 @@ procedure Tuos_Player.Execute;
 /////////////////////// The Loop Procedure ///////////////////////////////
 var
   x, x2, x3, x4: LongInt;
-  plugenabled: boolean;
+  stopped, plugenabled: boolean;
   curpos: cint64;
   err: CInt32;
   BufferplugINFLTMP: TDArFloat;
@@ -2386,7 +2418,7 @@ begin
   curpos := 0;
 
    {$IF not DEFINED(Library)}
-      if BeginProc <> nil then
+     if BeginProc <> nil then
     /////  Execute BeginProc procedure
        {$IF FPC_FULLVERSION>=20701}
      queue(BeginProc);
@@ -2400,11 +2432,17 @@ begin
    end;
     {$endif}
     {$endif}
-      {$else}
+      {$elseif not DEFINED(java)}
     if BeginProc <> nil then
       BeginProc;
-    {$endif}
-
+       {$else}
+  if BeginProc <> nil then
+         {$IF FPC_FULLVERSION>=20701}
+     queue(@BeginProcjava);
+        {$else}
+      synchronize(@BeginProcjava);
+        {$endif}
+      {$endif}
   repeat
 
      {$IF not DEFINED(Library)}
@@ -2422,9 +2460,16 @@ begin
    end;
     {$endif}
     {$endif}
-      {$else}
-    if LoopBeginProc <> nil then
-      LoopBeginProc;
+      {$elseif not DEFINED(java)}
+    if loopBeginProc <> nil then
+      loopBeginProc;
+       {$else}
+  if loopBeginProc <> nil then
+             {$IF FPC_FULLVERSION>=20701}
+     queue(@loopBeginProcjava);
+        {$else}
+      synchronize(@loopBeginProcjava);
+        {$endif}
     {$endif}
 
 
@@ -2492,7 +2537,7 @@ begin
 
           1:   /////// for Input from device
           begin
-            for x2 := 0 to StreamIn[x].Data.WantFrames do
+            for x2 := 0 to StreamIn[x].Data.WantFrames-1 do
               StreamIn[x].Data.Buffer[x2] := cfloat(0);      ////// clear input
             err := Pa_ReadStream(StreamIn[x].Data.HandleSt,
               @StreamIn[x].Data.Buffer[0], StreamIn[x].Data.WantFrames);
@@ -2564,11 +2609,19 @@ begin
    end;
     {$endif}
     {$endif}
-     {$else}
-      if (StreamIn[x].DSP[x2].LoopProc <> nil) then
+    {$elseif not DEFINED(java)}
+     if (StreamIn[x].DSP[x2].LoopProc <> nil) then
         StreamIn[x].DSP[x2].LoopProc;
-     {$endif}
-       end;
+       {$else}
+  if (StreamIn[x].DSP[x2].LoopProc <> nil) then
+   {$IF FPC_FULLVERSION>=20701}
+         queue(@Streamin[x].DSP[x2].LoopProcjava);
+        {$else}
+       synchronize(@Streamin[x].DSP[x2].LoopProcjava);
+       {$endif}
+    {$endif}
+
+    end;
 
         ///// End DSPin AfterBuffProc
 
@@ -2588,11 +2641,21 @@ begin
    end;
     {$endif}
     {$endif}
-    {$else}
+
+    {$elseif not DEFINED(java)}
       if (StreamIn[x].LoopProc <> nil) then
         StreamIn[x].LoopProc;
-     {$endif}
-    end;
+       {$else}
+       if (StreamIn[x].LoopProc <> nil) then
+  {$IF FPC_FULLVERSION>=20701}
+         queue(@Streamin[x].LoopProcjava);
+        {$else}
+       synchronize(@Streamin[x].LoopProcjava);
+       {$endif}
+    {$endif}
+      end;
+
+
 
     //// Getting the level after DSP procedure
   if  (StreamIn[x].Data.status > 0) and((StreamIn[x].Data.levelEnable = 2) or (StreamIn[x].Data.levelEnable = 3)) then StreamIn[x].Data := DSPLevel(StreamIn[x].Data);
@@ -2614,19 +2677,26 @@ begin
 
   end;   //////////////// end for low(StreamIn[x]) to high(StreamIn[x])
 
-   ////////////////// Seeking if StreamIn is terminated
-      status := 0;
-      for x := 0 to high(StreamIn) do
-    if (StreamIn[x].Data.Status) <> 0 then status := StreamIn[x].Data.Status ;
 
-    RTLeventWaitFor(evPause);  ///// is there a pause waiting ?
-    RTLeventSetEvent(evPause);
+  RTLeventWaitFor(evPause);  ///// is there a pause waiting ?
+  RTLeventSetEvent(evPause);
+   ////////////////// Seeking if StreamIn is terminated
+
+  stopped := true;
+  for x := 0 to high(StreamIn) do
+      stopped := stopped and (StreamIn[x].Data.Status = 0);
+
+  if stopped then
+     status := 0;
+
+
+
 
     //////////////////////// Give Buffer to Output
     if status <> 0 then
     begin
 
-    for x := 0 to high(StreamOut) do
+  for x := 0 to high(StreamOut) do
 
       if ((StreamOut[x].Data.TypePut = 1) and (StreamOut[x].Data.HandleSt <> nil) and
         (StreamOut[x].Data.Enabled = True)) or
@@ -2671,13 +2741,19 @@ begin
    end;
     {$endif}
     {$endif}
-    {$else}
-      if (StreamOut[x].DSP[x3].LoopProc <> nil) then
+
+     {$elseif not DEFINED(java)}
+     if (StreamOut[x].DSP[x3].LoopProc <> nil) then
         StreamOut[x].DSP[x3].LoopProc;
-     {$endif}
-
-
-            end;    ///// end DSPOut AfterBuffProc
+       {$else}
+       if (StreamOut[x].DSP[x3].LoopProc <> nil) then
+      {$IF FPC_FULLVERSION>=20701}
+         queue(@StreamOut[x].DSP[x3].LoopProcjava);
+        {$else}
+       synchronize(@StreamOut[x].DSP[x3].LoopProcjava);
+       {$endif}
+         {$endif}
+    end;    ///// end DSPOut AfterBuffProc
 
         ///// apply plugin (ex: SoundTouch Library)
 
@@ -2828,11 +2904,21 @@ begin
    end;
     {$endif}
     {$endif}
-      {$else}
-    if LoopEndProc <> nil then
+       {$elseif not DEFINED(java)}
+     if LoopEndProc <> nil then
       LoopEndProc;
+       {$else}
+       if LoopEndProc <> nil then
+
+
+      {$IF FPC_FULLVERSION>=20701}
+        queue(@endprocjava);
+         {$else}
+      synchronize(@endprocjava); /////  Execute EndProc procedure
+            {$endif}
+
     {$endif}
-  until status = 0;
+   until status = 0;
 
   ////////////////////////////////////// End of Loop ////////////////////////////////////////
 
@@ -2886,24 +2972,37 @@ begin
       if EndProc <> nil then
        {$IF FPC_FULLVERSION>=20701}
         queue(EndProc);
-        {$else}
+         {$else}
       synchronize(EndProc); /////  Execute EndProc procedure
             {$endif}
-     {$else}
-      if (EndProc <> nil) then
+
+       {$elseif not DEFINED(java)}
+     if (EndProc <> nil) then
         EndProc;
-     {$endif}
-  isAssigned := false ;
-    end;
+       {$else}
+     if (EndProc <> nil) then
+      {$IF FPC_FULLVERSION>=20701}
+        queue(@endprocjava);
+         {$else}
+      synchronize(@endprocjava); /////  Execute EndProc procedure
+            {$endif}
+
+       {$endif}
+
+     isAssigned := false ;
+     end;
+
 end;
 
 procedure Tuos_Player.onTerminate() ;
 begin
+
   if ifflat = true then
   begin
 FreeAndNil(uosPlayers[Index]);
 uosPlayersStat[Index] := -1 ;
 end else Free;
+
 end;
 
 
@@ -2995,7 +3094,7 @@ begin
   Mp_Unload();
   Pa_Unload();
   ST_Unload();
- Set8087CW(old8087cw);
+  Set8087CW(old8087cw);
 end;
 
 function Tuos_Init.InitLib(): LongInt;
@@ -3022,10 +3121,12 @@ begin
       Result := 0;
       DefDevOut := Pa_GetDefaultOutputDevice();
       DefDevOutInfo := Pa_GetDeviceInfo(DefDevOut);
-      DefDevOutAPIInfo := Pa_GetHostApiInfo(DefDevOutInfo^.hostApi);
+      if assigned(DefDevOutInfo) then
+         DefDevOutAPIInfo := Pa_GetHostApiInfo(DefDevOutInfo^.hostApi);
       DefDevIn := Pa_GetDefaultInputDevice();
       DefDevInInfo := Pa_GetDeviceInfo(DefDevIn);
-      DefDevInAPIInfo := Pa_GetHostApiInfo(DefDevInInfo^.hostApi);
+      if assigned(DefDevInInfo) then
+         DefDevInAPIInfo := Pa_GetHostApiInfo(DefDevInInfo^.hostApi);
     end;
   end;
   if (Result = -1) and (uosLoadResult.SFloadERROR = 0) then
@@ -3037,6 +3138,9 @@ begin
   Result := -1;
    if (PA_FileName <>  nil) and (PA_FileName <>  '') then
   begin
+    if not fileexists(PA_FileName) then
+      uosLoadResult.PAloadERROR := 1
+    else
     if Pa_Load(PA_FileName) then
     begin
       Result := 0;
@@ -3053,6 +3157,12 @@ begin
 
   if (SF_FileName <> nil) and (SF_FileName <>  '') then
   begin
+    if not fileexists(SF_FileName) then
+    begin
+      Result := -1;
+      uosLoadResult.SFloadERROR := 1;
+    end
+    else
     if Sf_Load(SF_FileName) then
     begin
       uosLoadResult.SFloadERROR := 0;
@@ -3070,6 +3180,12 @@ begin
 
   if (MP_FileName <> nil) and (MP_FileName <>  '') then
   begin
+    if not fileexists(MP_FileName) then
+    begin
+      Result := -1;
+      uosLoadResult.MPloadERROR := 1;
+    end
+    else
     begin
       if mp_Load(Mp_FileName) then
       begin
@@ -3089,6 +3205,12 @@ begin
 
   if (Plug_ST_FileName <> nil) and (Plug_ST_FileName <>  '')  then
   begin
+    if not fileexists(Plug_ST_FileName) then
+    begin
+      Result := -1;
+      uosLoadResult.STloadERROR := 1;
+    end
+    else
     if ST_Load(Plug_ST_FileName) then
     begin
       if (uosLoadResult.MPloadERROR = -1) and (uosLoadResult.PAloadERROR = -1) and
@@ -3105,7 +3227,7 @@ begin
   else
     uosLoadResult.STloadERROR := -1;
 
-  if Result = 0 then
+    if Result = 0 then
     Result := InitLib();
 end;
 
@@ -3199,7 +3321,7 @@ begin
  // }
 end;
 
-function uos_GetInfoDeviceStr() : PChar ;
+function uos_GetInfoDeviceStr() : PansiChar ;
 var
   x : LongInt ;
 devtmp , bool1, bool2 : string;
@@ -3229,13 +3351,51 @@ begin
  if x < length(uosDeviceInfos)-1 then  devtmp := devtmp +  #13#10 ;
  Inc(x);
  end;
- result := pchar(devtmp) ;
+result := pansichar( devtmp + ' ' );
 end;
+
+{$IF DEFINED(Java)}
+procedure Tuos_Player.beginprocjava();
+begin
+(PEnv^^).CallVoidMethod(PEnv,Obj,BeginProc)  ;
+end;
+
+procedure Tuos_Player.endprocjava();
+begin
+(PEnv^^).CallVoidMethod(PEnv,Obj,EndProc)  ;
+end;
+
+procedure Tuos_Player.LoopBeginProcjava();
+begin
+(PEnv^^).CallVoidMethod(PEnv,Obj,LoopBeginProc)  ;
+end;
+
+procedure Tuos_Player.LoopEndProcjava();
+begin
+(PEnv^^).CallVoidMethod(PEnv,Obj,LoopEndProc)  ;
+end;
+
+procedure Tuos_DSP.LoopProcjava();
+begin
+// todo
+end;
+
+procedure Tuos_InStream.LoopProcjava();
+begin
+/// todo
+end;
+
+procedure Tuos_OutStream.LoopProcjava();
+begin
+/// todo
+end;
+
+{$endif}
 
 constructor Tuos_Init.Create;
 begin
-//  SetExceptionMask(GetExceptionMask + [exZeroDivide] + [exInvalidOp] +
-//    [exDenormalized] + [exOverflow] + [exPrecision]);
+  SetExceptionMask(GetExceptionMask + [exZeroDivide] + [exInvalidOp] +
+    [exDenormalized] + [exOverflow] + [exPrecision]);
   uosLoadResult.PAloadERROR := -1;
   uosLoadResult.SFloadERROR := -1;
   uosLoadResult.STloadERROR := -1;
@@ -3251,6 +3411,8 @@ begin
   SF_FileName := nil; // SndFile
   MP_FileName := nil; // Mpg123
   Plug_ST_FileName := nil; // Plugin SoundTouch
+
+
 end;
 
 end.
