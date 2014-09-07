@@ -3138,9 +3138,9 @@ begin
   Result := -1;
    if (PA_FileName <>  nil) and (PA_FileName <>  '') then
   begin
-    if not fileexists(PA_FileName) then
-      uosLoadResult.PAloadERROR := 1
-    else
+//    if not fileexists(PA_FileName) then
+//      uosLoadResult.PAloadERROR := 1
+//   else
     if Pa_Load(PA_FileName) then
     begin
       Result := 0;
@@ -3157,12 +3157,12 @@ begin
 
   if (SF_FileName <> nil) and (SF_FileName <>  '') then
   begin
-    if not fileexists(SF_FileName) then
-    begin
-      Result := -1;
-      uosLoadResult.SFloadERROR := 1;
-    end
-    else
+    //if not fileexists(SF_FileName) then
+    //begin
+    //  Result := -1;
+    //  uosLoadResult.SFloadERROR := 1;
+    //end
+    //else
     if Sf_Load(SF_FileName) then
     begin
       uosLoadResult.SFloadERROR := 0;
@@ -3180,12 +3180,12 @@ begin
 
   if (MP_FileName <> nil) and (MP_FileName <>  '') then
   begin
-    if not fileexists(MP_FileName) then
-    begin
-      Result := -1;
-      uosLoadResult.MPloadERROR := 1;
-    end
-    else
+    //if not fileexists(MP_FileName) then
+    //begin
+    //  Result := -1;
+    //  uosLoadResult.MPloadERROR := 1;
+    //end
+    //else
     begin
       if mp_Load(Mp_FileName) then
       begin
@@ -3205,12 +3205,12 @@ begin
 
   if (Plug_ST_FileName <> nil) and (Plug_ST_FileName <>  '')  then
   begin
-    if not fileexists(Plug_ST_FileName) then
-    begin
-      Result := -1;
-      uosLoadResult.STloadERROR := 1;
-    end
-    else
+    //if not fileexists(Plug_ST_FileName) then
+    //begin
+    //  Result := -1;
+    //  uosLoadResult.STloadERROR := 1;
+    //end
+    //else
     if ST_Load(Plug_ST_FileName) then
     begin
       if (uosLoadResult.MPloadERROR = -1) and (uosLoadResult.PAloadERROR = -1) and
@@ -3415,4 +3415,4 @@ begin
 
 end;
 
-end.
+end.

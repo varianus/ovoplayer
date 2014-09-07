@@ -73,7 +73,7 @@ type
 
 
 implementation
-uses FileUtil;
+uses Math, FileUtil;
 Const
    UOSMAXVOLUME = 1;
 { TAudioEngineUOS }
@@ -100,7 +100,7 @@ end;
 function TAudioEngineUOS.GetSongPos: integer;
 begin
   if Assigned(UOS_Player) and (fState in [ENGINE_PLAY,ENGINE_PAUSE]) then
-     Result := Trunc(UOS_Player.InputPositionSeconds(fStreamIndex) * 1000);
+     Result := Trunc(UOS_Player.InputPositionSeconds(fStreamIndex)* 1000);
 end;
 
 procedure TAudioEngineUOS.SetSongPos(const AValue: integer);
@@ -114,8 +114,11 @@ begin
 end;
 
 constructor TAudioEngineUOS.Create;
+var
+  ExceptionMask : TFPUExceptionMask;
 begin
   inherited Create;
+
   {$IFDEF LINUX}
     uos_loadlib('libportaudio.so.2',
                 'libsndfile.so.1',
@@ -136,6 +139,9 @@ begin
               nil);
   {$ENDIF DARWIN}
   fVolume:=100;
+  ExceptionMask:= GetExceptionMask;
+  SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide,exOverflow, exUnderflow, exPrecision]);
+
   fdecoupler := TDecoupler.Create;
 
   fdecoupler.OnCommand := @ReceivedCommand;
@@ -196,7 +202,7 @@ begin
   fStreamIndex:= UOS_Player.AddFromFile(pchar(Song.FullName), -1, -1, -1);
   if fStreamIndex < 0 then
      exit;
-
+  UOS_Player.InputSetPositionEnable(fStreamIndex, 1);
   UOS_Player.EndProc:=@EndSong;
 
   fDSPVol := UOS_Player.AddDSPVolumeIn(fStreamIndex, 1, 1);
@@ -254,29 +260,32 @@ class function TAudioEngineUOS.IsAvalaible(ConfigParam: TStrings): boolean;
 begin
   Result := true;
   try
-  //  {$IFDEF LINUX}
-  //  Result :=   Pa_Load('libportaudio.so.2') and
-  //              sf_Load('libsndfile.so.1')  and
-  //              Mp_Load('libmpg123.so.0');
-  //  {$ENDIF LINUX}
-  //  {$IFDEF DARWIN}
-  //  Result :=   Pa_Load('LibPortaudio-32.dylib') and
-  //              sf_Load('LibSndFile-32.dylib') and
-  //              Mp_Load('LibMpg123-32.dylib');
-  //  {$ENDIF DARWIN}
-  //  {$IFDEF WINDOWS}
-  //  Result :=   Pa_Load('LibPortaudio.dll') and
-  //              sf_Load('LibSndFile.dll') and
-  //              Mp_Load('LibMpg123.dll');
-  //  {$ENDIF DARWIN}
+  {$IFDEF LINUX}
+    Result := uos_loadlib('libportaudio.so.2',
+                          'libsndfile.so.1',
+                          'libmpg123.so.0',
+                          nil) =0;
+  {$ENDIF LINUX}
+  {$IFDEF WINDOWS}
+  Result := uos_loadlib('libportaudio-32.dll',
+              'libsndfile-32.dll',
+              'libmpg123-32.dll',
+              nil)=0;
+  {$ENDIF LINUX}
+
+  {$IFDEF DARWIN}
+  Result := uos_loadlib('LibPortaudio.dylib',
+              'LibSndFile.dylib',
+              'LibMpg123.dylib',
+              nil)=0;
+  {$ENDIF DARWIN}
+
 
   except
   end;
 
   try
-     //Pa_Unload();
-     //sf_Unload();
-     //Mp_Unload();
+    uos_unloadlib();
   except
   end;
 end;
@@ -335,4 +344,4 @@ initialization
   RegisterEngineClass(TAudioEngineUOS, 1, false, true);
 
 
-end.
+end.
