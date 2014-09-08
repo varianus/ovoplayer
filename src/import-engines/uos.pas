@@ -106,10 +106,10 @@ type
   public
   constructor Create;
    private
-    PA_FileName: pchar; // PortAudio
-    SF_FileName: pchar; // SndFile
-    MP_FileName: pchar; // Mpg123
-    Plug_ST_FileName: pchar; // Plugin SoundTouch
+    PA_FileName: string; // PortAudio
+    SF_FileName: string; // SndFile
+    MP_FileName: string; // Mpg123
+    Plug_ST_FileName: string; // Plugin SoundTouch
     DefDevOut: PaDeviceIndex;
     DefDevOutInfo: PPaDeviceInfo;
     DefDevOutAPIInfo: PPaHostApiInfo;
@@ -613,7 +613,7 @@ procedure uos_GetInfoDevice();
 
 function uos_GetInfoDeviceStr() : Pansichar ;
 
-function uos_loadlib(PortAudioFileName, SndFileFileName, Mpg123FileName, SoundTouchFileName: PChar) : LongInt;
+function uos_loadlib(PortAudioFileName, SndFileFileName, Mpg123FileName, SoundTouchFileName: string) : LongInt;
         ////// load libraries... if libraryfilename = '' =>  do not load it...  You may load what and when you want...
 
 procedure uos_unloadlib();
@@ -3136,7 +3136,7 @@ end;
 function Tuos_Init.loadlib(): LongInt;
 begin
   Result := -1;
-   if (PA_FileName <>  nil) and (PA_FileName <>  '') then
+   if (PA_FileName <>  '') then
   begin
 //    if not fileexists(PA_FileName) then
 //      uosLoadResult.PAloadERROR := 1
@@ -3155,7 +3155,7 @@ begin
   else
     uosLoadResult.PAloadERROR := -1;
 
-  if (SF_FileName <> nil) and (SF_FileName <>  '') then
+  if (SF_FileName <>  '') then
   begin
     //if not fileexists(SF_FileName) then
     //begin
@@ -3178,7 +3178,7 @@ begin
   else
     uosLoadResult.SFloadERROR := -1;
 
-  if (MP_FileName <> nil) and (MP_FileName <>  '') then
+  if (MP_FileName <>  '') then
   begin
     //if not fileexists(MP_FileName) then
     //begin
@@ -3203,7 +3203,7 @@ begin
   else
     uosLoadResult.MPloadERROR := -1;
 
-  if (Plug_ST_FileName <> nil) and (Plug_ST_FileName <>  '')  then
+  if (Plug_ST_FileName <>  '')  then
   begin
     //if not fileexists(Plug_ST_FileName) then
     //begin
@@ -3231,7 +3231,7 @@ begin
     Result := InitLib();
 end;
 
-function uos_loadlib(PortAudioFileName, SndFileFileName, Mpg123FileName, SoundTouchFileName: PChar) : LongInt;
+function uos_loadlib(PortAudioFileName, SndFileFileName, Mpg123FileName, SoundTouchFileName: string) : LongInt;
   begin
    result := -1 ;
    if not assigned(uosInit) then begin
@@ -3239,10 +3239,10 @@ function uos_loadlib(PortAudioFileName, SndFileFileName, Mpg123FileName, SoundTo
    Set8087CW($133f);
    uosInit := TUOS_Init.Create;   //// Create Iibraries Loader-Init
    end;
-   uosInit.PA_FileName := PortAudioFileName;
-   uosInit.SF_FileName := SndFileFileName;
-   uosInit.MP_FileName := Mpg123FileName;
-   uosInit.Plug_ST_FileName := SoundTouchFileName;
+   uosInit.PA_FileName := (PortAudioFileName);
+   uosInit.SF_FileName := (SndFileFileName);
+   uosInit.MP_FileName := (Mpg123FileName);
+   uosInit.Plug_ST_FileName := (SoundTouchFileName);
 
   result := uosInit.loadlib ;
   end;
@@ -3407,12 +3407,12 @@ begin
   setlength(uosPlayers,0) ;
   setlength(uosPlayersStat,0) ;
   end;
-  PA_FileName := nil; // PortAudio
-  SF_FileName := nil; // SndFile
-  MP_FileName := nil; // Mpg123
-  Plug_ST_FileName := nil; // Plugin SoundTouch
+  PA_FileName := ''; // PortAudio
+  SF_FileName := ''; // SndFile
+  MP_FileName := ''; // Mpg123
+  Plug_ST_FileName := ''; // Plugin SoundTouch
 
 
 end;
 
-end.
+end.

@@ -76,6 +76,23 @@ implementation
 uses Math, FileUtil;
 Const
    UOSMAXVOLUME = 1;
+   SOUNDTOUCHLIB= '';
+{$IFDEF LINUX}
+   PORTAUDIOLIB = 'libportaudio.so.2';
+   SNDFILELIB   = 'libsndfile.so.1';
+   MPG123LIB    = 'libmpg123.so.0';
+{$ENDIF LINUX}
+{$IFDEF WINDOWS}
+   PORTAUDIOLIB = 'libportaudio-32.dll';
+   SNDFILELIB   = 'libsndfile-32.dll';
+   MPG123LIB    = 'libmpg123-32.dll';
+{$ENDIF LINUX}
+{$IFDEF DARWIN}
+   PORTAUDIOLIB = 'LibPortaudio.dylib';
+   SNDFILELIB   = 'LibSndFile.dylib';
+   MPG123LIB    = 'LibMpg123.dylib';
+{$ENDIF DARWIN}
+
 { TAudioEngineUOS }
 
 function TAudioEngineUOS.GetMainVolume: integer;
@@ -116,31 +133,18 @@ end;
 constructor TAudioEngineUOS.Create;
 var
   ExceptionMask : TFPUExceptionMask;
+  result : boolean;
 begin
   inherited Create;
 
-  {$IFDEF LINUX}
-    uos_loadlib('libportaudio.so.2',
-                'libsndfile.so.1',
-                'libmpg123.so.0',
-              nil);
-  {$ENDIF LINUX}
-  {$IFDEF WINDOWS}
-  uos_loadlib('libportaudio-32.dll',
-              'libsndfile-32.dll',
-              'libmpg123-32.dll',
-              nil);
-  {$ENDIF LINUX}
-
-  {$IFDEF DARWIN}
-  uos_loadlib('LibPortaudio.dylib',
-              'LibSndFile.dylib',
-              'LibMpg123.dylib',
-              nil);
-  {$ENDIF DARWIN}
   fVolume:=100;
   ExceptionMask:= GetExceptionMask;
   SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide,exOverflow, exUnderflow, exPrecision]);
+
+  Result := uos_loadlib(PORTAUDIOLIB,
+                       SNDFILELIB,
+                       MPG123LIB,
+                       SOUNDTOUCHLIB)=0;
 
   fdecoupler := TDecoupler.Create;
 
@@ -258,32 +262,14 @@ end;
 
 class function TAudioEngineUOS.IsAvalaible(ConfigParam: TStrings): boolean;
 begin
-  Result := true;
+  Result := false;
   try
-  {$IFDEF LINUX}
-    Result := uos_loadlib('libportaudio.so.2',
-                          'libsndfile.so.1',
-                          'libmpg123.so.0',
-                          nil) =0;
-  {$ENDIF LINUX}
-  {$IFDEF WINDOWS}
-  Result := uos_loadlib('libportaudio-32.dll',
-              'libsndfile-32.dll',
-              'libmpg123-32.dll',
-              nil)=0;
-  {$ENDIF LINUX}
-
-  {$IFDEF DARWIN}
-  Result := uos_loadlib('LibPortaudio.dylib',
-              'LibSndFile.dylib',
-              'LibMpg123.dylib',
-              nil)=0;
-  {$ENDIF DARWIN}
-
-
+     Result := uos_loadlib(PORTAUDIOLIB,
+                          SNDFILELIB,
+                          MPG123LIB,
+                          SOUNDTOUCHLIB)=0;
   except
   end;
-
   try
     uos_unloadlib();
   except
@@ -344,4 +330,4 @@ initialization
   RegisterEngineClass(TAudioEngineUOS, 1, false, true);
 
 
-end.
+end.
