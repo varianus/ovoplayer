@@ -3235,9 +3235,9 @@ function uos_loadlib(PortAudioFileName, SndFileFileName, Mpg123FileName, SoundTo
   begin
    result := -1 ;
    if not assigned(uosInit) then begin
-   old8087cw := Get8087CW;
-   Set8087CW($133f);
-   uosInit := TUOS_Init.Create;   //// Create Iibraries Loader-Init
+//   old8087cw := Get8087CW;
+//   Set8087CW($133f);
+     uosInit := TUOS_Init.Create;   //// Create Iibraries Loader-Init
    end;
    uosInit.PA_FileName := (PortAudioFileName);
    uosInit.SF_FileName := (SndFileFileName);
@@ -3254,8 +3254,12 @@ end;
 
 procedure uos_unloadlib() ;
 begin
- uosInit.unloadlib ;
- uosInit.free;
+ if Assigned(uosInit) then
+    begin
+      uosInit.unloadlib ;
+      uosInit.free;
+      uosInit := nil;
+    end;
 end;
 
 procedure uos_unloadlibCust(PortAudio, SndFile, Mpg123, SoundTouch: boolean);
