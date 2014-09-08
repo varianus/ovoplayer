@@ -2302,7 +2302,7 @@ begin
      1: BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
         'playcount = 0', 'random()'  + strLimit);
      2: BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
-        '', 'added' + strLimit);
+        '', 'added desc' + strLimit);
      3: BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
         '', 'playcount desc ' + strLimit);
      4: BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
