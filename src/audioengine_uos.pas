@@ -203,7 +203,7 @@ begin
   UOS_Player.AddIntoDevOut(-1, -1, -1, -1, -1, -1);
 
 
-  fStreamIndex:= UOS_Player.AddFromFile(pchar(Song.FullName), -1, -1, -1);
+  fStreamIndex:= UOS_Player.AddFromFile(pchar(UTF8ToSys(Song.FullName)), -1, -1, -1);
   if fStreamIndex < 0 then
      exit;
   UOS_Player.InputSetPositionEnable(fStreamIndex, 1);
