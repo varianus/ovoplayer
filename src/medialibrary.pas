@@ -112,7 +112,7 @@ implementation
 uses AppConsts, AudioTag, fileutil, dateutils;
 
 const
-  CURRENTDBVERSION = 2;
+  CURRENTDBVERSION = 3;
 
   CREATESONGTABLE = 'CREATE TABLE songs ('
                  + ' "ID" INTEGER primary key,'
@@ -161,7 +161,7 @@ const
                  + ' VALUES ('
                  + ' :Filename, :TrackString, :Track, :Title, :Album, :Artist,'
                  + ' :AlbumArtist, :Genre, :year, :elabflag, :Duration,'
-                 + ' :Playcount, :Rating, :LastPlay, datetime(''now''),'
+                 + ' :Playcount, :Rating, :LastPlay, :added, '
                  + ' :FileSize, :FileDate'
                  + ')';
 
@@ -212,11 +212,14 @@ var
  Info : TFileInfo;
 begin
   Info := Medialibrary.FileInfoFromFullName(CurrSong);
+//  DebugLn('Scan '+CurrSong+' T '+floattostr(info.ModifyDate)+'<>'+ floattostr(CurrInfo.info.ModifyDate)) ;
+
   if not MediaLibrary.fFullScan and
     (info.Size = CurrInfo.info.Size ) and
     (CompareDateTime(info.ModifyDate, CurrInfo.info.ModifyDate) =0) then
     begin
-     Medialibrary.fDB.ExecuteDirect('update songs set elabflag = null where FileName = '+QuotedStr(utf8Encode(CurrSong)));
+     Medialibrary.fDB.ExecuteDirect('update songs set elabflag = null where FileName = '+QuotedStr(CurrSong));
+//     DebugLn('Skipping ',CurrSong);
      exit;
     end;
 
@@ -338,27 +341,56 @@ end;
 procedure TMediaLibrary.UpgradeDBStructure(LoadedDBVersion:Integer);
 Var
   MustUpdate: boolean;
+  OffSet : integer;
+  tmp: string;
 const
+// Carefully test every upgrade statement!!!
+// Exception in this function can give unpredictable results in DB !!!
+//
   ToV2_1 = 'ALTER TABLE songs ADD COLUMN FileSize INTEGER;';
   ToV2_2 = 'ALTER TABLE songs ADD COLUMN FileDate DATETIME;' ;
-
-
+  ToV3_1 = 'update songs set added = Julianday(added) + (%0:s) ;';
+  ToV3_2 = 'update songs set LastPlay = julianday(LastPlay) + (%0:s) where lastplay is not null;';
 begin
+
   MustUpdate := false;
+  try
   if LoadedDBVersion < 2 then
      begin
         Fdb.ExecuteDirect(Tov2_1);
         Fdb.ExecuteDirect(Tov2_2);
         MustUpdate := true;
       end;
-  //
-  // if LoadedDBVersion < 3 then
-  //    begin
-  //       sql for upgrade to version 3
-  //    end;
 
- if MustUpdate then
-    fDB.ExecuteDirect(format(UPDATESTATUS,[CURRENTDBVERSION]));
+   if LoadedDBVersion < 3 then
+      begin
+        OffSet:= GetLocalTimeOffset;
+        if OffSet <> 0 then
+           begin
+             tmp := Format(ToV3_1,[FloatToStr(-OffSet /(60 *24)  + JulianEpoch,DefaultSQLFormatSettings)]) ;
+             DebugLn(tmp);
+             Fdb.ExecuteDirect(tmp) ;
+             tmp := Format(ToV3_2,[FloatToStr(-OffSet /(60 *24)  + JulianEpoch,DefaultSQLFormatSettings)]) ;
+             DebugLn(tmp);
+             Fdb.ExecuteDirect(tmp) ;
+
+           end;
+        MustUpdate := true;
+      end;
+
+//
+//   if LoadedDBVersion < 4 then
+//      begin
+//         sql for upgrade to version 4
+//      end;
+
+    if MustUpdate then
+       fDB.ExecuteDirect(format(UPDATESTATUS,[CURRENTDBVERSION]));
+
+  except
+    on e: Exception do
+       DebugLn(e.Message);
+  end;
 
 
 end;
@@ -427,17 +459,17 @@ procedure TMediaLibrary.Update(ID:Integer; Tags: TCommonTags; FileInfo:TFileInfo
 begin
 
   fUpdateSong.Params.ParamByName('ID').AsInteger         := ID;
-  fUpdateSong.Params.ParamByName('Filename').AsString    := UTF8Encode(Tags.FileName);
+  fUpdateSong.Params.ParamByName('Filename').AsString    := (Tags.FileName);
   fUpdateSong.Params.ParamByName('TrackString').AsString := Tags.TrackString;
   fUpdateSong.Params.ParamByName('Track').AsInteger      := Tags.Track;
-  fUpdateSong.Params.ParamByName('Title').AsString       := UTF8Encode(Tags.Title);
-  fUpdateSong.Params.ParamByName('Album').AsString       := UTF8Encode(Tags.Album);
-  fUpdateSong.Params.ParamByName('Artist').AsString      := UTF8Encode(Tags.Artist);
-  fUpdateSong.Params.ParamByName('AlbumArtist').AsString := UTF8Encode(Tags.AlbumArtist);
+  fUpdateSong.Params.ParamByName('Title').AsString       := (Tags.Title);
+  fUpdateSong.Params.ParamByName('Album').AsString       := (Tags.Album);
+  fUpdateSong.Params.ParamByName('Artist').AsString      := (Tags.Artist);
+  fUpdateSong.Params.ParamByName('AlbumArtist').AsString := (Tags.AlbumArtist);
   fUpdateSong.Params.ParamByName('Genre').AsString       := Tags.Genre;
   fUpdateSong.Params.ParamByName('year').AsString        := Tags.Year;
   fUpdateSong.Params.ParamByName('Duration').AsInteger   := Tags.Duration;
-  fUpdateSong.Params.ParamByName('FileDate').AsDateTime  := FileInfo.ModifyDate;
+  fUpdateSong.Params.ParamByName('FileDate').Asfloat     := FileInfo.ModifyDate;
   fUpdateSong.Params.ParamByName('FileSize').AsLargeint  := FileInfo.Size;
 
   fUpdateSong.Params.ParamByName('elabflag').Clear;
@@ -471,31 +503,38 @@ begin
          end;
       wrkSong := fUpdateSong;
       wrkSong.Params.ParamByName('ID').AsInteger := Id;
+      DebugLn('UP ', Tags.FileName);
       inc(fUpdated)
     end
   else
     begin
        wrkSong := fInsertSong;
        wrkSong.Params.ParamByName('PlayCount').AsInteger:= 0;
-//       wrkSong.Params.ParamByName('Added').AsDateTime := Now;
+       wrkSong.Params.ParamByName('added').AsFloat := Now;
        inc(fAdded)
     end;
 
-  wrkSong.Params.ParamByName('Filename').AsString    := UTF8Encode(Tags.FileName);
-  wrkSong.Params.ParamByName('TrackString').AsString := UTF8Encode(Tags.TrackString);
+  wrkSong.Params.ParamByName('Filename').AsString    := (Tags.FileName);
+  wrkSong.Params.ParamByName('TrackString').AsString := (Tags.TrackString);
   wrkSong.Params.ParamByName('Track').AsInteger      := Tags.Track;
-  wrkSong.Params.ParamByName('Title').AsString       := UTF8Encode(Tags.Title);
-  wrkSong.Params.ParamByName('Album').AsString       := UTF8Encode(Tags.Album);
-  wrkSong.Params.ParamByName('Artist').AsString      := UTF8Encode(Tags.Artist);
-  wrkSong.Params.ParamByName('AlbumArtist').AsString := UTF8Encode(Tags.AlbumArtist);
-  wrkSong.Params.ParamByName('Genre').AsString       := UTF8Encode(Tags.Genre);
-  wrkSong.Params.ParamByName('year').AsString        := UTF8Encode(Tags.Year);
+  wrkSong.Params.ParamByName('Title').AsString       := (Tags.Title);
+  wrkSong.Params.ParamByName('Album').AsString       := (Tags.Album);
+  wrkSong.Params.ParamByName('Artist').AsString      := (Tags.Artist);
+  wrkSong.Params.ParamByName('AlbumArtist').AsString := (Tags.AlbumArtist);
+  wrkSong.Params.ParamByName('Genre').AsString       := (Tags.Genre);
+  wrkSong.Params.ParamByName('year').AsString        := (Tags.Year);
   wrkSong.Params.ParamByName('Duration').AsInteger   := Tags.Duration;
-  wrkSong.Params.ParamByName('FileDate').AsDateTime  := FileInfo.ModifyDate;
+  wrkSong.Params.ParamByName('FileDate').AsFloat     := FileInfo.ModifyDate;
   wrkSong.Params.ParamByName('FileSize').AsLargeint  := FileInfo.Size;
 
   wrkSong.Params.ParamByName('elabflag').Clear;
-  wrkSong.ExecSQL;
+  try
+    wrkSong.ExecSQL;
+
+  except
+    on e:exception do
+      DebugLn(e.Message);
+  end;
 
 end;
 
@@ -686,7 +725,7 @@ end;
 function TMediaLibrary.IDFromFullName(FileName: TFileName): integer;
 begin
   fWorkQuery.Close;
-  fWorkQuery.SQL.Text := 'select ID from songs where filename =' + quotedstr(UTF8Encode(FileName));
+  fWorkQuery.SQL.Text := 'select ID from songs where filename =' + quotedstr((FileName));
   fWorkQuery.Open;
   if fWorkQuery.RecordCount > 0 then
      Result := fWorkQuery.Fields[0].AsInteger
@@ -699,12 +738,12 @@ end;
 function TMediaLibrary.FileInfoFromFullName(FileName: TFileName): TFileInfo;
 begin
   fWorkQuery.Close;
-  fWorkQuery.SQL.Text := 'select ID, FileSize, FileDate  from songs where filename =' + quotedstr(UTF8Encode(FileName));
+  fWorkQuery.SQL.Text := 'select ID, FileSize, FileDate  from songs where filename =' + quotedstr((FileName));
   fWorkQuery.Open;
   if fWorkQuery.RecordCount > 0 then
      begin
        Result.Size := fWorkQuery.Fields[1].AsLargeInt;
-       Result.ModifyDate := fWorkQuery.Fields[2].AsDateTime;
+       Result.ModifyDate := fWorkQuery.Fields[2].Asfloat;
      end
   else
      Result.Size := -1;
@@ -720,7 +759,7 @@ begin
   if fWorkQuery.RecordCount > 0 then
      begin
        Result.Size := fWorkQuery.Fields[0].AsLargeInt;
-       Result.ModifyDate := fWorkQuery.Fields[1].AsDateTime;
+       Result.ModifyDate := fWorkQuery.Fields[1].Asfloat;
      end
   else
      Result.Size := -1;
@@ -734,8 +773,8 @@ begin
 
   fWorkQuery.SQL.Text := 'update songs set '
                        + '  Playcount = Playcount + 1'
-                       + ' ,lastplay = datetime(''now'')'
-                       + 'where id =' + IntToStr(ID);
+                       + ' ,lastplay = ' + FloatToStr(now, DefaultSQLFormatSettings)
+                       + ' where id =' + IntToStr(ID);
   fWorkQuery.ExecSQL;
   Result := '';
   fWorkQuery.Close;
@@ -788,8 +827,8 @@ begin
      begin
        Result.Id:= ID;
        Result.PlayCount:=fWorkQuery.Fields[0].AsInteger;
-       Result.Added:=fWorkQuery.Fields[1].AsDateTime;
-       Result.LastPlay:=fWorkQuery.Fields[2].AsDateTime;
+       Result.Added:=fWorkQuery.Fields[1].AsFloat;
+       Result.LastPlay:=fWorkQuery.Fields[2].AsFloat;
        Result.Rating:=fWorkQuery.Fields[3].AsInteger;
      end;
 
@@ -803,7 +842,7 @@ begin
   fWorkQuery.Close;
   fWorkQuery.SQL.Text := UPDATEFILEINFO;
   fWorkQuery.Params.ParamByName('ID').AsInteger  := ID;
-  fWorkQuery.Params.ParamByName('FileDate').AsDateTime  := Info.ModifyDate;
+  fWorkQuery.Params.ParamByName('FileDate').AsFloat  := Info.ModifyDate;
   fWorkQuery.Params.ParamByName('FileSize').AsLargeint  := Info.Size;
   fWorkQuery.ExecSQL;
 
