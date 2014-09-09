@@ -1863,7 +1863,6 @@ object DM: TDM
     top = 80
   end
   object ApplicationProperties: TApplicationProperties
-    CaptureExceptions = False
     OnException = ApplicationPropertiesException
     OnDropFiles = ApplicationPropertiesDropFiles
     left = 359
