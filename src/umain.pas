@@ -780,6 +780,7 @@ end;
 procedure TfMainForm.ShowNotification;
 var
   ASong: TSong;
+  tmpstr :string;
 
 begin
   ASong := BackEnd.PlayList.CurrentItem;
@@ -808,10 +809,12 @@ begin
      {$ELSE} // Use standard balloon hint on other widgetset
       TrayIcon.BalloonTimeout := BackEnd.Config.NotificationParam.TimeOut;
       TrayIcon.BalloonTitle   := ASong.tags.Title;
-      TrayIcon.BalloonHint    := ASong.Tags.Album + LineEnding + ASong.Tags.Artist + LineEnding +
-      ASong.Tags.TrackString;
+      tmpstr  := UTF8Encode(aSong.Tags.Album + LineEnding + ASong.Tags.Artist + LineEnding +
+                      ASong.Tags.TrackString);
+
+      TrayIcon.BalloonHint    := tmpstr;
       if trim(TrayIcon.BalloonHint) = '' then
-         TrayIcon.BalloonHint := ASong.FileName;
+         TrayIcon.BalloonHint := UTF8ToSys(ASong.FileName); ;
 
       TrayIcon.ShowBalloonHint;
      {$ENDIF}
