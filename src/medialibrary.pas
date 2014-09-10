@@ -493,10 +493,10 @@ begin
       if Tags = tmpTags then
          begin
            info := FileInfoFromID(ID);
-           if info.size < 1 then
-              begin
+       //    if info.size < 1 then
+         //     begin
                 SetFileInfo(Id, FileInfo);
-              end;
+         //     end;
            fDB.ExecuteDirect('update songs set elabflag = null where id = '+IntToStr(ID));
            exit;
 
