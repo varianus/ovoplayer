@@ -186,7 +186,7 @@ function TVorbisTags.WriteToStream(AStream: TStream): DWord;
 var
   fSize: cardinal;
 //  Data: array of char;
-  i: cardinal;
+  i: LongInt;
 //  Frame: TVorbisFrame;
 begin
   fSize:= Length(Vendor);
@@ -214,7 +214,7 @@ var
   fSize: cardinal;
   Data: array of char;
   FrameCount: cardinal;
-  i: cardinal;
+  i: longint;
   Frame: TVorbisFrame;
 begin
   Clear;
@@ -227,15 +227,14 @@ begin
      end;
 
   FrameCount := AStream.ReadDWord;
-
-  for i := 0 to FrameCount - 1 do
-  begin
-    Frame := TVorbisFrame.Create;
-    if Frame.ReadFromStream(AStream) then
-       add(Frame)
-    else
-      FreeAndNil(Frame);
-  end;
+  for i := 0 to integer(FrameCount) - 1 do
+    begin
+      Frame := TVorbisFrame.Create;
+      if Frame.ReadFromStream(AStream) then
+         add(Frame)
+      else
+         FreeAndNil(Frame);
+    end;
   Result := Count > 0;
 end;
 

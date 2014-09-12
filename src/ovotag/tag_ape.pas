@@ -238,7 +238,7 @@ end;
 function TAPETags.ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean;
 var
   header :  TAPEHeader;
-  i: cardinal;
+  i: longint;
   Frame: TAPEFrame;
   offset: Integer;
   V1Rec: TID3V1Record;
@@ -288,7 +288,7 @@ end;
 function TAPETags.WriteToStream(AStream: TStream): DWord;
 var
   header :  TAPEHeader;
-  i: cardinal;
+  i: longint;
   Totsize: DWOrd;
 //  HeaderPos : integer;
   MemStream : Tmemorystream;
