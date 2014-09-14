@@ -1,31 +1,28 @@
-#*OvoPlayer is a music player for various audio formats.*
+##*OvoPlayer is a free multi-platform music manager and player.*
 
 Download is avalaible for Windows, Linux 64 bit and Linux 32 bit.
 
 ### Current version
-*1.1.0*
+*1.2.0*
 
 ### Binary downloads
  Windows installer and Debian packages are avalaible [here](http://code.google.com/p/ovoplayer/downloads/list)
 
 ### Features
-  * Can play and read music tag from MP3, FLAC, WMA, APE and OGG files,
-  * Cross platform - work on Linux and Windows 
-  * Multiple audio engines supported
-  * Can import M3U, ASX, PLS, XSPF, BSPL, WPL playlist
-
-### Supported audio engines 
-  * VLC - preferred choice, tested on Linux and Windows
-  * MPlayer - play almost any format, tested on Linux and Windows
-  * XINE - almost complete (some performance issues), tested on Linux
-  * BASS - complete, tested on Windows and linux
-  * GStreamer - almost complete, Linux only
-  * DirectShow - complete, Windows only (may need third-party codec)
-  * MediaFoundation - complete, Windows only (may need third-party codec)
-  
+*   **Play music**
+    	    Support for MP3, FLAC, OGG audio files with all supported audio engine. Also support WMA and APE in most common engines.
+*   **Playlists** 
+    	    Read the most used playlist format: M3U, ASX, PLS, XSPF, BSPL, WPL </div>
+*   **Music collection handling**
+      	    Handle large collection of thousands of songs. Fast and simple searching. Organize songs based on artist, album, genre, year, etc. 
+*   **Cross platform**
+    	 Run on Linux and Windows (still working on OS X version). Installer avalaible for Windows and Debian based Linux distro.
+*   **Multiple Audio Engine support**
+Ovoplayer can use DirectShow, MediaFoundation VLC, XINE, BASS, Mplayer, GStreamer.  Works "out-of-the box" on Windows and most Linux distro.
 ### To Do
   * Mac OSX port - working on
   * Streaming
+  * Equalizer
 
 ### Screenshot
 ![Screenshot](http://ovoplayer.altervista.org/images/OVOPlayer_scrn1.png)
