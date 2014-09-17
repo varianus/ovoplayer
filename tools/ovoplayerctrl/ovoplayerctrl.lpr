@@ -6,7 +6,7 @@ uses
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
   {$ENDIF}{$ENDIF}
-  Classes, SysUtils, CustApp,
+  Classes, SysUtils, appconsts, CustApp,
   { you can add units after this }
    SimpleIPC;
 
@@ -55,7 +55,9 @@ begin
 
         Active := True;
         SendStringMessage(TempStr);
-      end;
+      end
+    else
+      WriteLn('Cannot find ovoplayer instance');
   finally
     Free;
   end;
@@ -96,7 +98,7 @@ begin
   for i := 0 to MediaControlCount -1 do
      AddOptions(MediaControl[i]);
 
-  ErrorMsg:=CheckOptions(ShortOptions, LongOptions);
+  ErrorMsg:=CheckOptions(ShortOptions, LongOptions, true);
   if ErrorMsg<>'' then begin
     ShowException(Exception.Create(ErrorMsg));
     Terminate;
@@ -201,4 +203,4 @@ begin
   Application.Run;
   Application.Free;
 end.
-
+

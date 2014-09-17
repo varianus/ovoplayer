@@ -50,14 +50,10 @@
             <LinkSmart Value="True"/>
           </Linking>
           <Other>
-            <CompilerMessages>
-              <UseMsgFile Value="True"/>
-            </CompilerMessages>
             <ConfigFile>
               <CustomConfigFile Value="True"/>
               <ConfigFilePath Value="..\..\extrafpc.cfg"/>
             </ConfigFile>
-            <CompilerPath Value="$(CompPath)"/>
           </Other>
         </CompilerOptions>
       </Item2>
@@ -70,22 +66,24 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <CommandLineParams Value="--quit"/>
+        <CommandLineParams Value="seek+"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="1">
+    <RequiredPackages Count="2">
       <Item1>
-        <PackageName Value="FCL"/>
+        <PackageName Value="LCLBase"/>
       </Item1>
+      <Item2>
+        <PackageName Value="FCL"/>
+      </Item2>
     </RequiredPackages>
     <Units Count="2">
       <Unit0>
         <Filename Value="ovoplayerctrl.lpr"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="ovoplayerctrl"/>
       </Unit0>
       <Unit1>
-        <Filename Value="..\appconsts.pas"/>
+        <Filename Value="..\..\src\appconsts.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AppConsts"/>
       </Unit1>
@@ -123,14 +121,10 @@
       </Debugging>
     </Linking>
     <Other>
-      <CompilerMessages>
-        <UseMsgFile Value="True"/>
-      </CompilerMessages>
       <ConfigFile>
         <CustomConfigFile Value="True"/>
         <ConfigFilePath Value="..\..\extrafpc.cfg"/>
       </ConfigFile>
-      <CompilerPath Value="$(CompPath)"/>
     </Other>
   </CompilerOptions>
   <Debugging>
@@ -146,4 +140,4 @@
       </Item3>
     </Exceptions>
   </Debugging>
-</CONFIG>
+</CONFIG>
