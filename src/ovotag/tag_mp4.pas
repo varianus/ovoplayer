@@ -118,8 +118,8 @@ begin
   AStream.Read(wName, 4);
   fflags := BEtoN(AStream.ReadDWord);
   AStream.ReadDWord;
-  SetLength(Data, fSize - 16 + 1);
-  AStream.Read(Data[1], fSize - 16+1 );
+  SetLength(Data, fSize - 16 );
+  AStream.Read(Data[1], fSize - 16 );
   Result:= true;
 
 end;
