@@ -34,10 +34,8 @@ const
 
 function ExtractTrack(const TrackString: string): word;
 
-//function GetANSI(const Source: string): string;
 function ExtractString(p:pbyte; size:cardinal; LanguageID:boolean=false):string;
 
-procedure EncodeString(s:widestring; var e:pchar; var l:cardinal);
 
 procedure FixTrack(const TrackString: string; const TrackNr: integer;
   out TrackStringFixed: string; out TrackNrFixed: integer); overload;
@@ -52,7 +50,6 @@ function DecodeChannelNumber(Channels:integer): string;
 function GetContent(const Content1, Content2: string): string;
 function ExtractYear(const YearString, DateString: string): string;
 function ExtractGenre(const GenreString: string; offset:integer=0): string;
-//function ExtractText(const SourceString: string; LanguageID: boolean): string;
 function SyncSafe_Decode(const SyncDWord: DWord): DWord;
 function SyncSafe_Encode(const SyncDWord: DWord): DWord;
 
@@ -165,43 +162,6 @@ begin
     ByteArray[1] shr 24 + ByteArray[2] shr 16 + ByteArray[3] shr 8 + ByteArray[4];
 end;
 
-//function GetANSI(const Source: string): string;
-//var
-//  Index: integer;
-//  FirstByte, SecondByte: byte;
-//  UnicodeChar: widechar;
-//begin
-//  { Convert string from unicode if needed and trim spaces }
-//  if (Length(Source) > 0) and (Source[1] = UNICODE_ID) then
-//    begin
-//    Result := '';
-//    for Index := 1 to ((Length(Source) - 1) div 2) do
-//      begin
-//      FirstByte   := Ord(Source[Index * 2]);
-//      SecondByte  := Ord(Source[Index * 2 + 1]);
-//      UnicodeChar := widechar(FirstByte or (SecondByte shl 8));
-//      if UnicodeChar = #0 then
-//        break;
-//      if FirstByte < $FF then
-//        Result := Result + UnicodeChar;
-//      end;
-//    Result := Trim(Result);
-//    end
-//  else
-//    Result := Trim(Source);
-//end;
-
-procedure EncodeString(s:widestring; var e:pchar; var l:cardinal);
-var
-  t:string;
-begin
-  t:=UTF8Decode(s);
-  l:=length(t)+1;
-  getmem(pointer(e),l);
-  pbyte(e)^:=0;
-  if l<>1 then move(t[1],(e+1)^,l-1);
-end;
-
 procedure WideSwapEndian(PWC: PWideChar;size:integer);
 begin
   while size >= sizeof(widechar) do
@@ -298,7 +258,7 @@ begin
     TrackNrFixed := ExtractTrack(UTF8Encode(TrackStringFixed))
   else
   if (TrackNrFixed <> 0) and (TrackStringFixed = '') then
-    TrackStringFixed := IntToStr(TrackNrFixed);
+    TrackStringFixed := WideString(IntToStr(TrackNrFixed));
 
 end;
 
