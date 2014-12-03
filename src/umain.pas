@@ -1667,7 +1667,7 @@ end;
 procedure TfMainForm.sgPlayListDrawCell(Sender: TObject; aCol, aRow: Integer;
   aRect: TRect; aState: TGridDrawState);
 var
-  aBmp, ABmp2: TBitmap;
+  aBmp: TBitmap;
   ASong : TCustomSong;
   Txt: String;
   r1,R2: Trect;
