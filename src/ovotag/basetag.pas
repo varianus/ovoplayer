@@ -211,6 +211,7 @@ begin
   Tags.Genre        := '';
   Tags.Year         := '';
   Tags.Duration     := 0;
+  Tags.HasImage     := False;
 
 end;
 
@@ -331,7 +332,11 @@ end;
 
 function TTagReader.GetCommonTags: TCommonTags;
 begin
-  Result := Tags.GetCommonTags;
+  if Assigned(Tags) then
+     Result := Tags.GetCommonTags
+  else
+     ClearTags(Result);
+
   Result.FileName := FFileName;
   Result.Duration:= GetDuration;
   if Result.Title = '' then
