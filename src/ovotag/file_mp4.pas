@@ -25,7 +25,7 @@ unit file_Mp4;
 interface
 
 uses
-  Classes, lazutf8classes, SysUtils, AudioTag, baseTag, tag_Mp4;
+  Classes, lazutf8classes, SysUtils, AudioTag, baseTag, tag_Mp4, tag_id3v2;
 
 const
   Mp4FileMask: string    = '*.aac;*.m4a;';
@@ -72,6 +72,7 @@ type
 
   TMp4Reader = class(TTagReader)
   private
+    fTagsID3 : TID3Tags;
     fTags: TMp4Tags;
     FSampleRate: integer;
     FSamples: int64;
@@ -279,7 +280,10 @@ end;
 
 function TMp4Reader.GetTags: TTags;
 begin
-  Result := fTags;
+  if Assigned ( fTagsID3) then
+    Result := fTagsID3
+  else
+     Result := fTags;
 end;
 
 function TMp4Reader.LoadFromFile(AFileName: Tfilename): boolean;
@@ -293,48 +297,68 @@ var
   Data: array of byte;
   version:byte;
   unit_, length_:int64;
+  FoundAtoms: boolean;
 begin
   Result := inherited LoadFromFile(AFileName);
+  fTags := nil;
   fStream := TFileStreamUTF8.Create(fileName, fmOpenRead or fmShareDenyNone);
   AtomList:=TMP4AtomList.Create(fStream);
   try
   Result:=False;
   moov := AtomList.Find('moov',EmptyAtom,EmptyAtom,EmptyAtom);
-  if not Assigned(moov) then
-     exit;
-
-  trak:= moov.Find('trak',EmptyAtom,EmptyAtom,EmptyAtom);
-  if not Assigned(trak) then
-     exit;
-  mdhd:=trak.find('mdia','mdhd',EmptyAtom,EmptyAtom);
-  if not Assigned(mdhd) then
-     exit;
-
-  SetLength(Data, mdhd.AtomLength);
-  fStream.Seek(mdhd.Offset, soFromBeginning);
-  Transferred := fStream.Read(Data[0], mdhd.AtomLength);
-  Version := Data[8];
-  if version = 1 then
+  FoundAtoms := False;
+  if Assigned(moov) then
     begin
-       unit_ := BEtoN(pInt64(@data[28])^);
-       length_ := BEtoN(pInt64(@data[36])^);
-       fDuration:= (length_ div unit_) * 1000;
+      trak:= moov.Find('trak',EmptyAtom,EmptyAtom,EmptyAtom);
+      if Assigned(trak) then
+         begin
+           mdhd:=trak.find('mdia','mdhd',EmptyAtom,EmptyAtom);
+           if Assigned(mdhd) then
+             FoundAtoms := true;
+         end;
+    end;
 
-    end
-  else
+  if FoundAtoms then
     begin
-      unit_ := BEtoN(PInteger(@data[20])^);
-      length_ := BEtoN(PInteger(@data[24])^);
-      fDuration:= (length_ div unit_) * 1000;
-    end ;
+      SetLength(Data, mdhd.AtomLength);
+      fStream.Seek(mdhd.Offset, soFromBeginning);
+      Transferred := fStream.Read(Data[0], mdhd.AtomLength);
+      Version := Data[8];
+      if version = 1 then
+        begin
+           unit_ := BEtoN(pInt64(@data[28])^);
+           length_ := BEtoN(pInt64(@data[36])^);
+           fDuration:= (length_ div unit_) * 1000;
 
-  ilst := AtomList.find('moov', 'udta', 'meta', 'ilst');
-  if not Assigned(ilst) then
-     exit;
+        end
+      else
+        begin
+          unit_ := BEtoN(PInteger(@data[20])^);
+          length_ := BEtoN(PInteger(@data[24])^);
+          fDuration:= (length_ div unit_) * 1000;
+        end ;
 
-  fTags := TMp4Tags.Create;
-  fTags.ReadFromStream(fStream, ilst);
-  Result:=true;
+      ilst := AtomList.find('moov', 'udta', 'meta', 'ilst');
+      if not Assigned(ilst) then
+         exit;
+
+      fTags := TMp4Tags.Create;
+      fTags.ReadFromStream(fStream, ilst);
+      Result:=true;
+
+    end;
+  if not Assigned(fTags) then
+    // the file do no contain MP4 tags, let's try ID3
+    begin
+       fTagsID3 := TID3Tags.Create;
+       fStream.Seek(0, soFromBeginning);
+       fTagsid3.ReadFromStream(fStream);
+       if fTagsID3.Count = 0 then
+         FreeAndNil(fTagsID3)
+       else
+         Result:= true;
+    end;
+
   finally
     AtomList.Free;
     SetLength(Data, 0);
