@@ -259,9 +259,9 @@ begin
       if EngineArray[j].ForceSelection then
          TRadioButton(rgAudioEngine.Controls[i]).Enabled:=true
       else
-         TRadioButton(rgAudioEngine.Controls[i]).Enabled := EngineArray[j].Engine.IsAvalaible(nil);
+           TRadioButton(rgAudioEngine.Controls[i]).Enabled := EngineArray[j].Engine.IsAvalaible(nil);
+         end;
     end;
-end;
 
 procedure TfConfig.FormShow(Sender: TObject);
 var
@@ -386,4 +386,4 @@ begin
   pnlRestart.visible := Backend.Config.NeedRestart;
 end;
 
-end.
+end.

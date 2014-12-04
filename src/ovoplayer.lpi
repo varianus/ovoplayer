@@ -142,6 +142,7 @@ if TargetOS = 'linux' then
         <ComponentName Value="fSongInfo"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uSongInfo"/>
       </Unit2>
       <Unit3>
         <Filename Value="appconsts.pas"/>
@@ -178,14 +179,17 @@ if TargetOS = 'linux' then
       <Unit9>
         <Filename Value="audioengine_bass.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="audioengine_bass"/>
       </Unit9>
       <Unit10>
         <Filename Value="playlistmanager.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="PlayListManager"/>
       </Unit10>
       <Unit11>
         <Filename Value="medialibrary.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="MediaLibrary"/>
       </Unit11>
       <Unit12>
         <Filename Value="multimediakeys.pas"/>
@@ -236,16 +240,15 @@ if TargetOS = 'linux' then
       <Unit21>
         <Filename Value="audioengine_vlc.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="audioengine_vlc"/>
       </Unit21>
       <Unit22>
         <Filename Value="ovotag\commonfunctions.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="CommonFunctions"/>
       </Unit22>
       <Unit23>
         <Filename Value="ovotag\file_flac.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="file_flac"/>
       </Unit23>
       <Unit24>
         <Filename Value="ovotag\file_mp3.pas"/>
@@ -259,12 +262,10 @@ if TargetOS = 'linux' then
       <Unit26>
         <Filename Value="ovotag\tag_id3v2.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="tag_id3v2"/>
       </Unit26>
       <Unit27>
         <Filename Value="ovotag\tag_vorbis.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="tag_vorbis"/>
       </Unit27>
       <Unit28>
         <Filename Value="ovotag\tag_wma.pas"/>
@@ -302,12 +303,10 @@ if TargetOS = 'linux' then
       <Unit36>
         <Filename Value="ovotag\song.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="song"/>
       </Unit36>
       <Unit37>
         <Filename Value="import-engines\PasLibVlcUnit.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="PasLibVlcUnit"/>
       </Unit37>
       <Unit38>
         <Filename Value="customdrawn_ovoplayer.pas"/>
@@ -347,7 +346,6 @@ if TargetOS = 'linux' then
       <Unit46>
         <Filename Value="import-engines\uos.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="uos"/>
       </Unit46>
       <Unit47>
         <Filename Value="audioengine_uos.pas"/>
@@ -364,7 +362,6 @@ if TargetOS = 'linux' then
       <Unit50>
         <Filename Value="import-engines\uos_portaudio.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="uos_portaudio"/>
       </Unit50>
       <Unit51>
         <Filename Value="platform\linux\mpris2.pas"/>
@@ -373,6 +370,7 @@ if TargetOS = 'linux' then
       <Unit52>
         <Filename Value="coreinterfaces.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="coreinterfaces"/>
       </Unit52>
       <Unit53>
         <Filename Value="basetypes.pas"/>
@@ -413,6 +411,7 @@ if TargetOS = 'linux' then
       <Unit61>
         <Filename Value="nullinterfacedobject.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="NullInterfacedObject"/>
       </Unit61>
       <Unit62>
         <Filename Value="ovotag\audiotag.pas"/>
@@ -442,10 +441,12 @@ if TargetOS = 'linux' then
       <Unit68>
         <Filename Value="ovotag\file_mp4.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="file_Mp4"/>
       </Unit68>
       <Unit69>
         <Filename Value="ovotag\tag_mp4.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="tag_MP4"/>
       </Unit69>
     </Units>
   </ProjectOptions>
@@ -497,10 +498,13 @@ if TargetOS = 'linux' then
       <ConfigFile>
         <ConfigFilePath Value="..\extrafpc.cfg"/>
       </ConfigFile>
+      <ExecuteBefore>
+        <Command Value="$(LazarusDir)\tools\svn2revisioninc$(ExeExt) .. ovorevision.inc --c=ovoRevision"/>
+      </ExecuteBefore>
     </Other>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="4">
+    <Exceptions Count="5">
       <Item1>
         <Name Value="EAbort"/>
       </Item1>
@@ -514,6 +518,9 @@ if TargetOS = 'linux' then
         <Name Value="Exception"/>
         <Enabled Value="False"/>
       </Item4>
+      <Item5>
+        <Name Value="EDatabaseError"/>
+      </Item5>
     </Exceptions>
   </Debugging>
 </CONFIG>

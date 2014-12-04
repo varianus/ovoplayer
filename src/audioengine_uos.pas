@@ -139,7 +139,7 @@ begin
 
   fVolume:=100;
   ExceptionMask:= GetExceptionMask;
-  SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide,exOverflow, exUnderflow, exPrecision]);
+//  SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide,exOverflow, exUnderflow, exPrecision]);
 
   Result := uos_loadlib(PORTAUDIOLIB,
                        SNDFILELIB,
