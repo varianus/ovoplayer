@@ -267,11 +267,11 @@ procedure TfConfig.FormShow(Sender: TObject);
 var
   i:Integer;
 begin
-  for i := 0 to ComponentCount -1 do
+{  for i := 0 to ComponentCount -1 do
      if Components[i] is TLabel then
        if Tlabel (Components[i]).OptimalFill then
           Tlabel (Components[i]).AdjustFontForOptimalFill;
-
+ }
   pcConfig.ShowTabs:=false;
   sbInterface.click;
   ConfigToMap;
