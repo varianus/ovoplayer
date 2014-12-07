@@ -49,6 +49,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   {$IFDEF OPENSOURCELIB} uos_libsndfile, uos_mpg123, uos_portaudio, audioengine_OpenLib,{$ENDIF}
   {$IFDEF UOS} UOS, uos_libsndfile, uos_mpg123, uos_portaudio, audioengine_UOS,{$ENDIF}
   {$IFDEF FFMPEG} ffmpeg, audioengine_FFMPEG,{$ENDIF}
+  {$IFDEF LIBMPV} libmpv, audioengine_libmpv,{$ENDIF}
 
   // Platform related
   {$IFDEF MPRIS2} mpris2,{$ENDIF}
@@ -75,6 +76,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
 
 {$R *.res}
 begin
+
   defaultstyle := dsExtra2;
 
   CheckRestarting(Application);
@@ -88,4 +90,4 @@ begin
       fMainForm.show;
       Application.Run;
    end;
-end.
+end.

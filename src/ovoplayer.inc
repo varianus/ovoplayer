@@ -30,6 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 // MEDIAFOUNDATION - Microsoft        - Stable, minor seeking issues, Windows Vista and later only
 //
 // Engines under development
+// LIBMPV          - FFMpeg           - Partial support, under development
 // FFMPEG          - FFMpeg           - Working, but FFMPEG changes data structures so often that I disabled this
 // OPENSOURCELIB   - Various          - Working with major issues, lighter alternative to UOS
 
@@ -37,9 +38,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
   {$DEFINE GSTREAMER} // GStreamer need glib
   {$DEFINE VLC} //
-  {$DEFINE XINE} //
+  {-$DEFINE XINE} //
   {$DEFINE BASS} //
-  {$DEFINE UOS} //
+  {-$DEFINE UOS} //
+  {-$DEFINE LIBMPV} //
 
   {.$DEFINE OPENSOURCELIB} //
   {.$DEFINE FFMPEG}
@@ -94,4 +96,4 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
 
-
+

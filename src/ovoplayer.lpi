@@ -142,7 +142,6 @@ if TargetOS = 'linux' then
         <ComponentName Value="fSongInfo"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="uSongInfo"/>
       </Unit2>
       <Unit3>
         <Filename Value="appconsts.pas"/>
@@ -179,17 +178,14 @@ if TargetOS = 'linux' then
       <Unit9>
         <Filename Value="audioengine_bass.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="audioengine_bass"/>
       </Unit9>
       <Unit10>
         <Filename Value="playlistmanager.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="PlayListManager"/>
       </Unit10>
       <Unit11>
         <Filename Value="medialibrary.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="MediaLibrary"/>
       </Unit11>
       <Unit12>
         <Filename Value="multimediakeys.pas"/>
@@ -202,7 +198,6 @@ if TargetOS = 'linux' then
       <Unit14>
         <Filename Value="filessupport.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="FilesSupport"/>
       </Unit14>
       <Unit15>
         <Filename Value="uminiplayer.pas"/>
@@ -217,6 +212,7 @@ if TargetOS = 'linux' then
         <ComponentName Value="fConfig"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uConfig"/>
       </Unit16>
       <Unit17>
         <Filename Value="decoupler.pas"/>
@@ -236,15 +232,16 @@ if TargetOS = 'linux' then
         <ComponentName Value="fAbout"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uAbout"/>
       </Unit20>
       <Unit21>
         <Filename Value="audioengine_vlc.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="audioengine_vlc"/>
       </Unit21>
       <Unit22>
         <Filename Value="ovotag\commonfunctions.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="CommonFunctions"/>
       </Unit22>
       <Unit23>
         <Filename Value="ovotag\file_flac.pas"/>
@@ -253,7 +250,6 @@ if TargetOS = 'linux' then
       <Unit24>
         <Filename Value="ovotag\file_mp3.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="file_mp3"/>
       </Unit24>
       <Unit25>
         <Filename Value="ovotag\file_wma.pas"/>
@@ -298,7 +294,6 @@ if TargetOS = 'linux' then
       <Unit35>
         <Filename Value="ovotag\basetag.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="basetag"/>
       </Unit35>
       <Unit36>
         <Filename Value="ovotag\song.pas"/>
@@ -307,6 +302,7 @@ if TargetOS = 'linux' then
       <Unit37>
         <Filename Value="import-engines\PasLibVlcUnit.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="PasLibVlcUnit"/>
       </Unit37>
       <Unit38>
         <Filename Value="customdrawn_ovoplayer.pas"/>
@@ -370,7 +366,6 @@ if TargetOS = 'linux' then
       <Unit52>
         <Filename Value="coreinterfaces.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="coreinterfaces"/>
       </Unit52>
       <Unit53>
         <Filename Value="basetypes.pas"/>
@@ -411,12 +406,10 @@ if TargetOS = 'linux' then
       <Unit61>
         <Filename Value="nullinterfacedobject.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="NullInterfacedObject"/>
       </Unit61>
       <Unit62>
         <Filename Value="ovotag\audiotag.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="AudioTag"/>
       </Unit62>
       <Unit63>
         <Filename Value="import-engines\lazdynamic_bass.pas"/>
@@ -446,7 +439,6 @@ if TargetOS = 'linux' then
       <Unit69>
         <Filename Value="ovotag\tag_mp4.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="tag_MP4"/>
       </Unit69>
     </Units>
   </ProjectOptions>
@@ -523,4 +515,4 @@ if TargetOS = 'linux' then
       </Item5>
     </Exceptions>
   </Debugging>
-</CONFIG>
+</CONFIG>
