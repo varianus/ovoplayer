@@ -36,6 +36,7 @@ type
     bLicense: TBitBtn;
     Image1: TImage;
     Label1: TLabel;
+    Label10: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
@@ -47,6 +48,7 @@ type
     lbSVNRev: TLabel;
     lbFPCVersion: TLabel;
     lbBuildDate: TLabel;
+    lbEngine: TLabel;
     lVersion: TLabel;
     lHomePage: TLabel;
     lbLazVersion: TLabel;
@@ -69,7 +71,7 @@ var
 
 implementation
 
-uses AppConsts, lclintf;
+uses AppConsts, lclintf, GUIBackEnd;
 {$R *.lfm}
 
 { TfAbout }
@@ -83,6 +85,7 @@ begin
   lbLazVersion.Caption := lazVersion;
   lbBuildDate.Caption  := BuildDate;
   lbSVNRev.Caption     := ovoRevision;
+  lbEngine.Caption     := BackEnd.AudioEngine.GetEngineName;
 
   for i := 0 to ComponentCount -1 do
      if Components[i] is TLabel then

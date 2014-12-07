@@ -1,14 +1,14 @@
 object fAbout: TfAbout
-  Left = 683
+  Left = 835
   Height = 306
-  Top = 302
+  Top = 242
   Width = 456
   BorderStyle = bsDialog
   Caption = 'About'
   ClientHeight = 306
   ClientWidth = 456
   OnShow = FormShow
-  LCLVersion = '1.1'
+  LCLVersion = '1.3'
   object Image1: TImage
     Left = 0
     Height = 108
@@ -598,4 +598,28 @@ object fAbout: TfAbout
     ParentFont = False
     OptimalFill = True
   end
-end
+  object Label10: TLabel
+    Left = 232
+    Height = 14
+    Top = 174
+    Width = 92
+    Alignment = taRightJustify
+    AutoSize = False
+    Caption = 'Current Engine'
+    Font.Height = 11
+    ParentColor = False
+    ParentFont = False
+    OptimalFill = True
+  end
+  object lbEngine: TLabel
+    Left = 336
+    Height = 14
+    Top = 174
+    Width = 115
+    AutoSize = False
+    Font.Height = 14
+    ParentColor = False
+    ParentFont = False
+    OptimalFill = True
+  end
+end
