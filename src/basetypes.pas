@@ -10,7 +10,7 @@ type
     ENGINE_SONG_END,
     ENGINE_ON_LINE);
 
-  TEngineCommand = (ecInvalid, ecStop, ecPrevious, ecPlay, ecNext, ecPause, ecSeek);
+  TEngineCommand = (ecInvalid, ecStop, ecPrevious, ecPlay, ecNext, ecPause, ecSeek, ecCustom);
 
   TplSortField = (stNone, stTitle, StAlbum, stArtist, stDuration,  stTrack, stGenre,
                   stYear, stAlbumArtist, stFileName, stRating);
@@ -22,4 +22,4 @@ type
 implementation
 
 end.
-
+

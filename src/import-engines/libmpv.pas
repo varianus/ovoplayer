@@ -236,7 +236,6 @@ const
       MPV_ERROR_PROPERTY_FORMAT = -(9);
       MPV_ERROR_PROPERTY_UNAVAILABLE = -(10);
       MPV_ERROR_PROPERTY_ERROR = -(11);
-      MPV_ERROR_COMMAND = -(12);
 
   {*
    * Return a string describing the error. For unknown errors, the string
@@ -246,7 +245,7 @@ const
    * @return A static string describing the error. The string is completely
    *         static, i.e. doesn't need to be deallocated, and is valid forever.
     }
-(* Const before type ignored *)
+
 
   var
     mpv_error_string : function(error:longint):Pchar;cdecl;
@@ -265,7 +264,7 @@ const
    * @return The client name. The string is read-only and is valid until the
    *         mpv_handle is destroyed.
     }
-(* Const before type ignored *)
+
     mpv_client_name : function(var ctx:mpv_handle):Pchar;cdecl;
   {*
    * Create a new mpv instance and an associated client API handle to control
@@ -365,7 +364,7 @@ const
    * @param filename absolute path to the config file on the local filesystem
    * @return error code
     }
-(* Const before type ignored *)
+
     mpv_load_config_file : function(var ctx:mpv_handle; filename:Pchar):longint;cdecl;
   {*
    * Stop the playback thread. Normally, the client API stops the playback thread
@@ -650,16 +649,16 @@ const
    * @param[in] data Option value (according to the format).
    * @return error code
     }
-(* Const before type ignored *)
-    mpv_set_option : function(var ctx:mpv_handle; name:Pchar; format:mpv_format; var data:pointer):longint;cdecl;
+
+    mpv_set_option : function(var ctx:mpv_handle; name:Pchar; format:mpv_format; data:pointer):longint;cdecl;
   {*
    * Convenience function to set an option to a string value. This is like
    * calling mpv_set_option() with MPV_FORMAT_STRING.
    *
    * @return error code
     }
-(* Const before type ignored *)
-(* Const before type ignored *)
+
+
     mpv_set_option_string : function(var ctx:mpv_handle; name:Pchar; data:Pchar):longint;cdecl;
   {*
    * Send a command to the player. Commands are the same as those used in
@@ -672,14 +671,14 @@ const
    *                 is the command, and the following items are arguments.
    * @return error code
     }
-(* Const before type ignored *)
+
     mpv_command : function(var ctx:mpv_handle; args:PPchar):longint;cdecl;
   {*
    * Same as mpv_command, but use input.conf parsing for splitting arguments.
    * This is slightly simpler, but also more error prone, since arguments may
    * need quoting/escaping.
     }
-(* Const before type ignored *)
+
     mpv_command_string : function(var ctx:mpv_handle; args:Pchar):longint;cdecl;
   {*
    * Same as mpv_command, but run the command asynchronously.
@@ -692,7 +691,7 @@ const
    * @param args NULL-terminated list of strings (see mpv_command())
    * @return error code
     }
-(* Const before type ignored *)
+
     mpv_command_async : function(var ctx:mpv_handle; reply_userdata:cuint64; args:PPchar):longint;cdecl;
   {*
    * Set a property to a given value. Properties are essentially variables which
@@ -710,15 +709,15 @@ const
    * @param[in] data Option value.
    * @return error code
     }
-(* Const before type ignored *)
+
     mpv_set_property : function(var ctx:mpv_handle; name:Pchar; format:mpv_format; data:pointer):longint;cdecl;
   {*
    * Convenience function to set a property to a string value.
    *
    * This is like calling mpv_set_property() with MPV_FORMAT_STRING.
     }
-(* Const before type ignored *)
-(* Const before type ignored *)
+
+
     mpv_set_property_string : function(var ctx:mpv_handle; name:Pchar; data:Pchar):longint;cdecl;
   {*
    * Set a property asynchronously. You will receive the result of the operation
@@ -733,7 +732,7 @@ const
    *                 will never be modified by the client API.
    * @return error code if sending the request failed
     }
-(* Const before type ignored *)
+
     mpv_set_property_async : function(var ctx:mpv_handle; reply_userdata:cuint64; name:Pchar; format:mpv_format; var data:pointer):longint;cdecl;
   {*
    * Read the value of the given property.
@@ -753,7 +752,7 @@ const
    *                  mpv_free_node_contents() (MPV_FORMAT_NODE).
    * @return error code
     }
-(* Const before type ignored *)
+
     mpv_get_property : function(var ctx:mpv_handle; name:Pchar; format:mpv_format; data:pointer):longint;cdecl;
   {*
    * Return the value of the property with the given name as string. This is
@@ -768,7 +767,7 @@ const
    * @return Property value, or NULL if the property can't be retrieved. Free
    *         the string with mpv_free().
     }
-(* Const before type ignored *)
+
     mpv_get_property_string : function(var ctx:mpv_handle; name:Pchar):Pchar;cdecl;
   {*
    * Return the property as "OSD" formatted string. This is the same as
@@ -777,7 +776,7 @@ const
    * @return Property value, or NULL if the property can't be retrieved. Free
    *         the string with mpv_free().
     }
-(* Const before type ignored *)
+
     mpv_get_property_osd_string : function(var ctx:mpv_handle; name:Pchar):Pchar;cdecl;
   {*
    * Get a property asynchronously. You will receive the result of the operation
@@ -789,7 +788,7 @@ const
    * @param format see enum mpv_format.
    * @return error code if sending the request failed
     }
-(* Const before type ignored *)
+
     mpv_get_property_async : function(var ctx:mpv_handle; reply_userdata:cuint64; name:Pchar; format:mpv_format):longint;cdecl;
   {*
    * Get a notification whenever the given property changes. You will receive
@@ -831,7 +830,7 @@ const
    *               from the change events.
    * @return error code (usually fails only on OOM or unsupported format)
     }
-(* Const before type ignored *)
+
     mpv_observe_property : function(var mpv:mpv_handle; reply_userdata:cuint64; name:Pchar; format:mpv_format):longint;cdecl;
   {*
    * Undo mpv_observe_property(). This will remove all observed properties for
@@ -999,14 +998,14 @@ const
    *         The string is completely static, i.e. doesn't need to be deallocated,
    *         and is valid forever.
     }
-(* Const before type ignored *)
+
 
   var
     mpv_event_name : function(event:mpv_event_id):Pchar;cdecl;
   {*
        * Name of the property.
         }
-(* Const before type ignored *)
+
   {*
        * Format of the given data. See enum mpv_format.
        * This is always the same format as the requested format.
@@ -1033,12 +1032,12 @@ const
   {*
        * The module prefix, identifies the sender of the message.
         }
-(* Const before type ignored *)
+
   {*
        * The log level as string. See mpv_request_log_messages() for possible
        * values.
         }
-(* Const before type ignored *)
+
   {*
        * The log message. Note that this is the direct output of a printf()
        * style output API. The text will contain embedded newlines, and it's
@@ -1048,7 +1047,7 @@ const
        * It's safe to display messages only if they end with a newline character,
        * and to buffer them otherwise.
         }
-(* Const before type ignored *)
+
 
     Pmpv_event_log_message = ^_mpv_event_log_message;
     _mpv_event_log_message = packed record
@@ -1078,7 +1077,7 @@ const
        * down event), or "press" (either a single key event, or a key up event
        * following a "keyup_follows" event).
         }
-(* Const before type ignored *)
+
 
     Pmpv_event_script_input_dispatch = ^_mpv_event_script_input_dispatch;
     _mpv_event_script_input_dispatch = packed record
@@ -1091,7 +1090,7 @@ const
        * these arguments mean is up to the sender and receiver.
        * None of the valid items are NULL.
         }
-(* Const before type ignored *)
+
 
     Pmpv_event_client_message = ^_mpv_event_client_message;
     _mpv_event_client_message = packed record
@@ -1136,7 +1135,7 @@ const
         data : pointer;
       end;
 
-    mpv_callback= procedure (var d:pointer);
+    mpv_callback = procedure (d:pointer); cdecl;
 
   {*
    * Enable or disable the given event.
@@ -1162,7 +1161,7 @@ const
    *                      no fatal error warn info status v debug trace
    *                  The value "no" disables all messages. This is the default.
     }
-(* Const before type ignored *)
+
     mpv_request_log_messages : function(var ctx:mpv_handle; min_level:Pchar):longint;cdecl;
   {*
    * Wait for the next event, or until the timeout expires, or if another thread
@@ -1232,7 +1231,7 @@ const
    * @param d arbitrary userdata passed to cb
     }
 
-    mpv_set_wakeup_callback : procedure(var ctx:mpv_handle; cb:mpv_callback; var d:pointer);cdecl;
+    mpv_set_wakeup_callback : procedure(var ctx:mpv_handle; cb:mpv_callback; d:pointer);cdecl;
   {*
    * Return a UNIX file descriptor referring to the read end of a pipe. This
    * pipe can be used to wake up a poll() based processing loop. The purpose of

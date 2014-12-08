@@ -48,8 +48,8 @@ type
   public
     class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
-
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
+    procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
     destructor Destroy; override;
     procedure Activate; override;
@@ -70,6 +70,18 @@ Const
    MPVMAXVOLUME = 100;
 
 { TAudioEngineLibMPV }
+
+
+
+procedure LibMPVEvent(Data: Pointer); cdecl;
+var
+  player: TAudioEngineLibMPV;
+begin
+  if (Data = nil) then
+    exit;
+  player := TAudioEngineLibMPV(Data);
+  player.PostCommand(ecCustom, 1);
+end;
 
 function TAudioEngineLibMPV.GetMainVolume: integer;
 var
@@ -103,7 +115,11 @@ begin
 end;
 
 procedure TAudioEngineLibMPV.SetSongPos(const AValue: integer);
+var
+   pos : double;
 begin
+  pos := AValue / 1000;
+  mpv_set_property(fhandle^,'time-pos',MPV_FORMAT_DOUBLE,@pos);
 end;
 
 procedure TAudioEngineLibMPV.Activate;
@@ -112,13 +128,20 @@ begin
 end;
 
 constructor TAudioEngineLibMPV.Create;
+var
+   res: integer;
+   flg:integer=1;
 begin
   inherited Create;
   Load_libmpv(libmpv.External_library);
   fhandle := mpv_create();
+  res := mpv_set_option(fhandle^,'no-video', MPV_FORMAT_FLAG,@flg);
+
   mpv_initialize(fhandle^);
   fdecoupler := TDecoupler.Create;
   fdecoupler.OnCommand := @ReceivedCommand;
+
+  mpv_set_wakeup_callback(fhandle^,@LibMPVEvent, self);
 
 end;
 
@@ -141,7 +164,7 @@ begin
 
 end;
 
-Function TAudioEngineLibMPV.DoPlay(Song: TSong; offset:Integer):boolean;
+function TAudioEngineLibMPV.DoPlay(Song: TSong; offset: Integer): boolean;
 var
   Args: array of pchar;
   res: longint;
@@ -155,7 +178,6 @@ begin
  res:= mpv_command(fhandle^, ppchar(@args[0])) ;
  setlength(args,2);
  result := res = 0 ;
-// res:=mpv_get_property(fhandle^,'playlist/0/filename',MPV_FORMAT_STRING,@vol);
 
 end;
 
@@ -181,7 +203,27 @@ end;
 
 procedure TAudioEngineLibMPV.PostCommand(Command: TEngineCommand; Param: integer);
 begin
-  ReceivedCommand(Self, Command, Param);
+ fdecoupler.SendCommand(Command, Param);
+end;
+
+procedure TAudioEngineLibMPV.ReceivedCommand(Sender: TObject;
+  Command: TEngineCommand; Param: integer);
+var
+  Event: Pmpv_event;
+begin
+ if (Command = ecCustom) and (param=1) then
+    begin
+      Event := mpv_wait_event(fhandle^, 0);
+      while Event^.event_id <> MPV_EVENT_NONE do
+        begin
+          if (Event^.event_id =  MPV_EVENT_END_FILE) and
+             (Pmpv_event_end_file(Event^.data)^.reason = 0) then
+             ReceivedCommand(self, ecNext, 0);
+          Event := mpv_wait_event(fhandle^, 0);
+        end;
+    end
+ else
+    inherited ReceivedCommand(Sender, Command, Param);
 end;
 
 function TAudioEngineLibMPV.Playing: boolean;
@@ -195,7 +237,15 @@ begin
 end;
 
 procedure TAudioEngineLibMPV.Seek(Seconds: integer; SeekAbsolute: boolean);
+var
+  currpos: integer;
 begin
+  currpos := GetSongPos;
+  if SeekAbsolute then
+    SetSongPos(Seconds * 1000)
+  else
+    SetSongPos(currpos + Seconds * 1000);
+
 end;
 
 procedure TAudioEngineLibMPV.Stop;
