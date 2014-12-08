@@ -34,6 +34,9 @@ type
   TAudioEngineLibMPV = class(TAudioEngine)
   private
     fhandle : Pmpv_handle;
+    fState : TEngineState;
+    function GetBoolProperty(const PropertyName: string): boolean;
+    procedure SetBoolProperty(const PropertyName: string; AValue: boolean);
   protected
     fdecoupler :TDecoupler;
     function GetMainVolume: integer; override;
@@ -71,8 +74,6 @@ Const
 
 { TAudioEngineLibMPV }
 
-
-
 procedure LibMPVEvent(Data: Pointer); cdecl;
 var
   player: TAudioEngineLibMPV;
@@ -85,18 +86,20 @@ end;
 
 function TAudioEngineLibMPV.GetMainVolume: integer;
 var
-  vol : int64;
+  vol : Double;
+  res:integer;
 begin
-  mpv_get_property(fhandle^,'volume',MPV_FORMAT_INT64,@vol);
+  res :=mpv_get_property(fhandle^,'volume',MPV_FORMAT_DOUBLE,@vol);
   Result := trunc(vol * ( 255 / MPVMAXVOLUME));
 end;
 
 procedure TAudioEngineLibMPV.SetMainVolume(const AValue: integer);
 var
-  vol : int64;
+  vol : Double;
+    res:integer;
 begin
-  vol := trunc(AValue * (MPVMAXVOLUME / 255));
-  mpv_set_property(fhandle^,'volume',MPV_FORMAT_INT64,@vol);
+  vol := AValue * (MPVMAXVOLUME / 255);
+  res := mpv_set_property(fhandle^,'volume',MPV_FORMAT_DOUBLE,@vol);
 
 end;
 
@@ -148,6 +151,7 @@ end;
 destructor TAudioEngineLibMPV.Destroy;
 begin
 
+  mpv_set_wakeup_callback(fhandle^,nil, self);
   mpv_terminate_destroy(fhandle^);
   Free_libmpv;
   fdecoupler.free;
@@ -156,11 +160,22 @@ end;
 
 function TAudioEngineLibMPV.GetState: TEngineState;
 begin
-  Result := ENGINE_STOP;
+  Result := fState;
 end;
 
 procedure TAudioEngineLibMPV.Pause;
 begin
+  if (GetState() = ENGINE_PAUSE) then
+    begin
+        SetBoolProperty('pause', false);
+        fState:=ENGINE_PLAY;
+    end
+  else if  GetState() = ENGINE_PLAY then
+    begin
+      SetBoolProperty('pause', true);
+      fState:=ENGINE_Pause;
+    end;
+
 
 end;
 
@@ -178,16 +193,41 @@ begin
  res:= mpv_command(fhandle^, ppchar(@args[0])) ;
  setlength(args,2);
  result := res = 0 ;
+ if Result then
+   fState:= ENGINE_PLAY;
 
 end;
 
+procedure TAudioEngineLibMPV.SetBoolProperty(const PropertyName:string; AValue: boolean);
+var
+  res: integer;
+  p:integer;
+begin
+  if AValue then
+    p:= 1
+  else
+    p:=0;
+ res:=mpv_set_property(fhandle^,pchar(PropertyName),MPV_FORMAT_FLAG,@p);
+end;
+
+function TAudioEngineLibMPV.GetBoolProperty(const PropertyName:string):boolean;
+var
+  res: integer;
+  p:integer;
+begin
+ res:=mpv_get_property(fhandle^,pchar(PropertyName),MPV_FORMAT_FLAG,@p);
+ result := Boolean(p);
+end;
+
+
 procedure TAudioEngineLibMPV.SetMuted(const AValue: boolean);
 begin
+  SetBoolProperty('mute', AValue);
 end;
 
 function TAudioEngineLibMPV.GetMuted: boolean;
 begin
-  Result:=false;
+  result := GetBoolProperty('mute');
 end;
 
 class function TAudioEngineLibMPV.GetEngineName: String;
@@ -197,7 +237,6 @@ end;
 
 class function TAudioEngineLibMPV.IsAvalaible(ConfigParam: TStrings): boolean;
 begin
-  SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide,exOverflow, exUnderflow, exPrecision]);
   Result:= Check_libmpv;
 end;
 
@@ -218,7 +257,10 @@ begin
         begin
           if (Event^.event_id =  MPV_EVENT_END_FILE) and
              (Pmpv_event_end_file(Event^.data)^.reason = 0) then
+            begin
+             fState:= ENGINE_SONG_END;
              ReceivedCommand(self, ecNext, 0);
+            end;
           Event := mpv_wait_event(fhandle^, 0);
         end;
     end
@@ -228,12 +270,12 @@ end;
 
 function TAudioEngineLibMPV.Playing: boolean;
 begin
-  Result := true;
+  Result := GetState = ENGINE_PLAY;
 end;
 
 function TAudioEngineLibMPV.Running: boolean;
 begin
-  Result := true  ;
+ Result := GetState = ENGINE_PLAY;
 end;
 
 procedure TAudioEngineLibMPV.Seek(Seconds: integer; SeekAbsolute: boolean);
@@ -257,13 +299,19 @@ begin
  args[0] := 'stop';
  args[3] := nil ;
  res:= mpv_command(fhandle^, ppchar(@args[0])) ;
+ fState:= ENGINE_STOP;
 
 end;
 
 procedure TAudioEngineLibMPV.UnPause;
 begin
+
+  if (GetState() = ENGINE_PAUSE) then
+    begin
+      SetBoolProperty('pause',false);
+    end;
 end;
 
 initialization
-  RegisterEngineClass(TAudioEngineLibMPV, 5, false, false);
+  RegisterEngineClass(TAudioEngineLibMPV, 5, false, true);
 end.
