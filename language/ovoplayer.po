@@ -385,6 +385,10 @@ msgctxt "tfabout.label1.caption"
 msgid "OvoPlayer"
 msgstr ""
 
+#: tfabout.label10.caption
+msgid "Current Engine"
+msgstr ""
+
 #: tfabout.label2.caption
 msgctxt "tfabout.label2.caption"
 msgid "Version"

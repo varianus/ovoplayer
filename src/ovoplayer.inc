@@ -30,8 +30,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 // MEDIAFOUNDATION - Microsoft        - Stable, minor seeking issues, Windows Vista and later only
 //
 // Engines under development
-// LIBMPV          - FFMpeg           - Partial support, under development
-// FFMPEG          - FFMpeg           - Working, but FFMPEG changes data structures so often that I disabled this
+// LIBMPV          - mpv.io           - Fully working, under testing
+
+// FFMPEG          - FFMpeg           - Working, but FFMPEG changes data structures so often that I've disabled it
 // OPENSOURCELIB   - Various          - Working with major issues, lighter alternative to UOS
 
 {$IFDEF LINUX}
@@ -42,7 +43,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   {$DEFINE BASS} //
   {-$DEFINE UOS} //
   {$DEFINE LIBMPV} //
-
   {.$DEFINE OPENSOURCELIB} //
   {.$DEFINE FFMPEG}
 
@@ -75,12 +75,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {$IFDEF LINUX}
   {$DEFINE NEEDCFGSUBDIR} // Need to add a sub-directory to configuration files directory
   {$DEFINE ASKMMKEYSMODE} // Ask for multimedia keys capture mode
-  {$DEFINE MPRIS2} // MPRIS V2 Interface
-  {$DEFINE NOTIFYDBUS} // use DBus notification
+  {$DEFINE MPRIS2}        // MPRIS V2 Interface
+  {$DEFINE NOTIFYDBUS}    // use DBus notification
 {$ENDIF LINUX}  
 
 {$IFDEF WINDOWS}
-  {$DEFINE SUPPORT_SHAPING} // seems to work only on windows
+  {$DEFINE SUPPORT_SHAPING}   // Rounded border of OSD popup, seems to work only on windows
+  {$DEFINE TASKBAR_EXTENSION} // Add buttons to taskbar preview window, Win7 and higher only
 {$ENDIF WINDOWS}
 
 {$IFDEF LCLWin32}
@@ -96,4 +97,4 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
 
-
+

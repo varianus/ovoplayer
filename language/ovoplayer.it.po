@@ -385,6 +385,10 @@ msgctxt "tfabout.label1.caption"
 msgid "OvoPlayer"
 msgstr ""
 
+#: tfabout.label10.caption
+msgid "Current Engine"
+msgstr "Motore Audio corrente"
+
 #: tfabout.label2.caption
 #, fuzzy
 #| msgid "Version :"
@@ -425,6 +429,7 @@ msgid "http://code.google.com/p/ovoplayer/"
 msgstr ""
 
 #: tfabout.lversion.caption
+#, fuzzy
 msgctxt "tfabout.lversion.caption"
 msgid "Version"
 msgstr "Versione"

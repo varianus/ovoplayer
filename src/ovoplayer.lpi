@@ -123,7 +123,7 @@ if TargetOS = 'linux' then
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="70">
+    <Units Count="71">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -169,7 +169,6 @@ if TargetOS = 'linux' then
       <Unit7>
         <Filename Value="audioengine.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="AudioEngine"/>
       </Unit7>
       <Unit8>
         <Filename Value="audioengine_mplayer.pas"/>
@@ -212,7 +211,6 @@ if TargetOS = 'linux' then
         <ComponentName Value="fConfig"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="uConfig"/>
       </Unit16>
       <Unit17>
         <Filename Value="decoupler.pas"/>
@@ -232,12 +230,10 @@ if TargetOS = 'linux' then
         <ComponentName Value="fAbout"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="uAbout"/>
       </Unit20>
       <Unit21>
         <Filename Value="audioengine_vlc.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="audioengine_vlc"/>
       </Unit21>
       <Unit22>
         <Filename Value="ovotag\commonfunctions.pas"/>
@@ -302,7 +298,6 @@ if TargetOS = 'linux' then
       <Unit37>
         <Filename Value="import-engines\PasLibVlcUnit.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="PasLibVlcUnit"/>
       </Unit37>
       <Unit38>
         <Filename Value="customdrawn_ovoplayer.pas"/>
@@ -362,10 +357,12 @@ if TargetOS = 'linux' then
       <Unit51>
         <Filename Value="platform\linux\mpris2.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="mpris2"/>
       </Unit51>
       <Unit52>
         <Filename Value="coreinterfaces.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="coreinterfaces"/>
       </Unit52>
       <Unit53>
         <Filename Value="basetypes.pas"/>
@@ -434,12 +431,16 @@ if TargetOS = 'linux' then
       <Unit68>
         <Filename Value="ovotag\file_mp4.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="file_Mp4"/>
       </Unit68>
       <Unit69>
         <Filename Value="ovotag\tag_mp4.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit69>
+      <Unit70>
+        <Filename Value="platform\win32\taskbar_ext.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="taskbar_ext"/>
+      </Unit70>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -515,4 +516,4 @@ if TargetOS = 'linux' then
       </Item5>
     </Exceptions>
   </Debugging>
-</CONFIG>
+</CONFIG>

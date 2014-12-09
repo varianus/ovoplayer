@@ -10,6 +10,7 @@ object fMainForm: TfMainForm
   Constraints.MinHeight = 400
   Constraints.MinWidth = 600
   Menu = MainMenu
+  OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -144,7 +145,7 @@ object fMainForm: TfMainForm
         Width = 235
         Align = alBottom
         Caption = 'Stats'
-        ClientHeight = 91
+        ClientHeight = 89
         ClientWidth = 231
         ParentFont = False
         TabOrder = 1
@@ -200,7 +201,7 @@ object fMainForm: TfMainForm
         end
         object sgStats: TStringGrid
           Left = 0
-          Height = 91
+          Height = 89
           Top = 0
           Width = 209
           Align = alClient
@@ -443,12 +444,14 @@ object fMainForm: TfMainForm
         end
         object ToolButton8: TToolButton
           Left = 80
+          Height = 23
           Top = 0
           Width = 10
           Style = tbsSeparator
         end
         object ToolButton9: TToolButton
           Left = 47
+          Height = 23
           Top = 0
           Width = 10
           Style = tbsSeparator
@@ -480,6 +483,7 @@ object fMainForm: TfMainForm
         end
         object ToolButton18: TToolButton
           Left = 182
+          Height = 23
           Top = 0
           Width = 10
           AutoSize = True
@@ -488,6 +492,7 @@ object fMainForm: TfMainForm
         end
         object ToolButton12: TToolButton
           Left = 253
+          Height = 23
           Top = 0
           Width = 10
           Style = tbsSeparator

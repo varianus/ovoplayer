@@ -25,18 +25,15 @@ unit uMain;
 interface
 
 uses
+     InterfaceBase,
   Classes, types, SysUtils, FileUtil, Forms, Controls, Graphics,
   Dialogs, ComCtrls, Menus, ExtCtrls, Buttons, StdCtrls, Song, CustomSong, uOSD,
   BaseTypes, GUIBackEnd, Config, MediaLibrary, coreinterfaces,
   DefaultTranslator, Grids, EditBtn, ActnList, customdrawncontrols,
   customdrawn_common, customdrawn_ovoplayer, LCLIntf, Lmessages,
-  {$IFDEF MPRIS2}
-  Mpris2,
-  {$ENDIF MPRIS}
-  {$IFDEF NOTIFYDBUS}
-   notification,
-  {$ENDIF NOTIFYDBUS}
-
+  {$IFDEF MPRIS2} Mpris2,{$ENDIF}
+  {$IFDEF NOTIFYDBUS} notification,{$ENDIF}
+  {$IFDEF TASKBAR_EXTENSION}taskbar_ext,{$ENDIF}
   ucover;
 
 type
@@ -256,6 +253,7 @@ type
       var NodeClass: TTreeNodeClass);
     procedure FilesTreeDblClick(Sender: TObject);
     procedure FilesTreeGetImageIndex(Sender: TObject; Node: TTreeNode);
+    procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -342,6 +340,9 @@ type
     Notifier : TNotificationClient;
     MyNotification: RNotification;
     {$ENDIF NOTIFYDBUS}
+    {$IFDEF TASKBAR_EXTENSION}
+    Mytaskbar_ext: TTaskBarExtender;
+    {$ENDIF}
 
     function AdjustPos(pt: tpoint): Tpoint;
     Function ColumnSize(aCol: Integer):Integer;
@@ -689,6 +690,15 @@ begin
     myNode.ImageIndex := 7
   else
     myNode.ImageIndex := 2;
+
+end;
+
+procedure TfMainForm.FormActivate(Sender: TObject);
+begin
+ {$IFDEF TASKBAR_EXTENSION}
+ if not Mytaskbar_ext.Initialized then
+    Mytaskbar_ext.Init(WidgetSet.AppHandle, BackEnd);
+ {$ENDIF}
 
 end;
 
@@ -1148,6 +1158,10 @@ begin
     end;
   {$ENDIF MPRIS}
 
+  {$IFDEF TASKBAR_EXTENSION}
+  Mytaskbar_ext := TTaskBarExtender.Create;
+  {$ENDIF}
+
 
 end;
 
@@ -1160,6 +1174,9 @@ begin
       Mpris.Deactivate;
      end;
   {$ENDIF MPRIS}
+  {$IFDEF TASKBAR_EXTENSION}
+  Mytaskbar_ext.UnInit;
+  {$ENDIF}
   if Assigned(fMiniPlayer) then
     FreeAndNil(fMiniPlayer);
 

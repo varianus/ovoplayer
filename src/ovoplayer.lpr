@@ -54,6 +54,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   // Platform related
   {$IFDEF MPRIS2} mpris2,{$ENDIF}
   {$IFDEF NOTIFYDBUS}notification,{$ENDIF}
+  {$IFDEF TASKBAR_EXTENSION}taskbar_ext,{$ENDIF}
 
   // ovotag
   song, AudioTag, basetag,
@@ -69,8 +70,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   uConfig, uOSD, uMiniPlayer, uSongInfo,
   uCover,
   customdrawndrawers, customdrawn_ovoplayer,
-  DefaultTranslator, customdrawn,
-  Math;
+  DefaultTranslator, customdrawn;
 
 
 
