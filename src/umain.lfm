@@ -1,7 +1,7 @@
 object fMainForm: TfMainForm
-  Left = 253
+  Left = 582
   Height = 694
-  Top = 184
+  Top = 196
   Width = 866
   AllowDropFiles = True
   Caption = 'OvoPlayer'

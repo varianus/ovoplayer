@@ -27,7 +27,8 @@ unit taskbar_ext;
 interface
 
 uses
-  Windows, Classes, SysUtils, shlobj, comobj, coreinterfaces, uDM, NullInterfacedObject;
+  Windows, Classes, SysUtils, shlobj, comobj, coreinterfaces, uDM, NullInterfacedObject,
+  InterfaceBase, guibackend;
 
 const
       IID_ITaskbarList3: TGUID = '{ea1afb91-9e28-4b86-90e9-9e9f8a5eefaf}';
@@ -42,12 +43,15 @@ type
       TaskbarList3 : ITaskBarList3;
       FBackEnd: IBackEnd;
       FApplication: THandle;
+      Buttons: array [0..2] of THUMBBUTTON;
       Procedure AddButtons;
     public
       constructor Create;
       destructor Destroy; override;
-      Function Init(Application: THandle; BackEnd: IBackEnd):boolean;
+      Function Init:boolean;
+      procedure Update;
       Procedure UnInit;
+
       procedure UpdateProperty(Kind: TChangedProperty);
 
       Property Initialized: boolean read FInitialized;
@@ -56,7 +60,7 @@ type
 
 implementation
 var
-  PrevWndProc: WNDPROC;
+  PrevWndProc: Ptrint;
   Handler: TTaskBarExtender;
 
 { TTaskBarExtender }
@@ -72,12 +76,11 @@ begin
         3: Handler.FBackEnd.Next;
       end;
   end;
-  result:=CallWindowProc(PrevWndProc, Ahwnd, uMsg, WParam, LParam);
+  result:=CallWindowProc(WNDPROC(PrevWndProc), Ahwnd, uMsg, WParam, LParam);
 end;
 
 procedure TTaskBarExtender.AddButtons;
 var
- Buttons: array [0..3] of THUMBBUTTON;
  FormHandle: THandle;
  res : HRESULT;
  h: THandle;
@@ -120,6 +123,7 @@ begin
   res:=TaskbarList.HrInit;
   TaskbarList._AddRef;
   res:=ord(Supports(TaskbarList, IID_ITaskbarList3, TaskbarList3));
+  Handler:=self;
 
 end;
 
@@ -130,24 +134,35 @@ begin
   inherited Destroy;
 end;
 
-function TTaskBarExtender.Init(Application: THandle; BackEnd: IBackEnd):boolean;
+function TTaskBarExtender.Init:boolean;
 begin
-  fBackEnd := BackEnd;
-  FApplication:=Application;
-  if not Assigned(fBackEnd) then
-    exit;
-  FInitialized:=true;
-  fBackEnd.Attach(Self);
-  Result := True;
-  AddButtons;
-  PrevWndProc:=Windows.WNDPROC(SetWindowLongPtr(Application,GWL_WNDPROC,PtrInt(@WndCallback)));
-  Handler:=self;
+  FBackEnd:=BackEnd;
+  FApplication:= FindWindow(NIL, 'OvoPlayer');
+  if FApplication <> 0 then
+    begin
+     FInitialized:=true;
+     fBackEnd.Attach(Self);
+     Result := True;
+     PrevWndProc := Ptrint(GetWindowLongPtr(fApplication,GWL_WNDPROC));
+     SetWindowLongPtr(fApplication,GWL_WNDPROC,PtrInt(@WndCallback));
+     AddButtons;
+    end;
 
+end;
+
+procedure TTaskBarExtender.Update;
+begin
+  if not Initialized then
+      Init;
+  TaskbarList3.ThumbBarUpdateButtons(FApplication, 3, @Buttons[0]);
 end;
 
 procedure TTaskBarExtender.UnInit;
 begin
- fBackEnd.Remove(Self);
+  SetWindowLongptr(fApplication,GWL_WNDPROC, PrevWndProc);
+  FApplication:=0;
+
+  fBackEnd.Remove(Self);
   FInitialized:=false;
 end;
 

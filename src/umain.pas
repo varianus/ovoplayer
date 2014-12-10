@@ -25,7 +25,6 @@ unit uMain;
 interface
 
 uses
-     InterfaceBase,
   Classes, types, SysUtils, FileUtil, Forms, Controls, Graphics,
   Dialogs, ComCtrls, Menus, ExtCtrls, Buttons, StdCtrls, Song, CustomSong, uOSD,
   BaseTypes, GUIBackEnd, Config, MediaLibrary, coreinterfaces,
@@ -695,10 +694,10 @@ end;
 
 procedure TfMainForm.FormActivate(Sender: TObject);
 begin
- {$IFDEF TASKBAR_EXTENSION}
- if not Mytaskbar_ext.Initialized then
-    Mytaskbar_ext.Init(WidgetSet.AppHandle, BackEnd);
- {$ENDIF}
+  {$IFDEF TASKBAR_EXTENSION}
+   if not Mytaskbar_ext.Initialized then
+      Mytaskbar_ext.Init;
+  {$ENDIF}
 
 end;
 
@@ -707,6 +706,10 @@ begin
   if (BackEnd.Config.InterfaceParam.MinimizeOnClose) and not Quitting then
     begin
       Application.ShowMainForm:=False;
+      {$IFDEF TASKBAR_EXTENSION}
+      if Mytaskbar_ext.Initialized then
+         Mytaskbar_ext.UnInit;
+      {$ENDIF}
       CloseAction:=caHide;
     end
   else
@@ -1162,7 +1165,6 @@ begin
   Mytaskbar_ext := TTaskBarExtender.Create;
   {$ENDIF}
 
-
 end;
 
 procedure TfMainForm.FormDestroy(Sender: TObject);
@@ -1218,7 +1220,6 @@ begin
        ShowMessage(rMissingConfig);
        ActShowPreferences.Execute;
      end;
-
 end;
 
 procedure TfMainForm.imgCoverDblClick(Sender: TObject);
@@ -2235,11 +2236,20 @@ end;
 procedure TfMainForm.TrayIconDblClick(Sender: TObject);
 begin
   if Visible then
-    Hide
+    begin
+      Hide;
+      {$IFDEF TASKBAR_EXTENSION}
+      if Mytaskbar_ext.Initialized then
+         Mytaskbar_ext.UnInit;
+      {$ENDIF}
+    end
   else
   begin
     Show;
-   BringToFront;
+    BringToFront;
+    {$IFDEF TASKBAR_EXTENSION}
+    Mytaskbar_ext.Update;
+    {$ENDIF}
   end;
 end;
 
