@@ -309,6 +309,7 @@ begin
   if (GetState() = ENGINE_PAUSE) then
     begin
       SetBoolProperty('pause',false);
+      fState := ENGINE_PLAY;
     end;
 end;
 
