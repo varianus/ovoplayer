@@ -193,8 +193,13 @@ begin
  res:= mpv_command(fhandle^, ppchar(@args[0])) ;
  setlength(args,2);
  result := res = 0 ;
+
  if Result then
-   fState:= ENGINE_PLAY;
+   begin
+     fState:= ENGINE_PLAY;
+     if offset <> 0 then
+       Seek(offset, true);
+   end;
 
 end;
 
