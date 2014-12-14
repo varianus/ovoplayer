@@ -6,7 +6,16 @@ uses
   ctypes;
 
 const
-    External_library='libmpv.so.1'; {Setup as you need}
+  {$IFDEF LINUX}
+     External_library='libmpv.so.1';
+  {$ENDIF LINUX}
+  {$IFDEF WINDOWS}
+     External_library='libmpv.dll';
+  {$ENDIF LINUX}
+  {$IFDEF DARWIN}
+     External_library = 'libmpv.dylib';
+  {$ENDIF DARWIN}
+
 
   { Pointers to basic pascal types, inserted by h2pas conversion program.}
   Type
