@@ -156,7 +156,7 @@ end;
 
 function TAudioEngineMPlayer.GetMainVolume: integer;
 begin
-  Result := fMainVolume;
+  Result := trunc(fMainVolume *  ( 255 / MPLAYERMAXVOLUME)) ;
 end;
 
 function TAudioEngineMPlayer.GetSongPos: integer;
@@ -168,8 +168,8 @@ procedure TAudioEngineMPlayer.SetMainVolume(const AValue: integer);
 begin
   if AValue = fMainVolume then
     exit;
-  fMainVolume := AValue;
-  SendMPlayerCommand('volume ' + IntToStr(trunc(fMainVolume + MPLAYERMAXVOLUME /255)) + ' 1');
+  fMainVolume := trunc(AValue * MPLAYERMAXVOLUME /255);
+  SendMPlayerCommand('volume ' + IntToStr(fMainVolume) + ' 1');
 end;
 
 function TAudioEngineMPlayer.GetMaxVolume: integer;
@@ -182,10 +182,14 @@ procedure TAudioEngineMPlayer.SetPaused(const AValue: boolean);
 begin
   if FPaused = AValue then
     exit;
+  FPaused := AValue;
   if Running then
     begin
-    FPaused := AValue;
     SendMPlayerCommand('pause');
+    if FPaused then
+       fPlayerState := ENGINE_PAUSE
+    else
+       fPlayerState := ENGINE_PLAY
     end;
 end;
 
@@ -246,7 +250,10 @@ begin
 
   fPlayerState := ENGINE_PLAY;
   FPlayRunningI := True;
-  Seek(offset, true);
+
+  if offset <> 0 then
+    Seek(offset, true);
+
   fTimer.Enabled:=true;
 
   Result := fPlayerProcess.Running;
@@ -413,4 +420,4 @@ initialization
 
   RegisterEngineClass(TAudioEngineMPlayer, 2, true, false);
 
-end.
+end.
