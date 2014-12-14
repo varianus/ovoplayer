@@ -6360,24 +6360,27 @@ begin
   // try load library 
   // before loading libvlc.dll program nust change directry to
   // libvlc_dynamic_dll_path
-  if (libvlc_dynamic_dll_path <> '') then
+  if libvlc_dynamic_dll_file <> '' then
   begin
-    cdir := GetCurrentDir();
-    SetCurrentDir(libvlc_dynamic_dll_path);
-    {$IFDEF SUPPORTS_UNICODE}
-    libvlc_handle := LoadLibrary(PWideChar(libvlc_dynamic_dll_path + PathDelim + libvlc_dynamic_dll_file));
-    {$ELSE}
-    libvlc_handle := LoadLibrary(PAnsiChar(libvlc_dynamic_dll_path + PathDelim + libvlc_dynamic_dll_file));
-    {$ENDIF}
-    SetCurrentDir(cdir);
-  end
-  else
-  begin
-    {$IFDEF SUPPORTS_UNICODE}
-    libvlc_handle := LoadLibrary(PWideChar(libvlc_dynamic_dll_file));
-    {$ELSE}
-    libvlc_handle := LoadLibrary(PAnsiChar(libvlc_dynamic_dll_file));
-    {$ENDIF}
+    if (libvlc_dynamic_dll_path <> '') then
+    begin
+      cdir := GetCurrentDir();
+      SetCurrentDir(libvlc_dynamic_dll_path);
+      {$IFDEF SUPPORTS_UNICODE}
+      libvlc_handle := LoadLibrary(PWideChar(libvlc_dynamic_dll_path + PathDelim + libvlc_dynamic_dll_file));
+      {$ELSE}
+      libvlc_handle := LoadLibrary(PAnsiChar(libvlc_dynamic_dll_path + PathDelim + libvlc_dynamic_dll_file));
+      {$ENDIF}
+      SetCurrentDir(cdir);
+    end
+    else
+    begin
+      {$IFDEF SUPPORTS_UNICODE}
+      libvlc_handle := LoadLibrary(PWideChar(libvlc_dynamic_dll_file));
+      {$ELSE}
+      libvlc_handle := LoadLibrary(PAnsiChar(libvlc_dynamic_dll_file));
+      {$ENDIF}
+    end;
   end;
 
   // exit, report error
@@ -7382,4 +7385,4 @@ initialization
 finalization
 
 end.
-
+
