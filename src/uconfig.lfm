@@ -68,7 +68,7 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 61
+        ClientHeight = 62
         ClientWidth = 197
         Items.Strings = (
           'Gnome D-BUS mode'
@@ -90,13 +90,13 @@ object fConfig: TfConfig
     end
     object tsEngine: TTabSheet
       Caption = 'Engine'
-      ClientHeight = 422
-      ClientWidth = 541
+      ClientHeight = 415
+      ClientWidth = 543
       object rgAudioEngine: TRadioGroup
         Left = 4
-        Height = 51
+        Height = 52
         Top = 0
-        Width = 198
+        Width = 220
         AutoFill = True
         AutoSize = True
         Caption = 'Audio Engine'
@@ -108,55 +108,31 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 31
-        ClientWidth = 194
+        ClientHeight = 33
+        ClientWidth = 216
         Items.Strings = (
           'Sample row for builded engine'
         )
         OnClick = rgAudioEngineClick
         TabOrder = 0
       end
-      object pcEngineParams: TPageControl
-        Left = 3
-        Height = 104
-        Top = 184
-        Width = 472
-        ActivePage = tsMPlayer
-        ShowTabs = False
-        TabIndex = 0
+      object EngineParamsEditor: TValueListEditor
+        Left = 4
+        Height = 204
+        Top = 200
+        Width = 451
+        FixedCols = 0
+        RowCount = 2
         TabOrder = 1
-        object tsMPlayer: TTabSheet
-          ClientHeight = 96
-          ClientWidth = 464
-          object MPlayerPath: TFileNameEdit
-            Left = 3
-            Height = 23
-            Top = 25
-            Width = 424
-            DialogOptions = [ofReadOnly, ofPathMustExist, ofFileMustExist, ofNoTestFileCreate, ofViewDetail]
-            FilterIndex = 0
-            HideDirectories = False
-            ButtonWidth = 23
-            NumGlyphs = 1
-            MaxLength = 0
-            TabOrder = 0
-            OnChange = MPlayerPathChange
-          end
-          object Label6: TLabel
-            Left = 4
-            Height = 16
-            Top = 5
-            Width = 132
-            AutoSize = False
-            Caption = 'Mplayer Path'
-            Font.Height = 16
-            ParentColor = False
-            ParentFont = False
-            OptimalFill = True
-          end
-        end
-        object tsNone: TTabSheet
-        end
+        TitleStyle = tsNative
+        OnButtonClick = EngineParamsEditorButtonClick
+        Strings.Strings = (
+          ''
+        )
+        ColWidths = (
+          64
+          385
+        )
       end
     end
     object tsMediaLibrary: TTabSheet
@@ -171,6 +147,7 @@ object fConfig: TfConfig
         ItemHeight = 0
         ScrollWidth = 382
         TabOrder = 0
+        TopIndex = -1
       end
       object Label1: TLabel
         Left = 11
@@ -292,7 +269,7 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 85
+        ClientHeight = 86
         ClientWidth = 181
         Items.Strings = (
           'None'
@@ -353,7 +330,7 @@ object fConfig: TfConfig
     Width = 153
     Align = alLeft
     Caption = 'Categories'
-    ClientHeight = 430
+    ClientHeight = 431
     ClientWidth = 149
     Color = clWindow
     ParentColor = False
@@ -422,13 +399,13 @@ object fConfig: TfConfig
     object pnlRestart: TPanel
       Left = 1
       Height = 136
-      Top = 293
+      Top = 294
       Width = 147
       Align = alBottom
       BorderSpacing.Around = 1
       BorderStyle = bsSingle
-      ClientHeight = 132
-      ClientWidth = 143
+      ClientHeight = 134
+      ClientWidth = 145
       Color = clActiveCaption
       ParentColor = False
       TabOrder = 0
@@ -437,7 +414,7 @@ object fConfig: TfConfig
         Left = 4
         Height = 56
         Top = 4
-        Width = 135
+        Width = 137
         Align = alTop
         AutoSize = False
         BorderSpacing.Around = 3
@@ -484,4 +461,12 @@ object fConfig: TfConfig
     left = 496
     top = 96
   end
-end
+  object OpenDialog1: TOpenDialog
+    left = 393
+    top = 116
+  end
+  object SelectDirectoryDialog1: TSelectDirectoryDialog
+    left = 256
+    top = 116
+  end
+end

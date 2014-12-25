@@ -25,15 +25,9 @@ unit AudioEngine_MPlayer;
 interface
 
 uses
-  Classes, SysUtils, ExtCtrls, Process, UTF8Process, Song, BaseTypes, AudioEngine;
+  Classes, SysUtils, ExtCtrls, Process, FileUtil, UTF8Process, Song, BaseTypes, AudioEngine;
 
 type
-
-  { TAudioEngineMPlayer }
-  PConfigParamMplayer = ^TConfigParamMPlayer;
-  TConfigParamMPlayer = record
-    PlayerPath: ShortString;
-  end;
 
   TAudioEngineMPlayer = class(TAudioEngine)
   private
@@ -64,6 +58,7 @@ type
   public
     class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
+    Class Function GetEngineParams: AREngineParams; override;
 
     constructor Create; override;
     procedure Activate; override;
@@ -80,7 +75,7 @@ type
 
 implementation
 
-uses strutils, FileUtil, lclproc;
+uses strutils, lclproc;
 Const
   MPLAYERMAXVOLUME = 100;
 
@@ -89,11 +84,7 @@ const
   TIMEPOSOUT = 'A: ';
   EXITING = 'Exiting...';
 
-  {$IFDEF WINDOWS}
-    fMPlayerPath = 'mplayer.exe';
-  {$ELSE}
-    fMPlayerPath = 'mplayer';
-  {$ENDIF}
+  fMPlayerCommand = 'mplayer';
 
 
 var
@@ -233,7 +224,7 @@ begin
   fPlayerProcess.Terminate(0);
 end;
 
-Function TAudioEngineMPlayer.DoPlay(Song: TSong; offset:Integer):boolean;
+function TAudioEngineMPlayer.DoPlay(Song: TSong; offset: Integer): boolean;
 var
   Params: string;
 begin
@@ -336,10 +327,10 @@ begin
     begin
       APath:= ConfigParam.Values['Path'];
       if trim(APath) = '' then
-         APath := fMPlayerPath;
+         APath := fMPlayerCommand;
     end
   else
-    APath := fMPlayerPath;;
+    APath := fMPlayerCommand;;
 
   AProcess := TProcessUTF8.Create(nil);
   AProcess.Options := AProcess.Options + [poUsePipes, poNoConsole];
@@ -364,6 +355,22 @@ begin
        AProcess.Terminate(0);
     AProcess.free;
   end;
+
+end;
+
+class function TAudioEngineMPlayer.GetEngineParams: AREngineParams;
+var
+  tmpName: string;
+begin
+  SetLength(Result,1);
+  Result[0].Key:='Path';
+
+  tmpname :=  FindFilenameOfCmd(fMPlayerCommand+GetExeExt);
+  if tmpName = '' then
+    tmpname :=  FindFilenameOfCmd(fMPlayerCommand+'2'+GetExeExt);
+  Result[0].Value:=tmpName;
+
+  Result[0].Kind:=epkFileName;
 
 end;
 

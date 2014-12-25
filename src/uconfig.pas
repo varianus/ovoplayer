@@ -27,7 +27,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
   ExtCtrls, StdCtrls, Buttons, ButtonPanel, ColorBox, Menus, Spin, EditBtn,
-  GUIBackEnd, uOSD, AudioEngine, LCLProc;
+  GUIBackEnd, uOSD, AudioEngine, LCLProc, ValEdit, BaseTypes, Grids;
 
 type
 
@@ -48,7 +48,6 @@ type
     colorBackground: TColorBox;
     ColorFont:  TColorBox;
     lbRestart: TLabel;
-    MPlayerPath: TFileNameEdit;
     FontDialog1: TFontDialog;
     GroupBox1:  TGroupBox;
     Label1:     TLabel;
@@ -56,28 +55,27 @@ type
     Label3:     TLabel;
     Label4:     TLabel;
     Label5: TLabel;
-    Label6: TLabel;
     lbMLPath:   TListBox;
+    OpenDialog1: TOpenDialog;
     pnlRestart: TPanel;
-    pcEngineParams: TPageControl;
     pcConfig:   TPageControl;
     rgKeyCaptureMode: TRadioGroup;
     rgOSDKind:  TRadioGroup;
     rgAudioEngine: TRadioGroup;
     sbEngine:   TSpeedButton;
     sbInterface: TSpeedButton;
+    SelectDirectoryDialog1: TSelectDirectoryDialog;
     seLimit: TSpinEdit;
     SpeedButton2: TSpeedButton;
     sbPlayList: TSpeedButton;
     sbLibrary:  TSpeedButton;
-    tsNone: TTabSheet;
-    tsMPlayer: TTabSheet;
     tsInterface: TTabSheet;
     tbTransparency: TTrackBar;
     tsOSD:      TTabSheet;
     tsEngine:   TTabSheet;
     tsMediaLibrary: TTabSheet;
     tsPlaylist: TTabSheet;
+    EngineParamsEditor: TValueListEditor;
     procedure bAddDirClick(Sender: TObject);
     procedure bRemoveDirClick(Sender: TObject);
     procedure bRescanLibraryClick(Sender: TObject);
@@ -86,9 +84,10 @@ type
     procedure cbCaptureMMKeysClick(Sender: TObject);
     procedure colorBackgroundChange(Sender: TObject);
     procedure ColorFontChange(Sender: TObject);
+    procedure EngineParamsEditorButtonClick(Sender: TObject; aCol, aRow: Integer
+      );
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure MPlayerPathChange(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
     procedure rgAudioEngineClick(Sender: TObject);
     procedure rgOSDKindClick(Sender: TObject);
@@ -141,6 +140,11 @@ begin
 end;
 
 procedure TfConfig.rgAudioEngineClick(Sender: TObject);
+var
+  engineParams: AREngineParams;
+  Engine : TAudioEngineClass;
+  i: integer;
+  tmpValue: string;
 begin
   if rgAudioEngine.Items[rgAudioEngine.ItemIndex] <> BackEnd.AudioEngine.GetEngineName then
      begin
@@ -152,16 +156,30 @@ begin
       BackEnd.Config.NeedRestart:= false;
       pnlRestart.Visible:= false;
     end;
+  Engine := EngineArray[rgAudioEngine.ItemIndex].Engine;
+  EngineParams := Engine.GetEngineParams;
 
+  if Length(engineParams) > 0 then
+     begin
+       EngineParamsEditor.Visible:=True;
+       EngineParamsEditor.Clear;
+       BackEnd.Config.ReadSubParams(Engine.GetEngineName);
+       for i := 0 to Length(engineParams) -1 do
+         begin
+           tmpValue :=BackEnd.Config.EngineSubParams.Values[engineParams[i].Key];
+           if tmpValue = '' then
+             tmpValue:=engineParams[i].Value;
+           EngineParamsEditor.Values[engineParams[i].Key]:=tmpValue;
+           if engineParams[i].Kind = epkFileName then
+             EngineParamsEditor.ItemProps[engineParams[i].Key].EditStyle:=esEllipsis;
 
-  if rgAudioEngine.Items[rgAudioEngine.ItemIndex] = 'MPlayer' then
-    begin
-      BackEnd.Config.ReadSubParams('MPlayer');
-      MPlayerPath.Text:= BackEnd.Config.EngineSubParams.Values['Path'];
-      pcEngineParams.ActivePage := tsMPlayer;
-    end
+        // very dirty hack, shame on me
+           EngineParamsEditor.Strings.Objects[i]:=TObject(IntPtr(ord(EngineParams[i].Kind)));
+         end;
+     end
   else
-     pcEngineParams.ActivePage := tsNone;
+  EngineParamsEditor.Visible:=false;
+
 end;
 
 procedure TfConfig.rgOSDKindClick(Sender: TObject);
@@ -237,6 +255,15 @@ begin
 
 end;
 
+procedure TfConfig.EngineParamsEditorButtonClick(Sender: TObject; aCol,
+  aRow: Integer);
+begin
+
+ if  EngineParamKind(PtrInt(EngineParamsEditor.Strings.Objects[Arow-1])) = epkFileName  then
+     if OpenDialog1.Execute then
+       EngineParamsEditor.Cells[aCol, aRow] := OpenDialog1.FileName;
+end;
+
 procedure TfConfig.FormCreate(Sender: TObject);
 var
   i,j: integer;
@@ -259,8 +286,8 @@ begin
       if EngineArray[j].ForceSelection then
          TRadioButton(rgAudioEngine.Controls[i]).Enabled:=true
       else
-           TRadioButton(rgAudioEngine.Controls[i]).Enabled := EngineArray[j].Engine.IsAvalaible(nil);
-         end;
+         TRadioButton(rgAudioEngine.Controls[i]).Enabled := EngineArray[j].Engine.IsAvalaible(nil);
+      end;
     end;
 
 procedure TfConfig.FormShow(Sender: TObject);
@@ -283,10 +310,6 @@ begin
 
 end;
 
-procedure TfConfig.MPlayerPathChange(Sender: TObject);
-begin
-  BackEnd.Config.EngineSubParams.Values['Path']:=MPlayerPath.Text;
-end;
 
 procedure TfConfig.sbLibraryClick(Sender: TObject);
 begin
@@ -386,4 +409,4 @@ begin
   pnlRestart.visible := Backend.Config.NeedRestart;
 end;
 
-end.
+end.
