@@ -153,7 +153,12 @@ begin
   mediaLibrary := TMediaLibrary.Create;
   engine := nil;
   if Config.EngineParam.EngineKind <> '' then
-     Engine := GetEngineByName(Config.EngineParam.EngineKind);
+     begin
+       Engine := GetEngineByName(Config.EngineParam.EngineKind);
+       if not Engine.IsAvalaible(Config.EngineSubParams) then
+         engine := nil;
+     end;
+
 
   if Engine = nil then
     begin
