@@ -1,7 +1,7 @@
 object fConfig: TfConfig
-  Left = 391
+  Left = 568
   Height = 510
-  Top = 227
+  Top = 224
   Width = 702
   Caption = 'Config'
   ClientHeight = 510
@@ -117,10 +117,11 @@ object fConfig: TfConfig
         TabOrder = 0
       end
       object EngineParamsEditor: TValueListEditor
-        Left = 4
-        Height = 204
-        Top = 200
-        Width = 451
+        Left = 8
+        Height = 160
+        Top = 248
+        Width = 523
+        DefaultColWidth = 100
         FixedCols = 0
         RowCount = 2
         TabOrder = 1
@@ -129,9 +130,13 @@ object fConfig: TfConfig
         Strings.Strings = (
           ''
         )
+        TitleCaptions.Strings = (
+          'Parameter'
+          'Value'
+        )
         ColWidths = (
-          64
-          385
+          100
+          421
         )
       end
     end

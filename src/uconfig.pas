@@ -288,7 +288,9 @@ begin
       else
          TRadioButton(rgAudioEngine.Controls[i]).Enabled := EngineArray[j].Engine.IsAvalaible(nil);
       end;
-    end;
+
+end;
+
 
 procedure TfConfig.FormShow(Sender: TObject);
 var
@@ -377,6 +379,8 @@ begin
   BackEnd.Config.EngineParam.EngineKind           := rgAudioEngine.Items[rgAudioEngine.ItemIndex];
 
   //GENERAL
+  if EngineParamsEditor.Visible then
+    BackEnd.Config.EngineSubParams.Assign(EngineParamsEditor.Strings);
 end;
 
 procedure TfConfig.ConfigToMap;
@@ -404,6 +408,9 @@ begin
 
   // ENGINE
   rgAudioEngine.ItemIndex   := rgAudioEngine.Items.IndexOf(Backend.Config.EngineParam.EngineKind);
+
+  if EngineParamsEditor.Visible then
+    EngineParamsEditor.Strings.Assign(BackEnd.Config.EngineSubParams);
 
   //GENERAL
   pnlRestart.visible := Backend.Config.NeedRestart;
