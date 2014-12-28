@@ -535,7 +535,7 @@ const
 
   type
     Pmpv_format = ^mpv_format;
-    mpv_format =  Longint;
+    mpv_format =  int64;
     Const
       MPV_FORMAT_NONE = 0;
       MPV_FORMAT_STRING = 1;
@@ -588,17 +588,18 @@ const
     Pmpv_node_list = ^mpv_node_list;
 
     mpv_node_list = packed record
-        num : longint;
+        num : int64;
         values : Pmpv_node;
         keys : ^Pchar;
       end;
 
     _u = packed record
         case integer of
-         0:( _string : Pchar);
-         1:( flag : longint);
+         0:( string_ : Pchar);
+         1:( flag_   : longint);
          2:( double_ : double);
-         3:( list : Pmpv_node_list);
+         3:( list_   : Pmpv_node_list);
+         4:( int64_  : int64);
        end;
 
 
