@@ -113,12 +113,7 @@ end;
 
 constructor TAudioEngineXINE.Create;
 var
-//  args: array[0..0] of PAnsiChar;
-//  vo_driver :xine_video_port_s;
-//  ss: Pxine_stream_t;
   error : Integer;
-//  lst:PPChar;
-//  st:TstringList;
 begin
   inherited Create;
   Loadxine();
@@ -126,8 +121,6 @@ begin
   XineLib := xine_new();
   xine_init(XineLib);
 
-//  lst:= xine_list_audio_output_plugins(XineLib);
-//  st:= PPCharToStringList(lst);
   ao_driver := xine_open_audio_driver(XineLib, 'auto', Nil);
   XineStream := xine_stream_new(XineLib, ao_driver, nil);
   error := xine_get_error(XineStream);
@@ -140,15 +133,10 @@ end;
 destructor TAudioEngineXINE.Destroy;
 begin
 
-  //if (p_mi_ev_mgr <> nil) then
-  //  begin
-  //  libvlc_event_detach(p_mi_ev_mgr, libvlc_MediaPlayerEndReached, @lib_vlc_player_event_hdlr, SELF);
-  //  p_mi_ev_mgr := nil;
-  //  end;
-
   xine_close(XineStream);
   xine_exit(XineLib);
   fdecoupler.Free;
+  Freexine;
   inherited Destroy;
 end;
 
@@ -199,7 +187,12 @@ begin
   Result := ENGINE_ON_LINE;
 
   case  xine_get_status (XineStream)  of
-    XINE_STATUS_PLAY: Result   := ENGINE_PLAY;
+    XINE_STATUS_PLAY: begin
+                       Result   := ENGINE_PLAY;
+                       if xine_get_param(XINEStream,XINE_PARAM_SPEED) = XINE_SPEED_PAUSE then
+                          Result   := ENGINE_PAUSE;
+                      end;
+
     XINE_STATUS_STOP: Result   := ENGINE_STOP;
     XINE_STATUS_IDLE: Result   := ENGINE_SONG_END;
 
@@ -236,6 +229,9 @@ begin
   hr:= xine_play(XINEStream,0,0);
   if hr = 0 then
     exit;
+
+  if offset <> 0 then
+     Seek(offset, true);
 
   Result:= true;
 
@@ -317,4 +313,4 @@ initialization
   RegisterEngineClass(TAudioEngineXINE, 3, false, true);
 
 
-end.
+end.

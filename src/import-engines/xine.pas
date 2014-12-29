@@ -26,7 +26,7 @@ uses types, classes, ctypes;
     {$IFDEF WINDOWS}
       External_library='libxine-1.dll';
     {$ELSE}
-      External_library='libxine.so.1';
+      External_library='libxine.so.2';
     {$ENDIF WINDOWS}
 
 {$I ptypes.inc}
@@ -1050,11 +1050,11 @@ type
       callback_data: Pointer;
    end;
 
-   xine_event_t = record
-      typ: Integer;
+   xine_event_t = packed record
       stream: Pxine_stream_t;
       data: Pointer;
       data_length: Integer;
+      typ: int32_t;
       tv: timeval;
    end;
    Pxine_event_t = ^xine_event_t;
