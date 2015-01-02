@@ -261,7 +261,7 @@ begin
   Result := False;
   try
     Loadxine;
-    result:=true;
+    Result := isXineLoaded;
   except
     exit;
   end;
@@ -313,4 +313,4 @@ initialization
   RegisterEngineClass(TAudioEngineXINE, 3, false, true);
 
 
-end.
+end.
