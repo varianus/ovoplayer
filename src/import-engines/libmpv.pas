@@ -1356,7 +1356,7 @@ implementation
     begin
       hlib:=LoadLibrary(lib);
       if hlib=0 then
-        raise Exception.Create(format('Could not load library: %s',[lib]));
+        Exit;
 
       pointer(mpv_client_api_version):=GetProcAddress(hlib,'mpv_client_api_version');
       pointer(mpv_error_string):=GetProcAddress(hlib,'mpv_error_string');
@@ -1424,4 +1424,4 @@ initialization
 finalization
 
 end.
-
+

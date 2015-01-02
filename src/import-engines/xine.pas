@@ -3745,7 +3745,7 @@ implementation
       Freexine;
       hlib:=LoadLibrary(External_library);
       if hlib=0 then
-        raise Exception.Create(format('Could not load library: %s',[External_library]));
+        exit;
 
       pointer(xine_get_version_string):=GetProcAddress(hlib,'xine_get_version_string');
       pointer(xine_get_version):=GetProcAddress(hlib,'xine_get_version');
@@ -3871,4 +3871,4 @@ initialization
   hlib := 0;
 finalization
 
-end.
+end.
