@@ -34,22 +34,22 @@ const
 
 function ExtractTrack(const TrackString: string): word;
 
-function ExtractString(p:pbyte; size:cardinal; LanguageID:boolean=false):string;
+function ExtractString(p: pbyte; size: cardinal; LanguageID: boolean = False): string;
 
 
-procedure FixTrack(const TrackString: string; const TrackNr: integer;
-  out TrackStringFixed: string; out TrackNrFixed: integer); overload;
+procedure FixTrack(const TrackString: string; const TrackNr: integer; out TrackStringFixed: string;
+  out TrackNrFixed: integer); overload;
 
-procedure FixTrack(const TrackString: WideString; const TrackNr: integer;
-  out TrackStringFixed: WideString; out TrackNrFixed: integer);
+procedure FixTrack(const TrackString: WideString; const TrackNr: integer; out TrackStringFixed: WideString;
+  out TrackNrFixed: integer);
   overload;
 
 function Swap32(const Figure: DWORD): DWORD;
-function DecodeChannelNumber(Channels:integer): string;
+function DecodeChannelNumber(Channels: integer): string;
 
 function GetContent(const Content1, Content2: string): string;
 function ExtractYear(const YearString, DateString: string): string;
-function ExtractGenre(const GenreString: string; offset:integer=0): string;
+function ExtractGenre(const GenreString: string; offset: integer = 0): string;
 function SyncSafe_Decode(const SyncDWord: DWord): DWord;
 function SyncSafe_Encode(const SyncDWord: DWord): DWord;
 
@@ -57,45 +57,43 @@ function SyncSafe_Encode(const SyncDWord: DWord): DWord;
 function GetBit(const Value: DWord; const Bit: byte): boolean; inline;
 function ClearBit(const Value: DWord; const Bit: byte): DWord; inline;
 function SetBit(const Value: DWord; const Bit: byte): DWord; inline;
-function EnableBit(const Value: DWord; const Bit: byte;
-  const TurnOn: boolean): DWord; inline;
+function EnableBit(const Value: DWord; const Bit: byte; const TurnOn: boolean): DWord; inline;
 
 
 implementation
+
 uses ID3v1Genres, lazutf8;
+
 { --------------------------------------------------------------------------- }
 
-function DecodeChannelNumber(Channels:integer): string;
+function DecodeChannelNumber(Channels: integer): string;
 begin
   case Channels of
     1: Result := 'Mono';
     2: Result := 'Stereo';
     else
-       Result := Format('Multi Channel (%d)',[Channels]);
+      Result := Format('Multi Channel (%d)', [Channels]);
     end;
 end;
 
 function SyncSafe_Encode(const SyncDWord: DWord): DWord;
 var
-   tmp : DWord;
+  tmp: DWord;
 begin
-//
-//  result:=  ((SyncDWord and $0000007f) shl 24) xor
-//            ((SyncDWord and $00003f80) shl  9) xor
-//            ((SyncDWord and $001fc000) shr  6) xor
-//            ((SyncDWord and $0fe00000) shr 21);
-tmp := SyncDWord and $FFFFFFF;
-result := NtoBE((tmp and $7F) or ((tmp and $3F80) shl 1)
-   or ((tmp and $1FC000) shl 2) or ((tmp and $FE00000) shl 3));
+
+  //  result:=  ((SyncDWord and $0000007f) shl 24) xor
+  //            ((SyncDWord and $00003f80) shl  9) xor
+  //            ((SyncDWord and $001fc000) shr  6) xor
+  //            ((SyncDWord and $0fe00000) shr 21);
+  tmp := SyncDWord and $FFFFFFF;
+  Result := NtoBE((tmp and $7F) or ((tmp and $3F80) shl 1) or ((tmp and $1FC000) shl 2) or ((tmp and $FE00000) shl 3));
 
 end;
 
 function SyncSafe_Decode(const SyncDWord: DWord): DWord;
 begin
- result:=((SyncDWord and $000000ff) shl 21) xor
-         ((SyncDWord and $0000ff00) shl  6) xor
-         ((SyncDWord and $00ff0000) shr  9) xor
-         ((SyncDWord and $ff000000) shr 24)
+  Result := ((SyncDWord and $000000ff) shl 21) xor ((SyncDWord and $0000ff00) shl 6) xor
+    ((SyncDWord and $00ff0000) shr 9) xor ((SyncDWord and $ff000000) shr 24);
 
 end;
 
@@ -119,15 +117,15 @@ end;
 
 { --------------------------------------------------------------------------- }
 
-function ExtractGenre(const GenreString: string; offset:integer=0): string;
+function ExtractGenre(const GenreString: string; offset: integer = 0): string;
 var
   GenreNumber: integer;
 begin
   { Extract genre from string }
   Result := (GenreString);
-  GenreNumber:=255;
+  GenreNumber := 255;
   if TryStrToInt(Result, GenreNumber) and (GenreNumber <= ID3_MaxGenreExtended) then
-     Result := v1Genres[GenreNumber + offset];
+    Result := v1Genres[GenreNumber + offset];
 
   if Pos(')', Result) > 0 then
     Delete(Result, 1, LastDelimiter(')', Result));
@@ -162,80 +160,123 @@ begin
     ByteArray[1] shr 24 + ByteArray[2] shr 16 + ByteArray[3] shr 8 + ByteArray[4];
 end;
 
-procedure WideSwapEndian(PWC: PWideChar;size:integer);
+procedure WideSwapEndian(PWC: PWideChar; size: integer);
 begin
   while size >= sizeof(widechar) do
-  begin
-    PWC^ := WideChar(SwapEndian(Word(PWC^)));
-    inc(PWC);
-    dec(size,sizeof(widechar));
-  end;
+    begin
+    PWC^ := widechar(SwapEndian(word(PWC^)));
+    Inc(PWC);
+    Dec(size, sizeof(widechar));
+    end;
 end;
 
-function ExtractString(p:pbyte; size:cardinal; LanguageID:boolean=false):string;
-var l,i:cardinal; be:boolean;
-    ws: widestring;
+function ExtractString(p: pbyte; size: cardinal; LanguageID: boolean = False): string;
+var
+  l, i: cardinal;
+  be: boolean;
+  ws: WideString;
 begin
 
- if size<>0 then begin
-  if p^=0 then begin
-   result:=AnsiToUtf8(ANSIstring(pchar(p)+1))
-  end else if p^ in [1,2] then begin
-   inc(p);
-   dec(size);
-   size:=size and $fffffffe;
-   l:=0;
-   while (l<size) and (pword(p+l)^<>0) do inc(l,2);
-   if LanguageID then
-     begin
-      inc(p,3);
-      dec(l,3);
-      if pword(p+2)^=0 then
-         begin
-           inc(p,4);
-           dec(l,4)
-         end;
-     end;
+  if size <> 0 then
+    begin
+    if p^ = 0 then
+      begin
+      if LanguageID then
+        begin
+        l := size - 4;
+        Inc(p, 4);
+        // skip comment descriptor
+        while (l < size) and (pbyte(p)^ <> 0) do
+          begin
+          Inc(l);
+          Inc(p);
+          end;
+        end;
 
-   if l=0 then
-    be:=false
-   else begin
-    if pword(p)^=$feff then begin
-     be:=false;
-     inc(p,2);
-     dec(l,2);
-    end else if pword(p)^=$fffe then begin
-     be:=true;
-     inc(p,2);
-     dec(l,2);
-    end else
-     be:=p^=2;
-   end;
-   setlength(ws,l div 2);
-   if be then begin
-    for i:=1 to l div 2 do begin
-     word(ws[i]):=BeToN(pword(p)^);
-     inc(p,2);
+      Result := AnsiToUtf8(ansistring(PChar(p) + 1));
+      end
+    else if p^ in [1, 2] then
+        begin
+        Inc(p);
+        Dec(size);
+        size := size and $fffffffe;
+        l := 0;
+        while (l < size) and (pword(p + l)^ <> 0) do
+          Inc(l, 2);
+        if LanguageID then
+          begin
+          Inc(p, 3);
+          Dec(l, 3);
+          if pword(p + 2)^ = 0 then
+            begin
+            Inc(p, 4);
+            Dec(l, 4);
+            end;
+          end;
+
+        if l = 0 then
+          be := False
+        else
+          begin
+          if pword(p)^ = $feff then
+            begin
+            be := False;
+            Inc(p, 2);
+            Dec(l, 2);
+            end
+          else if pword(p)^ = $fffe then
+              begin
+              be := True;
+              Inc(p, 2);
+              Dec(l, 2);
+              end
+            else
+              be := p^ = 2;
+          end;
+        setlength(ws, l div 2);
+        if be then
+          begin
+          for i := 1 to l div 2 do
+            begin
+            word(ws[i]) := BeToN(pword(p)^);
+            Inc(p, 2);
+            end;
+          end
+        else
+          move(p^, ws[1], l);
+        Result := UTF16ToUTF8(ws);
+        end
+      else if p^ = 3 then
+          begin
+          Inc(p);
+          Dec(size);
+          l := 0;
+          if LanguageID then
+            begin
+            Inc(p, 3);
+            while (l < size) and (pbyte(p)^ <> 0) do
+              begin
+              Inc(p);
+              Inc(l);
+              end;
+            Dec(size, l);
+            Inc(p);
+            end;
+
+          while (l < size) and (pbyte(p + l)^ <> 0) do
+            Inc(l);
+          Result := (copy(PChar(p), 1, l));
+          end;
     end;
-   end else
-    move(p^,ws[1],l);
-    result := UTF16ToUTF8(ws);
-  end else if p^=3 then begin
-   inc(p);
-   dec(size);
-   l:=0;
-   while (l<size) and (pbyte(p+l)^<>0) do inc(l);
-   result:=(copy(pchar(p),1,l));
-  end;
- end;
- l:=length(result);
- while (l>0) and (result[l]=#0) do dec(l);
- setlength(result,l);
+  l := length(Result);
+  while (l > 0) and (Result[l] = #0) do
+    Dec(l);
+  setlength(Result, l);
 
 end;
 
-procedure FixTrack(const TrackString: string; const TrackNr: integer;
-  out TrackStringFixed: string; out TrackNrFixed: integer);
+procedure FixTrack(const TrackString: string; const TrackNr: integer; out TrackStringFixed: string;
+  out TrackNrFixed: integer);
 begin
   TrackStringFixed := TrackString;
   TrackNrFixed := TrackNr;
@@ -243,13 +284,13 @@ begin
   if (TrackNrFixed = 0) and (TrackStringFixed <> '') then
     TrackNrFixed := ExtractTrack(TrackStringFixed)
   else
-  if (TrackNrFixed <> 0) and (TrackStringFixed = '') then
-    TrackStringFixed := IntToStr(TrackNrFixed);
+    if (TrackNrFixed <> 0) and (TrackStringFixed = '') then
+      TrackStringFixed := IntToStr(TrackNrFixed);
 
 end;
 
-procedure FixTrack(const TrackString: WideString; const TrackNr: integer;
-  out TrackStringFixed: WideString; out TrackNrFixed: integer);
+procedure FixTrack(const TrackString: WideString; const TrackNr: integer; out TrackStringFixed: WideString;
+  out TrackNrFixed: integer);
 begin
   TrackStringFixed := TrackString;
   TrackNrFixed := TrackNr;
@@ -257,8 +298,8 @@ begin
   if (TrackNrFixed = 0) and (TrackStringFixed <> '') then
     TrackNrFixed := ExtractTrack(UTF8Encode(TrackStringFixed))
   else
-  if (TrackNrFixed <> 0) and (TrackStringFixed = '') then
-    TrackStringFixed := WideString(IntToStr(TrackNrFixed));
+    if (TrackNrFixed <> 0) and (TrackStringFixed = '') then
+      TrackStringFixed := WideString(IntToStr(TrackNrFixed));
 
 end;
 
@@ -301,4 +342,3 @@ begin
 end;
 
 end.
-
