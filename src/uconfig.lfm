@@ -6,9 +6,10 @@ object fConfig: TfConfig
   Caption = 'Config'
   ClientHeight = 510
   ClientWidth = 702
+  OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '1.3'
+  LCLVersion = '1.5'
   object pcConfig: TPageControl
     Left = 153
     Height = 450
@@ -68,7 +69,7 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 62
+        ClientHeight = 61
         ClientWidth = 197
         Items.Strings = (
           'Gnome D-BUS mode'
@@ -90,13 +91,13 @@ object fConfig: TfConfig
     end
     object tsEngine: TTabSheet
       Caption = 'Engine'
-      ClientHeight = 415
-      ClientWidth = 543
+      ClientHeight = 422
+      ClientWidth = 541
       object rgAudioEngine: TRadioGroup
         Left = 4
-        Height = 52
+        Height = 51
         Top = 0
-        Width = 220
+        Width = 198
         AutoFill = True
         AutoSize = True
         Caption = 'Audio Engine'
@@ -108,8 +109,8 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 33
-        ClientWidth = 216
+        ClientHeight = 31
+        ClientWidth = 194
         Items.Strings = (
           'Sample row for builded engine'
         )
@@ -136,7 +137,7 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          421
+          419
         )
       end
     end
@@ -152,7 +153,6 @@ object fConfig: TfConfig
         ItemHeight = 0
         ScrollWidth = 382
         TabOrder = 0
-        TopIndex = -1
       end
       object Label1: TLabel
         Left = 11
@@ -274,7 +274,7 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 86
+        ClientHeight = 85
         ClientWidth = 181
         Items.Strings = (
           'None'
@@ -335,7 +335,7 @@ object fConfig: TfConfig
     Width = 153
     Align = alLeft
     Caption = 'Categories'
-    ClientHeight = 431
+    ClientHeight = 430
     ClientWidth = 149
     Color = clWindow
     ParentColor = False
@@ -404,13 +404,13 @@ object fConfig: TfConfig
     object pnlRestart: TPanel
       Left = 1
       Height = 136
-      Top = 294
+      Top = 293
       Width = 147
       Align = alBottom
       BorderSpacing.Around = 1
       BorderStyle = bsSingle
-      ClientHeight = 134
-      ClientWidth = 145
+      ClientHeight = 132
+      ClientWidth = 143
       Color = clActiveCaption
       ParentColor = False
       TabOrder = 0
@@ -419,7 +419,7 @@ object fConfig: TfConfig
         Left = 4
         Height = 56
         Top = 4
-        Width = 137
+        Width = 135
         Align = alTop
         AutoSize = False
         BorderSpacing.Around = 3
@@ -474,4 +474,4 @@ object fConfig: TfConfig
     left = 256
     top = 116
   end
-end
+end

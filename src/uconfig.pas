@@ -30,8 +30,7 @@ uses
   GUIBackEnd, uOSD, AudioEngine, LCLProc, ValEdit, BaseTypes, Grids;
 
 type
-
-  { TfConfig }
+    { TfConfig }
 
   TfConfig = class(TForm)
     bAddDir:    TButton;
@@ -86,6 +85,7 @@ type
     procedure ColorFontChange(Sender: TObject);
     procedure EngineParamsEditorButtonClick(Sender: TObject; aCol, aRow: Integer
       );
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
@@ -103,14 +103,18 @@ type
     procedure ConfigToMap;
   public
     procedure MapToConfig;
+    destructor Destroy; override;
   end;
 
-var
-  fConfig: TfConfig;
+
+
+Procedure ShowConfigurationEditor;
 
 implementation
 {$R *.lfm}
 uses udm, GeneralFunc;
+var
+  fConfig: TfConfig;
 
 { TfConfig }
 
@@ -264,6 +268,11 @@ begin
        EngineParamsEditor.Cells[aCol, aRow] := OpenDialog1.FileName;
 end;
 
+procedure TfConfig.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  CloseAction:=caFree;
+end;
+
 procedure TfConfig.FormCreate(Sender: TObject);
 var
   i,j: integer;
@@ -383,6 +392,12 @@ begin
     BackEnd.Config.EngineSubParams.Assign(EngineParamsEditor.Strings);
 end;
 
+destructor TfConfig.Destroy;
+begin
+  inherited Destroy;
+  fConfig := nil;
+end;
+
 procedure TfConfig.ConfigToMap;
 begin
   // MEDIA LIBRARY
@@ -416,4 +431,14 @@ begin
   pnlRestart.visible := Backend.Config.NeedRestart;
 end;
 
-end.
+Procedure ShowConfigurationEditor;
+begin
+  if not Assigned(fConfig) then
+    fConfig := TfConfig.Create(Application);
+  fConfig.Show;
+end;
+
+Initialization
+ fConfig := Nil;
+
+end.

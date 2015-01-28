@@ -851,11 +851,8 @@ begin
 end;
 
 procedure TfMainForm.ActShowPreferencesExecute(Sender: TObject);
-var
-  TheForm: TfConfig;
 begin
-  TheForm := TfConfig.Create(Self);
-  TheForm.Show;
+  ShowConfigurationEditor;
 end;
 
 procedure TfMainForm.actShowAboutExecute(Sender: TObject);
