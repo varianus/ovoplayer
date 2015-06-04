@@ -474,8 +474,6 @@ end;
 
 
 procedure TfSongInfo.LoadFromFile(FileName: TFileName; var Info: RSongInfo);
-var
-  ID: integer;
 begin
   Info.FileName := FileName;
   info.TagReader := GetFileTagsObject(FileName);
@@ -483,7 +481,7 @@ begin
   info.MediaProperty := info.TagReader.MediaProperty;
   info.ID := backEnd.mediaLibrary.IDFromFullName(FileName);
   info.FileInfo := GetFileInfo(FileName);
-  if id <> -1 then
+  if info.ID <> -1 then
     info.ExtendedInfo := BackEnd.mediaLibrary.InfoFromID(info.ID);
 
 end;
