@@ -1,0 +1,33 @@
+object fCustomPlayList: TfCustomPlayList
+  Left = 634
+  Height = 585
+  Top = 144
+  Width = 588
+  Caption = 'Custom Playlist '
+  ClientHeight = 585
+  ClientWidth = 588
+  LCLVersion = '1.5'
+  object Panel1: TPanel
+    Left = 0
+    Height = 72
+    Top = 0
+    Width = 588
+    Align = alTop
+    TabOrder = 0
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 545
+    Width = 576
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 1
+  end
+end

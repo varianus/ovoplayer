@@ -70,7 +70,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   uConfig, uOSD, uMiniPlayer, uSongInfo,
   uCover,
   customdrawndrawers, customdrawn_ovoplayer,
-  DefaultTranslator, customdrawn;
+  DefaultTranslator, customdrawn, ucustomplaylist;
 
 
 
