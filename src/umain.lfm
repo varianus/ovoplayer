@@ -1,7 +1,7 @@
 object fMainForm: TfMainForm
-  Left = 582
+  Left = 902
   Height = 694
-  Top = 196
+  Top = 160
   Width = 866
   AllowDropFiles = True
   Caption = 'OvoPlayer'
@@ -19,16 +19,16 @@ object fMainForm: TfMainForm
   OnResize = FormResize
   OnShow = FormShow
   ShowHint = True
-  LCLVersion = '1.3'
+  LCLVersion = '1.5'
   object pcMain: TPageControl
     Left = 0
     Height = 674
     Top = 0
     Width = 243
-    ActivePage = tsCollection
+    ActivePage = tsPlayList
     Align = alLeft
     MultiLine = True
-    TabIndex = 0
+    TabIndex = 2
     TabOrder = 0
     TabPosition = tpBottom
     Options = [nboMultiLine, nboHidePageListPopup]
@@ -261,8 +261,8 @@ object fMainForm: TfMainForm
     end
     object tsDirectory: TTabSheet
       Caption = 'Directory'
-      ClientHeight = 638
-      ClientWidth = 237
+      ClientHeight = 646
+      ClientWidth = 235
       OnShow = tsDirectoryShow
       object tbDirectory: TToolBar
         Left = 0
@@ -339,8 +339,8 @@ object fMainForm: TfMainForm
     end
     object tsPlayList: TTabSheet
       Caption = 'PlayList'
-      ClientHeight = 638
-      ClientWidth = 237
+      ClientHeight = 646
+      ClientWidth = 235
       object PlaylistTree: TTreeView
         Left = 0
         Height = 646
@@ -457,12 +457,12 @@ object fMainForm: TfMainForm
           Style = tbsSeparator
         end
         object ToolButton10: TToolButton
-          Left = 230
+          Left = 228
           Top = 0
           Action = DM.actPlayListShuffle
         end
         object tbRepeat: TToolButton
-          Left = 192
+          Left = 190
           Top = 0
           Caption = '     '
           DropdownMenu = RepeatMenu
@@ -472,12 +472,12 @@ object fMainForm: TfMainForm
           Style = tbsDropDown
         end
         object ToolButton16: TToolButton
-          Left = 286
+          Left = 284
           Top = 0
           Action = DM.actPlaylistLoad
         end
         object ToolButton17: TToolButton
-          Left = 263
+          Left = 261
           Top = 0
           Action = DM.actPlaylistSave
         end
@@ -485,31 +485,31 @@ object fMainForm: TfMainForm
           Left = 182
           Height = 23
           Top = 0
-          Width = 10
+          Width = 8
           AutoSize = True
           Enabled = False
           Style = tbsSeparator
         end
         object ToolButton12: TToolButton
-          Left = 253
+          Left = 251
           Height = 23
           Top = 0
           Width = 10
           Style = tbsSeparator
         end
         object ToolButton13: TToolButton
-          Left = 309
+          Left = 307
           Top = 0
           Enabled = False
           ShowCaption = False
         end
         object ToolButton11: TToolButton
-          Left = 332
+          Left = 330
           Top = 0
           Action = DM.actMute
         end
         object slVolume: TCDTrackBar
-          Left = 355
+          Left = 353
           Height = 23
           Top = 0
           Width = 100
@@ -583,43 +583,49 @@ object fMainForm: TfMainForm
             Alignment = taRightJustify
             ReadOnly = True
             SizePriority = 0
-            Title.Caption = '#'
             Title.PrefixOption = poHeaderClick
+            Title.Caption = '#'
             Width = 88
           end        
           item
             ReadOnly = True
             SizePriority = 0
+            Tag = 1
             Title.Caption = 'Title'
             Width = 88
           end        
           item
             ReadOnly = True
             SizePriority = 0
+            Tag = 2
             Title.Caption = 'Album'
             Width = 88
           end        
           item
             ReadOnly = True
             SizePriority = 0
+            Tag = 3
             Title.Caption = 'Artist'
             Width = 88
           end        
           item
             ReadOnly = True
             SizePriority = 0
+            Tag = 4
             Title.Caption = 'Time'
             Width = 88
           end        
           item
             ReadOnly = True
             SizePriority = 0
+            Tag = 5
             Title.Caption = 'Track'
             Width = 88
           end        
           item
             ReadOnly = True
             SizePriority = 0
+            Tag = 6
             Title.Caption = 'Genre'
             Width = 0
             Visible = False
@@ -628,6 +634,7 @@ object fMainForm: TfMainForm
             Alignment = taRightJustify
             ReadOnly = True
             SizePriority = 0
+            Tag = 7
             Title.Caption = 'Year'
             Width = 0
             Visible = False
@@ -635,6 +642,7 @@ object fMainForm: TfMainForm
           item
             ReadOnly = True
             SizePriority = 0
+            Tag = 8
             Title.Caption = 'Album Artist'
             Width = 0
             Visible = False
@@ -642,6 +650,7 @@ object fMainForm: TfMainForm
           item
             ReadOnly = True
             SizePriority = 0
+            Tag = 9
             Title.Caption = 'FileName'
             Width = 0
             Visible = False
@@ -657,6 +666,7 @@ object fMainForm: TfMainForm
               '*****'
             )
             SizePriority = 0
+            Tag = 10
             Title.Caption = 'Rating'
             Width = 0
             Visible = False
@@ -666,7 +676,7 @@ object fMainForm: TfMainForm
         Flat = True
         HeaderHotZones = [gzFixedRows]
         MouseWheelOption = mwGrid
-        Options = [goColSizing, goRowSelect, goSmoothScroll, goHeaderHotTracking, goHeaderPushedLook, goDontScrollPartCell, goTruncCellHints]
+        Options = [goColSizing, goColMoving, goRowSelect, goSmoothScroll, goHeaderHotTracking, goHeaderPushedLook, goDontScrollPartCell, goTruncCellHints]
         ParentShowHint = False
         RowCount = 2
         ScrollBars = ssAutoVertical

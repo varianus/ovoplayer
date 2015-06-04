@@ -1300,9 +1300,9 @@ begin
   try
     for i := 1 to sgPlayList.Columns.Count -1 do
       begin
-        tmpst.Add(Inttostr(i)+'='+
+        tmpst.Add(inttostr(sgPlayList.Columns[i].Index) +'='+
                   sgPlayList.Columns[i].Title.Caption+';'+
-                  IntToStr(sgPlayList.Columns[i].Index)+';'+
+                  IntToStr(sgPlayList.Columns[i].Tag)+';'+
                   BoolToStr(sgPlayList.Columns[i].Visible,'Y','N')+';'+
                   IntToStr(sgPlayList.Columns[i].Width)+';'
                   );
@@ -1329,7 +1329,7 @@ procedure TfMainForm.ReadConfig(Sender: TObject);
 var
   tmpSt: TStringList;
   info: TStringList;
-  i: integer;
+  i, j: integer;
   Col: integer;
   Fase :Integer;
 const
@@ -1342,17 +1342,22 @@ begin
   try
     Fase := 1;
     BackEnd.Config.ReadCustomParams(SectionPlayListGrid, tmpSt);
-    for i := 1 to tmpSt.Count -1 do
+    for i := 0 to tmpSt.Count -1 do
       begin
         info.Clear;
         info.StrictDelimiter := true;
         info.Delimiter := ';';
         info.DelimitedText := tmpSt[i];
-        Col := StrToint(tmpSt.Names[i]);
-        sgPlayList.Columns[Col].Index:= StrToint(info[1]);
+        Col := StrToint(info[1]);
+        for j := 1 to sgPlayList.Columns.Count -1   do
+          if sgPlayList.Columns[j].Tag = col then
+            begin
+              Col := j;
+              break;
+            end;
+        sgPlayList.Columns[Col].Index:= StrToint(tmpSt.Names[i]);
         sgPlayList.Columns[col].visible := Info[2] = 'Y';
         sgPlayList.Columns[Col].Width:= StrToint(info[3]);
-
       end;
     Fase := 2;
     tmpSt.Clear;
@@ -1531,6 +1536,7 @@ var
   C: TGridColumn;
   ASong:TSong;
   txt:string;
+  TrueCol: integer;
 begin
 
       if (aCol<0) or (aCol>sgPlayList.ColCount-1) then
@@ -1560,7 +1566,9 @@ begin
           if ASong = nil then
              DebugLn('nessuno');
 
-          case aCol of
+         TrueCol := sgPlayList.Columns[aCol].Tag;
+
+          case TrueCol of
              0: Txt := IntToStr(i);
              1: Txt := ASong.Tags.Title;
              2: Txt := ASong.Tags.Album;
@@ -1688,6 +1696,7 @@ var
   r1,R2: Trect;
   ts: TTextStyle;
   CurrRating : integer;
+  TrueCol: integer;
 begin
   if (ACol = 0) and (Arow > 0) and (ARow = BackEnd.PlayList.ItemIndex + 1) then
     begin
@@ -1710,21 +1719,28 @@ begin
     if aRow = 0 then
       exit;
 
+
     ASong := BackEnd.PlayList.Songs[Arow -1];
     if ASong = nil then exit;
     ASong.LoadTags;
-    case aCol of
-         1: Txt := IntToStr(Arow);
-         2: Txt := ASong.Title;
-         3: Txt := ASong.Tags.Album;
-         4: Txt := ASong.Tags.Artist;
-         5: Txt := TimeToStr(ASong.Tags.Duration / MSecsPerDay);
-         6: Txt := ASong.Tags.TrackString;
-         7: Txt := ASong.Tags.Genre;
-         8: Txt := ASong.Tags.Year;
-         9: Txt := ASong.Tags.AlbumArtist;
-        10: Txt := ASong.FileName;
-        11: Txt := '';
+
+    if aCol = 0 then
+       TrueCol := -1
+    else
+       TrueCol := sgPlayList.Columns[aCol-1].Tag;
+
+    case TrueCol of
+         0: Txt := IntToStr(Arow);
+         1: Txt := ASong.Title;
+         2: Txt := ASong.Tags.Album;
+         3: Txt := ASong.Tags.Artist;
+         4: Txt := TimeToStr(ASong.Tags.Duration / MSecsPerDay);
+         5: Txt := ASong.Tags.TrackString;
+         6: Txt := ASong.Tags.Genre;
+         7: Txt := ASong.Tags.Year;
+         8: Txt := ASong.Tags.AlbumArtist;
+         9: Txt := ASong.FileName;
+        10: Txt := '';
         else txt := '';
     end;
 
@@ -1740,7 +1756,7 @@ begin
    if ts.Alignment = taLeftJustify then
       aRect.Left:= aRect.Left +3;
 
-   if (aCol <> 11) or (ASong.ID = -1)  then
+   if (TrueCol <> 10) or (ASong.ID = -1)  then
       sgPlayList.Canvas.TextRect(aRect, aRect.left, arect.top, txt, ts)
    else
       begin
@@ -1766,24 +1782,30 @@ var
   SortField: TplSortField;
   Direction: TplSortDirection;
   i: integer;
+  TrueCol : Integer;
 begin
 
   if not IsColumn then
     exit;
 
-  if Index < 2 then exit;
+  if Index = 0 then
+     TrueCol := -1
+  else
+     TrueCol := sgPlayList.Columns[Index-1].Tag;
 
-  case Index  of
-    2 : SortField := stTitle;
-    3 : SortField := StAlbum;
-    4 : SortField := stArtist;
-    5 : SortField := stDuration;
-    6 : SortField := stTrack;
-    7 : SortField := stGenre ;
-    8 : SortField := stYear;
-    9 : SortField := stAlbumArtist;
-   10 : SortField := stFileName;
-   11 : SortField := stRating;
+  if TrueCol <1 then exit;
+
+  case TrueCol  of
+    1 : SortField := stTitle;
+    2 : SortField := StAlbum;
+    3 : SortField := stArtist;
+    4 : SortField := stDuration;
+    5 : SortField := stTrack;
+    6 : SortField := stGenre ;
+    7 : SortField := stYear;
+    8 : SortField := stAlbumArtist;
+    9 : SortField := stFileName;
+   10 : SortField := stRating;
   else
     SortField:= stNone;
   end;

@@ -502,10 +502,6 @@ msgstr "Trasparenza"
 msgid "Tracks to extract for quick playlist"
 msgstr "Tracce da estrarre per playlist rapide"
 
-#: tfconfig.label6.caption
-msgid "Mplayer Path"
-msgstr "Percorso di Mplayer"
-
 #: tfconfig.lbrestart.caption
 msgid "A restart is required for this change to take effect."
 msgstr "È richiesto un riavvio affinché questa modifica abbia effetto."
@@ -589,6 +585,10 @@ msgstr "Dimens. originale"
 #: tfcover.caption
 msgid "Cover Viewer"
 msgstr "Visualizzatore Copertine"
+
+#: tfcustomplaylist.caption
+msgid "Custom Playlist "
+msgstr ""
 
 #: tflicense.caption
 msgid "License"
@@ -828,71 +828,6 @@ msgstr "Rimuovi da Playlist"
 #: tfmainform.mnurestore.caption
 msgid "Restore"
 msgstr "Ripristina"
-
-#: tfmainform.sgplaylist.columns[0].title.caption
-msgctxt "tfmainform.sgplaylist.columns[0].title.caption"
-msgid "#"
-msgstr ""
-
-#: tfmainform.sgplaylist.columns[10].title.caption
-msgctxt "tfmainform.sgplaylist.columns[10].title.caption"
-msgid "Rating"
-msgstr "Valutazione"
-
-#: tfmainform.sgplaylist.columns[1].title.caption
-msgctxt "tfmainform.sgplaylist.columns[1].title.caption"
-msgid "Title"
-msgstr "Titolo"
-
-#: tfmainform.sgplaylist.columns[2].title.caption
-msgctxt "TFMAINFORM.SGPLAYLIST.COLUMNS[2].TITLE.CAPTION"
-msgid "Album"
-msgstr "Album"
-
-#: tfmainform.sgplaylist.columns[3].title.caption
-msgctxt "TFMAINFORM.SGPLAYLIST.COLUMNS[3].TITLE.CAPTION"
-msgid "Artist"
-msgstr "Artista"
-
-#: tfmainform.sgplaylist.columns[4].title.caption
-msgctxt "tfmainform.sgplaylist.columns[4].title.caption"
-msgid "Time"
-msgstr "Tempo"
-
-#: tfmainform.sgplaylist.columns[5].title.caption
-msgctxt "TFMAINFORM.SGPLAYLIST.COLUMNS[5].TITLE.CAPTION"
-msgid "Track"
-msgstr "Traccia"
-
-#: tfmainform.sgplaylist.columns[6].title.caption
-msgctxt "TFMAINFORM.SGPLAYLIST.COLUMNS[6].TITLE.CAPTION"
-msgid "Genre"
-msgstr "Genere"
-
-#: tfmainform.sgplaylist.columns[7].title.caption
-msgctxt "TFMAINFORM.SGPLAYLIST.COLUMNS[7].TITLE.CAPTION"
-msgid "Year"
-msgstr "Anno"
-
-#: tfmainform.sgplaylist.columns[8].title.caption
-msgctxt "TFMAINFORM.SGPLAYLIST.COLUMNS[8].TITLE.CAPTION"
-msgid "Album Artist"
-msgstr "Artista Album"
-
-#: tfmainform.sgplaylist.columns[9].title.caption
-msgctxt "tfmainform.sgplaylist.columns[9].title.caption"
-msgid "FileName"
-msgstr "Nome file"
-
-#: tfmainform.sgstats.columns[0].title.caption
-msgctxt "TFMAINFORM.SGSTATS.COLUMNS[0].TITLE.CAPTION"
-msgid "Title"
-msgstr "Titolo"
-
-#: tfmainform.sgstats.columns[1].title.caption
-msgctxt "TFMAINFORM.SGSTATS.COLUMNS[1].TITLE.CAPTION"
-msgid "Title"
-msgstr "Titolo"
 
 #: tfmainform.tbrepeat.caption
 msgid "     "
