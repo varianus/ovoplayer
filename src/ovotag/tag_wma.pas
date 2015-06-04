@@ -59,7 +59,7 @@ type
 implementation
 
 { TWMATags }
-uses CommonFunctions;
+uses CommonFunctions, Lazutf8;
 
 function TWMATags.GetCommonTags: TCommonTags;
 begin
