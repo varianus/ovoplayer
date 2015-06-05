@@ -33,7 +33,7 @@ uses
   {$IFDEF MPRIS2} Mpris2,{$ENDIF}
   {$IFDEF NOTIFYDBUS} notification,{$ENDIF}
   {$IFDEF TASKBAR_EXTENSION}taskbar_ext,{$ENDIF}
-  ucover;
+  ucover, ucustomplaylist;
 
 type
   TSortFields = record
@@ -2358,6 +2358,9 @@ begin
         '','random()' + strLimit);
      5: BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
         '');
+     99: begin
+          with TfCustomPlayList.Create(self) do showmodal;
+     end;
   end;
   ReloadPlayList;
 end;

@@ -123,7 +123,7 @@ if TargetOS = 'linux' then
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="72">
+    <Units Count="73">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -417,6 +417,7 @@ if TargetOS = 'linux' then
       <Unit62>
         <Filename Value="ovotag\audiotag.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="AudioTag"/>
       </Unit62>
       <Unit63>
         <Filename Value="import-engines\lazdynamic_bass.pas"/>
@@ -457,6 +458,13 @@ if TargetOS = 'linux' then
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit71>
+      <Unit72>
+        <Filename Value="ufrfield.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frField"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Unit72>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

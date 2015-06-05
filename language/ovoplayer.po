@@ -57,6 +57,80 @@ msgstr ""
 msgid "Updated:"
 msgstr ""
 
+#: medialibrary.rs_added
+msgid "Date Added"
+msgstr ""
+
+#: medialibrary.rs_album
+msgctxt "medialibrary.rs_album"
+msgid "Album"
+msgstr ""
+
+#: medialibrary.rs_albumartist
+msgctxt "medialibrary.rs_albumartist"
+msgid "Album Artist"
+msgstr ""
+
+#: medialibrary.rs_artist
+msgctxt "medialibrary.rs_artist"
+msgid "Artist"
+msgstr ""
+
+#: medialibrary.rs_duration
+msgctxt "medialibrary.rs_duration"
+msgid "Duration"
+msgstr ""
+
+#: medialibrary.rs_filedate
+msgid "File Date"
+msgstr ""
+
+#: medialibrary.rs_filename
+msgctxt "medialibrary.rs_filename"
+msgid "File Name"
+msgstr ""
+
+#: medialibrary.rs_filesize
+msgid "File Size"
+msgstr ""
+
+#: medialibrary.rs_genre
+msgctxt "medialibrary.rs_genre"
+msgid "Genre"
+msgstr ""
+
+#: medialibrary.rs_lastplay
+msgid "Date Last Played"
+msgstr ""
+
+#: medialibrary.rs_playcount
+msgid "Play count"
+msgstr ""
+
+#: medialibrary.rs_rating
+msgctxt "medialibrary.rs_rating"
+msgid "Rating"
+msgstr ""
+
+#: medialibrary.rs_title
+msgctxt "medialibrary.rs_title"
+msgid "Title"
+msgstr ""
+
+#: medialibrary.rs_track
+msgctxt "medialibrary.rs_track"
+msgid "Track"
+msgstr ""
+
+#: medialibrary.rs_trackstring
+msgid "Track String"
+msgstr ""
+
+#: medialibrary.rs_year
+msgctxt "medialibrary.rs_year"
+msgid "Year"
+msgstr ""
+
 #: tbackend.actexit.caption
 msgctxt "tbackend.actexit.caption"
 msgid "Quit"

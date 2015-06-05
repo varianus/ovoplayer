@@ -57,6 +57,90 @@ msgstr "Rimossi:"
 msgid "Updated:"
 msgstr "Aggiornati:"
 
+#: medialibrary.rs_added
+msgid "Date Added"
+msgstr ""
+
+#: medialibrary.rs_album
+#, fuzzy
+msgctxt "medialibrary.rs_album"
+msgid "Album"
+msgstr "Album"
+
+#: medialibrary.rs_albumartist
+#, fuzzy
+msgctxt "medialibrary.rs_albumartist"
+msgid "Album Artist"
+msgstr "Artista Album"
+
+#: medialibrary.rs_artist
+#, fuzzy
+msgctxt "medialibrary.rs_artist"
+msgid "Artist"
+msgstr "Artista"
+
+#: medialibrary.rs_duration
+#, fuzzy
+msgctxt "medialibrary.rs_duration"
+msgid "Duration"
+msgstr "Durata"
+
+#: medialibrary.rs_filedate
+msgid "File Date"
+msgstr ""
+
+#: medialibrary.rs_filename
+#, fuzzy
+msgctxt "medialibrary.rs_filename"
+msgid "File Name"
+msgstr "Nome File"
+
+#: medialibrary.rs_filesize
+msgid "File Size"
+msgstr ""
+
+#: medialibrary.rs_genre
+#, fuzzy
+msgctxt "medialibrary.rs_genre"
+msgid "Genre"
+msgstr "Genere"
+
+#: medialibrary.rs_lastplay
+msgid "Date Last Played"
+msgstr ""
+
+#: medialibrary.rs_playcount
+msgid "Play count"
+msgstr ""
+
+#: medialibrary.rs_rating
+#, fuzzy
+msgctxt "medialibrary.rs_rating"
+msgid "Rating"
+msgstr "Valutazione"
+
+#: medialibrary.rs_title
+#, fuzzy
+msgctxt "medialibrary.rs_title"
+msgid "Title"
+msgstr "Titolo"
+
+#: medialibrary.rs_track
+#, fuzzy
+msgctxt "medialibrary.rs_track"
+msgid "Track"
+msgstr "Traccia"
+
+#: medialibrary.rs_trackstring
+msgid "Track String"
+msgstr ""
+
+#: medialibrary.rs_year
+#, fuzzy
+msgctxt "medialibrary.rs_year"
+msgid "Year"
+msgstr "Anno"
+
 #: tbackend.actexit.caption
 msgctxt "tbackend.actexit.caption"
 msgid "Quit"

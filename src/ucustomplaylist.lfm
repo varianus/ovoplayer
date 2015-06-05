@@ -1,25 +1,26 @@
 object fCustomPlayList: TfCustomPlayList
-  Left = 634
-  Height = 585
-  Top = 144
-  Width = 588
+  Left = 750
+  Height = 496
+  Top = 252
+  Width = 605
   Caption = 'Custom Playlist '
-  ClientHeight = 585
-  ClientWidth = 588
+  ClientHeight = 496
+  ClientWidth = 605
+  OnCreate = FormCreate
   LCLVersion = '1.5'
   object Panel1: TPanel
     Left = 0
     Height = 72
     Top = 0
-    Width = 588
+    Width = 605
     Align = alTop
     TabOrder = 0
   end
   object ButtonPanel1: TButtonPanel
     Left = 6
     Height = 34
-    Top = 545
-    Width = 576
+    Top = 456
+    Width = 593
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
     HelpButton.Name = 'HelpButton'
@@ -29,5 +30,15 @@ object fCustomPlayList: TfCustomPlayList
     CancelButton.Name = 'CancelButton'
     CancelButton.DefaultCaption = True
     TabOrder = 1
+  end
+  object sbFieldContainer: TScrollBox
+    Left = 0
+    Height = 378
+    Top = 72
+    Width = 605
+    HorzScrollBar.Page = 1
+    VertScrollBar.Page = 1
+    Align = alClient
+    TabOrder = 2
   end
 end

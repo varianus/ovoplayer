@@ -70,7 +70,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   uConfig, uOSD, uMiniPlayer, uSongInfo,
   uCover,
   customdrawndrawers, customdrawn_ovoplayer,
-  DefaultTranslator, customdrawn, ucustomplaylist;
+  DefaultTranslator, customdrawn, ucustomplaylist, ufrfield;
 
 
 
@@ -90,4 +90,4 @@ begin
       fMainForm.show;
       Application.Run;
    end;
-end.
+end.
