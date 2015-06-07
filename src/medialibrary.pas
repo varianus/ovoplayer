@@ -188,26 +188,6 @@ const
                  + ' where ID = :ID';
 
 
-
-
-ResourceString
-  // Diplay label for fields
-  RS_Filename     = 'File Name';
-  RS_TrackString  = 'Track String';
-  RS_Track        = 'Track';
-  RS_Title        = 'Title';
-  RS_Album        = 'Album';
-  RS_Artist       = 'Artist';
-  RS_AlbumArtist  = 'Album Artist';
-  RS_Genre        = 'Genre';
-  RS_year         = 'Year';
-  RS_Duration     = 'Duration';
-  RS_Playcount    = 'Play count';
-  RS_Rating       = 'Rating';
-  RS_LastPlay     = 'Date Last Played';
-  RS_Added        = 'Date Added';
-  RS_FileSize     = 'File Size';
-  RS_FileDate     = 'File Date';
 { TDirectoryScanner }
 
 constructor TDirectoryScanner.CreateScanner(Paths: TStrings; Owner: TmediaLibrary);

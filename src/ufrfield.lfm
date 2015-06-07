@@ -1,80 +1,30 @@
 object frField: TfrField
   Left = 0
-  Height = 34
+  Height = 35
   Top = 0
   Width = 574
-  ClientHeight = 34
+  ClientHeight = 35
   ClientWidth = 574
   TabOrder = 0
-  DesignLeft = 2030
-  DesignTop = 281
+  DesignLeft = 250
+  DesignTop = 50
   object cbFieldName: TComboBox
     Left = 0
-    Height = 23
-    Top = 4
-    Width = 112
-    ItemHeight = 15
+    Height = 35
+    Top = 0
+    Width = 128
+    Align = alLeft
+    ItemHeight = 0
+    OnChange = cbFieldNameChange
     Style = csDropDownList
     TabOrder = 0
   end
-  object cbTest: TComboBox
-    Left = 120
-    Height = 23
-    Top = 4
-    Width = 136
-    ItemHeight = 15
-    Style = csDropDownList
-    TabOrder = 1
-  end
-  object bPlus: TBitBtn
-    Left = 504
-    Height = 30
-    Top = 0
-    Width = 31
-    Anchors = [akTop, akRight]
-    Glyph.Data = {
-      36040000424D3604000000000000360000002800000010000000100000000100
-      2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFC00FFFFF700806D5EFF7B604BFF7D624DFF806D
-      5EFFFFFFF700FFFFFC00FDFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFB00FFFFF2007C614CFFECCEB5FFECCEB5FF7C61
-      4CFFFFFFF200FFFFFB00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFC00FFFFFB00FFFFF500FFFFED00856346FFEFCFB2FFCBAB8EFF8563
-      46FFFFFFEB00FFFFF500FFFFFB00FFFFFC00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFF800FFFFF200FFFFED00FFFFE6008E6342FFF6D0AEFFD2AC8AFF8E63
-      42FFFFFFE600FFFFED00FFFFF200FFFFF700FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00806D5EFF7C614DFF836248FF8A6343FF8E6342FFD2AC8AFFD4AB8AFF9063
-      41FF8E6342FF876246FF7E624AFF826D5EFFFFFFFF00FFFFFF00FFFFFF00FFFF
-      FF007C614CFFE6CCB4FFD3B59CFFD4B497FFD5B395FFD4B294FFCFAC8BFFCFA9
-      89FFCCA688FFC6A487FFDCBEA3FF7E614CFFFFFFFF00FFFFFF00FFFFFF00FFFF
-      FF007C614CFFEED4BCFFEFD2B7FFF2D2B5FFF1CFB2FFEDCFB2FFEFCFB2FFF5CF
-      B1FFF4CEB0FFEFCDB0FFEBCDB2FF7F634BFFFFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00806D5EFF7A624CFF836248FF8A6343FF8A6343FFEDCFB4FFEDCFB4FF8C63
-      43FF8C6342FF856346FF7F634BFF816F5EFFFFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFF700FFFFF200FFFFEB00FFFFE6008A6245FFECCEB5FFECCEB5FF8A62
-      45FFFFFFE600FFFFEB00FFFFF100FFFFF700FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFC00FFFFFB00FFFFF500FFFFED00836248FFEACEB6FFEACEB6FF8362
-      48FFFFFFEB00FFFFF500FFFFF900FFFFFC00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFB00FFFFF2007C614CFFE8CDB8FFE8CDB8FF7C61
-      4CFFFFFFF200FFFFFA00FFFFFF00FFFFFE00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFC00FFFFF700806D5EFF7C614CFF7C614CFF806D
-      5EFFFFFFF700FFFFFC00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
-    }
-    TabOrder = 2
-  end
   object bMinus: TBitBtn
-    Left = 540
-    Height = 30
+    Left = 543
+    Height = 35
     Top = 0
     Width = 31
+    Align = alRight
     Anchors = [akTop, akRight]
     Glyph.Data = {
       36040000424D3604000000000000360000002800000010000000100000000100
@@ -112,6 +62,112 @@ object frField: TfrField
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
     }
-    TabOrder = 3
+    OnClick = bMinusClick
+    TabOrder = 1
+  end
+  object PageControl1: TPageControl
+    Left = 128
+    Height = 35
+    Top = 0
+    Width = 415
+    ActivePage = tsRating
+    Align = alClient
+    ShowTabs = False
+    TabIndex = 3
+    TabOrder = 2
+    object tsText: TTabSheet
+      Caption = 'tsText'
+      ClientHeight = 29
+      ClientWidth = 409
+      object TestText: TComboBox
+        Left = 0
+        Height = 29
+        Top = 0
+        Width = 140
+        ItemHeight = 0
+        Items.Strings = (
+          'is'
+          'is not'
+          'contains'
+          'not contains'
+        )
+        Style = csDropDownList
+        TabOrder = 0
+      end
+      object edtText: TEdit
+        Left = 144
+        Height = 27
+        Top = 1
+        Width = 224
+        TabOrder = 1
+      end
+    end
+    object tsDate: TTabSheet
+      Caption = 'tsDate'
+    end
+    object tsNumber: TTabSheet
+      Caption = 'tsNumber'
+      ClientHeight = 29
+      ClientWidth = 409
+      object testNumber: TComboBox
+        Left = 3
+        Height = 29
+        Top = 0
+        Width = 140
+        ItemHeight = 0
+        Items.Strings = (
+          'equal to'
+          'not equal to'
+          'bigger than'
+          'lesser than'
+        )
+        Style = csDropDownList
+        TabOrder = 0
+      end
+      object seNumber: TSpinEdit
+        Left = 180
+        Height = 27
+        Top = 2
+        Width = 98
+        MaxValue = 2147483647
+        TabOrder = 1
+      end
+    end
+    object tsRating: TTabSheet
+      Caption = 'tsRating'
+      ClientHeight = 29
+      ClientWidth = 409
+      object testRating: TComboBox
+        Left = 0
+        Height = 29
+        Top = 0
+        Width = 140
+        ItemHeight = 0
+        Items.Strings = (
+          'equal to'
+          'not equal to'
+          'bigger than'
+          'lesser than'
+        )
+        Style = csDropDownList
+        TabOrder = 0
+      end
+      object cbRating: TComboBox
+        Left = 152
+        Height = 29
+        Top = 0
+        Width = 141
+        ItemHeight = 0
+        Items.Strings = (
+          '*'
+          '**'
+          '***'
+          '****'
+          '*****'
+        )
+        Style = csDropDownList
+        TabOrder = 1
+      end
+    end
   end
 end

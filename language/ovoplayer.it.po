@@ -58,6 +58,7 @@ msgid "Updated:"
 msgstr "Aggiornati:"
 
 #: medialibrary.rs_added
+msgctxt "medialibrary.rs_added"
 msgid "Date Added"
 msgstr ""
 
@@ -86,6 +87,7 @@ msgid "Duration"
 msgstr "Durata"
 
 #: medialibrary.rs_filedate
+msgctxt "medialibrary.rs_filedate"
 msgid "File Date"
 msgstr ""
 
@@ -96,6 +98,7 @@ msgid "File Name"
 msgstr "Nome File"
 
 #: medialibrary.rs_filesize
+msgctxt "medialibrary.rs_filesize"
 msgid "File Size"
 msgstr ""
 
@@ -106,10 +109,12 @@ msgid "Genre"
 msgstr "Genere"
 
 #: medialibrary.rs_lastplay
+msgctxt "medialibrary.rs_lastplay"
 msgid "Date Last Played"
 msgstr ""
 
 #: medialibrary.rs_playcount
+msgctxt "medialibrary.rs_playcount"
 msgid "Play count"
 msgstr ""
 
@@ -132,12 +137,103 @@ msgid "Track"
 msgstr "Traccia"
 
 #: medialibrary.rs_trackstring
+msgctxt "medialibrary.rs_trackstring"
 msgid "Track String"
 msgstr ""
 
 #: medialibrary.rs_year
 #, fuzzy
 msgctxt "medialibrary.rs_year"
+msgid "Year"
+msgstr "Anno"
+
+#: playlistbuilder.rs_added
+msgctxt "playlistbuilder.rs_added"
+msgid "Date Added"
+msgstr ""
+
+#: playlistbuilder.rs_album
+#, fuzzy
+msgctxt "playlistbuilder.rs_album"
+msgid "Album"
+msgstr "Album"
+
+#: playlistbuilder.rs_albumartist
+#, fuzzy
+msgctxt "playlistbuilder.rs_albumartist"
+msgid "Album Artist"
+msgstr "Artista Album"
+
+#: playlistbuilder.rs_artist
+#, fuzzy
+msgctxt "playlistbuilder.rs_artist"
+msgid "Artist"
+msgstr "Artista"
+
+#: playlistbuilder.rs_duration
+#, fuzzy
+msgctxt "playlistbuilder.rs_duration"
+msgid "Duration"
+msgstr "Durata"
+
+#: playlistbuilder.rs_filedate
+msgctxt "playlistbuilder.rs_filedate"
+msgid "File Date"
+msgstr ""
+
+#: playlistbuilder.rs_filename
+#, fuzzy
+msgctxt "playlistbuilder.rs_filename"
+msgid "File Name"
+msgstr "Nome File"
+
+#: playlistbuilder.rs_filesize
+msgctxt "playlistbuilder.rs_filesize"
+msgid "File Size"
+msgstr ""
+
+#: playlistbuilder.rs_genre
+#, fuzzy
+msgctxt "playlistbuilder.rs_genre"
+msgid "Genre"
+msgstr "Genere"
+
+#: playlistbuilder.rs_lastplay
+msgctxt "playlistbuilder.rs_lastplay"
+msgid "Date Last Played"
+msgstr ""
+
+#: playlistbuilder.rs_playcount
+msgctxt "playlistbuilder.rs_playcount"
+msgid "Play count"
+msgstr ""
+
+#: playlistbuilder.rs_rating
+#, fuzzy
+msgctxt "playlistbuilder.rs_rating"
+msgid "Rating"
+msgstr "Valutazione"
+
+#: playlistbuilder.rs_title
+#, fuzzy
+msgctxt "playlistbuilder.rs_title"
+msgid "Title"
+msgstr "Titolo"
+
+#: playlistbuilder.rs_track
+#, fuzzy
+msgctxt "playlistbuilder.rs_track"
+msgid "Track"
+msgstr "Traccia"
+
+#: playlistbuilder.rs_trackstring
+msgctxt "playlistbuilder.rs_trackstring"
+msgid "Track String"
+msgstr ""
+
+#: playlistbuilder.rs_year
+#, fuzzy
+msgctxt "playlistbuilder.rs_year"
 msgid "Year"
 msgstr "Anno"
 
@@ -958,6 +1054,22 @@ msgstr "Titolo"
 
 #: tfosd.track.caption
 msgid "0"
+msgstr ""
+
+#: tfrfield.tsdate.caption
+msgid "tsDate"
+msgstr ""
+
+#: tfrfield.tsnumber.caption
+msgid "tsNumber"
+msgstr ""
+
+#: tfrfield.tsrating.caption
+msgid "tsRating"
+msgstr ""
+
+#: tfrfield.tstext.caption
+msgid "tsText"
 msgstr ""
 
 #: tfsonginfo.bnext.caption

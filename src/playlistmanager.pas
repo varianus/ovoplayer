@@ -25,7 +25,7 @@ unit PlayListManager;
 interface
 
 uses
-  Classes, lazutf8classes, SysUtils, Playlist, AudioTag, MediaLibrary;
+  Classes, SysUtils, Playlist, AudioTag, MediaLibrary, lazutf8classes;
 
 const
   XSPF_VERSION = 'http://ovoplayer.altervista.org/ovoplayer/0/1/';

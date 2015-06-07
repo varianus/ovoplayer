@@ -123,7 +123,7 @@ if TargetOS = 'linux' then
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="73">
+    <Units Count="74">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -465,6 +465,10 @@ if TargetOS = 'linux' then
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
       </Unit72>
+      <Unit73>
+        <Filename Value="playlistbuilder.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit73>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -522,7 +526,7 @@ if TargetOS = 'linux' then
     </Other>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="5">
+    <Exceptions Count="6">
       <Item1>
         <Name Value="EAbort"/>
       </Item1>
@@ -539,6 +543,9 @@ if TargetOS = 'linux' then
       <Item5>
         <Name Value="EDatabaseError"/>
       </Item5>
+      <Item6>
+        <Name Value="EReadError"/>
+      </Item6>
     </Exceptions>
   </Debugging>
 </CONFIG>

@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  ButtonPanel, ufrfield, fgl;
+  ButtonPanel, Buttons, ufrfield, fgl, PlaylistBuilder;
 
 type
 
@@ -14,13 +14,17 @@ type
   TFieldContainer = specialize TFPGObjectList<TfrField>;
 
   TfCustomPlayList = class(TForm)
+    bPlus: TBitBtn;
     ButtonPanel1: TButtonPanel;
     Panel1: TPanel;
+    Panel2: TPanel;
     sbFieldContainer: TScrollBox;
+    procedure bPlusClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
-    Fields: TFieldContainer;
+
   public
+    Fields: TFieldContainer;
     Function AddField:TfrField;
   end;
 
@@ -39,12 +43,20 @@ begin
   AddField;
 end;
 
+procedure TfCustomPlayList.bPlusClick(Sender: TObject);
+begin
+  AddField;
+
+end;
+
 function TfCustomPlayList.AddField: TfrField;
 begin
   Result:= TfrField.Create(sbFieldContainer);
-  result.Align:=altop;
+  REsult.Name := 'FRA'+IntToStr(PtrUInt(result));
+  result.Align:=alBottom;
   Fields.Add(Result);
   Result.Parent := sbFieldContainer;
+  result.Align:=altop;
 end;
 
 end.
