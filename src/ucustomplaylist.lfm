@@ -23,6 +23,7 @@ object fCustomPlayList: TfCustomPlayList
     Width = 628
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
+    OKButton.OnClick = OKButtonClick
     HelpButton.Name = 'HelpButton'
     HelpButton.DefaultCaption = True
     CloseButton.Name = 'CloseButton'
@@ -30,6 +31,7 @@ object fCustomPlayList: TfCustomPlayList
     CancelButton.Name = 'CancelButton'
     CancelButton.DefaultCaption = True
     TabOrder = 1
+    ShowButtons = [pbOK, pbCancel]
   end
   object sbFieldContainer: TScrollBox
     Left = 0
