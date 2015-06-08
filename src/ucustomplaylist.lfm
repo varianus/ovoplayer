@@ -1,26 +1,26 @@
 object fCustomPlayList: TfCustomPlayList
-  Left = 536
-  Height = 303
-  Top = 187
-  Width = 640
+  Left = 963
+  Height = 477
+  Top = 163
+  Width = 602
   Caption = 'Custom Playlist '
-  ClientHeight = 303
-  ClientWidth = 640
+  ClientHeight = 477
+  ClientWidth = 602
   OnCreate = FormCreate
   LCLVersion = '1.5'
   object Panel1: TPanel
     Left = 0
     Height = 72
     Top = 0
-    Width = 640
+    Width = 602
     Align = alTop
     TabOrder = 0
   end
   object ButtonPanel1: TButtonPanel
     Left = 6
     Height = 34
-    Top = 263
-    Width = 628
+    Top = 437
+    Width = 590
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
     OKButton.OnClick = OKButtonClick
@@ -35,9 +35,9 @@ object fCustomPlayList: TfCustomPlayList
   end
   object sbFieldContainer: TScrollBox
     Left = 0
-    Height = 128
+    Height = 294
     Top = 72
-    Width = 640
+    Width = 602
     HorzScrollBar.Page = 1
     VertScrollBar.Page = 1
     Align = alClient
@@ -45,15 +45,16 @@ object fCustomPlayList: TfCustomPlayList
   end
   object Panel2: TPanel
     Left = 0
-    Height = 57
-    Top = 200
-    Width = 640
+    Height = 65
+    Top = 366
+    Width = 602
     Align = alBottom
-    ClientHeight = 57
-    ClientWidth = 640
+    Anchors = [akLeft]
+    ClientHeight = 65
+    ClientWidth = 602
     TabOrder = 3
     object bPlus: TBitBtn
-      Left = 603
+      Left = 565
       Height = 30
       Top = 8
       Width = 31
@@ -96,6 +97,41 @@ object fCustomPlayList: TfCustomPlayList
       }
       OnClick = bPlusClick
       TabOrder = 0
+    end
+    object ckRandom: TCheckBox
+      Left = 8
+      Height = 19
+      Top = 19
+      Width = 79
+      Caption = 'Randomize'
+      Checked = True
+      State = cbChecked
+      TabOrder = 1
+    end
+    object ckLimit: TCheckBox
+      AnchorSideRight.Control = seLimits
+      Left = 152
+      Height = 19
+      Top = 19
+      Width = 64
+      Caption = 'Limit to '
+      Checked = True
+      Color = clDefault
+      ParentColor = False
+      State = cbChecked
+      TabOrder = 3
+    end
+    object seLimits: TSpinEdit
+      AnchorSideTop.Control = ckLimit
+      AnchorSideTop.Side = asrCenter
+      Left = 240
+      Height = 23
+      Top = 17
+      Width = 90
+      MaxValue = 99999
+      MinValue = 1
+      TabOrder = 2
+      Value = 1
     end
   end
 end
