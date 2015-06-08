@@ -42,8 +42,13 @@ uses
 { TfrField }
 
 procedure TfrField.bMinusClick(Sender: TObject);
+var
+  cp: TfCustomPlayList;
 begin
-  TfCustomPlayList(Owner.owner).Fields.Remove(Self);
+  cp:=TfCustomPlayList(Owner.owner);
+  cp.Fields.Extract(Self);
+  Application.ReleaseComponent(self);
+
 end;
 
 procedure TfrField.cbFieldNameChange(Sender: TObject);
