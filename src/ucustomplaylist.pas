@@ -52,11 +52,12 @@ end;
 function TfCustomPlayList.AddField: TfrField;
 begin
   Result:= TfrField.Create(sbFieldContainer);
-  REsult.Name := 'FRA'+IntToStr(PtrUInt(result));
-  result.Align:=alBottom;
+  Result.Name := 'FRA'+IntToStr(PtrUInt(result));
+  Result.Align:=alTop;
   Fields.Add(Result);
   Result.Parent := sbFieldContainer;
-  result.Align:=altop;
+  result.Top:=sbFieldContainer.Height;
+
 end;
 
 end.

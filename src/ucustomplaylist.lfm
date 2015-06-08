@@ -1,26 +1,26 @@
 object fCustomPlayList: TfCustomPlayList
-  Left = 750
-  Height = 496
-  Top = 252
-  Width = 605
+  Left = 536
+  Height = 303
+  Top = 187
+  Width = 640
   Caption = 'Custom Playlist '
-  ClientHeight = 496
-  ClientWidth = 605
+  ClientHeight = 303
+  ClientWidth = 640
   OnCreate = FormCreate
   LCLVersion = '1.5'
   object Panel1: TPanel
     Left = 0
     Height = 72
     Top = 0
-    Width = 605
+    Width = 640
     Align = alTop
     TabOrder = 0
   end
   object ButtonPanel1: TButtonPanel
     Left = 6
-    Height = 35
-    Top = 455
-    Width = 593
+    Height = 34
+    Top = 263
+    Width = 628
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
     HelpButton.Name = 'HelpButton'
@@ -33,9 +33,9 @@ object fCustomPlayList: TfCustomPlayList
   end
   object sbFieldContainer: TScrollBox
     Left = 0
-    Height = 320
+    Height = 128
     Top = 72
-    Width = 605
+    Width = 640
     HorzScrollBar.Page = 1
     VertScrollBar.Page = 1
     Align = alClient
@@ -44,14 +44,14 @@ object fCustomPlayList: TfCustomPlayList
   object Panel2: TPanel
     Left = 0
     Height = 57
-    Top = 392
-    Width = 605
+    Top = 200
+    Width = 640
     Align = alBottom
     ClientHeight = 57
-    ClientWidth = 605
+    ClientWidth = 640
     TabOrder = 3
     object bPlus: TBitBtn
-      Left = 568
+      Left = 603
       Height = 30
       Top = 8
       Width = 31
