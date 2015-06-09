@@ -5,9 +5,7 @@ unit playlistbuilder;
 interface
 
 uses
-  Classes, SysUtils;
-
-
+ Classes, SysUtils, GeneralFunc;
 
 type
 
@@ -42,7 +40,7 @@ ResourceString
 
 const
    FieldCount = 16;
-   FieldArray : array [1..FieldCount] of FieldRec =  (
+   FieldArray : array [0..FieldCount-1] of FieldRec =  (
    (ID : 1; FieldName : 'Filename'; FieldLabel : RS_Filename; Kind: ekText),
    (ID : 2; FieldName : 'TrackString'; FieldLabel :RS_TrackString; Kind: ekText),
    (ID : 3; FieldName : 'Track'; FieldLabel : RS_Track; Kind: ekNumber),
@@ -61,7 +59,21 @@ const
    (ID :16; FieldName : 'FileDate'; FieldLabel :RS_FileDate; Kind: EkDate)
    );
 
+Procedure SortFields;
+
 implementation
+
+function MyCompare (const Item1, Item2: integer): Integer;
+  begin
+    result := CompareText(FieldArray[item1].FieldLabel, FieldArray[item2].FieldLabel);
+  end;
+
+procedure SortFields;
+type
+  myArr = specialize TSortArray<FieldRec>;
+begin
+  myArr.Sort(FieldArray, @MyCompare);
+end;
 
 end.
 
