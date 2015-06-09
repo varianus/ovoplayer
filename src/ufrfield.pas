@@ -22,16 +22,17 @@ type
     testRating: TComboBox;
     cbRating: TComboBox;
     TestText: TComboBox;
-    PageControl1: TPageControl;
-    tsText: TTabSheet;
-    tsDate: TTabSheet;
-    tsNumber: TTabSheet;
-    tsRating: TTabSheet;
+    pnlMain: TPanel;
+    pnlText: TPanel;
+    pnlDate: TPanel;
+    pnlNumber: TPanel;
+    pnlRating: TPanel;
     procedure bMinusClick(Sender: TObject);
     procedure cbFieldNameChange(Sender: TObject);
   private
     function GetFilterText(index: Integer): string;
   public
+    procedure ShowOnlyPanel(Panel: TPanel);
     constructor Create(TheOwner: TComponent); override;
     function GetFilter: string;
   end;
@@ -55,18 +56,28 @@ begin
 
 end;
 
+procedure TfrField.ShowOnlyPanel(Panel:TPanel);
+var i: integer;
+begin
+  For i := 0 to pnlMain.ControlCount -1 do
+    pnlMain.Controls[i].Visible:= false;
+
+  if Assigned(Panel) then
+     Panel.Visible:=true;
+end;
+
 procedure TfrField.cbFieldNameChange(Sender: TObject);
 var
   Idx : Integer;
 begin
- idx :=intptr(cbFieldName.Items.Objects[cbFieldName.ItemIndex]);
+ idx := cbFieldName.ItemIndex;
  if idx < 0 then exit;
 
  case  FieldArray[idx].Kind of
-   ekText : PageControl1.ActivePage := tsText;
-   EkDate : PageControl1.ActivePage := tsDate;
-   ekNumber : PageControl1.ActivePage := tsNumber;
-   EKRating : PageControl1.ActivePage := tsRating;
+   ekText : ShowOnlyPanel(pnlText);
+   EkDate : ShowOnlyPanel(pnlDate);
+   ekNumber : ShowOnlyPanel(pnlNumber);
+   EKRating : ShowOnlyPanel(pnlRating);
  end;
 end;
 
@@ -75,9 +86,9 @@ var
   i: integer;
 begin
   inherited Create(TheOwner);
-  for i := 1 to FieldCount  do
+  for i := 0 to FieldCount -1 do
     begin
-      cbFieldName.Items.AddObject(FieldArray[i].FieldLabel, TObject(PtrInt(FieldArray[i].Id)));
+      cbFieldName.Items.Add(FieldArray[i].FieldLabel);
     end;
 
 end;
@@ -115,7 +126,7 @@ function TfrField.GetFilter: string;
 var
  Idx : Integer;
 begin
- idx :=intptr(cbFieldName.Items.Objects[cbFieldName.ItemIndex]);
+ idx := cbFieldName.ItemIndex;
  if idx < 0 then exit;
 
  case  FieldArray[idx].Kind of

@@ -134,4 +134,8 @@ object fCustomPlayList: TfCustomPlayList
       Value = 1
     end
   end
+  object ApplicationProperties1: TApplicationProperties
+    left = 108
+    top = 142
+  end
 end

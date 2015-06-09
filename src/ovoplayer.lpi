@@ -168,6 +168,7 @@ if TargetOS = 'linux' then
       <Unit6>
         <Filename Value="playlist.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="PlayList"/>
       </Unit6>
       <Unit7>
         <Filename Value="audioengine.pas"/>
@@ -229,6 +230,7 @@ if TargetOS = 'linux' then
       <Unit18>
         <Filename Value="generalfunc.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="GeneralFunc"/>
       </Unit18>
       <Unit19>
         <Filename Value="ovoplayer.inc"/>
@@ -377,6 +379,7 @@ if TargetOS = 'linux' then
       <Unit53>
         <Filename Value="basetypes.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="BaseTypes"/>
       </Unit53>
       <Unit54>
         <Filename Value="platform\linux\dbusextension.pas"/>

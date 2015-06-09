@@ -15,6 +15,7 @@ type
   TFieldContainer = specialize TFPGObjectList<TfrField>;
 
   TfCustomPlayList = class(TForm)
+    ApplicationProperties1: TApplicationProperties;
     bPlus: TBitBtn;
     ButtonPanel1: TButtonPanel;
     ckRandom: TCheckBox;
@@ -27,7 +28,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
   private
-
+    fDefaultIndex: integer;
   public
     Fields: TFieldContainer;
     Function AddField:TfrField;
@@ -43,10 +44,23 @@ implementation
 { TfCustomPlayList }
 
 procedure TfCustomPlayList.FormCreate(Sender: TObject);
+var
+  i: integer;
 begin
+  // Sort field names based on label.
+  // Doing it here should sort the already translated
+  SortFields;
+  //Find at wich index is the title field, used as a default
+  fDefaultIndex:=0;
+  for i := 0 to FieldCount -1 do
+    if FieldArray[i].Id = 4 then
+      begin
+         fDefaultIndex:=i;
+         Break;
+      end;
   Fields := TFieldContainer.Create(true);
   AddField;
-//  seLimits.AnchorToNeighbour(akLeft, 10, ckLimit);
+  seLimits.AnchorToNeighbour(akLeft, 10, ckLimit);
 end;
 
 procedure TfCustomPlayList.OKButtonClick(Sender: TObject);
@@ -85,6 +99,11 @@ begin
   Fields.Add(Result);
   Result.Parent := sbFieldContainer;
   result.Top:=sbFieldContainer.Height;
+  result.Show;
+  // initialize with some value
+  result.cbFieldName.ItemIndex:=fDefaultIndex;
+  result.ShowOnlyPanel(result.pnlText);
+  result.TestText.ItemIndex:=0;
 
 end;
 
