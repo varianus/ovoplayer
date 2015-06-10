@@ -52,6 +52,12 @@ type
     destructor Destroy;  override;
   end;
 
+  RFilterInfo = record
+    Count: integer;
+    TotalSize : int64;
+    TotalTime : int64;
+  end;
+
   TScanComplete = procedure(Sender: TObject; Added, Updated, Removed, Failed : integer) of object;
 
   TMediaLibrary = class
@@ -85,10 +91,11 @@ type
     procedure Scan(paths: TStrings; FullScan :boolean=true);
     Procedure RemoveMissing;
 
-    procedure ReadBegin(Order: string; Filter: string);
+    procedure ReadBegin(Filter: string; Order: string);
     function ReadItem: TCommonTags;
     function NextItem: boolean;
     function ReadComplete: boolean;
+    function FilterInfo(Filter:string): RFilterInfo;
     procedure ReadEnd;
     function FullNameFromID(ID: integer): string;
     function IDFromFullName(FileName: TFileName): integer;
@@ -650,7 +657,7 @@ begin
 
 end;
 
-procedure TMediaLibrary.ReadBegin(Order: string; Filter: string);
+procedure TMediaLibrary.ReadBegin(Filter: string; Order: string);
 begin
   if not Assigned(fLoadTable) then
     fLoadTable := TSQLQuery.Create(fDB);
@@ -704,6 +711,30 @@ end;
 function TMediaLibrary.ReadComplete: boolean;
 begin
   Result := fLoadTable.EOF;
+end;
+
+function TMediaLibrary.FilterInfo(Filter: string): RFilterInfo;
+begin
+
+  fWorkQuery.Close;
+  fWorkQuery.SQL.Text := 'SELECT count(*), Sum(FileSize), Sum(Duration) FROM songs';
+  if Filter <> EmptyStr then
+     fWorkQuery.SQL.Add(' where ' +Filter);
+ fWorkQuery.Open;
+ Result.Count := (fWorkQuery.Fields[0].AsInteger);
+ if Result.Count > 0 then
+   begin
+     Result.TotalSize := (fWorkQuery.Fields[1].AsLargeInt);
+     Result.TotalTime := (fWorkQuery.Fields[2].AsLargeInt);
+   end
+ else
+   begin
+     Result.TotalSize := 0;
+     Result.TotalTime := 0;
+   end;
+
+ fWorkQuery.Close;
+
 end;
 
 procedure TMediaLibrary.ReadEnd;
