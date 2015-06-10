@@ -29,6 +29,10 @@ msgstr "<nessuno>"
 msgid "Failed:"
 msgstr "Falliti:"
 
+#: appconsts.rmatchingitems
+msgid "%0:d songs matching current filter (%1:s, %2:s)"
+msgstr "Il filtro corrente estrae %0:d tracce (%1:s, %2:s)"
+
 #: appconsts.rmissing
 msgid "<missing>"
 msgstr "<mancante>"
@@ -63,25 +67,21 @@ msgid "Date Added"
 msgstr ""
 
 #: medialibrary.rs_album
-#, fuzzy
 msgctxt "medialibrary.rs_album"
 msgid "Album"
 msgstr "Album"
 
 #: medialibrary.rs_albumartist
-#, fuzzy
 msgctxt "medialibrary.rs_albumartist"
 msgid "Album Artist"
 msgstr "Artista Album"
 
 #: medialibrary.rs_artist
-#, fuzzy
 msgctxt "medialibrary.rs_artist"
 msgid "Artist"
 msgstr "Artista"
 
 #: medialibrary.rs_duration
-#, fuzzy
 msgctxt "medialibrary.rs_duration"
 msgid "Duration"
 msgstr "Durata"
@@ -92,7 +92,6 @@ msgid "File Date"
 msgstr ""
 
 #: medialibrary.rs_filename
-#, fuzzy
 msgctxt "medialibrary.rs_filename"
 msgid "File Name"
 msgstr "Nome File"
@@ -103,7 +102,6 @@ msgid "File Size"
 msgstr ""
 
 #: medialibrary.rs_genre
-#, fuzzy
 msgctxt "medialibrary.rs_genre"
 msgid "Genre"
 msgstr "Genere"
@@ -119,19 +117,16 @@ msgid "Play count"
 msgstr ""
 
 #: medialibrary.rs_rating
-#, fuzzy
 msgctxt "medialibrary.rs_rating"
 msgid "Rating"
 msgstr "Valutazione"
 
 #: medialibrary.rs_title
-#, fuzzy
 msgctxt "medialibrary.rs_title"
 msgid "Title"
 msgstr "Titolo"
 
 #: medialibrary.rs_track
-#, fuzzy
 msgctxt "medialibrary.rs_track"
 msgid "Track"
 msgstr "Traccia"
@@ -142,7 +137,6 @@ msgid "Track String"
 msgstr ""
 
 #: medialibrary.rs_year
-#, fuzzy
 msgctxt "medialibrary.rs_year"
 msgid "Year"
 msgstr "Anno"
@@ -150,28 +144,24 @@ msgstr "Anno"
 #: playlistbuilder.rs_added
 msgctxt "playlistbuilder.rs_added"
 msgid "Date Added"
-msgstr ""
+msgstr "Data Aggiunta"
 
 #: playlistbuilder.rs_album
-#, fuzzy
 msgctxt "playlistbuilder.rs_album"
 msgid "Album"
 msgstr "Album"
 
 #: playlistbuilder.rs_albumartist
-#, fuzzy
 msgctxt "playlistbuilder.rs_albumartist"
 msgid "Album Artist"
 msgstr "Artista Album"
 
 #: playlistbuilder.rs_artist
-#, fuzzy
 msgctxt "playlistbuilder.rs_artist"
 msgid "Artist"
 msgstr "Artista"
 
 #: playlistbuilder.rs_duration
-#, fuzzy
 msgctxt "playlistbuilder.rs_duration"
 msgid "Duration"
 msgstr "Durata"
@@ -179,10 +169,9 @@ msgstr "Durata"
 #: playlistbuilder.rs_filedate
 msgctxt "playlistbuilder.rs_filedate"
 msgid "File Date"
-msgstr ""
+msgstr "Data file"
 
 #: playlistbuilder.rs_filename
-#, fuzzy
 msgctxt "playlistbuilder.rs_filename"
 msgid "File Name"
 msgstr "Nome File"
@@ -190,10 +179,9 @@ msgstr "Nome File"
 #: playlistbuilder.rs_filesize
 msgctxt "playlistbuilder.rs_filesize"
 msgid "File Size"
-msgstr ""
+msgstr "Dimensione File"
 
 #: playlistbuilder.rs_genre
-#, fuzzy
 msgctxt "playlistbuilder.rs_genre"
 msgid "Genre"
 msgstr "Genere"
@@ -201,27 +189,24 @@ msgstr "Genere"
 #: playlistbuilder.rs_lastplay
 msgctxt "playlistbuilder.rs_lastplay"
 msgid "Date Last Played"
-msgstr ""
+msgstr "Data Ultima Riproduzione"
 
 #: playlistbuilder.rs_playcount
 msgctxt "playlistbuilder.rs_playcount"
 msgid "Play count"
-msgstr ""
+msgstr "Conteggio Esecuzioni"
 
 #: playlistbuilder.rs_rating
-#, fuzzy
 msgctxt "playlistbuilder.rs_rating"
 msgid "Rating"
 msgstr "Valutazione"
 
 #: playlistbuilder.rs_title
-#, fuzzy
 msgctxt "playlistbuilder.rs_title"
 msgid "Title"
 msgstr "Titolo"
 
 #: playlistbuilder.rs_track
-#, fuzzy
 msgctxt "playlistbuilder.rs_track"
 msgid "Track"
 msgstr "Traccia"
@@ -229,10 +214,9 @@ msgstr "Traccia"
 #: playlistbuilder.rs_trackstring
 msgctxt "playlistbuilder.rs_trackstring"
 msgid "Track String"
-msgstr ""
+msgstr "Testo Traccia"
 
 #: playlistbuilder.rs_year
-#, fuzzy
 msgctxt "playlistbuilder.rs_year"
 msgid "Year"
 msgstr "Anno"
@@ -295,22 +279,22 @@ msgstr "Pulisci"
 #: tbackend.actplaylistload.caption
 msgctxt "tbackend.actplaylistload.caption"
 msgid "Load Playlist ..."
-msgstr "Carica Playlist ..."
+msgstr "Carica Scaletta ..."
 
 #: tbackend.actplaylistload.hint
 msgctxt "tbackend.actplaylistload.hint"
 msgid "Load a Playlist"
-msgstr "Carica una playlist"
+msgstr "Carica una scaletta"
 
 #: tbackend.actplaylistsave.caption
 msgctxt "tbackend.actplaylistsave.caption"
 msgid "Save PlayList ..."
-msgstr "Salva Playlist ..."
+msgstr "Salva Scaletta ..."
 
 #: tbackend.actplaylistsave.hint
 msgctxt "tbackend.actplaylistsave.hint"
 msgid "Save current playlist"
-msgstr "Salva Playlist corrente"
+msgstr "Salva Scaletta corrente"
 
 #: tbackend.actplaylistshuffle.caption
 msgctxt "TBACKEND.ACTPLAYLISTSHUFFLE.CAPTION"
@@ -385,12 +369,12 @@ msgstr "Stop"
 #: tbackend.opendialogfiles.title
 msgctxt "TBACKEND.OPENDIALOGFILES.TITLE"
 msgid "Open Playlist"
-msgstr "Apri Playlist"
+msgstr "Apri Scaletta"
 
 #: tbackend.opendialogplaylist.title
 msgctxt "TBACKEND.OPENDIALOGPLAYLIST.TITLE"
 msgid "Open Playlist"
-msgstr "Apri Playlist"
+msgstr "Apri Scaletta"
 
 #: tdm.actexit.caption
 msgctxt "tdm.actexit.caption"
@@ -454,22 +438,22 @@ msgstr "Pulisci"
 #: tdm.actplaylistload.caption
 msgctxt "tdm.actplaylistload.caption"
 msgid "Load Playlist ..."
-msgstr "Carica Playlist ..."
+msgstr "Carica Scaletta ..."
 
 #: tdm.actplaylistload.hint
 msgctxt "tdm.actplaylistload.hint"
 msgid "Load a Playlist"
-msgstr "Carica una playlist"
+msgstr "Carica una scaletta"
 
 #: tdm.actplaylistsave.caption
 msgctxt "tdm.actplaylistsave.caption"
 msgid "Save PlayList ..."
-msgstr "Salva Playlist ..."
+msgstr "Salva Scaletta ..."
 
 #: tdm.actplaylistsave.hint
 msgctxt "tdm.actplaylistsave.hint"
 msgid "Save current playlist"
-msgstr "Salva Playlist corrente"
+msgstr "Salva Scaletta corrente"
 
 #: tdm.actplaylistshuffle.caption
 msgctxt "tdm.actplaylistshuffle.caption"
@@ -499,7 +483,7 @@ msgstr "Ripeti Album"
 #: tdm.actrepeatall.caption
 msgctxt "tdm.actrepeatall.caption"
 msgid "Repeat Playlist"
-msgstr "Ripeti playlist"
+msgstr "Ripeti Scaletta"
 
 #: tdm.actrepeatnone.caption
 msgctxt "tdm.actrepeatnone.caption"
@@ -544,12 +528,12 @@ msgstr "Stop"
 #: tdm.opendialogfiles.title
 msgctxt "tdm.opendialogfiles.title"
 msgid "Open Playlist"
-msgstr "Apri Playlist"
+msgstr "Apri Scaletta"
 
 #: tdm.opendialogplaylist.title
 msgctxt "tdm.opendialogplaylist.title"
 msgid "Open Playlist"
-msgstr "Apri Playlist"
+msgstr "Apri Scaletta"
 
 #: tfabout.blicense.caption
 msgid "&License"
@@ -570,11 +554,10 @@ msgid "Current Engine"
 msgstr "Motore Audio corrente"
 
 #: tfabout.label2.caption
-#, fuzzy
 #| msgid "Version :"
 msgctxt "tfabout.label2.caption"
 msgid "Version"
-msgstr "Versione :"
+msgstr "Versione"
 
 #: tfabout.label3.caption
 msgid "Author : Marco Caselli"
@@ -609,7 +592,7 @@ msgid "http://code.google.com/p/ovoplayer/"
 msgstr ""
 
 #: tfabout.lversion.caption
-#, fuzzy
+
 msgctxt "tfabout.lversion.caption"
 msgid "Version"
 msgstr "Versione"
@@ -640,7 +623,7 @@ msgstr "Usa tasti Multimediali"
 
 #: tfconfig.cbenablesoundmenu.caption
 msgid "Show in Sound Menu"
-msgstr ""
+msgstr "Mostra nel Menù Audio"
 
 #: tfconfig.cbminimizeonclose.caption
 msgid "Minimize on Close"
@@ -680,7 +663,7 @@ msgstr "Trasparenza"
 
 #: tfconfig.label5.caption
 msgid "Tracks to extract for quick playlist"
-msgstr "Tracce da estrarre per playlist rapide"
+msgstr "Tracce da estrarre per scaletta rapida"
 
 #: tfconfig.lbrestart.caption
 msgid "A restart is required for this change to take effect."
@@ -745,17 +728,17 @@ msgstr ""
 #: tfconfig.tsplaylist.caption
 msgctxt "TFCONFIG.TSPLAYLIST.CAPTION"
 msgid "Play List"
-msgstr "PlayList"
+msgstr "Scaletta"
 
 #: tfcover.btnzoomin.caption
 msgctxt "tfcover.btnzoomin.caption"
 msgid "Zoom +"
-msgstr ""
+msgstr "Ingrandisci"
 
 #: tfcover.btnzoomout.caption
 msgctxt "TFCOVER.BTNZOOMOUT.CAPTION"
 msgid "Zoom -"
-msgstr ""
+msgstr "Riduci"
 
 #: tfcover.btnzoomreset.caption
 msgctxt "TFCOVER.BTNZOOMRESET.CAPTION"
@@ -768,7 +751,15 @@ msgstr "Visualizzatore Copertine"
 
 #: tfcustomplaylist.caption
 msgid "Custom Playlist "
-msgstr ""
+msgstr "Scaletta personalizzata"
+
+#: tfcustomplaylist.cklimit.caption
+msgid "Limit to "
+msgstr "Limita a "
+
+#: tfcustomplaylist.ckrandom.caption
+msgid "Randomize"
+msgstr "Casuale"
 
 #: tflicense.caption
 msgid "License"
@@ -919,7 +910,7 @@ msgstr ""
 #: tfmainform.menuitem38.caption
 msgctxt "TFMAINFORM.MENUITEM38.CAPTION"
 msgid "PlayList"
-msgstr ""
+msgstr "Scaletta"
 
 #: tfmainform.menuitem42.caption
 msgid "Repeat Mode"
@@ -942,7 +933,7 @@ msgstr ""
 #: tfmainform.menuitem51.caption
 msgctxt "TFMAINFORM.MENUITEM51.CAPTION"
 msgid "-"
-msgstr ""
+msgstr "-"
 
 #: tfmainform.menuitem52.caption
 msgid "*****"
@@ -962,12 +953,12 @@ msgstr ""
 
 #: tfmainform.menuitem56.caption
 msgid "None"
-msgstr ""
+msgstr "Nessuna"
 
 #: tfmainform.menuitem9.caption
 msgctxt "TFMAINFORM.MENUITEM9.CAPTION"
 msgid "-"
-msgstr ""
+msgstr "-"
 
 #: tfmainform.mnucollection.caption
 msgctxt "TFMAINFORM.MNUCOLLECTION.CAPTION"
@@ -980,7 +971,7 @@ msgstr "Accoda"
 
 #: tfmainform.mnufile.caption
 msgid "&File"
-msgstr ""
+msgstr "&File"
 
 #: tfmainform.mnufileinfo.caption
 msgctxt "TFMAINFORM.MNUFILEINFO.CAPTION"
@@ -995,7 +986,7 @@ msgstr "Informazione media"
 #: tfmainform.mnuplayitems.caption
 msgctxt "TFMAINFORM.MNUPLAYITEMS.CAPTION"
 msgid "Play"
-msgstr "Riproduci"
+msgstr "Esegui"
 
 #: tfmainform.mnurefreshitems.caption
 msgid "Refresh"
@@ -1011,7 +1002,7 @@ msgstr "Ripristina"
 
 #: tfmainform.tbrepeat.caption
 msgid "     "
-msgstr ""
+msgstr "     "
 
 #: tfmainform.title.caption
 msgctxt "TFMAINFORM.TITLE.CAPTION"
@@ -1025,17 +1016,17 @@ msgstr "Collezione"
 
 #: tfmainform.tsdirectory.caption
 msgid "Directory"
-msgstr ""
+msgstr "Cartella"
 
 #: tfmainform.tsplaylist.caption
 msgctxt "tfmainform.tsplaylist.caption"
 msgid "PlayList"
-msgstr ""
+msgstr "Elenco riproduzione"
 
 #: tfminiplayer.caption
 msgctxt "TFMINIPLAYER.CAPTION"
 msgid "MiniPlayer"
-msgstr ""
+msgstr "MiniPlayer"
 
 #: tfosd.album.caption
 msgctxt "TFOSD.ALBUM.CAPTION"
@@ -1054,23 +1045,21 @@ msgstr "Titolo"
 
 #: tfosd.track.caption
 msgid "0"
-msgstr ""
+msgstr "0"
 
-#: tfrfield.tsdate.caption
-msgid "tsDate"
-msgstr ""
+#: tfrfield.testnumber.text
+msgctxt "tfrfield.testnumber.text"
+msgid "equal to"
+msgstr "uguale a"
 
-#: tfrfield.tsnumber.caption
-msgid "tsNumber"
-msgstr ""
+#: tfrfield.testrating.text
+msgctxt "tfrfield.testrating.text"
+msgid "equal to"
+msgstr "uguale a"
 
-#: tfrfield.tsrating.caption
-msgid "tsRating"
-msgstr ""
-
-#: tfrfield.tstext.caption
-msgid "tsText"
-msgstr ""
+#: tfrfield.testtext.text
+msgid "is"
+msgstr "è"
 
 #: tfsonginfo.bnext.caption
 msgctxt "TFSONGINFO.BNEXT.CAPTION"
@@ -1092,7 +1081,7 @@ msgstr "Salva"
 
 #: tfsonginfo.caption
 msgid "Song Information"
-msgstr ""
+msgstr "Informazioni traccia"
 
 #: tfsonginfo.groupbox1.caption
 msgid "Library"
@@ -1115,11 +1104,11 @@ msgstr "Artista"
 
 #: tfsonginfo.label11.caption
 msgid "BitRate"
-msgstr ""
+msgstr "BitRate"
 
 #: tfsonginfo.label12.caption
 msgid "Sampling"
-msgstr ""
+msgstr "Campionamento"
 
 #: tfsonginfo.label13.caption
 msgid "Channels"
@@ -1179,9 +1168,9 @@ msgstr "Anno"
 #: tfsonginfo.tsmediaproperty.caption
 msgctxt "TFSONGINFO.TSMEDIAPROPERTY.CAPTION"
 msgid "Media Property"
-msgstr "ProprietàMedia"
+msgstr "Proprietà Media"
 
 #: tfsonginfo.tstags.caption
 msgid "Tags"
-msgstr ""
+msgstr "Etichette"
 

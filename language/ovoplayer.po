@@ -29,6 +29,10 @@ msgstr ""
 msgid "Failed:"
 msgstr ""
 
+#: appconsts.rmatchingitems
+msgid "%0:d songs matching current filter (%1:s, %2:s)"
+msgstr ""
+
 #: appconsts.rmissing
 msgid "<missing>"
 msgstr ""
@@ -747,6 +751,14 @@ msgstr ""
 msgid "Custom Playlist "
 msgstr ""
 
+#: tfcustomplaylist.cklimit.caption
+msgid "Limit to "
+msgstr ""
+
+#: tfcustomplaylist.ckrandom.caption
+msgid "Randomize"
+msgstr ""
+
 #: tflicense.caption
 msgid "License"
 msgstr ""
@@ -1033,20 +1045,18 @@ msgstr ""
 msgid "0"
 msgstr ""
 
-#: tfrfield.tsdate.caption
-msgid "tsDate"
+#: tfrfield.testnumber.text
+msgctxt "TFRFIELD.TESTNUMBER.TEXT"
+msgid "equal to"
 msgstr ""
 
-#: tfrfield.tsnumber.caption
-msgid "tsNumber"
+#: tfrfield.testrating.text
+msgctxt "tfrfield.testrating.text"
+msgid "equal to"
 msgstr ""
 
-#: tfrfield.tsrating.caption
-msgid "tsRating"
-msgstr ""
-
-#: tfrfield.tstext.caption
-msgid "tsText"
+#: tfrfield.testtext.text
+msgid "is"
 msgstr ""
 
 #: tfsonginfo.bnext.caption
