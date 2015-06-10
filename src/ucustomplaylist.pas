@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   ButtonPanel, Buttons, StdCtrls, Spin, ufrfield, fgl, PlaylistBuilder,
-  GUIBackEnd;
+  GUIBackEnd, MediaLibrary, AppConsts, GeneralFunc;
 
 type
 
@@ -20,15 +20,18 @@ type
     ButtonPanel1: TButtonPanel;
     ckRandom: TCheckBox;
     ckLimit: TCheckBox;
+    lbFilterResults: TLabel;
     Panel1: TPanel;
     Panel2: TPanel;
     sbFieldContainer: TScrollBox;
     seLimits: TSpinEdit;
+    procedure ApplicationProperties1Idle(Sender: TObject; var Done: Boolean);
     procedure bPlusClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
   private
     fDefaultIndex: integer;
+    function ComposeFilter: String;
   public
     Fields: TFieldContainer;
     Function AddField:TfrField;
@@ -70,7 +73,7 @@ var
 begin
   Filters:= '1=1'; // dummy test
   for i := 0 to Fields.Count -1 do
-    Filters := Filters + Fields[i].GetFilter;
+    Filters := Filters + ' AND '+ Fields[i].GetFilter;
 
   if ckRandom.Checked then
     Sorts := ' random() '
@@ -91,6 +94,50 @@ begin
 
 end;
 
+procedure TfCustomPlayList.ApplicationProperties1Idle(Sender: TObject;
+  var Done: Boolean);
+var
+  i: integer;
+  Executable : boolean;
+  PlayListData: RFilterInfo;
+  isChanged: boolean;
+begin
+  Executable := true;
+  isChanged:= false;
+  for i := 0 to Fields.Count -1 do
+    Executable:=Executable and Fields[i].isExecutable;
+
+  ButtonPanel1.OKButton.Enabled:=Executable;
+
+  if Executable then
+    begin
+      for i := 0 to Fields.Count -1 do
+        isChanged:=isChanged or Fields[i].isChanged;
+      if isChanged then
+        begin
+          PlayListData := BackEnd.mediaLibrary.FilterInfo(ComposeFilter);
+          lbFilterResults.Caption:= Format(rMatchingItems,[PlayListData.Count,
+                                                          TimeToStr(PlayListData.TotalTime / MSecsPerDay),
+                                                          FormatByteString(PlayListData.TotalSize)]);
+
+      end;
+    end;
+
+end;
+
+function TfCustomPlayList.ComposeFilter: String;
+var
+  i: integer;
+
+begin
+  Result:=EmptyStr;
+  for i := 0 to Fields.Count -1 do
+    begin
+      Result := Result + ' ' + Fields[i].GetFilter;
+    end;
+
+end;
+
 function TfCustomPlayList.AddField: TfrField;
 begin
   Result:= TfrField.Create(sbFieldContainer);
@@ -104,6 +151,7 @@ begin
   result.cbFieldName.ItemIndex:=fDefaultIndex;
   result.ShowOnlyPanel(result.pnlText);
   result.TestText.ItemIndex:=0;
+  Result.TestTextChange(Result.TestText);
 
 end;
 

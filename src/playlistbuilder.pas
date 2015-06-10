@@ -9,7 +9,7 @@ uses
 
 type
 
- EditorKind =(ekText,EkDate,EKRating,ekNumber);
+ EditorKind =(ekText,ekDate,ekRating,ekNumber);
 
 FieldRec = record
   Id : integer;

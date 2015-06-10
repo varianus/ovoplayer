@@ -79,6 +79,8 @@ Resourcestring
   rMultipleValue = '<Multiple Value>';
   rDragToChangePosition = 'Drag to change position';
 
+  rMatchingItems = '%0:d songs matching current filter (%1:s, %2:s)';
+
 
 implementation
 
@@ -91,4 +93,4 @@ initialization
  OnGetApplicationName := @GetAppName;
 
 
-end.
+end.

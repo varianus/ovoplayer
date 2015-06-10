@@ -605,7 +605,7 @@ var
   Tags: TCommonTags;
 begin
   Result := 0;
-  lib.ReadBegin(order, Filter);
+  lib.ReadBegin(Filter, Order);
   while not Lib.ReadComplete do
   begin
     Inc(Result);

@@ -1,26 +1,26 @@
 object fCustomPlayList: TfCustomPlayList
   Left = 963
-  Height = 477
+  Height = 521
   Top = 163
-  Width = 602
+  Width = 598
   Caption = 'Custom Playlist '
-  ClientHeight = 477
-  ClientWidth = 602
+  ClientHeight = 521
+  ClientWidth = 598
   OnCreate = FormCreate
   LCLVersion = '1.5'
   object Panel1: TPanel
     Left = 0
     Height = 72
     Top = 0
-    Width = 602
+    Width = 598
     Align = alTop
     TabOrder = 0
   end
   object ButtonPanel1: TButtonPanel
     Left = 6
     Height = 34
-    Top = 437
-    Width = 590
+    Top = 481
+    Width = 586
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
     OKButton.OnClick = OKButtonClick
@@ -35,9 +35,9 @@ object fCustomPlayList: TfCustomPlayList
   end
   object sbFieldContainer: TScrollBox
     Left = 0
-    Height = 294
+    Height = 324
     Top = 72
-    Width = 602
+    Width = 598
     HorzScrollBar.Page = 1
     VertScrollBar.Page = 1
     Align = alClient
@@ -45,16 +45,16 @@ object fCustomPlayList: TfCustomPlayList
   end
   object Panel2: TPanel
     Left = 0
-    Height = 65
-    Top = 366
-    Width = 602
+    Height = 79
+    Top = 396
+    Width = 598
     Align = alBottom
     Anchors = [akLeft]
-    ClientHeight = 65
-    ClientWidth = 602
+    ClientHeight = 79
+    ClientWidth = 598
     TabOrder = 3
     object bPlus: TBitBtn
-      Left = 565
+      Left = 561
       Height = 30
       Top = 8
       Width = 31
@@ -101,7 +101,7 @@ object fCustomPlayList: TfCustomPlayList
     object ckRandom: TCheckBox
       Left = 8
       Height = 19
-      Top = 19
+      Top = 14
       Width = 79
       Caption = 'Randomize'
       Checked = True
@@ -112,7 +112,7 @@ object fCustomPlayList: TfCustomPlayList
       AnchorSideRight.Control = seLimits
       Left = 152
       Height = 19
-      Top = 19
+      Top = 12
       Width = 64
       Caption = 'Limit to '
       Checked = True
@@ -124,17 +124,25 @@ object fCustomPlayList: TfCustomPlayList
     object seLimits: TSpinEdit
       AnchorSideTop.Control = ckLimit
       AnchorSideTop.Side = asrCenter
-      Left = 240
+      Left = 216
       Height = 23
-      Top = 17
+      Top = 10
       Width = 90
       MaxValue = 99999
-      MinValue = 1
+      MinValue = 50
       TabOrder = 2
-      Value = 1
+      Value = 50
+    end
+    object lbFilterResults: TLabel
+      Left = 8
+      Height = 1
+      Top = 56
+      Width = 1
+      ParentColor = False
     end
   end
   object ApplicationProperties1: TApplicationProperties
+    OnIdle = ApplicationProperties1Idle
     left = 108
     top = 142
   end

@@ -74,49 +74,6 @@ object frField: TfrField
       TabOrder = 1
       Visible = False
     end
-    object pnlRating: TPanel
-      Left = 0
-      Height = 32
-      Top = 0
-      Width = 413
-      Align = alClient
-      BevelOuter = bvNone
-      ClientHeight = 32
-      ClientWidth = 413
-      TabOrder = 3
-      Visible = False
-      object testRating: TComboBox
-        Left = 3
-        Height = 23
-        Top = 4
-        Width = 140
-        ItemHeight = 15
-        Items.Strings = (
-          'equal to'
-          'not equal to'
-          'bigger than'
-          'lesser than'
-        )
-        Style = csDropDownList
-        TabOrder = 0
-      end
-      object cbRating: TComboBox
-        Left = 149
-        Height = 23
-        Top = 4
-        Width = 140
-        ItemHeight = 15
-        Items.Strings = (
-          '*'
-          '**'
-          '***'
-          '****'
-          '*****'
-        )
-        Style = csDropDownList
-        TabOrder = 1
-      end
-    end
     object pnlText: TPanel
       Left = 0
       Height = 32
@@ -134,20 +91,26 @@ object frField: TfrField
         Top = 4
         Width = 140
         ItemHeight = 15
+        ItemIndex = 0
         Items.Strings = (
           'is'
           'is not'
           'contains'
           'not contains'
+          'is empty'
+          'is not empty'
         )
+        OnChange = TestTextChange
         Style = csDropDownList
         TabOrder = 0
+        Text = 'is'
       end
       object edtText: TEdit
         Left = 149
         Height = 23
         Top = 4
         Width = 200
+        OnChange = signalChange
         TabOrder = 1
       end
     end
@@ -168,14 +131,17 @@ object frField: TfrField
         Top = 4
         Width = 140
         ItemHeight = 15
+        ItemIndex = 0
         Items.Strings = (
           'equal to'
           'not equal to'
           'bigger than'
-          'lesser than'
+          'less than'
         )
+        OnChange = signalChange
         Style = csDropDownList
         TabOrder = 0
+        Text = 'equal to'
       end
       object seNumber: TSpinEdit
         Left = 149
@@ -183,6 +149,60 @@ object frField: TfrField
         Top = 4
         Width = 98
         MaxValue = 2147483647
+        OnChange = signalChange
+        TabOrder = 1
+      end
+    end
+    object pnlRating: TPanel
+      Left = 0
+      Height = 32
+      Top = 0
+      Width = 413
+      Align = alClient
+      BevelOuter = bvNone
+      ClientHeight = 32
+      ClientWidth = 413
+      TabOrder = 3
+      Visible = False
+      object testRating: TComboBox
+        Left = 3
+        Height = 23
+        Top = 4
+        Width = 140
+        ItemHeight = 15
+        ItemIndex = 0
+        Items.Strings = (
+          'equal to'
+          'not equal to'
+          'bigger than'
+          'lesser than'
+          'not rated'
+        )
+        OnChange = testRatingChange
+        Style = csDropDownList
+        TabOrder = 0
+        Text = 'equal to'
+      end
+      object cbRating: TComboBox
+        Left = 149
+        Height = 23
+        Top = 4
+        Width = 140
+        ItemHeight = 15
+        Items.Strings = (
+          '½'
+          '★'
+          '★½'
+          '★★'
+          '★★½'
+          '★★★'
+          '★★★½'
+          '★★★★'
+          '★★★★½'
+          '★★★★★'
+        )
+        OnChange = signalChange
+        Style = csDropDownList
         TabOrder = 1
       end
     end

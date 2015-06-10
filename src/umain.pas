@@ -994,7 +994,7 @@ begin
     L1Key := FakeValue;
     L2Key := FakeValue;
 
-    BackEnd.mediaLibrary.ReadBegin(PrepareFields, PrepareFilter);
+    BackEnd.mediaLibrary.ReadBegin(PrepareFilter, PrepareFields);
 
     while not BackEnd.mediaLibrary.ReadComplete do
       begin
