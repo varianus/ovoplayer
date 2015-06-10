@@ -45,6 +45,10 @@ type
     Class Procedure Sort (var Arr: Array of T; Compare:TArrayCompareFunc);
   end;
 
+ type
+  TByteStringFormat = (bsfDefault, bsfBytes, bsfKB, bsfMB, bsfGB, bsfTB);
+  function FormatByteString(Bytes: UInt64; Format: TByteStringFormat = bsfDefault): string;
+
 implementation
 uses
  {$IFdef MSWindows}
@@ -54,6 +58,47 @@ uses
   BaseUnix,
 {$ENDIF}
  SimpleIPC, AsyncProcess;
+
+const
+  OneKB = 1024;
+  OneMB = OneKB * OneKB;
+  OneGB = OneKB * OneMB;
+  OneTB = OneKB * OneGB;
+
+// code from David Heffernan, from http://stackoverflow.com/questions/30548940/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-delphi
+function FormatByteString(Bytes: UInt64; Format: TByteStringFormat = bsfDefault): string;
+begin
+  if Format = bsfDefault then begin
+    if Bytes < OneKB then begin
+      Format := bsfBytes;
+    end
+    else if Bytes < OneMB then begin
+      Format := bsfKB;
+    end
+    else if Bytes < OneGB then begin
+      Format := bsfMB;
+    end
+    else if Bytes < OneTB then begin
+      Format := bsfGB;
+    end
+    else begin
+      Format := bsfTB;
+    end;
+  end;
+
+  case Format of
+  bsfBytes:
+    Result := SysUtils.Format('%d bytes', [Bytes]);
+  bsfKB:
+    Result := SysUtils.Format('%.1n KB', [Bytes / OneKB]);
+  bsfMB:
+    Result := SysUtils.Format('%.1n MB', [Bytes / OneMB]);
+  bsfGB:
+    Result := SysUtils.Format('%.1n GB', [Bytes / OneGB]);
+  bsfTB:
+    Result := SysUtils.Format('%.1n TB', [Bytes / OneTB]);
+  end;
+end;
 
 Function Restart(Application:TCustomApplication):Boolean;
 var
