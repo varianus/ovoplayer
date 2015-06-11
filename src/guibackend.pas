@@ -155,8 +155,9 @@ begin
   if Config.EngineParam.EngineKind <> '' then
      begin
        Engine := GetEngineByName(Config.EngineParam.EngineKind);
-       if not Engine.IsAvalaible(Config.EngineSubParams) then
-         engine := nil;
+       if Assigned(Engine) then
+          if not Engine.IsAvalaible(Config.EngineSubParams) then
+             engine := nil;
      end;
 
 
