@@ -120,6 +120,36 @@ begin
       cbFieldName.Items.Add(FieldArray[i].FieldLabel);
     end;
 
+  with testRating do
+    begin
+      Items.Clear;
+      Items.Add(RS_EqualTo);
+      Items.Add(RS_NotEqualTo);
+      Items.Add(RS_BiggerThan);
+      Items.Add(RS_LessThan);
+      Items.Add(RS_NotRated);
+    end;
+
+  with TestText do
+    begin
+      Items.Clear;
+      Items.Add(RS_Is);
+      Items.Add(RS_IsNot);
+      Items.Add(RS_Contains);
+      Items.Add(RS_NotContains);
+      Items.Add(RS_IsEmpty);
+      Items.Add(RS_IsNotEmpty);
+    end;
+
+  with testNumber do
+    begin
+      Items.Clear;
+      Items.Add(RS_EqualTo);
+      Items.Add(RS_NotEqualTo);
+      Items.Add(RS_BiggerThan);
+      Items.Add(RS_LessThan);
+    end;
+
 end;
 
 function TfrField.GetFilterText(index: Integer): string;

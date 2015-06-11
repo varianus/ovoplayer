@@ -161,9 +161,22 @@ msgctxt "playlistbuilder.rs_artist"
 msgid "Artist"
 msgstr ""
 
+#: playlistbuilder.rs_biggerthan
+msgid "bigger than"
+msgstr ""
+
+#: playlistbuilder.rs_contains
+msgid "contains"
+msgstr ""
+
 #: playlistbuilder.rs_duration
 msgctxt "playlistbuilder.rs_duration"
 msgid "Duration"
+msgstr ""
+
+#: playlistbuilder.rs_equalto
+msgctxt "playlistbuilder.rs_equalto"
+msgid "equal to"
 msgstr ""
 
 #: playlistbuilder.rs_filedate
@@ -186,9 +199,42 @@ msgctxt "playlistbuilder.rs_genre"
 msgid "Genre"
 msgstr ""
 
+#: playlistbuilder.rs_is
+msgctxt "playlistbuilder.rs_is"
+msgid "is"
+msgstr ""
+
+#: playlistbuilder.rs_isempty
+msgid "is empty"
+msgstr ""
+
+#: playlistbuilder.rs_isnot
+msgid "is not"
+msgstr ""
+
+#: playlistbuilder.rs_isnotempty
+msgid "is not empty"
+msgstr ""
+
 #: playlistbuilder.rs_lastplay
 msgctxt "playlistbuilder.rs_lastplay"
 msgid "Date Last Played"
+msgstr ""
+
+#: playlistbuilder.rs_lessthan
+msgid "less than"
+msgstr ""
+
+#: playlistbuilder.rs_notcontains
+msgid "not contains"
+msgstr ""
+
+#: playlistbuilder.rs_notequalto
+msgid "not equal to"
+msgstr ""
+
+#: playlistbuilder.rs_notrated
+msgid "not rated"
 msgstr ""
 
 #: playlistbuilder.rs_playcount
@@ -1056,6 +1102,7 @@ msgid "equal to"
 msgstr ""
 
 #: tfrfield.testtext.text
+msgctxt "tfrfield.testtext.text"
 msgid "is"
 msgstr ""
 

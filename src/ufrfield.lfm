@@ -2,14 +2,14 @@ object frField: TfrField
   Left = 0
   Height = 32
   Top = 0
-  Width = 574
+  Width = 579
   ClientHeight = 32
-  ClientWidth = 574
+  ClientWidth = 579
   TabOrder = 0
   DesignLeft = 534
   DesignTop = 340
   object bMinus: TBitBtn
-    Left = 543
+    Left = 548
     Height = 32
     Top = 0
     Width = 31
@@ -58,17 +58,17 @@ object frField: TfrField
     Left = 130
     Height = 32
     Top = 0
-    Width = 413
+    Width = 418
     Align = alClient
     BevelOuter = bvNone
     ClientHeight = 32
-    ClientWidth = 413
+    ClientWidth = 418
     TabOrder = 1
     object pnlDate: TPanel
       Left = 0
       Height = 32
       Top = 0
-      Width = 413
+      Width = 418
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
@@ -78,11 +78,11 @@ object frField: TfrField
       Left = 0
       Height = 32
       Top = 0
-      Width = 413
+      Width = 418
       Align = alClient
       BevelOuter = bvNone
       ClientHeight = 32
-      ClientWidth = 413
+      ClientWidth = 418
       TabOrder = 0
       Visible = False
       object TestText: TComboBox
@@ -118,11 +118,11 @@ object frField: TfrField
       Left = 0
       Height = 32
       Top = 0
-      Width = 413
+      Width = 418
       Align = alClient
       BevelOuter = bvNone
       ClientHeight = 32
-      ClientWidth = 413
+      ClientWidth = 418
       TabOrder = 2
       Visible = False
       object testNumber: TComboBox
@@ -157,11 +157,11 @@ object frField: TfrField
       Left = 0
       Height = 32
       Top = 0
-      Width = 413
+      Width = 418
       Align = alClient
       BevelOuter = bvNone
       ClientHeight = 32
-      ClientWidth = 413
+      ClientWidth = 418
       TabOrder = 3
       Visible = False
       object testRating: TComboBox

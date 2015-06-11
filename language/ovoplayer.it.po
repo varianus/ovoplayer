@@ -64,7 +64,7 @@ msgstr "Aggiornati:"
 #: medialibrary.rs_added
 msgctxt "medialibrary.rs_added"
 msgid "Date Added"
-msgstr ""
+msgstr "Data aggiunta"
 
 #: medialibrary.rs_album
 msgctxt "medialibrary.rs_album"
@@ -89,7 +89,7 @@ msgstr "Durata"
 #: medialibrary.rs_filedate
 msgctxt "medialibrary.rs_filedate"
 msgid "File Date"
-msgstr ""
+msgstr "Data file"
 
 #: medialibrary.rs_filename
 msgctxt "medialibrary.rs_filename"
@@ -99,7 +99,7 @@ msgstr "Nome File"
 #: medialibrary.rs_filesize
 msgctxt "medialibrary.rs_filesize"
 msgid "File Size"
-msgstr ""
+msgstr "Dimensione File"
 
 #: medialibrary.rs_genre
 msgctxt "medialibrary.rs_genre"
@@ -109,12 +109,12 @@ msgstr "Genere"
 #: medialibrary.rs_lastplay
 msgctxt "medialibrary.rs_lastplay"
 msgid "Date Last Played"
-msgstr ""
+msgstr "Data Ultima Riproduzione"
 
 #: medialibrary.rs_playcount
 msgctxt "medialibrary.rs_playcount"
 msgid "Play count"
-msgstr ""
+msgstr "Conteggio esecuzioni"
 
 #: medialibrary.rs_rating
 msgctxt "medialibrary.rs_rating"
@@ -134,7 +134,7 @@ msgstr "Traccia"
 #: medialibrary.rs_trackstring
 msgctxt "medialibrary.rs_trackstring"
 msgid "Track String"
-msgstr ""
+msgstr "Traccia testo"
 
 #: medialibrary.rs_year
 msgctxt "medialibrary.rs_year"
@@ -161,10 +161,24 @@ msgctxt "playlistbuilder.rs_artist"
 msgid "Artist"
 msgstr "Artista"
 
+#: playlistbuilder.rs_biggerthan
+msgid "bigger than"
+msgstr "maggiore di"
+
+#: playlistbuilder.rs_contains
+msgid "contains"
+msgstr "contiene"
+
 #: playlistbuilder.rs_duration
 msgctxt "playlistbuilder.rs_duration"
 msgid "Duration"
 msgstr "Durata"
+
+#: playlistbuilder.rs_equalto
+#, fuzzy
+msgctxt "playlistbuilder.rs_equalto"
+msgid "equal to"
+msgstr "uguale a"
 
 #: playlistbuilder.rs_filedate
 msgctxt "playlistbuilder.rs_filedate"
@@ -186,10 +200,44 @@ msgctxt "playlistbuilder.rs_genre"
 msgid "Genre"
 msgstr "Genere"
 
+#: playlistbuilder.rs_is
+#, fuzzy
+msgctxt "playlistbuilder.rs_is"
+msgid "is"
+msgstr "è"
+
+#: playlistbuilder.rs_isempty
+msgid "is empty"
+msgstr "è vuoto"
+
+#: playlistbuilder.rs_isnot
+msgid "is not"
+msgstr "non è"
+
+#: playlistbuilder.rs_isnotempty
+msgid "is not empty"
+msgstr "non è vuoto"
+
 #: playlistbuilder.rs_lastplay
 msgctxt "playlistbuilder.rs_lastplay"
 msgid "Date Last Played"
 msgstr "Data Ultima Riproduzione"
+
+#: playlistbuilder.rs_lessthan
+msgid "less than"
+msgstr "minore di"
+
+#: playlistbuilder.rs_notcontains
+msgid "not contains"
+msgstr "non contiene"
+
+#: playlistbuilder.rs_notequalto
+msgid "not equal to"
+msgstr "è diverso da"
+
+#: playlistbuilder.rs_notrated
+msgid "not rated"
+msgstr "senza valutazione"
 
 #: playlistbuilder.rs_playcount
 msgctxt "playlistbuilder.rs_playcount"
@@ -383,7 +431,7 @@ msgstr "Esci"
 
 #: tdm.actfastscan.caption
 msgid "Fast Scan"
-msgstr ""
+msgstr "Scanzione Rapida"
 
 #: tdm.actimportdirectory.caption
 msgctxt "tdm.actimportdirectory.caption"
@@ -592,7 +640,6 @@ msgid "http://code.google.com/p/ovoplayer/"
 msgstr ""
 
 #: tfabout.lversion.caption
-
 msgctxt "tfabout.lversion.caption"
 msgid "Version"
 msgstr "Versione"
@@ -1058,6 +1105,7 @@ msgid "equal to"
 msgstr "uguale a"
 
 #: tfrfield.testtext.text
+msgctxt "tfrfield.testtext.text"
 msgid "is"
 msgstr "è"
 

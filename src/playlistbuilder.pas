@@ -38,6 +38,19 @@ ResourceString
   RS_FileSize     = 'File Size';
   RS_FileDate     = 'File Date';
 
+  RS_EqualTo      = 'equal to';
+  RS_NotEqualTo   = 'not equal to';
+  RS_BiggerThan   = 'bigger than';
+  RS_NotRated     = 'not rated';
+  RS_Is = 'is';
+  RS_IsNot = 'is not';
+  RS_Contains = 'contains';
+  RS_NotContains = 'not contains';
+  RS_IsEmpty = 'is empty';
+  RS_IsNotEmpty = 'is not empty';
+  RS_LessThan = 'less than';
+
+
 const
    FieldCount = 16;
    FieldArray : array [0..FieldCount-1] of FieldRec =  (
