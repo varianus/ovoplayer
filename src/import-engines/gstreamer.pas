@@ -130,7 +130,16 @@ uses
   Classes, SysUtils, dynlibs;
 
 const
-libgst_name = 'libgstbase-0.10.so.0';
+{$IFDEF UNIX}
+  libgst_name_old = 'libgstbase-0.10.so.0';
+  libgst_name     = 'libgstbase-1.0.so.0';
+{$ENDIF}
+{$IFDEF MSWINDOWS}
+  libgst_name_old = EmptyStr;
+  libgst_name = 'libgstreamer-1.0-0.dll';
+{$ENDIF}
+
+
 
 var
 libgst_handle: THandle;
@@ -147,18 +156,25 @@ end;
 
 procedure libGST_dynamic_dll_init();
 var
-  cdir: string;
+  currLib: string;
 begin
 
-  if (libGST_handle <> 0) then exit;
+  if (libGST_handle <> dynlibs.NilHandle) then exit;
+  currLib:=libGST_name;
+  libGST_handle := DynLibs.LoadLibrary(currLib);
+  // try to load previous release of GStreamer
+  if (libGST_handle = dynlibs.NilHandle) and (libgst_name_old <> EmptyStr) then
+    begin
+      currLib:=libGST_name_old;
+      libGST_handle := DynLibs.LoadLibrary(currLib);
 
-  libGST_handle := LoadLibrary(PAnsiChar(libGST_name));
+    end;
 
   // exit, report error
-  if (libGST_handle = 0) then
+  if (libGST_handle = dynlibs.NilHandle) then
   begin
     libGST_dynamic_dll_error :=
-      'Library not found ' + libGST_name + ', '+
+      'Library not found ' + currLib + ', '+
       'GetLastError() = ' + IntToStr(GetLastOSError);
     exit;
   end;
@@ -183,17 +199,17 @@ end;
 
 procedure libgst_dynamic_dll_done();
 begin
-  if (libgst_handle <> 0) then FreeLibrary(libgst_handle);
-  libgst_handle := 0;
+  if (libgst_handle <> dynlibs.NilHandle) then FreeLibrary(libgst_handle);
+  libgst_handle := dynlibs.NilHandle;
 end;
 
 initialization
 
-  libgst_handle := 0;
+  libgst_handle := dynlibs.NilHandle;
 
 finalization
 
 end.
 
 
-
+
