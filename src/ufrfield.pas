@@ -36,16 +36,14 @@ type
     FIdx : Integer;
     fChanged : boolean;
     FisChanged: boolean;
-    function GetFilterNumber(index: Integer): string;
-    function GetFilterRating(index: Integer): string;
-    function GetFilterText(index: Integer): string;
     procedure SetisChanged(AValue: boolean);
   public
+    FieldFilter : TFieldFilter;
     procedure ShowOnlyPanel(Panel: TPanel);
     constructor Create(TheOwner: TComponent); override;
-    function GetFilter: string;
-    Function isExecutable: boolean;
     Function isChanged: boolean;
+    procedure UpdateFromFilter;
+    procedure UpdateFilter;
   end;
 
 implementation
@@ -62,7 +60,7 @@ var
   cp: TfCustomPlayList;
 begin
   cp:=TfCustomPlayList(Owner.owner);
-  cp.Fields.Extract(Self);
+  cp.Editors.Extract(Self);
   Application.ReleaseComponent(self);
 
 end;
@@ -94,6 +92,7 @@ end;
 procedure TfrField.signalChange(Sender: TObject);
 begin
   fChanged:=true;
+  UpdateFilter;
 end;
 
 procedure TfrField.testRatingChange(Sender: TObject);
@@ -133,10 +132,10 @@ begin
   with TestText do
     begin
       Items.Clear;
-      Items.Add(RS_Is);
-      Items.Add(RS_IsNot);
       Items.Add(RS_Contains);
       Items.Add(RS_NotContains);
+      Items.Add(RS_Is);
+      Items.Add(RS_IsNot);
       Items.Add(RS_IsEmpty);
       Items.Add(RS_IsNotEmpty);
     end;
@@ -152,131 +151,61 @@ begin
 
 end;
 
-function TfrField.GetFilterText(index: Integer): string;
-var
-  op : string;
-  Value: string;
-  NeedWildcards: boolean;
-begin
-  result:='';
-  case TestText.ItemIndex of
-    0: begin op := '=';        NeedWildcards:= false; end; // is
-    1: begin op := '<>';       NeedWildcards:= false; end; // is not
-    2: begin op := 'like';     NeedWildcards:= true;  end; // contains
-    3: begin op := 'not like'; NeedWildcards:= true;  end; // not contains
-    4: begin op := '=';        NeedWildcards:= false; end; // is empty
-    5: begin op := '<>';       NeedWildcards:= false; end; // is not empty
-  else
-    exit;
-  end;
-
-  if TestText.ItemIndex < 4 then
-     begin
-     if edtText.Text = EmptyStr then
-        exit;
-     end
-  else
-     edtText.Text := '';
-
-  if NeedWildcards then
-     Value :=  QuotedStr('%'+edtText.Text+'%')
-  else
-     Value :=  QuotedStr(edtText.Text);
-
-  result := format(' %s %s %s',[FieldArray[index].FieldName, op, Value]);
-
-end;
-
 procedure TfrField.SetisChanged(AValue: boolean);
 begin
-  if FisChanged=AValue then Exit;
   FisChanged:=AValue;
-end;
-
-function TfrField.GetFilterNumber(index: Integer): string;
-var
-  op : string;
-  Value: string;
-begin
-  result:='';
-
-  case testNumber.ItemIndex of
-    0: begin op := '=';  end; // equal to
-    1: begin op := '<>'; end; // not equal to
-    2: begin op := '>';  end; // bigger than
-    3: begin op := '<';  end; // less than
-  else
-    exit;
-  end;
-
-  Value := IntToStr(seNumber.Value);
-
-  result := format(' %s %s %s',[FieldArray[index].FieldName, op, Value]);
-
-end;
-
-function TfrField.GetFilterRating(index: Integer): string;
-var
-  op : string;
-  Value: string;
-begin
-  result:='';
-
-  case testRating.ItemIndex of
-    0: begin op := '=';  end; // equal to
-    1: begin op := '<>'; end; // not equal to
-    2: begin op := '>';  end; // bigger than
-    3: begin op := '<';  end; // less than
-    4: begin op := 'is null';  end; // equal to
-
-  else
-    exit;
-  end;
-
-  if testRating.ItemIndex = 4 then
-    Value := ''
-  else
-    Value := IntToStr(cbRating.ItemIndex + 1);
-
-
-  result := format(' %s %s %s',[FieldArray[index].FieldName, op, Value]);
-
-end;
-
-function TfrField.GetFilter: string;
-begin
- Result := EmptyStr;
- if Fidx < 0 then exit;
- case  FieldArray[Fidx].Kind of
-   ekText : result := GetFilterText(Fidx);
-   ekDate : ;
-   ekNumber : result := GetFilterNumber(FIdx);
-   ekRating : result := GetFilterRating(FIdx);
-
- end;
-
-// if Result <> EmptyStr then
-//    Result := ' AND ' + Result ;
-end;
-
-function TfrField.isExecutable: boolean;
-begin
- Result := False;
- if Fidx < 0 then exit;
- case  FieldArray[Fidx].Kind of
-   ekText : result := (TestText.ItemIndex > 3) or
-                      ((TestText.ItemIndex < 4) and (edtText.Text <> EmptyStr) )   ;
-
-   ekDate : ;
-   ekNumber : Result := True;
-   ekRating : result := True;
- end;
+  UpdateFilter;
 end;
 
 function TfrField.isChanged: boolean;
 begin
   Result := fChanged;
   fChanged := false;
+end;
+
+procedure TfrField.UpdateFromFilter;
+begin
+  FIdx:= FindIndexByID(FieldFilter.FieldID);
+  case  FieldArray[fidx].Kind of
+    ekText : begin
+               ShowOnlyPanel(pnlText);
+               TestText.ItemIndex:=FieldFilter.TestIndex;
+               edtText.Text:=FieldFilter.StringValue;
+             end;
+    EkDate : ShowOnlyPanel(pnlDate);
+    ekNumber : begin
+                 ShowOnlyPanel(pnlNumber);
+                 testNumber.ItemIndex:=FieldFilter.TestIndex;
+                 seNumber.Value:=FieldFilter.IntegerValue;
+               end;
+    EKRating : begin
+                 ShowOnlyPanel(pnlRating);
+                 testRating.ItemIndex:=FieldFilter.TestIndex;
+                 cbRating.ItemIndex:=FieldFilter.IntegerValue;
+    end;
+  end;
+end;
+
+procedure TfrField.UpdateFilter;
+begin
+   if Not Assigned(FieldFilter) or (FIdx <0) then exit;
+    FieldFilter.FieldID := FieldArray[FIdx].Id;
+    case  FieldArray[fidx].Kind of
+      ekText : begin
+                 FieldFilter.TestIndex   := TestText.ItemIndex;
+                 FieldFilter.StringValue := edtText.Text;
+               end;
+//      EkDate : ShowOnlyPanel(pnlDate);
+      ekNumber : begin
+                   FieldFilter.TestIndex    := testNumber.ItemIndex;
+                   FieldFilter.IntegerValue := seNumber.Value;
+                 end;
+      EKRating : begin
+                   FieldFilter.TestIndex    := testRating.ItemIndex;
+                   FieldFilter.IntegerValue := cbRating.ItemIndex;
+      end;
+    end;
+
 end;
 
 end.

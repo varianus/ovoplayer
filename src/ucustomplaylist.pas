@@ -12,7 +12,7 @@ uses
 type
 
   { TfCustomPlayList }
-  TFieldContainer = specialize TFPGObjectList<TfrField>;
+  TEditorsContainer = specialize TFPGObjectList<TfrField>;
 
   TfCustomPlayList = class(TForm)
     ApplicationProperties1: TApplicationProperties;
@@ -31,9 +31,10 @@ type
     procedure OKButtonClick(Sender: TObject);
   private
     fDefaultIndex: integer;
+    PlayListBuilder: TPlayListBuilder;
     function ComposeFilter: String;
   public
-    Fields: TFieldContainer;
+    Editors: TEditorsContainer;
     Function AddField:TfrField;
   end;
 
@@ -50,8 +51,10 @@ procedure TfCustomPlayList.FormCreate(Sender: TObject);
 var
   i: integer;
 begin
+  PlayListBuilder := TPlayListBuilder.Create;
+
   // Sort field names based on label.
-  // Doing it here should sort the already translated
+  // Doing it here should sort the already translated ones
   SortFields;
   //Find at wich index is the title field, used as a default
   fDefaultIndex:=0;
@@ -61,7 +64,7 @@ begin
          fDefaultIndex:=i;
          Break;
       end;
-  Fields := TFieldContainer.Create(true);
+  Editors := TEditorsContainer.Create(true);
   AddField;
   seLimits.AnchorToNeighbour(akLeft, 10, ckLimit);
 end;
@@ -72,8 +75,8 @@ var
   i: integer;
 begin
   Filters:= '1=1'; // dummy test
-  for i := 0 to Fields.Count -1 do
-    Filters := Filters + ' AND '+ Fields[i].GetFilter;
+  for i := 0 to Editors.Count -1 do
+    Filters := Filters + ' AND '+ Editors[i].FieldFilter.GetFilter;
 
   if ckRandom.Checked then
     Sorts := ' random() '
@@ -104,15 +107,15 @@ var
 begin
   Executable := true;
   isChanged:= false;
-  for i := 0 to Fields.Count -1 do
-    Executable:=Executable and Fields[i].isExecutable;
+  for i := 0 to PlayListBuilder.Count -1 do
+    Executable:=Executable and PlayListBuilder[i].isExecutable;
 
   ButtonPanel1.OKButton.Enabled:=Executable;
 
   if Executable then
     begin
-      for i := 0 to Fields.Count -1 do
-        isChanged:=isChanged or Fields[i].isChanged;
+      for i := 0 to Editors.Count -1 do
+        isChanged:=isChanged or Editors[i].isChanged;
       if isChanged then
         begin
           PlayListData := BackEnd.mediaLibrary.FilterInfo(ComposeFilter);
@@ -131,27 +134,32 @@ var
 
 begin
   Result:=EmptyStr;
-  for i := 0 to Fields.Count -1 do
+  for i := 0 to PlayListBuilder.Count -1 do
     begin
-      Result := Result + ' ' + Fields[i].GetFilter;
+      Result := Result + ' ' + PlayListBuilder[i].GetFilter;
     end;
 
 end;
 
 function TfCustomPlayList.AddField: TfrField;
 begin
+
   Result:= TfrField.Create(sbFieldContainer);
+  Result.FieldFilter := TFieldFilter.Create;
+  PlayListBuilder.Capacity:= 4;
+  PlayListBuilder.Add(Result.FieldFilter);
   Result.Name := 'FRA'+IntToStr(PtrUInt(result));
   Result.Align:=alTop;
-  Fields.Add(Result);
+  Editors.Add(Result);
   Result.Parent := sbFieldContainer;
   result.Top:=sbFieldContainer.Height;
-  result.Show;
   // initialize with some value
   result.cbFieldName.ItemIndex:=fDefaultIndex;
   result.ShowOnlyPanel(result.pnlText);
   result.TestText.ItemIndex:=0;
   Result.TestTextChange(Result.TestText);
+  Result.cbFieldNameChange(Result);
+  Result.UpdateFilter;
 
 end;
 

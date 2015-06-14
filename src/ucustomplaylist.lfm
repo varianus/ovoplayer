@@ -18,8 +18,8 @@ object fCustomPlayList: TfCustomPlayList
   end
   object ButtonPanel1: TButtonPanel
     Left = 6
-    Height = 34
-    Top = 481
+    Height = 35
+    Top = 480
     Width = 586
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
@@ -35,7 +35,7 @@ object fCustomPlayList: TfCustomPlayList
   end
   object sbFieldContainer: TScrollBox
     Left = 0
-    Height = 324
+    Height = 323
     Top = 72
     Width = 598
     HorzScrollBar.Page = 1
@@ -46,7 +46,7 @@ object fCustomPlayList: TfCustomPlayList
   object Panel2: TPanel
     Left = 0
     Height = 79
-    Top = 396
+    Top = 395
     Width = 598
     Align = alBottom
     Anchors = [akLeft]
@@ -100,9 +100,9 @@ object fCustomPlayList: TfCustomPlayList
     end
     object ckRandom: TCheckBox
       Left = 8
-      Height = 19
+      Height = 21
       Top = 14
-      Width = 79
+      Width = 90
       Caption = 'Randomize'
       Checked = True
       State = cbChecked
@@ -111,9 +111,9 @@ object fCustomPlayList: TfCustomPlayList
     object ckLimit: TCheckBox
       AnchorSideRight.Control = seLimits
       Left = 152
-      Height = 19
+      Height = 21
       Top = 12
-      Width = 64
+      Width = 72
       Caption = 'Limit to '
       Checked = True
       Color = clDefault
@@ -125,8 +125,8 @@ object fCustomPlayList: TfCustomPlayList
       AnchorSideTop.Control = ckLimit
       AnchorSideTop.Side = asrCenter
       Left = 216
-      Height = 23
-      Top = 10
+      Height = 27
+      Top = 9
       Width = 90
       MaxValue = 99999
       MinValue = 50

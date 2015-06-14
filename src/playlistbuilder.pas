@@ -5,19 +5,50 @@ unit playlistbuilder;
 interface
 
 uses
- Classes, SysUtils, GeneralFunc;
+ Classes, SysUtils, GeneralFunc, fgl;
 
 type
 
  EditorKind =(ekText,ekDate,ekRating,ekNumber);
 
-FieldRec = record
-  Id : integer;
-  FieldName : string;
-  FieldLabel : string;
-  Kind : EditorKind;
+  FieldRec = record
+    Id : integer;
+    FieldName : string;
+    FieldLabel : string;
+    Kind : EditorKind;
+  end;
 
-end;
+  { TPlayListBuilder }
+
+  { TFieldFilter }
+
+  TFieldFilter = class
+  private
+    FFieldID: integer;
+    FIdx: integer;
+
+    function GetFilterNumber: string;
+    function GetFilterRating: string;
+    function GetFilterText: string;
+    procedure SetFieldID(AValue: integer);
+
+  public
+    TestIndex : integer;
+    StringValue : string;
+    IntegerValue: int64;
+    FloatValue : Double;
+    Property FieldID : integer read FFieldID write SetFieldID;
+    function isExecutable: boolean;
+    function GetFilter: string;
+  end;
+  TIntPlayListBuilder = specialize TFPGObjectList<TFieldFilter>;
+
+  TPlayListBuilder = class (TIntPlayListBuilder)
+  public
+    constructor Create;
+    Destructor Destroy; override;
+  end;
+
 
 ResourceString
   // Diplay label for fields
@@ -50,7 +81,6 @@ ResourceString
   RS_IsNotEmpty = 'is not empty';
   RS_LessThan = 'less than';
 
-
 const
    FieldCount = 16;
    FieldArray : array [0..FieldCount-1] of FieldRec =  (
@@ -74,6 +104,8 @@ const
 
 Procedure SortFields;
 
+Function FindIndexByID(const ID: Integer): Integer;
+
 implementation
 
 function MyCompare (const Item1, Item2: integer): Integer;
@@ -86,6 +118,152 @@ type
   myArr = specialize TSortArray<FieldRec>;
 begin
   myArr.Sort(FieldArray, @MyCompare);
+end;
+
+function FindIndexByID(const ID:Integer): Integer;
+var
+  i: integer;
+begin
+  for i := 0 to FieldCount -1 do
+    begin
+      if FieldArray[i].Id = id then
+        begin
+          result:= i;
+          exit;
+        end;
+    end;
+ Result:= -1;
+
+end;
+
+
+function TFieldFilter.GetFilterText: string;
+var
+  op : string;
+  Value: string;
+  NeedWildcards: boolean;
+begin
+  result:='';
+  case TestIndex of
+    0: begin op := 'like';     NeedWildcards:= true;  end; // contains
+    1: begin op := 'not like'; NeedWildcards:= true;  end; // not contains
+    2: begin op := '=';        NeedWildcards:= false; end; // is
+    3: begin op := '<>';       NeedWildcards:= false; end; // is not
+    4: begin op := '=';        NeedWildcards:= false; end; // is empty
+    5: begin op := '<>';       NeedWildcards:= false; end; // is not empty
+  else
+    exit;
+  end;
+
+  if TestIndex < 4 then
+     begin
+     if StringValue = EmptyStr then
+        exit;
+     end;
+
+  if NeedWildcards then
+     Value :=  QuotedStr('%'+StringValue+'%')
+  else
+     Value :=  QuotedStr(StringValue);
+
+  result := format(' %s %s %s',[FieldArray[FIdx].FieldName, op, Value]);
+
+end;
+
+procedure TFieldFilter.SetFieldID(AValue: integer);
+begin
+  if FFieldID=AValue then Exit;
+  FFieldID:=AValue;
+  FIdx:= FindIndexByID(FFieldID);
+end;
+
+function TFieldFilter.GetFilterNumber: string;
+var
+  op : string;
+  Value: string;
+begin
+  result:='';
+
+  case TestIndex of
+    0: begin op := '=';  end; // equal to
+    1: begin op := '<>'; end; // not equal to
+    2: begin op := '>';  end; // bigger than
+    3: begin op := '<';  end; // less than
+  else
+    exit;
+  end;
+
+  Value := IntToStr(IntegerValue);
+
+  result := format(' %s %s %s',[FieldArray[FIdx].FieldName, op, Value]);
+
+end;
+
+function TFieldFilter.GetFilterRating: string;
+var
+  op : string;
+  Value: string;
+begin
+  result:='';
+
+  case TestIndex of
+    0: begin op := '=';  end; // equal to
+    1: begin op := '<>'; end; // not equal to
+    2: begin op := '>';  end; // bigger than
+    3: begin op := '<';  end; // less than
+    4: begin op := 'is null';  end; // equal to
+
+  else
+    exit;
+  end;
+
+  if TestIndex = 4 then
+    Value := ''
+  else
+    Value := IntToStr(IntegerValue + 1);
+
+
+  result := format(' %s %s %s',[FieldArray[FIdx].FieldName, op, Value]);
+
+end;
+
+function TFieldFilter.GetFilter: string;
+begin
+ Result := EmptyStr;
+ if FIdx  < 0 then exit;
+ case  FieldArray[FIdx].Kind of
+   ekText : result := GetFilterText;
+   ekDate : ;
+   ekNumber : result := GetFilterNumber;
+   ekRating : result := GetFilterRating;
+
+ end;
+end;
+
+function TFieldFilter.isExecutable: boolean;
+begin
+ Result := False;
+ if FIdx < 0 then exit;
+ case  FieldArray[FIdx].Kind of
+   ekText : result := (TestIndex > 3) or
+                      ((TestIndex < 4) and (StringValue <> EmptyStr) )   ;
+
+   ekDate : ;
+   ekNumber : Result := True;
+   ekRating : result := True;
+ end;
+end;
+
+{ TPlayListBuilder }
+
+constructor TPlayListBuilder.Create;
+begin
+  Inherited Create(True);
+end;
+
+destructor TPlayListBuilder.Destroy;
+begin
+  inherited Destroy;
 end;
 
 end.
