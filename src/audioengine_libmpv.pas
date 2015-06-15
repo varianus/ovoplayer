@@ -68,6 +68,9 @@ type
 
 implementation
 uses math, ctypes;
+{$ifdef LINUX}
+function setlocale(category: cint; locale: pchar): pchar; cdecl; external 'c' name 'setlocale';
+{$endif}
 
 Const
    MPVMAXVOLUME = 100;
@@ -136,6 +139,10 @@ var
    flg:integer=1;
 begin
   inherited Create;
+  {$ifdef LINUX}
+  setlocale(1, 'C');
+  {$endif}
+
   Load_libmpv(libmpv.External_library);
   fhandle := mpv_create();
   res := mpv_set_option(fhandle^,'no-video', MPV_FORMAT_FLAG,@flg);
@@ -320,4 +327,4 @@ end;
 
 initialization
   RegisterEngineClass(TAudioEngineLibMPV, 5, false, true);
-end.
+end.
