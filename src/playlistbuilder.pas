@@ -44,7 +44,22 @@ type
   TIntPlayListBuilder = specialize TFPGObjectList<TFieldFilter>;
 
   TPlayListBuilder = class (TIntPlayListBuilder)
+  private
+    FSongLimit: integer;
+    FSortFieldID: integer;
+    function GetExecutable: boolean;
+    function GetFilter: string;
+    function GetSortClause: string;
+    procedure SetSongLimit(AValue: integer);
+    procedure SetSortFieldID(AValue: integer);
   public
+    property SongLimit: integer read FSongLimit write SetSongLimit;
+    property SortFieldID: integer read FSortFieldID write SetSortFieldID;
+    //
+    property isExecutable: boolean read GetExecutable;
+    Property Filter : string read GetFilter;
+    Property SortClause : string read GetSortClause;
+    //
     constructor Create;
     Destructor Destroy; override;
   end;
@@ -69,17 +84,20 @@ ResourceString
   RS_FileSize     = 'File Size';
   RS_FileDate     = 'File Date';
 
+  RS_Random       = 'Random';
+
+
   RS_EqualTo      = 'equal to';
   RS_NotEqualTo   = 'not equal to';
   RS_BiggerThan   = 'bigger than';
   RS_NotRated     = 'not rated';
-  RS_Is = 'is';
-  RS_IsNot = 'is not';
-  RS_Contains = 'contains';
-  RS_NotContains = 'not contains';
-  RS_IsEmpty = 'is empty';
-  RS_IsNotEmpty = 'is not empty';
-  RS_LessThan = 'less than';
+  RS_Is           = 'is';
+  RS_IsNot        = 'is not';
+  RS_Contains     = 'contains';
+  RS_NotContains  = 'not contains';
+  RS_IsEmpty      = 'is empty';
+  RS_IsNotEmpty   = 'is not empty';
+  RS_LessThan     = 'less than';
 
 const
    FieldCount = 16;
@@ -255,6 +273,53 @@ begin
 end;
 
 { TPlayListBuilder }
+
+procedure TPlayListBuilder.SetSongLimit(AValue: integer);
+begin
+  if FSongLimit=AValue then Exit;
+  FSongLimit:=AValue;
+end;
+
+function TPlayListBuilder.GetFilter: string;
+var
+  i :integer;
+begin
+ Result:= '1=1'; // dummy test to simplify AND logic
+
+ for i := 0 to Count -1 do
+   begin
+     Result := Result + ' AND ' + Items[i].GetFilter;
+   end;
+end;
+
+function TPlayListBuilder.GetExecutable: boolean;
+var
+  i: integer;
+begin
+ Result := true;
+  for i := 0 to Count -1 do
+    Result := Result and Items[i].isExecutable;
+
+end;
+
+function TPlayListBuilder.GetSortClause: string;
+begin
+  if SortFieldID = -1 then
+    Result := ' random() '
+  else
+    Result := FieldArray[FindIndexByID(SortFieldID)].FieldName;
+
+  if SongLimit > 0 then
+    Result:= Result + ' Limit ' + inttostr(SongLimit);
+
+
+end;
+
+procedure TPlayListBuilder.SetSortFieldID(AValue: integer);
+begin
+  if FSortFieldID=AValue then Exit;
+  FSortFieldID:=AValue;
+end;
 
 constructor TPlayListBuilder.Create;
 begin

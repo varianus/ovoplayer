@@ -18,8 +18,9 @@ type
     ApplicationProperties1: TApplicationProperties;
     bPlus: TBitBtn;
     ButtonPanel1: TButtonPanel;
-    ckRandom: TCheckBox;
+    cbFieldName: TComboBox;
     ckLimit: TCheckBox;
+    lbSort: TLabel;
     lbFilterResults: TLabel;
     Panel1: TPanel;
     Panel2: TPanel;
@@ -32,10 +33,11 @@ type
   private
     fDefaultIndex: integer;
     PlayListBuilder: TPlayListBuilder;
-    function ComposeFilter: String;
   public
     Editors: TEditorsContainer;
     Function AddField:TfrField;
+    Procedure UpdateBuilder;
+    Procedure UpdateFromBuilder;
   end;
 
 var
@@ -64,6 +66,16 @@ begin
          fDefaultIndex:=i;
          Break;
       end;
+
+  cbFieldName.Items.Add(RS_Random);
+
+  for i := 0 to FieldCount -1 do
+    begin
+      cbFieldName.Items.Add(FieldArray[i].FieldLabel);
+    end;
+
+  cbFieldName.ItemIndex:=0;
+
   Editors := TEditorsContainer.Create(true);
   AddField;
   seLimits.AnchorToNeighbour(akLeft, 10, ckLimit);
@@ -71,23 +83,11 @@ end;
 
 procedure TfCustomPlayList.OKButtonClick(Sender: TObject);
 var
-  filters, sorts: string;
   i: integer;
 begin
-  Filters:= '1=1'; // dummy test
-  for i := 0 to Editors.Count -1 do
-    Filters := Filters + ' AND '+ Editors[i].FieldFilter.GetFilter;
-
-  if ckRandom.Checked then
-    Sorts := ' random() '
-  else
-    Sorts := ' id ';
-  if ckLimit.Checked then
-    sorts:= sorts + ' Limit ' + inttostr(seLimits.Value);
-
 
   BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
-        Filters, sorts );
+        PlayListBuilder.Filter, PlayListBuilder.SortClause );
 
 end;
 
@@ -105,10 +105,8 @@ var
   PlayListData: RFilterInfo;
   isChanged: boolean;
 begin
-  Executable := true;
   isChanged:= false;
-  for i := 0 to PlayListBuilder.Count -1 do
-    Executable:=Executable and PlayListBuilder[i].isExecutable;
+  Executable:= PlayListBuilder.isExecutable;
 
   ButtonPanel1.OKButton.Enabled:=Executable;
 
@@ -118,7 +116,7 @@ begin
         isChanged:=isChanged or Editors[i].isChanged;
       if isChanged then
         begin
-          PlayListData := BackEnd.mediaLibrary.FilterInfo(ComposeFilter);
+          PlayListData := BackEnd.mediaLibrary.FilterInfo(PlayListBuilder.Filter);
           lbFilterResults.Caption:= Format(rMatchingItems,[PlayListData.Count,
                                                           TimeToStr(PlayListData.TotalTime / MSecsPerDay),
                                                           FormatByteString(PlayListData.TotalSize)]);
@@ -128,25 +126,11 @@ begin
 
 end;
 
-function TfCustomPlayList.ComposeFilter: String;
-var
-  i: integer;
-
-begin
-  Result:=EmptyStr;
-  for i := 0 to PlayListBuilder.Count -1 do
-    begin
-      Result := Result + ' ' + PlayListBuilder[i].GetFilter;
-    end;
-
-end;
-
 function TfCustomPlayList.AddField: TfrField;
 begin
 
   Result:= TfrField.Create(sbFieldContainer);
   Result.FieldFilter := TFieldFilter.Create;
-  PlayListBuilder.Capacity:= 4;
   PlayListBuilder.Add(Result.FieldFilter);
   Result.Name := 'FRA'+IntToStr(PtrUInt(result));
   Result.Align:=alTop;
@@ -161,6 +145,39 @@ begin
   Result.cbFieldNameChange(Result);
   Result.UpdateFilter;
 
+end;
+
+procedure TfCustomPlayList.UpdateBuilder;
+begin
+  if ckLimit.Checked then
+     PlayListBuilder.SongLimit := seLimits.Value
+  else
+     PlayListBuilder.SongLimit := -1;
+
+  if cbFieldName.ItemIndex = 0 then
+    PlayListBuilder.SortFieldID:= -1
+  else
+    PlayListBuilder.SortFieldID:= FieldArray[cbFieldName.ItemIndex-1].Id;
+
+end;
+
+procedure TfCustomPlayList.UpdateFromBuilder;
+begin
+  if PlayListBuilder.SongLimit >0  then
+     begin
+       seLimits.Value := PlayListBuilder.SongLimit;
+       ckLimit.Checked:= true;;
+     end
+  else
+     begin
+      seLimits.Value := 50;
+      ckLimit.Checked:= False;
+     end;
+
+  if cbFieldName.ItemIndex = 0 then
+    PlayListBuilder.SortFieldID:= -1
+  else
+    PlayListBuilder.SortFieldID:= FieldArray[cbFieldName.ItemIndex-1].Id;
 end;
 
 end.

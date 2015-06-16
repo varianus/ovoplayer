@@ -25,10 +25,10 @@ object fMainForm: TfMainForm
     Height = 674
     Top = 0
     Width = 243
-    ActivePage = tsPlayList
+    ActivePage = tsCollection
     Align = alLeft
     MultiLine = True
-    TabIndex = 2
+    TabIndex = 0
     TabOrder = 0
     TabPosition = tpBottom
     Options = [nboMultiLine, nboHidePageListPopup]
