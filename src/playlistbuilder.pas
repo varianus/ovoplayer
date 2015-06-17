@@ -5,7 +5,7 @@ unit playlistbuilder;
 interface
 
 uses
- Classes, SysUtils, GeneralFunc, fgl;
+ Classes, SysUtils, GeneralFunc, fgl, FPJSON, fpjsonrtti;
 
 type
 
@@ -21,25 +21,35 @@ type
   { TPlayListBuilder }
 
   { TFieldFilter }
-
+{$M+}
   TFieldFilter = class
   private
     FFieldID: integer;
+    FFloatValue: Double;
     FIdx: integer;
+    FIntegerValue: int64;
+    FStringValue: string;
+    FTestIndex: integer;
 
     function GetFilterNumber: string;
     function GetFilterRating: string;
     function GetFilterText: string;
     procedure SetFieldID(AValue: integer);
+    procedure SetFloatValue(AValue: Double);
+    procedure SetIntegerValue(AValue: int64);
+    procedure SetStringValue(AValue: string);
+    procedure SetTestIndex(AValue: integer);
 
   public
-    TestIndex : integer;
-    StringValue : string;
-    IntegerValue: int64;
-    FloatValue : Double;
-    Property FieldID : integer read FFieldID write SetFieldID;
     function isExecutable: boolean;
     function GetFilter: string;
+  published
+    property TestIndex : integer read FTestIndex write SetTestIndex;
+    property StringValue : string read FStringValue write SetStringValue;
+    property IntegerValue: int64 read FIntegerValue write SetIntegerValue;
+    property FloatValue : Double read FFloatValue write SetFloatValue;
+    Property FieldID : integer read FFieldID write SetFieldID;
+
   end;
   TIntPlayListBuilder = specialize TFPGObjectList<TFieldFilter>;
 
@@ -53,15 +63,22 @@ type
     procedure SetSongLimit(AValue: integer);
     procedure SetSortFieldID(AValue: integer);
   public
+   //
+    constructor Create;
+    Destructor Destroy; override;
+   //
+    Procedure ToJson(FileName:TfileName);
+
+    Property Filter : string read GetFilter;
+    property isExecutable: boolean read GetExecutable;
+    Property SortClause : string read GetSortClause;
+
+  published
     property SongLimit: integer read FSongLimit write SetSongLimit;
     property SortFieldID: integer read FSortFieldID write SetSortFieldID;
     //
-    property isExecutable: boolean read GetExecutable;
-    Property Filter : string read GetFilter;
-    Property SortClause : string read GetSortClause;
-    //
-    constructor Create;
-    Destructor Destroy; override;
+
+
   end;
 
 
@@ -195,6 +212,30 @@ begin
   FIdx:= FindIndexByID(FFieldID);
 end;
 
+procedure TFieldFilter.SetFloatValue(AValue: Double);
+begin
+  if FFloatValue=AValue then Exit;
+  FFloatValue:=AValue;
+end;
+
+procedure TFieldFilter.SetIntegerValue(AValue: int64);
+begin
+  if FIntegerValue=AValue then Exit;
+  FIntegerValue:=AValue;
+end;
+
+procedure TFieldFilter.SetStringValue(AValue: string);
+begin
+  if FStringValue=AValue then Exit;
+  FStringValue:=AValue;
+end;
+
+procedure TFieldFilter.SetTestIndex(AValue: integer);
+begin
+  if FTestIndex=AValue then Exit;
+  FTestIndex:=AValue;
+end;
+
 function TFieldFilter.GetFilterNumber: string;
 var
   op : string;
@@ -319,6 +360,35 @@ procedure TPlayListBuilder.SetSortFieldID(AValue: integer);
 begin
   if FSortFieldID=AValue then Exit;
   FSortFieldID:=AValue;
+end;
+
+procedure TPlayListBuilder.ToJson(FileName: TfileName);
+var
+  i: integer;
+  Streamer  : TJSONStreamer;
+  JSONString : string;
+  JSONOnject : TJSONObject;
+  JSONArray: TJSONArray;
+  f: Text;
+begin
+  Streamer := TJSONStreamer.Create(nil);
+
+  JSONOnject := Streamer.ObjectToJSON(Self);
+  JSONArray := TJSONArray.Create;
+
+  for i := 0 to Count -1 do
+     JSONArray.Add(Streamer.ObjectToJSON(Items[i]));
+
+  JSONOnject.Add('Filters',JSONArray);
+
+  JSONString := JSONOnject.AsJSON;
+  AssignFile(f,FileName);
+  Rewrite(f);
+  WriteLn(f,JSONString);
+  CloseFile(f);
+  Streamer.Free;
+  JSONOnject.Free;
+
 end;
 
 constructor TPlayListBuilder.Create;

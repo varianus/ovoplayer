@@ -17,6 +17,7 @@ type
   TfCustomPlayList = class(TForm)
     ApplicationProperties1: TApplicationProperties;
     bPlus: TBitBtn;
+    bPlus1: TBitBtn;
     ButtonPanel1: TButtonPanel;
     cbFieldName: TComboBox;
     ckLimit: TCheckBox;
@@ -27,6 +28,7 @@ type
     sbFieldContainer: TScrollBox;
     seLimits: TSpinEdit;
     procedure ApplicationProperties1Idle(Sender: TObject; var Done: Boolean);
+    procedure bPlus1Click(Sender: TObject);
     procedure bPlusClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
@@ -37,7 +39,7 @@ type
     Editors: TEditorsContainer;
     Function AddField:TfrField;
     Procedure UpdateBuilder;
-    Procedure UpdateFromBuilder;
+    Procedure UpdateFromBuilder(LoadFilters: boolean);
   end;
 
 var
@@ -126,6 +128,11 @@ begin
 
 end;
 
+procedure TfCustomPlayList.bPlus1Click(Sender: TObject);
+begin
+  PlayListBuilder.ToJson('testfile.json');
+end;
+
 function TfCustomPlayList.AddField: TfrField;
 begin
 
@@ -161,7 +168,10 @@ begin
 
 end;
 
-procedure TfCustomPlayList.UpdateFromBuilder;
+procedure TfCustomPlayList.UpdateFromBuilder(LoadFilters: boolean);
+var
+  i:integer;
+  _Frame: TfrField;
 begin
   if PlayListBuilder.SongLimit >0  then
      begin
@@ -178,6 +188,20 @@ begin
     PlayListBuilder.SortFieldID:= -1
   else
     PlayListBuilder.SortFieldID:= FieldArray[cbFieldName.ItemIndex-1].Id;
+
+  if LoadFilters then
+      for i := 0 to PlayListBuilder.Count -1 do
+        begin
+         _Frame:= TfrField.Create(sbFieldContainer);
+         _Frame.FieldFilter := PlayListBuilder[i];
+         _Frame.UpdateFromFilter;
+         _Frame.Name := 'FRA'+IntToStr(PtrUInt(_Frame));
+         _Frame.Align:=alTop;
+         Editors.Add(_Frame);
+         _Frame.Parent := sbFieldContainer;
+         _Frame.Top:=sbFieldContainer.Height;
+        end;
+
 end;
 
 end.

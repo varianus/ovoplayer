@@ -1,7 +1,7 @@
 object fCustomPlayList: TfCustomPlayList
-  Left = 2038
+  Left = 1976
   Height = 521
-  Top = 240
+  Top = 117
   Width = 598
   Caption = 'Custom Playlist '
   ClientHeight = 521
@@ -147,6 +147,16 @@ object fCustomPlayList: TfCustomPlayList
       Width = 37
       Caption = 'Sort by'
       ParentColor = False
+    end
+    object bPlus1: TBitBtn
+      Left = 384
+      Height = 30
+      Top = 41
+      Width = 103
+      Anchors = [akTop, akRight]
+      Caption = 'Test write'
+      OnClick = bPlus1Click
+      TabOrder = 4
     end
   end
   object ApplicationProperties1: TApplicationProperties
