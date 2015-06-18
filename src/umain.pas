@@ -1171,11 +1171,14 @@ begin
   if Assigned(Mpris) then
      begin
       Mpris.Deactivate;
+      Mpris.Free;
      end;
   {$ENDIF MPRIS}
   {$IFDEF TASKBAR_EXTENSION}
   Mytaskbar_ext.UnInit;
+  Mytaskbar_ext.Free;
   {$ENDIF}
+
   if Assigned(fMiniPlayer) then
     FreeAndNil(fMiniPlayer);
 
@@ -1718,7 +1721,6 @@ begin
 
     if aRow = 0 then
       exit;
-
 
     ASong := BackEnd.PlayList.Songs[Arow -1];
     if ASong = nil then exit;
