@@ -5,7 +5,7 @@ unit playlistbuilder;
 interface
 
 uses
- Classes, SysUtils, GeneralFunc, fgl, FPJSON, fpjsonrtti;
+ Classes, LazUTF8Classes, SysUtils, GeneralFunc, fgl, FPJSON, jsonparser, fpjsonrtti;
 
 type
 
@@ -57,6 +57,7 @@ type
   private
     FSongLimit: integer;
     FSortFieldID: integer;
+
     function GetExecutable: boolean;
     function GetFilter: string;
     function GetSortClause: string;
@@ -68,6 +69,7 @@ type
     Destructor Destroy; override;
    //
     Procedure ToJson(FileName:TfileName);
+    procedure FromJson(FileName: TfileName);
 
     Property Filter : string read GetFilter;
     property isExecutable: boolean read GetExecutable;
@@ -369,7 +371,7 @@ var
   JSONString : string;
   JSONOnject : TJSONObject;
   JSONArray: TJSONArray;
-  f: Text;
+  Stream: TFileStreamUTF8;
 begin
   Streamer := TJSONStreamer.Create(nil);
 
@@ -381,14 +383,45 @@ begin
 
   JSONOnject.Add('Filters',JSONArray);
 
-  JSONString := JSONOnject.AsJSON;
-  AssignFile(f,FileName);
-  Rewrite(f);
-  WriteLn(f,JSONString);
-  CloseFile(f);
+  Stream := TFileStreamUTF8.Create(FileName, fmOpenWrite + fmCreate);
+
+  JSONOnject.DumpJSON(Stream);
+  Stream.Free;
+
   Streamer.Free;
   JSONOnject.Free;
 
+end;
+
+procedure TPlayListBuilder.FromJson(FileName: TfileName);
+var
+  i: integer;
+  DeStreamer  : TJSONDeStreamer;
+  JSONString : string;
+  JSONOnject : TJSONObject;
+  JSONArray: TJSONArray;
+  Stream: TFileStreamUTF8;
+  item: TFieldFilter;
+begin
+  Stream:= TFileStreamUTF8.Create(FileName, fmOpenRead);
+  JSONOnject := TJSONObject(GetJSON(Stream, True));
+
+  DeStreamer := TJSONDeStreamer.Create(nil);
+  DeStreamer.JSONToObject(JSONOnject, self);
+
+  Clear;
+
+  JSONArray := JSONOnject.Get('Filters',JSONArray);
+
+  for i := 0 to JSONArray.Count -1 do
+     begin
+       Item := TFieldFilter.Create;
+       DeStreamer.JSONToObject(JSONArray.Objects[i],item);
+       Add(item);
+     end;
+  Stream.Free;
+  DeStreamer.Free;
+  JSONOnject.Free;
 end;
 
 constructor TPlayListBuilder.Create;

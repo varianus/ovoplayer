@@ -7,6 +7,7 @@ object fCustomPlayList: TfCustomPlayList
   ClientHeight = 521
   ClientWidth = 598
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   LCLVersion = '1.5'
   object Panel1: TPanel
     Left = 0
@@ -119,7 +120,7 @@ object fCustomPlayList: TfCustomPlayList
       Top = 12
       Width = 90
       MaxValue = 99999
-      MinValue = 50
+      MinValue = 1
       TabOrder = 1
       Value = 50
     end
@@ -149,14 +150,24 @@ object fCustomPlayList: TfCustomPlayList
       ParentColor = False
     end
     object bPlus1: TBitBtn
-      Left = 384
+      Left = 368
       Height = 30
       Top = 41
-      Width = 103
+      Width = 55
       Anchors = [akTop, akRight]
       Caption = 'Test write'
       OnClick = bPlus1Click
       TabOrder = 4
+    end
+    object bPlus2: TBitBtn
+      Left = 443
+      Height = 30
+      Top = 41
+      Width = 55
+      Anchors = [akTop, akRight]
+      Caption = 'Test read'
+      OnClick = bPlus2Click
+      TabOrder = 5
     end
   end
   object ApplicationProperties1: TApplicationProperties

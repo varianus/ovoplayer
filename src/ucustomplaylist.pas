@@ -18,6 +18,7 @@ type
     ApplicationProperties1: TApplicationProperties;
     bPlus: TBitBtn;
     bPlus1: TBitBtn;
+    bPlus2: TBitBtn;
     ButtonPanel1: TButtonPanel;
     cbFieldName: TComboBox;
     ckLimit: TCheckBox;
@@ -29,8 +30,10 @@ type
     seLimits: TSpinEdit;
     procedure ApplicationProperties1Idle(Sender: TObject; var Done: Boolean);
     procedure bPlus1Click(Sender: TObject);
+    procedure bPlus2Click(Sender: TObject);
     procedure bPlusClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
   private
     fDefaultIndex: integer;
@@ -83,6 +86,12 @@ begin
   seLimits.AnchorToNeighbour(akLeft, 10, ckLimit);
 end;
 
+procedure TfCustomPlayList.FormDestroy(Sender: TObject);
+begin
+  Editors.Free;
+  PlayListBuilder.Free;
+end;
+
 procedure TfCustomPlayList.OKButtonClick(Sender: TObject);
 var
   i: integer;
@@ -130,7 +139,14 @@ end;
 
 procedure TfCustomPlayList.bPlus1Click(Sender: TObject);
 begin
+  UpdateBuilder;
   PlayListBuilder.ToJson('testfile.json');
+end;
+
+procedure TfCustomPlayList.bPlus2Click(Sender: TObject);
+begin
+  PlayListBuilder.FromJson('testfile.json');
+  UpdateFromBuilder(True);
 end;
 
 function TfCustomPlayList.AddField: TfrField;
@@ -184,12 +200,14 @@ begin
       ckLimit.Checked:= False;
      end;
 
-  if cbFieldName.ItemIndex = 0 then
-    PlayListBuilder.SortFieldID:= -1
+  if PlayListBuilder.SortFieldID = -1 then
+    cbFieldName.ItemIndex := 0
   else
-    PlayListBuilder.SortFieldID:= FieldArray[cbFieldName.ItemIndex-1].Id;
+    cbFieldName.ItemIndex := FindIndexByID(PlayListBuilder.SortFieldID) +1;
 
   if LoadFilters then
+     begin
+       Editors.Clear;
       for i := 0 to PlayListBuilder.Count -1 do
         begin
          _Frame:= TfrField.Create(sbFieldContainer);
@@ -201,6 +219,7 @@ begin
          _Frame.Parent := sbFieldContainer;
          _Frame.Top:=sbFieldContainer.Height;
         end;
+     end;
 
 end;
 

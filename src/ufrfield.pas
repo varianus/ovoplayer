@@ -166,6 +166,7 @@ end;
 procedure TfrField.UpdateFromFilter;
 begin
   FIdx:= FindIndexByID(FieldFilter.FieldID);
+  cbFieldName.ItemIndex:=fidx;
   case  FieldArray[fidx].Kind of
     ekText : begin
                ShowOnlyPanel(pnlText);
