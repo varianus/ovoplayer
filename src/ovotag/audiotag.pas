@@ -75,7 +75,7 @@ end;
 function LoadTags(Song: Tsong): boolean;
 begin
   Result := FileExistsUTF8(Song.FullName);
-  if result then
+  if result and not (song.TagLoaded) then
      begin
        Song.SetTags(ExtractTags(Song.FullName));
        Song.TagLoaded := True;
