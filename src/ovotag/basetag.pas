@@ -298,7 +298,7 @@ end;
 
 constructor TTagReader.Create(FileName: TfileName);
 begin
-  Create;
+//  Create;
   LoadFromFile(FileName);
 end;
 
@@ -311,9 +311,9 @@ destructor TTagReader.Destroy;
 var
    tmptags: TTags;
 begin
-  tmptags := Tags;
+  tmptags := GetTags;
   if Assigned(tmptags) then
-     freeAndNil(tmptags);
+     tmptags.Free;
 
   inherited Destroy;
 end;
@@ -457,7 +457,6 @@ begin
 
 
   inherited Destroy;
-  self :=nil;
 end;
 
 procedure TTags.Add(Frame: TFrameElement);
