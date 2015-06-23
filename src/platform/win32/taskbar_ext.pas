@@ -28,7 +28,7 @@ interface
 
 uses
   Windows, Classes, SysUtils, shlobj, comobj, coreinterfaces, uDM, NullInterfacedObject,
-  InterfaceBase, guibackend;
+  InterfaceBase, guibackend, LazUTF8;
 
 const
       IID_ITaskbarList3: TGUID = '{ea1afb91-9e28-4b86-90e9-9e9f8a5eefaf}';
@@ -95,15 +95,15 @@ begin
 
    Buttons[0].iId := 1;
    Buttons[0].iBitmap := 7;
-   StrCopy(Buttons[0].szTip, PWideChar(DM.actPrevious.Caption));
+   StrCopy(Buttons[0].szTip, PWideChar(utf8toUtf16(DM.actPrevious.Caption)));
 
    Buttons[1].iId := 2;
    Buttons[1].iBitmap := 2;
-   StrCopy(Buttons[1].szTip, PWideChar(DM.actPlay.Caption));
+   StrCopy(Buttons[1].szTip, PWideChar(utf8toUtf16(DM.actPlay.Caption)));
 
    Buttons[2].iId := 3;
    Buttons[2].iBitmap := 8;
-   StrCopy(Buttons[2].szTip, PWideChar(DM.actNext.Caption));
+   StrCopy(Buttons[2].szTip, PWideChar(utf8toUtf16(DM.actNext.Caption)));
 
    res:=TaskbarList3.ThumbBarSetImageList(FApplication, DM.ilButtons.Handle);
    res:=TaskbarList3.ThumbBarAddButtons(FApplication, 3, @Buttons[0]);
