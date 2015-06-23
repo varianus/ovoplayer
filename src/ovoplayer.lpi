@@ -101,11 +101,6 @@ if TargetOS = 'linux' then
       <local>
         <FormatVersion Value="1"/>
       </local>
-      <environment>
-        <UserOverrides Count="1">
-          <Variable0 Name="HEAPTRC" Value="log=&quot;c:\ovoheap.txt&quot;"/>
-        </UserOverrides>
-      </environment>
     </RunParams>
     <RequiredPackages Count="4">
       <Item1>
