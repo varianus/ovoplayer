@@ -10,7 +10,7 @@ const
      External_library='libmpv.so.1';
   {$ENDIF LINUX}
   {$IFDEF WINDOWS}
-     External_library='libmpv.dll';
+     External_library='mpv-1.dll';
   {$ENDIF LINUX}
   {$IFDEF DARWIN}
      External_library = 'libmpv.dylib';
@@ -535,7 +535,8 @@ const
 
   type
     Pmpv_format = ^mpv_format;
-    mpv_format =  int64;
+
+    mpv_format =  PtrUInt;
     Const
       MPV_FORMAT_NONE = 0;
       MPV_FORMAT_STRING = 1;

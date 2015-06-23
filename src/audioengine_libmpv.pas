@@ -71,6 +71,11 @@ uses math, ctypes;
 {$ifdef LINUX}
 function setlocale(category: cint; locale: pchar): pchar; cdecl; external 'c' name 'setlocale';
 {$endif}
+(*
+{$ifdef WINDOWS}
+function setlocale(category: cint; locale: pchar): pchar; cdecl; external 'msvcrt.dll' name 'setlocale';
+{$endif}
+*)
 
 Const
    MPVMAXVOLUME = 100;
