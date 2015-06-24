@@ -43,6 +43,7 @@ function BuildFolderList(const Path: string; const List: TStrings; Recurring: bo
 Function UpperDirectory(const dir:string):string;
 function GetConfigDir: string;
 function strByteSize(Value: Int64): String;
+function EncodeSafeFileName(const s: string): string;
 
 implementation
 
@@ -55,6 +56,79 @@ KBYTE = Sizeof(Byte) shl 10;
 MBYTE = KBYTE shl 10;
 GBYTE = MBYTE shl 10;
 
+BlackListedChar = ['<','>',':','"','/','\','|','?','*','%'];
+
+function EncodeSafeFileName(const s: string): string;
+var
+i, L: integer;
+P: PChar;
+begin
+  L := Length(s);
+  for i := 1 to Length(s) do
+    if (s[i] in BlackListedChar) then
+      Inc(L, 2);
+  if L = Length(s) then
+  begin
+    Result := s;
+    Exit;
+  end;
+
+  SetLength(Result, L);
+  P := @Result[1];
+  for i := 1 to Length(s) do
+  begin
+    if (s[i] in BlackListedChar) then
+    begin
+      P^ := '%';
+      Inc(P);
+      StrFmt(P, '%.2x', [Ord(s[i])]);
+      Inc(P);
+    end
+    else
+      P^ := s[i];
+    Inc(P);
+  end;
+  if L > (MAX_PATH -4) then
+    Result := Copy(Result,1, MAX_PATH -4);
+end;
+
+function DecodeSafeFileName(const s: string): string;
+var
+  i, RealLength: integer;
+  P: PChar;
+
+  function HexValue(c: char): integer; inline;
+  begin
+    case c of
+      '0'..'9': Result := Ord(c) - Ord('0');
+      'A'..'F': Result := Ord(c) - (Ord('A') - 10);
+      'a'..'f': Result := Ord(c) - (Ord('a') - 10);
+      else
+        Result := 0;
+    end;
+  end;
+
+begin
+  SetLength(Result, Length(s));
+  i := 1;
+  P := PChar(Result);  { use PChar to prevent numerous calls to UniqueString }
+  RealLength := 0;
+  while i <= Length(s) do
+  begin
+    if s[i] = '%' then
+    begin
+      P[RealLength] := Chr(HexValue(s[i + 1]) shl 4 or HexValue(s[i + 2]));
+      Inc(i, 3);
+    end
+    else
+    begin
+      P[RealLength] := s[i];
+      Inc(i);
+    end;
+    Inc(RealLength);
+  end;
+  SetLength(Result, RealLength);
+end;
 
 function strByteSize(Value: int64): String;
 
