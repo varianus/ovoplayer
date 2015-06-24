@@ -22,6 +22,7 @@ type
     ButtonPanel1: TButtonPanel;
     cbFieldName: TComboBox;
     ckLimit: TCheckBox;
+    edtPlayListName: TLabeledEdit;
     lbSort: TLabel;
     lbFilterResults: TLabel;
     Panel1: TPanel;
@@ -49,7 +50,8 @@ var
   fCustomPlayList: TfCustomPlayList;
 
 implementation
-
+uses
+  FilesSupport;
 {$R *.lfm}
 
 { TfCustomPlayList }
@@ -140,7 +142,7 @@ end;
 procedure TfCustomPlayList.bPlus1Click(Sender: TObject);
 begin
   UpdateBuilder;
-  PlayListBuilder.ToJson('testfile.json');
+  PlayListBuilder.ToJson(BackEnd.Config.GetPlaylistsPath+ EncodeSafeFileName(edtPlayListName.Text));
 end;
 
 procedure TfCustomPlayList.bPlus2Click(Sender: TObject);
@@ -172,6 +174,8 @@ end;
 
 procedure TfCustomPlayList.UpdateBuilder;
 begin
+  PlayListBuilder.Name:= edtPlayListName.Text;
+
   if ckLimit.Checked then
      PlayListBuilder.SongLimit := seLimits.Value
   else
@@ -189,6 +193,8 @@ var
   i:integer;
   _Frame: TfrField;
 begin
+  edtPlayListName.Text := PlayListBuilder.Name;
+
   if PlayListBuilder.SongLimit >0  then
      begin
        seLimits.Value := PlayListBuilder.SongLimit;

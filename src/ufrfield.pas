@@ -171,18 +171,18 @@ begin
     ekText : begin
                ShowOnlyPanel(pnlText);
                TestText.ItemIndex:=FieldFilter.TestIndex;
-               edtText.Text:=FieldFilter.StringValue;
+               edtText.Text:=FieldFilter.Value;
              end;
     EkDate : ShowOnlyPanel(pnlDate);
     ekNumber : begin
                  ShowOnlyPanel(pnlNumber);
                  testNumber.ItemIndex:=FieldFilter.TestIndex;
-                 seNumber.Value:=FieldFilter.IntegerValue;
+                 seNumber.Value:=FieldFilter.AsInteger;
                end;
     EKRating : begin
                  ShowOnlyPanel(pnlRating);
                  testRating.ItemIndex:=FieldFilter.TestIndex;
-                 cbRating.ItemIndex:=FieldFilter.IntegerValue;
+                 cbRating.ItemIndex:=FieldFilter.AsInteger;
     end;
   end;
 end;
@@ -194,16 +194,16 @@ begin
     case  FieldArray[fidx].Kind of
       ekText : begin
                  FieldFilter.TestIndex   := TestText.ItemIndex;
-                 FieldFilter.StringValue := edtText.Text;
+                 FieldFilter.Value       := edtText.Text;
                end;
 //      EkDate : ShowOnlyPanel(pnlDate);
       ekNumber : begin
-                   FieldFilter.TestIndex    := testNumber.ItemIndex;
-                   FieldFilter.IntegerValue := seNumber.Value;
+                   FieldFilter.TestIndex := testNumber.ItemIndex;
+                   FieldFilter.Value     := IntToStr(seNumber.Value);
                  end;
       EKRating : begin
-                   FieldFilter.TestIndex    := testRating.ItemIndex;
-                   FieldFilter.IntegerValue := cbRating.ItemIndex;
+                   FieldFilter.TestIndex := testRating.ItemIndex;
+                   FieldFilter.Value     := IntToStr(cbRating.ItemIndex);
       end;
     end;
 

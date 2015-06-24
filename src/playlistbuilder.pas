@@ -28,6 +28,7 @@ type
     FFloatValue: Double;
     FIdx: integer;
     FIntegerValue: int64;
+    FKind: EditorKind;
     FStringValue: string;
     FTestIndex: integer;
 
@@ -35,19 +36,18 @@ type
     function GetFilterRating: string;
     function GetFilterText: string;
     procedure SetFieldID(AValue: integer);
-    procedure SetFloatValue(AValue: Double);
-    procedure SetIntegerValue(AValue: int64);
+    procedure SetKind(AValue: EditorKind);
     procedure SetStringValue(AValue: string);
     procedure SetTestIndex(AValue: integer);
 
   public
     function isExecutable: boolean;
     function GetFilter: string;
+    Function AsInteger:integer;
   published
     property TestIndex : integer read FTestIndex write SetTestIndex;
-    property StringValue : string read FStringValue write SetStringValue;
-    property IntegerValue: int64 read FIntegerValue write SetIntegerValue;
-    property FloatValue : Double read FFloatValue write SetFloatValue;
+    property Value : string read FStringValue write SetStringValue;
+    property Kind : EditorKind read FKind write SetKind;
     Property FieldID : integer read FFieldID write SetFieldID;
 
   end;
@@ -55,12 +55,14 @@ type
 
   TPlayListBuilder = class (TIntPlayListBuilder)
   private
+    FName: string;
     FSongLimit: integer;
     FSortFieldID: integer;
 
     function GetExecutable: boolean;
     function GetFilter: string;
     function GetSortClause: string;
+    procedure SetName(AValue: string);
     procedure SetSongLimit(AValue: integer);
     procedure SetSortFieldID(AValue: integer);
   public
@@ -76,8 +78,10 @@ type
     Property SortClause : string read GetSortClause;
 
   published
+    property Name: string read FName write SetName;
     property SongLimit: integer read FSongLimit write SetSongLimit;
     property SortFieldID: integer read FSortFieldID write SetSortFieldID;
+
     //
 
 
@@ -177,7 +181,7 @@ end;
 function TFieldFilter.GetFilterText: string;
 var
   op : string;
-  Value: string;
+  theValue: string;
   NeedWildcards: boolean;
 begin
   result:='';
@@ -194,16 +198,16 @@ begin
 
   if TestIndex < 4 then
      begin
-     if StringValue = EmptyStr then
+     if  FStringValue = EmptyStr then
         exit;
      end;
 
   if NeedWildcards then
-     Value :=  QuotedStr('%'+StringValue+'%')
+     theValue :=  QuotedStr('%'+FStringValue+'%')
   else
-     Value :=  QuotedStr(StringValue);
+     theValue :=  QuotedStr(FStringValue);
 
-  result := format(' %s %s %s',[FieldArray[FIdx].FieldName, op, Value]);
+  result := format(' %s %s %s',[FieldArray[FIdx].FieldName, op, theValue]);
 
 end;
 
@@ -214,16 +218,10 @@ begin
   FIdx:= FindIndexByID(FFieldID);
 end;
 
-procedure TFieldFilter.SetFloatValue(AValue: Double);
+procedure TFieldFilter.SetKind(AValue: EditorKind);
 begin
-  if FFloatValue=AValue then Exit;
-  FFloatValue:=AValue;
-end;
-
-procedure TFieldFilter.SetIntegerValue(AValue: int64);
-begin
-  if FIntegerValue=AValue then Exit;
-  FIntegerValue:=AValue;
+  if FKind=AValue then Exit;
+  FKind:=AValue;
 end;
 
 procedure TFieldFilter.SetStringValue(AValue: string);
@@ -241,7 +239,6 @@ end;
 function TFieldFilter.GetFilterNumber: string;
 var
   op : string;
-  Value: string;
 begin
   result:='';
 
@@ -254,16 +251,14 @@ begin
     exit;
   end;
 
-  Value := IntToStr(IntegerValue);
-
-  result := format(' %s %s %s',[FieldArray[FIdx].FieldName, op, Value]);
+  result := format(' %s %s %s',[FieldArray[FIdx].FieldName, op, FStringValue]);
 
 end;
 
 function TFieldFilter.GetFilterRating: string;
 var
   op : string;
-  Value: string;
+  TheValue: string;
 begin
   result:='';
 
@@ -279,12 +274,12 @@ begin
   end;
 
   if TestIndex = 4 then
-    Value := ''
+    TheValue := ''
   else
-    Value := IntToStr(IntegerValue + 1);
+    TheValue := FStringValue;
 
 
-  result := format(' %s %s %s',[FieldArray[FIdx].FieldName, op, Value]);
+  result := format(' %s %s %s',[FieldArray[FIdx].FieldName, op, TheValue]);
 
 end;
 
@@ -301,13 +296,20 @@ begin
  end;
 end;
 
+function TFieldFilter.AsInteger: integer;
+begin
+  if not TryStrToInt(FStringValue,Result) then
+     Result:=0;
+
+end;
+
 function TFieldFilter.isExecutable: boolean;
 begin
  Result := False;
  if FIdx < 0 then exit;
  case  FieldArray[FIdx].Kind of
    ekText : result := (TestIndex > 3) or
-                      ((TestIndex < 4) and (StringValue <> EmptyStr) )   ;
+                      ((TestIndex < 4) and (FStringValue <> EmptyStr) )   ;
 
    ekDate : ;
    ekNumber : Result := True;
@@ -356,6 +358,12 @@ begin
     Result:= Result + ' Limit ' + inttostr(SongLimit);
 
 
+end;
+
+procedure TPlayListBuilder.SetName(AValue: string);
+begin
+  if FName=AValue then Exit;
+  FName:=AValue;
 end;
 
 procedure TPlayListBuilder.SetSortFieldID(AValue: integer);
