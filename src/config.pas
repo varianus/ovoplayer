@@ -105,6 +105,7 @@ type
     procedure RemoveSection(const Section:string);
 
     function GetResourcesPath: string;
+    function GetPlaylistsPath: string;
     Property ConfigDir: string read fConfigDir;
     Property NeedRestart:boolean read FNeedRestart write SetNeedRestart;
     procedure Flush;
@@ -142,6 +143,7 @@ begin
   fIniFiles  := TMemIniFile.Create(ConfigFile, False);
   MediaLibraryParam.LibraryPaths := TStringList.Create;
   EngineSubParams:= TStringList.Create;
+  ForceDirectories(GetPlaylistsPath);
   ReadConfig;
 
 end;
@@ -369,6 +371,11 @@ begin
   Result := ExtractFilePath(ExtractFilePath(ParamStr(0))) + ResourceSubDirectory + PathDelim;
 {$endif}
 
+end;
+
+function TConfig.GetPlaylistsPath: string;
+begin
+  Result := IncludeTrailingPathDelimiter(IncludeTrailingPathDelimiter(fConfigDir)+'playlists');
 end;
 
 end.
