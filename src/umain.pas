@@ -108,6 +108,9 @@ type
     MenuItem51: TMenuItem;
     MenuItem56: TMenuItem;
     MenuItem57: TMenuItem;
+    mnuSeparator: TMenuItem;
+    MenuItem59: TMenuItem;
+    MenuItem60: TMenuItem;
     RateStars: TImageList;
     MenuItem21: TMenuItem;
     MenuItem38: TMenuItem;
@@ -252,6 +255,7 @@ type
       var NodeClass: TTreeNodeClass);
     procedure FilesTreeDblClick(Sender: TObject);
     procedure FilesTreeGetImageIndex(Sender: TObject; Node: TTreeNode);
+    procedure FilesTreeGetSelectedIndex(Sender: TObject; Node: TTreeNode);
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
@@ -261,6 +265,8 @@ type
     procedure FormResize(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure imgCoverDblClick(Sender: TObject);
+    procedure MenuItem59Click(Sender: TObject);
+    procedure MenuItem60Click(Sender: TObject);
     procedure mnuRestoreClick(Sender: TObject);
     procedure mnuEnqueueItemsClick(Sender: TObject);
     procedure mnuFileInfoClick(Sender: TObject);
@@ -347,6 +353,7 @@ type
     Function ColumnSize(aCol: Integer):Integer;
     procedure ClearPanelInfo;
     procedure CollectionHandler(Enqueue: boolean);
+    procedure FileSystemHandler(Enqueue: boolean);
     procedure LoadDir(Path: string);
     procedure LoadTree;
     procedure MediaLibraryScanComplete(Sender: TObject; _Added, _Updated, _Removed, _Failed: integer);
@@ -635,6 +642,39 @@ begin
      end;
 end;
 
+procedure TfMainForm.FileSystemHandler(Enqueue:boolean);
+var
+  Node:     TFileTreeNode;
+  aSong:    TCustomSong;
+
+begin
+  Node := TFileTreeNode(FilesTree.GetFirstMultiSelected);
+  while Node <> nil do
+  begin
+    if not Enqueue then
+       BackEnd.PlayList.Clear;
+
+    if node.isDir  then
+      begin
+        BackEnd.Manager.ImportFromDirectory(Node.FullPath, True, BackEnd.PlayList);
+      end
+    else
+      begin
+        aSong := TCustomSong.Create(Node.FullPath);
+        BackEnd.PlayList.Add(ASong);
+      end;
+   Node:= TFileTreeNode(node.GetNextMultiSelected);
+  end;
+
+  OnLoaded(sgPlayList);
+
+  if not Enqueue and (BackEnd.PlayList.Count > 0) then
+     begin
+       BackEnd.PlayList.ItemIndex:=0;
+       BackEnd.Play;
+     end;
+end;
+
 procedure TfMainForm.edtFilterChange(Sender: TObject);
 begin
   LoadTree;
@@ -691,6 +731,17 @@ begin
     myNode.ImageIndex := 2;
 
 end;
+
+procedure TfMainForm.FilesTreeGetSelectedIndex(Sender: TObject; Node: TTreeNode);
+var
+  myNode: TFileTreeNode;
+begin
+  myNode := TFileTreeNode(Node);
+  if myNode = nil then
+     exit;
+  myNode.SelectedIndex:=myNode.ImageIndex;
+end;
+
 
 procedure TfMainForm.FormActivate(Sender: TObject);
 begin
@@ -1237,6 +1288,16 @@ begin
 
 end;
 
+procedure TfMainForm.MenuItem59Click(Sender: TObject);
+begin
+  FileSystemHandler(True);
+end;
+
+procedure TfMainForm.MenuItem60Click(Sender: TObject);
+begin
+  FileSystemHandler(False);
+end;
+
 procedure TfMainForm.PlayListChange(Sender: TObject);
 begin
   ReloadPlayList;
@@ -1493,10 +1554,8 @@ begin
   Node := TFileTreeNode(FilesTree.Selected);
   if (Node <> nil) then
     begin
-      if not Node.isDir then
-         mnuFileInfo.Visible := true
-      else
-         mnuFileInfo.Visible := False;
+       mnuFileInfo.Visible := not Node.isDir;
+       mnuSeparator.Visible := not Node.isDir;
     end;
 
 end;

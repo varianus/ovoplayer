@@ -25,10 +25,10 @@ object fMainForm: TfMainForm
     Height = 674
     Top = 0
     Width = 243
-    ActivePage = tsCollection
+    ActivePage = tsDirectory
     Align = alLeft
     MultiLine = True
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     TabPosition = tpBottom
     Options = [nboMultiLine, nboHidePageListPopup]
@@ -323,6 +323,7 @@ object fMainForm: TfMainForm
         Align = alClient
         DefaultItemHeight = 18
         ExpandSignType = tvestPlusMinus
+        HideSelection = False
         Images = DM.ilSmall
         MultiSelect = True
         PopupMenu = pmdirectories
@@ -334,7 +335,8 @@ object fMainForm: TfMainForm
         OnCreateNodeClass = FilesTreeCreateNodeClass
         OnDblClick = FilesTreeDblClick
         OnGetImageIndex = FilesTreeGetImageIndex
-        Options = [tvoAllowMultiselect, tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+        OnGetSelectedIndex = FilesTreeGetSelectedIndex
+        Options = [tvoAllowMultiselect, tvoAutoItemHeight, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
       end
     end
     object tsPlayList: TTabSheet
@@ -1010,6 +1012,17 @@ object fMainForm: TfMainForm
     OnPopup = pmdirectoriesPopup
     left = 152
     top = 184
+    object MenuItem59: TMenuItem
+      Caption = 'Enqueue'
+      OnClick = MenuItem59Click
+    end
+    object MenuItem60: TMenuItem
+      Caption = 'Play'
+      OnClick = MenuItem60Click
+    end
+    object mnuSeparator: TMenuItem
+      Caption = '-'
+    end
     object mnuFileInfo: TMenuItem
       Caption = 'Media Info'
       OnClick = mnuFileInfoClick
