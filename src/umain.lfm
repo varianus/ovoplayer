@@ -308,7 +308,6 @@ object fMainForm: TfMainForm
           OnAcceptDirectory = ePathAcceptDirectory
           ShowHidden = False
           ButtonWidth = 23
-          DirectInput = False
           NumGlyphs = 1
           MaxLength = 0
           TabOrder = 0
