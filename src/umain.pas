@@ -1222,7 +1222,6 @@ begin
   if Assigned(Mpris) then
      begin
       Mpris.Deactivate;
-      Mpris.Free;
      end;
   {$ENDIF MPRIS}
   {$IFDEF TASKBAR_EXTENSION}
