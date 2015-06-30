@@ -175,7 +175,7 @@ begin
 
   AudioEngine := Engine.Create;
   AudioEngine.OnSongEnd := @AudioEngineSongEnd;
-  AudioEngine.Activate;
+  AudioEngine.Initialize;
   AudioEngine.MainVolume:= Config.EngineParam.Volume;
   PlayList.OnSongAdd:=@PlaylistOnSongAdd;
 

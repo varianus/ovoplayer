@@ -55,6 +55,7 @@ type
     procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
     destructor Destroy; override;
+    function Initialize: boolean; override;
     procedure Activate; override;
     procedure Pause; override;
     function Playing: boolean; override;
@@ -139,9 +140,6 @@ begin
 end;
 
 constructor TAudioEngineLibMPV.Create;
-var
-   res: integer;
-   flg:integer=1;
 begin
   inherited Create;
   {$ifdef LINUX}
@@ -149,14 +147,6 @@ begin
   {$endif}
 
   Load_libmpv(libmpv.External_library);
-  fhandle := mpv_create();
-  res := mpv_set_option(fhandle^,'no-video', MPV_FORMAT_FLAG,@flg);
-
-  mpv_initialize(fhandle^);
-  fdecoupler := TDecoupler.Create;
-  fdecoupler.OnCommand := @ReceivedCommand;
-
-  mpv_set_wakeup_callback(fhandle^,@LibMPVEvent, self);
 
 end;
 
@@ -168,6 +158,24 @@ begin
   Free_libmpv;
   fdecoupler.free;
   inherited Destroy;
+end;
+
+function TAudioEngineLibMPV.Initialize: boolean;
+var
+   res: integer;
+   flg:integer=1;
+begin
+  fhandle := mpv_create();
+  result := assigned(fhandle);
+  if not result then exit;
+
+  res := mpv_set_option(fhandle^,'no-video', MPV_FORMAT_FLAG,@flg);
+
+  mpv_initialize(fhandle^);
+  fdecoupler := TDecoupler.Create;
+  fdecoupler.OnCommand := @ReceivedCommand;
+  mpv_set_wakeup_callback(fhandle^,@LibMPVEvent, self);
+  Initialized := true;
 end;
 
 function TAudioEngineLibMPV.GetState: TEngineState;

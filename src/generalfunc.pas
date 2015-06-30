@@ -19,7 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 }
 {$I ovoplayer.inc}
 unit GeneralFunc;
-
 {$mode objfpc}{$H+}
 
 interface
@@ -31,6 +30,7 @@ function TimeToMSec(Time: double): int64;
 Function isAppRunning(Application:TCustomApplication):Boolean;
 Function Restart(Application:TCustomApplication):Boolean;
 Function CheckRestarting(Application:TCustomApplication):Boolean;
+function CompareBoolean (a, b: Boolean): Integer;
 
 type
 
@@ -246,5 +246,12 @@ class procedure TSortArray.Sort(var Arr: array of T; Compare: TArrayCompareFunc)
 begin
   IntQuickSort(Arr,low(arr), High(Arr), Compare);
 end;
+
+function CompareBoolean (a, b: Boolean): Integer;
+const
+   BoolOrder: Array [False..True] Of Integer = (0,1); // o 1,0 se si desidera ordinare il contrario
+Begin
+   result := BoolOrder [a] - BoolOrder [b];
+End ;
 
 end.

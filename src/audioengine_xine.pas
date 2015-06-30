@@ -56,6 +56,7 @@ type
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
     destructor Destroy; override;
+    function Initialize: boolean; override;
     procedure Activate; override;
 
     procedure Pause; override;
@@ -112,13 +113,35 @@ end;
 
 
 constructor TAudioEngineXINE.Create;
-var
-  error : Integer;
 begin
   inherited Create;
   Loadxine();
 
+end;
+
+destructor TAudioEngineXINE.Destroy;
+begin
+
+  if Initialized then
+  begin
+    xine_close(XineStream);
+    xine_exit(XineLib);
+    fdecoupler.Free;
+  end;
+  Freexine;
+
+  inherited Destroy;
+end;
+
+function TAudioEngineXINE.Initialize: boolean;
+var
+  error : Integer;
+
+begin
   XineLib := xine_new();
+  result := Assigned(XineLib);
+  if not result then exit;
+
   xine_init(XineLib);
 
   ao_driver := xine_open_audio_driver(XineLib, 'auto', Nil);
@@ -127,17 +150,9 @@ begin
 
   fdecoupler := TDecoupler.Create;
   fdecoupler.OnCommand := @ReceivedCommand;
+  Initialized := true;
 
-end;
 
-destructor TAudioEngineXINE.Destroy;
-begin
-
-  xine_close(XineStream);
-  xine_exit(XineLib);
-  fdecoupler.Free;
-  Freexine;
-  inherited Destroy;
 end;
 
 function TAudioEngineXINE.GetMainVolume: integer;
@@ -178,7 +193,6 @@ procedure TAudioEngineXINE.Activate;
 begin
   queue := xine_event_new_queue (XineStream);
   xine_event_create_listener_thread (queue, @XineEventCB, self);
-
 end;
 
 
@@ -213,7 +227,7 @@ begin
 
 end;
 
-Function TAudioEngineXINE.DoPlay(Song: TSong; offset:Integer):boolean;
+function TAudioEngineXINE.DoPlay(Song: TSong; offset: Integer): boolean;
 var
   hr: HRESULT;
 begin

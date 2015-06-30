@@ -51,6 +51,7 @@ type
     Function DoPlay(Song: TSong; offset:Integer):boolean; override;
     procedure SetMuted(const AValue: boolean);  override;
     Function GetMuted: boolean; override;
+    function Initialize: boolean; override;
   public
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
     class Function GetEngineName: String; override;
@@ -155,14 +156,13 @@ begin
 //    AddInfo(Info.formats[i].Name, Info.formats[i].Exts);
 end;
 
-constructor TAudioEngineBASS.Create;
-var
+function TAudioEngineBASS.Initialize:boolean;
+  var
   I: integer;
 begin
-  inherited Create;
+  result := BASS_Init(1, 44100, 0, 0, nil);
 
-  Load_BASSDLL(BASS_name);
-  BASS_Init(1, 44100, 0, 0, nil);
+  if not Result then exit;
 
   fMuted := false;
 
@@ -189,15 +189,27 @@ begin
 
 end;
 
+constructor TAudioEngineBASS.Create;
+var
+  I: integer;
+begin
+  inherited Create;
+
+  Load_BASSDLL(BASS_name);
+
+end;
+
 destructor TAudioEngineBASS.Destroy;
 begin
 
 //  for I := 0 to FormatInfos.Count - 1 do
 //    Dispose(FormatInfos.Items[i]);
 
-  BASS_PluginFree(0);  // Unplugs all plugins
-  BASS_Free;
-  fdecoupler.Free;
+  if Initialized then begin
+     BASS_PluginFree(0);  // Unplugs all plugins
+     BASS_Free;
+     fdecoupler.Free;
+  end;
 
   inherited Destroy;
 end;

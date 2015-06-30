@@ -55,6 +55,7 @@ type
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
     destructor Destroy; override;
+    function Initialize: boolean; override;
     procedure Activate; override;
 
     procedure Pause; override;
@@ -132,7 +133,7 @@ begin
 
 end;
 
-constructor TAudioEngineVLC.Create;
+function TAudioEngineVLC.Initialize: boolean;
 const ArgsNumber = 6;
 const
   args: array[0..ArgsNumber - 1] of PAnsiChar =
@@ -142,8 +143,23 @@ const
      '--no-video-title-show',
      '--file-caching=500',
      '--ignore-config');
-var
-  ExceptionMask : TFPUExceptionMask;
+begin
+  SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide,exOverflow, exUnderflow, exPrecision]);
+  p_li := libvlc_new(ArgsNumber, @args);
+  Result := Assigned(p_li);
+  if not result then exit;
+
+  p_mi := libvlc_media_player_new(p_li);
+  Result := Assigned(p_mi);
+  if not result then exit;
+
+  Initialized:= result;
+  fdecoupler := TDecoupler.Create;
+  fdecoupler.OnCommand := @ReceivedCommand;
+
+end;
+
+constructor TAudioEngineVLC.Create;
 begin
   inherited Create;
   p_li := nil; // library instance
@@ -154,15 +170,6 @@ begin
     begin
     raise Exception.Create(libvlc_dynamic_dll_error);
     end;
-//  ExceptionMask:= GetExceptionMask;
-  SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide,exOverflow, exUnderflow, exPrecision]);
-  p_li := libvlc_new(ArgsNumber, @args);
-//  SetExceptionMask(ExceptionMask);
-
-  p_mi := libvlc_media_player_new(p_li);
-
-  fdecoupler := TDecoupler.Create;
-  fdecoupler.OnCommand := @ReceivedCommand;
 
 end;
 
@@ -188,7 +195,9 @@ begin
     p_li := nil;
     end;
 
-  fdecoupler.Free;
+  if Initialized then
+     fdecoupler.Free;
+
   inherited Destroy;
 end;
 
@@ -228,7 +237,7 @@ begin
 
 end;
 
-Function TAudioEngineVLC.DoPlay(Song: TSong; offset:Integer):boolean;
+function TAudioEngineVLC.DoPlay(Song: TSong; offset: Integer): boolean;
 Var
   savedVolume: Integer;
   hr: hResult;

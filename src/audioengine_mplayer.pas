@@ -29,6 +29,8 @@ uses
 
 type
 
+  { TAudioEngineMPlayer }
+
   TAudioEngineMPlayer = class(TAudioEngine)
   private
     fMainVolume: integer;
@@ -39,6 +41,8 @@ type
     fPosition: integer;
     fTimer: TTimer;
     fMuted: boolean;
+    ExePath: string;
+    Params:  string;
     procedure RunAndPlay(Filename: String);
     procedure SetPaused(const AValue: boolean);
     procedure SendMPlayerCommand(Cmd: string);
@@ -62,6 +66,7 @@ type
 
     constructor Create; override;
     procedure Activate; override;
+    function Initialize: boolean; override;
     destructor Destroy; override;
     procedure Pause; override;
     function Playing: boolean; override;
@@ -225,8 +230,6 @@ begin
 end;
 
 function TAudioEngineMPlayer.DoPlay(Song: TSong; offset: Integer): boolean;
-var
-  Params: string;
 begin
   if not Assigned(Song) then
     exit;
@@ -255,10 +258,17 @@ begin
 
 end;
 
+function TAudioEngineMPlayer.Initialize: boolean;
+begin
+  ExePath := fProgramPath;
+  if not FilenameIsAbsolute(ExePath) then
+    ExePath := FindDefaultExecutablePath(ExePath);
+  Result := FileExistsUTF8(ExePath);
+  Initialized := result;
+
+end;
+
 procedure TAudioEngineMPlayer.RunAndPlay(Filename:String);
-var
-  ExePath: string;
-  Params:  string;
 begin
   if Running and Paused then
     begin
@@ -268,12 +278,6 @@ begin
 
   if Playing then
     exit;
-
-  ExePath := fProgramPath;
-  if not FilenameIsAbsolute(ExePath) then
-    ExePath := FindDefaultExecutablePath(ExePath);
-  if not FileExistsUTF8(ExePath) then
-    raise Exception.Create('mplayer not found');
 
   FPlayRunningI := True;
   fPlayerProcess := TProcessUTF8.Create(nil);
@@ -427,4 +431,4 @@ initialization
 
   RegisterEngineClass(TAudioEngineMPlayer, 2, true, false);
 
-end.
+end.

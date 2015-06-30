@@ -59,6 +59,7 @@ type
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
     destructor Destroy; override;
+    function Initialize: boolean; override;
     procedure Activate; override;
     procedure Pause; override;
     function Playing: boolean; override;
@@ -213,10 +214,17 @@ end;
 
 constructor TAudioEngineDShow.Create;
 begin
-  inherited Create;
-  CreateAppWindow;
   fMuted := false;
 end;
+
+function TAudioEngineDShow.Initialize: boolean;
+begin
+
+  Result := CreateAppWindow;
+  Initialized := Result;
+
+end;
+
 
 Procedure TAudioEngineDShow.Release;
 begin

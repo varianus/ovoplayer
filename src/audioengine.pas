@@ -37,12 +37,14 @@ type
     Priority : Integer;
     ForceSelection:boolean;
     _Experimental : boolean;
+    Failed :boolean;
   end;
 
   { TAudioEngine }
 
   TAudioEngine = class
   private
+    FInitialized: boolean;
     FOnSongEnd:   TNotifyEvent;
     FOnSongStart: TNotifyEvent;
     FPaused:      boolean;
@@ -50,16 +52,21 @@ type
     function GetMainVolume: integer; virtual; abstract;
     function GetMaxVolume: integer; virtual; abstract;
     procedure SetMainVolume(const AValue: integer); virtual; abstract;
+
     function GetSongPos: integer; virtual; abstract;
+    procedure SetSongPos(const AValue: integer); virtual; abstract;
+
     procedure SetOnSongEnd(const AValue: TNotifyEvent);
     procedure SetOnSongStart(const AValue: TNotifyEvent);
     procedure SetPaused(const AValue: boolean);
-    procedure SetSongPos(const AValue: integer); virtual; abstract;
     function GetState: TEngineState; virtual; abstract;
     Function DoPlay(Song: TSong; offset:Integer):boolean; virtual; abstract;
     procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); virtual;
-    procedure SetMuted(const AValue: boolean); virtual; abstract;
     Function GetMuted: boolean; virtual; abstract;
+    procedure SetMuted(const AValue: boolean); virtual; abstract;
+    // Usually this method do not need overriding
+    function GetInitialized: boolean; virtual;
+    procedure SetInitialized(AValue: boolean); virtual;
   public
     class Function GetEngineName: string; virtual; abstract;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; virtual; abstract;
@@ -67,16 +74,27 @@ type
 
     constructor Create; virtual;
     destructor Destroy; override;
-    procedure Pause; virtual;
+
+    { Initialize method must be called only once for an engine.
+      Resource allocated by this methos should be released in the destroy method
+      It return false if initialization of engine fails
+      }
+    Function Initialize: boolean; virtual; abstract;
+
+    { Activate method usually is called every time a song start playing,
+      some engine could be calling it only once...
+      }
     procedure Activate; virtual; abstract;
     procedure Play(Song: TSong; offset:Integer=0); virtual;
     function Playing: boolean; virtual; abstract;
     function Running: boolean; virtual; abstract;
     procedure Seek(Seconds: integer; SeekAbsolute: boolean); virtual; abstract;
     procedure Stop; virtual; abstract;
+    procedure Pause; virtual;
     procedure UnPause; virtual; abstract;
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); virtual; abstract;
   public
+    property Initialized: boolean read GetInitialized write SetInitialized;
     property Muted: boolean read GetMuted write SetMuted;
     property MainVolume: integer read GetMainVolume write SetMainVolume;
     property OnSongEnd: TNotifyEvent read FOnSongEnd write SetOnSongEnd;
@@ -100,7 +118,10 @@ var
   EngineArray : array of RAudioEngine;
 
 implementation
-uses FileUtil;
+uses FileUtil, GeneralFunc, math;
+
+Type
+  TEngineSorter = specialize TSortArray<RAudioEngine>;
 
 procedure RegisterEngineClass(const EngineClass: TAudioEngineClass;
                               const Priority: Integer;
@@ -115,6 +136,7 @@ begin
   EngineRecord.Priority := Priority;
   EngineRecord.ForceSelection:=ForceSelection;
   EngineRecord._Experimental := _Experimental;
+  EngineRecord.Failed:= false;
   EngineArray[High(EngineArray)] := EngineRecord;
 end;
 
@@ -132,35 +154,26 @@ begin
 
 end;
 
-procedure SortEngines(var Vals:Array of RAudioEngine);
-var i,j,k:Integer;
-    Hold:RAudioEngine;
-    ACount:Integer;
+function CompareEngine(const Item1, Item2: Integer): Integer;
+  begin
+    result := CompareBoolean(EngineArray[item1].Failed,EngineArray[item2].Failed);
+    if result = 0 then
+       result := CompareValue(EngineArray[item1].Priority,EngineArray[item2].Priority);
+  end;
+
+procedure SortEngines;
 begin
-  ACount := Length(Vals);
-  for i := 1 to ACount - 1 do
-    begin
-      Hold:=Vals[i];
-      j := i;
-      k := j - 1;
-      while ((j > 0) and (Vals[k].Priority > Hold.Priority)) do
-        begin
-          Vals[j] := Vals[k];
-          dec(j);
-          dec(k);
-        end;
-      Vals[j] := Hold;
-    end;
+  TEngineSorter.Sort(EngineArray, @CompareEngine);
 end;
 
 function GetBestEngine: TAudioEngineClass;
 var
   i:integer;
 begin
-  SortEngines(EngineArray);
+  SortEngines;
   result:=nil;
   for i := Low(EngineArray) to High(EngineArray) do
-    if EngineArray[i].Engine.isAvalaible(nil) then
+    if EngineArray[i].Engine.isAvalaible(nil) and not (EngineArray[i].Failed) then
        begin
          result := EngineArray[i].Engine;
          break;
@@ -169,6 +182,16 @@ begin
 end;
 
 { TAudioEngine }
+
+function TAudioEngine.GetInitialized: boolean;
+begin
+ result:= FInitialized;
+end;
+
+procedure TAudioEngine.SetInitialized(AValue: boolean);
+begin
+  FInitialized := AValue;
+end;
 
 procedure TAudioEngine.SetOnSongEnd(const AValue: TNotifyEvent);
 begin
@@ -252,4 +275,4 @@ initialization
   setlength(EngineArray, 0);
 Finalization
   setlength(EngineArray, 0);
-end.
+end.

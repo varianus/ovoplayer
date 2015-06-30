@@ -53,7 +53,6 @@ type
     pSource: IMFMediaSource;
     EventHandler: TMFEventHandler;
     pClock: IMFPresentationCLOCK;
-
     procedure Release;
   protected
     function GetMainVolume: integer; override;
@@ -72,6 +71,7 @@ type
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
     destructor Destroy; override;
+    Function Initialize: boolean; override;
     procedure Activate; override;
     procedure Pause; override;
     function Playing: boolean; override;
@@ -79,6 +79,7 @@ type
     procedure Seek(Seconds: integer; SeekAbsolute: boolean); override;
     procedure Stop; override;
     procedure UnPause; override;
+
 
   end;
 
@@ -201,12 +202,6 @@ constructor TAudioEngineMediaFoundation.Create;
 begin
   inherited Create;
   libMF_dynamic_dll_init;
-
-  MFStartup(MF_VERSION, MFSTARTUP_FULL);
-
-  fDecoupler := TDecoupler.Create;
-  fdecoupler.OnCommand := @ReceivedCommand;
-
 end;
 
 procedure TAudioEngineMediaFoundation.Release;
@@ -230,13 +225,29 @@ end;
 
 destructor TAudioEngineMediaFoundation.Destroy;
 begin
-
-  Release;
-  MFShutdown;
-  EventHandler := nil;
-  fDecoupler.Free;
+  if Initialized then
+    begin
+      Release;
+      MFShutdown;
+      EventHandler := nil;
+      if Assigned(fDecoupler) then
+         fDecoupler.Free;
+    end;
   libMF_dynamic_dll_Done;
   inherited Destroy;
+end;
+
+function TAudioEngineMediaFoundation.Initialize: boolean;
+begin
+
+  result := MFStartup(MF_VERSION, MFSTARTUP_FULL) = S_OK;
+  Initialized := Result;
+  if Result then
+     begin
+       fDecoupler := TDecoupler.Create;
+       fdecoupler.OnCommand := @ReceivedCommand;
+     end;
+
 end;
 
 function TAudioEngineMediaFoundation.GetState: TEngineState;
@@ -260,7 +271,8 @@ begin
   pSession.Pause;
 end;
 
-Function TAudioEngineMediaFoundation.DoPlay(Song: TSong; offset:Integer):boolean;
+function TAudioEngineMediaFoundation.DoPlay(Song: TSong; offset: Integer
+  ): boolean;
 var
   Hr: HRESULT;
   ObjectType: MF_Object_type;
@@ -417,6 +429,7 @@ var
   b: bool;
 begin
   pVolume.GetMute(b);
+  result := b;
 end;
 
 class function TAudioEngineMediaFoundation.IsAvalaible(ConfigParam: TStrings): boolean;

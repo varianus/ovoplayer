@@ -54,8 +54,8 @@ type
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
     destructor Destroy; override;
+    function Initialize: boolean; override;
     procedure Activate; override;
-
     procedure Pause; override;
     function Playing: boolean; override;
     function Running: boolean; override;
@@ -141,10 +141,6 @@ end;
 
 procedure TAudioEngineGStreamer.Activate;
 begin
-  gst_init_check(0, nil);
-  playbin := gst_element_factory_make('playbin2', 'play');
-  if (playbin = nil) then
-      playbin := gst_element_factory_make('playbin', 'play');
 
   bus := gst_pipeline_get_bus (playbin);
   gst_bus_add_watch (bus, @bus_watch_callback, self);
@@ -157,9 +153,6 @@ begin
   inherited Create;
   libGST_dynamic_dll_init;
 
-    fdecoupler := TDecoupler.Create;
-    fdecoupler.OnCommand := @ReceivedCommand;
-
 end;
 
 destructor TAudioEngineGStreamer.Destroy;
@@ -167,6 +160,24 @@ begin
   libGST_dynamic_dll_done;
   fdecoupler.free;
   inherited Destroy;
+end;
+
+function TAudioEngineGStreamer.Initialize: boolean;
+begin
+
+  result := gst_init_check(0, nil);
+  if not result then exit;
+
+  playbin := gst_element_factory_make('playbin2', 'play');
+  if (playbin = nil) then
+      playbin := gst_element_factory_make('playbin', 'play');
+  result := Assigned(playbin);
+  if not result then exit;
+  Initialized:= true;
+
+  fdecoupler := TDecoupler.Create;
+  fdecoupler.OnCommand := @ReceivedCommand;
+
 end;
 
 function TAudioEngineGStreamer.GetState: TEngineState;
@@ -191,7 +202,7 @@ begin
   xx:= gst_element_set_state((playbin), GST_STATE_PAUSED);
 end;
 
-Function TAudioEngineGStreamer.DoPlay(Song: TSong; offset:Integer):boolean;
+function TAudioEngineGStreamer.DoPlay(Song: TSong; offset: Integer): boolean;
 var
  tmp:string;
  hr : integer;
