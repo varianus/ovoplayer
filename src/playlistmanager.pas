@@ -211,6 +211,8 @@ begin
     Playlist.EnqueueFile(fName);
   end;
 
+  Result := i;
+
   Root := FindNode(XMLDoc.DocumentElement, 'extension');
   for i := 0 to Root.ChildNodes.Count - 1 do
   begin
@@ -231,8 +233,6 @@ begin
     end;
 
   end;
-
-  Result := i;
 
   XMLDoc.Free;
 end;

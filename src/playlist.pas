@@ -276,7 +276,7 @@ end;
 
 function TPlayList.GetCurrentItem: TCustomSong;
 begin
-  if ItemIndex <> -1 then
+  if (ItemIndex <> -1) and (Count > 0) then
     Result := TCustomSong(Items[ItemIndex])
   else
     Result := nil;
