@@ -418,7 +418,7 @@ begin
   DeStreamer.JSONToObject(JSONOnject, self);
 
   Clear;
-
+  JSONArray := nil;
   JSONArray := JSONOnject.Get('Filters',JSONArray);
 
   for i := 0 to JSONArray.Count -1 do
