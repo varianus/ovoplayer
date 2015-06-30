@@ -72,8 +72,6 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   customdrawndrawers, customdrawn_ovoplayer,
   DefaultTranslator, customdrawn, ucustomplaylist, ufrfield, playlistbuilder;
 
-
-
 {$R *.res}
 begin
 

@@ -118,7 +118,7 @@ if TargetOS = 'linux' then
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="74">
+    <Units Count="76">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -168,10 +168,12 @@ if TargetOS = 'linux' then
       <Unit7>
         <Filename Value="audioengine.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="AudioEngine"/>
       </Unit7>
       <Unit8>
         <Filename Value="audioengine_mplayer.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="AudioEngine_MPlayer"/>
       </Unit8>
       <Unit9>
         <Filename Value="audioengine_bass.pas"/>
@@ -323,6 +325,7 @@ if TargetOS = 'linux' then
       <Unit41>
         <Filename Value="audioengine_dshow.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="audioengine_DShow"/>
       </Unit41>
       <Unit42>
         <Filename Value="import-engines\mediafoundation.pas"/>
@@ -428,6 +431,7 @@ if TargetOS = 'linux' then
       <Unit65>
         <Filename Value="audioengine_xine.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="audioengine_Xine"/>
       </Unit65>
       <Unit66>
         <Filename Value="import-engines\ctypes.inc"/>
@@ -467,6 +471,14 @@ if TargetOS = 'linux' then
         <Filename Value="playlistbuilder.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit73>
+      <Unit74>
+        <Filename Value="audioengine_libmpv.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit74>
+      <Unit75>
+        <Filename Value="import-engines\libmpv.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit75>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -517,7 +529,6 @@ if TargetOS = 'linux' then
       <ConfigFile>
         <ConfigFilePath Value="..\extrafpc.cfg"/>
       </ConfigFile>
-      <CustomOptions Value="-FcUTF8"/>
       <ExecuteBefore>
         <Command Value="$(LazarusDir)\tools\svn2revisioninc$(ExeExt) .. ovorevision.inc --c=ovoRevision"/>
       </ExecuteBefore>
