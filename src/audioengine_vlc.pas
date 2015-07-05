@@ -128,8 +128,6 @@ end;
 
 procedure TAudioEngineVLC.Activate;
 begin
-  p_mi_ev_mgr := libvlc_media_player_event_manager(p_mi);
-  libvlc_event_attach(p_mi_ev_mgr, libvlc_MediaPlayerEndReached, @lib_vlc_player_event_hdlr, SELF);
 
 end;
 
@@ -152,6 +150,10 @@ begin
   p_mi := libvlc_media_player_new(p_li);
   Result := Assigned(p_mi);
   if not result then exit;
+
+  p_mi_ev_mgr := libvlc_media_player_event_manager(p_mi);
+  libvlc_event_attach(p_mi_ev_mgr, libvlc_MediaPlayerEndReached, @lib_vlc_player_event_hdlr, SELF);
+
 
   Initialized:= result;
   fdecoupler := TDecoupler.Create;
