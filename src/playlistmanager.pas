@@ -173,7 +173,7 @@ var
   Root, Node: TDOMNode;
   //  list: TDOMNodeList;
   i: integer;
-  fName: string;
+  fName, RealName: string;
   IntValue: integer;
 
   function FindNode(x: TDOMNode; Name: string): TDOMNode;
@@ -207,8 +207,8 @@ begin
     fname := Node.FirstChild.NodeValue;
     if Length(fname) > MAX_PATH then
       Continue;
-    URIToFilename(Unescape(fname), fname);
-    Playlist.EnqueueFile(fName);
+    URIToFilename(Unescape(fname), RealName);
+    Playlist.EnqueueFile(RealName);
   end;
 
   Result := i;
