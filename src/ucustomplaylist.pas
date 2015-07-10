@@ -21,6 +21,7 @@ type
     bPlus2: TBitBtn;
     ButtonPanel1: TButtonPanel;
     cbFieldName: TComboBox;
+    cbSortDirection: TCheckBox;
     ckLimit: TCheckBox;
     edtPlayListName: TLabeledEdit;
     lbSort: TLabel;
@@ -39,9 +40,10 @@ type
   private
     fDefaultIndex: integer;
     PlayListBuilder: TPlayListBuilder;
-  public
     Editors: TEditorsContainer;
+  public
     Function AddField:TfrField;
+    Procedure DeleteField(AField:TfrField);
     Procedure UpdateBuilder;
     Procedure UpdateFromBuilder(LoadFilters: boolean);
   end;
@@ -98,7 +100,7 @@ procedure TfCustomPlayList.OKButtonClick(Sender: TObject);
 var
   i: integer;
 begin
-
+  UpdateBuilder;
   BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
         PlayListBuilder.Filter, PlayListBuilder.SortClause );
 
@@ -142,7 +144,7 @@ end;
 procedure TfCustomPlayList.bPlus1Click(Sender: TObject);
 begin
   UpdateBuilder;
-  PlayListBuilder.ToJson(BackEnd.Config.GetPlaylistsPath+ EncodeSafeFileName(edtPlayListName.Text));
+  PlayListBuilder.ToJson(BackEnd.Config.GetPlaylistsPath+ EncodeSafeFileName(edtPlayListName.Text)+'.opl');
 end;
 
 procedure TfCustomPlayList.bPlus2Click(Sender: TObject);
@@ -172,6 +174,13 @@ begin
 
 end;
 
+procedure TfCustomPlayList.DeleteField(AField: TfrField);
+begin
+  Editors.Extract(AField);
+  PlayListBuilder.Extract(AField.FieldFilter);
+
+end;
+
 procedure TfCustomPlayList.UpdateBuilder;
 begin
   PlayListBuilder.Name:= edtPlayListName.Text;
@@ -186,6 +195,7 @@ begin
   else
     PlayListBuilder.SortFieldID:= FieldArray[cbFieldName.ItemIndex-1].Id;
 
+  PlayListBuilder.SortAscending:= cbSortDirection.Checked;
 end;
 
 procedure TfCustomPlayList.UpdateFromBuilder(LoadFilters: boolean);
@@ -205,6 +215,8 @@ begin
       seLimits.Value := 50;
       ckLimit.Checked:= False;
      end;
+
+  cbSortDirection.Checked := PlayListBuilder.SortAscending;
 
   if PlayListBuilder.SortFieldID = -1 then
     cbFieldName.ItemIndex := 0

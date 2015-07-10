@@ -57,6 +57,7 @@ type
   private
     FName: string;
     FSongLimit: integer;
+    FSortAscending: boolean;
     FSortFieldID: integer;
 
     function GetExecutable: boolean;
@@ -64,6 +65,7 @@ type
     function GetSortClause: string;
     procedure SetName(AValue: string);
     procedure SetSongLimit(AValue: integer);
+    procedure SetSortAscending(AValue: boolean);
     procedure SetSortFieldID(AValue: integer);
   public
    //
@@ -77,10 +79,12 @@ type
     property isExecutable: boolean read GetExecutable;
     Property SortClause : string read GetSortClause;
 
+
   published
     property Name: string read FName write SetName;
     property SongLimit: integer read FSongLimit write SetSongLimit;
     property SortFieldID: integer read FSortFieldID write SetSortFieldID;
+    property SortAscending: boolean read FSortAscending write SetSortAscending;
 
     //
 
@@ -325,6 +329,12 @@ begin
   FSongLimit:=AValue;
 end;
 
+procedure TPlayListBuilder.SetSortAscending(AValue: boolean);
+begin
+  if FSortAscending=AValue then Exit;
+  FSortAscending:=AValue;
+end;
+
 function TPlayListBuilder.GetFilter: string;
 var
   i :integer;
@@ -352,7 +362,11 @@ begin
   if SortFieldID = -1 then
     Result := ' random() '
   else
-    Result := FieldArray[FindIndexByID(SortFieldID)].FieldName;
+    begin
+       Result := FieldArray[FindIndexByID(SortFieldID)].FieldName;
+       if not FSortAscending then
+         Result := result + ' desc ';
+    end;
 
   if SongLimit > 0 then
     Result:= Result + ' Limit ' + inttostr(SongLimit);
