@@ -60,7 +60,7 @@ var
   cp: TfCustomPlayList;
 begin
   cp:=TfCustomPlayList(Owner.owner);
-  cp.Editors.Extract(Self);
+  cp.DeleteField(self);
   Application.ReleaseComponent(self);
 
 end;
