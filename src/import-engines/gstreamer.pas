@@ -92,7 +92,8 @@ type
   gst_element_get_state_T = function (element: Pointer;var state: GstElementState ; var pending: GstElementState;timeout: pTimeVal): GstElementState; cdecl;
   gst_pipeline_get_bus_T  = function (pipeline: Pointer): pointer; cdecl;
   gst_object_unref_T      = function (Obj: Pointer): dword; cdecl;
-  gst_element_query_position_T   = function (element: Pointer; var Format:DWORD; var CURR:int64 ): boolean; cdecl;
+  gst_element_query_position_T   = function (element: Pointer; Format:DWORD; var CURR:int64 ): boolean; cdecl;
+  gst_element_query_position_OLD_T   = function (element: Pointer; var Format:DWORD; var CURR:int64 ): boolean; cdecl;
   gst_element_seek_simple_t      = function (element: pointer; format :Dword; flags :dword;  cur:Int64): boolean; cdecl;
 
   gst_element_seek_t      = function  (element: pointer; rate :double; format :Dword; flags :dword;
@@ -105,6 +106,7 @@ type
 
 
 var
+  GST_New_Lib :boolean;
   libgst_dynamic_dll_error: string;
 
   gst_init_check :gst_init_check_t;
@@ -121,6 +123,7 @@ var
   gst_element_seek      : gst_element_seek_t;
   gst_element_seek_simple      : gst_element_seek_simple_t;
   gst_element_query_position : gst_element_query_position_T;
+  gst_element_query_position_OLD : gst_element_query_position_OLD_T;
 
 
   procedure libGST_dynamic_dll_init;
@@ -162,12 +165,13 @@ begin
   if (libGST_handle <> dynlibs.NilHandle) then exit;
   currLib:=libGST_name;
   libGST_handle := DynLibs.LoadLibrary(currLib);
+  GST_New_Lib := true;
   // try to load previous release of GStreamer
   if (libGST_handle = dynlibs.NilHandle) and (libgst_name_old <> EmptyStr) then
     begin
       currLib:=libGST_name_old;
       libGST_handle := DynLibs.LoadLibrary(currLib);
-
+      GST_New_Lib := false;
     end;
 
   // exit, report error
@@ -190,7 +194,13 @@ begin
   if not libGST_dll_get_proc_addr(pointer(gst_pipeline_get_bus),  'gst_pipeline_get_bus') then   exit;
   if not libGST_dll_get_proc_addr(pointer(gst_bus_add_watch),  'gst_bus_add_watch') then   exit;
   if not libGST_dll_get_proc_addr(pointer(gst_object_unref),  'gst_object_unref') then   exit;
-  if not libGST_dll_get_proc_addr(pointer(gst_element_query_position),  'gst_element_query_position') then   exit;
+  if GST_New_Lib then
+     begin
+     if not libGST_dll_get_proc_addr(pointer(gst_element_query_position),  'gst_element_query_position') then   exit
+     end
+  else
+    if not libGST_dll_get_proc_addr(pointer(gst_element_query_position_OLD),  'gst_element_query_position') then   exit;
+
   if not libGST_dll_get_proc_addr(pointer(gst_element_seek),  'gst_element_seek') then   exit;
   if not libGST_dll_get_proc_addr(pointer(gst_element_seek_simple),  'gst_element_seek_simple') then   exit;
 

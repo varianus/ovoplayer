@@ -26,7 +26,7 @@ interface
 
 uses
   Classes, SysUtils, BaseTypes,
-  AudioEngine, gstreamer, Song, uriparser, decoupler;
+  AudioEngine, gstreamer, Song, uriparser, decoupler, ctypes;
 
 type
 
@@ -119,16 +119,26 @@ end;
 
 function TAudioEngineGStreamer.GetSongPos: integer;
 var
-  format : dword;
+  format : DWord;
   cur: Int64;
 begin
   format := GST_FORMAT_TIME;
   cur := 0;
-  if gst_element_query_position (G_OBJECT(playbin), format, cur) then
+  if GST_New_Lib then
+     begin
+      if gst_element_query_position (G_OBJECT(playbin), format, cur) then
+         result:= cur div 1000000
+      else
+         result:=0;
+     end
+  else
+   begin
+   if gst_element_query_position_OLD (G_OBJECT(playbin), format, cur) then
     if (format <> GST_FORMAT_TIME) then
        result:= 0
     else
        result:= cur div 1000000;
+    end;
 end;
 
 procedure TAudioEngineGStreamer.SetSongPos(const AValue: integer);
