@@ -60,20 +60,41 @@ const
   GST_MESSAGE_EOS               = (1 shl 0);
 
 type
-  gstMiniObject = packed record
+  gstMiniObject_0_10 =  record
     instance: TGTypeInstance;
     refcount: gint;
     flags : guint;
     _gst_reserved: gpointer;
-
   end;
 
-  pgstmessage = ^gstMessage;
-  gstMessage = packed record
-    MiniObject: gstMiniObject;
+  gstMiniObject_1_0 =  record
+    _type: GType;
+    refcount: gint;
+    lockstate: gint;
+    flags : guint;
+    _gst_reserved1: gpointer;
+    _gst_reserved2: gpointer;
+    _gst_reserved3: gpointer;
+    n_qdata : guint;
+    qdata : gpointer;
+  end;
+
+  pgstmessage_0_10 = ^gstMessage_0_10;
+  gstMessage_0_10 = packed record
+    MiniObject: gstMiniObject_0_10;
     lock: gpointer;
     cond: gpointer;
     _type: guint;
+  end;
+
+  pgstmessage_1_0 = ^gstMessage_1_0;
+  gstMessage_1_0 = packed record
+    MiniObject: gstMiniObject_1_0;
+    _type: guint;
+    timestamp: guint64;
+    dummy : pointer;
+    seqnum: guint32;
+
   end;
 
 
@@ -82,9 +103,10 @@ type
   GstElementState = dword;
   pTimeVal = ^word;
 
-  gst_init_check_t = function (argc: Integer; args: PPAnsiChar):Boolean; cdecl;
+  gst_init_check_t = function (var argc: Integer; var args: PAnsiChar; var Error:PGError):gBoolean; cdecl;
   gst_element_factory_make_t = function (const factoryname: PChar;const name: PChar): Pointer; cdecl;
   gst_bin_new_t = FUNCTION (const name: PChar): Pointer; cdecl;
+  gst_is_initialized_t = FUNCTION (): gBoolean; cdecl;
   gst_bin_add_t = function (bin: Pointer;element: Pointer): Boolean; cdecl;
   gst_bin_add_many_t = procedure(bin: Pointer;element_1: Pointer;additional: array of const); cdecl;
   gst_element_link_many_t = function (element_1: Pointer;element_2: Pointer; additional: array of const): Boolean; cdecl;
@@ -92,21 +114,21 @@ type
   gst_element_get_state_T = function (element: Pointer;var state: GstElementState ; var pending: GstElementState;timeout: pTimeVal): GstElementState; cdecl;
   gst_pipeline_get_bus_T  = function (pipeline: Pointer): pointer; cdecl;
   gst_object_unref_T      = function (Obj: Pointer): dword; cdecl;
-  gst_element_query_position_T   = function (element: Pointer; Format:DWORD; var CURR:int64 ): boolean; cdecl;
-  gst_element_query_position_OLD_T   = function (element: Pointer; var Format:DWORD; var CURR:int64 ): boolean; cdecl;
+  gst_element_query_position_1_0_T   = function (element: Pointer; Format:DWORD; var CURR:int64 ): boolean; cdecl;
+  gst_element_query_position_0_10_T   = function (element: Pointer; var Format:DWORD; var CURR:int64 ): boolean; cdecl;
   gst_element_seek_simple_t      = function (element: pointer; format :Dword; flags :dword;  cur:Int64): boolean; cdecl;
 
   gst_element_seek_t      = function  (element: pointer; rate :double; format :Dword; flags :dword;
                                                          cur_type: dword;  cur:Int64;
                                                          stop_type: dword; stop:Int64): boolean; cdecl;
 
-  gst_bus_func = function (bus: pointer; message:pgstmessage; user_data:pointer): boolean; cdecl;
+//  gst_bus_func = function (bus: pointer; message:pgstmessage; user_data:pointer): boolean; cdecl;
 
-  gst_bus_add_watch_T = function (bus: pointer;func:gst_bus_func; user_data:pointer): dword; cdecl;
+  gst_bus_add_watch_T = function (bus: pointer;func:Pointer; user_data:pointer): dword; cdecl;
 
 
 var
-  GST_New_Lib :boolean;
+  GST_Lib_1_0 :boolean;
   libgst_dynamic_dll_error: string;
 
   gst_init_check :gst_init_check_t;
@@ -122,8 +144,9 @@ var
   gst_object_unref      : gst_object_unref_T;
   gst_element_seek      : gst_element_seek_t;
   gst_element_seek_simple      : gst_element_seek_simple_t;
-  gst_element_query_position : gst_element_query_position_T;
-  gst_element_query_position_OLD : gst_element_query_position_OLD_T;
+  gst_element_query_position : gst_element_query_position_1_0_T;
+  gst_element_query_position_OLD : gst_element_query_position_0_10_T;
+  gst_is_initialized : gst_is_initialized_t;
 
 
   procedure libGST_dynamic_dll_init;
@@ -134,12 +157,12 @@ uses
 
 const
 {$IFDEF UNIX}
-  libgst_name_old = 'libgstbase-0.10.so.0';
-  libgst_name     = 'libgstbase-1.0.so.0';
+  libgst_name_1_0  = 'libgstbase-0.10.so.0';
+  libgst_name_0_10 = 'libgstbase-1.0.so.0';
 {$ENDIF}
 {$IFDEF MSWINDOWS}
-  libgst_name_old = EmptyStr;
-  libgst_name = 'libgstreamer-1.0-0.dll';
+  libgst_name_1_0  = 'libgstreamer-1.0-0.dll';
+  libgst_name_0_10 = 'libgstreamer-0.10-0.dll';
 {$ENDIF}
 
 
@@ -163,15 +186,15 @@ var
 begin
 
   if (libGST_handle <> dynlibs.NilHandle) then exit;
-  currLib:=libGST_name;
+  currLib:=libgst_name_0_10;
   libGST_handle := DynLibs.LoadLibrary(currLib);
-  GST_New_Lib := true;
+  GST_Lib_1_0 := true;
   // try to load previous release of GStreamer
-  if (libGST_handle = dynlibs.NilHandle) and (libgst_name_old <> EmptyStr) then
+  if (libGST_handle = dynlibs.NilHandle) and (libgst_name_1_0 <> EmptyStr) then
     begin
-      currLib:=libGST_name_old;
+      currLib:=libgst_name_1_0;
       libGST_handle := DynLibs.LoadLibrary(currLib);
-      GST_New_Lib := false;
+      GST_Lib_1_0 := false;
     end;
 
   // exit, report error
@@ -194,7 +217,7 @@ begin
   if not libGST_dll_get_proc_addr(pointer(gst_pipeline_get_bus),  'gst_pipeline_get_bus') then   exit;
   if not libGST_dll_get_proc_addr(pointer(gst_bus_add_watch),  'gst_bus_add_watch') then   exit;
   if not libGST_dll_get_proc_addr(pointer(gst_object_unref),  'gst_object_unref') then   exit;
-  if GST_New_Lib then
+  if GST_Lib_1_0 then
      begin
      if not libGST_dll_get_proc_addr(pointer(gst_element_query_position),  'gst_element_query_position') then   exit
      end
@@ -203,6 +226,7 @@ begin
 
   if not libGST_dll_get_proc_addr(pointer(gst_element_seek),  'gst_element_seek') then   exit;
   if not libGST_dll_get_proc_addr(pointer(gst_element_seek_simple),  'gst_element_seek_simple') then   exit;
+  if not libGST_dll_get_proc_addr(pointer(gst_is_initialized),  'gst_is_initialized') then   exit;
 
 end;
 

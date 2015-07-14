@@ -69,18 +69,28 @@ type
 implementation
 
 { TAudioEngineGStreamer }
-uses  glib2;
+uses  glib2,lclproc;
 
 
-function bus_watch_callback(bus: pointer; message:pgstmessage; user_data:pointer): boolean; cdecl;
+function bus_watch_callback(bus: pointer; AMessage:Pointer; user_data:pointer): boolean; cdecl;
 var
  Player: TAudioEngineGStreamer;
+ fgstmessage_1_0 : pgstmessage_1_0 absolute AMessage;
+ fgstmessage_0_10 : pgstmessage_0_10 absolute AMessage;
+ msgType : guint;
 begin
 
   player:=  TAudioEngineGStreamer(User_data);
   if (user_data <> NIL) then
      begin
-          case message^._type of
+//         DebugLn(inttostr(message^._type));
+//         DebugLn(inttostr(sizeof(gstMiniObject)));
+          if GST_Lib_1_0 then
+             msgtype := fgstmessage_1_0^._type
+          else
+             msgtype := fgstmessage_0_10^._type;
+
+          case msgtype of
           GST_MESSAGE_EOS:
                begin
                   player.PostCommand(ecNext);
@@ -124,7 +134,7 @@ var
 begin
   format := GST_FORMAT_TIME;
   cur := 0;
-  if GST_New_Lib then
+  if GST_Lib_1_0 then
      begin
       if gst_element_query_position (G_OBJECT(playbin), format, cur) then
          result:= cur div 1000000
@@ -152,9 +162,7 @@ end;
 procedure TAudioEngineGStreamer.Activate;
 begin
 
-  bus := gst_pipeline_get_bus (playbin);
-  gst_bus_add_watch (bus, @bus_watch_callback, self);
-  gst_object_unref (bus);
+
 
 end;
 
@@ -173,10 +181,26 @@ begin
 end;
 
 function TAudioEngineGStreamer.Initialize: boolean;
+var
+  err : TGError;
+  perr : PGError;
+  res : gboolean;
+  nilptr :pAnsichar = nil;
+  argc : integer=0;
 begin
+  Err.code:=0;
+  res := gst_init_check(argc, nilptr, perr);
 
-  result := gst_init_check(0, nil);
-  if not result then exit;
+
+  // added a check for initialized, gst_init_check sometimes retuns FALSE but everithing is ok!!
+  if not res and not gst_is_initialized() then
+    begin
+      DebugLn('GST initialization error',' ',inttostr(err.code), err.message);
+      result := res;
+      exit;
+
+    end;
+
 
   playbin := gst_element_factory_make('playbin2', 'play');
   if (playbin = nil) then
@@ -187,6 +211,10 @@ begin
 
   fdecoupler := TDecoupler.Create;
   fdecoupler.OnCommand := @ReceivedCommand;
+
+  bus := gst_pipeline_get_bus (playbin);
+  gst_bus_add_watch (bus, @bus_watch_callback, self);
+  gst_object_unref (bus);
 
 end;
 
