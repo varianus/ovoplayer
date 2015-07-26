@@ -56,8 +56,9 @@ type
     procedure HandleCommand(Command: TEngineCommand; Param: integer = 0);
     Procedure OpenURI(URI: String);
     procedure Seek(AValue: int64);
-    Function GetMetadata: TCommonTags;
+    Function GetMetadata(Index:integer=-1): TCommonTags;
     Function GetCoverURL: String;
+    Function PlayListCount : integer;
   end;
 
 

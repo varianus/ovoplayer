@@ -25,7 +25,7 @@ unit GUIBackEnd;
 interface
 
 uses
-  Classes, SysUtils, FileUtil,
+  Classes, SysUtils, LazFileUtils,
   BaseTypes, CoreInterfaces,  forms,
   PlayList, AudioEngine, AudioEngine_dummy,
   PlayListManager, MediaLibrary, basetag, CustomSong,
@@ -88,11 +88,14 @@ type
     Procedure Quit;
     Procedure Mute;
     Procedure UnMute;
+    Function GetMetadata(Index:integer=-1): TCommonTags;
     Procedure OpenURI(URI: String);
-    Function GetMetadata: TCommonTags;
+    procedure Seek(AValue: int64);
+    Function PlayListCount : integer;
+
     Procedure Attach(observer: iObserver);
     Procedure Remove(observer: iObserver);
-    procedure Seek(AValue: int64);
+
     Procedure Notify(Kind:  TChangedProperty);
     procedure HandleCommand(Command: TEngineCommand; Param: integer);
 
@@ -174,8 +177,9 @@ begin
        engine:=TAudioEngineDummy;
 
   AudioEngine := Engine.Create;
+  if not AudioEngine.Initialize then
+     Engine:=TAudioEnginedummy;
   AudioEngine.OnSongEnd := @AudioEngineSongEnd;
-  AudioEngine.Initialize;
   AudioEngine.MainVolume:= Config.EngineParam.Volume;
   PlayList.OnSongAdd:=@PlaylistOnSongAdd;
 
@@ -481,19 +485,29 @@ begin
 
 end;
 
-function TBackEnd.GetMetadata: TCommonTags;
+function TBackEnd.GetMetadata(Index:integer=-1): TCommonTags;
 begin
-  If Assigned(PlayList.CurrentItem) then
-     Result:=PlayList.CurrentItem.Tags
-  else
-     ClearTags(Result);
+  ClearTags(Result);
 
+  If (index=-1) then
+    begin
+      if Assigned(PlayList.CurrentItem) then
+         Result:=PlayList.CurrentItem.Tags
+    end
+  else
+    if (Index < PlayList.Count) and (PlayList.Count > 0) then
+       Result:= TCustomSong(PlayList.Items[Index]).Tags;
 end;
 
 procedure TBackEnd.Seek(AValue: int64);
 begin
   AudioEngine.Seek(AValue,False);
   Notify(cpPosition);
+end;
+
+function TBackEnd.PlayListCount: integer;
+begin
+  Result:=PlayList.Count;
 end;
 
 procedure TBackEnd.Attach(observer: iObserver);
