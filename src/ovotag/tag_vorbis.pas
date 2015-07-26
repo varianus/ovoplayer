@@ -73,7 +73,7 @@ end;
 function TVorbisFrame.ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean;
 var
   fSize:Cardinal;
-  Data: RawByteString;
+  Data: rawbyteString;
   iSep :Integer;
   TmpSt:String;
 begin
@@ -212,7 +212,7 @@ end;
 function TVorbisTags.ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean;
 var
   fSize: cardinal;
-  Data: array of char;
+  Data: rawbytestring;
   FrameCount: cardinal;
   i: longint;
   Frame: TVorbisFrame;
@@ -222,7 +222,7 @@ begin
   if fsize <> 0 then
      begin
        SetLength(Data, fSize);
-       AStream.Read(Data[0], fSize);
+       AStream.Read(Data[1], fSize);
        Vendor := string(Data);
      end;
 
