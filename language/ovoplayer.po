@@ -9,6 +9,10 @@ msgstr ""
 msgid "All Files(%0:s)|%0:s"
 msgstr ""
 
+#: appconsts.rautomaticplaylist
+msgid "Automatic Playlist"
+msgstr ""
+
 #: appconsts.rbegincollectionscan
 msgid "Scanning Collection"
 msgstr ""
@@ -240,6 +244,10 @@ msgstr ""
 #: playlistbuilder.rs_playcount
 msgctxt "playlistbuilder.rs_playcount"
 msgid "Play count"
+msgstr ""
+
+#: playlistbuilder.rs_random
+msgid "Random"
 msgstr ""
 
 #: playlistbuilder.rs_rating
@@ -793,16 +801,32 @@ msgstr ""
 msgid "Cover Viewer"
 msgstr ""
 
+#: tfcustomplaylist.bplus2.caption
+msgid "Test read"
+msgstr ""
+
 #: tfcustomplaylist.caption
 msgid "Custom Playlist "
+msgstr ""
+
+#: tfcustomplaylist.cbsortdirection.caption
+msgid "in ascending order"
 msgstr ""
 
 #: tfcustomplaylist.cklimit.caption
 msgid "Limit to "
 msgstr ""
 
-#: tfcustomplaylist.ckrandom.caption
-msgid "Randomize"
+#: tfcustomplaylist.edtplaylistname.editlabel.caption
+msgid "Name"
+msgstr ""
+
+#: tfcustomplaylist.lbfilterresults.caption
+msgid "                              "
+msgstr ""
+
+#: tfcustomplaylist.lbsort.caption
+msgid "Sort by"
 msgstr ""
 
 #: tflicense.caption
@@ -999,6 +1023,31 @@ msgstr ""
 msgid "None"
 msgstr ""
 
+#: tfmainform.menuitem58.caption
+msgctxt "TFMAINFORM.MENUITEM58.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfmainform.menuitem59.caption
+msgctxt "TFMAINFORM.MENUITEM59.CAPTION"
+msgid "Enqueue"
+msgstr ""
+
+#: tfmainform.menuitem60.caption
+msgctxt "TFMAINFORM.MENUITEM60.CAPTION"
+msgid "Play"
+msgstr ""
+
+#: tfmainform.menuitem64.caption
+msgctxt "TFMAINFORM.MENUITEM64.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tfmainform.menuitem65.caption
+msgctxt "TFMAINFORM.MENUITEM65.CAPTION"
+msgid "-"
+msgstr ""
+
 #: tfmainform.menuitem9.caption
 msgctxt "TFMAINFORM.MENUITEM9.CAPTION"
 msgid "-"
@@ -1009,7 +1058,22 @@ msgctxt "TFMAINFORM.MNUCOLLECTION.CAPTION"
 msgid "Collection"
 msgstr ""
 
+#: tfmainform.mnudeleteplaylist.caption
+msgctxt "TFMAINFORM.MNUDELETEPLAYLIST.CAPTION"
+msgid "Delete"
+msgstr ""
+
+#: tfmainform.mnueditplaylist.caption
+msgid "Edit ..."
+msgstr ""
+
 #: tfmainform.mnuenqueueitems.caption
+msgctxt "tfmainform.mnuenqueueitems.caption"
+msgid "Enqueue"
+msgstr ""
+
+#: tfmainform.mnuenqueueplaylist.caption
+msgctxt "TFMAINFORM.MNUENQUEUEPLAYLIST.CAPTION"
 msgid "Enqueue"
 msgstr ""
 
@@ -1027,8 +1091,18 @@ msgctxt "TFMAINFORM.MNUINFO.CAPTION"
 msgid "Media Info"
 msgstr ""
 
+#: tfmainform.mnunewplaylist.caption
+msgctxt "TFMAINFORM.MNUNEWPLAYLIST.CAPTION"
+msgid "New playlist"
+msgstr ""
+
 #: tfmainform.mnuplayitems.caption
 msgctxt "TFMAINFORM.MNUPLAYITEMS.CAPTION"
+msgid "Play"
+msgstr ""
+
+#: tfmainform.mnuplayplaylist.caption
+msgctxt "TFMAINFORM.MNUPLAYPLAYLIST.CAPTION"
 msgid "Play"
 msgstr ""
 
@@ -1042,6 +1116,11 @@ msgstr ""
 
 #: tfmainform.mnurestore.caption
 msgid "Restore"
+msgstr ""
+
+#: tfmainform.mnuseparator.caption
+msgctxt "TFMAINFORM.MNUSEPARATOR.CAPTION"
+msgid "-"
 msgstr ""
 
 #: tfmainform.tbrepeat.caption

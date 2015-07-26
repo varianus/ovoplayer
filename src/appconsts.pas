@@ -50,6 +50,8 @@ const
 
   MediaLibraryName = 'medialibrary.db';
 
+  CustomPlaylistExtension ='.opl';
+
   MimeTypes : array [0..8] of string =(
     'application/x-ogg',
     'application/ogg',
@@ -68,6 +70,7 @@ Resourcestring
   rNotPlaying = 'Not Playing';
   rAllFiles     = 'All Files(%0:s)|%0:s';
   rEmbedded  = 'Embedded in file';
+  rAutomaticPlaylist = 'Automatic Playlist';
 
   rBeginCollectionScan  = 'Scanning Collection';
   rAddedTrack   = 'Added:';

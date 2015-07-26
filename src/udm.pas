@@ -25,9 +25,9 @@ unit uDM;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, ActnList, Controls, Dialogs, Forms, LResources,
+  Classes, SysUtils, LazFileUtils, ActnList, Controls, Dialogs, Forms, LResources,
   BaseTypes, CoreInterfaces,
-  AudioEngine,
+  AudioEngine, LazUTF8,
   PlayListManager, MediaLibrary, UniqueInstance;
 
 type

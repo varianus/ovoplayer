@@ -170,16 +170,6 @@ object fCustomPlayList: TfCustomPlayList
       Caption = 'Sort by'
       ParentColor = False
     end
-    object bPlus1: TBitBtn
-      Left = 410
-      Height = 30
-      Top = 41
-      Width = 55
-      Anchors = [akTop, akRight]
-      Caption = 'Test write'
-      OnClick = bPlus1Click
-      TabOrder = 4
-    end
     object bPlus2: TBitBtn
       Left = 485
       Height = 30
@@ -188,7 +178,7 @@ object fCustomPlayList: TfCustomPlayList
       Anchors = [akTop, akRight]
       Caption = 'Test read'
       OnClick = bPlus2Click
-      TabOrder = 5
+      TabOrder = 4
     end
     object cbSortDirection: TCheckBox
       Left = 224
@@ -198,7 +188,7 @@ object fCustomPlayList: TfCustomPlayList
       Caption = 'in ascending order'
       Checked = True
       State = cbChecked
-      TabOrder = 6
+      TabOrder = 5
     end
   end
   object ApplicationProperties1: TApplicationProperties

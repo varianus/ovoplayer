@@ -23,6 +23,9 @@
       <MajorVersionNr Value="1"/>
       <StringTable CompanyName="Marco Caselli" ProductVersion=""/>
     </VersionInfo>
+    <MacroValues Count="1">
+      <Macro1 Name="LCLWidgetType" Value="gtk2"/>
+    </MacroValues>
     <BuildModes Count="2">
       <Item1 Name="Debug" Default="True"/>
       <Item2 Name="Release">
@@ -85,11 +88,12 @@ if TargetOS = 'linux' then
           </Other>
         </CompilerOptions>
       </Item2>
-      <SharedMatrixOptions Count="4">
-        <Item1 ID="066772129436" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
+      <SharedMatrixOptions Count="5">
+        <Item1 ID="066772129436" Modes="Debug" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
         <Item2 ID="410165404427" Type="IDEMacro" MacroName="LCLWidgetType" Value="qt"/>
         <Item3 ID="829386383577" Type="IDEMacro" MacroName="LCLWidgetType" Value="customdrawn"/>
         <Item4 ID="280527481958" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk3"/>
+        <Item5 ID="185779540059" Modes="Debug" Value="-dEnableUTF8RTL"/>
       </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
@@ -293,6 +297,7 @@ if TargetOS = 'linux' then
       <Unit33>
         <Filename Value="ovotag\tag_ape.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="tag_APE"/>
       </Unit33>
       <Unit34>
         <Filename Value="ovotag\id3v1genres.pas"/>
@@ -317,6 +322,7 @@ if TargetOS = 'linux' then
       <Unit39>
         <Filename Value="ovotag\file_dummy.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="file_Dummy"/>
       </Unit39>
       <Unit40>
         <Filename Value="ovotag\tag_dummy.pas"/>
@@ -518,6 +524,7 @@ if TargetOS = 'linux' then
     <Linking>
       <Debugging>
         <DebugInfoType Value="dsDwarf2"/>
+        <UseValgrind Value="True"/>
       </Debugging>
       <Options>
         <Win32>
@@ -529,6 +536,7 @@ if TargetOS = 'linux' then
       <ConfigFile>
         <ConfigFilePath Value="..\extrafpc.cfg"/>
       </ConfigFile>
+      <CustomOptions Value="-FcUTF8"/>
       <ExecuteBefore>
         <Command Value="$(LazarusDir)\tools\svn2revisioninc$(ExeExt) .. ovorevision.inc --c=ovoRevision"/>
       </ExecuteBefore>

@@ -17,7 +17,6 @@ type
   TfCustomPlayList = class(TForm)
     ApplicationProperties1: TApplicationProperties;
     bPlus: TBitBtn;
-    bPlus1: TBitBtn;
     bPlus2: TBitBtn;
     ButtonPanel1: TButtonPanel;
     cbFieldName: TComboBox;
@@ -31,7 +30,6 @@ type
     sbFieldContainer: TScrollBox;
     seLimits: TSpinEdit;
     procedure ApplicationProperties1Idle(Sender: TObject; var Done: Boolean);
-    procedure bPlus1Click(Sender: TObject);
     procedure bPlus2Click(Sender: TObject);
     procedure bPlusClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -42,6 +40,7 @@ type
     PlayListBuilder: TPlayListBuilder;
     Editors: TEditorsContainer;
   public
+    function LoadFromFile(AfileName:TfileName):boolean;
     Function AddField:TfrField;
     Procedure DeleteField(AField:TfrField);
     Procedure UpdateBuilder;
@@ -101,9 +100,22 @@ var
   i: integer;
 begin
   UpdateBuilder;
-  BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
-        PlayListBuilder.Filter, PlayListBuilder.SortClause );
+  PlayListBuilder.ToJson(BackEnd.Config.GetPlaylistsPath+ EncodeSafeFileName(edtPlayListName.Text)+CustomPlaylistExtension);
 
+  //BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
+  //      PlayListBuilder.Filter, PlayListBuilder.SortClause );
+
+end;
+
+function TfCustomPlayList.LoadFromFile(AfileName: TfileName): boolean;
+begin
+  try
+    PlayListBuilder.FromJson(AfileName);
+    UpdateFromBuilder(true);
+    result := true;
+  except
+    Result:= false
+  end;
 end;
 
 procedure TfCustomPlayList.bPlusClick(Sender: TObject);
@@ -139,12 +151,6 @@ begin
       end;
     end;
 
-end;
-
-procedure TfCustomPlayList.bPlus1Click(Sender: TObject);
-begin
-  UpdateBuilder;
-  PlayListBuilder.ToJson(BackEnd.Config.GetPlaylistsPath+ EncodeSafeFileName(edtPlayListName.Text)+'.opl');
 end;
 
 procedure TfCustomPlayList.bPlus2Click(Sender: TObject);

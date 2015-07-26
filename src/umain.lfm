@@ -1,11 +1,11 @@
 object fMainForm: TfMainForm
-  Left = 902
+  Left = 858
   Height = 694
-  Top = 160
+  Top = 253
   Width = 866
   AllowDropFiles = True
   Caption = 'OvoPlayer'
-  ClientHeight = 674
+  ClientHeight = 673
   ClientWidth = 866
   Constraints.MinHeight = 400
   Constraints.MinWidth = 600
@@ -22,38 +22,38 @@ object fMainForm: TfMainForm
   LCLVersion = '1.5'
   object pcMain: TPageControl
     Left = 0
-    Height = 674
+    Height = 673
     Top = 0
     Width = 243
-    ActivePage = tsDirectory
+    ActivePage = tsPlayList
     Align = alLeft
     MultiLine = True
-    TabIndex = 1
+    TabIndex = 2
     TabOrder = 0
     TabPosition = tpBottom
     Options = [nboMultiLine, nboHidePageListPopup]
     object tsCollection: TTabSheet
       Caption = 'Collection'
-      ClientHeight = 646
-      ClientWidth = 235
+      ClientHeight = 638
+      ClientWidth = 237
       object pnlCollection: TPanel
         Left = 0
         Height = 70
         Top = 0
-        Width = 235
+        Width = 237
         Align = alTop
         BevelOuter = bvNone
         ClientHeight = 70
-        ClientWidth = 235
+        ClientWidth = 237
         TabOrder = 0
         object cbGroupBy: TComboBox
           Left = 4
-          Height = 23
+          Height = 25
           Hint = 'Group song'
           Top = 6
-          Width = 228
+          Width = 230
           Anchors = [akTop, akLeft, akRight]
-          ItemHeight = 15
+          ItemHeight = 0
           ItemIndex = 0
           Items.Strings = (
             'AlbumArtist / Album'
@@ -68,20 +68,20 @@ object fMainForm: TfMainForm
         end
         object edtFilter: TLabeledEdit
           Left = 47
-          Height = 23
+          Height = 27
           Hint = 'Filter'
           Top = 38
-          Width = 165
+          Width = 167
           Anchors = [akTop, akLeft, akRight]
           EditLabel.AnchorSideTop.Control = edtFilter
           EditLabel.AnchorSideTop.Side = asrCenter
           EditLabel.AnchorSideRight.Control = edtFilter
           EditLabel.AnchorSideBottom.Control = edtFilter
           EditLabel.AnchorSideBottom.Side = asrBottom
-          EditLabel.Left = 18
-          EditLabel.Height = 15
-          EditLabel.Top = 42
-          EditLabel.Width = 26
+          EditLabel.Left = 14
+          EditLabel.Height = 17
+          EditLabel.Top = 43
+          EditLabel.Width = 30
           EditLabel.Caption = 'Filter'
           EditLabel.ParentColor = False
           LabelPosition = lpLeft
@@ -89,7 +89,7 @@ object fMainForm: TfMainForm
           OnChange = edtFilterChange
         end
         object btnFilterCancel: TSpeedButton
-          Left = 211
+          Left = 213
           Height = 22
           Top = 39
           Width = 22
@@ -141,17 +141,17 @@ object fMainForm: TfMainForm
       object gbStats: TGroupBox
         Left = 0
         Height = 109
-        Top = 537
-        Width = 235
+        Top = 529
+        Width = 237
         Align = alBottom
         Caption = 'Stats'
-        ClientHeight = 89
-        ClientWidth = 231
+        ClientHeight = 90
+        ClientWidth = 233
         ParentFont = False
         TabOrder = 1
         Visible = False
         object btnCloseCollectionStat: TSpeedButton
-          Left = 209
+          Left = 211
           Height = 22
           Top = 0
           Width = 22
@@ -201,9 +201,9 @@ object fMainForm: TfMainForm
         end
         object sgStats: TStringGrid
           Left = 0
-          Height = 89
+          Height = 90
           Top = 0
-          Width = 209
+          Width = 211
           Align = alClient
           AutoEdit = False
           ColCount = 2
@@ -236,11 +236,10 @@ object fMainForm: TfMainForm
       end
       object tvCollection: TTreeView
         Left = 0
-        Height = 467
+        Height = 459
         Top = 70
-        Width = 235
+        Width = 237
         Align = alClient
-        DefaultItemHeight = 18
         ExpandSignType = tvestPlusMinus
         Images = DM.ilSmall
         Indent = 20
@@ -261,14 +260,14 @@ object fMainForm: TfMainForm
     end
     object tsDirectory: TTabSheet
       Caption = 'Directory'
-      ClientHeight = 646
-      ClientWidth = 235
+      ClientHeight = 638
+      ClientWidth = 237
       OnShow = tsDirectoryShow
       object tbDirectory: TToolBar
         Left = 0
         Height = 49
         Top = 0
-        Width = 235
+        Width = 237
         Flat = False
         Images = DM.ilButtons
         TabOrder = 0
@@ -302,7 +301,7 @@ object fMainForm: TfMainForm
         end
         object ePath: TDirectoryEdit
           Left = 1
-          Height = 23
+          Height = 27
           Top = 24
           Width = 202
           OnAcceptDirectory = ePathAcceptDirectory
@@ -316,11 +315,10 @@ object fMainForm: TfMainForm
       end
       object FilesTree: TTreeView
         Left = 0
-        Height = 597
+        Height = 589
         Top = 49
-        Width = 235
+        Width = 237
         Align = alClient
-        DefaultItemHeight = 18
         ExpandSignType = tvestPlusMinus
         HideSelection = False
         Images = DM.ilSmall
@@ -340,51 +338,47 @@ object fMainForm: TfMainForm
     end
     object tsPlayList: TTabSheet
       Caption = 'PlayList'
-      ClientHeight = 646
-      ClientWidth = 235
+      ClientHeight = 638
+      ClientWidth = 237
+      OnShow = tsPlayListShow
       object PlaylistTree: TTreeView
         Left = 0
-        Height = 646
+        Height = 638
         Top = 0
-        Width = 235
+        Width = 237
         Align = alClient
-        DefaultItemHeight = 18
+        PopupMenu = pmPlaylists
         ReadOnly = True
         RightClickSelect = True
         RowSelect = True
         ScrollBars = ssAutoBoth
         TabOrder = 0
+        OnCreateNodeClass = PlaylistTreeCreateNodeClass
         OnDblClick = PlaylistTreeDblClick
         Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
         Items.Data = {
-          F9FFFFFF020002000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF050000000000
-          0000011100000044656661756C7420506C61796C69737473FFFFFFFFFFFFFFFF
-          01000000FFFFFFFF0000000000000000000C0000004E6576657220706C617965
-          64FFFFFFFFFFFFFFFF02000000FFFFFFFF0000000000000000000A0000004C61
-          7374206164646564FFFFFFFFFFFFFFFF03000000FFFFFFFF0000000000000000
-          000B0000004D6F737420706C61796564FFFFFFFFFFFFFFFF04000000FFFFFFFF
-          0000000000000000000600000052616E646F6DFFFFFFFFFFFFFFFF05000000FF
-          FFFFFF00000000000000000003000000416C6CFFFFFFFFFFFFFFFF63000000FF
-          FFFFFF00000000000000000006000000437573746F6D
+          F9FFFFFF020001000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF010000000000
+          000001130000004175746F6D6174696320706C61796C69737473FFFFFFFFFFFF
+          FFFF63000000FFFFFFFF000000000000000000010000002D
         }
       end
     end
   end
   object pnlMain: TPanel
     Left = 247
-    Height = 674
+    Height = 673
     Top = 0
     Width = 619
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 674
+    ClientHeight = 673
     ClientWidth = 619
     Constraints.MinWidth = 439
     TabOrder = 1
     object pnlControl: TPanel
       Left = 0
       Height = 53
-      Top = 621
+      Top = 620
       Width = 619
       Align = alBottom
       Anchors = [akLeft, akRight]
@@ -562,17 +556,17 @@ object fMainForm: TfMainForm
     end
     object pnlPlaylist: TPanel
       Left = 0
-      Height = 497
+      Height = 496
       Top = 124
       Width = 619
       Align = alClient
-      ClientHeight = 497
+      ClientHeight = 496
       ClientWidth = 619
       Constraints.MinWidth = 494
       TabOrder = 1
       object sgPlayList: TStringGrid
         Left = 1
-        Height = 495
+        Height = 494
         Top = 1
         Width = 617
         Align = alClient
@@ -793,7 +787,7 @@ object fMainForm: TfMainForm
   end
   object Splitter1: TSplitter
     Left = 243
-    Height = 674
+    Height = 673
     Top = 0
     Width = 4
   end
@@ -1417,5 +1411,39 @@ object fMainForm: TfMainForm
       DC9EDCDCDC1D00000000000000000000000000000000DCDCDC11DCDCDC88DCDC
       DCF5DCDCDC5F0000000000000000
     }
+  end
+  object pmPlaylists: TPopupMenu
+    OnPopup = pmPlaylistsPopup
+    left = 124
+    top = 336
+    object mnuNewPlayList: TMenuItem
+      Caption = 'New playlist'
+      OnClick = mnuNewPlayListClick
+    end
+    object MenuItem64: TMenuItem
+      Caption = '-'
+    end
+    object mnuPlayPlaylist: TMenuItem
+      Caption = 'Play'
+      OnClick = mnuPlayPlaylistClick
+    end
+    object mnuEnqueuePlaylist: TMenuItem
+      Caption = 'Enqueue'
+      OnClick = mnuEnqueuePlaylistClick
+    end
+    object MenuItem58: TMenuItem
+      Caption = '-'
+    end
+    object mnuEditPlaylist: TMenuItem
+      Caption = 'Edit ...'
+      OnClick = mnuEditPlaylistClick
+    end
+    object MenuItem65: TMenuItem
+      Caption = '-'
+    end
+    object mnuDeletePlaylist: TMenuItem
+      Caption = 'Delete'
+      Enabled = False
+    end
   end
 end

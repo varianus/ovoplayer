@@ -25,7 +25,7 @@ unit uMain;
 interface
 
 uses
-  Classes, types, SysUtils, FileUtil, Forms, Controls, Graphics,
+  Classes, types, SysUtils, lazFileUtils, Forms, Controls, Graphics,
   Dialogs, ComCtrls, Menus, ExtCtrls, Buttons, StdCtrls, Song, CustomSong, uOSD,
   BaseTypes, GUIBackEnd, Config, MediaLibrary, coreinterfaces,
   DefaultTranslator, Grids, EditBtn, ActnList, customdrawncontrols,
@@ -33,7 +33,7 @@ uses
   {$IFDEF MPRIS2} Mpris2,{$ENDIF}
   {$IFDEF NOTIFYDBUS} notification,{$ENDIF}
   {$IFDEF TASKBAR_EXTENSION}taskbar_ext,{$ENDIF}
-  ucover, ucustomplaylist;
+  ucover, ucustomplaylist, playlistbuilder;
 
 type
   TSortFields = record
@@ -63,6 +63,14 @@ type
     public
       FullPath: string;
       isDir:    boolean;
+  end;
+
+  { TPlayListTreeNode }
+
+  TPlayListTreeNode = class ( TTreeNode)
+    public
+      FullPath: string;
+      Automatic: boolean;
   end;
 
   TDWordArray = array [0..$FFFFFF] of Dword;
@@ -108,9 +116,18 @@ type
     MenuItem51: TMenuItem;
     MenuItem56: TMenuItem;
     MenuItem57: TMenuItem;
+    mnuEnqueuePlaylist: TMenuItem;
+    mnuPlayPlaylist: TMenuItem;
+    mnuDeletePlaylist: TMenuItem;
+    MenuItem64: TMenuItem;
+    MenuItem65: TMenuItem;
+    mnuNewPlayList: TMenuItem;
+    mnuEditPlaylist: TMenuItem;
+    MenuItem58: TMenuItem;
     mnuSeparator: TMenuItem;
     MenuItem59: TMenuItem;
     MenuItem60: TMenuItem;
+    pmPlaylists: TPopupMenu;
     RateStars: TImageList;
     MenuItem21: TMenuItem;
     MenuItem38: TMenuItem;
@@ -267,14 +284,21 @@ type
     procedure imgCoverDblClick(Sender: TObject);
     procedure MenuItem59Click(Sender: TObject);
     procedure MenuItem60Click(Sender: TObject);
+    procedure mnuEnqueuePlaylistClick(Sender: TObject);
+    procedure mnuPlayPlaylistClick(Sender: TObject);
+    procedure mnuNewPlayListClick(Sender: TObject);
+    procedure mnuEditPlaylistClick(Sender: TObject);
     procedure mnuRestoreClick(Sender: TObject);
     procedure mnuEnqueueItemsClick(Sender: TObject);
     procedure mnuFileInfoClick(Sender: TObject);
     procedure mnuInfoClick(Sender: TObject);
     procedure mnuPlayItemsClick(Sender: TObject);
     procedure mnuRemovePlaylistClick(Sender: TObject);
+    procedure PlaylistTreeCreateNodeClass(Sender: TCustomTreeView;
+      var NodeClass: TTreeNodeClass);
 //    procedure PlaylistMenuPopup(Sender: TObject);
     procedure pmdirectoriesPopup(Sender: TObject);
+    procedure pmPlaylistsPopup(Sender: TObject);
     procedure pnCollectionPopup(Sender: TObject);
     procedure pnHeaderPlaylistPopup(Sender: TObject);
     procedure sgPlayListClick(Sender: TObject);
@@ -318,6 +342,7 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure PlaylistTreeDblClick(Sender: TObject);
     procedure tsDirectoryShow(Sender: TObject);
+    procedure tsPlayListShow(Sender: TObject);
     procedure tvCollectionCreateNodeClass(Sender: TCustomTreeView;
       var NodeClass: TTreeNodeClass);
     procedure tvCollectionDblClick(Sender: TObject);
@@ -354,6 +379,7 @@ type
     procedure ClearPanelInfo;
     procedure CollectionHandler(Enqueue: boolean);
     procedure FileSystemHandler(Enqueue: boolean);
+    procedure PlayListHandler(Enqueue:boolean);
     procedure LoadDir(Path: string);
     procedure LoadTree;
     procedure MediaLibraryScanComplete(Sender: TObject; _Added, _Updated, _Removed, _Failed: integer);
@@ -373,6 +399,7 @@ type
     procedure ReadConfig(Sender: TObject);
     procedure RemoveSelectionFromPlaylist;
     procedure ScrollIntoView;
+    procedure LoadAutomaticPlaylist;
     procedure ShowNotification;
     procedure UpdateProperty(Kind: TChangedProperty);
 
@@ -675,6 +702,27 @@ begin
      end;
 end;
 
+procedure TfMainForm.PlayListHandler(Enqueue: boolean);
+var
+  playlistbuilder : TPlayListBuilder;
+  item: TPlayListTreeNode;
+begin
+  item := TPlayListTreeNode( PlaylistTree.Selected);
+  if item = nil then
+     exit;
+  if not Enqueue then
+    BackEnd.PlayList.Clear;
+  playlistbuilder := TPlayListBuilder.Create;
+  try
+    playlistbuilder.FromJson(item.FullPath);
+    BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
+          PlayListBuilder.Filter, PlayListBuilder.SortClause );
+
+  finally
+    playlistbuilder.free;
+  end;
+  ReloadPlayList;
+end;
 procedure TfMainForm.edtFilterChange(Sender: TObject);
 begin
   LoadTree;
@@ -1297,6 +1345,45 @@ begin
   FileSystemHandler(False);
 end;
 
+procedure TfMainForm.mnuEnqueuePlaylistClick(Sender: TObject);
+begin
+  PlayListHandler(True);
+end;
+
+procedure TfMainForm.mnuPlayPlaylistClick(Sender: TObject);
+begin
+ PlayListHandler(False);
+end;
+
+procedure TfMainForm.mnuNewPlayListClick(Sender: TObject);
+begin
+  with TfCustomPlayList.Create(self) do
+    begin
+      if showmodal = mrOK then
+        LoadAutomaticPlaylist;
+
+    end;
+end;
+
+procedure TfMainForm.mnuEditPlaylistClick(Sender: TObject);
+var
+  item: TPlayListTreeNode;
+begin
+  item := TPlayListTreeNode( PlaylistTree.Selected);
+  if item = nil then
+     exit;
+  with TfCustomPlayList.Create(self) do
+    begin
+      if LoadFromFile(item.FullPath) then
+        begin
+         if showmodal = mrOK then
+           LoadAutomaticPlaylist;
+        end
+      else
+        free;
+    end;
+end;
+
 procedure TfMainForm.PlayListChange(Sender: TObject);
 begin
   ReloadPlayList;
@@ -1352,6 +1439,30 @@ begin
          if ARow > lastRow then
            sgplaylist.TopRow := ARow -visRows;
   end;
+end;
+
+procedure TfMainForm.LoadAutomaticPlaylist;
+var
+  AutoPlayList:TStringList;
+  i: integer;
+  Node, BaseNode: TPlayListTreeNode;
+  plName:string;
+begin
+  PlaylistTree.Items.Clear;
+  BaseNode:= TPlayListTreeNode(PlaylistTree.Items.Add(nil, rAutomaticPlaylist));
+  BaseNode.FullPath:=EmptyStr;
+
+  AutoPlayList := TStringList.Create;
+  BuildFileList(BackEnd.Config.GetPlaylistsPath+'*'+CustomPlaylistExtension,faAnyFile, AutoPlayList,False);
+  for i := 0 to AutoPlayList.Count -1 do
+    begin
+      plname := DecodeSafeFileName(ExtractFileNameOnly(AutoPlayList[i]));
+      node:= TPlayListTreeNode(PlaylistTree.Items.AddChild(BaseNode, plName));
+      node.FullPath:=AutoPlayList[i];
+      Node.Automatic:=true;
+    end;
+
+  BaseNode.Expand(true);
 end;
 
 procedure TfMainForm.SaveConfig(Sender: TObject);
@@ -1546,6 +1657,12 @@ begin
   RemoveSelectionFromPlaylist;
 end;
 
+procedure TfMainForm.PlaylistTreeCreateNodeClass(Sender: TCustomTreeView;
+  var NodeClass: TTreeNodeClass);
+begin
+  NodeClass:= TPlayListTreeNode;
+end;
+
 procedure TfMainForm.pmdirectoriesPopup(Sender: TObject);
 var
   Node: TFileTreeNode;
@@ -1556,6 +1673,23 @@ begin
        mnuFileInfo.Visible := not Node.isDir;
        mnuSeparator.Visible := not Node.isDir;
     end;
+
+end;
+
+procedure TfMainForm.pmPlaylistsPopup(Sender: TObject);
+var
+ item: TPlayListTreeNode;
+ MasterItem: boolean;
+begin
+ item := TPlayListTreeNode( PlaylistTree.Selected);
+ if item = nil then
+   exit;
+ MasterItem:= item.FullPath = EmptyStr;
+
+ mnuPlayPlaylist.Visible:= Not MasterItem;
+ MenuItem58.Visible:= Not MasterItem;
+ mnuEditPlaylist.Visible:= Not MasterItem;
+ mnuDeletePlaylist.Visible:= Not MasterItem;
 
 end;
 
@@ -2332,7 +2466,7 @@ begin
   end;
 end;
 
-Function TfMainForm.AdjustPos(pt:tpoint):Tpoint;
+function TfMainForm.AdjustPos(pt: tpoint): Tpoint;
 begin
 
   result.x := pt.x;
@@ -2392,36 +2526,18 @@ begin
 
 end;
 
+
+
 procedure TfMainForm.PlaylistTreeDblClick(Sender: TObject);
 var
-  item: TTreeNode;
-  Limit : Integer;
-  strLimit: string;
+  item: TPlayListTreeNode;
 begin
-  item := PlaylistTree.Selected;
+  item := TPlayListTreeNode(PlaylistTree.Selected);
   if item = nil then
      exit;
-  Limit := BackEnd.Config.PlayListParam.LimitTrack;
-  if limit > 0 then
-     strLimit:= ' limit ' + IntToStr(Limit)
-  else
-     strLimit:= '';
-
-  case item.StateIndex of
-     1: BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
-        'playcount = 0', 'random()'  + strLimit);
-     2: BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
-        '', 'added desc' + strLimit);
-     3: BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
-        '', 'playcount desc ' + strLimit);
-     4: BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
-        '','random()' + strLimit);
-     5: BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
-        '');
-     99: begin
-          with TfCustomPlayList.Create(self) do showmodal;
-     end;
-  end;
+  if item.FullPath <> EmptyStr then
+    if item.Automatic then
+       PlayListHandler(True);
   ReloadPlayList;
 end;
 
@@ -2431,6 +2547,11 @@ begin
      begin
        LoadDir(GetUserDir);
      end;
+end;
+
+procedure TfMainForm.tsPlayListShow(Sender: TObject);
+begin
+  LoadAutomaticPlaylist;
 end;
 
 procedure TfMainForm.tvCollectionCreateNodeClass(Sender: TCustomTreeView;

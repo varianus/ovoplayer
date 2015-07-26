@@ -9,6 +9,10 @@ msgstr "Aggiunti:"
 msgid "All Files(%0:s)|%0:s"
 msgstr "Tutti i files (%0:s)|%0:s"
 
+#: appconsts.rautomaticplaylist
+msgid "Automatic Playlist"
+msgstr ""
+
 #: appconsts.rbegincollectionscan
 msgid "Scanning Collection"
 msgstr "Scansione Collezione "
@@ -243,6 +247,10 @@ msgstr "senza valutazione"
 msgctxt "playlistbuilder.rs_playcount"
 msgid "Play count"
 msgstr "Conteggio Esecuzioni"
+
+#: playlistbuilder.rs_random
+msgid "Random"
+msgstr ""
 
 #: playlistbuilder.rs_rating
 msgctxt "playlistbuilder.rs_rating"
@@ -796,17 +804,33 @@ msgstr "Dimens. originale"
 msgid "Cover Viewer"
 msgstr "Visualizzatore Copertine"
 
+#: tfcustomplaylist.bplus2.caption
+msgid "Test read"
+msgstr ""
+
 #: tfcustomplaylist.caption
 msgid "Custom Playlist "
 msgstr "Scaletta personalizzata"
+
+#: tfcustomplaylist.cbsortdirection.caption
+msgid "in ascending order"
+msgstr ""
 
 #: tfcustomplaylist.cklimit.caption
 msgid "Limit to "
 msgstr "Limita a "
 
-#: tfcustomplaylist.ckrandom.caption
-msgid "Randomize"
-msgstr "Casuale"
+#: tfcustomplaylist.edtplaylistname.editlabel.caption
+msgid "Name"
+msgstr ""
+
+#: tfcustomplaylist.lbfilterresults.caption
+msgid "                              "
+msgstr ""
+
+#: tfcustomplaylist.lbsort.caption
+msgid "Sort by"
+msgstr ""
 
 #: tflicense.caption
 msgid "License"
@@ -1002,6 +1026,35 @@ msgstr ""
 msgid "None"
 msgstr "Nessuna"
 
+#: tfmainform.menuitem58.caption
+#, fuzzy
+#| msgid "Enqueue"
+msgctxt "tfmainform.menuitem58.caption"
+msgid "-"
+msgstr "Accoda"
+
+#: tfmainform.menuitem59.caption
+#, fuzzy
+msgctxt "tfmainform.menuitem59.caption"
+msgid "Enqueue"
+msgstr "Accoda"
+
+#: tfmainform.menuitem60.caption
+#, fuzzy
+msgctxt "tfmainform.menuitem60.caption"
+msgid "Play"
+msgstr "Riproduci"
+
+#: tfmainform.menuitem64.caption
+msgctxt "tfmainform.menuitem64.caption"
+msgid "-"
+msgstr ""
+
+#: tfmainform.menuitem65.caption
+msgctxt "tfmainform.menuitem65.caption"
+msgid "-"
+msgstr ""
+
 #: tfmainform.menuitem9.caption
 msgctxt "TFMAINFORM.MENUITEM9.CAPTION"
 msgid "-"
@@ -1012,9 +1065,24 @@ msgctxt "TFMAINFORM.MNUCOLLECTION.CAPTION"
 msgid "Collection"
 msgstr "Collezione"
 
+#: tfmainform.mnudeleteplaylist.caption
+msgctxt "tfmainform.mnudeleteplaylist.caption"
+msgid "Delete"
+msgstr ""
+
+#: tfmainform.mnueditplaylist.caption
+msgid "Edit ..."
+msgstr ""
+
 #: tfmainform.mnuenqueueitems.caption
+msgctxt "tfmainform.mnuenqueueitems.caption"
 msgid "Enqueue"
 msgstr "Accoda"
+
+#: tfmainform.mnuenqueueplaylist.caption
+msgctxt "tfmainform.mnuenqueueplaylist.caption"
+msgid "Enqueue"
+msgstr ""
 
 #: tfmainform.mnufile.caption
 msgid "&File"
@@ -1030,10 +1098,21 @@ msgctxt "TFMAINFORM.MNUINFO.CAPTION"
 msgid "Media Info"
 msgstr "Informazione media"
 
+#: tfmainform.mnunewplaylist.caption
+msgctxt "tfmainform.mnunewplaylist.caption"
+msgid "New playlist"
+msgstr ""
+
 #: tfmainform.mnuplayitems.caption
 msgctxt "TFMAINFORM.MNUPLAYITEMS.CAPTION"
 msgid "Play"
 msgstr "Esegui"
+
+#: tfmainform.mnuplayplaylist.caption
+#, fuzzy
+msgctxt "tfmainform.mnuplayplaylist.caption"
+msgid "Play"
+msgstr "Riproduci"
 
 #: tfmainform.mnurefreshitems.caption
 msgid "Refresh"
@@ -1046,6 +1125,11 @@ msgstr "Rimuovi da Playlist"
 #: tfmainform.mnurestore.caption
 msgid "Restore"
 msgstr "Ripristina"
+
+#: tfmainform.mnuseparator.caption
+msgctxt "tfmainform.mnuseparator.caption"
+msgid "-"
+msgstr ""
 
 #: tfmainform.tbrepeat.caption
 msgid "     "

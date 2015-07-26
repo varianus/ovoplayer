@@ -116,7 +116,7 @@ type
 
 implementation
 
-uses AppConsts, AudioTag, fileutil, dateutils;
+uses AppConsts, AudioTag, lazfileutils, dateutils;
 
 const
   CURRENTDBVERSION = 3;
