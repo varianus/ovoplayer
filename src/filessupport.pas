@@ -44,6 +44,7 @@ Function UpperDirectory(const dir:string):string;
 function GetConfigDir: string;
 function strByteSize(Value: Int64): String;
 function EncodeSafeFileName(const s: string): string;
+function DecodeSafeFileName(const s: string): string;
 
 implementation
 
