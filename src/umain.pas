@@ -415,7 +415,7 @@ implementation
 {$R *.lfm}
 uses AppConsts, lclType, AudioTag, LCLProc, FilesSupport,
      uConfig, uMiniPlayer, uSongInfo, uAbout, baseTag,
-     Math, udm;
+     Math, udm, lazutf8;
 
 type
 
