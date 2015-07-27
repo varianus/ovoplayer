@@ -69,7 +69,7 @@ type
 
 
 implementation
-uses math, fileutil;
+uses math, fileutil, lazfileutils;
 
 Const
    VLCMAXVOLUME = 100;

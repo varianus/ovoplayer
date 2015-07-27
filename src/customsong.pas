@@ -11,7 +11,7 @@ type
 
   { TCustomSong }
 
-  TCustomSong = Class (tSong)
+  TCustomSong = Class (TSong)
   private
     FAdded: TDateTime;
     FId: Integer;

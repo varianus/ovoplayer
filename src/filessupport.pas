@@ -49,7 +49,7 @@ function DecodeSafeFileName(const s: string): string;
 implementation
 
 uses
-  SysUtils, fileutil;
+  SysUtils, fileutil, LazUTF8, LazFileUtils;
 
 const
 { common computer sizes }
