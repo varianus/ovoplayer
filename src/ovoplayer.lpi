@@ -23,9 +23,6 @@
       <MajorVersionNr Value="1"/>
       <StringTable CompanyName="Marco Caselli" ProductVersion=""/>
     </VersionInfo>
-    <MacroValues Count="1">
-      <Macro1 Name="LCLWidgetType" Value="gtk2"/>
-    </MacroValues>
     <BuildModes Count="2">
       <Item1 Name="Debug" Default="True"/>
       <Item2 Name="Release">
@@ -89,7 +86,7 @@ if TargetOS = 'linux' then
         </CompilerOptions>
       </Item2>
       <SharedMatrixOptions Count="5">
-        <Item1 ID="066772129436" Modes="Debug" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
+        <Item1 ID="066772129436" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
         <Item2 ID="410165404427" Type="IDEMacro" MacroName="LCLWidgetType" Value="qt"/>
         <Item3 ID="829386383577" Type="IDEMacro" MacroName="LCLWidgetType" Value="customdrawn"/>
         <Item4 ID="280527481958" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk3"/>
@@ -359,6 +356,7 @@ if TargetOS = 'linux' then
       <Unit47>
         <Filename Value="audioengine_uos.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="AudioEngine_UOS"/>
       </Unit47>
       <Unit48>
         <Filename Value="import-engines\uos_libsndfile.pas"/>
