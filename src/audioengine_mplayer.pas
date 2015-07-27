@@ -25,7 +25,7 @@ unit AudioEngine_MPlayer;
 interface
 
 uses
-  Classes, SysUtils, ExtCtrls, Process, FileUtil, UTF8Process, Song, BaseTypes, AudioEngine;
+  Classes, SysUtils, ExtCtrls, Process, UTF8Process, Song, BaseTypes, AudioEngine;
 
 type
 
@@ -80,7 +80,7 @@ type
 
 implementation
 
-uses strutils, lclproc;
+uses strutils, FileUtil, LazFileUtils, lclproc;
 Const
   MPLAYERMAXVOLUME = 100;
 

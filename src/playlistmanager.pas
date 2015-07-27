@@ -85,7 +85,7 @@ type
 implementation
 
 uses
-  DOM, XMLRead, XMLWrite, URIParser, IniFiles, fileutil, filesSupport, LCLProc, basetag;
+  DOM, XMLRead, XMLWrite, URIParser, IniFiles, fileutil, LazFileUtils, filesSupport, LCLProc, basetag;
 
 const
   //  GenDelims  = [':', '/', '?', '#', '[', ']', '@'];

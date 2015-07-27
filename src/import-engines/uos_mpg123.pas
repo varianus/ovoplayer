@@ -829,6 +829,8 @@ begin
     mp_Handle := DynLibs.NilHandle;
   end;
 
+  result := true;
+
 end;
 
 function Mp_Load(const libfilename: string): boolean;
@@ -956,4 +958,4 @@ begin
 end;
 
 
-end.
+end.

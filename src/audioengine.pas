@@ -118,7 +118,7 @@ var
   EngineArray : array of RAudioEngine;
 
 implementation
-uses FileUtil, GeneralFunc, math;
+uses FileUtil, LazFileUtils, GeneralFunc, math;
 
 Type
   TEngineSorter = specialize TSortArray<RAudioEngine>;

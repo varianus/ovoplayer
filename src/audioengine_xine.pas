@@ -70,7 +70,7 @@ type
 
 
 implementation
-uses FileUtil;
+uses FileUtil, LazFileUtils;
 { TAudioEngineXINE }
 
 procedure XineEventCB(user_data:Pointer; event: Pxine_event_t); cdecl;
