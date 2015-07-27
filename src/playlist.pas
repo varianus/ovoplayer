@@ -425,8 +425,8 @@ end;
 procedure TPlayList.Sort;
 begin
   PushPos;
-
-  IntQuickSort(Self.List, 0, count-1, @MyCompare);
+  if Assigned(self.List) then
+    IntQuickSort(Self.List, 0, count-1, @MyCompare);
 
   PopPos;
 end;
