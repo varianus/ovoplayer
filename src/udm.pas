@@ -27,7 +27,7 @@ interface
 uses
   Classes, SysUtils, LazFileUtils, ActnList, Controls, Dialogs, Forms, LResources,
   BaseTypes, CoreInterfaces,
-  AudioEngine, LazUTF8,
+  AudioEngine, LazUTF8,  LazLogger,
   PlayListManager, MediaLibrary, UniqueInstance;
 
 type
@@ -99,6 +99,8 @@ type
     procedure DataModuleDestroy(Sender: TObject);
     procedure UniqueInstanceIOtherInstance(Sender: TObject; ParamCount: Integer;
       Parameters: array of String);
+    // -- --
+    procedure DebugLnHook(Sender: TObject; S: string; var Handled: Boolean);
   public
 
   end;
@@ -109,15 +111,17 @@ var
 implementation
 
 {$R *.lfm}
-uses LCLProc, strutils, AudioTag, AppConsts, GeneralFunc, GUIBackEnd;
-
+uses lclproc, strutils, AudioTag, AppConsts, GeneralFunc, GUIBackEnd;
 
 { TDM }
+// for traceback porpouse
+var
+  f: text;
 
 
 procedure TDM.DataModuleCreate(Sender: TObject);
 begin
-  Application.OnException := @ApplicationPropertiesException;
+//  Application.OnException := @ApplicationPropertiesException;
 
   UniqueInstanceI:= TUniqueInstance.Create(Self);
   with UniqueInstanceI do
@@ -197,6 +201,12 @@ begin
            end;
       end;
 
+end;
+
+procedure TDM.DebugLnHook(Sender: TObject; S: string; var Handled: Boolean);
+begin
+ if (TextRec(f).mode <> fmClosed) and (IOResult = 0) then
+    WriteLn(f, S);
 end;
 
 procedure TDM.actPlaylistLoadExecute(Sender: TObject);
@@ -402,90 +412,39 @@ begin
     st.free;
   end;
 end;
-{
-procedure DumpExceptionCallStack(E: Exception);
-var
-  I: Integer;
-  Frames: PPointer;
-  Report: string;
-  func,
-  source : shortstring;
-  hs     : string[32];
-  line   : longint;
-  Success : boolean;
-  Msg: TstringList;
-begin
-  msg:= TstringList.create;
-  Report := 'Program exception! ' + LineEnding +
-    'Stacktrace:' + LineEnding + LineEnding;
-  if E <> nil then begin
-    Report := Report + 'Exception class: ' + E.ClassName + LineEnding +
-    'Message: ' + E.Message + LineEnding;
-  end;
-  Report := Report + BackTraceStrFunc (ExceptAddr);
-  Frames := ExceptFrames;
-  for I := 0 to ExceptFrameCount - 1 do
-    Report := Report + LineEnding + BackTraceStrFunc (Frames[I] );
-  msg.Text:=Report;
-  msg.SaveToFile('ovoplayer.err');
-  msg.free;
-  DumpStack;
-end;
-
-}
-procedure DumpExceptionCallStack(e:exception);
-var
-  f: System.Text;
-  afileName:String;
-begin
-  afileName:='ovoplayer.err';
-  if (aFileName <> EmptyStr)  then
-  begin
-    AssignFile(f, UTF8ToSys(aFileName));
-    {$PUSH}{$I-}
-    if not FileExistsUTF8(aFileName) then
-      Rewrite(f)
-    else
-      Append(f);
-    {$POP}
-    if (TextRec(f).mode <> fmClosed) and (IOResult = 0) then
-    begin
-      WriteLn(f, '--------------- ',
-                 FormatDateTime('dd-mm-yyyy, hh:nn:ss', SysUtils.Now),
-                 ' ---------------');
-      WriteLn(f, '| DC v', AppVersion, ' Rev. ', AppVersion);
-//                 ' -- ', TargetCPU + '-' + TargetOS + '-' + TargetWS);
-//      if WSVersion <> EmptyStr then
-//        WriteLn(f, '| ', OSVersion, ' -- ', WSVersion)
-//      else
-//        WriteLn(f, '| ', OSVersion);
-
-        if Assigned(e) then
-          WriteLn(f, 'Unhandled exception: ',
-                     Exception(e).ClassName, ': ',
-                     Exception(e).Message)
-        else
-          WriteLn(f, 'Unhandled exception');
-        WriteLn(f, '  Stack trace:');
-
-        System.DumpExceptionBackTrace(f);
-
-
-      // Make one empty line.
-      WriteLn(f);
-
-      CloseFile(f);
-    end;
-  end;
-end;
 
 
 procedure TDM.ApplicationPropertiesException(Sender: TObject; E: Exception
   );
+var
+  AfileName: string;
 begin
-  DumpExceptionCallStack(e);
-//  Halt; // End of program execution
+  AFileName:= 'ovoplayer.err';
+  AssignFile(f, UTF8ToSys(aFileName));
+  {$PUSH}{$I-}
+  if not FileExistsUTF8(aFileName) then
+    Rewrite(f)
+  else
+    Append(f);
+  {$POP}
+
+  DebugLogger.OnDebugLn:= @DebugLnHook;
+  debugln('=============================================');
+  debugln('| ', FormatDateTime('dd-mm-yyyy, hh:nn:ss', SysUtils.Now));
+  debugln('| ', AppName, ' v', AppVersion, ' Rev. ', ovoRevision);
+  if Assigned(e) then
+    debugln('| TApplication.HandleException ', Exception(e).ClassName,' ', Exception(e).Message)
+  else
+    debugln('| ''TApplication.HandleException Strange Exception ');
+
+  DumpExceptionBackTrace;
+
+  DebugLogger.OnDebugLn:=nil;
+  Flush(F);
+  CloseFile(F);
+
 end;
 
 initialization
+
 end.

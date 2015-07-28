@@ -68,7 +68,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
     // Application forms and related
   Udm,uMain, uAbout, ulicense,
   uConfig, uOSD, uMiniPlayer, uSongInfo,
-  uCover,
+  uCover,  lazlogger,
   customdrawndrawers, customdrawn_ovoplayer,
   DefaultTranslator, customdrawn, ucustomplaylist, ufrfield, playlistbuilder;
 
@@ -78,6 +78,8 @@ begin
   defaultstyle := dsExtra2;
 
   CheckRestarting(Application);
+  // needed to output exception to a file
+  Application.Flags := Application.Flags + [appNoExceptionMessages];
 
   if not isAppRunning(Application) then
    begin
