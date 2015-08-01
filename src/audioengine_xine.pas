@@ -148,6 +148,10 @@ begin
   XineStream := xine_stream_new(XineLib, ao_driver, nil);
   error := xine_get_error(XineStream);
 
+  queue := xine_event_new_queue (XineStream);
+  xine_event_create_listener_thread (queue, @XineEventCB, self);
+
+
   fdecoupler := TDecoupler.Create;
   fdecoupler.OnCommand := @ReceivedCommand;
   Initialized := true;
@@ -191,8 +195,6 @@ end;
 
 procedure TAudioEngineXINE.Activate;
 begin
-  queue := xine_event_new_queue (XineStream);
-  xine_event_create_listener_thread (queue, @XineEventCB, self);
 end;
 
 
