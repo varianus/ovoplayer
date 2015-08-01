@@ -104,7 +104,7 @@ var
 
   procedure DoStuffForProcess;
   var
-    Buffer:     string;
+    Buffer:     ansistring;
     BytesAvailable: DWord;
     BytesRead:  longint;
     ProcessStr: string;
@@ -120,6 +120,8 @@ var
         SetLength(Buffer, BytesAvailable);
         BytesRead  := fPlayerProcess.OutPut.Read(Buffer[1], BytesAvailable);
         ProcessStr := copy(Buffer, 1, BytesRead);
+     //   debugln(ProcessStr);
+
         if AnsiStartsStr(TIMEPOSOUT,ProcessStr) then
           begin
             ProcessStr := trim(Copy(ProcessStr, 3, 7));
@@ -281,9 +283,9 @@ begin
 
   FPlayRunningI := True;
   fPlayerProcess := TProcessUTF8.Create(nil);
-  Params := ' -slave -nofs -nomouseinput -noquiet -vc null -vo null -nofontconfig '; //  -priority abovenormal -really-quiet -identify
+  Params := ' -slave -nofs -nomouseinput -noquiet -vc null -vo null ';// -nofontconfig '; //  -priority abovenormal -really-quiet -identify
   Params := Params + ' -volume ' + IntToStr(Self.MainVolume) + ' -softvol -softvol-max 255';
-  fPlayerProcess.Options := fPlayerProcess.Options + [poUsePipes, poNoConsole];
+  fPlayerProcess.Options := fPlayerProcess.Options + [poUsePipes, poNoConsole, poStderrToOutPut];
   fPlayerProcess.CommandLine :=ExePath + ' ' + Params + ' "' +Filename+'"';
   fPlayerProcess.Execute;
 
