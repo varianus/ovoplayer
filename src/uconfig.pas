@@ -46,6 +46,7 @@ type
     cbRestart: TCheckBox;
     colorBackground: TColorBox;
     ColorFont:  TColorBox;
+    EngineInfo: TValueListEditor;
     lbRestart: TLabel;
     FontDialog1: TFontDialog;
     GroupBox1:  TGroupBox;
@@ -148,15 +149,18 @@ var
   engineParams: AREngineParams;
   Engine : TAudioEngineClass;
   i: integer;
+  isCurrent: boolean;
   tmpValue: string;
 begin
   if rgAudioEngine.Items[rgAudioEngine.ItemIndex] <> BackEnd.AudioEngine.GetEngineName then
      begin
+       isCurrent:= False;
        BackEnd.Config.NeedRestart:= true;
        pnlRestart.Visible:= true;
      end
   else
     begin
+      isCurrent:= True;
       BackEnd.Config.NeedRestart:= false;
       pnlRestart.Visible:= false;
     end;
@@ -183,6 +187,21 @@ begin
      end
   else
   EngineParamsEditor.Visible:=false;
+
+  EngineParams := Engine.GetEngineInfo(isCurrent);
+
+  if Length(engineParams) > 0 then
+     begin
+       EngineInfo.Visible:=True;
+       EngineInfo.Clear;
+       for i := 0 to Length(engineParams) -1 do
+         begin
+           EngineInfo.Values[engineParams[i].Key]:=engineParams[i].Value;
+         end;
+     end
+  else
+  EngineInfo.Visible:=false;
+
 
 end;
 
