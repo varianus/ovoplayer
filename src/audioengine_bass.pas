@@ -55,6 +55,7 @@ type
   public
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
     class Function GetEngineName: String; override;
+    Class Function GetEngineInfo(IsCurrent:boolean): AREngineParams; override;
 
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
@@ -230,7 +231,7 @@ begin
   BASS_ChannelPause(Channel);
 end;
 
-Function TAudioEngineBASS.DoPlay(Song: TSong; offset:Integer):boolean;
+function TAudioEngineBASS.DoPlay(Song: TSong; offset: Integer): boolean;
 var
   Flags: DWORD;
 begin
@@ -303,6 +304,32 @@ end;
 class function TAudioEngineBASS.GetEngineName: String;
 begin
   Result:='BASS';
+end;
+
+class function TAudioEngineBASS.GetEngineInfo(IsCurrent:boolean): AREngineParams;
+var
+  isAlreadyActive, isactivated: boolean;
+  ver: LongWord;
+  ByteArray: array [1..4] of byte absolute ver;
+begin
+  result := inherited GetEngineInfo(IsCurrent);
+  if not IsCurrent then
+     Load_BASSDLL(lazdynamic_bass.BASS_name);
+  try
+    ver := BASS_GetVersion();
+  Except
+    ver:=0;
+  end;
+
+  SetLength(Result,1);
+  result[0].Key:= 'Version';
+
+
+  Result[0].Value:=Format('%d.%d.%d',[ByteArray[4],ByteArray[3],ByteArray[2]]);
+  result[0].Kind:=epkString;
+  if not IsCurrent then
+     Unload_BASSDLL;
+
 end;
 
 procedure TAudioEngineBASS.PostCommand(Command: TEngineCommand; Param: integer);

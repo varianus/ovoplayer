@@ -71,6 +71,7 @@ type
     class Function GetEngineName: string; virtual; abstract;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; virtual; abstract;
     Class Function GetEngineParams: AREngineParams; virtual;
+    Class Function GetEngineInfo(IsCurrent:boolean): AREngineParams; virtual;
 
     constructor Create; virtual;
     destructor Destroy; override;
@@ -229,6 +230,11 @@ begin
 end;
 
 class function TAudioEngine.GetEngineParams: AREngineParams;
+begin
+  SetLength(result,0);
+end;
+
+class function TAudioEngine.GetEngineInfo(IsCurrent:boolean): AREngineParams;
 begin
   SetLength(result,0);
 end;

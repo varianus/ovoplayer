@@ -51,6 +51,7 @@ type
   public
     class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
+    Class Function GetEngineInfo(IsCurrent:boolean): AREngineParams; override;
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
@@ -263,6 +264,32 @@ end;
 class function TAudioEngineLibMPV.IsAvalaible(ConfigParam: TStrings): boolean;
 begin
   Result:= Check_libmpv;
+end;
+
+class function TAudioEngineLibMPV.GetEngineInfo(IsCurrent:boolean): AREngineParams;
+ var
+   isAlreadyActive, isactivated: boolean;
+   ver: LongWord;
+   ByteArray: array [1..4] of byte absolute ver;
+ begin
+   result := inherited GetEngineInfo(IsCurrent);
+   if not IsCurrent then
+      Load_libmpv(libmpv.External_library);
+   try
+     ver := mpv_client_api_version();
+   Except
+     ver:=0;
+   end;
+
+   SetLength(Result,1);
+   result[0].Key:= 'Version';
+
+
+   Result[0].Value:=Format('%d.%d.%d',[ByteArray[4],ByteArray[3],ByteArray[2]]);
+   result[0].Kind:=epkString;
+   if not IsCurrent then
+      Free_libmpv();
+
 end;
 
 procedure TAudioEngineLibMPV.PostCommand(Command: TEngineCommand; Param: integer);
