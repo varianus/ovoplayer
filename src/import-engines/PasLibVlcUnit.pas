@@ -7246,7 +7246,7 @@ begin
 end;
 
 (******************************************************************************)
-(* GDK_WINDOW_HWND is not defined in GDK2 for WIN32
+(* GDK_WINDOW_HWND is not defined in GDK2 for WIN32                           *)
 (******************************************************************************)
 
 {$IFDEF MSWINDOWS}
@@ -7385,4 +7385,4 @@ initialization
 finalization
 
 end.
-
+
