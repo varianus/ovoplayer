@@ -38,6 +38,7 @@ type
     p_md: libvlc_media_t_ptr;
     p_mi_ev_mgr: libvlc_event_manager_t_ptr;
     fdecoupler: TDecoupler;
+
   protected
     function GetMainVolume: integer; override;
     procedure SetMainVolume(const AValue: integer); override;
@@ -51,6 +52,7 @@ type
   public
     class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
+    class function GetEngineInfo(IsCurrent: boolean): AREngineParams;  override;
 
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
@@ -69,7 +71,7 @@ type
 
 
 implementation
-uses math, fileutil, lazfileutils;
+uses math, fileutil, lazfileutils, generalfunc;
 
 Const
    VLCMAXVOLUME = 100;
@@ -314,6 +316,32 @@ class function TAudioEngineVLC.IsAvalaible(ConfigParam: TStrings): boolean;
 begin
   Result:= Check_libvlc;
 end;
+
+class function TAudioEngineVLC.GetEngineInfo(IsCurrent:boolean): AREngineParams;
+ var
+   isAlreadyActive, isactivated: boolean;
+   BaseAddr:pointer;
+   ModuleName:string;
+ begin
+   result := inherited GetEngineInfo(IsCurrent);
+   if not IsCurrent then
+      libvlc_dynamic_dll_init();
+
+   GetModuleByAddr(libvlc_get_version, BaseAddr, ModuleName);
+
+   SetLength(Result,2);
+   result[0].Key:= 'Library';
+   Result[0].Value:=ModuleName;
+   result[0].Kind:=epkString;
+
+   result[1].Key:= 'Version';
+   Result[1].Value:=libvlc_dynamic_dll_version;
+   result[1].Kind:=epkString;
+   if not IsCurrent then
+      libvlc_dynamic_dll_done();
+
+end;
+
 
 procedure TAudioEngineVLC.PostCommand(Command: TEngineCommand; Param: integer);
 begin

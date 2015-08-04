@@ -73,7 +73,7 @@ type
 
 implementation
 uses
-  dynlibs;
+  dynlibs, GeneralFunc;
 
 Const
   BASSMAXVOLUME = 1.0;
@@ -311,6 +311,8 @@ var
   isAlreadyActive, isactivated: boolean;
   ver: LongWord;
   ByteArray: array [1..4] of byte absolute ver;
+  BaseAddr:pointer;
+  ModuleName:string;
 begin
   result := inherited GetEngineInfo(IsCurrent);
   if not IsCurrent then
@@ -321,12 +323,16 @@ begin
     ver:=0;
   end;
 
-  SetLength(Result,1);
-  result[0].Key:= 'Version';
+  GetModuleByAddr(@BASS_GetVersion,BaseAddr,ModuleName);
 
-
-  Result[0].Value:=Format('%d.%d.%d',[ByteArray[4],ByteArray[3],ByteArray[2]]);
+  SetLength(Result,2);
+  result[0].Key:= 'Library';
+  Result[0].Value:=ModuleName;
   result[0].Kind:=epkString;
+
+  result[1].Key:= 'Version';
+  Result[1].Value:=Format('%d.%d.%d',[ByteArray[4],ByteArray[3],ByteArray[2]]);
+  result[1].Kind:=epkString;
   if not IsCurrent then
      Unload_BASSDLL;
 

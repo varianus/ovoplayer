@@ -69,7 +69,7 @@ type
 
 
 implementation
-uses math, ctypes;
+uses math, ctypes, generalfunc;
 {$ifdef LINUX}
 function setlocale(category: cint; locale: pchar): pchar; cdecl; external 'c' name 'setlocale';
 {$endif}
@@ -271,6 +271,8 @@ class function TAudioEngineLibMPV.GetEngineInfo(IsCurrent:boolean): AREnginePara
    isAlreadyActive, isactivated: boolean;
    ver: LongWord;
    ByteArray: array [1..4] of byte absolute ver;
+   BaseAddr:pointer;
+   ModuleName:string;
  begin
    result := inherited GetEngineInfo(IsCurrent);
    if not IsCurrent then
@@ -281,12 +283,16 @@ class function TAudioEngineLibMPV.GetEngineInfo(IsCurrent:boolean): AREnginePara
      ver:=0;
    end;
 
-   SetLength(Result,1);
-   result[0].Key:= 'Version';
+   GetModuleByAddr(mpv_client_api_version,BaseAddr,ModuleName);
 
-
-   Result[0].Value:=Format('%d.%d.%d',[ByteArray[4],ByteArray[3],ByteArray[2]]);
+   SetLength(Result,2);
+   result[0].Key:= 'Library';
+   Result[0].Value:=ModuleName;
    result[0].Kind:=epkString;
+
+   result[1].Key:= 'Version';
+   Result[1].Value:=Format('%d.%d.%d',[ByteArray[4],ByteArray[3],ByteArray[2]]);
+   result[1].Kind:=epkString;
    if not IsCurrent then
       Free_libmpv();
 
