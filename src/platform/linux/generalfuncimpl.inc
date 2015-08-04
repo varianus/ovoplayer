@@ -1,5 +1,5 @@
 {$IFDEF USESMODE}
-  BaseUnix,
+  BaseUnix, dl,
 {$ELSE}  
 
 procedure GetModuleByAddr(addr: pointer; var baseaddr: pointer; var filename: string);
