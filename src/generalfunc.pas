@@ -32,6 +32,10 @@ Function Restart(Application:TCustomApplication):Boolean;
 Function CheckRestarting(Application:TCustomApplication):Boolean;
 function CompareBoolean (a, b: Boolean): Integer;
 
+// Platform dependant function
+procedure GetModuleByAddr(addr: pointer; var baseaddr: pointer; var filename: string);
+Function ProcessRunningByPID(Pid:DWORD):Boolean;
+
 type
 
   { TSortArray }
@@ -51,12 +55,9 @@ type
 
 implementation
 uses
- {$IFdef MSWindows}
-  Windows,
-{$ENDIF}
-{$IFDEF unix}
-  BaseUnix,
-{$ENDIF}
+{$DEFINE USESMODE}
+  {$i generalfuncimpl.inc}
+{$UNDEF USESMODE}
  SimpleIPC, AsyncProcess;
 
 const
@@ -156,33 +157,6 @@ begin
      end;
 end;
 
-Function ProcessRunningByPID(Pid:DWORD):Boolean;
-{$IFDEF WINDOWS}
-  var
-    ProcessHandle: THandle;
-  begin
-    Result:= false;
-    ProcessHandle := OpenProcess(SYNCHRONIZE, false, PID);
-    if ProcessHandle<>0 then
-      begin
-        Result:= true;
-        CloseHandle(ProcessHandle);
-      end;
-  end;
-{$ELSE}
-{$IFDEF UNIX}
-  begin
-    Result := fpKill(PID, 0) = 0;
-  end;
-{$ELSE}
-  begin
-    DebugLn('ProcessRunningByPID not implemented for this OS. We just wait 5 seconds');
-    Sleep(1000);
-    Result := false;
-  end;
-{$ENDIF}
-{$ENDIF}
-
 function CheckRestarting(Application: TCustomApplication): Boolean;
 var
   Pid: Longint;
@@ -254,4 +228,5 @@ Begin
    result := BoolOrder [a] - BoolOrder [b];
 End ;
 
+{$i generalfuncimpl.inc}
 end.
