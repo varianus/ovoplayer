@@ -155,9 +155,11 @@ destructor TAudioEngineLibMPV.Destroy;
 begin
 
   mpv_set_wakeup_callback(fhandle^,nil, self);
+  if Assigned(fdecoupler) then
+     fdecoupler.free;
+
   mpv_terminate_destroy(fhandle^);
   Free_libmpv;
-  fdecoupler.free;
   inherited Destroy;
 end;
 
