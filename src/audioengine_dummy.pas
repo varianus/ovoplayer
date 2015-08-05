@@ -48,6 +48,7 @@ type
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
 
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
+    Function Initialize: boolean; override;
     constructor Create; override;
     destructor Destroy; override;
     procedure Activate; override;
@@ -116,7 +117,7 @@ begin
 
 end;
 
-Function TAudioEnginedummy.DoPlay(Song: TSong; offset:Integer):boolean;
+function TAudioEnginedummy.DoPlay(Song: TSong; offset: Integer): boolean;
 begin
   Result := true;
 end;
@@ -143,6 +144,11 @@ end;
 procedure TAudioEnginedummy.PostCommand(Command: TEngineCommand; Param: integer);
 begin
   ReceivedCommand(Self, Command, Param);
+end;
+
+function TAudioEnginedummy.Initialize: boolean;
+begin
+  Result := true;
 end;
 
 function TAudioEnginedummy.Playing: boolean;
