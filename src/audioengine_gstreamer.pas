@@ -50,6 +50,7 @@ type
   public
     class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
+    class function GetEngineInfo(IsCurrent: boolean): AREngineParams; override;
 
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
@@ -69,7 +70,7 @@ type
 implementation
 
 { TAudioEngineGStreamer }
-uses  glib2,lclproc;
+uses  glib2,lclproc, GeneralFunc;
 
 
 function bus_watch_callback(bus: pointer; AMessage:Pointer; user_data:pointer): boolean; cdecl;
@@ -300,6 +301,37 @@ begin
   Except
     exit;
   end;
+
+end;
+
+class function TAudioEngineGStreamer.GetEngineInfo(IsCurrent:boolean): AREngineParams;
+ var
+   isAlreadyActive, isactivated: boolean;
+   Major, minor, micro, nano :guint;
+   BaseAddr:pointer;
+   ModuleName:string;
+ begin
+   result := inherited GetEngineInfo(IsCurrent);
+   if not IsCurrent then
+      libGST_dynamic_dll_init;
+   try
+     gst_version(major, minor, micro, nano);
+   Except
+     Major:=0; Minor:=0; micro := 0; nano := 0;
+   end;
+
+   GetModuleByAddr(gst_version,BaseAddr,ModuleName);
+
+   SetLength(Result,2);
+   result[0].Key:= 'Library';
+   Result[0].Value:=ModuleName;
+   result[0].Kind:=epkString;
+
+   result[1].Key:= 'Version';
+   Result[1].Value:=Format('%d.%d.%d.%d',[major, minor, micro, nano]);
+   result[1].Kind:=epkString;
+   if not IsCurrent then
+     libGST_dynamic_dll_done();
 
 end;
 

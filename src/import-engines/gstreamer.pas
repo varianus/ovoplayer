@@ -102,7 +102,7 @@ type
 
   GstElementState = dword;
   pTimeVal = ^word;
-
+  gst_version_t = procedure (var major, minor, micro, nano: guint);
   gst_init_check_t = function (var argc: Integer; var args: PAnsiChar; var Error:PGError):gBoolean; cdecl;
   gst_element_factory_make_t = function (const factoryname: PChar;const name: PChar): Pointer; cdecl;
   gst_bin_new_t = FUNCTION (const name: PChar): Pointer; cdecl;
@@ -131,6 +131,7 @@ var
   GST_Lib_1_0 :boolean;
   libgst_dynamic_dll_error: string;
 
+  gst_version : gst_version_t;
   gst_init_check :gst_init_check_t;
   gst_element_factory_make : gst_element_factory_make_t;
   gst_bin_new : gst_bin_new_t;
@@ -206,6 +207,7 @@ begin
     exit;
   end;
 
+  if not libGST_dll_get_proc_addr(pointer(gst_version),  'gst_version') then   exit;
   if not libGST_dll_get_proc_addr(pointer(gst_element_factory_make),  'gst_element_factory_make') then   exit;
   if not libGST_dll_get_proc_addr(pointer(gst_init_check),  'gst_init') then   exit;
   if not libGST_dll_get_proc_addr(pointer(gst_bin_new),  'gst_bin_new') then   exit;
