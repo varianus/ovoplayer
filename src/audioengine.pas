@@ -112,6 +112,7 @@ Procedure RegisterEngineClass(const EngineClass: TAudioEngineClass;
                               const _Experimental:boolean = false);
 
 Function GetEngineByName(const Name: string): TAudioEngineClass;
+Procedure SetEngineFailed(const Engine: TAudioEngineClass);
 
 Function GetBestEngine: TAudioEngineClass;
 
@@ -137,7 +138,7 @@ begin
   EngineRecord.Priority := Priority;
   EngineRecord.ForceSelection:=ForceSelection;
   EngineRecord._Experimental := _Experimental;
-  EngineRecord.Failed:= false;
+  EngineRecord.Failed:= False;
   EngineArray[High(EngineArray)] := EngineRecord;
 end;
 
@@ -153,6 +154,18 @@ begin
          break;
        end;
 
+end;
+
+procedure SetEngineFailed(const Engine: TAudioEngineClass);
+var
+  i: integer;
+begin
+  for i := Low(EngineArray) to High(EngineArray) do
+    if EngineArray[i].Engine = Engine then
+       begin
+         EngineArray[i].Failed := true;
+         break;
+       end;
 end;
 
 function CompareEngine(const Item1, Item2: Integer): Integer;

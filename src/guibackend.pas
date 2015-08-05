@@ -148,6 +148,20 @@ end;
 constructor TBackEnd.Create;
 var
   Engine : TAudioEngineClass;
+  Function EngineCreation:boolean;
+   begin
+     AudioEngine := Engine.Create;
+     if not AudioEngine.Initialize then
+         begin
+           FreeAndNil(AudioEngine);
+           SetEngineFailed(Engine);
+           Engine:= nil;
+           result := False;
+         end
+     else
+       Result:= true;
+   end;
+
 begin
   Config := TConfig.Create;
   Manager  := TPlayListManager.Create;
@@ -160,25 +174,28 @@ begin
        Engine := GetEngineByName(Config.EngineParam.EngineKind);
        if Assigned(Engine) then
           if not Engine.IsAvalaible(Config.EngineSubParams) then
-             engine := nil;
+             engine := nil
+          else
+            EngineCreation;
      end;
 
-
-  if Engine = nil then
+  while not assigned(engine) do
     begin
       Engine := GetBestEngine;
-      if Engine = nil then
+      if Engine = nil then  // no more engine to try ...
          engine:=TAudioEngineDummy
       else
-        Config.EngineParam.EngineKind := Engine.getEngineNAme;
+         Config.EngineParam.EngineKind := Engine.getEngineName;
+
+      if not Engine.IsAvalaible(Config.EngineSubParams) then
+         begin
+           SetEngineFailed(Engine);
+           Engine:= nil;
+         end
+      else
+        EngineCreation;
     end;
 
-  if not Engine.IsAvalaible(Config.EngineSubParams) then
-       engine:=TAudioEngineDummy;
-
-  AudioEngine := Engine.Create;
-  if not AudioEngine.Initialize then
-     Engine:=TAudioEnginedummy;
   AudioEngine.OnSongEnd := @AudioEngineSongEnd;
   AudioEngine.MainVolume:= Config.EngineParam.Volume;
   PlayList.OnSongAdd:=@PlaylistOnSongAdd;
