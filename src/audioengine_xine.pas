@@ -52,6 +52,7 @@ type
   public
     class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
+    class function GetEngineInfo(IsCurrent: boolean): AREngineParams; override;
 
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
@@ -283,6 +284,37 @@ begin
   end;
   if Mustfree then
      Freexine;
+end;
+
+class function TAudioEngineXINE.GetEngineInfo(IsCurrent:boolean): AREngineParams;
+ var
+   isAlreadyActive, isactivated: boolean;
+   Major, minor, sub :longint;
+   BaseAddr:pointer;
+   ModuleName:string;
+ begin
+   result := inherited GetEngineInfo(IsCurrent);
+   if not IsCurrent then
+      Loadxine;
+   try
+     xine_get_version(major, minor, sub);
+   Except
+     Major:=0; Minor:=0; sub := 0;
+   end;
+
+   GetModuleByAddr(xine_get_version,BaseAddr,ModuleName);
+
+   SetLength(Result,2);
+   result[0].Key:= 'Library';
+   Result[0].Value:=ModuleName;
+   result[0].Kind:=epkString;
+
+   result[1].Key:= 'Version';
+   Result[1].Value:=Format('%d.%d.%d',[major, minor, sub]);
+   result[1].Kind:=epkString;
+   if not IsCurrent then
+     Freexine();
+
 end;
 
 procedure TAudioEngineXINE.PostCommand(Command: TEngineCommand; Param: integer);
