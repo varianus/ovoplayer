@@ -431,6 +431,6 @@ initialization
   EngFormat.DecimalSeparator := '.';
   EngFormat.ThousandSeparator := ',';
 
-  RegisterEngineClass(TAudioEngineMPlayer, 2, true, false);
+  RegisterEngineClass(TAudioEngineMPlayer, 10, true, false);
 
 end.
