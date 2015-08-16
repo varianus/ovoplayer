@@ -491,7 +491,7 @@ msgstr ""
 
 #: tdm.actplaylistload.caption
 msgctxt "TDM.ACTPLAYLISTLOAD.CAPTION"
-msgid "Load Playlist ..."
+msgid "Open Playlist ..."
 msgstr ""
 
 #: tdm.actplaylistload.hint
@@ -741,7 +741,7 @@ msgstr ""
 
 #: tfconfig.sbinterface.caption
 msgctxt "TFCONFIG.SBINTERFACE.CAPTION"
-msgid "Interfaces"
+msgid "Interface"
 msgstr ""
 
 #: tfconfig.sblibrary.caption
@@ -749,13 +749,14 @@ msgctxt "TFCONFIG.SBLIBRARY.CAPTION"
 msgid "Media Library"
 msgstr ""
 
+#: tfconfig.sbnotification.caption
+msgctxt "TFCONFIG.SBNOTIFICATION.CAPTION"
+msgid "Notification"
+msgstr ""
+
 #: tfconfig.sbplaylist.caption
 msgctxt "TFCONFIG.SBPLAYLIST.CAPTION"
 msgid "Play List"
-msgstr ""
-
-#: tfconfig.speedbutton2.caption
-msgid "Notification"
 msgstr ""
 
 #: tfconfig.tsengine.caption
@@ -801,10 +802,6 @@ msgstr ""
 msgid "Cover Viewer"
 msgstr ""
 
-#: tfcustomplaylist.bplus2.caption
-msgid "Test read"
-msgstr ""
-
 #: tfcustomplaylist.caption
 msgid "Custom Playlist "
 msgstr ""
@@ -819,10 +816,6 @@ msgstr ""
 
 #: tfcustomplaylist.edtplaylistname.editlabel.caption
 msgid "Name"
-msgstr ""
-
-#: tfcustomplaylist.lbfilterresults.caption
-msgid "                              "
 msgstr ""
 
 #: tfcustomplaylist.lbsort.caption
@@ -848,7 +841,22 @@ msgid "Media Info"
 msgstr ""
 
 #: tfmainform.actshowpreferences.caption
-msgid "Preferences"
+msgctxt "tfmainform.actshowpreferences.caption"
+msgid "Preferences ..."
+msgstr ""
+
+#: tfmainform.actshowpreferencesengine.caption
+msgctxt "TFMAINFORM.ACTSHOWPREFERENCESENGINE.CAPTION"
+msgid "Audio Engine"
+msgstr ""
+
+#: tfmainform.actshowpreferencesinterface.caption
+msgid "Aspect"
+msgstr ""
+
+#: tfmainform.actshowpreferencesmedialibrary.caption
+msgctxt "TFMAINFORM.ACTSHOWPREFERENCESMEDIALIBRARY.CAPTION"
+msgid "Collection Preferences ..."
 msgstr ""
 
 #: tfmainform.album.caption
@@ -892,7 +900,7 @@ msgid "Up"
 msgstr ""
 
 #: tfmainform.caption
-msgctxt "tfmainform.caption"
+msgctxt "TFMAINFORM.CAPTION"
 msgid "OvoPlayer"
 msgstr ""
 
@@ -942,6 +950,11 @@ msgctxt "TFMAINFORM.MENUITEM18.CAPTION"
 msgid "-"
 msgstr ""
 
+#: tfmainform.menuitem20.caption
+msgctxt "TFMAINFORM.MENUITEM20.CAPTION"
+msgid "-"
+msgstr ""
+
 #: tfmainform.menuitem25.caption
 msgid "Help"
 msgstr ""
@@ -977,7 +990,7 @@ msgstr ""
 
 #: tfmainform.menuitem38.caption
 msgctxt "TFMAINFORM.MENUITEM38.CAPTION"
-msgid "PlayList"
+msgid "-"
 msgstr ""
 
 #: tfmainform.menuitem42.caption
@@ -1048,6 +1061,10 @@ msgctxt "TFMAINFORM.MENUITEM65.CAPTION"
 msgid "-"
 msgstr ""
 
+#: tfmainform.menuitem66.caption
+msgid "Edit"
+msgstr ""
+
 #: tfmainform.menuitem9.caption
 msgctxt "TFMAINFORM.MENUITEM9.CAPTION"
 msgid "-"
@@ -1056,6 +1073,10 @@ msgstr ""
 #: tfmainform.mnucollection.caption
 msgctxt "TFMAINFORM.MNUCOLLECTION.CAPTION"
 msgid "Collection"
+msgstr ""
+
+#: tfmainform.mnucolumns.caption
+msgid "Columns"
 msgstr ""
 
 #: tfmainform.mnudeleteplaylist.caption

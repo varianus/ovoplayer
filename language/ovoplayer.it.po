@@ -1,9 +1,19 @@
 msgid ""
-msgstr "Content-Type: text/plain; charset=UTF-8"
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Project-Id-Version: Ovoplayer 1.3\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Marco Caselli <marcocas@gmail.com>\n"
+"Language-Team: Marco Caselli\n"
+"MIME-Version: 1.0\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
+"X-Generator: Poedit 1.7.5\n"
 
 #: appconsts.raddedtrack
 msgid "Added:"
-msgstr "Aggiunti:"
+msgstr "Aggiunte:"
 
 #: appconsts.rallfiles
 msgid "All Files(%0:s)|%0:s"
@@ -11,11 +21,11 @@ msgstr "Tutti i files (%0:s)|%0:s"
 
 #: appconsts.rautomaticplaylist
 msgid "Automatic Playlist"
-msgstr ""
+msgstr "Scaletta Automatica"
 
 #: appconsts.rbegincollectionscan
 msgid "Scanning Collection"
-msgstr "Scansione Collezione "
+msgstr "Scansione Collezione"
 
 #: appconsts.rdragtochangeposition
 msgid "Drag to change position"
@@ -31,7 +41,7 @@ msgstr "<nessuno>"
 
 #: appconsts.rfailedtrack
 msgid "Failed:"
-msgstr "Falliti:"
+msgstr "Fallite:"
 
 #: appconsts.rmatchingitems
 msgid "%0:d songs matching current filter (%1:s, %2:s)"
@@ -63,7 +73,7 @@ msgstr "Rimossi:"
 
 #: appconsts.rupdatedtrack
 msgid "Updated:"
-msgstr "Aggiornati:"
+msgstr "Aggiornate:"
 
 #: medialibrary.rs_added
 msgctxt "medialibrary.rs_added"
@@ -179,7 +189,6 @@ msgid "Duration"
 msgstr "Durata"
 
 #: playlistbuilder.rs_equalto
-#, fuzzy
 msgctxt "playlistbuilder.rs_equalto"
 msgid "equal to"
 msgstr "uguale a"
@@ -205,7 +214,6 @@ msgid "Genre"
 msgstr "Genere"
 
 #: playlistbuilder.rs_is
-#, fuzzy
 msgctxt "playlistbuilder.rs_is"
 msgid "is"
 msgstr "è"
@@ -250,7 +258,7 @@ msgstr "Conteggio Esecuzioni"
 
 #: playlistbuilder.rs_random
 msgid "Random"
-msgstr ""
+msgstr "Casuale"
 
 #: playlistbuilder.rs_rating
 msgctxt "playlistbuilder.rs_rating"
@@ -493,8 +501,8 @@ msgstr "Pulisci"
 
 #: tdm.actplaylistload.caption
 msgctxt "tdm.actplaylistload.caption"
-msgid "Load Playlist ..."
-msgstr "Carica Scaletta ..."
+msgid "Open Playlist ..."
+msgstr "Apri Scaletta"
 
 #: tdm.actplaylistload.hint
 msgctxt "tdm.actplaylistload.hint"
@@ -637,7 +645,7 @@ msgstr ""
 
 #: tfabout.label8.caption
 msgid "Build Date"
-msgstr ""
+msgstr "Data file"
 
 #: tfabout.label9.caption
 msgid "SVN rev:"
@@ -670,7 +678,7 @@ msgstr "Riavvia ora"
 
 #: tfconfig.caption
 msgid "Config"
-msgstr "Configurazione"
+msgstr "Preferenze"
 
 #: tfconfig.cbcapturemmkeys.caption
 msgid "Use multimedia Keys"
@@ -744,22 +752,23 @@ msgstr "Motore di riproduzione"
 
 #: tfconfig.sbinterface.caption
 msgctxt "TFCONFIG.SBINTERFACE.CAPTION"
-msgid "Interfaces"
-msgstr "Interfacce"
+msgid "Interface"
+msgstr "Interfaccia"
 
 #: tfconfig.sblibrary.caption
 msgctxt "TFCONFIG.SBLIBRARY.CAPTION"
 msgid "Media Library"
 msgstr "Libreria Musicale"
 
+#: tfconfig.sbnotification.caption
+msgctxt "tfconfig.sbnotification.caption"
+msgid "Notification"
+msgstr "Tipo di Notifica"
+
 #: tfconfig.sbplaylist.caption
 msgctxt "TFCONFIG.SBPLAYLIST.CAPTION"
 msgid "Play List"
-msgstr "PlayList"
-
-#: tfconfig.speedbutton2.caption
-msgid "Notification"
-msgstr "Notifica"
+msgstr "Scaletta"
 
 #: tfconfig.tsengine.caption
 msgctxt "TFCONFIG.TSENGINE.CAPTION"
@@ -804,17 +813,13 @@ msgstr "Dimens. originale"
 msgid "Cover Viewer"
 msgstr "Visualizzatore Copertine"
 
-#: tfcustomplaylist.bplus2.caption
-msgid "Test read"
-msgstr ""
-
 #: tfcustomplaylist.caption
 msgid "Custom Playlist "
 msgstr "Scaletta personalizzata"
 
 #: tfcustomplaylist.cbsortdirection.caption
 msgid "in ascending order"
-msgstr ""
+msgstr "in ordine crescente"
 
 #: tfcustomplaylist.cklimit.caption
 msgid "Limit to "
@@ -822,15 +827,11 @@ msgstr "Limita a "
 
 #: tfcustomplaylist.edtplaylistname.editlabel.caption
 msgid "Name"
-msgstr ""
-
-#: tfcustomplaylist.lbfilterresults.caption
-msgid "                              "
-msgstr ""
+msgstr "Nome"
 
 #: tfcustomplaylist.lbsort.caption
 msgid "Sort by"
-msgstr ""
+msgstr "Ordine per"
 
 #: tflicense.caption
 msgid "License"
@@ -851,8 +852,23 @@ msgid "Media Info"
 msgstr "Informazione media"
 
 #: tfmainform.actshowpreferences.caption
-msgid "Preferences"
-msgstr "Preferenze"
+msgctxt "tfmainform.actshowpreferences.caption"
+msgid "Preferences ..."
+msgstr "Preferenze ..."
+
+#: tfmainform.actshowpreferencesengine.caption
+msgctxt "tfmainform.actshowpreferencesengine.caption"
+msgid "Audio Engine"
+msgstr "Motore di Riproduzione"
+
+#: tfmainform.actshowpreferencesinterface.caption
+msgid "Aspect"
+msgstr "Aspetto"
+
+#: tfmainform.actshowpreferencesmedialibrary.caption
+msgctxt "tfmainform.actshowpreferencesmedialibrary.caption"
+msgid "Collection Preferences ..."
+msgstr "Preferenze Collezione ..."
 
 #: tfmainform.album.caption
 msgctxt "TFMAINFORM.ALBUM.CAPTION"
@@ -945,6 +961,12 @@ msgctxt "TFMAINFORM.MENUITEM18.CAPTION"
 msgid "-"
 msgstr ""
 
+#: tfmainform.menuitem20.caption
+#| msgid "Preferences"
+msgctxt "tfmainform.menuitem20.caption"
+msgid "-"
+msgstr "-"
+
 #: tfmainform.menuitem25.caption
 msgid "Help"
 msgstr "Aiuto"
@@ -980,8 +1002,8 @@ msgstr ""
 
 #: tfmainform.menuitem38.caption
 msgctxt "TFMAINFORM.MENUITEM38.CAPTION"
-msgid "PlayList"
-msgstr "Scaletta"
+msgid "-"
+msgstr "-"
 
 #: tfmainform.menuitem42.caption
 msgid "Repeat Mode"
@@ -1027,20 +1049,16 @@ msgid "None"
 msgstr "Nessuna"
 
 #: tfmainform.menuitem58.caption
-#, fuzzy
-#| msgid "Enqueue"
 msgctxt "tfmainform.menuitem58.caption"
 msgid "-"
-msgstr "Accoda"
+msgstr "-"
 
 #: tfmainform.menuitem59.caption
-#, fuzzy
 msgctxt "tfmainform.menuitem59.caption"
 msgid "Enqueue"
 msgstr "Accoda"
 
 #: tfmainform.menuitem60.caption
-#, fuzzy
 msgctxt "tfmainform.menuitem60.caption"
 msgid "Play"
 msgstr "Riproduci"
@@ -1055,6 +1073,10 @@ msgctxt "tfmainform.menuitem65.caption"
 msgid "-"
 msgstr ""
 
+#: tfmainform.menuitem66.caption
+msgid "Edit"
+msgstr "Modifica"
+
 #: tfmainform.menuitem9.caption
 msgctxt "TFMAINFORM.MENUITEM9.CAPTION"
 msgid "-"
@@ -1065,14 +1087,18 @@ msgctxt "TFMAINFORM.MNUCOLLECTION.CAPTION"
 msgid "Collection"
 msgstr "Collezione"
 
+#: tfmainform.mnucolumns.caption
+msgid "Columns"
+msgstr "Colonne"
+
 #: tfmainform.mnudeleteplaylist.caption
 msgctxt "tfmainform.mnudeleteplaylist.caption"
 msgid "Delete"
-msgstr ""
+msgstr "Cancella"
 
 #: tfmainform.mnueditplaylist.caption
 msgid "Edit ..."
-msgstr ""
+msgstr "Modifica ..."
 
 #: tfmainform.mnuenqueueitems.caption
 msgctxt "tfmainform.mnuenqueueitems.caption"
@@ -1082,7 +1108,7 @@ msgstr "Accoda"
 #: tfmainform.mnuenqueueplaylist.caption
 msgctxt "tfmainform.mnuenqueueplaylist.caption"
 msgid "Enqueue"
-msgstr ""
+msgstr "Accoda"
 
 #: tfmainform.mnufile.caption
 msgid "&File"
@@ -1101,7 +1127,7 @@ msgstr "Informazione media"
 #: tfmainform.mnunewplaylist.caption
 msgctxt "tfmainform.mnunewplaylist.caption"
 msgid "New playlist"
-msgstr ""
+msgstr "Nuova Scaletta"
 
 #: tfmainform.mnuplayitems.caption
 msgctxt "TFMAINFORM.MNUPLAYITEMS.CAPTION"
@@ -1109,7 +1135,6 @@ msgid "Play"
 msgstr "Esegui"
 
 #: tfmainform.mnuplayplaylist.caption
-#, fuzzy
 msgctxt "tfmainform.mnuplayplaylist.caption"
 msgid "Play"
 msgstr "Riproduci"
@@ -1120,7 +1145,7 @@ msgstr "Aggiorna"
 
 #: tfmainform.mnuremoveplaylist.caption
 msgid "Remove from Playlist"
-msgstr "Rimuovi da Playlist"
+msgstr "Rimuovi da Scaletta"
 
 #: tfmainform.mnurestore.caption
 msgid "Restore"
@@ -1152,7 +1177,7 @@ msgstr "Cartella"
 #: tfmainform.tsplaylist.caption
 msgctxt "tfmainform.tsplaylist.caption"
 msgid "PlayList"
-msgstr "Elenco riproduzione"
+msgstr "Scaletta"
 
 #: tfminiplayer.caption
 msgctxt "TFMINIPLAYER.CAPTION"
@@ -1305,4 +1330,3 @@ msgstr "Proprietà Media"
 #: tfsonginfo.tstags.caption
 msgid "Tags"
 msgstr "Etichette"
-
