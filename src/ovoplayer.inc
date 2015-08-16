@@ -39,9 +39,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
   {$DEFINE GSTREAMER} // GStreamer need glib
   {$DEFINE VLC} //
-  {-$DEFINE XINE} //
+  {$DEFINE XINE} //
   {$DEFINE BASS} //
-  {-$DEFINE UOS} //
+  {$DEFINE UOS} //
   {$DEFINE LIBMPV} //
   {.$DEFINE OPENSOURCELIB} //
   {.$DEFINE FFMPEG}
