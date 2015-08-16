@@ -17,7 +17,6 @@ type
   TfCustomPlayList = class(TForm)
     ApplicationProperties1: TApplicationProperties;
     bPlus: TBitBtn;
-    bPlus2: TBitBtn;
     ButtonPanel1: TButtonPanel;
     cbFieldName: TComboBox;
     cbSortDirection: TCheckBox;

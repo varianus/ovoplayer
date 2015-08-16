@@ -105,6 +105,9 @@ type
 
 
   TfMainForm = class(TForm, IObserver)
+    ActShowPreferencesInterface: TAction;
+    ActShowPreferencesEngine: TAction;
+    ActShowPreferencesMediaLibrary: TAction;
     actShowLeft: TAction;
     actShowPLMediainfo: TAction;
     actShowAbout: TAction;
@@ -113,9 +116,16 @@ type
     Artist:     TLabel;
     cbGroupBy:  TComboBox;
     FilesTree: TTreeView;
+    MenuItem20: TMenuItem;
+    MenuItem38: TMenuItem;
+    MenuItem39: TMenuItem;
+    mnuColumns: TMenuItem;
     MenuItem51: TMenuItem;
     MenuItem56: TMenuItem;
     MenuItem57: TMenuItem;
+    MenuItem61: TMenuItem;
+    MenuItem66: TMenuItem;
+    MenuItem67: TMenuItem;
     mnuEnqueuePlaylist: TMenuItem;
     mnuPlayPlaylist: TMenuItem;
     mnuDeletePlaylist: TMenuItem;
@@ -130,8 +140,6 @@ type
     pmPlaylists: TPopupMenu;
     RateStars: TImageList;
     MenuItem21: TMenuItem;
-    MenuItem38: TMenuItem;
-    MenuItem39: TMenuItem;
     MenuItem40: TMenuItem;
     MenuItem41: TMenuItem;
     MenuItem42: TMenuItem;
@@ -175,7 +183,6 @@ type
     MenuItem14: TMenuItem;
     MenuItem15: TMenuItem;
     MenuItem16: TMenuItem;
-    MenuItem20: TMenuItem;
     MenuItem23: TMenuItem;
     MenuItem24: TMenuItem;
     MenuItem25: TMenuItem;
@@ -257,7 +264,10 @@ type
     procedure actShowAboutExecute(Sender: TObject);
     procedure actShowLeftExecute(Sender: TObject);
     procedure actShowPLMediainfoExecute(Sender: TObject);
+    procedure ActShowPreferencesEngineExecute(Sender: TObject);
     procedure ActShowPreferencesExecute(Sender: TObject);
+    procedure ActShowPreferencesInterfaceExecute(Sender: TObject);
+    procedure ActShowPreferencesMediaLibraryExecute(Sender: TObject);
     procedure BackEndSongStart(Sender: TObject);
     procedure btnBackDirClick(Sender: TObject);
     procedure btnFilterCancelClick(Sender: TObject);
@@ -284,6 +294,7 @@ type
     procedure imgCoverDblClick(Sender: TObject);
     procedure MenuItem59Click(Sender: TObject);
     procedure MenuItem60Click(Sender: TObject);
+    procedure mnuColumnsClick(Sender: TObject);
     procedure mnuEnqueuePlaylistClick(Sender: TObject);
     procedure mnuPlayPlaylistClick(Sender: TObject);
     procedure mnuNewPlayListClick(Sender: TObject);
@@ -379,6 +390,7 @@ type
     procedure ClearPanelInfo;
     procedure CollectionHandler(Enqueue: boolean);
     procedure FileSystemHandler(Enqueue: boolean);
+    procedure LoadColumnsMenu(BaseItem: TMenuItem);
     procedure PlayListHandler(Enqueue:boolean);
     procedure LoadDir(Path: string);
     procedure LoadTree;
@@ -951,7 +963,17 @@ end;
 
 procedure TfMainForm.ActShowPreferencesExecute(Sender: TObject);
 begin
-  ShowConfigurationEditor;
+  ShowConfigurationEditor();
+end;
+
+procedure TfMainForm.ActShowPreferencesInterfaceExecute(Sender: TObject);
+begin
+  ShowConfigurationEditor(cpGUI);
+end;
+
+procedure TfMainForm.ActShowPreferencesMediaLibraryExecute(Sender: TObject);
+begin
+  ShowConfigurationEditor(cpMediaLibrary);
 end;
 
 procedure TfMainForm.actShowAboutExecute(Sender: TObject);
@@ -996,6 +1018,11 @@ begin
   finally
     FreeAndNil(FileList);
   end;
+end;
+
+procedure TfMainForm.ActShowPreferencesEngineExecute(Sender: TObject);
+begin
+    ShowConfigurationEditor(cpEngine);
 end;
 
 procedure TfMainForm.btnBackDirClick(Sender: TObject);
@@ -1343,6 +1370,11 @@ end;
 procedure TfMainForm.MenuItem60Click(Sender: TObject);
 begin
   FileSystemHandler(False);
+end;
+
+procedure TfMainForm.mnuColumnsClick(Sender: TObject);
+begin
+  LoadColumnsMenu(mnuColumns);
 end;
 
 procedure TfMainForm.mnuEnqueuePlaylistClick(Sender: TObject);
@@ -1803,23 +1835,27 @@ begin
 
 end;
 
-
-procedure TfMainForm.pnHeaderPlaylistPopup(Sender: TObject);
+procedure TfMainForm.LoadColumnsMenu(BaseItem:TMenuItem);
 var
   col :integer;
   item : TMenuItem;
 begin
-  pnHeaderPlaylist.Items.Clear;
+  BaseItem.Clear;
   for col := 1 to sgPlayList.Columns.Count - 1 do
     begin
-      item := TMenuItem.Create(pnHeaderPlaylist);
+      item := TMenuItem.Create(BaseItem);
       item.Caption:=sgPlayList.Columns[col].Title.Caption;
       item.Tag := Col;
       item.Checked := sgPlayList.Columns[col].Visible;
       item.OnClick := @OnMenuItemClick;
-      pnHeaderPlaylist.Items.Add(item);
+      BaseItem.Add(item);
     end;
 
+end;
+
+procedure TfMainForm.pnHeaderPlaylistPopup(Sender: TObject);
+begin
+  LoadColumnsMenu(pnHeaderPlaylist.Items);
 end;
 
 procedure TfMainForm.sgPlayListClick(Sender: TObject);

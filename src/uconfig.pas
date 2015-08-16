@@ -32,6 +32,8 @@ uses
 type
     { TfConfig }
 
+  TConfigPage = (cpNone, cpEngine,cpMediaLibrary, cpOSD, cpGUI);
+
   TfConfig = class(TForm)
     bAddDir:    TButton;
     bRemoveDir: TButton;
@@ -66,7 +68,7 @@ type
     sbInterface: TSpeedButton;
     SelectDirectoryDialog1: TSelectDirectoryDialog;
     seLimit: TSpinEdit;
-    SpeedButton2: TSpeedButton;
+    sbNotification: TSpeedButton;
     sbPlayList: TSpeedButton;
     sbLibrary:  TSpeedButton;
     tsInterface: TTabSheet;
@@ -96,10 +98,14 @@ type
     procedure sbInterfaceClick(Sender: TObject);
     procedure sbLibraryClick(Sender: TObject);
     procedure sbPlayListClick(Sender: TObject);
-    procedure SpeedButton2Click(Sender: TObject);
+    procedure sbNotificationClick(Sender: TObject);
     procedure tbTransparencyChange(Sender: TObject);
+    procedure tsEngineShow(Sender: TObject);
+    procedure tsInterfaceShow(Sender: TObject);
+    procedure tsMediaLibraryShow(Sender: TObject);
     procedure tsOSDHide(Sender: TObject);
     procedure tsOSDShow(Sender: TObject);
+    procedure tsPlaylistShow(Sender: TObject);
   private
     procedure ConfigToMap;
   public
@@ -109,7 +115,7 @@ type
 
 
 
-Procedure ShowConfigurationEditor;
+Procedure ShowConfigurationEditor(Page:TConfigPage=cpNone);
 
 implementation
 {$R *.lfm}
@@ -330,7 +336,7 @@ begin
           Tlabel (Components[i]).AdjustFontForOptimalFill;
  }
   pcConfig.ShowTabs:=false;
-  sbInterface.click;
+//  sbInterface.click;
   ConfigToMap;
   {$IFDEF ASKMMKEYSMODE}
     rgKeyCaptureMode.Visible:=True;
@@ -351,7 +357,7 @@ begin
   pcConfig.ActivePage := tsPlaylist;
 end;
 
-procedure TfConfig.SpeedButton2Click(Sender: TObject);
+procedure TfConfig.sbNotificationClick(Sender: TObject);
 begin
   pcConfig.ActivePage := tsOSD;
 end;
@@ -362,6 +368,21 @@ begin
   if Assigned(Fosd) and fOSD.Visible then
     fosd.UpdateAspect;
 
+end;
+
+procedure TfConfig.tsEngineShow(Sender: TObject);
+begin
+  sbEngine.Down:=true;
+end;
+
+procedure TfConfig.tsInterfaceShow(Sender: TObject);
+begin
+  sbInterface.Down:=true;
+end;
+
+procedure TfConfig.tsMediaLibraryShow(Sender: TObject);
+begin
+  sbLibrary.Down:=true;
 end;
 
 procedure TfConfig.tsOSDHide(Sender: TObject);
@@ -376,8 +397,14 @@ end;
 
 procedure TfConfig.tsOSDShow(Sender: TObject);
 begin
+  sbNotification.Down:=true;
   if rgOSDKind.ItemIndex = 2 then
      ShowOSDConfig;
+end;
+
+procedure TfConfig.tsPlaylistShow(Sender: TObject);
+begin
+  sbPlayList.Down:=true;
 end;
 
 procedure TfConfig.MapToConfig;
@@ -450,10 +477,18 @@ begin
   pnlRestart.visible := Backend.Config.NeedRestart;
 end;
 
-Procedure ShowConfigurationEditor;
+Procedure ShowConfigurationEditor(Page:TConfigPage=cpNone);
 begin
   if not Assigned(fConfig) then
     fConfig := TfConfig.Create(Application);
+  case page of
+       cpNone: ;
+       cpEngine: fConfig.pcConfig.ActivePage := fConfig.tsEngine;
+       cpMediaLibrary: fConfig.pcConfig.ActivePage := fConfig.tsMediaLibrary;
+       cpOSD: fConfig.pcConfig.ActivePage := fConfig.tsOSD;
+       cpGUI: fConfig.pcConfig.ActivePage := fConfig.tsInterface;
+  end;
+
   fConfig.Show;
 end;
 

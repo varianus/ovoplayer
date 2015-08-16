@@ -1,11 +1,12 @@
 object fMainForm: TfMainForm
-  Left = 858
-  Height = 694
-  Top = 253
+  Left = 727
+  Height = 673
+  Top = 200
   Width = 866
+  ActiveControl = pcMain
   AllowDropFiles = True
   Caption = 'OvoPlayer'
-  ClientHeight = 673
+  ClientHeight = 652
   ClientWidth = 866
   Constraints.MinHeight = 400
   Constraints.MinWidth = 600
@@ -22,7 +23,7 @@ object fMainForm: TfMainForm
   LCLVersion = '1.5'
   object pcMain: TPageControl
     Left = 0
-    Height = 673
+    Height = 652
     Top = 0
     Width = 243
     ActivePage = tsPlayList
@@ -34,7 +35,7 @@ object fMainForm: TfMainForm
     Options = [nboMultiLine, nboHidePageListPopup]
     object tsCollection: TTabSheet
       Caption = 'Collection'
-      ClientHeight = 638
+      ClientHeight = 617
       ClientWidth = 237
       object pnlCollection: TPanel
         Left = 0
@@ -260,7 +261,7 @@ object fMainForm: TfMainForm
     end
     object tsDirectory: TTabSheet
       Caption = 'Directory'
-      ClientHeight = 638
+      ClientHeight = 617
       ClientWidth = 237
       OnShow = tsDirectoryShow
       object tbDirectory: TToolBar
@@ -338,12 +339,12 @@ object fMainForm: TfMainForm
     end
     object tsPlayList: TTabSheet
       Caption = 'PlayList'
-      ClientHeight = 638
+      ClientHeight = 617
       ClientWidth = 237
       OnShow = tsPlayListShow
       object PlaylistTree: TTreeView
         Left = 0
-        Height = 638
+        Height = 617
         Top = 0
         Width = 237
         Align = alClient
@@ -366,19 +367,19 @@ object fMainForm: TfMainForm
   end
   object pnlMain: TPanel
     Left = 247
-    Height = 673
+    Height = 652
     Top = 0
     Width = 619
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 673
+    ClientHeight = 652
     ClientWidth = 619
     Constraints.MinWidth = 439
     TabOrder = 1
     object pnlControl: TPanel
       Left = 0
       Height = 53
-      Top = 620
+      Top = 599
       Width = 619
       Align = alBottom
       Anchors = [akLeft, akRight]
@@ -493,18 +494,18 @@ object fMainForm: TfMainForm
           Style = tbsSeparator
         end
         object ToolButton13: TToolButton
-          Left = 307
+          Left = 310
           Top = 0
           Enabled = False
           ShowCaption = False
         end
         object ToolButton11: TToolButton
-          Left = 330
+          Left = 333
           Top = 0
           Action = DM.actMute
         end
         object slVolume: TCDTrackBar
-          Left = 353
+          Left = 356
           Height = 23
           Top = 0
           Width = 100
@@ -556,17 +557,17 @@ object fMainForm: TfMainForm
     end
     object pnlPlaylist: TPanel
       Left = 0
-      Height = 496
+      Height = 475
       Top = 124
       Width = 619
       Align = alClient
-      ClientHeight = 496
+      ClientHeight = 475
       ClientWidth = 619
       Constraints.MinWidth = 494
       TabOrder = 1
       object sgPlayList: TStringGrid
         Left = 1
-        Height = 494
+        Height = 473
         Top = 1
         Width = 617
         Align = alClient
@@ -787,7 +788,7 @@ object fMainForm: TfMainForm
   end
   object Splitter1: TSplitter
     Left = 243
-    Height = 673
+    Height = 652
     Top = 0
     Width = 4
   end
@@ -797,6 +798,15 @@ object fMainForm: TfMainForm
     top = 184
     object mnuFile: TMenuItem
       Caption = '&File'
+      object mnuSavePlaylist: TMenuItem
+        Action = DM.actPlaylistSave
+      end
+      object mnuLoadPlaylist: TMenuItem
+        Action = DM.actPlaylistLoad
+      end
+      object MenuItem38: TMenuItem
+        Caption = '-'
+      end
       object MenuItem23: TMenuItem
         Action = DM.actPlayListAddFiles
       end
@@ -813,20 +823,8 @@ object fMainForm: TfMainForm
         Action = DM.actExit
       end
     end
-    object MenuItem38: TMenuItem
-      Caption = 'PlayList'
-      object mnuLoadPlaylist: TMenuItem
-        Action = DM.actPlaylistLoad
-      end
-      object mnuSavePlaylist: TMenuItem
-        Action = DM.actPlaylistSave
-      end
-      object MenuItem39: TMenuItem
-        Action = DM.actPlayListAddFiles
-      end
-      object MenuItem51: TMenuItem
-        Caption = '-'
-      end
+    object MenuItem66: TMenuItem
+      Caption = 'Edit'
       object MenuItem41: TMenuItem
         Action = DM.actPlayListShuffle
       end
@@ -853,6 +851,25 @@ object fMainForm: TfMainForm
       object MenuItem40: TMenuItem
         Action = DM.actPlayListClear
       end
+      object MenuItem51: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem67: TMenuItem
+        Action = ActShowPreferences
+      end
+    end
+    object MenuItem14: TMenuItem
+      Caption = 'View'
+      object MenuItem48: TMenuItem
+        Action = actShowLeft
+        AutoCheck = True
+      end
+      object mnuColumns: TMenuItem
+        Caption = 'Columns'
+        OnClick = mnuColumnsClick
+        object MenuItem39: TMenuItem
+        end
+      end
     end
     object mnuCollection: TMenuItem
       Caption = 'Collection'
@@ -865,15 +882,11 @@ object fMainForm: TfMainForm
       object MenuItem1: TMenuItem
         Action = DM.actRemoveMissing
       end
-    end
-    object MenuItem20: TMenuItem
-      Action = ActShowPreferences
-    end
-    object MenuItem14: TMenuItem
-      Caption = 'View'
-      object MenuItem48: TMenuItem
-        Action = actShowLeft
-        AutoCheck = True
+      object MenuItem20: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem61: TMenuItem
+        Action = ActShowPreferencesMediaLibrary
       end
     end
     object MenuItem25: TMenuItem
@@ -1085,7 +1098,8 @@ object fMainForm: TfMainForm
     left = 272
     top = 184
     object ActShowPreferences: TAction
-      Caption = 'Preferences'
+      Category = 'Preferences'
+      Caption = 'Preferences ...'
       OnExecute = ActShowPreferencesExecute
     end
     object actShowAbout: TAction
@@ -1101,6 +1115,21 @@ object fMainForm: TfMainForm
       Caption = 'Show Left Panel'
       Checked = True
       OnExecute = actShowLeftExecute
+    end
+    object ActShowPreferencesInterface: TAction
+      Category = 'Preferences'
+      Caption = 'Aspect'
+      OnExecute = ActShowPreferencesInterfaceExecute
+    end
+    object ActShowPreferencesEngine: TAction
+      Category = 'Preferences'
+      Caption = 'Audio Engine'
+      OnExecute = ActShowPreferencesEngineExecute
+    end
+    object ActShowPreferencesMediaLibrary: TAction
+      Category = 'Preferences'
+      Caption = 'Collection Preferences ...'
+      OnExecute = ActShowPreferencesMediaLibraryExecute
     end
   end
   object RateStars: TImageList

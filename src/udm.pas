@@ -435,7 +435,7 @@ begin
   if Assigned(e) then
     debugln('| TApplication.HandleException ', Exception(e).ClassName,' ', Exception(e).Message)
   else
-    debugln('| ''TApplication.HandleException Strange Exception ');
+    debugln('| TApplication.HandleException Strange Exception ');
 
   DumpExceptionBackTrace;
 

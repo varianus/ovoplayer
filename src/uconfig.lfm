@@ -1,7 +1,7 @@
 object fConfig: TfConfig
-  Left = 568
+  Left = 733
   Height = 510
-  Top = 224
+  Top = 247
   Width = 702
   Caption = 'Config'
   ClientHeight = 510
@@ -15,18 +15,19 @@ object fConfig: TfConfig
     Height = 450
     Top = 0
     Width = 549
-    ActivePage = tsEngine
+    ActivePage = tsInterface
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 0
     object tsInterface: TTabSheet
       Caption = 'Interfaces'
       ClientHeight = 415
       ClientWidth = 543
+      OnShow = tsInterfaceShow
       object cbMinimizeOnClose: TCheckBox
         Left = 12
         Height = 21
-        Top = 43
+        Top = 42
         Width = 131
         Caption = 'Minimize on Close'
         Checked = True
@@ -46,7 +47,7 @@ object fConfig: TfConfig
       object cbCaptureMMKeys: TCheckBox
         Left = 12
         Height = 21
-        Top = 106
+        Top = 72
         Width = 147
         Caption = 'Use multimedia Keys'
         Checked = True
@@ -69,7 +70,7 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 61
+        ClientHeight = 62
         ClientWidth = 197
         Items.Strings = (
           'Gnome D-BUS mode'
@@ -81,7 +82,7 @@ object fConfig: TfConfig
       object cbEnableSoundMenu: TCheckBox
         Left = 12
         Height = 21
-        Top = 80
+        Top = 102
         Width = 150
         Caption = 'Show in Sound Menu'
         Checked = True
@@ -91,13 +92,14 @@ object fConfig: TfConfig
     end
     object tsEngine: TTabSheet
       Caption = 'Engine'
-      ClientHeight = 422
-      ClientWidth = 541
+      ClientHeight = 415
+      ClientWidth = 543
+      OnShow = tsEngineShow
       object rgAudioEngine: TRadioGroup
         Left = 4
-        Height = 51
+        Height = 52
         Top = 0
-        Width = 198
+        Width = 220
         AutoFill = True
         AutoSize = True
         Caption = 'Audio Engine'
@@ -109,8 +111,8 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 31
-        ClientWidth = 194
+        ClientHeight = 33
+        ClientWidth = 216
         Items.Strings = (
           'Sample row for builded engine'
         )
@@ -137,7 +139,7 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          419
+          421
         )
       end
       object EngineInfo: TValueListEditor
@@ -153,6 +155,7 @@ object fConfig: TfConfig
         TabOrder = 2
         TitleStyle = tsNative
         OnButtonClick = EngineParamsEditorButtonClick
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goAlwaysShowEditor, goThumbTracking]
         Strings.Strings = (
           ''
         )
@@ -162,7 +165,7 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          219
+          221
         )
       end
     end
@@ -170,6 +173,7 @@ object fConfig: TfConfig
       Caption = 'Media Library'
       ClientHeight = 415
       ClientWidth = 543
+      OnShow = tsMediaLibraryShow
       object lbMLPath: TListBox
         Left = 3
         Height = 128
@@ -178,6 +182,7 @@ object fConfig: TfConfig
         ItemHeight = 0
         ScrollWidth = 382
         TabOrder = 0
+        TopIndex = -1
       end
       object Label1: TLabel
         Left = 11
@@ -225,8 +230,9 @@ object fConfig: TfConfig
     end
     object tsPlaylist: TTabSheet
       Caption = 'Play List'
-      ClientHeight = 422
-      ClientWidth = 541
+      ClientHeight = 415
+      ClientWidth = 543
+      OnShow = tsPlaylistShow
       object Label5: TLabel
         Left = 12
         Height = 15
@@ -240,7 +246,7 @@ object fConfig: TfConfig
       end
       object seLimit: TSpinEdit
         Left = 267
-        Height = 23
+        Height = 27
         Top = 12
         Width = 58
         MaxValue = 9999
@@ -249,9 +255,9 @@ object fConfig: TfConfig
       end
       object cbRestart: TCheckBox
         Left = 12
-        Height = 19
+        Height = 21
         Top = 56
-        Width = 152
+        Width = 174
         Caption = 'Restart from last position'
         TabOrder = 1
       end
@@ -264,7 +270,7 @@ object fConfig: TfConfig
       OnShow = tsOSDShow
       object colorBackground: TColorBox
         Left = 146
-        Height = 22
+        Height = 29
         Top = 136
         Width = 176
         DefaultColorColor = 11955992
@@ -279,7 +285,7 @@ object fConfig: TfConfig
         Left = 11
         Height = 17
         Top = 139
-        Width = 114
+        Width = 109
         Caption = 'BackGround Color'
         ParentColor = False
       end
@@ -298,7 +304,7 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 85
+        ClientHeight = 86
         ClientWidth = 181
         Items.Strings = (
           'None'
@@ -312,13 +318,13 @@ object fConfig: TfConfig
         Left = 11
         Height = 17
         Top = 174
-        Width = 68
+        Width = 63
         Caption = 'Font Color'
         ParentColor = False
       end
       object ColorFont: TColorBox
         Left = 146
-        Height = 22
+        Height = 29
         Top = 170
         Width = 176
         DefaultColorColor = 11955992
@@ -346,7 +352,7 @@ object fConfig: TfConfig
         Left = 11
         Height = 17
         Top = 204
-        Width = 77
+        Width = 74
         Caption = 'Tranparency'
         ParentColor = False
       end
@@ -359,7 +365,7 @@ object fConfig: TfConfig
     Width = 153
     Align = alLeft
     Caption = 'Categories'
-    ClientHeight = 430
+    ClientHeight = 431
     ClientWidth = 149
     Color = clWindow
     ParentColor = False
@@ -376,7 +382,7 @@ object fConfig: TfConfig
       GroupIndex = 1
       OnClick = sbEngineClick
     end
-    object SpeedButton2: TSpeedButton
+    object sbNotification: TSpeedButton
       Left = 0
       Height = 48
       Top = 192
@@ -386,7 +392,7 @@ object fConfig: TfConfig
       Color = clWindow
       Flat = True
       GroupIndex = 1
-      OnClick = SpeedButton2Click
+      OnClick = sbNotificationClick
     end
     object sbPlayList: TSpeedButton
       Left = 0
@@ -418,7 +424,7 @@ object fConfig: TfConfig
       Top = 0
       Width = 149
       Align = alTop
-      Caption = 'Interfaces'
+      Caption = 'Interface'
       Color = clWindow
       Down = True
       Flat = True
@@ -428,13 +434,13 @@ object fConfig: TfConfig
     object pnlRestart: TPanel
       Left = 1
       Height = 136
-      Top = 293
+      Top = 294
       Width = 147
       Align = alBottom
       BorderSpacing.Around = 1
       BorderStyle = bsSingle
-      ClientHeight = 132
-      ClientWidth = 143
+      ClientHeight = 134
+      ClientWidth = 145
       Color = clActiveCaption
       ParentColor = False
       TabOrder = 0
@@ -443,7 +449,7 @@ object fConfig: TfConfig
         Left = 4
         Height = 56
         Top = 4
-        Width = 135
+        Width = 137
         Align = alTop
         AutoSize = False
         BorderSpacing.Around = 3
@@ -495,7 +501,7 @@ object fConfig: TfConfig
     top = 116
   end
   object SelectDirectoryDialog1: TSelectDirectoryDialog
-    left = 256
-    top = 116
+    left = 464
+    top = 224
   end
 end

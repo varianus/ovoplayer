@@ -147,10 +147,9 @@ object fCustomPlayList: TfCustomPlayList
     end
     object lbFilterResults: TLabel
       Left = 8
-      Height = 17
+      Height = 1
       Top = 56
-      Width = 90
-      Caption = '                              '
+      Width = 1
       ParentColor = False
     end
     object cbFieldName: TComboBox
@@ -170,16 +169,6 @@ object fCustomPlayList: TfCustomPlayList
       Caption = 'Sort by'
       ParentColor = False
     end
-    object bPlus2: TBitBtn
-      Left = 485
-      Height = 30
-      Top = 41
-      Width = 55
-      Anchors = [akTop, akRight]
-      Caption = 'Test read'
-      OnClick = bPlus2Click
-      TabOrder = 4
-    end
     object cbSortDirection: TCheckBox
       Left = 224
       Height = 21
@@ -188,7 +177,7 @@ object fCustomPlayList: TfCustomPlayList
       Caption = 'in ascending order'
       Checked = True
       State = cbChecked
-      TabOrder = 5
+      TabOrder = 4
     end
   end
   object ApplicationProperties1: TApplicationProperties

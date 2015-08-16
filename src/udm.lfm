@@ -14,10 +14,11 @@ object DM: TDM
     top = 21
     object actPlaylistLoad: TAction
       Category = 'PlayList'
-      Caption = 'Load Playlist ...'
+      Caption = 'Open Playlist ...'
       Hint = 'Load a Playlist'
       ImageIndex = 12
       OnExecute = actPlaylistLoadExecute
+      ShortCut = 16463
     end
     object actPlaylistSave: TAction
       Category = 'PlayList'
@@ -25,6 +26,7 @@ object DM: TDM
       Hint = 'Save current playlist'
       ImageIndex = 13
       OnExecute = actPlaylistSaveExecute
+      ShortCut = 16467
     end
     object actPlay: TAction
       Category = 'Controls'
@@ -104,6 +106,7 @@ object DM: TDM
       Category = 'Interface'
       Caption = 'Quit'
       OnExecute = actExitExecute
+      ShortCut = 16465
     end
     object actRepeatTrack: TAction
       Category = 'PlayList'
