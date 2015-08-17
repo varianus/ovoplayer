@@ -62,7 +62,7 @@ function EnableBit(const Value: DWord; const Bit: byte; const TurnOn: boolean): 
 
 implementation
 
-uses ID3v1Genres, lazutf8;
+uses ID3v1Genres, lconvencoding, lazutf8;
 
 { --------------------------------------------------------------------------- }
 
@@ -193,7 +193,7 @@ begin
           end;
         end;
 
-      Result := AnsiToUtf8(ansistring(PChar(p) + 1));
+      Result := ISO_8859_1ToUTF8((PAnsiChar(p) + 1));
       end
     else if p^ in [1, 2] then
         begin
