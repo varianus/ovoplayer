@@ -79,7 +79,7 @@ uses
 function TAPEFrame.GetAsString: string;
 begin
   case DataType of
-    0: Result := UTF8Decode(fValue);
+    0: Result := fValue;
     1: Result := '<bytes>';
   else
     result := 'unsupported';
@@ -89,7 +89,7 @@ end;
 procedure TAPEFrame.SetAsString(const AValue: string);
 begin
   case DataType of
-    0: fValue := UTF8Encode(AValue);
+    0: fValue := (AValue);
   else
     raise Exception.Create('Unsupported');
   end;
