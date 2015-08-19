@@ -100,13 +100,14 @@ begin
 
   ErrorMsg:=CheckOptions(ShortOptions, LongOptions, true);
   if ErrorMsg<>'' then begin
-    ShowException(Exception.Create(ErrorMsg));
+    Writeln(ErrorMsg);
     Terminate;
     Exit;
   end;
 
+
   // parse parameters
-  if HasOption('h','help') then begin
+  if HasOption('h','help')  or (paramcount =0) then begin
     WriteHelp;
     Terminate;
     Exit;

@@ -57,6 +57,9 @@
           </Other>
         </CompilerOptions>
       </Item2>
+      <SharedMatrixOptions Count="1">
+        <Item1 ID="906470382694" Modes="Debug" Value="-dEnableUTF8RTL"/>
+      </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
@@ -66,16 +69,19 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <CommandLineParams Value="seek+"/>
+        <CommandLineParams Value="--cazz"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="2">
+    <RequiredPackages Count="3">
       <Item1>
-        <PackageName Value="LCLBase"/>
+        <PackageName Value="LazUtils"/>
       </Item1>
       <Item2>
-        <PackageName Value="FCL"/>
+        <PackageName Value="LCLBase"/>
       </Item2>
+      <Item3>
+        <PackageName Value="FCL"/>
+      </Item3>
     </RequiredPackages>
     <Units Count="2">
       <Unit0>
@@ -116,7 +122,6 @@
     <Linking>
       <Debugging>
         <DebugInfoType Value="dsDwarf2Set"/>
-        <UseHeaptrc Value="True"/>
         <UseExternalDbgSyms Value="True"/>
       </Debugging>
     </Linking>
@@ -125,6 +130,7 @@
         <CustomConfigFile Value="True"/>
         <ConfigFilePath Value="..\..\extrafpc.cfg"/>
       </ConfigFile>
+      <CustomOptions Value="-FcUTF8"/>
     </Other>
   </CompilerOptions>
   <Debugging>
