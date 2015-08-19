@@ -32,6 +32,12 @@ uses
 
 type
 
+  RExternalCommand = record
+    Category: string;
+    Command: string;
+    Param: string;
+  end;
+
   { TDM }
 
   TDM = class(TDataModule)
@@ -100,7 +106,9 @@ type
     procedure UniqueInstanceIOtherInstance(Sender: TObject; ParamCount: Integer;
       Parameters: array of String);
     // -- --
+  private
     procedure DebugLnHook(Sender: TObject; S: string; var Handled: Boolean);
+    Function SplitCommand(ACommand:string): RExternalCommand;
   public
 
   end;
@@ -144,59 +152,44 @@ procedure TDM.UniqueInstanceIOtherInstance(Sender: TObject;
   ParamCount: Integer; Parameters: array of String);
 var
   i:integer;
-  tempstr: string;
   idx: integer;
-  tempparam: string;
+  Command: RExternalCommand;
 begin
   //
   if ParamCount > 0 then
     for i:= 0 to ParamCount - 1 do
       begin
-         if AnsiStartsStr('action:', Parameters[i]) then
-           begin
-             tempstr:=copy(Parameters[i], 8, Length(Parameters[i]));
-             if tempstr = 'seek+'    then
-                actSkipForward.Execute   else
-             if tempstr = 'seek-'    then
-                actSkipBackward.Execute  else
-             if tempstr = 'play'     then
-                Backend.Play                     else
-             if tempstr = 'stop'     then
-                Backend.Stop                     else
-             if tempstr = 'pause'    then
-                Backend.Pause                    else
-             if tempstr = 'next'     then
-                Backend.Next                     else
-             if tempstr = 'previous' then
-                Backend.Previous                 else
-             if tempstr = 'quit' then
-                Backend.Quit;
-
+        Command := SplitCommand(Parameters[i]);
+        if Command.Category = 'action' then
+          case Command.Command of
+             'seek+'    : actSkipForward.Execute;
+             'seek-'    : actSkipBackward.Execute;
+             'play'     : Backend.Play;
+             'stop'     : Backend.Stop;
+             'pause'    : Backend.Pause;
+             'next'     : Backend.Next;
+             'previous' : Backend.Previous;
+             'quit'     : Backend.Quit;
+           else
              if Assigned(Backend.OnExternalCommand) then
-                Backend.OnExternalCommand(Self, tempstr);
+                Backend.OnExternalCommand(Self, Command.Command);
+          end;
 
-           end;
-
-         if AnsiStartsStr('file:', Parameters[i]) then
-           begin
-             tempstr:=copy(Parameters[i], 6, 2);
-             tempparam:=copy(Parameters[i], 8, Length(Parameters[i]));
-             if tempstr = 'e=' then
-                begin
-                  idx := Backend.PlayList.EnqueueFile(tempparam);
-                  Backend.SignalPlayListChange;
-                end else
-             if tempstr = 'p=' then
-                begin
-                  Backend.OpenUri(tempparam)
-                end  else
-             if tempstr = 'x=' then
-                begin
-                  idx := Backend.PlayList.EnqueueFile(tempparam);
-                  Backend.PlayList.ItemIndex:=idx;
-                  Backend.AudioEngine.Play(Backend.PlayList.CurrentItem);
-                  Backend.SignalPlayListChange;
-                end;
+        if Command.Category = 'file' then
+           case command.Command of
+             'e' : begin
+                     idx := Backend.PlayList.EnqueueFile(Command.Param);
+                     Backend.SignalPlayListChange;
+                   end;
+             'p' : begin
+                     Backend.OpenUri(Command.Param)
+                   end;
+             'x' : begin
+                     idx := Backend.PlayList.EnqueueFile(Command.Param);
+                     Backend.PlayList.ItemIndex:=idx;
+                     Backend.AudioEngine.Play(Backend.PlayList.CurrentItem);
+                     Backend.SignalPlayListChange;
+                   end;
 
            end;
       end;
@@ -207,6 +200,34 @@ procedure TDM.DebugLnHook(Sender: TObject; S: string; var Handled: Boolean);
 begin
  if (TextRec(f).mode <> fmClosed) and (IOResult = 0) then
     WriteLn(f, S);
+end;
+
+function TDM.SplitCommand(ACommand: string): RExternalCommand;
+var
+  pColon, pEqual: integer;
+  tmpstr: string;
+begin
+  Result.Category:=EmptyStr;
+  Result.Param:=EmptyStr;
+
+  pColon:= pos(':',ACommand);
+  if pColon < 1 then
+    Result.Command:=ACommand
+  else
+    begin
+      Result.Category:=copy(ACommand, 1,pColon-1);
+      pEqual:= PosEx('=',ACommand,pColon+1);
+      if pEqual < 1 then
+        Result.Command:=Copy(ACommand,pColon+1, Length(ACommand))
+      else
+        begin
+           Result.Command:=copy(ACommand, pColon+1,pEqual -pColon -1);
+           Result.Param:= copy(ACommand, pEqual+1, Length(ACommand));
+        end;
+
+    end;
+
+
 end;
 
 procedure TDM.actPlaylistLoadExecute(Sender: TObject);
