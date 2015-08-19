@@ -14,7 +14,7 @@ uses
   Classes, SysUtils, appconsts, CustApp,  lclproc,
   { you can add units after this }
   {$IFDEF CONSOLEHACK}
-  windows,
+  windows,  JwaWinUser,
   {$ENDIF}
    SimpleIPC;
 
@@ -45,6 +45,19 @@ type
 { TOvoPlayerCtrl }
 {$IFDEF CONSOLEHACK}
   function AttachConsole(dwProcessId: DWORD): BOOL; stdcall; external kernel32 name 'AttachConsole';
+  function GetConsoleWindow(): HWND; stdcall; external kernel32 name 'GetConsoleWindow';
+
+  procedure SendKeyInput(Flag: DWORD; Key: Word);
+  var
+    Input: TInput;
+  begin
+    FillChar(Input, SizeOf(Input), 0);
+    Input.type_ := INPUT_KEYBOARD;
+    Input.ki.dwFlags := Flag;
+    Input.ki.wVk := Key;
+
+    SendInput(1, @Input, SizeOf(Input));
+  end;
 {$ENDIF}
 
   var
@@ -202,8 +215,8 @@ begin
   if h = 0 then
      AllocConsole;
 
-  rewrite(Output);
-  reset(input);
+  rewrite(system.Output);
+  reset(system.input);
   WriteLn();
   {$ENDIF CONSOLEHACK}
 end;
@@ -212,8 +225,13 @@ procedure TOvoPlayerCtrl.DoneConsole;
 begin
   {$IFDEF CONSOLEHACK}
      WriteLn();
-     Close(Output);
-     close(Input);
+     Close(system.Output);
+     close(system.Input);
+     if GetForegroundWindow = GetConsoleWindow() then
+        begin
+          SendKeyInput(0,$0d);
+          SendKeyInput(KEYEVENTF_KEYUP,$0d);
+        end;
      FreeConsole;
   {$ENDIF}
 end;
