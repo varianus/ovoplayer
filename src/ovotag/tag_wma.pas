@@ -163,7 +163,7 @@ begin
  case DataType of
    0: fValue := AValue;
    1: raise Exception.Create('Unsupported');
-   2..5: fValueInt := StrToInt(AValue);
+   2..5: fValueInt := StrToInt(Utf16toUtf8(AValue));
  end;
 end;
 

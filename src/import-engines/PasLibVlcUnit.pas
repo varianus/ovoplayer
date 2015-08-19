@@ -6342,7 +6342,7 @@ procedure libvlc_dynamic_dll_init_with_path(vlc_install_path: string);
 var
   cdir: string;
   va, vb, vc : LongWord;
-  vp : PAnsiChar;
+  vp : PChar;
 begin
   if (libvlc_handle <> 0) then exit;
 
@@ -6406,7 +6406,7 @@ begin
     'libvlc_get_version') then exit;
 
   vp := libvlc_get_version();
-  libvlc_dynamic_dll_version := Utf8Decode(vp);
+  libvlc_dynamic_dll_version := (vp);
 
   va := read_dec_number(vp) and $ff;
   vb := read_dec_number(vp) and $ff;
