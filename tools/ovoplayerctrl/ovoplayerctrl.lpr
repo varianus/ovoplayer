@@ -1,13 +1,21 @@
 program ovoplayerctrl;
-{$apptype console}
+{$IFDEF WINDOWS}
+  {$DEFINE CONSOLEHACK}
+{$ENDIF}
+{$IFNDEF CONSOLEHACK}
+   {$apptype console}
+{$ENDIF}
 {$mode objfpc}{$H+}
 
 uses
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
   {$ENDIF}{$ENDIF}
-  Classes, SysUtils, appconsts, CustApp,
+  Classes, SysUtils, appconsts, CustApp,  lclproc,
   { you can add units after this }
+  {$IFDEF CONSOLEHACK}
+  windows,
+  {$ENDIF}
    SimpleIPC;
 
 type
@@ -24,6 +32,8 @@ type
     Procedure AddOptions(ShortOption:string; LongOption:string); overload;
     Procedure AddOptions(LongOption:string); overload;
     procedure WriteVersion;
+    Procedure NeedConsole;
+    Procedure DoneConsole;
   protected
     procedure DoRun; override;
   public
@@ -33,11 +43,16 @@ type
   end;
 
 { TOvoPlayerCtrl }
-var
+{$IFDEF CONSOLEHACK}
+  function AttachConsole(dwProcessId: DWORD): BOOL; stdcall; external kernel32 name 'AttachConsole';
+{$ENDIF}
+
+  var
   BaseServerId:string = 'tuniqueinstance_';
   AppNameServerID :string  = 'ovoplayer';
   AppVersion : string = {$I ..\..\src\version.inc};
   Separator:string = '|';
+
 function TOvoPlayerCtrl.PostCommand(CommandType:TCommandType;Command:string;Parameter:string=''): Boolean;
 var
   TempStr: String;
@@ -57,7 +72,11 @@ begin
         SendStringMessage(TempStr);
       end
     else
-      WriteLn('Cannot find ovoplayer instance');
+     begin
+       NeedConsole;
+       WriteLn('Cannot find ovoplayer instance');
+       DoneConsole;
+     end;
   finally
     Free;
   end;
@@ -94,13 +113,17 @@ begin
   AddOptions('e:','enqueue:');
   AddOptions('x:','enqplay:');
   AddOptions('q','quit');
+  AddOptions('d:','debug-log:');
+
 
   for i := 0 to MediaControlCount -1 do
      AddOptions(MediaControl[i]);
 
   ErrorMsg:=CheckOptions(ShortOptions, LongOptions, true);
   if ErrorMsg<>'' then begin
+    NeedConsole;
     Writeln(ErrorMsg);
+    DoneConsole;
     Terminate;
     Exit;
   end;
@@ -112,6 +135,7 @@ begin
     Terminate;
     Exit;
   end;
+
   if HasOption('v','version') then begin
     WriteVersion;
   end;
@@ -153,19 +177,52 @@ end;
 
 procedure TOvoPlayerCtrl.WriteVersion;
 begin
-  { add your help code here }
+  NeedConsole;
   writeln('ovoplayerctrl ' + AppVersion);
   writeln('This application act as a "remote control" for Ovoplayer application');
   writeln;
   writeln('Copyright (C) 2011, Marco Caselli <marcocas@gmail.com>');
   writeln('License GPLv2: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html');
+  DoneConsole;
 end;
+
+procedure TOvoPlayerCtrl.NeedConsole;
+var
+ h: HRESULT;
+begin
+  {$IFDEF CONSOLEHACK}
+  h:= GetStdHandle(STD_OUTPUT_HANDLE);
+  if h <> 0 then
+    begin
+      Freeconsole;
+      AttachConsole(DWORD(-1));
+    end;
+  h:= GetStdHandle(STD_OUTPUT_HANDLE);
+
+  if h = 0 then
+     AllocConsole;
+
+  rewrite(Output);
+  reset(input);
+  WriteLn();
+  {$ENDIF CONSOLEHACK}
+end;
+
+procedure TOvoPlayerCtrl.DoneConsole;
+begin
+  {$IFDEF CONSOLEHACK}
+     WriteLn();
+     Close(Output);
+     close(Input);
+     FreeConsole;
+  {$ENDIF}
+end;
+
 procedure TOvoPlayerCtrl.WriteHelp;
 begin
+  NeedConsole;
   writeln('ovoplayerctrl ' + AppVersion);
   writeln('This application act as a "remote control" for Ovoplayer application');
-//  writeln('Copyright (C) 2011, Marco Caselli <marcocas@gmail.com>');
-//  writeln('License GPLv2: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
   writeln('Usage: ovoplayerctrl [option]');
   writeln;
   writeln('--next' + sLineBreak +
@@ -190,7 +247,7 @@ begin
           '    ' + 'Enqueue current playlist AND begin play a song');
   writeln('-q , --quit' + sLineBreak +
           '    ' + 'Close ovoplayer');
-
+  DoneConsole;
 
 end;
 

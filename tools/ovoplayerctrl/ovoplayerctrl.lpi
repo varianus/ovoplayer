@@ -69,7 +69,7 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <CommandLineParams Value="--cazz"/>
+        <CommandLineParams Value="-h"/>
       </local>
     </RunParams>
     <RequiredPackages Count="3">
@@ -124,6 +124,11 @@
         <DebugInfoType Value="dsDwarf2Set"/>
         <UseExternalDbgSyms Value="True"/>
       </Debugging>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="True"/>
+        </Win32>
+      </Options>
     </Linking>
     <Other>
       <ConfigFile>
