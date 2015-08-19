@@ -1,9 +1,10 @@
 program ovoplayerctrl;
 {$IFDEF WINDOWS}
   {$DEFINE CONSOLEHACK}
-{$ENDIF}
-{$IFNDEF CONSOLEHACK}
-   {$apptype console}
+
+  {$IFNDEF CONSOLEHACK}
+     {$apptype console}
+  {$ENDIF}
 {$ENDIF}
 {$mode objfpc}{$H+}
 
