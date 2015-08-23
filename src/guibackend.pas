@@ -33,8 +33,15 @@ uses
 
 type
 
+  RExternalCommand = record
+    Category: string;
+    Command: string;
+   Param: string;
+  end;
+
+
   TOnEngineCommand = procedure(Sender: Tobject; Command : TEngineCommand) of object;
-  TOnExternalCommand = procedure(Sender: Tobject; Command : String) of object;
+  TOnExternalCommand = procedure(Sender: Tobject; Command : RExternalCommand) of object;
 
   { TBackEnd }
 
@@ -98,6 +105,7 @@ type
 
     Procedure Notify(Kind:  TChangedProperty);
     procedure HandleCommand(Command: TEngineCommand; Param: integer);
+    procedure HandleExternalCommand(Command: RExternalCommand);
 
     function GetImageFromfolder(Path: string): string;
     procedure SaveState;
@@ -114,9 +122,11 @@ type
 function BackEnd: TBackEnd;
 Procedure FreeBackend;
 
+Function SplitCommand(ACommand:string): RExternalCommand;
+
 implementation
 
-uses Graphics, LCLProc, FilesSupport, AudioTag, AppConsts, ExtendedInfo, uriparser;
+uses Graphics, LCLProc, FilesSupport, AudioTag, AppConsts, ExtendedInfo, strutils, uriparser;
 
 var
   fBackEnd: TBackEnd;
@@ -144,6 +154,35 @@ begin
   fBackEnd := nil;
 
 end;
+
+function SplitCommand(ACommand: string): RExternalCommand;
+var
+  pColon, pEqual: integer;
+  tmpstr: string;
+begin
+  Result.Category:=EmptyStr;
+  Result.Param:=EmptyStr;
+
+  pColon:= pos(':',ACommand);
+  if pColon < 1 then
+    Result.Command:=ACommand
+  else
+    begin
+      Result.Category:=copy(ACommand, 1,pColon-1);
+      pEqual:= PosEx('=',ACommand,pColon+1);
+      if pEqual < 1 then
+        Result.Command:=Copy(ACommand,pColon+1, Length(ACommand))
+      else
+        begin
+           Result.Command:=copy(ACommand, pColon+1,pEqual -pColon -1);
+           Result.Param:= copy(ACommand, pEqual+1, Length(ACommand));
+        end;
+
+    end;
+
+
+end;
+
 
 constructor TBackEnd.Create;
 var
@@ -594,6 +633,49 @@ begin
     ecStop: Stop;
     ecSeek: SetPosition(Param);
     end;
+end;
+
+procedure TBackEnd.HandleExternalCommand(Command: RExternalCommand);
+var
+  Handled: boolean;
+  idx: integer;
+begin
+  Handled:=false;
+
+  if Command.Category = 'action' then
+    case Command.Command of
+       'play'     : begin Play; Handled := true; end;
+       'stop'     : begin Stop; Handled := true; end;
+       'pause'    : begin Pause; Handled := true; end;
+       'next'     : begin Next; Handled := true; end;
+       'previous' : begin Previous; Handled := true; end;
+       'quit'     : begin Quit; Handled := true; end;
+    end;
+
+  if Command.Category = 'file' then
+     case command.Command of
+       'e' : begin
+               idx := PlayList.EnqueueFile(Command.Param);
+               Handled:=true;
+               SignalPlayListChange;
+
+             end;
+       'p' : begin
+               OpenUri(Command.Param);
+               Handled:=true;
+             end;
+       'x' : begin
+               idx := PlayList.EnqueueFile(Command.Param);
+               PlayList.ItemIndex:=idx;
+               AudioEngine.Play(PlayList.CurrentItem);
+               Handled:=true;
+               SignalPlayListChange;
+             end;
+     end;
+  // in not handled by backend, forward event
+  if not Handled and Assigned(FOnExternalCommand) then
+     FOnExternalCommand(Self, Command);
+
 end;
 
 
