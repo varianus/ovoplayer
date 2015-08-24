@@ -647,6 +647,13 @@ begin
        'play'     : begin Play; Handled := true; end;
        'stop'     : begin Stop; Handled := true; end;
        'pause'    : begin Pause; Handled := true; end;
+       'playpause': begin
+                      if GetStatus = ENGINE_PLAY then
+                        Pause
+                      else
+                        Play;
+                      Handled := true;
+                    end;
        'next'     : begin Next; Handled := true; end;
        'previous' : begin Previous; Handled := true; end;
        'quit'     : begin Quit; Handled := true; end;

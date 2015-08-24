@@ -113,10 +113,10 @@ var
   ErrorMsg: String;
   i:Integer;
 const
-  MediaControlCount = 7;
+  MediaControlCount = 8;
 var
   MediaControl : array [0..MediaControlCount-1] of string =
-                                   ('pause', 'play', 'stop',
+                                   ('pause', 'play', 'playpause', 'stop',
                                     'next', 'previous',
                                     'seek+', 'seek-');
 begin
@@ -252,6 +252,8 @@ begin
           '    ' + 'Pause current song');
   writeln('--play' + sLineBreak +
           '    ' + 'Resume current song');
+  writeln('--playpause' + sLineBreak +
+          '    ' + 'Pause current song if playing or resume current song if paused');
   writeln('--stop' + sLineBreak +
           '    ' + 'Stop playing');
   writeln('--seek+' + sLineBreak +
