@@ -56,6 +56,10 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   {$IFDEF NOTIFYDBUS}notification,{$ENDIF}
   {$IFDEF TASKBAR_EXTENSION}taskbar_ext,{$ENDIF}
 
+  //Other Features
+
+  {$IFDEF NETWORK_INTF}NetIntf,{$ENDIF}
+
   // ovotag
   song, AudioTag, basetag,
   tag_vorbis, file_flac, file_ogg,

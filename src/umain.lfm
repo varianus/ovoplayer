@@ -1,12 +1,12 @@
 object fMainForm: TfMainForm
-  Left = 727
+  Left = 416
   Height = 673
-  Top = 200
+  Top = 196
   Width = 866
   ActiveControl = pcMain
   AllowDropFiles = True
   Caption = 'OvoPlayer'
-  ClientHeight = 652
+  ClientHeight = 653
   ClientWidth = 866
   Constraints.MinHeight = 400
   Constraints.MinWidth = 600
@@ -23,7 +23,7 @@ object fMainForm: TfMainForm
   LCLVersion = '1.5'
   object pcMain: TPageControl
     Left = 0
-    Height = 652
+    Height = 653
     Top = 0
     Width = 243
     ActivePage = tsPlayList
@@ -49,12 +49,12 @@ object fMainForm: TfMainForm
         TabOrder = 0
         object cbGroupBy: TComboBox
           Left = 4
-          Height = 25
+          Height = 23
           Hint = 'Group song'
           Top = 6
           Width = 230
           Anchors = [akTop, akLeft, akRight]
-          ItemHeight = 0
+          ItemHeight = 15
           ItemIndex = 0
           Items.Strings = (
             'AlbumArtist / Album'
@@ -146,7 +146,7 @@ object fMainForm: TfMainForm
         Width = 237
         Align = alBottom
         Caption = 'Stats'
-        ClientHeight = 90
+        ClientHeight = 89
         ClientWidth = 233
         ParentFont = False
         TabOrder = 1
@@ -339,15 +339,16 @@ object fMainForm: TfMainForm
     end
     object tsPlayList: TTabSheet
       Caption = 'PlayList'
-      ClientHeight = 617
-      ClientWidth = 237
+      ClientHeight = 625
+      ClientWidth = 235
       OnShow = tsPlayListShow
       object PlaylistTree: TTreeView
         Left = 0
-        Height = 617
+        Height = 625
         Top = 0
-        Width = 237
+        Width = 235
         Align = alClient
+        DefaultItemHeight = 18
         PopupMenu = pmPlaylists
         ReadOnly = True
         RightClickSelect = True
@@ -367,19 +368,19 @@ object fMainForm: TfMainForm
   end
   object pnlMain: TPanel
     Left = 247
-    Height = 652
+    Height = 653
     Top = 0
     Width = 619
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 652
+    ClientHeight = 653
     ClientWidth = 619
     Constraints.MinWidth = 439
     TabOrder = 1
     object pnlControl: TPanel
       Left = 0
       Height = 53
-      Top = 599
+      Top = 600
       Width = 619
       Align = alBottom
       Anchors = [akLeft, akRight]
@@ -494,18 +495,18 @@ object fMainForm: TfMainForm
           Style = tbsSeparator
         end
         object ToolButton13: TToolButton
-          Left = 310
+          Left = 307
           Top = 0
           Enabled = False
           ShowCaption = False
         end
         object ToolButton11: TToolButton
-          Left = 333
+          Left = 330
           Top = 0
           Action = DM.actMute
         end
         object slVolume: TCDTrackBar
-          Left = 356
+          Left = 353
           Height = 23
           Top = 0
           Width = 100
@@ -557,17 +558,17 @@ object fMainForm: TfMainForm
     end
     object pnlPlaylist: TPanel
       Left = 0
-      Height = 475
+      Height = 476
       Top = 124
       Width = 619
       Align = alClient
-      ClientHeight = 475
+      ClientHeight = 476
       ClientWidth = 619
       Constraints.MinWidth = 494
       TabOrder = 1
       object sgPlayList: TStringGrid
         Left = 1
-        Height = 473
+        Height = 474
         Top = 1
         Width = 617
         Align = alClient
@@ -788,7 +789,7 @@ object fMainForm: TfMainForm
   end
   object Splitter1: TSplitter
     Left = 243
-    Height = 652
+    Height = 653
     Top = 0
     Width = 4
   end

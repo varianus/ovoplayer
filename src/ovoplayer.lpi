@@ -103,23 +103,26 @@ if TargetOS = 'linux' then
         <FormatVersion Value="1"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="4">
+    <RequiredPackages Count="5">
       <Item1>
-        <PackageName Value="customdrawn"/>
+        <PackageName Value="FCL"/>
       </Item1>
       <Item2>
-        <PackageName Value="SQLDBLaz"/>
-        <MinVersion Major="1" Release="1" Valid="True"/>
+        <PackageName Value="customdrawn"/>
       </Item2>
       <Item3>
-        <PackageName Value="LCLBase"/>
+        <PackageName Value="SQLDBLaz"/>
         <MinVersion Major="1" Release="1" Valid="True"/>
       </Item3>
       <Item4>
-        <PackageName Value="LCL"/>
+        <PackageName Value="LCLBase"/>
+        <MinVersion Major="1" Release="1" Valid="True"/>
       </Item4>
+      <Item5>
+        <PackageName Value="LCL"/>
+      </Item5>
     </RequiredPackages>
-    <Units Count="76">
+    <Units Count="77">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -483,6 +486,11 @@ if TargetOS = 'linux' then
         <Filename Value="import-engines\libmpv.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit75>
+      <Unit76>
+        <Filename Value="netintf.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="NetIntf"/>
+      </Unit76>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -493,7 +501,7 @@ if TargetOS = 'linux' then
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir);platform\$(TargetOS);import-engines"/>
-      <OtherUnitFiles Value="import-engines;ovotag;components\uniqueinstance;platform\$(TargetOS)"/>
+      <OtherUnitFiles Value="import-engines;ovotag;components\uniqueinstance;platform\$(TargetOS);components\network"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Conditionals Value="if TargetOS = 'darwin' then

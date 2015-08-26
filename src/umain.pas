@@ -33,6 +33,7 @@ uses
   {$IFDEF MPRIS2} Mpris2,{$ENDIF}
   {$IFDEF NOTIFYDBUS} notification,{$ENDIF}
   {$IFDEF TASKBAR_EXTENSION}taskbar_ext,{$ENDIF}
+  {$IFDEF NETWORK_INTF}NetIntf,{$ENDIF}
   ucover, ucustomplaylist, playlistbuilder;
 
 type
@@ -384,7 +385,9 @@ type
     {$IFDEF TASKBAR_EXTENSION}
     Mytaskbar_ext: TTaskBarExtender;
     {$ENDIF}
-
+    {$IFDEF NETWORK_INTF}
+    MyNetIntf : TNetIntf;
+    {$ENDIF}
     function AdjustPos(pt: tpoint): Tpoint;
     Function ColumnSize(aCol: Integer):Integer;
     procedure ClearPanelInfo;
@@ -1288,6 +1291,11 @@ begin
   Mytaskbar_ext := TTaskBarExtender.Create;
   {$ENDIF}
 
+  {$IFDEF NETWORK_INTF}
+    MyNetIntf := TNetIntf.Create;
+    MyNetIntf.Activate(BackEnd);
+  {$ENDIF}
+
 end;
 
 procedure TfMainForm.FormDestroy(Sender: TObject);
@@ -1302,6 +1310,11 @@ begin
   {$IFDEF TASKBAR_EXTENSION}
   Mytaskbar_ext.UnInit;
   Mytaskbar_ext.Free;
+  {$ENDIF}
+
+  {$IFDEF NETWORK_INTF}
+  if Assigned(MyNetIntf) then
+     MyNetIntf.DeActivate;
   {$ENDIF}
 
   if Assigned(fMiniPlayer) then

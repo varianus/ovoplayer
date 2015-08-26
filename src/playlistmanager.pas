@@ -73,6 +73,8 @@ type
     function ImportFromASX(const FileName: TFileName; var Playlist: TPlaylist): integer;
     function ImportFromBSP(const FileName: TFileName; var Playlist: TPlaylist): integer;
 
+    function ExportToJson(var Playlist: TPlaylist): TStringList;
+
     function LoadPlayList(const FileName: TFileName; var Playlist: TPlaylist): integer;
 
     procedure SaveToXSPF(const FileName: TFileName; var Playlist: TPlaylist;
@@ -85,7 +87,8 @@ type
 implementation
 
 uses
-  DOM, XMLRead, XMLWrite, URIParser, IniFiles, fileutil, LazFileUtils, filesSupport, LCLProc, basetag;
+  DOM, XMLRead, XMLWrite, URIParser, IniFiles, fileutil, LazFileUtils,
+  filesSupport, CustomSong, LCLProc, basetag, fpjson, jsonparser, fpjsonrtti;
 
 const
   //  GenDelims  = [':', '/', '?', '#', '[', ']', '@'];
@@ -401,6 +404,44 @@ begin
     Playlist.EnqueueFile(ProcessPath(s, p));
   end;
   closefile(f);
+end;
+
+function TPlayListManager.ExportToJson(var Playlist: TPlaylist): TStringList;
+var
+  FObj: TJSONObject;
+  FArr: TJSONArray;
+  FSongObj: TJSONObject;
+  FSong: TCustomSong;
+  FTags: TCommonTags;
+  i: integer;
+
+begin
+  Result := TStringList.Create;
+  Fobj:= TJSONObject.Create;
+  Fobj.Add('count',Playlist.Count);
+  Fobj.Add('current',Playlist.ItemIndex);
+  Farr := TJSONArray.Create;
+  for i := 0 to Playlist.Count -1 do
+    begin
+      FsongObj:= TJSONObject.Create;
+      FSong := TCustomSong(Playlist.Items[i]);
+      FTags := FSong.Tags;
+      FSongObj.Add('id',i+1);
+      FSongObj.Add('Title',FTags.Title);
+      FSongObj.Add('Album',FTags.Album);
+      FSongObj.Add('AlbumArtist',FTags.AlbumArtist);
+      FSongObj.Add('Artist',FTags.Artist);
+      FSongObj.Add('Comment',FTags.Comment);
+      FSongObj.Add('Duration',FTags.Duration);
+      FSongObj.Add('Genre',FTags.Genre);
+      FSongObj.Add('TrackString',FTags.TrackString);
+      FSongObj.Add('Year',FTags.Year);
+      FArr.Add(FSongObj);
+    end;
+  FObj.Add('items',FArr);
+
+  Result.Text :=FObj.AsJSON;
+
 end;
 
 

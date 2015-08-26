@@ -73,6 +73,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 {$ENDIF DARWIN}
 
+
 // Platform-dependent features
 {$IFDEF LINUX}
   {$DEFINE NEEDCFGSUBDIR} // Need to add a sub-directory to configuration files directory
@@ -89,6 +90,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {$IFDEF LCLWin32}
   {$DEFINE SUPPORT_LISTBOX_HINT} // GTK2 have some problems
 {$ENDIF LCLWin32}
+
+//Other Features
+{$DEFINE NETWORK_INTF} // Activate network interface for remote control, depends on Synapse packages
 
 //if release is defined, try to be quiet and efficient...
 {$IFDEF RELEASE}
