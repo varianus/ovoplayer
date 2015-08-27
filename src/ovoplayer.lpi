@@ -421,6 +421,7 @@ if TargetOS = 'linux' then
       <Unit61>
         <Filename Value="nullinterfacedobject.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="NullInterfacedObject"/>
       </Unit61>
       <Unit62>
         <Filename Value="ovotag\audiotag.pas"/>

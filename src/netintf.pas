@@ -5,132 +5,158 @@ unit NetIntf;
 interface
 
 uses
-  Classes, SysUtils,types, BaseTypes, coreinterfaces, TcpIpServer, TcpIpClient, sockets, NullInterfacedObject;
+  Classes, SysUtils, types, BaseTypes, coreinterfaces, TcpIpServer, TcpIpClient, sockets, NullInterfacedObject;
 
 type
 
   { TWebIntf }
   TTCPRemoteDaemon = class;
-  TTCPRemoteThrd = class;
 
-  TNetIntf = class(TNullInterfacedobject, IObserver)
+  TNetIntf = class(TNullInterfacedobject)
   private
     fBackEnd: IBackEnd;
-    DaemonThread : TTCPRemoteDaemon;
+    DaemonThread: TTCPRemoteDaemon;
   public
     function Activate(BackEnd: IBackEnd): boolean;
     procedure DeActivate;
-    procedure UpdateProperty(Kind: TChangedProperty);
     constructor Create;
     destructor Destroy; override;
   end;
 
   TTCPRemoteDaemon = class(TThread)
   private
-    Sock:TTcpIpServerSocket;
-    fnet:TNetIntf;
+    Sock: TTcpIpServerSocket;
+    fnet: TNetIntf;
   public
-    Constructor Create(net:TNetIntf);
-    Destructor Destroy; override;
+    constructor Create(net: TNetIntf);
+    destructor Destroy; override;
     procedure Execute; override;
   end;
 
-  TTCPRemoteThrd = class(TThread)
+  { TTCPRemoteThrd }
+
+  TTCPRemoteThrd = class(TNullInterfacedThread, IObserver)
   private
-    Sock:TTcpIpClientSocket;
+    Sock: TTcpIpClientSocket;
     CSock: TSocket;
-    fnet:TNetIntf;
+    fnet: TNetIntf;
+    Data: string;
+    DataSize: integer;
+  private
+    procedure SyncRunner;
   public
-    Constructor Create (hsock:tSocket; net:TNetIntf);
+    procedure UpdateProperty(Kind: TChangedProperty);
+    constructor Create(hsock: TSocket; net: TNetIntf);
     procedure Execute; override;
+    Destructor Destroy; override;
   end;
 
 implementation
 
 { TEchoDaemon }
 
-Constructor TTCPRemoteDaemon.Create(net:TNetIntf);
+constructor TTCPRemoteDaemon.Create(net: TNetIntf);
 begin
-  inherited create(false);
-  fnet:=net;
-  sock:=TTcpIpServerSocket.Create(5500);
-  FreeOnTerminate:=true;
+  inherited Create(False);
+  fnet := net;
+  sock := TTcpIpServerSocket.Create(5500);
+  FreeOnTerminate := True;
 end;
 
-Destructor TTCPRemoteDaemon.Destroy;
+destructor TTCPRemoteDaemon.Destroy;
 begin
-  Sock.free;
+  Sock.Free;
 end;
 
 procedure TTCPRemoteDaemon.Execute;
 var
-  ClientSock:TSocket;
+  ClientSock: TSocket;
 begin
   with sock do
     begin
 
-     // setLinger(true,10000);
-      bind;
-      listen;
-      repeat
-        if terminated then break;
-        ClientSock:=accept;
-        if lastError=0 then TTCPRemoteThrd.create(ClientSock, fnet);
-      until false;
+    // setLinger(true,10000);
+    bind;
+    listen;
+    repeat
+      if terminated then
+        break;
+      ClientSock := accept;
+      if lastError = 0 then
+        TTCPRemoteThrd.Create(ClientSock, fnet);
+    until False;
     end;
 end;
 
 { TEchoThrd }
 
-Constructor TTCPRemoteThrd.Create(Hsock:TSocket; net:TNetIntf);
+procedure TTCPRemoteThrd.SyncRunner;
 begin
-  inherited create(false);
-  fnet:= net;
+  case Data of
+    'p': fnet.fBackEnd.Play;
+    'u': fnet.fBackEnd.pause;
+    'n': fnet.fBackEnd.Next;
+    'x': ;
+
+  end;
+end;
+
+procedure TTCPRemoteThrd.UpdateProperty(Kind: TChangedProperty);
+begin
+    //case kind of
+    //cpStatus:
+    //  begin
+    //    mpris_send_signal_Updated_Metadata;
+    //    mpris_send_signal_PlaybackStatus;
+    //  end;
+    //cpVolume: mpris_send_signal_VolumeChanged;
+    //cpPosition: mpris_send_signal_Seeked;
+    //cpMetadata: mpris_send_signal_Updated_Metadata;
+  Sock.WriteStr(fnet.fBackEnd.GetMetadata().Title);
+end;
+
+constructor TTCPRemoteThrd.Create(hsock: TSocket; net: TNetIntf);
+begin
+  inherited Create(False);
+  fnet := net;
   Csock := Hsock;
-  FreeOnTerminate:=true;
+  fnet.fBackEnd.Attach(self);
+  FreeOnTerminate := True;
 end;
 
 procedure TTCPRemoteThrd.Execute;
-var
-  s: ansistring;
-  DataSize: integer;
-  Unk: boolean;
 begin
-  sock:=TTcpIpClientSocket.create(CSock);
-  try
+  sock := TTcpIpClientSocket.Create(CSock);
+    try
     with sock do
       begin
         repeat
-          if terminated then break;
+          if terminated then
+            break;
           if sock.CanRead(60000) then
             begin
-              if (lastError<>0) then break;
+              if (lastError <> 0) then
+                break;
               DataSize := Sock.Waiting;
-              SetLength(S,DataSize);
-              Sock.Read(s[1], DataSize);
-              unk := false;
-              case s of
-                'p' : fnet.fBackEnd.Play;
-                'u' : fnet.fBackEnd.pause;
-                'n' : fnet.fBackEnd.Next;
-                'x' : ;
-                '':;
-              else
-                unk:= true;
-              end;
-             if unk then
-               Sock.WriteStr('BOH??')
-             else
-               Sock.WriteStr(Inttostr(fnet.fBackEnd.GetPosition));
-
-             if lastError<>0 then break;
+              SetLength(Data, DataSize);
+              Sock.Read(Data[1], DataSize);
+              Synchronize(@SyncRunner);
+              Sock.WriteStr(IntToStr(fnet.fBackEnd.GetPosition));
+              if lastError <> 0 then
+                break;
 
             end;
-        until false;
+        until False;
       end;
-  finally
-    Sock.Free;
-  end;
+    finally
+      Sock.Free;
+    end;
+end;
+
+destructor TTCPRemoteThrd.Destroy;
+begin
+  fnet.fBackEnd.Remove(Self);
+  inherited Destroy;
 end;
 
 { TWebIntf }
@@ -144,18 +170,11 @@ begin
   if not Assigned(fBackEnd) then
     exit;
 
-  fBackEnd.Attach(Self);
   Result := True;
-
 
 end;
 
 procedure TNetIntf.DeActivate;
-begin
-  fBackEnd.Remove(Self);
-end;
-
-procedure TNetIntf.UpdateProperty(Kind: TChangedProperty);
 begin
 
 end;
@@ -173,4 +192,3 @@ begin
 end;
 
 end.
-

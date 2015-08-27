@@ -35,6 +35,13 @@ type
     function _Release : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
   end;
 
+  TNullInterfacedThread = class(TThread, IUnknown)
+  protected
+    function QueryInterface({$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF} iid : tguid;out obj) : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+    function _AddRef : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+    function _Release : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+  end;
+
 implementation
 { TNullInterfacedObject }
 
@@ -55,5 +62,25 @@ function TNullInterfacedObject._Release : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}s
 begin
   Result := -1;
 end;
+
+function TNullInterfacedThread.QueryInterface({$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF} iid : tguid;out obj) : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+begin
+  if GetInterface(IID, Obj) then
+    Result := 0
+  else
+    result := integer(e_nointerface);
+end;
+
+function TNullInterfacedThread._AddRef : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+begin
+  Result := -1;
+end;
+
+function TNullInterfacedThread._Release : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+begin
+  Result := -1;
+end;
+
+
 end.
 
