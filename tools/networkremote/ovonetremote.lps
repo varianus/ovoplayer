@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <Version Value="9"/>
+    <BuildModes Active="Debug"/>
+    <Units Count="2">
+      <Unit0>
+        <Filename Value="ovonetremote.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="uremote.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form1"/>
+        <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="16"/>
+        <CursorPos X="13" Y="38"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+    </Units>
+    <JumpHistory Count="6" HistoryIndex="5">
+      <Position1>
+        <Filename Value="uremote.pas"/>
+        <Caret Line="9" Column="40"/>
+      </Position1>
+      <Position2>
+        <Filename Value="uremote.pas"/>
+        <Caret Line="18" Column="37"/>
+      </Position2>
+      <Position3>
+        <Filename Value="uremote.pas"/>
+        <Caret Line="17" Column="37"/>
+      </Position3>
+      <Position4>
+        <Filename Value="uremote.pas"/>
+        <Caret Line="19" Column="37"/>
+      </Position4>
+      <Position5>
+        <Filename Value="uremote.pas"/>
+        <Caret Line="18" Column="37"/>
+      </Position5>
+      <Position6>
+        <Filename Value="uremote.pas"/>
+        <Caret Line="20" Column="37"/>
+      </Position6>
+    </JumpHistory>
+  </ProjectSession>
+</CONFIG>
