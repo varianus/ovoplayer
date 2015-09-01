@@ -28,7 +28,13 @@ type
 
   AREngineParams = array of REngineParams;
 
+  RExternalCommand = record
+    Category: string;
+    Command: string;
+    Param: string;
+  end;
+
 implementation
 
 end.
-
+

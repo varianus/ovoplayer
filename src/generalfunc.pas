@@ -24,7 +24,7 @@ unit GeneralFunc;
 interface
 
 uses
-  Classes, SysUtils, AppConsts, CustApp, lclProc;
+  Classes, SysUtils, AppConsts, CustApp, lclProc, BaseTypes;
 
 function TimeToMSec(Time: double): int64;
 Function isAppRunning(Application:TCustomApplication):Boolean;
@@ -53,12 +53,14 @@ type
   TByteStringFormat = (bsfDefault, bsfBytes, bsfKB, bsfMB, bsfGB, bsfTB);
   function FormatByteString(Bytes: UInt64; Format: TByteStringFormat = bsfDefault): string;
 
+  Function SplitCommand(ACommand:string): RExternalCommand;
+
 implementation
 uses
 {$DEFINE USESMODE}
   {$i generalfuncimpl.inc}
 {$UNDEF USESMODE}
- SimpleIPC, AsyncProcess;
+ strutils, SimpleIPC, AsyncProcess;
 
 const
   OneKB = 1024;
@@ -227,6 +229,32 @@ const
 Begin
    result := BoolOrder [a] - BoolOrder [b];
 End ;
+
+function SplitCommand(ACommand: string): RExternalCommand;
+var
+  pColon, pEqual: integer;
+  tmpstr: string;
+begin
+  Result.Category:=EmptyStr;
+  Result.Param:=EmptyStr;
+
+  pColon:= pos(':',ACommand);
+  if pColon < 1 then
+    Result.Command:=ACommand
+  else
+    begin
+      Result.Category:=copy(ACommand, 1,pColon-1);
+      pEqual:= PosEx('=',ACommand,pColon+1);
+      if pEqual < 1 then
+        Result.Command:=Copy(ACommand,pColon+1, Length(ACommand))
+      else
+        begin
+           Result.Command:=copy(ACommand, pColon+1,pEqual -pColon -1);
+           Result.Param:= copy(ACommand, pEqual+1, Length(ACommand));
+        end;
+    end;
+end;
+
 
 {$i generalfuncimpl.inc}
 end.

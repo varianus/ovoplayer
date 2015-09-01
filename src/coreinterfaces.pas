@@ -54,6 +54,7 @@ type
     Procedure Mute;
     Procedure UnMute;
     procedure HandleCommand(Command: TEngineCommand; Param: integer = 0);
+    Procedure HandleExternalCommand(Command: RExternalCommand);
     Procedure OpenURI(URI: String);
     procedure Seek(AValue: int64);
     Function GetMetadata(Index:integer=-1): TCommonTags;
@@ -65,4 +66,4 @@ type
 implementation
 
 end.
-
+

@@ -33,13 +33,6 @@ uses
 
 type
 
-  RExternalCommand = record
-    Category: string;
-    Command: string;
-   Param: string;
-  end;
-
-
   TOnEngineCommand = procedure(Sender: Tobject; Command : TEngineCommand) of object;
   TOnExternalCommand = procedure(Sender: Tobject; Command : RExternalCommand) of object;
 
@@ -122,11 +115,9 @@ type
 function BackEnd: TBackEnd;
 Procedure FreeBackend;
 
-Function SplitCommand(ACommand:string): RExternalCommand;
-
 implementation
 
-uses Graphics, LCLProc, FilesSupport, AudioTag, AppConsts, ExtendedInfo, strutils, uriparser;
+uses Graphics, LCLProc, FilesSupport, AudioTag, AppConsts, ExtendedInfo, uriparser;
 
 var
   fBackEnd: TBackEnd;
@@ -152,34 +143,6 @@ begin
 
   fBackEnd.Free;
   fBackEnd := nil;
-
-end;
-
-function SplitCommand(ACommand: string): RExternalCommand;
-var
-  pColon, pEqual: integer;
-  tmpstr: string;
-begin
-  Result.Category:=EmptyStr;
-  Result.Param:=EmptyStr;
-
-  pColon:= pos(':',ACommand);
-  if pColon < 1 then
-    Result.Command:=ACommand
-  else
-    begin
-      Result.Category:=copy(ACommand, 1,pColon-1);
-      pEqual:= PosEx('=',ACommand,pColon+1);
-      if pEqual < 1 then
-        Result.Command:=Copy(ACommand,pColon+1, Length(ACommand))
-      else
-        begin
-           Result.Command:=copy(ACommand, pColon+1,pEqual -pColon -1);
-           Result.Param:= copy(ACommand, pEqual+1, Length(ACommand));
-        end;
-
-    end;
-
 
 end;
 

@@ -5,7 +5,8 @@ unit NetIntf;
 interface
 
 uses
-  Classes, SysUtils, types, BaseTypes, coreinterfaces, TcpIpServer, TcpIpClient, sockets, NullInterfacedObject;
+  Classes, SysUtils, types, BaseTypes, coreinterfaces, TcpIpServer, TcpIpClient, sockets,
+  NullInterfacedObject, netprotocol;
 
 type
 
@@ -52,8 +53,13 @@ type
   end;
 
 implementation
+uses GeneralFunc;
 
 { TEchoDaemon }
+Function EncodeString(S:String): string;
+begin
+  Result := EncodeSize(Length(s))+s;
+end;
 
 constructor TTCPRemoteDaemon.Create(net: TNetIntf);
 begin
@@ -92,13 +98,8 @@ end;
 
 procedure TTCPRemoteThrd.SyncRunner;
 begin
-  case Data of
-    'p': fnet.fBackEnd.Play;
-    'u': fnet.fBackEnd.pause;
-    'n': fnet.fBackEnd.Next;
-    'x': ;
+  fnet.fBackEnd.HandleExternalCommand(SplitCommand(Data));
 
-  end;
 end;
 
 procedure TTCPRemoteThrd.UpdateProperty(Kind: TChangedProperty);
@@ -112,7 +113,7 @@ begin
     //cpVolume: mpris_send_signal_VolumeChanged;
     //cpPosition: mpris_send_signal_Seeked;
     //cpMetadata: mpris_send_signal_Updated_Metadata;
-  Sock.WriteStr(fnet.fBackEnd.GetMetadata().Title);
+  Sock.WriteStr(EncodeString(fnet.fBackEnd.GetMetadata().Title));
 end;
 
 constructor TTCPRemoteThrd.Create(hsock: TSocket; net: TNetIntf);
@@ -137,11 +138,13 @@ begin
             begin
               if (lastError <> 0) then
                 break;
-              DataSize := Sock.Waiting;
+              SetLength(Data, 4);
+              Sock.Read(Data[1], 4);
+              DataSize:= DecodeSize(Data);
               SetLength(Data, DataSize);
               Sock.Read(Data[1], DataSize);
               Synchronize(@SyncRunner);
-              Sock.WriteStr(IntToStr(fnet.fBackEnd.GetPosition));
+              Sock.WriteStr(EncodeString(IntToStr(fnet.fBackEnd.GetPosition)));
               if lastError <> 0 then
                 break;
 
