@@ -26,7 +26,7 @@ uses
   Classes, SysUtils, base64, BaseTypes;
 
 Const
-  CATEGORY_ACTION = 'action';
+  CATEGORY_ACTION = 'action';  // client --> server
     COMMAND_PLAY = 'play';
     COMMAND_STOP = 'stop';
     COMMAND_PAUSE = 'pause' ;
@@ -36,14 +36,26 @@ Const
     COMMAND_SEEK_P = 'seek+';
     COMMAND_SEEK_M = 'seek-';
 
-  CATEGORY_FILE = 'file';
+  CATEGORY_FILE = 'file';   // client --> server
     COMMAND_ENQUEUE = 'e';
     COMMAND_CLEAR_AND_PLAY = 'p';
     COMMAND_ENQUEUE_AND_PLAY = 'x';
 
-  CATEGORY_APP = 'app';
+  CATEGORY_APP = 'app';  // client --> server
     COMMAND_ACTIVATE = 'activate';
     COMMAND_QUIT = 'quit';
+
+  CATEGORY_INFORMATION = 'info';
+    INFO_ENGINE_STATE = 'state';
+    {  ENGINE_STOP,
+       ENGINE_PLAY,
+       ENGINE_PAUSE,
+       ENGINE_SONG_END,
+       ENGINE_ON_LINE);}
+    INFO_POSITION = 'pos';
+    INFO_VOLUME = 'vol';
+    INFO_METADATA = 'meta';
+
 
   CATEGORY_COMMAND_SEPARATOR = ':';
   CATEGORY_PARAM_SEPARATOR = '=';

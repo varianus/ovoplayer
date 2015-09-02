@@ -4,7 +4,8 @@ unit BaseTypes;
 
 interface
 type
-  TEngineState = (ENGINE_STOP,
+  TEngineState = (
+    ENGINE_STOP,
     ENGINE_PLAY,
     ENGINE_PAUSE,
     ENGINE_SONG_END,

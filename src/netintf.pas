@@ -99,17 +99,21 @@ begin
 end;
 
 procedure TTCPRemoteThrd.UpdateProperty(Kind: TChangedProperty);
+var
+  tmpstr: string;
 begin
-    //case kind of
-    //cpStatus:
-    //  begin
-    //    mpris_send_signal_Updated_Metadata;
-    //    mpris_send_signal_PlaybackStatus;
-    //  end;
-    //cpVolume: mpris_send_signal_VolumeChanged;
-    //cpPosition: mpris_send_signal_Seeked;
-    //cpMetadata: mpris_send_signal_Updated_Metadata;
-  Sock.WriteStr(EncodeString(fnet.fBackEnd.GetMetadata().Title));
+    case kind of
+    cpStatus:
+      begin
+      // mpris_send_signal_Updated_Metadata;
+        tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_ENGINE_STATE, IntToStr(ord(fnet.fBackEnd.GetStatus)));
+      end;
+    cpVolume: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.GetVolume));
+    cpPosition: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.GetPosition));
+    cpMetadata: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, fnet.fBackEnd.GetMetadata().Title);
+
+    end;
+  Sock.WriteStr(EncodeString(tmpstr));
 end;
 
 constructor TTCPRemoteThrd.Create(hsock: TSocket; net: TNetIntf);
