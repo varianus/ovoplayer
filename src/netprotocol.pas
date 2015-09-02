@@ -41,7 +41,7 @@ Const
     COMMAND_CLEAR_AND_PLAY = 'p';
     COMMAND_ENQUEUE_AND_PLAY = 'x';
 
-  CATEGORY_APP = 'App';
+  CATEGORY_APP = 'app';
     COMMAND_ACTIVATE = 'activate';
     COMMAND_QUIT = 'quit';
 

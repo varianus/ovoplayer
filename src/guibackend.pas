@@ -620,6 +620,10 @@ begin
                           end;
        COMMAND_NEXT     : begin Next; Handled := true; end;
        COMMAND_PREVIOUS : begin Previous; Handled := true; end;
+    end;
+
+  if Command.Category = CATEGORY_APP then
+    case Command.Command of
        COMMAND_QUIT     : begin Quit; Handled := true; end;
     end;
 
