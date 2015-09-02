@@ -23,20 +23,50 @@ unit netprotocol;
 
 interface
 uses
-  Classes, SysUtils, base64;
+  Classes, SysUtils, base64, BaseTypes;
+
+Const
+  CATEGORY_ACTION = 'action';
+    COMMAND_PLAY = 'play';
+    COMMAND_STOP = 'stop';
+    COMMAND_PAUSE = 'pause' ;
+    COMMAND_PLAYPAUSE = 'playpause';
+    COMMAND_NEXT = 'next';
+    COMMAND_PREVIOUS = 'previous';
+    COMMAND_SEEK_P = 'seek+';
+    COMMAND_SEEK_M = 'seek-';
+
+  CATEGORY_FILE = 'file';
+    COMMAND_ENQUEUE = 'e';
+    COMMAND_CLEAR_AND_PLAY = 'p';
+    COMMAND_ENQUEUE_AND_PLAY = 'x';
+
+  CATEGORY_APP = 'App';
+    COMMAND_ACTIVATE = 'activate';
+    COMMAND_QUIT = 'quit';
+
+  CATEGORY_COMMAND_SEPARATOR = ':';
+  CATEGORY_PARAM_SEPARATOR = '=';
+  IPC_SEPARATOR = '|'; // used by communication based on SimpleIPC
 
 {
-My personal implementation of a netstrings-like protocol, where
-each string is prefixed by it's length.
+My personal implementation of a netstrings-like protocol, where each string
+is prefixed by it's length.
 
 To avoid sending binary data, length is defined as a 24 bit unsigned integer.
 This 3-byte integer is then encoded in Base64, so it became a 4 byte ASCII string
-
 }
+
 function EncodeSize(Size:Integer):string;
 function DecodeSize(Size:string):integer;
+Function EncodeString(S:String): string;
+
+function BuildCommand(Category: string; Command: string; Param:string=''; IPCSeparator:boolean=false):string;
+Function SplitCommand(ACommand:string): RExternalCommand;
 
 implementation
+uses strutils;
+
 function EncodeSize(Size:Integer):string;
 var
   s : RawByteString;
@@ -65,6 +95,55 @@ begin
   end;
 end;
 
+Function EncodeString(S:String): string;
+begin
+  Result := EncodeSize(Length(s))+s;
+end;
+
+function BuildCommand(Category: string; Command: string; Param: string;
+  IPCSeparator: boolean): string;
+begin
+  Result := Category +
+            CATEGORY_COMMAND_SEPARATOR+
+            Command;
+
+  if Param <> '' then
+     Result := Result +
+               CATEGORY_PARAM_SEPARATOR +
+               Param;
+  if IPCSeparator then
+     Result := Result + IPC_SEPARATOR;
+end;
+
+function SplitCommand(ACommand: string): RExternalCommand;
+var
+  pColon, pEqual: integer;
+  tmpstr: string;
+  cmdlength: integer;
+begin
+  Result.Category:=EmptyStr;
+  Result.Param:=EmptyStr;
+  cmdlength := Length(ACommand);
+
+  if (cmdlength >0 ) and (ACommand[cmdlength] = IPC_SEPARATOR) then
+     dec(cmdlength);
+
+  pColon:= pos(CATEGORY_COMMAND_SEPARATOR,ACommand);
+  if pColon < 1 then
+    Result.Command:=ACommand
+  else
+    begin
+      Result.Category:=copy(ACommand, 1,pColon-1);
+      pEqual:= PosEx(CATEGORY_PARAM_SEPARATOR,ACommand,pColon+1);
+      if pEqual < 1 then
+        Result.Command:=Copy(ACommand,pColon+1, cmdlength)
+      else
+        begin
+           Result.Command:=copy(ACommand, pColon+1,pEqual -pColon -1);
+           Result.Param:= copy(ACommand, pEqual+1, cmdlength);
+        end;
+    end;
+end;
 
 
 end.

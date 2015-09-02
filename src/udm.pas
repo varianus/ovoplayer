@@ -112,7 +112,8 @@ var
 implementation
 
 {$R *.lfm}
-uses lclproc, strutils, AudioTag, AppConsts, GeneralFunc, GUIBackEnd;
+uses lclproc, strutils, AudioTag, AppConsts, GeneralFunc, GUIBackEnd,
+  netprotocol;
 
 { TDM }
 // for traceback porpouse

@@ -24,7 +24,8 @@ unit GeneralFunc;
 interface
 
 uses
-  Classes, SysUtils, AppConsts, CustApp, lclProc, BaseTypes;
+  Classes, SysUtils, AppConsts, CustApp, lclProc, BaseTypes,
+  netprotocol;
 
 function TimeToMSec(Time: double): int64;
 Function isAppRunning(Application:TCustomApplication):Boolean;
@@ -52,8 +53,6 @@ type
  type
   TByteStringFormat = (bsfDefault, bsfBytes, bsfKB, bsfMB, bsfGB, bsfTB);
   function FormatByteString(Bytes: UInt64; Format: TByteStringFormat = bsfDefault): string;
-
-  Function SplitCommand(ACommand:string): RExternalCommand;
 
 implementation
 uses
@@ -130,7 +129,6 @@ end;
 Function isAppRunning(Application:TCustomApplication):Boolean;
 const
   BaseServerId = 'tuniqueinstance_';
-//  Separator = '|';
 var
   Client : TSimpleIPCClient;
   FilesInParm : TStringList;
@@ -147,11 +145,13 @@ begin
             FilesInParm := TStringList.Create;
             Application.CheckOptions('', nil, nil, FilesInParm);
             for i := 0 to FilesinParm.Count - 1 do
-              begin  
-               SendStringMessage(1, 'file:x='+FilesInParm[i] +'|');
-               DebugLn(FilesInParm[i]);
+              begin
+               if i = 0 then // if there is more then one song, play the first one and enqueues the others
+                 SendStringMessage(1, BuildCommand(CATEGORY_FILE,COMMAND_ENQUEUE_AND_PLAY,FilesInParm[i], true))
+               else
+                 SendStringMessage(1, BuildCommand(CATEGORY_FILE,COMMAND_ENQUEUE,FilesInParm[i], true))
               end;
-            SendStringMessage(1, 'action:activate|');
+            SendStringMessage(1, BuildCommand(CATEGORY_APP, COMMAND_ACTIVATE, '', True));
           end;
 
      finally
@@ -229,32 +229,6 @@ const
 Begin
    result := BoolOrder [a] - BoolOrder [b];
 End ;
-
-function SplitCommand(ACommand: string): RExternalCommand;
-var
-  pColon, pEqual: integer;
-  tmpstr: string;
-begin
-  Result.Category:=EmptyStr;
-  Result.Param:=EmptyStr;
-
-  pColon:= pos(':',ACommand);
-  if pColon < 1 then
-    Result.Command:=ACommand
-  else
-    begin
-      Result.Category:=copy(ACommand, 1,pColon-1);
-      pEqual:= PosEx('=',ACommand,pColon+1);
-      if pEqual < 1 then
-        Result.Command:=Copy(ACommand,pColon+1, Length(ACommand))
-      else
-        begin
-           Result.Command:=copy(ACommand, pColon+1,pEqual -pColon -1);
-           Result.Param:= copy(ACommand, pEqual+1, Length(ACommand));
-        end;
-    end;
-end;
-
 
 {$i generalfuncimpl.inc}
 end.

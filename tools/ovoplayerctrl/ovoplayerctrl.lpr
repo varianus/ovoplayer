@@ -31,7 +31,7 @@ uses
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
   {$ENDIF}{$ENDIF}
-  Classes, SysUtils, appconsts, CustApp,  lclproc,
+  Classes, SysUtils, appconsts, netprotocol, CustApp,  lclproc,
   { you can add units after this }
   {$IFDEF CONSOLEHACK}
   windows,  JwaWinUser,
@@ -48,7 +48,7 @@ type
     ShortOptions:string;
     LongOptions:TStringList;
 
-    function PostCommand(CommandType:TCommandType; Command:string; Parameter:string=''): Boolean;
+    function PostCommand(Category:string ; Command:string; Parameter:string=''): Boolean;
     Procedure AddOptions(ShortOption:string; LongOption:string); overload;
     Procedure AddOptions(LongOption:string); overload;
     procedure WriteVersion;
@@ -84,11 +84,8 @@ type
   BaseServerId:string = 'tuniqueinstance_';
   AppNameServerID :string  = 'ovoplayer';
   AppVersion : string = {$I ..\..\src\version.inc};
-  Separator:string = '|';
 
-function TOvoPlayerCtrl.PostCommand(CommandType:TCommandType;Command:string;Parameter:string=''): Boolean;
-var
-  TempStr: String;
+function TOvoPlayerCtrl.PostCommand(Category:string; Command:string;Parameter:string=''): Boolean;
 begin
   with TSimpleIPCClient.Create(nil) do
   try
@@ -96,13 +93,8 @@ begin
     Result := ServerRunning;
     if Result then
       begin
-        case CommandType of
-          ctAction : TempStr := 'action:'+lowercase(Command) + Separator;
-          ctFile : TempStr := 'file:'+lowercase(Command) +'='+Parameter+ Separator;
-        end;
-
         Active := True;
-        SendStringMessage(TempStr);
+        SendStringMessage(BuildCommand(Category, Command, Parameter, true));
       end
     else
      begin
@@ -138,6 +130,11 @@ var
                                    ('pause', 'play', 'playpause', 'stop',
                                     'next', 'previous',
                                     'seek+', 'seek-');
+
+  MediaControlCommand : array [0..MediaControlCount-1] of string =
+                                   (COMMAND_PAUSE, COMMAND_PLAY, COMMAND_PLAYPAUSE, COMMAND_STOP,
+                                    COMMAND_NEXT, COMMAND_PREVIOUS,
+                                    COMMAND_SEEK_P, COMMAND_SEEK_M);
 begin
   // quick check parameters
   AddOptions('h','help');
@@ -161,7 +158,6 @@ begin
     Exit;
   end;
 
-
   // parse parameters
   if HasOption('h','help')  or (paramcount =0) then begin
     WriteHelp;
@@ -175,19 +171,19 @@ begin
 
   for i := 0 to MediaControlCount -1 do
      if HasOption(MediaControl[i]) then
-        PostCommand(ctAction,MediaControl[i]);
+        PostCommand(CATEGORY_ACTION,MediaControlCommand[i]);
 
   if HasOption('e','enqueue') then
-     PostCommand(ctFile, 'e', GetOptionValue('e','enqueue'));
+     PostCommand(CATEGORY_FILE, COMMAND_ENQUEUE, GetOptionValue('e','enqueue'));
 
   if HasOption('p','playsong') then
-     PostCommand(ctFile, 'p', GetOptionValue('p','playsong'));
+     PostCommand(CATEGORY_FILE, COMMAND_CLEAR_AND_PLAY , GetOptionValue('p','playsong'));
 
   if HasOption('x','enqplay') then
-     PostCommand(ctFile, 'x', GetOptionValue('x','enqplay'));
+     PostCommand(CATEGORY_FILE, COMMAND_ENQUEUE_AND_PLAY, GetOptionValue('x','enqplay'));
 
   if HasOption('q','quit') then
-     PostCommand(ctAction, 'quit', '');
+     PostCommand(CATEGORY_APP, COMMAND_QUIT);
 
 
   // stop program loop

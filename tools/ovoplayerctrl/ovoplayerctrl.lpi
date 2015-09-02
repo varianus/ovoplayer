@@ -69,7 +69,7 @@
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <CommandLineParams Value="-h"/>
+        <CommandLineParams Value="--seek+"/>
       </local>
     </RunParams>
     <RequiredPackages Count="3">

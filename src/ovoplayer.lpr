@@ -70,11 +70,9 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   tag_Dummy, file_Wave, file_Dummy,
 
     // Application forms and related
-  Udm,uMain, uAbout, ulicense,
-  uConfig, uOSD, uMiniPlayer, uSongInfo,
-  uCover,  lazlogger,
-  customdrawndrawers, customdrawn_ovoplayer,
-  DefaultTranslator, customdrawn, ucustomplaylist, ufrfield, playlistbuilder;
+  Udm, uMain, uAbout, ulicense, uConfig, uOSD, uMiniPlayer, uSongInfo, uCover,
+  lazlogger, customdrawndrawers, customdrawn_ovoplayer, DefaultTranslator,
+  customdrawn, ucustomplaylist, ufrfield, playlistbuilder, netprotocol;
 
 {$R *.res}
 begin

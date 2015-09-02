@@ -34,7 +34,7 @@ uses
   {$IFDEF NOTIFYDBUS} notification,{$ENDIF}
   {$IFDEF TASKBAR_EXTENSION}taskbar_ext,{$ENDIF}
   {$IFDEF NETWORK_INTF}NetIntf,{$ENDIF}
-  ucover, ucustomplaylist, playlistbuilder;
+  ucover, ucustomplaylist, playlistbuilder, netprotocol;
 
 type
   TSortFields = record
@@ -2715,16 +2715,21 @@ end;
 
 procedure TfMainForm.OnExternalCommand(Sender: Tobject; Command: RExternalCommand);
 begin
-  case Command.command of
-  'activate':
-    begin
-       FormStyle := fsSystemStayOnTop;
-       FormStyle := fsNormal;
-       Show;
+  if Command.Category = CATEGORY_APP then
+    case Command.command of
+      COMMAND_ACTIVATE:
+        begin
+           FormStyle := fsSystemStayOnTop;
+           FormStyle := fsNormal;
+           Show;
+        end;
     end;
-   'seek+'    : dm.actSkipForward.Execute;
-   'seek-'    : dm.actSkipBackward.Execute;
-  end;
+
+  if Command.Category = CATEGORY_ACTION then
+    case Command.command of
+      COMMAND_SEEK_P : dm.actSkipForward.Execute;
+      COMMAND_SEEK_M : dm.actSkipBackward.Execute;
+    end;
 
 end;
 

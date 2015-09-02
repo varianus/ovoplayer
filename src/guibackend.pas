@@ -117,7 +117,8 @@ Procedure FreeBackend;
 
 implementation
 
-uses Graphics, LCLProc, FilesSupport, AudioTag, AppConsts, ExtendedInfo, uriparser;
+uses Graphics, LCLProc, FilesSupport, AudioTag, AppConsts, ExtendedInfo, uriparser,
+     NetProtocol;
 
 var
   fBackEnd: TBackEnd;
@@ -605,42 +606,44 @@ var
 begin
   Handled:=false;
 
-  if Command.Category = 'action' then
+  if Command.Category = CATEGORY_ACTION then
     case Command.Command of
-       'play'     : begin Play; Handled := true; end;
-       'stop'     : begin Stop; Handled := true; end;
-       'pause'    : begin Pause; Handled := true; end;
-       'playpause': begin
-                      if GetStatus = ENGINE_PLAY then
-                        Pause
-                      else
-                        Play;
-                      Handled := true;
-                    end;
-       'next'     : begin Next; Handled := true; end;
-       'previous' : begin Previous; Handled := true; end;
-       'quit'     : begin Quit; Handled := true; end;
+       COMMAND_PLAY     : begin Play; Handled := true; end;
+       COMMAND_STOP     : begin Stop; Handled := true; end;
+       COMMAND_PAUSE    : begin Pause; Handled := true; end;
+       COMMAND_PLAYPAUSE: begin
+                            if GetStatus = ENGINE_PLAY then
+                              Pause
+                            else
+                              Play;
+                            Handled := true;
+                          end;
+       COMMAND_NEXT     : begin Next; Handled := true; end;
+       COMMAND_PREVIOUS : begin Previous; Handled := true; end;
+       COMMAND_QUIT     : begin Quit; Handled := true; end;
     end;
 
-  if Command.Category = 'file' then
+  if Command.Category = CATEGORY_FILE then
      case command.Command of
-       'e' : begin
-               idx := PlayList.EnqueueFile(Command.Param);
-               Handled:=true;
-               SignalPlayListChange;
-
-             end;
-       'p' : begin
-               OpenUri(Command.Param);
-               Handled:=true;
-             end;
-       'x' : begin
-               idx := PlayList.EnqueueFile(Command.Param);
-               PlayList.ItemIndex:=idx;
-               AudioEngine.Play(PlayList.CurrentItem);
-               Handled:=true;
-               SignalPlayListChange;
-             end;
+       COMMAND_ENQUEUE :
+                  begin
+                    idx := PlayList.EnqueueFile(Command.Param);
+                    Handled:=true;
+                    SignalPlayListChange;
+                  end;
+       COMMAND_CLEAR_AND_PLAY :
+                  begin
+                    OpenUri(Command.Param);
+                    Handled:=true;
+                  end;
+       COMMAND_ENQUEUE_AND_PLAY :
+                  begin
+                    idx := PlayList.EnqueueFile(Command.Param);
+                    PlayList.ItemIndex:=idx;
+                    AudioEngine.Play(PlayList.CurrentItem);
+                    Handled:=true;
+                    SignalPlayListChange;
+                  end;
      end;
   // in not handled by backend, forward event
   if not Handled and Assigned(FOnExternalCommand) then

@@ -56,10 +56,6 @@ implementation
 uses GeneralFunc;
 
 { TEchoDaemon }
-Function EncodeString(S:String): string;
-begin
-  Result := EncodeSize(Length(s))+s;
-end;
 
 constructor TTCPRemoteDaemon.Create(net: TNetIntf);
 begin

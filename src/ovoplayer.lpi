@@ -122,7 +122,7 @@ if TargetOS = 'linux' then
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="77">
+    <Units Count="78">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -492,6 +492,10 @@ if TargetOS = 'linux' then
         <IsPartOfProject Value="True"/>
         <UnitName Value="NetIntf"/>
       </Unit76>
+      <Unit77>
+        <Filename Value="netprotocol.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit77>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
