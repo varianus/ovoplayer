@@ -16,8 +16,8 @@ uses
 {$R *.res}
 
 begin
-   SetHeapTraceOutput('heap.trc');
-   HaltOnError := false;
+//   SetHeapTraceOutput('heap.trc');
+//   HaltOnError := false;
   RequireDerivedFormResource := True;
   Application.Initialize;
   Application.CreateForm(TForm1, Form1);

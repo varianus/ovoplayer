@@ -93,9 +93,11 @@ end;
 { TEchoThrd }
 
 procedure TTCPRemoteThrd.SyncRunner;
+var
+  Command : RExternalCommand;
 begin
-  fnet.fBackEnd.HandleExternalCommand(SplitCommand(Data));
-
+  Command := SplitCommand(Data);
+  fnet.fBackEnd.HandleExternalCommand(Command);
 end;
 
 procedure TTCPRemoteThrd.UpdateProperty(Kind: TChangedProperty);
@@ -105,12 +107,16 @@ begin
     case kind of
     cpStatus:
       begin
-      // mpris_send_signal_Updated_Metadata;
+        if fnet.fBackEnd.GetStatus = ENGINE_PLAY then
+          begin
+            tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata()));
+            Sock.WriteStr(EncodeString(tmpstr));
+          end;
         tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_ENGINE_STATE, IntToStr(ord(fnet.fBackEnd.GetStatus)));
       end;
     cpVolume: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.GetVolume));
     cpPosition: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.GetPosition));
-    cpMetadata: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, fnet.fBackEnd.GetMetadata().Title);
+    cpMetadata: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata()));
 
     end;
   Sock.WriteStr(EncodeString(tmpstr));

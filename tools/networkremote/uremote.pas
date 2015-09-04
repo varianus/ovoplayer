@@ -25,7 +25,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, TcpIpClient, netprotocol;
+  ExtCtrls, Spin, TcpIpClient, netprotocol, BaseTypes, basetag;
 
 type
 
@@ -50,17 +50,38 @@ type
 
   TForm1 = class(TForm)
     Button1: TButton;
-    Edit2: TEdit;
+    edAlbum: TEdit;
+    edAlbumArtist: TEdit;
+    edArtist: TEdit;
+    edGenre: TEdit;
     Edit1: TEdit;
+    Edit2: TEdit;
+    edTitle: TEdit;
+    gbCommonTags: TGroupBox;
+    GroupBox1: TGroupBox;
+    Image1: TImage;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    meComment: TMemo;
     Memo1: TMemo;
+    seTrack: TSpinEdit;
+    seYear: TSpinEdit;
     tbConn: TToggleBox;
     procedure Button1Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure tbConnChange(Sender: TObject);
   protected
     procedure DoClientReceive(Sender: TObject; const AData: string);
   private
     FClient: TTcpIpClientSocket;
     FThread: TClientThread;
+    procedure TagsToMap(Tags:TCommonTags);
   public
 
   end;
@@ -99,7 +120,7 @@ begin
     FSocket.Read(Data[1], DataSize);
     if DataSize < 1 then
       Exit;
-    Queue(@DoReceive);
+    Synchronize(@DoReceive);
   end;
 end;
 
@@ -132,8 +153,21 @@ begin
 end;
 
 procedure TForm1.DoClientReceive(Sender: TObject; const AData: string);
+var
+  r : RExternalCommand;
+  tags: TCommonTags;
 begin
   memo1.lines.add(AData);
+  r:= SplitCommand(AData);
+
+  if (r.Category = CATEGORY_INFORMATION) and (r.Command = INFO_METADATA) then
+    begin
+      tags := DecodeMetaData(r.Param);
+      TagsToMap(tags);
+    end;
+
+
+
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
@@ -141,6 +175,44 @@ begin
   FClient.WriteStr(EncodeSize(Length(Edit1.caption)) + edit1.caption);
   Edit2.Caption:=EncodeSize(Length(Edit1.caption)) + edit1.caption;
 end;
+
+procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  if tbConn.Checked then
+    begin
+       FThread.Terminate;
+       FThread.WaitFor;
+       FClient.Free;
+
+    end;
+
+end;
+
+procedure TForm1.TagsToMap(Tags:TCommonTags);
+var
+  i: integer;
+begin
+//  leFileName.Caption := Tags.FileName;
+  edArtist.Caption := Tags.Artist;
+  edAlbum.Caption := Tags.Album;
+  edAlbumArtist.Caption := Tags.AlbumArtist;
+  edGenre.Caption := Tags.Genre;
+  edTitle.Caption := Tags.Title;
+  meComment.Lines.Clear;
+  meComment.Lines.Add(Tags.Comment);
+
+  i := 0;
+  TryStrToInt(Tags.Year, i);
+  seYear.Value := i;
+
+  i := 0;
+  TryStrToInt(Tags.TrackString, i);
+  seYear.Value := i;
+
+  seTrack.Value := i;
+
+end;
+
 
 end.
 

@@ -26,6 +26,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="../../src;../../src/components/network;../../src/ovotag"/>
             <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <CodeGeneration>
@@ -45,10 +46,13 @@
               </Win32>
             </Options>
           </Linking>
+          <Other>
+            <CustomOptions Value="-FcUTF8"/>
+          </Other>
         </CompilerOptions>
       </Item2>
       <SharedMatrixOptions Count="1">
-        <Item1 ID="994975638340" Modes="Debug" Value="-dEnableUTF8RTL"/>
+        <Item1 ID="994975638340" Modes="Debug,Release" Value="-dEnableUTF8RTL"/>
       </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
@@ -89,7 +93,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="../../src;../../src/components/network"/>
+      <OtherUnitFiles Value="../../src;../../src/components/network;../../src/ovotag"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>

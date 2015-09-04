@@ -33,7 +33,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="..\..\src"/>
+            <OtherUnitFiles Value="..\..\src;..\..\src\ovotag"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <CodeGeneration>
@@ -54,11 +54,12 @@
               <CustomConfigFile Value="True"/>
               <ConfigFilePath Value="..\..\extrafpc.cfg"/>
             </ConfigFile>
+            <CustomOptions Value="-FcUTF8"/>
           </Other>
         </CompilerOptions>
       </Item2>
       <SharedMatrixOptions Count="1">
-        <Item1 ID="906470382694" Modes="Debug" Value="-dEnableUTF8RTL"/>
+        <Item1 ID="906470382694" Modes="Debug,Release" Value="-dEnableUTF8RTL"/>
       </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
@@ -103,7 +104,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="..\..\src"/>
+      <OtherUnitFiles Value="..\..\src;..\..\src\ovotag"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>

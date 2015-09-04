@@ -19,8 +19,45 @@
     <VersionInfo>
       <StringTable ProductVersion=""/>
     </VersionInfo>
-    <BuildModes Count="1">
-      <Item1 Name="Default" Default="True"/>
+    <BuildModes Count="2">
+      <Item1 Name="Debug" Default="True"/>
+      <Item2 Name="Release">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="project1"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value=".."/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <CodeGeneration>
+            <SmartLinkUnit Value="True"/>
+            <Optimizations>
+              <OptimizationLevel Value="3"/>
+            </Optimizations>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+            </Debugging>
+            <LinkSmart Value="True"/>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+          <Other>
+            <CustomOptions Value="-FcUTF8"/>
+          </Other>
+        </CompilerOptions>
+      </Item2>
+      <SharedMatrixOptions Count="1">
+        <Item1 ID="304667297796" Value="-dEnableUTF8RTL"/>
+      </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
@@ -41,7 +78,6 @@
       <Unit0>
         <Filename Value="project1.lpr"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="project1"/>
       </Unit0>
       <Unit1>
         <Filename Value="unit1.pas"/>
@@ -54,42 +90,34 @@
       <Unit2>
         <Filename Value="..\basetag.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="basetag"/>
       </Unit2>
       <Unit3>
         <Filename Value="..\file_ogg.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="file_ogg"/>
       </Unit3>
       <Unit4>
         <Filename Value="..\tag_vorbis.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="tag_vorbis"/>
       </Unit4>
       <Unit5>
         <Filename Value="..\file_wma.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="file_wma"/>
       </Unit5>
       <Unit6>
         <Filename Value="..\tag_wma.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="tag_wma"/>
       </Unit6>
       <Unit7>
         <Filename Value="..\file_mp3.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="file_mp3"/>
       </Unit7>
       <Unit8>
         <Filename Value="..\tag_id3v2.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="tag_id3v2"/>
       </Unit8>
       <Unit9>
         <Filename Value="..\file_flac.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="file_flac"/>
       </Unit9>
       <Unit10>
         <Filename Value="..\file_monkey.pas"/>
@@ -136,13 +164,11 @@
         <OverflowChecks Value="True"/>
         <StackChecks Value="True"/>
       </Checks>
-      <Optimizations>
-        <OptimizationLevel Value="0"/>
-      </Optimizations>
     </CodeGeneration>
     <Linking>
       <Debugging>
-        <UseHeaptrc Value="True"/>
+        <DebugInfoType Value="dsDwarf2Set"/>
+        <UseExternalDbgSyms Value="True"/>
       </Debugging>
       <Options>
         <Win32>
@@ -151,10 +177,7 @@
       </Options>
     </Linking>
     <Other>
-      <CompilerMessages>
-        <UseMsgFile Value="True"/>
-      </CompilerMessages>
-      <CompilerPath Value="$(CompPath)"/>
+      <CustomOptions Value="-FcUTF8"/>
     </Other>
   </CompilerOptions>
   <Debugging>

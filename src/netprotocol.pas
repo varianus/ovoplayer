@@ -23,7 +23,7 @@ unit netprotocol;
 
 interface
 uses
-  Classes, SysUtils, base64, BaseTypes;
+  Classes, SysUtils, base64, BaseTypes, basetag;
 
 Const
   CATEGORY_ACTION = 'action';  // client --> server
@@ -45,7 +45,7 @@ Const
     COMMAND_ACTIVATE = 'activate';
     COMMAND_QUIT = 'quit';
 
-  CATEGORY_INFORMATION = 'info';
+  CATEGORY_INFORMATION = 'info'; // server --> client
     INFO_ENGINE_STATE = 'state';
     {  ENGINE_STOP,
        ENGINE_PLAY,
@@ -75,6 +75,9 @@ Function EncodeString(S:String): string;
 
 function BuildCommand(Category: string; Command: string; Param:string=''; IPCSeparator:boolean=false):string;
 Function SplitCommand(ACommand:string): RExternalCommand;
+
+Function EncodeMetaData(Tags:TCommonTags): String;
+Function DecodeMetaData(StringTags:string): TCommonTags;
 
 implementation
 uses strutils;
@@ -155,6 +158,55 @@ begin
            Result.Param:= copy(ACommand, pEqual+1, cmdlength);
         end;
     end;
+end;
+
+function EncodeMetaData(Tags: TCommonTags): String;
+begin
+  result := EncodeString(   // is this encoding really needed ??? Maybe only for check
+                EncodeString(inttostr(Tags.id))+
+                EncodeString(Tags.FileName)+
+                EncodeString(Tags.Album)+
+                EncodeString(Tags.AlbumArtist)+
+                EncodeString(Tags.Artist)+
+                EncodeString(Tags.Comment)+
+                EncodeString(Inttostr(Tags.Duration))+
+                EncodeString(Tags.Genre)+
+                EncodeString(Tags.Title)+
+                EncodeString(Tags.TrackString)+
+                EncodeString(Tags.Year)
+           );
+end;
+
+function DecodeMetaData(StringTags: string): TCommonTags;
+var
+  tmp: string;
+  Procedure ReadField;
+  var
+    s: string;
+    size: integer;
+  begin
+    s:=Copy(StringTags,1,4);
+    size:= DecodeSize(s);
+    tmp := copy(StringTags, 5, size);
+    inc(size,4);
+    Delete(StringTags, 1, size);
+  end;
+
+begin
+  Delete(StringTags, 1, 4);
+
+  ReadField;  Result.ID:= StrToInt64Def(tmp,0);
+  ReadField;  Result.FileName := tmp;
+  ReadField;  Result.Album := tmp;
+  ReadField;  Result.AlbumArtist := tmp;
+  ReadField;  Result.Artist := tmp;
+  ReadField;  Result.Comment := tmp;
+  ReadField;  Result.Duration := StrToInt64Def(tmp,0);
+  ReadField;  Result.Genre := tmp;
+  ReadField;  Result.Title := tmp;
+  ReadField;  Result.TrackString := tmp;
+  ReadField;  Result.Year := tmp;
+
 end;
 
 
