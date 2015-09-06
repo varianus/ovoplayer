@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, types, BaseTypes, coreinterfaces, TcpIpServer, TcpIpClient, sockets,
-  NullInterfacedObject, netprotocol;
+  NullInterfacedObject, netprotocol,lclproc;
 
 type
 
@@ -95,9 +95,21 @@ end;
 procedure TTCPRemoteThrd.SyncRunner;
 var
   Command : RExternalCommand;
+
 begin
   Command := SplitCommand(Data);
-  fnet.fBackEnd.HandleExternalCommand(Command);
+  if not  fnet.fBackEnd.HandleExternalCommand(Command) then
+    begin
+      if Command.Category = CATEGORY_REQUEST then
+        begin
+          case Command.Command of
+            INFO_ENGINE_STATE: sock.WriteStr(BuildCommand(CATEGORY_INFORMATION, INFO_ENGINE_STATE, IntToStr(ord(fnet.fBackEnd.GetStatus))));
+            INFO_METADATA: sock.WriteStr(BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata())));
+            INFO_POSITION : sock.WriteStr(BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.GetPosition)));
+            INFO_VOLUME: Sock.WriteStr(BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.GetVolume)));
+          end;
+        end;
+    end;
 end;
 
 procedure TTCPRemoteThrd.UpdateProperty(Kind: TChangedProperty);
@@ -132,6 +144,8 @@ begin
 end;
 
 procedure TTCPRemoteThrd.Execute;
+var
+  w: integer;
 begin
   sock := TTcpIpClientSocket.Create(CSock);
     try
@@ -143,14 +157,20 @@ begin
           if sock.CanRead(60000) then
             begin
               if (lastError <> 0) then
-                break;
+                Break;
+              if waiting = 0 then
+                Break;
               SetLength(Data, 4);
               Sock.Read(Data[1], 4);
+              debugln('DS--',data);
               DataSize:= DecodeSize(Data);
+              if DataSize < 0 then
+                break;
               SetLength(Data, DataSize);
               Sock.Read(Data[1], DataSize);
+              debugln('Dt--',data);
               Synchronize(@SyncRunner);
-              Sock.WriteStr(EncodeString(IntToStr(fnet.fBackEnd.GetPosition)));
+
               if lastError <> 0 then
                 break;
 

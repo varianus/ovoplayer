@@ -3,30 +3,53 @@
   <ProjectSession>
     <Version Value="9"/>
     <BuildModes Active="Debug"/>
-    <Units Count="2">
+    <Units Count="5">
       <Unit0>
         <Filename Value="ovonetremote.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <WindowIndex Value="-1"/>
-        <TopLine Value="-1"/>
-        <CursorPos X="-1" Y="-1"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="22"/>
+        <CursorPos X="19" Y="20"/>
         <UsageCount Value="20"/>
+        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="uremote.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form1"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="16"/>
-        <CursorPos X="13" Y="38"/>
+        <TopLine Value="132"/>
+        <CursorPos Y="147"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
+      <Unit2>
+        <Filename Value="../../src/netprotocol.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UsageCount Value="20"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="../../../../../development/fpc-src/rtl/inc/objpash.inc"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="191"/>
+        <CursorPos X="22" Y="206"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="../../src/components/network/tcpipclient.pas"/>
+        <UnitName Value="TcpIpClient"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="92"/>
+        <CursorPos X="6" Y="97"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit4>
     </Units>
-    <JumpHistory Count="6" HistoryIndex="5">
+    <JumpHistory Count="18" HistoryIndex="17">
       <Position1>
         <Filename Value="uremote.pas"/>
         <Caret Line="9" Column="40"/>
@@ -51,6 +74,86 @@
         <Filename Value="uremote.pas"/>
         <Caret Line="20" Column="37"/>
       </Position6>
+      <Position7>
+        <Filename Value="uremote.pas"/>
+        <Caret Line="147" TopLine="134"/>
+      </Position7>
+      <Position8>
+        <Filename Value="uremote.pas"/>
+        <Caret Line="148" TopLine="134"/>
+      </Position8>
+      <Position9>
+        <Filename Value="uremote.pas"/>
+        <Caret Line="149" TopLine="134"/>
+      </Position9>
+      <Position10>
+        <Filename Value="uremote.pas"/>
+        <Caret Line="150" TopLine="134"/>
+      </Position10>
+      <Position11>
+        <Filename Value="uremote.pas"/>
+        <Caret Line="138" Column="25" TopLine="134"/>
+      </Position11>
+      <Position12>
+        <Filename Value="uremote.pas"/>
+        <Caret Line="143" Column="35" TopLine="134"/>
+      </Position12>
+      <Position13>
+        <Filename Value="uremote.pas"/>
+        <Caret Line="140" Column="46" TopLine="134"/>
+      </Position13>
+      <Position14>
+        <Filename Value="uremote.pas"/>
+        <Caret Line="145" Column="40" TopLine="134"/>
+      </Position14>
+      <Position15>
+        <Filename Value="uremote.pas"/>
+        <Caret Line="82" Column="5" TopLine="68"/>
+      </Position15>
+      <Position16>
+        <Filename Value="../../src/components/network/tcpipclient.pas"/>
+        <Caret Line="97" Column="3" TopLine="95"/>
+      </Position16>
+      <Position17>
+        <Filename Value="uremote.pas"/>
+        <Caret Line="147" TopLine="132"/>
+      </Position17>
+      <Position18>
+        <Filename Value="../../src/components/network/tcpipclient.pas"/>
+        <Caret Line="97" TopLine="92"/>
+      </Position18>
     </JumpHistory>
   </ProjectSession>
+  <Debugging>
+    <BreakPoints Count="4">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="uremote.pas"/>
+        <Line Value="175"/>
+      </Item1>
+      <Item2>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="uremote.pas"/>
+        <Line Value="116"/>
+      </Item2>
+      <Item3>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="uremote.pas"/>
+        <Line Value="147"/>
+      </Item3>
+      <Item4>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="../../src/components/network/tcpipclient.pas"/>
+        <Line Value="97"/>
+      </Item4>
+    </BreakPoints>
+  </Debugging>
 </CONFIG>

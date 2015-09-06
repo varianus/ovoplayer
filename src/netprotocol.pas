@@ -46,6 +46,7 @@ Const
     COMMAND_QUIT = 'quit';
 
   CATEGORY_INFORMATION = 'info'; // server --> client
+  CATEGORY_REQUEST = 'req'; //  client --> server
     INFO_ENGINE_STATE = 'state';
     {  ENGINE_STOP,
        ENGINE_PLAY,
