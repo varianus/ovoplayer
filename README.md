@@ -3,22 +3,23 @@
 Download is avalaible for Windows, Linux 64 bit and Linux 32 bit.
 
 ### Current version
-*1.2.0*
+*  **1.2.1** Stable release
+*  **1.3.0** Unstable  
 
 ### Binary downloads
- Windows installer and Debian packages are avalaible [here](http://code.google.com/p/ovoplayer/downloads/list)
+ Windows installer and Debian packages are avalaible [here](http://ovoplayer.altervista.org/downloads.html)
 
 ### Features
 *   **Play music**
     	    Support for MP3, FLAC, OGG audio files with all supported audio engine. Also support WMA and APE in most common engines.
-*   **Playlists** 
+*   **Playlists**
     	    Read the most used playlist format: M3U, ASX, PLS, XSPF, BSPL, WPL </div>
 *   **Music collection handling**
-      	    Handle large collection of thousands of songs. Fast and simple searching. Organize songs based on artist, album, genre, year, etc. 
+      	    Handle large collection of thousands of songs. Fast and simple searching. Organize songs based on artist, album, genre, year, etc.
 *   **Cross platform**
     	 Run on Linux and Windows (still working on OS X version). Installer avalaible for Windows and Debian based Linux distro.
 *   **Multiple Audio Engine support**
-Ovoplayer can use DirectShow, MediaFoundation VLC, XINE, BASS, Mplayer, GStreamer.  Works "out-of-the box" on Windows and most Linux distro.
+Ovoplayer can use DirectShow, MediaFoundation VLC, XINE, BASS, Mplayer, GStreamer, libMPV.  Works "out-of-the box" on Windows and most Linux distro.
 
 ### To Do
   * Mac OSX port - working on
