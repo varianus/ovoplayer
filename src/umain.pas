@@ -409,7 +409,7 @@ type
     function PrepareImportFilter(Node: TMusicTreeNode): string;
     procedure ReloadPlayList;
     procedure OnEngineCommand(Sender: Tobject; Command : TEngineCommand);
-    procedure OnExternalCommand(Sender: Tobject; Command : RExternalCommand);
+    procedure OnExternalCommand(Sender: Tobject; Command : RExternalCommand; var Handled:boolean);
     procedure SaveConfig(Sender: TObject);
     procedure ReadConfig(Sender: TObject);
     procedure RemoveSelectionFromPlaylist;
@@ -2713,7 +2713,7 @@ begin
   end;
 end;
 
-procedure TfMainForm.OnExternalCommand(Sender: Tobject; Command: RExternalCommand);
+procedure TfMainForm.OnExternalCommand(Sender: Tobject; Command: RExternalCommand; Var Handled:boolean);
 begin
   if Command.Category = CATEGORY_APP then
     case Command.command of
@@ -2721,14 +2721,23 @@ begin
         begin
            FormStyle := fsSystemStayOnTop;
            FormStyle := fsNormal;
+           Handled:= true;
            Show;
         end;
     end;
 
   if Command.Category = CATEGORY_ACTION then
     case Command.command of
-      COMMAND_SEEK_P : dm.actSkipForward.Execute;
-      COMMAND_SEEK_M : dm.actSkipBackward.Execute;
+      COMMAND_SEEK_P :
+              begin
+                dm.actSkipForward.Execute;
+                Handled:=true;
+              end;
+      COMMAND_SEEK_M :
+              begin
+                dm.actSkipBackward.Execute;
+                Handled:=true;
+              end;
     end;
 
 end;

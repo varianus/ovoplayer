@@ -34,7 +34,7 @@ uses
 type
 
   TOnEngineCommand = procedure(Sender: Tobject; Command : TEngineCommand) of object;
-  TOnExternalCommand = procedure(Sender: Tobject; Command : RExternalCommand) of object;
+  TOnExternalCommand = procedure(Sender: Tobject; Command : RExternalCommand; var Handled:boolean) of object;
 
   { TBackEnd }
 
@@ -98,7 +98,7 @@ type
 
     Procedure Notify(Kind:  TChangedProperty);
     procedure HandleCommand(Command: TEngineCommand; Param: integer);
-    procedure HandleExternalCommand(Command: RExternalCommand);
+    function HandleExternalCommand(Command: RExternalCommand):boolean;
 
     function GetImageFromfolder(Path: string): string;
     procedure SaveState;
@@ -599,7 +599,7 @@ begin
     end;
 end;
 
-procedure TBackEnd.HandleExternalCommand(Command: RExternalCommand);
+function TBackEnd.HandleExternalCommand(Command: RExternalCommand):boolean;
 var
   Handled: boolean;
   idx: integer;
@@ -651,8 +651,9 @@ begin
      end;
   // in not handled by backend, forward event
   if not Handled and Assigned(FOnExternalCommand) then
-     FOnExternalCommand(Self, Command);
+     FOnExternalCommand(Self, Command, Handled);
 
+  Result := handled;
 end;
 
 
