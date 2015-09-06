@@ -110,19 +110,16 @@ begin
 end;
 
 function TTcpIpClientSocket.Waiting: Integer;
-//var
- // L: DWord;
+var
+  L: DWord;
 begin
   Result := 1;
-  //L := 0;
-  _IoctlSocket (FSocket.Handle, FIONREAD, Result) ;
-//  //synsock.IoctlSocket   (
-//{$IFDEF UNIX}
-//  if FPIOCtl(FSocket.Handle, $541B, @L) = 0 then
-//{$ELSE}
-//  if IOCtlSocket(FSocket.Handle, FIONREAD, L) = 0 then
-//{$ENDIF}
- //   Result := L;
+{$IFDEF UNIX}
+  if FPIOCtl(FSocket.Handle, $541B, @L) = 0 then
+{$ELSE}
+  if IOCtlSocket(FSocket.Handle, FIONREAD, L) = 0 then
+{$ENDIF}
+    Result := L;
   if Result > $10000 then
     Result := $10000;
 end;
