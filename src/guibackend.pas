@@ -509,14 +509,14 @@ function TBackEnd.GetMetadata(Index:integer=-1): TCommonTags;
 begin
   ClearTags(Result);
 
-  If (index=-1) then
+  If (index<1) then
     begin
       if Assigned(PlayList.CurrentItem) then
          Result:=PlayList.CurrentItem.Tags
     end
   else
-    if (Index < PlayList.Count) and (PlayList.Count > 0) then
-       Result:= TCustomSong(PlayList.Items[Index]).Tags;
+    if (Index <= PlayList.Count) and (PlayList.Count > 0) then
+       Result:= TCustomSong(PlayList.Items[Index-1]).Tags;
 end;
 
 procedure TBackEnd.Seek(AValue: int64);

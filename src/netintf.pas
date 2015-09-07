@@ -95,6 +95,7 @@ end;
 procedure TTCPRemoteThrd.SyncRunner;
 var
   Command : RExternalCommand;
+  Item: integer;
 
 begin
   Command := SplitCommand(Data);
@@ -103,10 +104,14 @@ begin
       if Command.Category = CATEGORY_REQUEST then
         begin
           case Command.Command of
-            INFO_ENGINE_STATE: sock.WriteStr(BuildCommand(CATEGORY_INFORMATION, INFO_ENGINE_STATE, IntToStr(ord(fnet.fBackEnd.GetStatus))));
-            INFO_METADATA: sock.WriteStr(BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata())));
-            INFO_POSITION : sock.WriteStr(BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.GetPosition)));
-            INFO_VOLUME: Sock.WriteStr(BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.GetVolume)));
+            INFO_ENGINE_STATE: sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_ENGINE_STATE, IntToStr(ord(fnet.fBackEnd.GetStatus)))));
+            INFO_METADATA: begin
+                             item := StrToInt64Def(Command.Param, -1);
+                             sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata(item)))));
+                           end;
+            INFO_POSITION : sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.GetPosition))));
+            INFO_VOLUME: Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.GetVolume))));
+            INFO_PLAYLISTCOUNT: Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_PLAYLISTCOUNT, IntToStr(fnet.fBackEnd.PlayListCount))));
           end;
         end;
     end;

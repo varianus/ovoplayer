@@ -37,9 +37,9 @@ Const
     COMMAND_SEEK_M = 'seek-';
 
   CATEGORY_FILE = 'file';   // client --> server
-    COMMAND_ENQUEUE = 'e';
-    COMMAND_CLEAR_AND_PLAY = 'p';
-    COMMAND_ENQUEUE_AND_PLAY = 'x';
+    COMMAND_ENQUEUE = 'e';           //   \
+    COMMAND_CLEAR_AND_PLAY = 'p';    //    | --> required param = filename
+    COMMAND_ENQUEUE_AND_PLAY = 'x';  //   /
 
   CATEGORY_APP = 'app';  // client --> server
     COMMAND_ACTIVATE = 'activate';
@@ -48,14 +48,10 @@ Const
   CATEGORY_INFORMATION = 'info'; // server --> client
   CATEGORY_REQUEST = 'req'; //  client --> server
     INFO_ENGINE_STATE = 'state';
-    {  ENGINE_STOP,
-       ENGINE_PLAY,
-       ENGINE_PAUSE,
-       ENGINE_SONG_END,
-       ENGINE_ON_LINE);}
     INFO_POSITION = 'pos';
     INFO_VOLUME = 'vol';
-    INFO_METADATA = 'meta';
+    INFO_METADATA = 'meta';  // optional param playlist item number
+    INFO_PLAYLISTCOUNT = 'count';
 
 
   CATEGORY_COMMAND_SEPARATOR = ':';
