@@ -1,35 +1,32 @@
 object Form1: TForm1
-  Left = 600
-  Height = 615
-  Top = 157
-  Width = 865
+  Left = 1986
+  Height = 730
+  Top = 133
+  Width = 1020
   Caption = 'Test ovoplayer remote control over network'
-  ClientHeight = 615
-  ClientWidth = 865
+  ClientHeight = 730
+  ClientWidth = 1020
   OnClose = FormClose
   LCLVersion = '1.5'
-  object Memo1: TMemo
+  object memoReceived: TMemo
     Left = 0
-    Height = 211
-    Top = 404
-    Width = 865
+    Height = 142
+    Top = 588
+    Width = 1020
     Align = alClient
-    Lines.Strings = (
-      'Memo1'
-    )
     ScrollBars = ssAutoBoth
     TabOrder = 0
     WordWrap = False
   end
   object gbCommonTags: TGroupBox
     Left = 0
-    Height = 299
-    Top = 105
-    Width = 865
+    Height = 300
+    Top = 168
+    Width = 1020
     Align = alTop
     Caption = 'Common Tags'
-    ClientHeight = 279
-    ClientWidth = 861
+    ClientHeight = 280
+    ClientWidth = 1016
     TabOrder = 1
     object Label1: TLabel
       Left = 0
@@ -201,48 +198,168 @@ object Form1: TForm1
       Width = 280
       Stretch = True
     end
+    object ComboBox1: TComboBox
+      Left = 856
+      Height = 23
+      Top = 6
+      Width = 132
+      Enabled = False
+      ItemHeight = 15
+      Items.Strings = (
+        'ENGINE_STOP   '
+        'ENGINE_PLAY   '
+        'ENGINE_PAUSE'
+        'ENGINE_SONG_END'
+        'ENGINE_ON_LINE'
+      )
+      Style = csDropDownList
+      TabOrder = 8
+    end
   end
   object GroupBox1: TGroupBox
     Left = 0
-    Height = 105
+    Height = 168
     Top = 0
-    Width = 865
+    Width = 1020
     Align = alTop
     Caption = 'Controls'
-    ClientHeight = 85
-    ClientWidth = 861
+    ClientHeight = 148
+    ClientWidth = 1016
     TabOrder = 2
     object Button1: TButton
-      Left = 328
+      Left = 329
       Height = 25
-      Top = 16
+      Top = 104
       Width = 75
       Caption = 'Send'
       OnClick = Button1Click
       TabOrder = 0
     end
     object tbConn: TToggleBox
-      Left = 536
+      Left = 8
       Height = 23
-      Top = 16
-      Width = 90
+      Top = 0
+      Width = 116
       Caption = 'Connect'
       OnChange = tbConnChange
       TabOrder = 1
     end
-    object Edit2: TEdit
-      Left = 49
+    object Edit1: TEdit
+      Left = 64
       Height = 23
-      Top = 50
+      Top = 106
       Width = 247
       TabOrder = 2
     end
-    object Edit1: TEdit
-      Left = 48
-      Height = 23
-      Top = 16
-      Width = 247
-      TabOrder = 3
+    object Label9: TLabel
+      Left = 16
+      Height = 15
+      Top = 113
+      Width = 42
+      Caption = 'Custom'
+      ParentColor = False
     end
+    object Panel1: TPanel
+      Left = 81
+      Height = 26
+      Top = 31
+      Width = 800
+      ChildSizing.HorizontalSpacing = 2
+      ChildSizing.EnlargeHorizontal = crsScaleChilds
+      ChildSizing.Layout = cclLeftToRightThenTopToBottom
+      ChildSizing.ControlsPerLine = 10
+      ClientHeight = 26
+      ClientWidth = 800
+      TabOrder = 3
+      object Button2: TButton
+        Left = 0
+        Height = 25
+        Top = 0
+        Width = 135
+        Caption = 'previous'
+        OnClick = Button8Click
+        TabOrder = 0
+      end
+      object Button3: TButton
+        Left = 137
+        Height = 25
+        Top = 0
+        Width = 91
+        Caption = 'play'
+        OnClick = Button8Click
+        TabOrder = 1
+      end
+      object Button4: TButton
+        Left = 230
+        Height = 25
+        Top = 0
+        Width = 109
+        Caption = 'pause'
+        OnClick = Button8Click
+        TabOrder = 2
+      end
+      object Button5: TButton
+        Left = 341
+        Height = 25
+        Top = 0
+        Width = 150
+        Caption = 'playpause'
+        OnClick = Button8Click
+        TabOrder = 3
+      end
+      object Button6: TButton
+        Left = 493
+        Height = 25
+        Top = 0
+        Width = 91
+        Caption = 'next'
+        OnClick = Button8Click
+        TabOrder = 4
+      end
+      object Button7: TButton
+        Left = 586
+        Height = 25
+        Top = 0
+        Width = 109
+        Caption = 'seek+'
+        OnClick = Button8Click
+        TabOrder = 5
+      end
+      object Button8: TButton
+        Left = 697
+        Height = 25
+        Top = 0
+        Width = 103
+        Caption = 'seek-'
+        OnClick = Button8Click
+        TabOrder = 6
+      end
+    end
+    object Label10: TLabel
+      Left = 26
+      Height = 15
+      Top = 36
+      Width = 35
+      Caption = 'Action'
+      ParentColor = False
+    end
+    object Label11: TLabel
+      Left = 26
+      Height = 15
+      Top = 64
+      Width = 42
+      Caption = 'Request'
+      ParentColor = False
+    end
+  end
+  object memoSent: TMemo
+    Left = 0
+    Height = 120
+    Top = 468
+    Width = 1020
+    Align = alTop
+    ScrollBars = ssAutoBoth
+    TabOrder = 3
+    WordWrap = False
   end
 end

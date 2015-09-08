@@ -25,7 +25,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, Spin, TcpIpClient, netprotocol, BaseTypes, basetag;
+  ExtCtrls, Spin, ComCtrls, CustomDrawnControls, TcpIpClient, netprotocol,
+  BaseTypes, basetag, uriparser;
 
 type
 
@@ -50,17 +51,26 @@ type
 
   TForm1 = class(TForm)
     Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    Button4: TButton;
+    Button5: TButton;
+    Button6: TButton;
+    Button7: TButton;
+    Button8: TButton;
+    ComboBox1: TComboBox;
     edAlbum: TEdit;
     edAlbumArtist: TEdit;
     edArtist: TEdit;
     edGenre: TEdit;
     Edit1: TEdit;
-    Edit2: TEdit;
     edTitle: TEdit;
     gbCommonTags: TGroupBox;
     GroupBox1: TGroupBox;
     Image1: TImage;
     Label1: TLabel;
+    Label10: TLabel;
+    Label11: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
@@ -68,12 +78,16 @@ type
     Label6: TLabel;
     Label7: TLabel;
     Label8: TLabel;
+    Label9: TLabel;
     meComment: TMemo;
-    Memo1: TMemo;
+    memoReceived: TMemo;
+    memoSent: TMemo;
+    Panel1: TPanel;
     seTrack: TSpinEdit;
     seYear: TSpinEdit;
     tbConn: TToggleBox;
     procedure Button1Click(Sender: TObject);
+    procedure Button8Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure tbConnChange(Sender: TObject);
   protected
@@ -156,15 +170,24 @@ procedure TForm1.DoClientReceive(Sender: TObject; const AData: string);
 var
   r : RExternalCommand;
   tags: TCommonTags;
+  s: string;
 begin
-  memo1.lines.add(AData);
+  memoReceived.lines.add(AData);
   r:= SplitCommand(AData);
 
-  if (r.Category = CATEGORY_INFORMATION) and (r.Command = INFO_METADATA) then
-    begin
-      tags := DecodeMetaData(r.Param);
-      TagsToMap(tags);
-    end;
+  if (r.Category = CATEGORY_INFORMATION) then
+   case r.Command of
+     INFO_METADATA : begin
+                       tags := DecodeMetaData(r.Param);
+                       TagsToMap(tags);
+                    end;
+     INFO_COVER : begin
+                    if URIToFilename(r.param,s) then
+                       image1.Picture.LoadFromFile(s);
+                  end;
+
+     INFO_ENGINE_STATE : ComboBox1.ItemIndex:=StrToIntDef(r.Param,-1);
+   end;
 
 
 
@@ -173,7 +196,16 @@ end;
 procedure TForm1.Button1Click(Sender: TObject);
 begin
   FClient.WriteStr(EncodeSize(Length(Edit1.caption)) + edit1.caption);
-  Edit2.Caption:=EncodeSize(Length(Edit1.caption)) + edit1.caption;
+  memoSent.Lines.Add(EncodeSize(Length(Edit1.caption)) + edit1.caption);
+end;
+
+procedure TForm1.Button8Click(Sender: TObject);
+var
+  s :string;
+begin
+  s:=EncodeString(BuildCommand(CATEGORY_ACTION, (sender as tbutton).caption));
+  memoSent.lines.Add(s);
+  FClient.WriteStr(s);
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -207,7 +239,6 @@ begin
 
   i := 0;
   TryStrToInt(Tags.TrackString, i);
-  seYear.Value := i;
 
   seTrack.Value := i;
 
