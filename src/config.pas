@@ -58,7 +58,6 @@ type
   end;
 
   TPlayListParam = record
-    LimitTrack : Integer;
     Restart: boolean;
     RepeatMode:Integer;
   end;
@@ -70,6 +69,11 @@ type
 
   TGeneralParam = record
     LastImportFolder: String;
+  end;
+
+  TNetRemoteParam = record
+    Enabled:boolean;
+    Port: integer;
   end;
 
   { TConfig }
@@ -94,6 +98,7 @@ type
     PlayListParam:     TPlayListParam;
     EngineParam:       TEngineParam;
     GeneralParam:      TGeneralParam;
+    NetRemoteParam:    TNetRemoteParam;
     EngineSubParams:   TStringList;
     constructor Create;
     procedure ReadConfig;
@@ -182,7 +187,6 @@ begin
   fIniFiles.WriteBool('Interface', 'EnableSoundMenu', InterfaceParam.EnableSoundMenu);
 
   // PLAYLIST
-  fIniFiles.WriteInteger('PlayList', 'TrackLimit', PlayListParam.LimitTrack);
   fIniFiles.WriteBool('PlayList', 'Restart', PlayListParam.Restart);
   fIniFiles.WriteInteger('PlayList', 'RepeatMode', PlayListParam.RepeatMode);
 
@@ -191,6 +195,9 @@ begin
   fIniFiles.WriteInteger('AudioEngine', 'Volume', EngineParam.Volume);
   fIniFiles.WriteInteger('AudioEngine', 'Volume', EngineParam.Volume);
 
+  // NETREMOTE
+  fIniFiles.WriteBool('NetRemote', 'Enabled', NetRemoteParam.Enabled);
+  fIniFiles.WriteInteger('NetRemote', 'Port', NetRemoteParam.Port);
 
   //GENERAL
   fIniFiles.WriteString('General', 'LastFolder', GeneralParam.LastImportFolder);
@@ -271,7 +278,6 @@ begin
   InterfaceParam.EnableSoundMenu := fIniFiles.ReadBool('Interface', 'EnableSoundMenu', True);
 
   // PLAYLIST
-  PlayListParam.LimitTrack :=  fIniFiles.ReadInteger('PlayList', 'TrackLimit', 50);
   PlayListParam.Restart :=  fIniFiles.ReadBool('PlayList', 'Restart', true);
   PlayListParam.RepeatMode :=  fIniFiles.ReadInteger('PlayList', 'RepeatMode', 0);
 
@@ -279,6 +285,10 @@ begin
   EngineParam.EngineKind := fIniFiles.ReadString('AudioEngine', 'Kind', '');
   EngineParam.Volume := fIniFiles.ReadInteger('AudioEngine', 'Volume', 50);
   ReadSubParams;
+
+  // NETREMOTE
+  NetRemoteParam.Enabled := fIniFiles.ReadBool('NetRemote', 'Enabled', False);
+  NetRemoteParam.Port := fIniFiles.ReadInteger('NetRemote', 'Port', 6860;
 
   //GENERAL
   GeneralParam.LastImportFolder := fIniFiles.ReadString('General', 'LastFolder', GetUserDir);

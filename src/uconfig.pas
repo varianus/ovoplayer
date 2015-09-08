@@ -35,49 +35,51 @@ type
   TConfigPage = (cpNone, cpEngine,cpMediaLibrary, cpOSD, cpGUI);
 
   TfConfig = class(TForm)
-    bAddDir:    TButton;
+    bAddDir: TButton;
     bRemoveDir: TButton;
     bRescanLibrary: TButton;
     bRestart: TButton;
     ButtonPanel: TButtonPanel;
     cbCaptureMMKeys: TCheckBox;
     cbEnableSoundMenu: TCheckBox;
-    cbScanOnStart: TCheckBox;
-    cbTrayVisible: TCheckBox;
     cbMinimizeOnClose: TCheckBox;
     cbRestart: TCheckBox;
+    cbScanOnStart: TCheckBox;
+    cbTrayVisible: TCheckBox;
+    cbNetRemote: TCheckBox;
     colorBackground: TColorBox;
-    ColorFont:  TColorBox;
+    ColorFont: TColorBox;
     EngineInfo: TValueListEditor;
+    EngineParamsEditor: TValueListEditor;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    lbMLPath: TListBox;
     lbRestart: TLabel;
     FontDialog1: TFontDialog;
     GroupBox1:  TGroupBox;
-    Label1:     TLabel;
-    Label2:     TLabel;
-    Label3:     TLabel;
-    Label4:     TLabel;
-    Label5: TLabel;
-    lbMLPath:   TListBox;
     OpenDialog1: TOpenDialog;
+    Panel1: TPanel;
+    pcConfig: TPageControl;
     pnlRestart: TPanel;
-    pcConfig:   TPageControl;
-    rgKeyCaptureMode: TRadioGroup;
-    rgOSDKind:  TRadioGroup;
     rgAudioEngine: TRadioGroup;
+    rgKeyCaptureMode: TRadioGroup;
+    rgOSDKind: TRadioGroup;
     sbEngine:   TSpeedButton;
     sbInterface: TSpeedButton;
+    sbNetRemote: TSpeedButton;
     SelectDirectoryDialog1: TSelectDirectoryDialog;
-    seLimit: TSpinEdit;
     sbNotification: TSpeedButton;
-    sbPlayList: TSpeedButton;
     sbLibrary:  TSpeedButton;
-    tsInterface: TTabSheet;
+    SpinEdit1: TSpinEdit;
     tbTransparency: TTrackBar;
-    tsOSD:      TTabSheet;
-    tsEngine:   TTabSheet;
+    tsEngine: TTabSheet;
+    tsInterface: TTabSheet;
     tsMediaLibrary: TTabSheet;
-    tsPlaylist: TTabSheet;
-    EngineParamsEditor: TValueListEditor;
+    tsNetRemote: TTabSheet;
+    tsOSD: TTabSheet;
     procedure bAddDirClick(Sender: TObject);
     procedure bRemoveDirClick(Sender: TObject);
     procedure bRescanLibraryClick(Sender: TObject);
@@ -97,15 +99,15 @@ type
     procedure sbEngineClick(Sender: TObject);
     procedure sbInterfaceClick(Sender: TObject);
     procedure sbLibraryClick(Sender: TObject);
-    procedure sbPlayListClick(Sender: TObject);
+    procedure sbNetRemoteClick(Sender: TObject);
     procedure sbNotificationClick(Sender: TObject);
     procedure tbTransparencyChange(Sender: TObject);
     procedure tsEngineShow(Sender: TObject);
     procedure tsInterfaceShow(Sender: TObject);
     procedure tsMediaLibraryShow(Sender: TObject);
+    procedure tsNetRemoteShow(Sender: TObject);
     procedure tsOSDHide(Sender: TObject);
     procedure tsOSDShow(Sender: TObject);
-    procedure tsPlaylistShow(Sender: TObject);
   private
     procedure ConfigToMap;
   public
@@ -352,9 +354,9 @@ begin
   pcConfig.ActivePage := tsMediaLibrary;
 end;
 
-procedure TfConfig.sbPlayListClick(Sender: TObject);
+procedure TfConfig.sbNetRemoteClick(Sender: TObject);
 begin
-  pcConfig.ActivePage := tsPlaylist;
+  pcConfig.ActivePage := tsNetRemote;
 end;
 
 procedure TfConfig.sbNotificationClick(Sender: TObject);
@@ -385,6 +387,11 @@ begin
   sbLibrary.Down:=true;
 end;
 
+procedure TfConfig.tsNetRemoteShow(Sender: TObject);
+begin
+  sbNetRemote.Down:=true;
+end;
+
 procedure TfConfig.tsOSDHide(Sender: TObject);
 begin
   if Assigned(Fosd) and fOSD.Visible then
@@ -402,16 +409,11 @@ begin
      ShowOSDConfig;
 end;
 
-procedure TfConfig.tsPlaylistShow(Sender: TObject);
-begin
-  sbPlayList.Down:=true;
-end;
-
 procedure TfConfig.MapToConfig;
 begin
   // MEDIA LIBRARY
   BackEnd.Config.MediaLibraryParam.LibraryPaths.Assign(lbMLPath.Items);
-  BackEnd.Config.MediaLibraryParam.CheckOnStart := cbScanOnStart.Checked;
+  BackEnd.Config.MediaLibraryParam.CheckOnStart   := cbScanOnStart.Checked;
 
   // NOTIFICATION
   BackEnd.Config.NotificationParam.Kind           := rgOSDKind.ItemIndex;
@@ -427,11 +429,15 @@ begin
   BackEnd.Config.InterfaceParam.EnableSoundMenu   := cbEnableSoundMenu.Checked;
 
   // PLAYLIST
-  BackEnd.Config.PlayListParam.LimitTrack         := seLimit.Value;
   BackEnd.Config.PlayListParam.Restart            := cbRestart.Checked;
 
   // ENGINE
   BackEnd.Config.EngineParam.EngineKind           := rgAudioEngine.Items[rgAudioEngine.ItemIndex];
+
+  // NETREMOTE
+  BackEnd.Config.NetRemoteParam.Enabled           := NetRemoteParam.Enabled;
+  BackEnd.Config.NetRemoteParam.Port              := NetRemoteParam.Port;
+
 
   //GENERAL
   if EngineParamsEditor.Visible then
@@ -448,13 +454,13 @@ procedure TfConfig.ConfigToMap;
 begin
   // MEDIA LIBRARY
   lbMLPath.Items.Assign(BackEnd.Config.MediaLibraryParam.LibraryPaths);
-  cbScanOnStart.Checked     := BackEnd.Config.MediaLibraryParam.CheckOnStart;
+  cbScanOnStart.Checked      := BackEnd.Config.MediaLibraryParam.CheckOnStart;
 
   // NOTIFICATION
-  rgOSDKind.ItemIndex       := BackEnd.Config.NotificationParam.Kind;
-  ColorBackground.Selected  := BackEnd.Config.NotificationParam.BackColor;
-  ColorFont.Selected        := BackEnd.Config.NotificationParam.FontColor;
-  tbTransparency.Position   := BackEnd.Config.NotificationParam.Transparency;
+  rgOSDKind.ItemIndex        := BackEnd.Config.NotificationParam.Kind;
+  ColorBackground.Selected   := BackEnd.Config.NotificationParam.BackColor;
+  ColorFont.Selected         := BackEnd.Config.NotificationParam.FontColor;
+  tbTransparency.Position    := BackEnd.Config.NotificationParam.Transparency;
 
   // INTERFACE
   cbMinimizeOnClose.checked  := BackEnd.Config.InterfaceParam.MinimizeOnClose;
@@ -464,14 +470,17 @@ begin
   cbEnableSoundMenu.Checked  := BackEnd.Config.InterfaceParam.EnableSoundMenu;
 
   // PLAYLIST
-  seLimit.Value             := BackEnd.Config.PlayListParam.LimitTrack;
-  cbRestart.Checked         := BackEnd.Config.PlayListParam.Restart;
+  cbRestart.Checked          := BackEnd.Config.PlayListParam.Restart;
 
   // ENGINE
-  rgAudioEngine.ItemIndex   := rgAudioEngine.Items.IndexOf(Backend.Config.EngineParam.EngineKind);
+  rgAudioEngine.ItemIndex    := rgAudioEngine.Items.IndexOf(Backend.Config.EngineParam.EngineKind);
 
   if EngineParamsEditor.Visible then
     EngineParamsEditor.Strings.Assign(BackEnd.Config.EngineSubParams);
+
+  // NETREMOTE
+  NetRemoteParam.Enabled     := BackEnd.Config.NetRemoteParam.Enabled;
+  NetRemoteParam.Port        := BackEnd.Config.NetRemoteParam.Port;
 
   //GENERAL
   pnlRestart.visible := Backend.Config.NeedRestart;
