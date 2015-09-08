@@ -61,7 +61,7 @@ type
     FontDialog1: TFontDialog;
     GroupBox1:  TGroupBox;
     OpenDialog1: TOpenDialog;
-    Panel1: TPanel;
+    pnlNetwork: TPanel;
     pcConfig: TPageControl;
     pnlRestart: TPanel;
     rgAudioEngine: TRadioGroup;
@@ -73,7 +73,7 @@ type
     SelectDirectoryDialog1: TSelectDirectoryDialog;
     sbNotification: TSpeedButton;
     sbLibrary:  TSpeedButton;
-    SpinEdit1: TSpinEdit;
+    sePort: TSpinEdit;
     tbTransparency: TTrackBar;
     tsEngine: TTabSheet;
     tsInterface: TTabSheet;
@@ -86,6 +86,7 @@ type
     procedure bRestartClick(Sender: TObject);
     procedure CancelButtonClick(Sender: TObject);
     procedure cbCaptureMMKeysClick(Sender: TObject);
+    procedure cbNetRemoteChange(Sender: TObject);
     procedure colorBackgroundChange(Sender: TObject);
     procedure ColorFontChange(Sender: TObject);
     procedure EngineParamsEditorButtonClick(Sender: TObject; aCol, aRow: Integer
@@ -271,6 +272,11 @@ begin
   rgKeyCaptureMode.Enabled := cbCaptureMMKeys.Checked;
 end;
 
+procedure TfConfig.cbNetRemoteChange(Sender: TObject);
+begin
+  pnlNetwork.Enabled:= cbNetRemote.Checked;
+end;
+
 procedure TfConfig.colorBackgroundChange(Sender: TObject);
 begin
   BackEnd.Config.NotificationParam.BackColor := colorBackground.Selected;
@@ -345,7 +351,7 @@ begin
   {$ELSE}
     rgKeyCaptureMode.Visible:=False;
   {$ENDIF ASKMMKEYSMODE}
-
+  pnlNetwork.Enabled:=cbNetRemote.Checked;
 end;
 
 
@@ -435,8 +441,8 @@ begin
   BackEnd.Config.EngineParam.EngineKind           := rgAudioEngine.Items[rgAudioEngine.ItemIndex];
 
   // NETREMOTE
-  BackEnd.Config.NetRemoteParam.Enabled           := NetRemoteParam.Enabled;
-  BackEnd.Config.NetRemoteParam.Port              := NetRemoteParam.Port;
+  BackEnd.Config.NetRemoteParam.Enabled           := cbNetRemote.checked;
+  BackEnd.Config.NetRemoteParam.Port              := sePort.Value;
 
 
   //GENERAL
@@ -479,8 +485,8 @@ begin
     EngineParamsEditor.Strings.Assign(BackEnd.Config.EngineSubParams);
 
   // NETREMOTE
-  NetRemoteParam.Enabled     := BackEnd.Config.NetRemoteParam.Enabled;
-  NetRemoteParam.Port        := BackEnd.Config.NetRemoteParam.Port;
+  cbNetRemote.Checked       := BackEnd.Config.NetRemoteParam.Enabled;
+  sePort.Value              := BackEnd.Config.NetRemoteParam.Port;
 
   //GENERAL
   pnlRestart.visible := Backend.Config.NeedRestart;

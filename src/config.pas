@@ -288,7 +288,7 @@ begin
 
   // NETREMOTE
   NetRemoteParam.Enabled := fIniFiles.ReadBool('NetRemote', 'Enabled', False);
-  NetRemoteParam.Port := fIniFiles.ReadInteger('NetRemote', 'Port', 6860;
+  NetRemoteParam.Port := fIniFiles.ReadInteger('NetRemote', 'Port', 6860);
 
   //GENERAL
   GeneralParam.LastImportFolder := fIniFiles.ReadString('General', 'LastFolder', GetUserDir);
