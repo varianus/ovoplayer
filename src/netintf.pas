@@ -112,6 +112,7 @@ begin
             INFO_POSITION : sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.GetPosition))));
             INFO_VOLUME: Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.GetVolume))));
             INFO_PLAYLISTCOUNT: Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_PLAYLISTCOUNT, IntToStr(fnet.fBackEnd.PlayListCount))));
+            INFO_COVER : sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_COVER, fnet.fBackEnd.GetCoverURL)));
           end;
         end;
     end;
@@ -167,13 +168,11 @@ begin
                 Break;
               SetLength(Data, 4);
               Sock.Read(Data[1], 4);
-              debugln('DS--',data);
               DataSize:= DecodeSize(Data);
               if DataSize < 0 then
                 break;
               SetLength(Data, DataSize);
               Sock.Read(Data[1], DataSize);
-              debugln('Dt--',data);
               Synchronize(@SyncRunner);
 
               if lastError <> 0 then

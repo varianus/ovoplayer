@@ -52,6 +52,7 @@ Const
     INFO_VOLUME = 'vol';
     INFO_METADATA = 'meta';  // optional param playlist item number
     INFO_PLAYLISTCOUNT = 'count';
+    INFO_COVER = 'cover';
 
 
   CATEGORY_COMMAND_SEPARATOR = ':';
