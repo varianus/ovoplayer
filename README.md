@@ -1,13 +1,11 @@
-##*OvoPlayer is a free multi-platform music manager and player.*
 
-Download is avalaible for Windows, Linux 64 bit and Linux 32 bit.
+# [OvoPlayer](http://ovoplayer.altervista.org) 
+[![Stable 1.2.1](https://img.shields.io/badge/stable-1.2.1-green.svg?style=flat)](https://sourceforge.net/projects/ovoplayer/files/1.2.1/)
+[![Development 1.3.0](https://img.shields.io/badge/development-1.3.0-yellow.svg?style=flat)](https://sourceforge.net/projects/ovoplayer/files/1.3.0/)
 
-### Current version
-*  **1.2.1** Stable release
-*  **1.3.0** Unstable  
+OvoPlayer is a free multi-platform music manager and player.
 
-### Binary downloads
- Windows installer and Debian packages are avalaible [here](http://ovoplayer.altervista.org/downloads.html)
+Windows installer and Debian packages are avalaible [here](http://ovoplayer.altervista.org/downloads.html)
 
 ### Features
 *   **Play music**
@@ -30,18 +28,4 @@ Ovoplayer can use DirectShow, MediaFoundation VLC, XINE, BASS, Mplayer, GStreame
 ![Screenshot](http://ovoplayer.altervista.org/images/OVOPlayer_scrn1.png)
 
 ### License
-Copyright (C) 2011 Marco Caselli
-
-OvoPlayer is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+See [LICENSE.txt](https://github.com/varianus/ovoplayer/blob/master/LICENSE.txt)
