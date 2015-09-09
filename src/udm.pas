@@ -97,6 +97,7 @@ type
     procedure ApplicationPropertiesException(Sender: TObject; E: Exception);
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
+    procedure SaveDialogPlaylistTypeChange(Sender: TObject);
     procedure UniqueInstanceIOtherInstance(Sender: TObject; ParamCount: Integer;
       Parameters: array of String);
     // -- --
@@ -140,6 +141,18 @@ end;
 procedure TDM.DataModuleDestroy(Sender: TObject);
 begin
   UniqueInstanceI.free;
+end;
+
+procedure TDM.SaveDialogPlaylistTypeChange(Sender: TObject);
+var
+  NewExt:string;
+begin
+  case SaveDialogPlayList.FilterIndex of
+    1 : NewExt:='.xspf';
+    2 : NewExt:='.m3u8';
+    3 : NewExt:='.m3u';
+  end;
+  ChangeFileExt(SaveDialogPlayList.FileName,'newExt');
 end;
 
 procedure TDM.UniqueInstanceIOtherInstance(Sender: TObject;
@@ -316,11 +329,16 @@ begin
 end;
 
 procedure TDM.actPlaylistSaveExecute(Sender: TObject);
+var
+  z :integer;
 begin
   if not SaveDialogPlayList.Execute then
     exit;
-
-  Backend.Manager.SaveToXSPF(SaveDialogPlayList.FileName, Backend.PlayList, Backend.AudioEngine.Position);
+ z:= SaveDialogPlayList.FilterIndex;
+  case SaveDialogPlayList.FilterIndex of
+    1   : Backend.Manager.SaveToXSPF(SaveDialogPlayList.FileName, Backend.PlayList, Backend.AudioEngine.Position);
+    2,3 : Backend.Manager.SaveToM3U(SaveDialogPlayList.FileName, Backend.PlayList, Backend.AudioEngine.Position);
+  end;
 
 end;
 

@@ -79,6 +79,9 @@ type
 
     procedure SaveToXSPF(const FileName: TFileName; var Playlist: TPlaylist;
       CurrentTime: integer = -1);
+    procedure SaveToM3U(const FileName: TFileName; var Playlist: TPlaylist;
+      CurrentTime: integer = -1);
+
   public
     property SavedTime: integer read fSavedTime default 0;
 
@@ -534,6 +537,29 @@ begin
 
 end;
 
+procedure TPlayListManager.SaveToM3U(const FileName: TFileName;
+  var Playlist: TPlaylist; CurrentTime: integer);
+var
+  f: textfile;
+  s: string;
+  i:integer;
+begin
+  assignfile(f, FileName);
+  Rewrite(f);
+  if ExtractFileExt(FileName) = '.m3u' then
+    TextRec(f).CodePage:=1252
+  else
+    TextRec(f).CodePage:=CP_UTF8;
+  WriteLn(f,'#EXTM3U');
+
+  for i := 0 to Playlist.Count - 1 do
+    begin
+      WriteLn(f, '#EXTINF:'+IntToStr(Playlist[i].Tags.Duration div 1000)+','+Playlist[i].Title);
+      WriteLn(f, Playlist[i].FullName);
+    end;
+  CloseFile(f);
+end;
+
 function TPlayListManager.GetPlayListType(FileName: string): TPlayListType;
 var
   f: textfile;
@@ -565,6 +591,8 @@ begin
       if fe = '.xspf' then
         Result := pltXSPF
       else if fe = '.m3u' then
+        Result := pltM3U
+      else if fe = '.m3u8' then
         Result := pltM3U
       else if fe = '.bsl' then
         Result := pltBSPL

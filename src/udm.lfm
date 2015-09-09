@@ -624,8 +624,9 @@ object DM: TDM
     top = 80
   end
   object SaveDialogPlaylist: TSaveDialog
-    Filter = 'XSPF (XML Shareable Playlist Format) Playlist|*.xspf|M3U Playlist|*.m3u|BSPlayer Playlist|*.bsp|Media Player Classic Playlist|*.mpc|Windows Media ASX Playlist|*.asx|PLS Playlist|*.pls'
+    Filter = 'XSPF (XML Shareable Playlist Format) Playlist|*.xspf|M3U8 Playlist|*.m3u8|M3U Playlist|*.m3u'
     FilterIndex = 0
+    OnTypeChange = SaveDialogPlaylistTypeChange
     Options = [ofOverwritePrompt, ofExtensionDifferent, ofPathMustExist, ofEnableSizing, ofViewDetail]
     left = 210
     top = 80
