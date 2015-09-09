@@ -692,6 +692,10 @@ msgstr "Mostra nel Menù Audio"
 msgid "Minimize on Close"
 msgstr "Riduci su chiusura"
 
+#: tfconfig.cbnetremote.caption
+msgid "Enable network remote"
+msgstr "Abilita telecomando di rete"
+
 #: tfconfig.cbrestart.caption
 msgid "Restart from last position"
 msgstr "Ricomincia dall'ultima posizione"
@@ -725,8 +729,8 @@ msgid "Tranparency"
 msgstr "Trasparenza"
 
 #: tfconfig.label5.caption
-msgid "Tracks to extract for quick playlist"
-msgstr "Tracce da estrarre per scaletta rapida"
+msgid "Port"
+msgstr "Porta"
 
 #: tfconfig.lbrestart.caption
 msgid "A restart is required for this change to take effect."
@@ -747,28 +751,27 @@ msgstr "Tipo di Notifica"
 
 #: tfconfig.sbengine.caption
 msgctxt "TFCONFIG.SBENGINE.CAPTION"
-msgid "Audio Engine"
-msgstr "Motore di riproduzione"
+msgid "Playback"
+msgstr "Riproduzione"
 
 #: tfconfig.sbinterface.caption
 msgctxt "TFCONFIG.SBINTERFACE.CAPTION"
-msgid "Interface"
-msgstr "Interfaccia"
+msgid "Behavior"
+msgstr "Comportamento"
 
 #: tfconfig.sblibrary.caption
 msgctxt "TFCONFIG.SBLIBRARY.CAPTION"
 msgid "Media Library"
 msgstr "Libreria Musicale"
 
+#: tfconfig.sbnetremote.caption
+msgid "Network Remote"
+msgstr "Telecomando di rete"
+
 #: tfconfig.sbnotification.caption
 msgctxt "tfconfig.sbnotification.caption"
 msgid "Notification"
 msgstr "Tipo di Notifica"
-
-#: tfconfig.sbplaylist.caption
-msgctxt "TFCONFIG.SBPLAYLIST.CAPTION"
-msgid "Play List"
-msgstr "Scaletta"
 
 #: tfconfig.tsengine.caption
 msgctxt "TFCONFIG.TSENGINE.CAPTION"
@@ -785,14 +788,13 @@ msgctxt "TFCONFIG.TSMEDIALIBRARY.CAPTION"
 msgid "Media Library"
 msgstr "Libreria Musicale"
 
+#: tfconfig.tsnetremote.caption
+msgid "NetRemote"
+msgstr ""
+
 #: tfconfig.tsosd.caption
 msgid "OSD"
 msgstr ""
-
-#: tfconfig.tsplaylist.caption
-msgctxt "TFCONFIG.TSPLAYLIST.CAPTION"
-msgid "Play List"
-msgstr "Scaletta"
 
 #: tfcover.btnzoomin.caption
 msgctxt "tfcover.btnzoomin.caption"
@@ -1330,3 +1332,4 @@ msgstr "Proprietà Media"
 #: tfsonginfo.tstags.caption
 msgid "Tags"
 msgstr "Etichette"
+

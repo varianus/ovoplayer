@@ -681,6 +681,10 @@ msgstr ""
 msgid "Minimize on Close"
 msgstr ""
 
+#: tfconfig.cbnetremote.caption
+msgid "Enable network remote"
+msgstr ""
+
 #: tfconfig.cbrestart.caption
 msgid "Restart from last position"
 msgstr ""
@@ -714,7 +718,7 @@ msgid "Tranparency"
 msgstr ""
 
 #: tfconfig.label5.caption
-msgid "Tracks to extract for quick playlist"
+msgid "Port"
 msgstr ""
 
 #: tfconfig.lbrestart.caption
@@ -736,12 +740,12 @@ msgstr ""
 
 #: tfconfig.sbengine.caption
 msgctxt "TFCONFIG.SBENGINE.CAPTION"
-msgid "Audio Engine"
+msgid "Playback"
 msgstr ""
 
 #: tfconfig.sbinterface.caption
 msgctxt "TFCONFIG.SBINTERFACE.CAPTION"
-msgid "Interface"
+msgid "Behavior"
 msgstr ""
 
 #: tfconfig.sblibrary.caption
@@ -749,14 +753,13 @@ msgctxt "TFCONFIG.SBLIBRARY.CAPTION"
 msgid "Media Library"
 msgstr ""
 
+#: tfconfig.sbnetremote.caption
+msgid "Network Remote"
+msgstr ""
+
 #: tfconfig.sbnotification.caption
 msgctxt "TFCONFIG.SBNOTIFICATION.CAPTION"
 msgid "Notification"
-msgstr ""
-
-#: tfconfig.sbplaylist.caption
-msgctxt "TFCONFIG.SBPLAYLIST.CAPTION"
-msgid "Play List"
 msgstr ""
 
 #: tfconfig.tsengine.caption
@@ -774,13 +777,12 @@ msgctxt "TFCONFIG.TSMEDIALIBRARY.CAPTION"
 msgid "Media Library"
 msgstr ""
 
-#: tfconfig.tsosd.caption
-msgid "OSD"
+#: tfconfig.tsnetremote.caption
+msgid "NetRemote"
 msgstr ""
 
-#: tfconfig.tsplaylist.caption
-msgctxt "TFCONFIG.TSPLAYLIST.CAPTION"
-msgid "Play List"
+#: tfconfig.tsosd.caption
+msgid "OSD"
 msgstr ""
 
 #: tfcover.btnzoomin.caption
