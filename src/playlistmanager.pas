@@ -363,20 +363,13 @@ begin
   begin
     readln(f, s);
     s := trim(s);
-    if uppercase(copy(s, 0, 7)) = '#EXTINF' then
-    begin
-      readln(f, s);
-      Inc(Result);
-      Playlist.EnqueueFile(ProcessPath(s, p));
-    end
-    else
-    begin
-      if uppercase(copy(s, 0, 7)) <> '#EXTM3U' then
+    if (s <> EmptyStr) and
+       (uppercase(copy(s, 1, 7)) <> '#EXTINF') and
+       (uppercase(copy(s, 0, 7)) <> '#EXTM3U') then
       begin
         Inc(Result);
         Playlist.EnqueueFile(ProcessPath(s, p));
       end;
-    end;
   end;
   closefile(f);
 end;
