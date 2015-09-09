@@ -25,7 +25,7 @@ unit uSongInfo;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   StdCtrls, ButtonPanel, ComCtrls, Buttons,
   {$IFDEF SUPPORT_LISTBOX_HINT}
   LCLIntf,

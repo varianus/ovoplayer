@@ -5,7 +5,7 @@ unit uCover;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
+  Classes, SysUtils,  Forms, Controls, Graphics, Dialogs, ExtCtrls,
   StdCtrls, Buttons;
 
 type

@@ -5,7 +5,7 @@ unit ufrfield;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, StdCtrls, Buttons, ComCtrls,
+  Classes, SysUtils, Forms, Controls, StdCtrls, Buttons, ComCtrls,
   Spin, ExtCtrls, playlistbuilder, Types;
 
 type

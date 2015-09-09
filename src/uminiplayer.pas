@@ -25,7 +25,7 @@ unit uMiniPlayer;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls,
   ExtCtrls, customdrawncontrols, udm, GUIBackEnd;
 
 type
@@ -126,4 +126,4 @@ begin
   BackEnd.AudioEngine.Position := TrackBar.Position;
 end;
 
-end.
+end.

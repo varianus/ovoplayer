@@ -5,7 +5,7 @@ unit ucustomplaylist;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   ButtonPanel, Buttons, StdCtrls, Spin, ufrfield, fgl, PlaylistBuilder,
   GUIBackEnd, MediaLibrary, AppConsts, GeneralFunc;
 

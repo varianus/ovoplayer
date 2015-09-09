@@ -87,7 +87,7 @@ type
 implementation
 
 uses
-  DOM, XMLRead, XMLWrite, URIParser, IniFiles, fileutil, LazFileUtils,
+  DOM, XMLRead, XMLWrite, URIParser, IniFiles, LazFileUtils,
   filesSupport, CustomSong, LCLProc, basetag, fpjson, jsonparser, fpjsonrtti;
 
 const

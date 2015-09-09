@@ -71,7 +71,7 @@ type
 
 
 implementation
-uses math, fileutil, lazfileutils, generalfunc;
+uses math, lazfileutils, generalfunc;
 
 Const
    VLCMAXVOLUME = 100;

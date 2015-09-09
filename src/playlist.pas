@@ -86,7 +86,7 @@ type
 
 implementation
 uses
-  math, FileUtil, LazFileUtils, ExtendedInfo;
+  math, LazFileUtils, ExtendedInfo;
 
 Procedure IntQuickSort(FList: PPointerList; L, R : Longint;
                      Compare: TPlayListSortCompare);

@@ -181,7 +181,7 @@ function GetTagByID(Tags:TcommonTags; Field: TIDFields):string; inline;
 Procedure SetTagByID(var Tags:TcommonTags; Field: TIDFields; Value :string); inline;
 
 implementation
-uses FileUtil, lclProc;
+uses LazFileUtils, lclProc;
 
 operator = (t1 : TCommonTags; t2 : TCommonTags) b : boolean;
 begin

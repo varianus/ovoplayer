@@ -73,7 +73,7 @@ type
 
 
 implementation
-uses Math, FileUtil, lazutf8, lazfileutils;
+uses Math, lazutf8, lazfileutils;
 Const
    UOSMAXVOLUME = 1;
    SOUNDTOUCHLIB= '';

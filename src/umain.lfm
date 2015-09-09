@@ -1,7 +1,7 @@
 object fMainForm: TfMainForm
-  Left = 416
+  Left = 2675
   Height = 673
-  Top = 196
+  Top = 76
   Width = 866
   ActiveControl = pcMain
   AllowDropFiles = True

@@ -40,7 +40,7 @@ function GetFileTagsObject(FileName: string): TTagReader;
 function IdentifyKind(FileName: string): TTagReaderClass;
 
 implementation
-uses strutils, fileUtil, LazFileUtils, file_Dummy;
+uses strutils, LazFileUtils, file_Dummy;
 
 type
   RTagReader = record

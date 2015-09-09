@@ -55,7 +55,7 @@ type
 
 implementation
 
-uses FileUtil;
+uses LazFileUtils;
 
 { TOGGReader }
 const
@@ -181,7 +181,7 @@ begin
   end
   else
   if (FBitRate > 0) and (FChannelModeID > 0) then
-    Result := trunc(FileSize(FileName) / FBitRate / FChannelModeID / 125 * 2000)
+    Result := trunc(FileSizeUtf8(FileName) / FBitRate / FChannelModeID / 125 * 2000)
   else
     Result := 0;
 

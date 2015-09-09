@@ -49,7 +49,7 @@ function DecodeSafeFileName(const s: string): string;
 implementation
 
 uses
-  SysUtils, fileutil, LazUTF8, LazFileUtils;
+  SysUtils, LazUTF8, LazFileUtils;
 
 const
 { common computer sizes }
@@ -302,7 +302,7 @@ end;
 
 function GetFileInfo(FileName: String): TFileInfo;
 begin
-  Result.Size:= FileSize(FileName);
+  Result.Size:= FileSizeUtf8(FileName);
   result.CreationDate:= FileDateToDateTime(FileAgeUTF8(FileName));
 end;
 

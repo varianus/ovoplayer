@@ -25,7 +25,7 @@ unit uOSD;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls, LCLType,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, LCLType,
   StdCtrls, Buttons, song, GUIBackEnd, LMessages;
 
 type

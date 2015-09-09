@@ -25,7 +25,7 @@ unit uConfig;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls,
   ExtCtrls, StdCtrls, Buttons, ButtonPanel, ColorBox, Menus, Spin, EditBtn,
   GUIBackEnd, uOSD, AudioEngine, LCLProc, ValEdit, BaseTypes, Grids;
 
