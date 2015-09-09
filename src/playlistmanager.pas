@@ -340,12 +340,9 @@ begin
     (Copy(UpperCase(FileName), 1, 6) = 'FTP://')) then
   begin
     if CurPlaylist[Length(CurPlaylist)] <> PathDelim then
-      CurPlaylist := CurPlaylist + PathDelim; // changed the next IF to protect UNCs  KWL
-    if (Copy(FileName, 1, 1) = PathDelim) and (Copy(FileName, 2, 1) <> PathDelim) then
-      FileName := Copy(CurPlaylist, 1, 2) + FileName
-    else
-    if Copy(FileName, 2, 2) <> ':\' then
-      FileName := CurPlaylist + FileName;
+      CurPlaylist := CurPlaylist + PathDelim;
+    if not FilenameIsAbsolute(FileName) then
+      FileName := ExpandFileNameUTF8(FileName,CurPlayList);
   end;
   Result := FileName;
 end;
