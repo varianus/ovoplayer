@@ -34,6 +34,8 @@ type
 
   TConfigPage = (cpNone, cpEngine,cpMediaLibrary, cpOSD, cpGUI);
 
+  TOnConfigDone = procedure (Sender: TObject; Changed: boolean) of object;
+
   TfConfig = class(TForm)
     bAddDir: TButton;
     bRemoveDir: TButton;
@@ -110,15 +112,20 @@ type
     procedure tsOSDHide(Sender: TObject);
     procedure tsOSDShow(Sender: TObject);
   private
+    FSaved: boolean;
+    FOnConfigDone: TOnConfigDone;
+
     procedure ConfigToMap;
+    procedure SetOnConfigDone(AValue: TOnConfigDone);
   public
     procedure MapToConfig;
     destructor Destroy; override;
+    Property OnConfigDone: TOnConfigDone read FOnConfigDone write SetOnConfigDone;
   end;
 
 
 
-Procedure ShowConfigurationEditor(Page:TConfigPage=cpNone);
+Procedure ShowConfigurationEditor(CallBack:TOnConfigDone=nil; Page:TConfigPage=cpNone);
 
 implementation
 {$R *.lfm}
@@ -146,7 +153,7 @@ begin
       BackEnd.Config.NotificationParam.Y := fOsd.top;
       FreeAndNil(fOSD);
     end;
-
+  FSaved:=true;
   MapToConfig;
   BackEnd.Config.SaveConfig;
   BackEnd.Config.Flush;
@@ -264,6 +271,7 @@ begin
     begin
       FreeAndNil(fOSD);
     end;
+  FSaved:=False;
   Close;
 end;
 
@@ -303,6 +311,8 @@ end;
 
 procedure TfConfig.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
+  if Assigned(FOnConfigDone) then
+    FOnConfigDone(Self, FSaved);
   CloseAction:=caFree;
 end;
 
@@ -352,8 +362,11 @@ begin
     rgKeyCaptureMode.Visible:=False;
   {$ENDIF ASKMMKEYSMODE}
   pnlNetwork.Enabled:=cbNetRemote.Checked;
-end;
 
+  {$IFNDEF NETWORK_INTF}
+  sbNetRemote.Visible:=False;
+  {$ENDIF}
+end;
 
 procedure TfConfig.sbLibraryClick(Sender: TObject);
 begin
@@ -492,7 +505,13 @@ begin
   pnlRestart.visible := Backend.Config.NeedRestart;
 end;
 
-Procedure ShowConfigurationEditor(Page:TConfigPage=cpNone);
+procedure TfConfig.SetOnConfigDone(AValue: TOnConfigDone);
+begin
+  if FOnConfigDone=AValue then Exit;
+  FOnConfigDone:=AValue;
+end;
+
+Procedure ShowConfigurationEditor(CallBack:TOnConfigDone=nil; Page:TConfigPage=cpNone);
 begin
   if not Assigned(fConfig) then
     fConfig := TfConfig.Create(Application);
@@ -505,6 +524,7 @@ begin
   end;
 
   fConfig.Show;
+  fConfig.OnConfigDone:= CallBack;
 end;
 
 Initialization

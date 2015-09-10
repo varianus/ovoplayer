@@ -3,6 +3,7 @@ object fConfig: TfConfig
   Height = 509
   Top = 219
   Width = 702
+  ActiveControl = bRestart
   Caption = 'Config'
   ClientHeight = 509
   ClientWidth = 702
@@ -10,6 +11,7 @@ object fConfig: TfConfig
   OnCreate = FormCreate
   OnShow = FormShow
   LCLVersion = '1.5'
+  Visible = False
   object GroupBox1: TGroupBox
     Left = 0
     Height = 449
@@ -17,7 +19,7 @@ object fConfig: TfConfig
     Width = 153
     Align = alLeft
     Caption = 'Categories'
-    ClientHeight = 430
+    ClientHeight = 429
     ClientWidth = 149
     Color = clWindow
     ParentColor = False
@@ -82,13 +84,13 @@ object fConfig: TfConfig
     object pnlRestart: TPanel
       Left = 1
       Height = 101
-      Top = 328
+      Top = 327
       Width = 147
       Align = alBottom
       BorderSpacing.Around = 1
       BorderStyle = bsSingle
-      ClientHeight = 99
-      ClientWidth = 145
+      ClientHeight = 97
+      ClientWidth = 143
       Color = clActiveCaption
       ParentColor = False
       TabOrder = 0
@@ -97,7 +99,7 @@ object fConfig: TfConfig
         Left = 4
         Height = 56
         Top = 4
-        Width = 137
+        Width = 135
         Align = alTop
         AutoSize = False
         BorderSpacing.Around = 3
@@ -163,14 +165,14 @@ object fConfig: TfConfig
     TabOrder = 2
     object tsInterface: TTabSheet
       Caption = 'Interfaces'
-      ClientHeight = 414
-      ClientWidth = 543
+      ClientHeight = 421
+      ClientWidth = 541
       OnShow = tsInterfaceShow
       object cbMinimizeOnClose: TCheckBox
         Left = 12
-        Height = 21
+        Height = 19
         Top = 8
-        Width = 131
+        Width = 118
         Caption = 'Minimize on Close'
         Checked = True
         State = cbChecked
@@ -178,9 +180,9 @@ object fConfig: TfConfig
       end
       object cbTrayVisible: TCheckBox
         Left = 12
-        Height = 21
+        Height = 19
         Top = 70
-        Width = 114
+        Width = 101
         Caption = 'Show Tray Icon'
         Checked = True
         State = cbChecked
@@ -188,9 +190,9 @@ object fConfig: TfConfig
       end
       object cbCaptureMMKeys: TCheckBox
         Left = 12
-        Height = 21
+        Height = 19
         Top = 134
-        Width = 147
+        Width = 130
         Caption = 'Use multimedia Keys'
         Checked = True
         OnClick = cbCaptureMMKeysClick
@@ -212,7 +214,7 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 62
+        ClientHeight = 61
         ClientWidth = 197
         Items.Strings = (
           'Gnome D-BUS mode'
@@ -223,9 +225,9 @@ object fConfig: TfConfig
       end
       object cbEnableSoundMenu: TCheckBox
         Left = 12
-        Height = 21
+        Height = 19
         Top = 102
-        Width = 150
+        Width = 133
         Caption = 'Show in Sound Menu'
         Checked = True
         State = cbChecked
@@ -233,9 +235,9 @@ object fConfig: TfConfig
       end
       object cbRestart: TCheckBox
         Left = 12
-        Height = 21
+        Height = 19
         Top = 39
-        Width = 174
+        Width = 152
         Caption = 'Restart from last position'
         TabOrder = 5
       end
@@ -261,7 +263,7 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 32
+        ClientHeight = 31
         ClientWidth = 194
         Items.Strings = (
           'Sample row for builded engine'
@@ -289,7 +291,7 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          419
+          402
         )
       end
       object EngineInfo: TValueListEditor
@@ -315,7 +317,7 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          217
+          200
         )
       end
     end
@@ -332,7 +334,6 @@ object fConfig: TfConfig
         ItemHeight = 0
         ScrollWidth = 382
         TabOrder = 0
-        TopIndex = -1
       end
       object Label1: TLabel
         Left = 11
@@ -420,7 +421,7 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 86
+        ClientHeight = 85
         ClientWidth = 181
         Items.Strings = (
           'None'
