@@ -71,12 +71,10 @@ type
     LastImportFolder: String;
   end;
 
- {$IFDEF NETWORK_INTF}
   TNetRemoteParam = record
     Enabled:boolean;
     Port: integer;
   end;
- {$EndIf}
 
   { TConfig }
 
@@ -100,9 +98,7 @@ type
     PlayListParam:     TPlayListParam;
     EngineParam:       TEngineParam;
     GeneralParam:      TGeneralParam;
-    {$IFDEF NETWORK_INTF}
     NetRemoteParam:    TNetRemoteParam;
-    {$ENDIF}
     EngineSubParams:   TStringList;
     constructor Create;
     procedure ReadConfig;
@@ -199,11 +195,9 @@ begin
   fIniFiles.WriteInteger('AudioEngine', 'Volume', EngineParam.Volume);
   fIniFiles.WriteInteger('AudioEngine', 'Volume', EngineParam.Volume);
 
-  {$IFDEF NETWORK_INTF}
   // NETREMOTE
   fIniFiles.WriteBool('NetRemote', 'Enabled', NetRemoteParam.Enabled);
   fIniFiles.WriteInteger('NetRemote', 'Port', NetRemoteParam.Port);
-  {$ENDIf}
 
   //GENERAL
   fIniFiles.WriteString('General', 'LastFolder', GeneralParam.LastImportFolder);
@@ -293,10 +287,8 @@ begin
   ReadSubParams;
 
   // NETREMOTE
-  {$IFDEF NETWORK_INTF}
   NetRemoteParam.Enabled := fIniFiles.ReadBool('NetRemote', 'Enabled', False);
   NetRemoteParam.Port := fIniFiles.ReadInteger('NetRemote', 'Port', 6860);
-  {$ENDIF}
 
   //GENERAL
   GeneralParam.LastImportFolder := fIniFiles.ReadString('General', 'LastFolder', GetUserDir);

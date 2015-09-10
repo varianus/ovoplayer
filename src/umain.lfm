@@ -1,6 +1,6 @@
 object fMainForm: TfMainForm
   Left = 2675
-  Height = 653
+  Height = 673
   Top = 76
   Width = 866
   ActiveControl = pcMain
@@ -21,10 +21,9 @@ object fMainForm: TfMainForm
   OnShow = FormShow
   ShowHint = True
   LCLVersion = '1.5'
-  Visible = False
   object pcMain: TPageControl
     Left = 0
-    Height = 633
+    Height = 653
     Top = 0
     Width = 243
     ActivePage = tsPlayList
@@ -340,12 +339,12 @@ object fMainForm: TfMainForm
     end
     object tsPlayList: TTabSheet
       Caption = 'PlayList'
-      ClientHeight = 605
+      ClientHeight = 625
       ClientWidth = 235
       OnShow = tsPlayListShow
       object PlaylistTree: TTreeView
         Left = 0
-        Height = 605
+        Height = 625
         Top = 0
         Width = 235
         Align = alClient
@@ -369,19 +368,19 @@ object fMainForm: TfMainForm
   end
   object pnlMain: TPanel
     Left = 247
-    Height = 633
+    Height = 653
     Top = 0
     Width = 619
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 633
+    ClientHeight = 653
     ClientWidth = 619
     Constraints.MinWidth = 439
     TabOrder = 1
     object pnlControl: TPanel
       Left = 0
       Height = 53
-      Top = 580
+      Top = 600
       Width = 619
       Align = alBottom
       Anchors = [akLeft, akRight]
@@ -559,17 +558,17 @@ object fMainForm: TfMainForm
     end
     object pnlPlaylist: TPanel
       Left = 0
-      Height = 456
+      Height = 476
       Top = 124
       Width = 619
       Align = alClient
-      ClientHeight = 456
+      ClientHeight = 476
       ClientWidth = 619
       Constraints.MinWidth = 494
       TabOrder = 1
       object sgPlayList: TStringGrid
         Left = 1
-        Height = 454
+        Height = 474
         Top = 1
         Width = 617
         Align = alClient
@@ -790,7 +789,7 @@ object fMainForm: TfMainForm
   end
   object Splitter1: TSplitter
     Left = 243
-    Height = 633
+    Height = 653
     Top = 0
     Width = 4
   end
@@ -1121,14 +1120,17 @@ object fMainForm: TfMainForm
     object ActShowPreferencesInterface: TAction
       Category = 'Preferences'
       Caption = 'Aspect'
+      OnExecute = ActShowPreferencesInterfaceExecute
     end
     object ActShowPreferencesEngine: TAction
       Category = 'Preferences'
       Caption = 'Audio Engine'
+      OnExecute = ActShowPreferencesEngineExecute
     end
     object ActShowPreferencesMediaLibrary: TAction
       Category = 'Preferences'
       Caption = 'Collection Preferences ...'
+      OnExecute = ActShowPreferencesMediaLibraryExecute
     end
   end
   object RateStars: TImageList

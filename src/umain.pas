@@ -265,7 +265,10 @@ type
     procedure actShowAboutExecute(Sender: TObject);
     procedure actShowLeftExecute(Sender: TObject);
     procedure actShowPLMediainfoExecute(Sender: TObject);
+    procedure ActShowPreferencesEngineExecute(Sender: TObject);
     procedure ActShowPreferencesExecute(Sender: TObject);
+    procedure ActShowPreferencesInterfaceExecute(Sender: TObject);
+    procedure ActShowPreferencesMediaLibraryExecute(Sender: TObject);
     procedure BackEndSongStart(Sender: TObject);
     procedure btnBackDirClick(Sender: TObject);
     procedure btnFilterCancelClick(Sender: TObject);
@@ -391,7 +394,6 @@ type
     procedure CollectionHandler(Enqueue: boolean);
     procedure FileSystemHandler(Enqueue: boolean);
     procedure LoadColumnsMenu(BaseItem: TMenuItem);
-    procedure OnConfigDone(Sender: TObject; ChangedConf: boolean);
     procedure PlayListHandler(Enqueue:boolean);
     procedure LoadDir(Path: string);
     procedure LoadTree;
@@ -962,36 +964,19 @@ begin
 
 end;
 
-procedure TfMainForm.OnConfigDone(Sender: TObject; ChangedConf: boolean);
-begin
-  if not ChangedConf then
-    exit;
-  {$IFDEF NETWORK_INTF}
-
-  if BackEnd.Config.NetRemoteParam.Enabled then
-    begin
-     if not Assigned(MyNetIntf) then
-       begin
-         MyNetIntf :=  TNetIntf.Create;
-         MyNetIntf.Port := BackEnd.Config.NetRemoteParam.Port;
-         MyNetIntf.Activate(BackEnd);
-       end;
-    end
-  else
-   if Assigned(MyNetIntf) then
-     begin
-       FreeAndNil(MyNetIntf);
-
-     end;
-
-  if Assigned(MyNetIntf) then
-     MyNetIntf.Port := BackEnd.Config.NetRemoteParam.Port;
-  {$ENDIF}
-end;
-
 procedure TfMainForm.ActShowPreferencesExecute(Sender: TObject);
 begin
-  ShowConfigurationEditor(@OnConfigDone);
+  ShowConfigurationEditor();
+end;
+
+procedure TfMainForm.ActShowPreferencesInterfaceExecute(Sender: TObject);
+begin
+  ShowConfigurationEditor(cpGUI);
+end;
+
+procedure TfMainForm.ActShowPreferencesMediaLibraryExecute(Sender: TObject);
+begin
+  ShowConfigurationEditor(cpMediaLibrary);
 end;
 
 procedure TfMainForm.actShowAboutExecute(Sender: TObject);
@@ -1036,6 +1021,11 @@ begin
   finally
     FreeAndNil(FileList);
   end;
+end;
+
+procedure TfMainForm.ActShowPreferencesEngineExecute(Sender: TObject);
+begin
+    ShowConfigurationEditor(cpEngine);
 end;
 
 procedure TfMainForm.btnBackDirClick(Sender: TObject);
@@ -1302,12 +1292,8 @@ begin
   {$ENDIF}
 
   {$IFDEF NETWORK_INTF}
-  if BackEnd.Config.NetRemoteParam.Enabled then
-    begin
-      MyNetIntf := TNetIntf.Create;
-      MyNetIntf.Port:=BackEnd.Config.NetRemoteParam.Port;
-      MyNetIntf.Activate(BackEnd);
-    end;
+    MyNetIntf := TNetIntf.Create;
+    MyNetIntf.Activate(BackEnd);
   {$ENDIF}
 
 end;
