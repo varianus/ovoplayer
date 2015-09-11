@@ -13,15 +13,22 @@ type
   { TWebIntf }
   TTCPRemoteDaemon = class;
 
+  { TNetIntf }
+
   TNetIntf = class(TNullInterfacedobject)
   private
+    FActivated: boolean;
     fBackEnd: IBackEnd;
     DaemonThread: TTCPRemoteDaemon;
+    FPort: integer;
+    procedure SetPort(AValue: integer);
   public
     function Activate(BackEnd: IBackEnd): boolean;
     procedure DeActivate;
     constructor Create;
     destructor Destroy; override;
+    property Port: integer read FPort write SetPort;
+    property Activated: boolean read FActivated;
   end;
 
   TTCPRemoteDaemon = class(TThread)
@@ -61,7 +68,7 @@ constructor TTCPRemoteDaemon.Create(net: TNetIntf);
 begin
   inherited Create(False);
   fnet := net;
-  sock := TTcpIpServerSocket.Create(5500);
+  sock := TTcpIpServerSocket.Create(net.FPort);
   FreeOnTerminate := True;
 end;
 
@@ -194,6 +201,17 @@ end;
 
 { TWebIntf }
 
+procedure TNetIntf.SetPort(AValue: integer);
+begin
+  if FPort=AValue then Exit;
+  FPort:=AValue;
+  if Assigned(DaemonThread) then
+    begin
+      DeActivate;
+      Activate(fBackEnd);
+    end;
+end;
+
 function TNetIntf.Activate(BackEnd: IBackEnd): boolean;
 begin
   fBackEnd := BackEnd;
@@ -204,17 +222,27 @@ begin
     exit;
 
   Result := True;
+  FActivated:= True;
 
 end;
 
 procedure TNetIntf.DeActivate;
 begin
-
+  if Assigned(DaemonThread) then
+    begin
+       DaemonThread.Terminate;
+       DaemonThread.Sock.Socket.StopAccepting(true);
+       DaemonThread.WaitFor;
+       DaemonThread := nil;
+       FActivated:=false;
+    end;
 end;
 
 constructor TNetIntf.Create;
 begin
-
+  FPort := 6860;
+  FActivated := False;
+  DaemonThread := nil;
 end;
 
 destructor TNetIntf.Destroy;
