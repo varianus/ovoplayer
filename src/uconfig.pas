@@ -454,9 +454,10 @@ begin
   BackEnd.Config.EngineParam.EngineKind           := rgAudioEngine.Items[rgAudioEngine.ItemIndex];
 
   // NETREMOTE
+  {$IFDEF NETWORK_INTF}
   BackEnd.Config.NetRemoteParam.Enabled           := cbNetRemote.checked;
   BackEnd.Config.NetRemoteParam.Port              := sePort.Value;
-
+  {$ENDIF NETWORK_INTF}
 
   //GENERAL
   if EngineParamsEditor.Visible then
@@ -497,10 +498,11 @@ begin
   if EngineParamsEditor.Visible then
     EngineParamsEditor.Strings.Assign(BackEnd.Config.EngineSubParams);
 
+  {$IFDEF NETWORK_INTF}
   // NETREMOTE
   cbNetRemote.Checked       := BackEnd.Config.NetRemoteParam.Enabled;
   sePort.Value              := BackEnd.Config.NetRemoteParam.Port;
-
+  {$ENDIF NETWORK_INTF}
   //GENERAL
   pnlRestart.visible := Backend.Config.NeedRestart;
 end;
