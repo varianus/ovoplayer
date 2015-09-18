@@ -176,7 +176,7 @@ begin
   SetLength(tmpValue, DataLength);
   AStream.Read(tmpValue[0], DataLength);
   DataType := AStream.ReadWord;
-  ID := Widestring(tmpValue);
+  ID := UTF16ToUTF8(Widestring(tmpValue));
 
   DataLength := AStream.ReadWord;
 
@@ -201,7 +201,7 @@ var
   DataLength: word;
   tmpValue: UnicodeString;
 begin
-  tmpValue:= id +#0;
+  tmpValue:= UTF8ToUTF16(id + #0);
   DataLength := Length(tmpValue) * SizeOf(WideChar);
   AStream.WriteWord(DataLength);
   AStream.Write(tmpValue[1], DataLength);
