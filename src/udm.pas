@@ -28,7 +28,7 @@ uses
   Classes, SysUtils, LazFileUtils, ActnList, Controls, Dialogs, Forms, LResources,
   BaseTypes, CoreInterfaces,
   AudioEngine, LazUTF8,  LazLogger,
-  PlayListManager, MediaLibrary, UniqueInstance;
+  PlayListManager, MediaLibrary, FilesSupport, UniqueInstance;
 
 type
 
@@ -392,7 +392,7 @@ procedure TDM.ApplicationPropertiesException(Sender: TObject; E: Exception
 var
   AfileName: string;
 begin
-  AFileName:= 'ovoplayer.err';
+  AFileName:= GetConfigDir+'ovoplayer.err';
   AssignFile(f, UTF8ToSys(aFileName));
   {$PUSH}{$I-}
   if not FileExistsUTF8(aFileName) then
