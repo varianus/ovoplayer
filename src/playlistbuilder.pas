@@ -32,6 +32,7 @@ type
     FStringValue: string;
     FTestIndex: integer;
 
+    function GetFilterDate: string;
     function GetFilterNumber: string;
     function GetFilterRating: string;
     function GetFilterText: string;
@@ -44,6 +45,7 @@ type
     function isExecutable: boolean;
     function GetFilter: string;
     Function AsInteger:integer;
+    Function AsDate:TDate;
   published
     property TestIndex : integer read FTestIndex write SetTestIndex;
     property Value : string read FStringValue write SetStringValue;
@@ -125,6 +127,15 @@ ResourceString
   RS_IsEmpty      = 'is empty';
   RS_IsNotEmpty   = 'is not empty';
   RS_LessThan     = 'less than';
+
+  RS_Between      = 'between';
+
+  RS_On           = 'on';
+  RS_NotOn        = 'not on';
+  RS_Before       = 'before';
+  RS_After        = 'after';
+  RS_InTheLast    = 'in the last';
+  RS_NotInTheLast = 'not in the last';
 
 const
    FieldCount = 16;
@@ -259,6 +270,26 @@ begin
 
 end;
 
+function TFieldFilter.GetFilterDate: string;
+var
+  op : string;
+begin
+  result:='';
+
+  case TestIndex of
+    0: begin op := '=';  end; // equal to
+    1: begin op := '<>'; end; // not equal to
+    2: begin op := '<';  end; // bigger than
+    3: begin op := '>';  end; // less than
+  else
+    exit;
+  end;
+
+  result := format(' %s %s %s',[FieldArray[FIdx].FieldName, op, FStringValue]);
+
+end;
+
+
 function TFieldFilter.GetFilterRating: string;
 var
   op : string;
@@ -293,7 +324,7 @@ begin
  if FIdx  < 0 then exit;
  case  FieldArray[FIdx].Kind of
    ekText : result := GetFilterText;
-   ekDate : ;
+   ekDate : result := GetFilterDate;
    ekNumber : result := GetFilterNumber;
    ekRating : result := GetFilterRating;
 
@@ -307,6 +338,16 @@ begin
 
 end;
 
+function TFieldFilter.AsDate: TDate;
+var
+  tmp : Integer;
+begin
+  if not TryStrToInt(FStringValue,tmp) then
+     Result:=0
+  else
+     Result := TDate(tmp);
+end;
+
 function TFieldFilter.isExecutable: boolean;
 begin
  Result := False;
@@ -315,7 +356,7 @@ begin
    ekText : result := (TestIndex > 3) or
                       ((TestIndex < 4) and (FStringValue <> EmptyStr) )   ;
 
-   ekDate : ;
+   ekDate : Result := AsDate > 0;
    ekNumber : Result := True;
    ekRating : result := True;
  end;

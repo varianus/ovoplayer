@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, StdCtrls, Buttons, ComCtrls,
-  Spin, ExtCtrls, playlistbuilder, Types;
+  Spin, ExtCtrls, EditBtn, playlistbuilder, Types;
 
 type
 
@@ -15,7 +15,9 @@ type
   TfrField = class(TFrame)
     bMinus: TBitBtn;
     cbFieldName: TComboBox;
+    dtpDate: TDateEdit;
     Panel1: TPanel;
+    testDate: TComboBox;
     testNumber: TComboBox;
     edtText: TEdit;
     seNumber: TSpinEdit;
@@ -29,7 +31,9 @@ type
     pnlRating: TPanel;
     procedure bMinusClick(Sender: TObject);
     procedure cbFieldNameChange(Sender: TObject);
+    procedure dtpDateChange(Sender: TObject);
     procedure signalChange(Sender: TObject);
+    procedure testDateChange(Sender: TObject);
     procedure testRatingChange(Sender: TObject);
     procedure TestTextChange(Sender: TObject);
   private
@@ -89,10 +93,22 @@ begin
  signalChange(Self);
 end;
 
+procedure TfrField.dtpDateChange(Sender: TObject);
+begin
+  signalChange(self);
+end;
+
 procedure TfrField.signalChange(Sender: TObject);
 begin
   fChanged:=true;
   UpdateFilter;
+end;
+
+procedure TfrField.testDateChange(Sender: TObject);
+begin
+  dtpDate.Visible := testDate.ItemIndex < 4;
+  signalChange(self);
+
 end;
 
 procedure TfrField.testRatingChange(Sender: TObject);
@@ -149,6 +165,18 @@ begin
       Items.Add(RS_LessThan);
     end;
 
+  with testDate do
+    begin
+      Items.Clear;
+      Items.Add(RS_On);
+      Items.Add(RS_NotOn);
+      Items.Add(RS_Before);
+      Items.Add(RS_After);
+//      Items.Add(RS_InTheLast);
+//      Items.Add(RS_NotInTheLast);
+    end;
+
+
 end;
 
 procedure TfrField.SetisChanged(AValue: boolean);
@@ -173,7 +201,11 @@ begin
                TestText.ItemIndex:=FieldFilter.TestIndex;
                edtText.Text:=FieldFilter.Value;
              end;
-    EkDate : ShowOnlyPanel(pnlDate);
+    EkDate :  begin
+                 ShowOnlyPanel(pnlDate);
+                 testDate.ItemIndex:=FieldFilter.TestIndex;
+                 dtpDate.Date:=FieldFilter.AsDate;
+               end;
     ekNumber : begin
                  ShowOnlyPanel(pnlNumber);
                  testNumber.ItemIndex:=FieldFilter.TestIndex;
@@ -196,7 +228,10 @@ begin
                  FieldFilter.TestIndex   := TestText.ItemIndex;
                  FieldFilter.Value       := edtText.Text;
                end;
-//      EkDate : ShowOnlyPanel(pnlDate);
+      EkDate : begin
+                 FieldFilter.TestIndex   := testDate.ItemIndex;
+                 FieldFilter.Value       := inttostr(trunc(dtpDate.Date));
+               end;
       ekNumber : begin
                    FieldFilter.TestIndex := testNumber.ItemIndex;
                    FieldFilter.Value     := IntToStr(seNumber.Value);

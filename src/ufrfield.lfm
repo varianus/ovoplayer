@@ -6,8 +6,8 @@ object frField: TfrField
   ClientHeight = 32
   ClientWidth = 579
   TabOrder = 0
-  DesignLeft = 534
-  DesignTop = 340
+  DesignLeft = 2115
+  DesignTop = 517
   object bMinus: TBitBtn
     Left = 548
     Height = 32
@@ -71,8 +71,46 @@ object frField: TfrField
       Width = 418
       Align = alClient
       BevelOuter = bvNone
+      ClientHeight = 32
+      ClientWidth = 418
       TabOrder = 1
       Visible = False
+      object testDate: TComboBox
+        Left = 3
+        Height = 23
+        Top = 4
+        Width = 140
+        ItemHeight = 15
+        ItemIndex = 0
+        Items.Strings = (
+          'equal to'
+          'not equal to'
+          'bigger than'
+          'less than'
+        )
+        OnChange = testDateChange
+        Style = csDropDownList
+        TabOrder = 0
+        Text = 'equal to'
+      end
+      object dtpDate: TDateEdit
+        AnchorSideLeft.Control = testDate
+        AnchorSideLeft.Side = asrBottom
+        Left = 146
+        Height = 23
+        Top = 4
+        Width = 128
+        CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
+        OKCaption = 'OK'
+        CancelCaption = 'Cancel'
+        DateOrder = doNone
+        ButtonWidth = 23
+        BorderSpacing.Left = 3
+        NumGlyphs = 1
+        MaxLength = 0
+        OnChange = dtpDateChange
+        TabOrder = 1
+      end
     end
     object pnlText: TPanel
       Left = 0
@@ -87,10 +125,10 @@ object frField: TfrField
       Visible = False
       object TestText: TComboBox
         Left = 3
-        Height = 25
+        Height = 23
         Top = 4
         Width = 140
-        ItemHeight = 0
+        ItemHeight = 15
         ItemIndex = 0
         Items.Strings = (
           'is'
@@ -106,10 +144,17 @@ object frField: TfrField
         Text = 'is'
       end
       object edtText: TEdit
-        Left = 149
-        Height = 27
+        AnchorSideLeft.Control = TestText
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideRight.Control = pnlText
+        AnchorSideRight.Side = asrBottom
+        Left = 146
+        Height = 23
         Top = 4
-        Width = 200
+        Width = 269
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Left = 3
+        BorderSpacing.Right = 3
         OnChange = signalChange
         TabOrder = 1
       end
@@ -127,10 +172,10 @@ object frField: TfrField
       Visible = False
       object testNumber: TComboBox
         Left = 3
-        Height = 25
+        Height = 23
         Top = 4
         Width = 140
-        ItemHeight = 0
+        ItemHeight = 15
         ItemIndex = 0
         Items.Strings = (
           'equal to'
@@ -144,10 +189,17 @@ object frField: TfrField
         Text = 'equal to'
       end
       object seNumber: TSpinEdit
-        Left = 149
-        Height = 27
+        AnchorSideLeft.Control = testNumber
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideRight.Control = pnlNumber
+        AnchorSideRight.Side = asrBottom
+        Left = 146
+        Height = 23
         Top = 4
-        Width = 98
+        Width = 269
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Left = 3
+        BorderSpacing.Right = 3
         MaxValue = 2147483647
         OnChange = signalChange
         TabOrder = 1
@@ -166,10 +218,10 @@ object frField: TfrField
       Visible = False
       object testRating: TComboBox
         Left = 3
-        Height = 25
+        Height = 23
         Top = 4
         Width = 140
-        ItemHeight = 0
+        ItemHeight = 15
         ItemIndex = 0
         Items.Strings = (
           'equal to'
@@ -184,11 +236,18 @@ object frField: TfrField
         Text = 'equal to'
       end
       object cbRating: TComboBox
-        Left = 149
-        Height = 29
+        AnchorSideLeft.Control = testRating
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideRight.Control = pnlRating
+        AnchorSideRight.Side = asrBottom
+        Left = 146
+        Height = 23
         Top = 4
-        Width = 140
-        ItemHeight = 0
+        Width = 269
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Left = 3
+        BorderSpacing.Right = 3
+        ItemHeight = 15
         Items.Strings = (
           'None'
           '½'
@@ -220,10 +279,10 @@ object frField: TfrField
     TabOrder = 2
     object cbFieldName: TComboBox
       Left = 0
-      Height = 29
+      Height = 23
       Top = 4
       Width = 128
-      ItemHeight = 0
+      ItemHeight = 15
       OnChange = cbFieldNameChange
       Style = csDropDownList
       TabOrder = 0
