@@ -26,6 +26,10 @@ uses
   Classes, SysUtils, base64, BaseTypes, basetag;
 
 Const
+  CATEGORY_CONFIG = 'cfg';  // client --> server
+    COMMAND_PIN = 'pin';
+    COMMAND_KEEP = 'keep'; // keep connection open
+
   CATEGORY_ACTION = 'action';  // client --> server
     COMMAND_PLAY = 'play';
     COMMAND_STOP = 'stop';
@@ -35,6 +39,9 @@ Const
     COMMAND_PREVIOUS = 'previous';
     COMMAND_SEEK_P = 'seek+';
     COMMAND_SEEK_M = 'seek-';
+    COMMAND_SETVOL = 'vol'; // param is new volume in range 1..256
+    COMMAND_MUTE = 'mute';
+    COMMAND_UNMUTE = 'unmute';
 
   CATEGORY_FILE = 'file';   // client --> server
     COMMAND_ENQUEUE = 'e';           //   \
@@ -53,7 +60,6 @@ Const
     INFO_METADATA = 'meta';  // optional param playlist item number
     INFO_PLAYLISTCOUNT = 'count';
     INFO_COVER = 'cover';
-
 
   CATEGORY_COMMAND_SEPARATOR = ':';
   CATEGORY_PARAM_SEPARATOR = '=';

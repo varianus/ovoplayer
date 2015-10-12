@@ -603,6 +603,7 @@ function TBackEnd.HandleExternalCommand(Command: RExternalCommand):boolean;
 var
   Handled: boolean;
   idx: integer;
+  vol: integer;
 begin
   Handled:=false;
 
@@ -620,6 +621,13 @@ begin
                           end;
        COMMAND_NEXT     : begin Next; Handled := true; end;
        COMMAND_PREVIOUS : begin Previous; Handled := true; end;
+       COMMAND_MUTE     : begin Mute; Handled := true; end;
+       COMMAND_UNMUTE   : begin UnMute; Handled := true; end;
+       COMMAND_SETVOL   : begin
+                              Vol:=StrToIntDef(Command.Param, GetVolume);
+                              SetVolume(Vol);
+                              Handled := true;
+                          end;
     end;
 
   if Command.Category = CATEGORY_APP then
