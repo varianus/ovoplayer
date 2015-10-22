@@ -316,6 +316,9 @@ type
     procedure sgPlayListContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
     procedure sgPlayListDblClick(Sender: TObject);
+    procedure sgPlayListDragDrop(Sender, Source: TObject; X, Y: Integer);
+    procedure sgPlayListDragOver(Sender, Source: TObject; X, Y: Integer;
+      State: TDragState; var Accept: Boolean);
     procedure sgPlayListDrawCell(Sender: TObject; aCol, aRow: Integer;
       aRect: TRect; aState: TGridDrawState);
     procedure sgPlayListHeaderClick(Sender: TObject; IsColumn: Boolean;
@@ -356,6 +359,8 @@ type
       var NodeClass: TTreeNodeClass);
     procedure tvCollectionDblClick(Sender: TObject);
     procedure tvCollectionGetImageIndex(Sender: TObject; Node: TTreeNode);
+    procedure tvCollectionStartDrag(Sender: TObject; var DragObject: TDragObject
+      );
   private
     SeekIng:      boolean;
     fSourceIndex, fTargetIndex: Integer;
@@ -1945,6 +1950,22 @@ begin
 
 end;
 
+procedure TfMainForm.sgPlayListDragDrop(Sender, Source: TObject; X, Y: Integer);
+begin
+  if source = tvCollection then
+    CollectionHandler(true)
+  else
+    if source = FilesTree then
+      FileSystemHandler(true);
+
+end;
+
+procedure TfMainForm.sgPlayListDragOver(Sender, Source: TObject; X, Y: Integer;
+  State: TDragState; var Accept: Boolean);
+begin
+  Accept:=(Source = tvCollection) or (source = FilesTree);
+end;
+
 procedure TfMainForm.sgPlayListDrawCell(Sender: TObject; aCol, aRow: Integer;
   aRect: TRect; aState: TGridDrawState);
 var
@@ -2634,6 +2655,12 @@ begin
   node.ImageIndex := SortArray[TMusicTreeNode(Node).Kind].ImageIndex;
   node.SelectedIndex:= node.ImageIndex;
 
+end;
+
+procedure TfMainForm.tvCollectionStartDrag(Sender: TObject;
+  var DragObject: TDragObject);
+begin
+  //
 end;
 
 procedure TfMainForm.LoadDir(Path:string);
