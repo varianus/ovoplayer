@@ -206,7 +206,8 @@ type
     MenuItem7:  TMenuItem;
     MenuItem8:  TMenuItem;
     MenuItem9:  TMenuItem;
-    Panel1: TPanel;
+    pnlTimePos: TPanel;
+    pnlLeft: TPanel;
     PlaylistMenu: TPopupMenu;
     pmdirectories: TPopupMenu;
     PlaylistTree: TTreeView;
@@ -1009,7 +1010,7 @@ end;
 
 procedure TfMainForm.actShowLeftExecute(Sender: TObject);
 begin
-  pcmain.Visible:= actShowLeft.checked;
+  pnlLeft.Visible:= actShowLeft.checked;
 end;
 
 procedure TfMainForm.actShowPLMediainfoExecute(Sender: TObject);

@@ -1,12 +1,11 @@
 object fMainForm: TfMainForm
-  Left = 1970
+  Left = 508
   Height = 653
   Top = 181
   Width = 866
-  ActiveControl = pcMain
   AllowDropFiles = True
   Caption = 'OvoPlayer'
-  ClientHeight = 633
+  ClientHeight = 632
   ClientWidth = 866
   Constraints.MinHeight = 400
   Constraints.MinWidth = 600
@@ -21,371 +20,379 @@ object fMainForm: TfMainForm
   OnShow = FormShow
   ShowHint = True
   LCLVersion = '1.5'
-  object pcMain: TPageControl
+  object pnlleft: TPanel
     Left = 0
-    Height = 633
+    Height = 632
     Top = 0
     Width = 243
-    ActivePage = tsCollection
     Align = alLeft
-    MultiLine = True
-    TabIndex = 0
+    BevelOuter = bvNone
+    ClientHeight = 632
+    ClientWidth = 243
     TabOrder = 0
-    TabPosition = tpBottom
-    Options = [nboMultiLine, nboHidePageListPopup]
-    object tsCollection: TTabSheet
-      Caption = 'Collection'
-      ClientHeight = 605
-      ClientWidth = 235
-      object pnlCollection: TPanel
-        Left = 0
-        Height = 70
-        Top = 0
-        Width = 235
-        Align = alTop
-        BevelOuter = bvNone
-        ClientHeight = 70
-        ClientWidth = 235
-        TabOrder = 0
-        object cbGroupBy: TComboBox
-          Left = 4
-          Height = 23
-          Hint = 'Group song'
-          Top = 6
-          Width = 228
-          Anchors = [akTop, akLeft, akRight]
-          ItemHeight = 15
-          ItemIndex = 0
-          Items.Strings = (
-            'AlbumArtist / Album'
-            'Artist / Album'
-            'Year / Album'
-            'Genre / Album'
-          )
-          OnChange = cbGroupByChange
-          Style = csDropDownList
-          TabOrder = 0
-          Text = 'AlbumArtist / Album'
-        end
-        object edtFilter: TLabeledEdit
-          Left = 47
-          Height = 23
-          Hint = 'Filter'
-          Top = 38
-          Width = 165
-          Anchors = [akTop, akLeft, akRight]
-          EditLabel.AnchorSideTop.Control = edtFilter
-          EditLabel.AnchorSideTop.Side = asrCenter
-          EditLabel.AnchorSideRight.Control = edtFilter
-          EditLabel.AnchorSideBottom.Control = edtFilter
-          EditLabel.AnchorSideBottom.Side = asrBottom
-          EditLabel.Left = 18
-          EditLabel.Height = 15
-          EditLabel.Top = 42
-          EditLabel.Width = 26
-          EditLabel.Caption = 'Filter'
-          EditLabel.ParentColor = False
-          LabelPosition = lpLeft
-          TabOrder = 1
-          OnChange = edtFilterChange
-        end
-        object btnFilterCancel: TSpeedButton
-          Left = 211
-          Height = 22
-          Top = 39
-          Width = 22
-          Anchors = [akRight, akBottom]
-          Constraints.MaxHeight = 22
-          Constraints.MaxWidth = 22
-          Caption = 'Close'
-          Flat = True
-          Glyph.Data = {
-            36040000424D3604000000000000360000002800000010000000100000000100
-            2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
-            FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-            FF00FFFFFF00000000000000000A0000000FFFFFFF000000000AFFFFFF00FFFF
-            FF0000000000000000010000001F000000E6000000FF000000FF000000FF0000
-            00FF000000FF000000FF000000FA000000FF000000FF000000FFFFFFFF00FFFF
-            FF004A47F0000000000D000000E6000000FF000000AA000000B4000000DF0000
-            00AF000000C2000001A9000000D8000000DB000000CC000000FFFFFFFF000101
-            040F00000000000000FF000000FF413FED0B3D3AEC00FFFFFF00FFFFFF00302D
-            E7042C2AE600413FF1004C4AF600312FEA00000002D0000000FFFFFFFF000000
-            0015000000CF000000E67170FF060000FFCD0000FF8F3E3BEC023937EB003532
-            E9004745F2000000FFCD0000FFCD0000FF32000002CD000000FF0000000F0000
-            00FF000001EA10102C2E6663FA000000FFBF0000FFD70000FFCD3E3CEC01504D
-            F4000000FFCD0000FFFF0000FF7F2A27E500000000AA000000FF000000CB0000
-            00FF000000405B58F6015C5AF6006764FA010000FFA10000FFF30000FFB20000
-            FF9B0000FFE60000FFFF3230E800FFFFFF00000000B7000000FF000000FF0000
-            00BBFFFFFF00FFFFFF005C59F6005D5BF7010707FF0D0000FF330000FFD00000
-            FFFB0000FF6B3C39EB00FFFFFF00FFFFFF00000000CB000000FF000000FF0000
-            0095FFFFFF00FFFFFF00615EF8005D5AF6007D79FF000000FF9D0000FFD80000
-            FFFD0000FF94413FED00FFFFFF00FFFFFF00000000C2000000FF000000C20000
-            00FF0000006A6967FB006663F900706DFB000000FFC30000FFF30000FF7B0000
-            FFBA0000FFF90000FFD84240EE00FFFFFF00000000C2000000FFFFFFFF000000
-            00DA000000FF0F0F230C6462F8010000FFF20000FFFF0000FFDD605DF7006D6A
-            FA000000FFD00000FFFF0000FFFF4341EE00000000D2000000FFFFFFFF000606
-            0E35000000FF000000FF0000FF320000FFF60000FFFF0808FE305F5CF702615E
-            F8006E6CFA000000FFCD0000FFD00101FE2D000000AB000000FFFFFFFF007774
-            FF037A77FF05000000FF000000FF0000FF2C3634FD0CFFFFFF00FFFFFF00605D
-            F703625FF8006F6DFB030000FF2C0E0DFE07010106CE000000FFFFFFFF00FFFF
-            FF007774FF027A77FF05000000FF000000FF000000C0000000B3000000CB0000
-            00A9020206A9030309CD010103D8010103CA010103AB000000FFFFFFFF00FFFF
-            FF00FFFFFF007774FF0A7774FF0A000000FF000000F8000000F0000000FF0000
-            00F5000000FF000000FF000000FF000000FF000000DA000000FFFFFFFF00FFFF
-            FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF0000000000000000000000001E0000
-            0000FFFFFF00FFFFFF0000000000000000000000003200000000
-          }
-          OnClick = btnFilterCancelClick
-          ShowCaption = False
-        end
-      end
-      object gbStats: TGroupBox
-        Left = 0
-        Height = 109
-        Top = 496
-        Width = 235
-        Align = alBottom
-        Caption = 'Stats'
-        ClientHeight = 89
-        ClientWidth = 231
-        ParentFont = False
-        TabOrder = 1
-        Visible = False
-        object btnCloseCollectionStat: TSpeedButton
-          Left = 209
-          Height = 22
-          Top = 0
-          Width = 22
-          Align = alRight
-          Constraints.MaxHeight = 22
-          Constraints.MaxWidth = 22
-          Caption = 'Close'
-          Flat = True
-          Glyph.Data = {
-            36040000424D3604000000000000360000002800000010000000100000000100
-            20000000000000040000640000006400000000000000000000009B9B9B16A0A0
-            A0AE9D9D9DF99E9E9EF89E9E9EF89E9E9EF89E9E9EF89E9E9EF89E9E9EF89E9E
-            9EF89E9E9EF89E9E9EF89E9E9EF89D9D9DFBA0A0A0C99B9B9B319F9F9F95B9B9
-            B9FBEAEAEAFFF2F2F2FFF5F5F5FFF7F7F7FFF9F9F9FFFBFBFBFFFCFCFCFFFBFB
-            FBFFF9F9F9FFF7F7F7FFF5F5F5FFF1F1F1FFCACACAFFA0A0A0D39E9E9EF0E3E3
-            E3FF6E6EE4FF1717DBFF1616D9FF1414D8FF1313D7FF1212D6FF1111D6FF1212
-            D6FF1212D7FF1414D8FF1515D9FF5454E1FFF0F0F0FFA0A0A0F69D9D9DF7E9E9
-            E9FF2929DFFF1313DCFF1111DAFF1010D9FF0E0ED8FF0E0ED8FF0E0ED8FF0E0E
-            D8FF0E0ED8FF0F0FD9FF1111DAFF1212DCFFF1F1F1FFA4A4A4F29D9D9DF7E9E9
-            E9FF2B2BE1FF1515DEFF1717DDFF7F80E5FF6566E3FF1111DAFF1111DAFF3838
-            DEFF898AE6FF3031DFFF1313DDFF1515DEFFF1F1F1FFA4A4A4F29D9D9DF7E8E8
-            E8FF2D2DE3FF1818E0FF4E4FE3FFECEEEEFFECEEEEFF7B7CE5FF4444E0FFE0E2
-            EDFFECEEEEFF8E8FE7FF1616DFFF1818E0FFF0F0F0FFA4A4A4F29D9D9DF7E7E7
-            E7FF2E2EE4FF1A1AE3FF2020E2FFC6C8ECFFECEEEEFFECEEEEFFE6E8EDFFECEE
-            EEFFE4E6EEFF4949E4FF1919E1FF1A1AE2FFEFEFEFFFA4A4A4F29D9D9DF7E6E6
-            E6FF3131E6FF1D1DE5FF1C1CE4FF2C2DE4FFD0D2EDFFECEEEEFFECEEEEFFE9EB
-            EEFF5152E6FF1B1BE3FF1C1CE4FF1D1DE5FFEDEDEDFFA4A4A4F29D9D9DF7E5E5
-            E5FF3333E8FF2020E7FF1F1FE7FF4F4FE8FFE2E4EEFFECEEEEFFECEEEEFFECEE
-            EEFF8485EAFF1E1EE6FF1F1FE6FF2020E7FFECECECFFA3A3A3F29D9D9DF7E3E3
-            E3FF3636EBFF2323EAFF3F40EAFFE3E5EEFFECEEEEFFE4E7EEFFD1D3EDFFECEE
-            EEFFECEEEEFF696AEAFF2222E9FF2323EAFFEAEAEAFFA3A3A3F29D9D9DF7E1E1
-            E1FF3838EDFF2626ECFF5252ECFFECEEEEFFE4E6EEFF5859ECFF3435ECFFC8CA
-            EDFFECEEEEFF8E8FEDFF2525ECFF2626ECFFE8E8E8FFA3A3A3F29D9D9DF7E0E0
-            E0FF3939EEFF2828EEFF2828EEFF5657EEFF3E3EEEFF2727EDFF2727EDFF3434
-            EDFF5F5FEDFF3030EEFF2828EEFF2828EEFFE6E6E6FFA3A3A3F29D9D9DF7DEDE
-            DEFF3D3DEDFF2828EEFF2828EEFF2828EEFF2828EEFF2828EEFF2828EEFF2828
-            EEFF2828EEFF2828EEFF2828EEFF2B2BEEFFE4E4E4FFA3A3A3F29F9F9FE4D2D2
-            D2FF9D9DE7FF5D5DEBFF5C5CEBFF5D5DECFF5D5DECFF5D5DECFF5D5DECFF5D5D
-            ECFF5D5DECFF5D5DECFF5C5CEBFF8D8DE8FFDFDFDFFF9E9E9EF79C9C9C74A6A6
-            A6F6CBCBCBFFD4D4D4FFD5D5D5FFD5D5D5FFD5D5D5FFD5D5D5FFD5D5D5FFD5D5
-            D5FFD5D5D5FFD5D5D5FFD5D5D5FFD0D0D0FFB0B0B0F89F9F9FB59B9B9B039B9B
-            9B5CA0A0A0CCA0A0A0DFA0A0A0DFA0A0A0DFA0A0A0DFA0A0A0DFA0A0A0DFA0A0
-            A0DFA0A0A0DFA0A0A0DFA0A0A0DFA0A0A0D79D9D9D779B9B9B0E
-          }
-          OnClick = btnCloseCollectionStatClick
-          ShowCaption = False
-        end
-        object sgStats: TStringGrid
+    object pcMain: TPageControl
+      Left = 0
+      Height = 523
+      Top = 0
+      Width = 243
+      ActivePage = tsCollection
+      Align = alClient
+      MultiLine = True
+      TabIndex = 0
+      TabOrder = 0
+      TabPosition = tpBottom
+      Options = [nboMultiLine, nboHidePageListPopup]
+      object tsCollection: TTabSheet
+        Caption = 'Collection'
+        ClientHeight = 488
+        ClientWidth = 237
+        object pnlCollection: TPanel
           Left = 0
-          Height = 89
+          Height = 70
           Top = 0
-          Width = 209
+          Width = 237
+          Align = alTop
+          BevelOuter = bvNone
+          ClientHeight = 70
+          ClientWidth = 237
+          TabOrder = 0
+          object cbGroupBy: TComboBox
+            Left = 4
+            Height = 25
+            Hint = 'Group song'
+            Top = 6
+            Width = 230
+            Anchors = [akTop, akLeft, akRight]
+            ItemHeight = 0
+            ItemIndex = 0
+            Items.Strings = (
+              'AlbumArtist / Album'
+              'Artist / Album'
+              'Year / Album'
+              'Genre / Album'
+            )
+            OnChange = cbGroupByChange
+            Style = csDropDownList
+            TabOrder = 0
+            Text = 'AlbumArtist / Album'
+          end
+          object edtFilter: TLabeledEdit
+            Left = 47
+            Height = 27
+            Hint = 'Filter'
+            Top = 38
+            Width = 167
+            Anchors = [akTop, akLeft, akRight]
+            EditLabel.AnchorSideTop.Control = edtFilter
+            EditLabel.AnchorSideTop.Side = asrCenter
+            EditLabel.AnchorSideRight.Control = edtFilter
+            EditLabel.AnchorSideBottom.Control = edtFilter
+            EditLabel.AnchorSideBottom.Side = asrBottom
+            EditLabel.Left = 14
+            EditLabel.Height = 17
+            EditLabel.Top = 43
+            EditLabel.Width = 30
+            EditLabel.Caption = 'Filter'
+            EditLabel.ParentColor = False
+            LabelPosition = lpLeft
+            TabOrder = 1
+            OnChange = edtFilterChange
+          end
+          object btnFilterCancel: TSpeedButton
+            Left = 213
+            Height = 22
+            Top = 39
+            Width = 22
+            Anchors = [akRight, akBottom]
+            Constraints.MaxHeight = 22
+            Constraints.MaxWidth = 22
+            Caption = 'Close'
+            Flat = True
+            Glyph.Data = {
+              36040000424D3604000000000000360000002800000010000000100000000100
+              2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
+              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+              FF00FFFFFF00000000000000000A0000000FFFFFFF000000000AFFFFFF00FFFF
+              FF0000000000000000010000001F000000E6000000FF000000FF000000FF0000
+              00FF000000FF000000FF000000FA000000FF000000FF000000FFFFFFFF00FFFF
+              FF004A47F0000000000D000000E6000000FF000000AA000000B4000000DF0000
+              00AF000000C2000001A9000000D8000000DB000000CC000000FFFFFFFF000101
+              040F00000000000000FF000000FF413FED0B3D3AEC00FFFFFF00FFFFFF00302D
+              E7042C2AE600413FF1004C4AF600312FEA00000002D0000000FFFFFFFF000000
+              0015000000CF000000E67170FF060000FFCD0000FF8F3E3BEC023937EB003532
+              E9004745F2000000FFCD0000FFCD0000FF32000002CD000000FF0000000F0000
+              00FF000001EA10102C2E6663FA000000FFBF0000FFD70000FFCD3E3CEC01504D
+              F4000000FFCD0000FFFF0000FF7F2A27E500000000AA000000FF000000CB0000
+              00FF000000405B58F6015C5AF6006764FA010000FFA10000FFF30000FFB20000
+              FF9B0000FFE60000FFFF3230E800FFFFFF00000000B7000000FF000000FF0000
+              00BBFFFFFF00FFFFFF005C59F6005D5BF7010707FF0D0000FF330000FFD00000
+              FFFB0000FF6B3C39EB00FFFFFF00FFFFFF00000000CB000000FF000000FF0000
+              0095FFFFFF00FFFFFF00615EF8005D5AF6007D79FF000000FF9D0000FFD80000
+              FFFD0000FF94413FED00FFFFFF00FFFFFF00000000C2000000FF000000C20000
+              00FF0000006A6967FB006663F900706DFB000000FFC30000FFF30000FF7B0000
+              FFBA0000FFF90000FFD84240EE00FFFFFF00000000C2000000FFFFFFFF000000
+              00DA000000FF0F0F230C6462F8010000FFF20000FFFF0000FFDD605DF7006D6A
+              FA000000FFD00000FFFF0000FFFF4341EE00000000D2000000FFFFFFFF000606
+              0E35000000FF000000FF0000FF320000FFF60000FFFF0808FE305F5CF702615E
+              F8006E6CFA000000FFCD0000FFD00101FE2D000000AB000000FFFFFFFF007774
+              FF037A77FF05000000FF000000FF0000FF2C3634FD0CFFFFFF00FFFFFF00605D
+              F703625FF8006F6DFB030000FF2C0E0DFE07010106CE000000FFFFFFFF00FFFF
+              FF007774FF027A77FF05000000FF000000FF000000C0000000B3000000CB0000
+              00A9020206A9030309CD010103D8010103CA010103AB000000FFFFFFFF00FFFF
+              FF00FFFFFF007774FF0A7774FF0A000000FF000000F8000000F0000000FF0000
+              00F5000000FF000000FF000000FF000000FF000000DA000000FFFFFFFF00FFFF
+              FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF0000000000000000000000001E0000
+              0000FFFFFF00FFFFFF0000000000000000000000003200000000
+            }
+            OnClick = btnFilterCancelClick
+            ShowCaption = False
+          end
+        end
+        object tvCollection: TTreeView
+          Left = 0
+          Height = 418
+          Top = 70
+          Width = 237
           Align = alClient
-          AutoEdit = False
-          ColCount = 2
-          Columns = <          
-            item
-              MaxSize = 400
-              Title.Caption = 'Title'
-              Width = 143
-            end          
-            item
-              Alignment = taRightJustify
-              MaxSize = 400
-              SizePriority = 2
-              Title.Caption = 'Title'
-              Width = 54
-            end>
-          DefaultRowHeight = 18
-          FixedCols = 0
-          FixedRows = 0
-          Options = [goRangeSelect, goSmoothScroll]
-          RowCount = 1
-          ScrollBars = ssAutoVertical
-          TabOrder = 0
-          TitleStyle = tsNative
-          ColWidths = (
-            143
-            54
-          )
+          DragMode = dmAutomatic
+          ExpandSignType = tvestPlusMinus
+          Images = DM.ilSmall
+          Indent = 20
+          MultiSelect = True
+          ParentShowHint = False
+          PopupMenu = pnCollection
+          ReadOnly = True
+          RightClickSelect = True
+          RowSelect = True
+          ScrollBars = ssAutoBoth
+          ShowHint = True
+          TabOrder = 1
+          OnCreateNodeClass = tvCollectionCreateNodeClass
+          OnDblClick = tvCollectionDblClick
+          OnGetImageIndex = tvCollectionGetImageIndex
+          OnStartDrag = tvCollectionStartDrag
+          Options = [tvoAllowMultiselect, tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
         end
       end
-      object tvCollection: TTreeView
-        Left = 0
-        Height = 426
-        Top = 70
-        Width = 235
-        Align = alClient
-        DefaultItemHeight = 18
-        DragMode = dmAutomatic
-        ExpandSignType = tvestPlusMinus
-        Images = DM.ilSmall
-        Indent = 20
-        MultiSelect = True
-        ParentShowHint = False
-        PopupMenu = pnCollection
-        ReadOnly = True
-        RightClickSelect = True
-        RowSelect = True
-        ScrollBars = ssAutoBoth
-        ShowHint = True
-        TabOrder = 2
-        OnCreateNodeClass = tvCollectionCreateNodeClass
-        OnDblClick = tvCollectionDblClick
-        OnGetImageIndex = tvCollectionGetImageIndex
-        OnStartDrag = tvCollectionStartDrag
-        Options = [tvoAllowMultiselect, tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+      object tsDirectory: TTabSheet
+        Caption = 'Directory'
+        ClientHeight = 488
+        ClientWidth = 237
+        OnShow = tsDirectoryShow
+        object tbDirectory: TToolBar
+          Left = 0
+          Height = 49
+          Top = 0
+          Width = 237
+          Flat = False
+          Images = DM.ilButtons
+          TabOrder = 0
+          object btnBackDir: TToolButton
+            Left = 1
+            Top = 2
+            Caption = 'Back'
+            ImageIndex = 16
+            OnClick = btnBackDirClick
+          end
+          object btnForwardDir: TToolButton
+            Left = 27
+            Top = 2
+            Caption = 'Forward'
+            ImageIndex = 15
+            OnClick = btnForwardDirClick
+          end
+          object btnUpDir: TToolButton
+            Left = 53
+            Top = 2
+            Caption = 'Up'
+            ImageIndex = 17
+            OnClick = btnUpDirClick
+          end
+          object btnHomeDir: TToolButton
+            Left = 79
+            Top = 2
+            Caption = 'Home'
+            ImageIndex = 14
+            OnClick = btnHomeDirClick
+          end
+          object ePath: TDirectoryEdit
+            Left = 1
+            Height = 27
+            Top = 24
+            Width = 202
+            OnAcceptDirectory = ePathAcceptDirectory
+            ShowHidden = False
+            ButtonWidth = 23
+            NumGlyphs = 1
+            MaxLength = 0
+            TabOrder = 0
+            OnEditingDone = ePathEditingDone
+          end
+        end
+        object FilesTree: TTreeView
+          Left = 0
+          Height = 439
+          Top = 49
+          Width = 237
+          Align = alClient
+          DragMode = dmAutomatic
+          ExpandSignType = tvestPlusMinus
+          HideSelection = False
+          Images = DM.ilSmall
+          MultiSelect = True
+          PopupMenu = pmdirectories
+          ReadOnly = True
+          RightClickSelect = True
+          RowSelect = True
+          ScrollBars = ssAutoBoth
+          TabOrder = 1
+          OnCreateNodeClass = FilesTreeCreateNodeClass
+          OnDblClick = FilesTreeDblClick
+          OnGetImageIndex = FilesTreeGetImageIndex
+          OnGetSelectedIndex = FilesTreeGetSelectedIndex
+          Options = [tvoAllowMultiselect, tvoAutoItemHeight, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+        end
+      end
+      object tsPlayList: TTabSheet
+        Caption = 'PlayList'
+        ClientHeight = 488
+        ClientWidth = 237
+        OnShow = tsPlayListShow
+        object PlaylistTree: TTreeView
+          Left = 0
+          Height = 597
+          Top = 0
+          Width = 237
+          Align = alClient
+          PopupMenu = pmPlaylists
+          ReadOnly = True
+          RightClickSelect = True
+          RowSelect = True
+          ScrollBars = ssAutoBoth
+          TabOrder = 0
+          OnCreateNodeClass = PlaylistTreeCreateNodeClass
+          OnDblClick = PlaylistTreeDblClick
+          Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+          Items.Data = {
+            F9FFFFFF020001000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF010000000000
+            000001130000004175746F6D6174696320706C61796C69737473FFFFFFFFFFFF
+            FFFF63000000FFFFFFFF000000000000000000010000002D
+          }
+        end
       end
     end
-    object tsDirectory: TTabSheet
-      Caption = 'Directory'
-      ClientHeight = 605
-      ClientWidth = 235
-      OnShow = tsDirectoryShow
-      object tbDirectory: TToolBar
-        Left = 0
-        Height = 49
+    object gbStats: TGroupBox
+      Left = 0
+      Height = 109
+      Top = 523
+      Width = 243
+      Align = alBottom
+      Caption = 'Stats'
+      ClientHeight = 90
+      ClientWidth = 239
+      ParentFont = False
+      TabOrder = 1
+      Visible = False
+      object btnCloseCollectionStat: TSpeedButton
+        Left = 217
+        Height = 22
         Top = 0
-        Width = 235
-        Flat = False
-        Images = DM.ilButtons
-        TabOrder = 0
-        object btnBackDir: TToolButton
-          Left = 1
-          Top = 2
-          Caption = 'Back'
-          ImageIndex = 16
-          OnClick = btnBackDirClick
-        end
-        object btnForwardDir: TToolButton
-          Left = 27
-          Top = 2
-          Caption = 'Forward'
-          ImageIndex = 15
-          OnClick = btnForwardDirClick
-        end
-        object btnUpDir: TToolButton
-          Left = 53
-          Top = 2
-          Caption = 'Up'
-          ImageIndex = 17
-          OnClick = btnUpDirClick
-        end
-        object btnHomeDir: TToolButton
-          Left = 79
-          Top = 2
-          Caption = 'Home'
-          ImageIndex = 14
-          OnClick = btnHomeDirClick
-        end
-        object ePath: TDirectoryEdit
-          Left = 1
-          Height = 23
-          Top = 24
-          Width = 202
-          OnAcceptDirectory = ePathAcceptDirectory
-          ShowHidden = False
-          ButtonWidth = 23
-          NumGlyphs = 1
-          MaxLength = 0
-          TabOrder = 0
-          OnEditingDone = ePathEditingDone
-        end
-      end
-      object FilesTree: TTreeView
-        Left = 0
-        Height = 556
-        Top = 49
-        Width = 235
-        Align = alClient
-        DefaultItemHeight = 18
-        DragMode = dmAutomatic
-        ExpandSignType = tvestPlusMinus
-        HideSelection = False
-        Images = DM.ilSmall
-        MultiSelect = True
-        PopupMenu = pmdirectories
-        ReadOnly = True
-        RightClickSelect = True
-        RowSelect = True
-        ScrollBars = ssAutoBoth
-        TabOrder = 1
-        OnCreateNodeClass = FilesTreeCreateNodeClass
-        OnDblClick = FilesTreeDblClick
-        OnGetImageIndex = FilesTreeGetImageIndex
-        OnGetSelectedIndex = FilesTreeGetSelectedIndex
-        Options = [tvoAllowMultiselect, tvoAutoItemHeight, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
-      end
-    end
-    object tsPlayList: TTabSheet
-      Caption = 'PlayList'
-      ClientHeight = 605
-      ClientWidth = 235
-      OnShow = tsPlayListShow
-      object PlaylistTree: TTreeView
-        Left = 0
-        Height = 605
-        Top = 0
-        Width = 235
-        Align = alClient
-        DefaultItemHeight = 18
-        PopupMenu = pmPlaylists
-        ReadOnly = True
-        RightClickSelect = True
-        RowSelect = True
-        ScrollBars = ssAutoBoth
-        TabOrder = 0
-        OnCreateNodeClass = PlaylistTreeCreateNodeClass
-        OnDblClick = PlaylistTreeDblClick
-        Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
-        Items.Data = {
-          F9FFFFFF020001000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF010000000000
-          000001130000004175746F6D6174696320706C61796C69737473FFFFFFFFFFFF
-          FFFF63000000FFFFFFFF000000000000000000010000002D
+        Width = 22
+        Align = alRight
+        Constraints.MaxHeight = 22
+        Constraints.MaxWidth = 22
+        Caption = 'Close'
+        Flat = True
+        Glyph.Data = {
+          36040000424D3604000000000000360000002800000010000000100000000100
+          20000000000000040000640000006400000000000000000000009B9B9B16A0A0
+          A0AE9D9D9DF99E9E9EF89E9E9EF89E9E9EF89E9E9EF89E9E9EF89E9E9EF89E9E
+          9EF89E9E9EF89E9E9EF89E9E9EF89D9D9DFBA0A0A0C99B9B9B319F9F9F95B9B9
+          B9FBEAEAEAFFF2F2F2FFF5F5F5FFF7F7F7FFF9F9F9FFFBFBFBFFFCFCFCFFFBFB
+          FBFFF9F9F9FFF7F7F7FFF5F5F5FFF1F1F1FFCACACAFFA0A0A0D39E9E9EF0E3E3
+          E3FF6E6EE4FF1717DBFF1616D9FF1414D8FF1313D7FF1212D6FF1111D6FF1212
+          D6FF1212D7FF1414D8FF1515D9FF5454E1FFF0F0F0FFA0A0A0F69D9D9DF7E9E9
+          E9FF2929DFFF1313DCFF1111DAFF1010D9FF0E0ED8FF0E0ED8FF0E0ED8FF0E0E
+          D8FF0E0ED8FF0F0FD9FF1111DAFF1212DCFFF1F1F1FFA4A4A4F29D9D9DF7E9E9
+          E9FF2B2BE1FF1515DEFF1717DDFF7F80E5FF6566E3FF1111DAFF1111DAFF3838
+          DEFF898AE6FF3031DFFF1313DDFF1515DEFFF1F1F1FFA4A4A4F29D9D9DF7E8E8
+          E8FF2D2DE3FF1818E0FF4E4FE3FFECEEEEFFECEEEEFF7B7CE5FF4444E0FFE0E2
+          EDFFECEEEEFF8E8FE7FF1616DFFF1818E0FFF0F0F0FFA4A4A4F29D9D9DF7E7E7
+          E7FF2E2EE4FF1A1AE3FF2020E2FFC6C8ECFFECEEEEFFECEEEEFFE6E8EDFFECEE
+          EEFFE4E6EEFF4949E4FF1919E1FF1A1AE2FFEFEFEFFFA4A4A4F29D9D9DF7E6E6
+          E6FF3131E6FF1D1DE5FF1C1CE4FF2C2DE4FFD0D2EDFFECEEEEFFECEEEEFFE9EB
+          EEFF5152E6FF1B1BE3FF1C1CE4FF1D1DE5FFEDEDEDFFA4A4A4F29D9D9DF7E5E5
+          E5FF3333E8FF2020E7FF1F1FE7FF4F4FE8FFE2E4EEFFECEEEEFFECEEEEFFECEE
+          EEFF8485EAFF1E1EE6FF1F1FE6FF2020E7FFECECECFFA3A3A3F29D9D9DF7E3E3
+          E3FF3636EBFF2323EAFF3F40EAFFE3E5EEFFECEEEEFFE4E7EEFFD1D3EDFFECEE
+          EEFFECEEEEFF696AEAFF2222E9FF2323EAFFEAEAEAFFA3A3A3F29D9D9DF7E1E1
+          E1FF3838EDFF2626ECFF5252ECFFECEEEEFFE4E6EEFF5859ECFF3435ECFFC8CA
+          EDFFECEEEEFF8E8FEDFF2525ECFF2626ECFFE8E8E8FFA3A3A3F29D9D9DF7E0E0
+          E0FF3939EEFF2828EEFF2828EEFF5657EEFF3E3EEEFF2727EDFF2727EDFF3434
+          EDFF5F5FEDFF3030EEFF2828EEFF2828EEFFE6E6E6FFA3A3A3F29D9D9DF7DEDE
+          DEFF3D3DEDFF2828EEFF2828EEFF2828EEFF2828EEFF2828EEFF2828EEFF2828
+          EEFF2828EEFF2828EEFF2828EEFF2B2BEEFFE4E4E4FFA3A3A3F29F9F9FE4D2D2
+          D2FF9D9DE7FF5D5DEBFF5C5CEBFF5D5DECFF5D5DECFF5D5DECFF5D5DECFF5D5D
+          ECFF5D5DECFF5D5DECFF5C5CEBFF8D8DE8FFDFDFDFFF9E9E9EF79C9C9C74A6A6
+          A6F6CBCBCBFFD4D4D4FFD5D5D5FFD5D5D5FFD5D5D5FFD5D5D5FFD5D5D5FFD5D5
+          D5FFD5D5D5FFD5D5D5FFD5D5D5FFD0D0D0FFB0B0B0F89F9F9FB59B9B9B039B9B
+          9B5CA0A0A0CCA0A0A0DFA0A0A0DFA0A0A0DFA0A0A0DFA0A0A0DFA0A0A0DFA0A0
+          A0DFA0A0A0DFA0A0A0DFA0A0A0DFA0A0A0D79D9D9D779B9B9B0E
         }
+        OnClick = btnCloseCollectionStatClick
+        ShowCaption = False
+      end
+      object sgStats: TStringGrid
+        Left = 0
+        Height = 90
+        Top = 0
+        Width = 217
+        Align = alClient
+        AutoEdit = False
+        ColCount = 2
+        Columns = <        
+          item
+            MaxSize = 400
+            Title.Caption = 'Title'
+            Width = 143
+          end        
+          item
+            Alignment = taRightJustify
+            MaxSize = 400
+            SizePriority = 2
+            Title.Caption = 'Title'
+            Width = 54
+          end>
+        DefaultRowHeight = 18
+        FixedCols = 0
+        FixedRows = 0
+        Options = [goRangeSelect, goSmoothScroll]
+        RowCount = 1
+        ScrollBars = ssAutoVertical
+        TabOrder = 0
+        TitleStyle = tsNative
+        ColWidths = (
+          143
+          54
+        )
       end
     end
   end
   object pnlMain: TPanel
     Left = 247
-    Height = 633
+    Height = 632
     Top = 0
     Width = 619
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 633
+    ClientHeight = 632
     ClientWidth = 619
     Constraints.MinWidth = 439
     TabOrder = 1
     object pnlControl: TPanel
       Left = 0
       Height = 53
-      Top = 580
+      Top = 579
       Width = 619
       Align = alBottom
       Anchors = [akLeft, akRight]
@@ -522,7 +529,7 @@ object fMainForm: TfMainForm
           DrawStyle = dsExtra2
         end
       end
-      object Panel1: TPanel
+      object pnlTimePos: TPanel
         Left = 0
         Height = 25
         Top = 28
@@ -563,17 +570,17 @@ object fMainForm: TfMainForm
     end
     object pnlPlaylist: TPanel
       Left = 0
-      Height = 456
+      Height = 455
       Top = 124
       Width = 619
       Align = alClient
-      ClientHeight = 456
+      ClientHeight = 455
       ClientWidth = 619
       Constraints.MinWidth = 494
       TabOrder = 1
       object sgPlayList: TStringGrid
         Left = 1
-        Height = 454
+        Height = 453
         Top = 1
         Width = 617
         Align = alClient
@@ -796,7 +803,7 @@ object fMainForm: TfMainForm
   end
   object Splitter1: TSplitter
     Left = 243
-    Height = 633
+    Height = 632
     Top = 0
     Width = 4
   end
