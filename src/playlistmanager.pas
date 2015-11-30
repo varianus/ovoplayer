@@ -521,7 +521,7 @@ begin
     node.AppendChild(TrackNode);
 
     PropNode := XMLDoc.CreateElement('location');
-    propnode.TextContent := FilenameToURI(Escape(Playlist[i].FullName, ValidPathChars));
+    propnode.TextContent := FilenameToURI((Playlist[i].FullName), true);
     TrackNode.AppendChild(PropNode);
 
     PropNode := XMLDoc.CreateElement('title');
