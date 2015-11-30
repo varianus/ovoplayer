@@ -90,8 +90,8 @@ type
 implementation
 
 uses
-  DOM, XMLRead, XMLWrite, URIParser, IniFiles, LazFileUtils,
-  filesSupport, CustomSong, LCLProc, basetag, fpjson, jsonparser, fpjsonrtti;
+  laz2_DOM, laz2_XMLRead, laz2_XMLWrite, URIParser, IniFiles, LazFileUtils,
+  filesSupport, CustomSong, LCLProc, Lazutf8,  basetag, fpjson, jsonparser, fpjsonrtti;
 
 const
   //  GenDelims  = [':', '/', '?', '#', '[', ']', '@'];
@@ -189,7 +189,7 @@ var
     Result := nil;
     for j := 0 to x.ChildNodes.Count - 1 do
     begin
-      if UpperCase(x.ChildNodes.Item[j].NodeName) = UpperCase(Name) then
+      if UpperCase(x.ChildNodes.Item[j].NodeName) = UpperCase( Name) then
       begin
         Result := x.ChildNodes.Item[j];
       end;
@@ -527,6 +527,17 @@ begin
     PropNode := XMLDoc.CreateElement('title');
     propnode.TextContent := Playlist[i].Tags.Title;
     TrackNode.AppendChild(PropNode);
+//
+    PropNode := XMLDoc.CreateElement('creator');
+    propnode.TextContent := Playlist[i].Tags.Artist;
+    TrackNode.AppendChild(PropNode);
+    PropNode := XMLDoc.CreateElement('album');
+    propnode.TextContent := Playlist[i].Tags.Album;
+    TrackNode.AppendChild(PropNode);
+    PropNode := XMLDoc.CreateElement('duration');
+    propnode.TextContent := inttostr(Playlist[i].Tags.Duration);
+    TrackNode.AppendChild(PropNode);
+
 
   end;
 
