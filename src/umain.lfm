@@ -1,7 +1,7 @@
 object fMainForm: TfMainForm
-  Left = 508
+  Left = 703
   Height = 653
-  Top = 181
+  Top = 187
   Width = 866
   AllowDropFiles = True
   Caption = 'OvoPlayer'
@@ -618,6 +618,7 @@ object fMainForm: TfMainForm
             Width = 88
           end        
           item
+            Alignment = taRightJustify
             ReadOnly = True
             SizePriority = 0
             Tag = 4
@@ -625,6 +626,7 @@ object fMainForm: TfMainForm
             Width = 88
           end        
           item
+            Alignment = taRightJustify
             ReadOnly = True
             SizePriority = 0
             Tag = 5
