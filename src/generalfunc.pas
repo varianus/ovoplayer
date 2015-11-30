@@ -28,6 +28,7 @@ uses
   netprotocol;
 
 function TimeToMSec(Time: double): int64;
+Function ShortestDurationFormat(const Duration:int64):string;
 Function isAppRunning(Application:TCustomApplication):Boolean;
 Function Restart(Application:TCustomApplication):Boolean;
 Function CheckRestarting(Application:TCustomApplication):Boolean;
@@ -66,6 +67,21 @@ const
   OneMB = OneKB * OneKB;
   OneGB = OneKB * OneMB;
   OneTB = OneKB * OneGB;
+
+  OneHour = MinsPerHour * SecsPerMin * MSecsPerSec;
+
+Function ShortestDurationFormat(const Duration:int64):string;
+var
+  fmt: string;
+begin
+  if Duration < OneHour then
+    fmt := 'N:SS'
+  else
+    fmt := 'H:NN:SS';
+
+  Datetimetostring(result, fmt, Duration / MSecsPerDay);;
+
+end;
 
 // code from David Heffernan, from http://stackoverflow.com/questions/30548940/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-delphi
 function FormatByteString(Bytes: UInt64; Format: TByteStringFormat = bsfDefault): string;

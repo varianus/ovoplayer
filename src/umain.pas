@@ -434,7 +434,7 @@ implementation
 {$R *.lfm}
 uses AppConsts, lclType, AudioTag, LCLProc, FilesSupport,
      uConfig, uMiniPlayer, uSongInfo, uAbout, baseTag,
-     Math, udm, lazutf8;
+     Math, udm, lazutf8, GeneralFunc;
 
 type
 
@@ -1874,7 +1874,7 @@ var
   item : TMenuItem;
 begin
   BaseItem.Clear;
-  for col := 1 to sgPlayList.Columns.Count - 1 do
+  for col := 0 to sgPlayList.Columns.Count - 1 do
     begin
       item := TMenuItem.Create(BaseItem);
       item.Caption:=sgPlayList.Columns[col].Title.Caption;
@@ -2013,7 +2013,7 @@ begin
          1: Txt := ASong.Title;
          2: Txt := ASong.Tags.Album;
          3: Txt := ASong.Tags.Artist;
-         4: Txt := TimeToStr(ASong.Tags.Duration / MSecsPerDay);
+         4: Txt := ShortestDurationFormat(ASong.Tags.Duration);
          5: Txt := ASong.Tags.TrackString;
          6: Txt := ASong.Tags.Genre;
          7: Txt := ASong.Tags.Year;
