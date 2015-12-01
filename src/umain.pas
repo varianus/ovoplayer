@@ -1537,7 +1537,7 @@ var
 begin
   tmpSt := TStringList.Create;
   try
-    for i := 1 to sgPlayList.Columns.Count -1 do
+    for i := 0 to sgPlayList.Columns.Count -1 do
       begin
         tmpst.Add(inttostr(sgPlayList.Columns[i].Index) +'='+
                   sgPlayList.Columns[i].Title.Caption+';'+
@@ -1588,7 +1588,7 @@ begin
         info.Delimiter := ';';
         info.DelimitedText := tmpSt[i];
         Col := StrToint(info[1]);
-        for j := 1 to sgPlayList.Columns.Count -1   do
+        for j := 0 to sgPlayList.Columns.Count -1   do
           if sgPlayList.Columns[j].Tag = col then
             begin
               Col := j;
@@ -2791,12 +2791,14 @@ var
   TotalSize : Integer;
   diffs     : integer;
   VisibleCount : integer;
+  HighP, LowP  : integer;
   Steps        : integer;
   Remains      : integer;
   h: ThackGrid;
   oldTop: Integer;
 begin
   oldtop:= sgPlayList.TopRow;
+  HighP:=0; LowP:=0;
   TotalSize:= 0;
   VisibleCount:=0;
   SetLength(ColWidths, sgPlayList.Columns.Count);
@@ -2805,9 +2807,13 @@ begin
       for I := 0 to sgPlayList.Columns.Count - 1 do
          if sgPlayList.Columns[i].Visible then
            begin
-             ColWidths[i] := ColumnSize(i);
+             ColWidths[i] := ColumnSize(i)+3;
              inc(VisibleCount);
-             inc(TotalSize, ColWidths[i])
+             inc(TotalSize, ColWidths[i]);
+             if sgPlayList.Columns[i].SizePriority > 0 then
+               Inc(HighP)
+             else
+               Inc(LowP);
            end
          else
            ColWidths[i] := 0;
@@ -2819,7 +2825,12 @@ begin
            begin
              ColWidths[i] :=  sgPlayList.Columns[i].Width;
              inc(VisibleCount);
-             inc(TotalSize, ColWidths[i])
+             inc(TotalSize, ColWidths[i]) ;
+             if sgPlayList.Columns[i].SizePriority > 0 then
+               Inc(HighP)
+             else
+               Inc(LowP);
+
            end
          else
            ColWidths[i] := 0;
@@ -2829,17 +2840,17 @@ begin
 
   Diffs := h.gcache.ClientWidth - h.gcache.FixedWidth  - TotalSize -1;
 
-  Steps := diffs div VisibleCount;
-  remains := diffs mod VisibleCount;
+  Steps := diffs div HighP;// VisibleCount;
+  remains := diffs mod LowP;// VisibleCount;
 
   for I := 0 to sgPlayList.Columns.Count - 1 do
-     if sgPlayList.Columns[i].Visible then
+     if sgPlayList.Columns[i].Visible and (sgPlayList.Columns[i].SizePriority > 0) then
        begin
          ColWidths[i] := ColWidths[i] + Steps;
        end;
 
-  for I := 0 to Remains - 2 do
-     if sgPlayList.Columns[i].Visible then
+   for I := 0 to sgPlayList.Columns.Count - 1 do      // for I := 0 to Remains - 2 do
+     if sgPlayList.Columns[i].Visible and not (sgPlayList.Columns[i].SizePriority > 0)  then
        begin
          if diffs > 0 then
             ColWidths[i] := ColWidths[i] + 1
