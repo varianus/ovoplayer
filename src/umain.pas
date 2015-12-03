@@ -859,7 +859,7 @@ begin
   Album.Caption     := Song.Tags.Album;
   Artist.Caption    := Song.Tags.Artist;
   TrackBar.Max      := Song.Tags.Duration;
-  TrackBar.Position := BackEnd.GetPosition;
+  TrackBar.Position := BackEnd.Position;
   TrayIcon.Hint     := Song.tags.Title + LineEnding + Song.Tags.Artist;
   Caption           := Song.tags.Title + ' - ' + Song.Tags.Artist;;
 
@@ -958,7 +958,7 @@ procedure TfMainForm.UpdateProperty(Kind: TChangedProperty);
 begin
   case kind of
     cpVolume: begin
-                slVolume.Position:= BackEnd.GetVolume;
+                slVolume.Position:= BackEnd.Volume;
               end;
     cpClosing: begin
                 Quitting:= true;
@@ -1241,30 +1241,6 @@ begin
     rptPlayList : dm.actRepeatAll.Checked := true;
   end;
 
-  try
-    if FileExistsUTF8(Backend.Config.ConfigDir + LASTPLAYLISTNAME) then
-       BackEnd.Manager.ImportFromXSPF(Backend.Config.ConfigDir + LASTPLAYLISTNAME, BackEnd.PlayList)
-    else
-       BackEnd.PlayList.clear;
-    if (BackEnd.Manager.SavedTime <> 0) and
-       BackEnd.Config.PlayListParam.Restart and
-       (BackEnd.PlayList.CurrentItem <> nil) then
-      begin
-         Application.ProcessMessages;
-         BackEnd.AudioEngine.Play(BackEnd.PlayList.CurrentItem, BackEnd.Manager.SavedTime);
-         ScrollIntoView;
-         Application.ProcessMessages;
-      end;
-  except
-     on e: Exception do
-       begin
-          DebugLn(e.Message);
-          BackEnd.PlayList.clear;
-       end;
-  end;
-
-  OnLoaded(self);
-
   if BackEnd.Config.InterfaceParam.ShowTrayIcon then
     begin
        tmpIcon:=TIcon.Create;
@@ -1288,7 +1264,7 @@ begin
        TrayIcon.Visible := false;
      end;
 
-  slVolume.Position := BackEnd.GetVolume;
+  slVolume.Position := BackEnd.Volume;
   BackEnd.Attach(Self);
 
   cbGroupBy.ItemIndex := BackEnd.Config.InterfaceParam.GroupBy;
@@ -1315,6 +1291,29 @@ begin
       MyNetIntf.Activate(BackEnd);
     end;
   {$ENDIF}
+  try
+    if FileExistsUTF8(Backend.Config.ConfigDir + LASTPLAYLISTNAME) then
+       BackEnd.Manager.ImportFromXSPF(Backend.Config.ConfigDir + LASTPLAYLISTNAME, BackEnd.PlayList)
+    else
+       BackEnd.PlayList.clear;
+    if (BackEnd.Manager.SavedTime <> 0) and
+       BackEnd.Config.PlayListParam.Restart and
+       (BackEnd.PlayList.CurrentItem <> nil) then
+      begin
+         Application.ProcessMessages;
+         BackEnd.AudioEngine.Play(BackEnd.PlayList.CurrentItem, BackEnd.Manager.SavedTime);
+         ScrollIntoView;
+         Application.ProcessMessages;
+      end;
+  except
+     on e: Exception do
+       begin
+          DebugLn(e.Message);
+          BackEnd.PlayList.clear;
+       end;
+  end;
+
+  OnLoaded(self);
 
 end;
 
@@ -2465,10 +2464,10 @@ begin
   if (BackEnd.AudioEngine.State = ENGINE_PLAY)  then
   begin
     if not seeking then
-      TrackBar.Position := BackEnd.GetPosition;
+      TrackBar.Position := BackEnd.Position;
   end;
 
-  lbTime.Caption := TimeToStr(BackEnd.getPosition / MSecsPerDay);
+  lbTime.Caption := TimeToStr(BackEnd.Position / MSecsPerDay);
 end;
 
 procedure TfMainForm.btnUpDirClick(Sender: TObject);
@@ -2484,7 +2483,7 @@ end;
 
 procedure TfMainForm.TrackBarChange(Sender: TObject);
 begin
-  BackEnd.SetPosition(TrackBar.Position);
+  BackEnd.Position := TrackBar.Position;
 end;
 
 procedure TfMainForm.TrackBarMouseMove(Sender: TObject; Shift: TShiftState; X, Y: integer);
@@ -2498,7 +2497,7 @@ begin
     TrackBar.Cursor := crHSplit;
     newPosition := Round(x * TrackBar.Max / TrackBar.ClientWidth);
     TrackBar.Position := newPosition;
-    BackEnd.SetPosition(newPosition);
+    BackEnd.Position := newPosition;
   end
   else
   begin

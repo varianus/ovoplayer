@@ -391,7 +391,7 @@ begin
 
           dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
           s := 'PlaybackStatus';
-          case backend.GetStatus of
+          case backend.Status of
             engine_play: s_val := ('Playing');
             engine_pause: s_val := ('Paused');
             else
@@ -405,7 +405,7 @@ begin
 
           dbus_message_iter_open_container(@sub1, DBUS_TYPE_DICT_ENTRY, nil, @sub2);
           property_ := ('Volume');
-          d_val := BackEnd.GetVolume / 256;
+          d_val := BackEnd.Volume / 255;
           dbus_message_iter_append_basic(@sub2, DBUS_TYPE_STRING, @property_);
           dbus_message_iter_open_container(@sub2, DBUS_TYPE_VARIANT, 'd', @sub3);
           dbus_message_iter_append_basic(@sub3, DBUS_TYPE_DOUBLE, @d_val);
@@ -447,7 +447,7 @@ begin
           property_ := ('Position');
           dbus_message_iter_append_basic(@sub2, DBUS_TYPE_STRING, @property_);
           dbus_message_iter_open_container(@sub2, DBUS_TYPE_VARIANT, 'x', @sub3);
-          x_val := BackEnd.GetPosition * 1000000;
+          x_val := BackEnd.Position * 1000000;
           dbus_message_iter_append_basic(@sub3, DBUS_TYPE_INT64, @x_val);
           dbus_message_iter_close_container(@sub2, @sub3);
 
@@ -588,7 +588,7 @@ begin
           end;
         if (dbus_message_is_method_call(message_, 'org.mpris.MediaPlayer2.Player', 'PlayPause')) > 0 then
           begin
-          if BackEnd.GetStatus = ENGINE_PLAY then
+          if BackEnd.Status = ENGINE_PLAY then
             BackEnd.Pause
           else
             BackEnd.Play;
@@ -658,7 +658,7 @@ begin
           dbus_error_init(@error);
           if (dbus_message_get_args(message_, @error, DBUS_TYPE_OBJECT_PATH, [@s_val, DBUS_TYPE_INT64, @x_val, DBUS_TYPE_INVALID]) > 0) then
             begin
-            BackEnd.SetPosition(x_val div 1000000);
+            BackEnd.Position := x_val div 1000000;
             end
           else
             begin
@@ -712,7 +712,7 @@ begin
                 // this is a variant, so we have to open its container
                 dbus_message_iter_recurse(@sub0, @sub1);
                 dbus_message_iter_get_basic(@sub1, @d_val);
-                BackEnd.SetVolume(trunc(d_val * 255));
+                BackEnd.Volume := (trunc(d_val * 255));
                 end;
               end;
             reply_message := dbus_message_new_method_return(message_);
@@ -735,7 +735,7 @@ begin
               dbus_message_iter_get_basic(@sub0, @property_);
               if (strcomp(property_, 'PlaybackStatus') = 0) then
                 begin
-                case backend.GetStatus of
+                case backend.Status of
                   engine_play: s_val := ('Playing');
                   engine_pause: s_val := ('Paused');
                   else
@@ -758,7 +758,7 @@ begin
                 reply_message := dbus_message_new_method_return(message_);
                 dbus_message_iter_init_append(reply_message, @sub0);
                 //dbus_message_iter_open_container(@sub0, DBUS_TYPE_VARIANT, 'x', @sub1);
-                x_val := BackEnd.GetPosition * 1000000;
+                x_val := BackEnd.Position * 1000000;
                 dbus_message_iter_append_basic(@sub0, DBUS_TYPE_INT64, @x_val);
                 //dbus_message_iter_close_container(@sub0, @sub1);
                 dbus_connection_send(mpris_connection, reply_message, nil);
@@ -772,7 +772,7 @@ begin
                 reply_message := dbus_message_new_method_return(message_);
                 dbus_message_iter_init_append(reply_message, @sub0);
                 //dbus_message_iter_open_container(@sub0, DBUS_TYPE_VARIANT, 'd', @sub1);
-                d_val := backend.GetVolume / 255;
+                d_val := backend.Volume / 255;
                 dbus_message_iter_append_basic(@sub0, DBUS_TYPE_DOUBLE, @d_val);
                 //dbus_message_iter_close_container(@sub0, @sub1);
                 dbus_connection_send(mpris_connection, reply_message, nil);
@@ -1069,7 +1069,7 @@ begin
     dbus_message_iter_open_container(@iter, DBUS_TYPE_ARRAY, '{sv}', @dict);
     dbus_message_iter_open_container(@dict, DBUS_TYPE_DICT_ENTRY, nil, @dict_entry);
     property_ := ('PlaybackStatus');
-    case fbackend.GetStatus of
+    case fbackend.Status of
       engine_play: s_val := ('Playing');
       engine_pause: s_val := ('Paused');
       else
@@ -1121,7 +1121,7 @@ begin
 
     dbus_message_iter_open_container(@dict, DBUS_TYPE_DICT_ENTRY, nil, @dict_entry);
     property_ := ('PlaybackStatus');
-    case fbackend.GetStatus of
+    case fbackend.Status of
       engine_play: s_val := ('Playing');
       engine_pause: s_val := ('Paused');
       else
@@ -1153,7 +1153,7 @@ begin
     interface_ := ('org.mpris.MediaPlayer2.Player');
     message := dbus_message_new_signal(path, interface_, 'Seeked');
     dbus_message_iter_init_append(message, @iter);
-    x_val := fbackend.getposition * 1000000;
+    x_val := fbackend.Position * 1000000;
     dbus_message_iter_append_basic(@iter, DBUS_TYPE_INT64, @x_val);
     dbus_connection_send(mpris_connection, message, nil);
     dbus_message_unref(message);
@@ -1180,7 +1180,7 @@ begin
     property_ := ('Volume');
     dbus_message_iter_append_basic(@dict_entry, DBUS_TYPE_STRING, @property_);
     dbus_message_iter_open_container(@dict_entry, DBUS_TYPE_VARIANT, 'd', @dict_val);
-    d_val := fBackend.GetVolume / 256;
+    d_val := fBackend.Volume / 255;
     dbus_message_iter_append_basic(@dict_val, DBUS_TYPE_DOUBLE, @d_val);
     dbus_message_iter_close_container(@dict_entry, @dict_val);
     dbus_message_iter_close_container(@dict, @dict_entry);

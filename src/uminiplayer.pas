@@ -114,7 +114,7 @@ end;
 
 procedure TfMiniPlayer.TimerTimer(Sender: TObject);
 begin
- if BackEnd.GetStatus = ENGINE_PLAY then
+ if BackEnd.Status = ENGINE_PLAY then
     begin
       TrackBar.Max := BackEnd.PlayList.CurrentItem.Tags.Duration;
       TrackBar.Position := BackEnd.AudioEngine.Position;

@@ -59,6 +59,8 @@ type
 
 
 implementation
+uses
+  BaseTypes;
 var
   PrevWndProc: Ptrint;
   Handler: TTaskBarExtender;
@@ -72,7 +74,10 @@ begin
     if HIWORD(wParam) = THBN_CLICKED then
       case LOWORD(wParam) of
         1: Handler.FBackEnd.Previous;
-        2: Handler.FBackEnd.Pause;
+        2: if Handler.FBackEnd.Status = ENGINE_PLAY then
+             Handler.FBackEnd.Pause
+           else
+             Handler.FBackEnd.Play;
         3: Handler.FBackEnd.Next;
       end;
   end;
@@ -98,8 +103,16 @@ begin
    StrCopy(Buttons[0].szTip, PWideChar(utf8toUtf16(DM.actPrevious.Caption)));
 
    Buttons[1].iId := 2;
-   Buttons[1].iBitmap := 2;
-   StrCopy(Buttons[1].szTip, PWideChar(utf8toUtf16(DM.actPlay.Caption)));
+   if fBackEnd.Status = ENGINE_PLAY then
+     begin
+         Buttons[1].iBitmap := 1;
+         StrCopy(Buttons[1].szTip, PWideChar(utf8toUtf16(DM.actPlay.Caption)));
+     end
+   else
+     begin
+         Buttons[1].iBitmap := 2;
+         StrCopy(Buttons[1].szTip, PWideChar(utf8toUtf16(DM.actPause.Caption)));
+     end;
 
    Buttons[2].iId := 3;
    Buttons[2].iBitmap := 8;
@@ -154,6 +167,7 @@ procedure TTaskBarExtender.Update;
 begin
   if not Initialized then
       Init;
+
   TaskbarList3.ThumbBarUpdateButtons(FApplication, 3, @Buttons[0]);
 end;
 
@@ -167,7 +181,27 @@ begin
 end;
 
 procedure TTaskBarExtender.UpdateProperty(Kind: TChangedProperty);
+var
+ j:tenginestate;
 begin
+  case kind of
+  cpStatus:
+    begin
+      j := fBackEnd.Status;
+      if fBackEnd.Status = ENGINE_PLAY then
+        begin
+             Buttons[1].iBitmap := 1;
+             StrCopy(Buttons[1].szTip, PWideChar(utf8toUtf16(DM.actPause.Caption)));
+        end
+      else
+        begin
+             Buttons[1].iBitmap := 2;
+             StrCopy(Buttons[1].szTip, PWideChar(utf8toUtf16(DM.actPlay.Caption)));
+        end;
+      Update;
+    end;
+
+  end;
 
 end;
 

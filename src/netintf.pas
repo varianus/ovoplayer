@@ -45,13 +45,16 @@ type
 
   TTCPRemoteThrd = class(TNullInterfacedThread, IObserver)
   private
+    FKeepOpen: boolean;
     Sock: TTcpIpClientSocket;
     CSock: TSocket;
     fnet: TNetIntf;
     Data: string;
     DataSize: integer;
+    procedure SetKeepOpen(AValue: boolean);
   private
     procedure SyncRunner;
+    property KeepOpen: boolean read FKeepOpen write SetKeepOpen;
   public
     procedure UpdateProperty(Kind: TChangedProperty);
     constructor Create(hsock: TSocket; net: TNetIntf);
@@ -83,8 +86,6 @@ var
 begin
   with sock do
     begin
-
-    // setLinger(true,10000);
     bind;
     listen;
     repeat
@@ -99,6 +100,19 @@ end;
 
 { TEchoThrd }
 
+procedure TTCPRemoteThrd.SetKeepOpen(AValue: boolean);
+begin
+  if FKeepOpen=AValue then Exit;
+
+  if AValue then
+    fnet.fBackEnd.Attach(self)
+  else
+    fnet.fBackEnd.Remove(self);
+
+  FKeepOpen:=AValue;
+
+end;
+
 procedure TTCPRemoteThrd.SyncRunner;
 var
   Command : RExternalCommand;
@@ -106,18 +120,28 @@ var
 
 begin
   Command := SplitCommand(Data);
-  if not  fnet.fBackEnd.HandleExternalCommand(Command) then
+  if Command.Category = CATEGORY_CONFIG then
+    begin
+      Case Command.Command of
+        COMMAND_KEEP : KeepOpen := true;
+        COMMAND_PIN: ;
+      end;
+
+      exit;
+    end;
+
+ if not  fnet.fBackEnd.HandleExternalCommand(Command) then
     begin
       if Command.Category = CATEGORY_REQUEST then
         begin
           case Command.Command of
-            INFO_ENGINE_STATE: sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_ENGINE_STATE, IntToStr(ord(fnet.fBackEnd.GetStatus)))));
+            INFO_ENGINE_STATE: sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_ENGINE_STATE, IntToStr(ord(fnet.fBackEnd.Status)))));
             INFO_METADATA: begin
                              item := StrToInt64Def(Command.Param, -1);
                              sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata(item)))));
                            end;
-            INFO_POSITION : sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.GetPosition))));
-            INFO_VOLUME: Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.GetVolume))));
+            INFO_POSITION : sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.Position))));
+            INFO_VOLUME: Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.Volume))));
             INFO_PLAYLISTCOUNT: Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_PLAYLISTCOUNT, IntToStr(fnet.fBackEnd.PlayListCount))));
             INFO_COVER : sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_COVER, fnet.fBackEnd.GetCoverURL)));
           end;
@@ -132,15 +156,15 @@ begin
     case kind of
     cpStatus:
       begin
-        if fnet.fBackEnd.GetStatus = ENGINE_PLAY then
+        if fnet.fBackEnd.Status = ENGINE_PLAY then
           begin
             tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata()));
             Sock.WriteStr(EncodeString(tmpstr));
           end;
-        tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_ENGINE_STATE, IntToStr(ord(fnet.fBackEnd.GetStatus)));
+        tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_ENGINE_STATE, IntToStr(ord(fnet.fBackEnd.Status)));
       end;
-    cpVolume: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.GetVolume));
-    cpPosition: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.GetPosition));
+    cpVolume: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.Volume));
+    cpPosition: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.Position));
     cpMetadata: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata()));
 
     end;
@@ -160,6 +184,8 @@ procedure TTCPRemoteThrd.Execute;
 var
   w: integer;
 begin
+  // temporary hack 
+  KeepOpen := true
   sock := TTcpIpClientSocket.Create(CSock);
     try
     with sock do
@@ -171,7 +197,7 @@ begin
             begin
               if (lastError <> 0) then
                 Break;
-              if waiting = 0 then
+              if Waiting = 0 then
                 Break;
               SetLength(Data, 4);
               Sock.Read(Data[1], 4);
@@ -186,7 +212,7 @@ begin
                 break;
 
             end;
-        until False;
+        until (not FKeepOpen) and (Waiting = 0);
       end;
     finally
       Sock.Free;
