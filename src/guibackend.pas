@@ -108,6 +108,10 @@ type
     property OnPlayListLoad: TNotifyEvent read FOnPlayListLoad write SetOnPlayListLoad;
     property OnEngineCommand :TOnEngineCommand read FOnEngineCommand write SetOnEngineCommand;
     property OnExternalCommand :TOnExternalCommand read FOnExternalCommand write SetOnExternalCommand;
+    Property Status: TengineState read GetStatus write SetStatus;
+    Property Position: int64 read GetPosition write SetPosition;
+    property Looping: TplRepeat read  GetLooping write SetLooping;
+    Property Volume : cardinal read GetVolume write SetVolume;
 
   end;
 
@@ -595,7 +599,7 @@ begin
       else
         Play;
     ecStop: Stop;
-    ecSeek: SetPosition(Param);
+    ecSeek: Position := Param;
     end;
 end;
 
@@ -603,7 +607,6 @@ function TBackEnd.HandleExternalCommand(Command: RExternalCommand):boolean;
 var
   Handled: boolean;
   idx: integer;
-  vol: integer;
 begin
   Handled:=false;
 
@@ -613,7 +616,7 @@ begin
        COMMAND_STOP     : begin Stop; Handled := true; end;
        COMMAND_PAUSE    : begin Pause; Handled := true; end;
        COMMAND_PLAYPAUSE: begin
-                            if GetStatus = ENGINE_PLAY then
+                            if Status = ENGINE_PLAY then
                               Pause
                             else
                               Play;
@@ -624,8 +627,7 @@ begin
        COMMAND_MUTE     : begin Mute; Handled := true; end;
        COMMAND_UNMUTE   : begin UnMute; Handled := true; end;
        COMMAND_SETVOL   : begin
-                              Vol:=StrToIntDef(Command.Param, GetVolume);
-                              SetVolume(Vol);
+                              Volume :=StrToIntDef(Command.Param, Volume);
                               Handled := true;
                           end;
     end;

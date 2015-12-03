@@ -60,6 +60,11 @@ type
     Function GetMetadata(Index:integer=-1): TCommonTags;
     Function GetCoverURL: String;
     Function PlayListCount : integer;
+    // property
+    Property Status: TEngineState read GetStatus write SetStatus;
+    Property Position: int64 read GetPosition write SetPosition;
+    property Looping: TplRepeat read  GetLooping write SetLooping;
+    Property Volume : cardinal read GetVolume write SetVolume;
   end;
 
 
