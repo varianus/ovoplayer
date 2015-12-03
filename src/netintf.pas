@@ -185,7 +185,7 @@ var
   w: integer;
 begin
   // temporary hack 
-  KeepOpen := true
+  KeepOpen := true;
   sock := TTcpIpClientSocket.Create(CSock);
     try
     with sock do
