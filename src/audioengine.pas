@@ -70,6 +70,7 @@ type
   public
     class Function GetEngineName: string; virtual; abstract;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; virtual; abstract;
+    Class Function GetEngineParamsCount: Integer; virtual;
     Class Function GetEngineParams: AREngineParams; virtual;
     Class Function GetEngineInfo(IsCurrent:boolean): AREngineParams; virtual;
 
@@ -205,6 +206,11 @@ end;
 procedure TAudioEngine.SetInitialized(AValue: boolean);
 begin
   FInitialized := AValue;
+end;
+
+class function TAudioEngine.GetEngineParamsCount: Integer;
+begin
+  Result := 0;
 end;
 
 procedure TAudioEngine.SetOnSongEnd(const AValue: TNotifyEvent);

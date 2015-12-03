@@ -51,7 +51,7 @@ type
     cbNetRemote: TCheckBox;
     colorBackground: TColorBox;
     ColorFont: TColorBox;
-    EngineInfo: TValueListEditor;
+    EngineInfoView: TValueListEditor;
     EngineParamsEditor: TValueListEditor;
     Label1: TLabel;
     Label2: TLabel;
@@ -162,7 +162,7 @@ end;
 
 procedure TfConfig.rgAudioEngineClick(Sender: TObject);
 var
-  engineParams: AREngineParams;
+  engineParams, EngineInfo: AREngineParams;
   Engine : TAudioEngineClass;
   i: integer;
   isCurrent: boolean;
@@ -181,10 +181,10 @@ begin
       pnlRestart.Visible:= false;
     end;
   Engine := EngineArray[rgAudioEngine.ItemIndex].Engine;
-  EngineParams := Engine.GetEngineParams;
 
-  if Length(engineParams) > 0 then
+  if Engine.GetEngineParamsCount > 0 then
      begin
+       EngineParams := Engine.GetEngineParams;
        EngineParamsEditor.Visible:=True;
        EngineParamsEditor.Clear;
        BackEnd.Config.ReadSubParams(Engine.GetEngineName);
@@ -204,19 +204,19 @@ begin
   else
   EngineParamsEditor.Visible:=false;
 
-  EngineParams := Engine.GetEngineInfo(isCurrent);
+  EngineInfo := Engine.GetEngineInfo(isCurrent);
 
-  if Length(engineParams) > 0 then
+  if Length(EngineInfo) > 0 then
      begin
-       EngineInfo.Visible:=True;
-       EngineInfo.Clear;
-       for i := 0 to Length(engineParams) -1 do
+       EngineInfoView.Visible:=True;
+       EngineInfoView.Clear;
+       for i := 0 to Length(EngineInfo) -1 do
          begin
-           EngineInfo.Values[engineParams[i].Key]:=engineParams[i].Value;
+           EngineInfoView.Values[EngineInfo[i].Key]:=EngineInfo[i].Value;
          end;
      end
   else
-  EngineInfo.Visible:=false;
+  EngineInfoView.Visible:=false;
 
 
 end;

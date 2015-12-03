@@ -63,7 +63,7 @@ type
     class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
     Class Function GetEngineParams: AREngineParams; override;
-
+    class function GetEngineParamsCount: Integer; override;
     constructor Create; override;
     procedure Activate; override;
     function Initialize: boolean; override;
@@ -362,6 +362,11 @@ begin
     AProcess.free;
   end;
 
+end;
+
+class function TAudioEngineMPlayer.GetEngineParamsCount: Integer;
+begin
+  Result := 1;
 end;
 
 class function TAudioEngineMPlayer.GetEngineParams: AREngineParams;

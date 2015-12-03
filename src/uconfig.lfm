@@ -10,7 +10,7 @@ object fConfig: TfConfig
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '1.5'
+  LCLVersion = '1.7'
   Visible = False
   object GroupBox1: TGroupBox
     Left = 0
@@ -159,9 +159,9 @@ object fConfig: TfConfig
     Height = 449
     Top = 0
     Width = 549
-    ActivePage = tsInterface
+    ActivePage = tsEngine
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 2
     object tsInterface: TTabSheet
       Caption = 'Interfaces'
@@ -244,8 +244,8 @@ object fConfig: TfConfig
     end
     object tsEngine: TTabSheet
       Caption = 'Engine'
-      ClientHeight = 414
-      ClientWidth = 543
+      ClientHeight = 421
+      ClientWidth = 541
       OnShow = tsEngineShow
       object rgAudioEngine: TRadioGroup
         Left = 4
@@ -274,7 +274,7 @@ object fConfig: TfConfig
       object EngineParamsEditor: TValueListEditor
         Left = 8
         Height = 160
-        Top = 248
+        Top = 256
         Width = 523
         DefaultColWidth = 100
         FixedCols = 0
@@ -291,14 +291,14 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          402
+          419
         )
       end
-      object EngineInfo: TValueListEditor
+      object EngineInfoView: TValueListEditor
         Left = 208
-        Height = 239
+        Height = 208
         Top = 8
-        Width = 321
+        Width = 323
         Anchors = [akTop, akLeft, akRight, akBottom]
         AutoEdit = False
         DefaultColWidth = 100
@@ -317,7 +317,7 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          200
+          219
         )
       end
     end
