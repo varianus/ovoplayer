@@ -120,8 +120,7 @@ var
         SetLength(Buffer, BytesAvailable);
         BytesRead  := fPlayerProcess.OutPut.Read(Buffer[1], BytesAvailable);
         ProcessStr := copy(Buffer, 1, BytesRead);
-     //   debugln(ProcessStr);
-
+       // DebugLn(ProcessStr);
         if AnsiStartsStr(TIMEPOSOUT,ProcessStr) then
           begin
             ProcessStr := trim(Copy(ProcessStr, 3, 7));
@@ -147,7 +146,8 @@ begin
   if not Running then
     begin
       fTimer.enabled := false;
-      PostCommand(ecNext,0);
+      if fPlayerState <> ENGINE_STOP then
+         PostCommand(ecNext,0);
     end;
 
 end;
@@ -227,7 +227,10 @@ end;
 
 procedure TAudioEngineMPlayer.Stop;
 begin
+  fPlayerState:= ENGINE_STOP;
   SendMPlayerCommand('stop');
+  Sleep(10);
+
   fPlayerProcess.Terminate(0);
 end;
 
@@ -280,13 +283,24 @@ begin
 
   if Playing then
     exit;
+  paused:=false;
 
   FPlayRunningI := True;
-  fPlayerProcess := TProcessUTF8.Create(nil);
-  Params := ' -slave -nofs -nomouseinput -noquiet -vc null -vo null ';// -nofontconfig '; //  -priority abovenormal -really-quiet -identify
-  Params := Params + ' -volume ' + IntToStr(Self.MainVolume) + ' -softvol -softvol-max 255';
-  fPlayerProcess.Options := fPlayerProcess.Options + [poUsePipes, poNoConsole, poStderrToOutPut];
-  fPlayerProcess.CommandLine :=ExePath + ' ' + Params + ' "' +Filename+'"';
+  fPlayerProcess := TProcessUtf8.Create(nil);
+  fPlayerProcess.Executable :=ExePath;
+  fPlayerProcess.Parameters.add('-slave');
+  fPlayerProcess.Parameters.add('-nofs');
+  fPlayerProcess.Parameters.add('-nomouseinput');
+  fPlayerProcess.Parameters.add('-noquiet');
+  fPlayerProcess.Parameters.add('-vc');  fPlayerProcess.Parameters.add('null');
+  fPlayerProcess.Parameters.add('-vo');  fPlayerProcess.Parameters.add('null');
+  fPlayerProcess.Parameters.add('-volume');  fPlayerProcess.Parameters.add(IntToStr(Self.MainVolume));
+  fPlayerProcess.Parameters.add('-softvol');
+  fPlayerProcess.Parameters.add('-softvol-max');  fPlayerProcess.Parameters.add('255');
+  fPlayerProcess.Parameters.add(Filename);
+  // -nofontconfig '; //  -priority abovenormal -really-quiet -identify
+  fPlayerProcess.Options := fPlayerProcess.Options + [poUsePipes, poNoConsole{, poStderrToOutPut}];
+  //fPlayerProcess.CommandLine:=ExePath+ fPlayerProcess.Parameters.Text ;
   fPlayerProcess.Execute;
 
 end;
@@ -347,7 +361,7 @@ begin
           result:= false;
           exit;
        end;
-    AProcess.CommandLine:= APath;
+    AProcess.Executable:= APath;
     fProgramPath:=APath;
     try
       AProcess.Execute;
@@ -419,6 +433,7 @@ begin
     else
       st := st + ' 0';
     SendMPlayerCommand(st);
+    Sleep(20);
   end;
 end;
 

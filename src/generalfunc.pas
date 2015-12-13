@@ -124,8 +124,8 @@ var
 begin
   NewProc:= TAsyncProcess.Create(nil);
   try
-    NewProc.CommandLine:= format('%s --restart=%d',[Application.ExeName,
-                                                      GetProcessID]);
+    Newproc.Executable:=Application.ExeName;
+    NewProc.Parameters.Add(format('--restart=%d',[GetProcessID]));
 
     NewProc.Execute;
   finally
