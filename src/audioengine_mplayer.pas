@@ -297,6 +297,7 @@ begin
   fPlayerProcess.Parameters.add('-volume');  fPlayerProcess.Parameters.add(IntToStr(Self.MainVolume));
   fPlayerProcess.Parameters.add('-softvol');
   fPlayerProcess.Parameters.add('-softvol-max');  fPlayerProcess.Parameters.add('255');
+  fPlayerProcess.Parameters.add('-nofontconfig');
   fPlayerProcess.Parameters.add(Filename);
   // -nofontconfig '; //  -priority abovenormal -really-quiet -identify
   fPlayerProcess.Options := fPlayerProcess.Options + [poUsePipes, poNoConsole{, poStderrToOutPut}];
