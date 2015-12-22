@@ -11,7 +11,6 @@ object fConfig: TfConfig
   OnCreate = FormCreate
   OnShow = FormShow
   LCLVersion = '1.7'
-  Visible = False
   object GroupBox1: TGroupBox
     Left = 0
     Height = 449
@@ -19,7 +18,7 @@ object fConfig: TfConfig
     Width = 153
     Align = alLeft
     Caption = 'Categories'
-    ClientHeight = 429
+    ClientHeight = 430
     ClientWidth = 149
     Color = clWindow
     ParentColor = False
@@ -84,13 +83,13 @@ object fConfig: TfConfig
     object pnlRestart: TPanel
       Left = 1
       Height = 101
-      Top = 327
+      Top = 328
       Width = 147
       Align = alBottom
       BorderSpacing.Around = 1
       BorderStyle = bsSingle
-      ClientHeight = 97
-      ClientWidth = 143
+      ClientHeight = 99
+      ClientWidth = 145
       Color = clActiveCaption
       ParentColor = False
       TabOrder = 0
@@ -99,7 +98,7 @@ object fConfig: TfConfig
         Left = 4
         Height = 56
         Top = 4
-        Width = 135
+        Width = 137
         Align = alTop
         AutoSize = False
         BorderSpacing.Around = 3
@@ -165,8 +164,8 @@ object fConfig: TfConfig
     TabOrder = 2
     object tsInterface: TTabSheet
       Caption = 'Interfaces'
-      ClientHeight = 421
-      ClientWidth = 541
+      ClientHeight = 414
+      ClientWidth = 543
       OnShow = tsInterfaceShow
       object cbMinimizeOnClose: TCheckBox
         Left = 12
@@ -214,7 +213,7 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 61
+        ClientHeight = 62
         ClientWidth = 197
         Items.Strings = (
           'Gnome D-BUS mode'
@@ -244,14 +243,14 @@ object fConfig: TfConfig
     end
     object tsEngine: TTabSheet
       Caption = 'Engine'
-      ClientHeight = 421
-      ClientWidth = 541
+      ClientHeight = 414
+      ClientWidth = 543
       OnShow = tsEngineShow
       object rgAudioEngine: TRadioGroup
         Left = 4
-        Height = 51
+        Height = 52
         Top = 0
-        Width = 198
+        Width = 220
         AutoFill = True
         AutoSize = True
         Caption = 'Audio Engine'
@@ -263,8 +262,8 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 31
-        ClientWidth = 194
+        ClientHeight = 33
+        ClientWidth = 216
         Items.Strings = (
           'Sample row for builded engine'
         )
@@ -291,14 +290,14 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          419
+          421
         )
       end
       object EngineInfoView: TValueListEditor
         Left = 208
-        Height = 208
+        Height = 201
         Top = 8
-        Width = 323
+        Width = 325
         Anchors = [akTop, akLeft, akRight, akBottom]
         AutoEdit = False
         DefaultColWidth = 100
@@ -317,7 +316,7 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          219
+          223
         )
       end
     end
@@ -334,6 +333,7 @@ object fConfig: TfConfig
         ItemHeight = 0
         ScrollWidth = 382
         TabOrder = 0
+        TopIndex = -1
       end
       object Label1: TLabel
         Left = 11
@@ -421,7 +421,7 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 85
+        ClientHeight = 86
         ClientWidth = 181
         Items.Strings = (
           'None'

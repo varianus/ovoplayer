@@ -114,6 +114,7 @@ type
   private
     FSaved: boolean;
     FOnConfigDone: TOnConfigDone;
+    OldEngine: Integer;
 
     procedure ConfigToMap;
     procedure SetOnConfigDone(AValue: TOnConfigDone);
@@ -182,6 +183,18 @@ begin
     end;
   Engine := EngineArray[rgAudioEngine.ItemIndex].Engine;
 
+  if rgAudioEngine.ItemIndex <> OldEngine then
+    begin
+      if EngineArray[oldEngine].Engine.GetEngineParamsCount > 0 then
+        begin
+          BackEnd.Config.SaveSubParams(EngineArray[OldEngine].Engine.GetEngineName);
+          SetLength(engineParams,0);
+        end;
+
+    end;
+
+  OldEngine := rgAudioEngine.ItemIndex;
+
   if Engine.GetEngineParamsCount > 0 then
      begin
        EngineParams := Engine.GetEngineParams;
@@ -202,7 +215,7 @@ begin
          end;
      end
   else
-  EngineParamsEditor.Visible:=false;
+    EngineParamsEditor.Visible:=false;
 
   EngineInfo := Engine.GetEngineInfo(isCurrent);
 
@@ -461,7 +474,9 @@ begin
 
   //GENERAL
   if EngineParamsEditor.Visible then
-    BackEnd.Config.EngineSubParams.Assign(EngineParamsEditor.Strings);
+    BackEnd.Config.EngineSubParams.Assign(EngineParamsEditor.Strings)
+  else
+    BackEnd.Config.EngineSubParams.Clear;
 end;
 
 destructor TfConfig.Destroy;
@@ -493,7 +508,9 @@ begin
   cbRestart.Checked          := BackEnd.Config.PlayListParam.Restart;
 
   // ENGINE
-  rgAudioEngine.ItemIndex    := rgAudioEngine.Items.IndexOf(Backend.Config.EngineParam.EngineKind);
+  OldEngine:= rgAudioEngine.Items.IndexOf(Backend.Config.EngineParam.EngineKind);
+  rgAudioEngine.ItemIndex    := OldEngine;
+
 
   if EngineParamsEditor.Visible then
     EngineParamsEditor.Strings.Assign(BackEnd.Config.EngineSubParams);
