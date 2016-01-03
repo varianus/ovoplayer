@@ -71,7 +71,7 @@ constructor TTCPRemoteDaemon.Create(net: TNetIntf);
 begin
   inherited Create(False);
   fnet := net;
-  sock := TTcpIpServerSocket.Create(net.FPort);
+  sock := TTcpIpServerSocket.Create('',net.FPort);
   FreeOnTerminate := True;
 end;
 
@@ -104,10 +104,10 @@ procedure TTCPRemoteThrd.SetKeepOpen(AValue: boolean);
 begin
   if FKeepOpen=AValue then Exit;
 
-  if AValue then
-    fnet.fBackEnd.Attach(self)
-  else
-    fnet.fBackEnd.Remove(self);
+  //if AValue then
+  //  fnet.fBackEnd.Attach(self)
+  //else
+  //  fnet.fBackEnd.Remove(self);
 
   FKeepOpen:=AValue;
 
@@ -166,7 +166,7 @@ begin
     cpVolume: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.Volume));
     cpPosition: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.Position));
     cpMetadata: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata()));
-
+    cpClosing:  tmpstr:= BuildCommand(CATEGORY_APP, COMMAND_CLOSE);
     end;
   Sock.WriteStr(EncodeString(tmpstr));
 end;
@@ -192,27 +192,44 @@ begin
       begin
         repeat
           if terminated then
-            break;
+            begin
+               DebugLn('GOT KILLED:', IntToStr(LastError));
+               Break;
+            end;
+
           if sock.CanRead(60000) then
             begin
               if (lastError <> 0) then
-                Break;
-              if Waiting = 0 then
-                Break;
+                begin
+                   DebugLn('GOT NET ERROR:', IntToStr(LastError));
+                   Break;
+                end;
+              w:=Waiting;
+              if w = 0 then
+                begin
+                   DebugLn('GOT NO DATA:', IntToStr(LastError));
+                   Break;
+                end;
               SetLength(Data, 4);
               Sock.Read(Data[1], 4);
               DataSize:= DecodeSize(Data);
               if DataSize < 0 then
-                break;
+                begin
+                   DebugLn('GOT INVALID DATA SIZE', IntToStr(LastError));
+                   Break;
+                end;
               SetLength(Data, DataSize);
               Sock.Read(Data[1], DataSize);
               Synchronize(@SyncRunner);
 
               if lastError <> 0 then
-                break;
-
+                begin
+                   DebugLn('GOT NET ERROR ON REPLY:', IntToStr(LastError));
+                   Break;
+                end;
             end;
-        until (not FKeepOpen) and (Waiting = 0);
+        until (not FKeepOpen) and (w = 0);
+        DebugLn('DISconnected');
       end;
     finally
       Sock.Free;
@@ -256,11 +273,11 @@ procedure TNetIntf.DeActivate;
 begin
   if Assigned(DaemonThread) then
     begin
-       DaemonThread.Terminate;
-       DaemonThread.Sock.Socket.StopAccepting(true);
-       DaemonThread.WaitFor;
-       DaemonThread := nil;
-       FActivated:=false;
+      DaemonThread.Sock.Socket.StopAccepting(true);
+      DaemonThread.Terminate;
+      DaemonThread.WaitFor;
+      DaemonThread := nil;
+      FActivated:=false;
     end;
 end;
 
