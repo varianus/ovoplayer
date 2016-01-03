@@ -39,6 +39,7 @@ Const
     COMMAND_PREVIOUS = 'previous';
     COMMAND_SEEK_P = 'seek+';
     COMMAND_SEEK_M = 'seek-';
+    COMMAND_SEEK = 'seek';  // param is new position (seconds)
     COMMAND_SETVOL = 'vol'; // param is new volume in range 1..256
     COMMAND_MUTE = 'mute';
     COMMAND_UNMUTE = 'unmute';
@@ -51,6 +52,7 @@ Const
   CATEGORY_APP = 'app';  // client --> server
     COMMAND_ACTIVATE = 'activate';
     COMMAND_QUIT = 'quit';
+    COMMAND_CLOSE = 'close';
 
   CATEGORY_INFORMATION = 'info'; // server --> client
   CATEGORY_REQUEST = 'req'; //  client --> server
@@ -60,6 +62,9 @@ Const
     INFO_METADATA = 'meta';  // optional param playlist item number
     INFO_PLAYLISTCOUNT = 'count';
     INFO_COVER = 'cover';
+
+  CATEGORY_HEART = 'heart';
+    COMMAND_BEAT = 'beat';
 
   CATEGORY_COMMAND_SEPARATOR = ':';
   CATEGORY_PARAM_SEPARATOR = '=';
