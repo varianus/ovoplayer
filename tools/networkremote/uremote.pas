@@ -152,7 +152,7 @@ begin
   if tbConn.Checked then
      begin
        tbConn.Caption:= 'Disconnect';
-       FClient := TTcpIpClientSocket.Create('localhost', 5500);
+       FClient := TTcpIpClientSocket.Create('127.0.0.1', 6860);
        FThread := TClientThread.Create(FClient);
        FThread.OnReceive := @DoClientReceive;
      end

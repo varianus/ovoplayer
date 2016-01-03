@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 1986
+  Left = 610
   Height = 730
-  Top = 133
+  Top = 127
   Width = 1020
   Caption = 'Test ovoplayer remote control over network'
   ClientHeight = 730
@@ -25,7 +25,7 @@ object Form1: TForm1
     Width = 1020
     Align = alTop
     Caption = 'Common Tags'
-    ClientHeight = 280
+    ClientHeight = 281
     ClientWidth = 1016
     TabOrder = 1
     object Label1: TLabel
@@ -43,7 +43,7 @@ object Form1: TForm1
     end
     object edArtist: TEdit
       Left = 98
-      Height = 23
+      Height = 27
       Top = 41
       Width = 384
       TabOrder = 0
@@ -63,7 +63,7 @@ object Form1: TForm1
     end
     object edAlbum: TEdit
       Left = 98
-      Height = 23
+      Height = 27
       Top = 72
       Width = 384
       TabOrder = 1
@@ -83,7 +83,7 @@ object Form1: TForm1
     end
     object edTitle: TEdit
       Left = 98
-      Height = 23
+      Height = 27
       Top = 7
       Width = 384
       TabOrder = 2
@@ -103,7 +103,7 @@ object Form1: TForm1
     end
     object edAlbumArtist: TEdit
       Left = 98
-      Height = 23
+      Height = 27
       Top = 105
       Width = 384
       TabOrder = 3
@@ -123,7 +123,7 @@ object Form1: TForm1
     end
     object edGenre: TEdit
       Left = 98
-      Height = 23
+      Height = 27
       Top = 137
       Width = 384
       TabOrder = 4
@@ -150,7 +150,7 @@ object Form1: TForm1
     end
     object seYear: TSpinEdit
       Left = 98
-      Height = 23
+      Height = 27
       Top = 169
       Width = 101
       MaxValue = 9999
@@ -185,7 +185,7 @@ object Form1: TForm1
     end
     object seTrack: TSpinEdit
       Left = 329
-      Height = 23
+      Height = 27
       Top = 169
       Width = 101
       MaxValue = 9999
@@ -200,11 +200,11 @@ object Form1: TForm1
     end
     object ComboBox1: TComboBox
       Left = 856
-      Height = 23
+      Height = 29
       Top = 6
       Width = 132
       Enabled = False
-      ItemHeight = 15
+      ItemHeight = 0
       Items.Strings = (
         'ENGINE_STOP   '
         'ENGINE_PLAY   '
@@ -223,7 +223,7 @@ object Form1: TForm1
     Width = 1020
     Align = alTop
     Caption = 'Controls'
-    ClientHeight = 148
+    ClientHeight = 149
     ClientWidth = 1016
     TabOrder = 2
     object Button1: TButton
@@ -246,16 +246,16 @@ object Form1: TForm1
     end
     object Edit1: TEdit
       Left = 64
-      Height = 23
+      Height = 27
       Top = 106
       Width = 247
       TabOrder = 2
     end
     object Label9: TLabel
       Left = 16
-      Height = 15
+      Height = 17
       Top = 113
-      Width = 42
+      Width = 47
       Caption = 'Custom'
       ParentColor = False
     end
@@ -273,63 +273,63 @@ object Form1: TForm1
       TabOrder = 3
       object Button2: TButton
         Left = 0
-        Height = 25
+        Height = 27
         Top = 0
-        Width = 135
+        Width = 144
         Caption = 'previous'
         OnClick = Button8Click
         TabOrder = 0
       end
       object Button3: TButton
-        Left = 137
-        Height = 25
+        Left = 146
+        Height = 27
         Top = 0
-        Width = 91
+        Width = 83
         Caption = 'play'
         OnClick = Button8Click
         TabOrder = 1
       end
       object Button4: TButton
-        Left = 230
-        Height = 25
+        Left = 231
+        Height = 27
         Top = 0
-        Width = 109
+        Width = 108
         Caption = 'pause'
         OnClick = Button8Click
         TabOrder = 2
       end
       object Button5: TButton
         Left = 341
-        Height = 25
+        Height = 27
         Top = 0
-        Width = 150
+        Width = 167
         Caption = 'playpause'
         OnClick = Button8Click
         TabOrder = 3
       end
       object Button6: TButton
-        Left = 493
-        Height = 25
+        Left = 510
+        Height = 27
         Top = 0
-        Width = 91
+        Width = 87
         Caption = 'next'
         OnClick = Button8Click
         TabOrder = 4
       end
       object Button7: TButton
-        Left = 586
-        Height = 25
+        Left = 599
+        Height = 27
         Top = 0
-        Width = 109
+        Width = 103
         Caption = 'seek+'
         OnClick = Button8Click
         TabOrder = 5
       end
       object Button8: TButton
-        Left = 697
-        Height = 25
+        Left = 704
+        Height = 27
         Top = 0
-        Width = 103
+        Width = 96
         Caption = 'seek-'
         OnClick = Button8Click
         TabOrder = 6
@@ -337,17 +337,17 @@ object Form1: TForm1
     end
     object Label10: TLabel
       Left = 26
-      Height = 15
+      Height = 17
       Top = 36
-      Width = 35
+      Width = 38
       Caption = 'Action'
       ParentColor = False
     end
     object Label11: TLabel
       Left = 26
-      Height = 15
+      Height = 17
       Top = 64
-      Width = 42
+      Width = 49
       Caption = 'Request'
       ParentColor = False
     end
