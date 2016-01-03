@@ -264,7 +264,7 @@ begin
      n:=0;
      while (N <= CountName - 1) and (result = EmptyStr) do
        begin
-         if FileExistsUTF8(Path + CoverName[N] + '.' + CoverExt[E]) then
+         if FileExists(Path + CoverName[N] + '.' + CoverExt[E]) then
             Result:=path + CoverName[N] + '.' + CoverExt[E];
          inc(N);
        end;
@@ -630,6 +630,7 @@ begin
                               Volume :=StrToIntDef(Command.Param, Volume);
                               Handled := true;
                           end;
+       COMMAND_SEEK     : Seek(StrToIntDef(Command.Param, Position));
     end;
 
   if Command.Category = CATEGORY_APP then

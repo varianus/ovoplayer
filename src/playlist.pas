@@ -166,7 +166,7 @@ function TPlayList.EnqueueFile(FileName: TFileName): integer;
 var
   Song: TCustomSong;
 begin
-  if FileExistsUTF8(FileName) then
+  if FileExists(FileName) then
      begin
       song   := TCustomSong.Create(FileName);
       Result := Add(Song);

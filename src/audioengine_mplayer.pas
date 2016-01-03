@@ -268,7 +268,7 @@ begin
   ExePath := fProgramPath;
   if not FilenameIsAbsolute(ExePath) then
     ExePath := FindDefaultExecutablePath(ExePath);
-  Result := FileExistsUTF8(ExePath);
+  Result := FileExists(ExePath);
   Initialized := result;
 
 end;
