@@ -1946,6 +1946,7 @@ begin
   index := sgPlayList.Row;
   BackEnd.PlayList.ItemIndex := index - 1;
   BackEnd.AudioEngine.Play(BackEnd.PlayList.CurrentItem);
+  BackEnd.Notify(cpStatus);
   sgPlayList.Invalidate;
 
 end;
@@ -2739,7 +2740,7 @@ begin
   TrackBar.Position := 0;
   lbTime.caption    := TimeToStr(0);
   lFile := backend.Config.GetResourcesPath + 'logo.png';
-  if not FileExistsUTF8(lFile) then
+  if not FileExists(lFile) then
     DebugLn('[TfMainForm.ClearPanelInfo] File not found: ' + lFile)
   else
     imgCover.Picture.LoadFromFile(lFile);
