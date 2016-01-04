@@ -51,6 +51,7 @@ type
 
   TForm1 = class(TForm)
     Button1: TButton;
+    Button10: TButton;
     Button2: TButton;
     Button3: TButton;
     Button4: TButton;
@@ -58,6 +59,7 @@ type
     Button6: TButton;
     Button7: TButton;
     Button8: TButton;
+    Button9: TButton;
     ComboBox1: TComboBox;
     edAlbum: TEdit;
     edAlbumArtist: TEdit;
@@ -85,14 +87,23 @@ type
     Panel1: TPanel;
     seTrack: TSpinEdit;
     seYear: TSpinEdit;
-    tbConn: TToggleBox;
+    tbConn1: TToggleBox;
+    Timer1: TTimer;
+    TrackBar1: TTrackBar;
     procedure Button1Click(Sender: TObject);
     procedure Button8Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure tbConnChange(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure TrackBar1Change(Sender: TObject);
+    procedure TrackBar1MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure TrackBar1MouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   protected
     procedure DoClientReceive(Sender: TObject; const AData: string);
   private
+    Seeking: boolean;
     FClient: TTcpIpClientSocket;
     FThread: TClientThread;
     procedure TagsToMap(Tags:TCommonTags);
@@ -148,22 +159,64 @@ end;
 { TForm1 }
 
 procedure TForm1.tbConnChange(Sender: TObject);
+var
+  s:string;
 begin
-  if tbConn.Checked then
+  if tbConn1.Checked then
      begin
-       tbConn.Caption:= 'Disconnect';
+       tbConn1.Caption:= 'Disconnect';
        FClient := TTcpIpClientSocket.Create('127.0.0.1', 6860);
        FThread := TClientThread.Create(FClient);
        FThread.OnReceive := @DoClientReceive;
+       s:=EncodeString(BuildCommand(CATEGORY_REQUEST, INFO_ENGINE_STATE));
+       memoSent.lines.Add(s);
+       FClient.WriteStr(s);
+       s:=EncodeString(BuildCommand(CATEGORY_REQUEST, INFO_METADATA));
+       memoSent.lines.Add(s);
+       FClient.WriteStr(s);
      end
   else
      begin
        FThread.Terminate;
        FThread.WaitFor;
        FClient.Free;
-       tbConn.Caption:= 'Connect';
+       tbConn1.Caption:= 'Connect';
      end;
 
+end;
+
+procedure TForm1.Timer1Timer(Sender: TObject);
+var
+  s:string;
+begin
+  s:=EncodeString(BuildCommand(CATEGORY_REQUEST, INFO_POSITION));
+  memoSent.lines.Add(s);
+  fClient.WriteStr(s);
+
+end;
+
+procedure TForm1.TrackBar1Change(Sender: TObject);
+var
+  s:string;
+begin
+  if not Seeking then exit;
+  s:=EncodeString(BuildCommand(CATEGORY_ACTION, COMMAND_SEEK, inttostr(TrackBar1.Position)));
+  memoSent.lines.Add(s);
+  fClient.WriteStr(s);
+end;
+
+procedure TForm1.TrackBar1MouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  Seeking:= true;
+  Timer1.Enabled:=false;
+end;
+
+procedure TForm1.TrackBar1MouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  Seeking:= true;
+  Timer1.Enabled:=true;
 end;
 
 procedure TForm1.DoClientReceive(Sender: TObject; const AData: string);
@@ -181,14 +234,26 @@ begin
                        tags := DecodeMetaData(r.Param);
                        TagsToMap(tags);
                     end;
+     INFO_POSITION : begin
+                       if not seeking then
+                          TrackBar1.Position:=StrToInt(r.Param);
+                    end;
+
      INFO_COVER : begin
                     if URIToFilename(r.param,s) then
                        image1.Picture.LoadFromFile(s);
                   end;
 
-     INFO_ENGINE_STATE : ComboBox1.ItemIndex:=StrToIntDef(r.Param,-1);
-   end;
+     INFO_ENGINE_STATE : begin
+                           ComboBox1.ItemIndex:=StrToIntDef(r.Param,-1);
+                           case TEngineState(StrToInt(r.Param)) of
+                             ENGINE_PLAY: Timer1.Enabled:=true;
+                           else
+                             Timer1.Enabled:=false;
+                           end;
+                         end;
 
+   end;
 
 
 end;
@@ -210,7 +275,7 @@ end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
-  if tbConn.Checked then
+  if tbConn1.Checked then
     begin
        FThread.Terminate;
        FThread.WaitFor;
@@ -242,6 +307,7 @@ begin
 
   seTrack.Value := i;
 
+  TrackBar1.Max:= Tags.Duration;
 end;
 
 
