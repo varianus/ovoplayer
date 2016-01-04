@@ -630,7 +630,7 @@ begin
                               Volume :=StrToIntDef(Command.Param, Volume);
                               Handled := true;
                           end;
-       COMMAND_SEEK     : Seek(StrToIntDef(Command.Param, Position));
+       COMMAND_SEEK     : position := (StrToIntDef(Command.Param, Position));
     end;
 
   if Command.Category = CATEGORY_APP then
