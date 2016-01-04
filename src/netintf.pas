@@ -71,13 +71,14 @@ constructor TTCPRemoteDaemon.Create(net: TNetIntf);
 begin
   inherited Create(False);
   fnet := net;
-  sock := TTcpIpServerSocket.Create('',net.FPort);
+  sock := TTcpIpServerSocket.Create('', net.FPort);
   FreeOnTerminate := True;
 end;
 
 destructor TTCPRemoteDaemon.Destroy;
 begin
   Sock.Free;
+  Inherited Destroy();
 end;
 
 procedure TTCPRemoteDaemon.Execute;
@@ -273,7 +274,7 @@ procedure TNetIntf.DeActivate;
 begin
   if Assigned(DaemonThread) then
     begin
-      DaemonThread.Sock.Socket.StopAccepting(true);
+      DaemonThread.Sock.Socket.StopAccepting(True);
       DaemonThread.Terminate;
       DaemonThread.WaitFor;
       DaemonThread := nil;
