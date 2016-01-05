@@ -2,8 +2,9 @@
 # [OvoPlayer](http://ovoplayer.altervista.org) 
 [![Stable 1.2.1](https://img.shields.io/badge/stable-1.2.1-green.svg?style=flat)](https://sourceforge.net/projects/ovoplayer/files/1.2.1/)
 [![Development 1.3.0](https://img.shields.io/badge/development-1.3.0-yellow.svg?style=flat)](https://sourceforge.net/projects/ovoplayer/files/1.3.0/)
-![ga tracker](https://www.google-analytics.com/collect?v=1&a=257770996&t=pageview&dl=https%3A%2F%2Fgithub.com%2Fvarianus%2Fovoplayer&ul=en-us&de=UTF-8&cid=978224512.1377738459&tid=UA-26420338-1&z=887657232 "ga tracker")
-OvoPlayer is a free multi-platform music manager and player.
+[![Analytics](https://ga-beacon.appspot.com/UA-26420338-1/ovoplayer/readme?flat)](https://github.com/varianus/ovoplayer/)
+
+Ovoplayer is a free multi-platform music manager and player.
 
 Windows installer and Debian packages are avalaible [here](http://ovoplayer.altervista.org/downloads.html)
 
@@ -20,10 +21,11 @@ Windows installer and Debian packages are avalaible [here](http://ovoplayer.alte
 Ovoplayer can use DirectShow, MediaFoundation VLC, XINE, BASS, Mplayer, GStreamer, libMPV.  Works "out-of-the box" on Windows and most Linux distro.
 
 ### To Do
+  * ![Android remote control](https://github.com/varianus/ovoplayer-remote) 
   * Mac OSX port - working on
   * Streaming
   * Equalizer
-
+  
 ### Screenshot
 ![Screenshot](http://ovoplayer.altervista.org/images/OVOPlayer_scrn1.png)
 
