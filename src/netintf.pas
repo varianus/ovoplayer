@@ -118,6 +118,8 @@ procedure TTCPRemoteThrd.SyncRunner;
 var
   Command : RExternalCommand;
   Item: integer;
+  i: integer;
+  fPlaylist: String;
 
 begin
   Command := SplitCommand(Data);
@@ -145,6 +147,12 @@ begin
             INFO_VOLUME: Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.Volume))));
             INFO_PLAYLISTCOUNT: Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_PLAYLISTCOUNT, IntToStr(fnet.fBackEnd.PlayListCount))));
             INFO_COVER : sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_COVER, fnet.fBackEnd.GetCoverURL)));
+            INFO_FULLPLAYLIST : begin
+                                 fPlaylist:=EncodeString(IntToStr(fnet.fBackEnd.PlayListCount));
+                                 for i := 1 to fnet.fBackEnd.PlayListCount  do
+                                    fPlaylist:= fPlaylist+EncodeMetaData(fnet.fBackEnd.GetMetadata(i));
+                                 Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_FULLPLAYLIST, fPlaylist)));
+                                end;
           end;
         end;
     end;

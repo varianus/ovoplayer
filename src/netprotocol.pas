@@ -62,6 +62,7 @@ Const
     INFO_METADATA = 'meta';  // optional param playlist item number
     INFO_PLAYLISTCOUNT = 'count';
     INFO_COVER = 'cover';
+    INFO_FULLPLAYLIST = 'playlist';
 
   CATEGORY_HEART = 'heart';
     COMMAND_BEAT = 'beat';
@@ -86,7 +87,9 @@ function BuildCommand(Category: string; Command: string; Param:string=''; IPCSep
 Function SplitCommand(ACommand:string): RExternalCommand;
 
 Function EncodeMetaData(Tags:TCommonTags): String;
-Function DecodeMetaData(StringTags:string): TCommonTags;
+Function DecodeMetaData(var StringTags:string): TCommonTags;
+
+Function ExtractField(var StringTags:String ):String;
 
 implementation
 uses strutils;
@@ -186,35 +189,34 @@ begin
            );
 end;
 
-function DecodeMetaData(StringTags: string): TCommonTags;
+Function ExtractField(var StringTags:String ):String;
+var
+  size: integer;
+begin
+  size:= DecodeSize(Copy(StringTags,1,4));
+  Result := copy(StringTags, 5, size);
+  inc(size,4);
+  Delete(StringTags, 1, size);
+end;
+
+
+function DecodeMetaData(var StringTags: string): TCommonTags;
 var
   tmp: string;
-  Procedure ReadField;
-  var
-    s: string;
-    size: integer;
-  begin
-    s:=Copy(StringTags,1,4);
-    size:= DecodeSize(s);
-    tmp := copy(StringTags, 5, size);
-    inc(size,4);
-    Delete(StringTags, 1, size);
-  end;
-
 begin
   Delete(StringTags, 1, 4);
 
-  ReadField;  Result.ID:= StrToInt64Def(tmp,0);
-  ReadField;  Result.FileName := tmp;
-  ReadField;  Result.Album := tmp;
-  ReadField;  Result.AlbumArtist := tmp;
-  ReadField;  Result.Artist := tmp;
-  ReadField;  Result.Comment := tmp;
-  ReadField;  Result.Duration := StrToInt64Def(tmp,0);
-  ReadField;  Result.Genre := tmp;
-  ReadField;  Result.Title := tmp;
-  ReadField;  Result.TrackString := tmp;
-  ReadField;  Result.Year := tmp;
+  Result.ID          := StrToInt64Def(ExtractField(StringTags),0);
+  Result.FileName    := ExtractField(StringTags);
+  Result.Album       := ExtractField(StringTags);
+  Result.AlbumArtist := ExtractField(StringTags);
+  Result.Artist      := ExtractField(StringTags);
+  Result.Comment     := ExtractField(StringTags);
+  Result.Duration    := StrToInt64Def(ExtractField(StringTags),0);
+  Result.Genre       := ExtractField(StringTags);
+  Result.Title       := ExtractField(StringTags);
+  Result.TrackString := ExtractField(StringTags);
+  Result.Year        := ExtractField(StringTags);
 
 end;
 
