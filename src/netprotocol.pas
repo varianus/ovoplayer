@@ -61,7 +61,8 @@ Const
     INFO_VOLUME = 'vol';
     INFO_METADATA = 'meta';  // optional param playlist item number
     INFO_PLAYLISTCOUNT = 'count';
-    INFO_COVER = 'cover';
+    INFO_COVERURL = 'coverurl';
+    INFO_COVERIMG = 'coverimg';
     INFO_FULLPLAYLIST = 'playlist';
 
   CATEGORY_HEART = 'heart';

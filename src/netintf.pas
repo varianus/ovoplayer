@@ -146,7 +146,8 @@ begin
             INFO_POSITION : sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.Position))));
             INFO_VOLUME: Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.Volume))));
             INFO_PLAYLISTCOUNT: Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_PLAYLISTCOUNT, IntToStr(fnet.fBackEnd.PlayListCount))));
-            INFO_COVER : sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_COVER, fnet.fBackEnd.GetCoverURL)));
+            INFO_COVERURL : sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_COVERURL, fnet.fBackEnd.GetCoverURL)));
+            INFO_COVERIMG : sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_COVERIMG, fnet.fBackEnd.GetCover)));
             INFO_FULLPLAYLIST : begin
                                  fPlaylist:=EncodeString(IntToStr(fnet.fBackEnd.PlayListCount));
                                  for i := 1 to fnet.fBackEnd.PlayListCount  do
