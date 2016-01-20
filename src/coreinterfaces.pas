@@ -59,6 +59,7 @@ type
     procedure Seek(AValue: int64);
     Function GetMetadata(Index:integer=-1): TCommonTags;
     Function GetCoverURL: String;
+    Function GetCover: String;
     Function PlayListCount : integer;
     // property
     Property Status: TEngineState read GetStatus write SetStatus;

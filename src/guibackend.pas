@@ -78,6 +78,8 @@ type
     procedure SetStatus(AValue: TEngineState);
     procedure SetVolume(AValue: cardinal);
     Function GetCoverURL: String;
+    Function GetCover: String;
+
 
     Procedure Play;
     Procedure Stop;
@@ -122,7 +124,7 @@ Procedure FreeBackend;
 implementation
 
 uses Graphics, LCLProc, FilesSupport, AudioTag, AppConsts, ExtendedInfo, uriparser,
-     NetProtocol;
+     NetProtocol, base64;
 
 var
   fBackEnd: TBackEnd;
@@ -407,6 +409,52 @@ begin
 
   if Result <> '' then
      result := FilenameToURI(result);
+
+end;
+
+function TBackEnd.GetCover: String;
+var
+  Picture: TPicture;
+  imgLoaded : boolean;
+  Song: TCustomSong;
+  f: TTagReader;
+  Encoder: TBase64EncodingStream;
+  Outstream : TStringStream;
+
+begin
+  result := '';
+  Song :=  PlayList.CurrentItem;
+  if not assigned(song) then exit;
+
+  imgloaded := false;
+  if Song.Tags.HasImage then
+     begin
+       f := GetFileTagsObject(Song.Tags.FileName);
+       f.Tags.Images[0].image.Position:=0;
+       try
+         Outstream:=TStringStream.Create('');
+         try
+           Encoder := TBase64EncodingStream.Create(Outstream);
+           try
+             Encoder.CopyFrom(f.Tags.Images[0].image, f.Tags.Images[0].image.Size);
+           finally
+             Encoder.Free;
+             end;
+           Result:=Outstream.DataString;
+         finally
+           Outstream.free;
+         end;
+         imgLoaded:= true;
+       Except
+       end;
+       f.Free;
+
+     end;
+
+  if not imgLoaded then
+     begin
+      result := '';
+     end;
 
 end;
 
