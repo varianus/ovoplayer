@@ -25,8 +25,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, Spin, ComCtrls, CustomDrawnControls, TcpIpClient, netprotocol,
-  BaseTypes, basetag, uriparser;
+  ExtCtrls, Spin, ComCtrls, CustomDrawnControls, myhello, TcpIpClient,
+  netprotocol, BaseTypes, basetag, uriparser;
 
 type
 
@@ -81,6 +81,7 @@ type
     Label7: TLabel;
     Label8: TLabel;
     Label9: TLabel;
+    ListBox1: TListBox;
     meComment: TMemo;
     memoReceived: TMemo;
     memoSent: TMemo;
@@ -106,7 +107,9 @@ type
     Seeking: boolean;
     FClient: TTcpIpClientSocket;
     FThread: TClientThread;
+    procedure DecodeImage(s: string);
     procedure TagsToMap(Tags:TCommonTags);
+    procedure DecodePlaylist(s: string);
   public
 
   end;
@@ -115,6 +118,7 @@ var
   Form1: TForm1;
 
 implementation
+uses base64;
 
 {$R *.lfm}
 
@@ -128,6 +132,8 @@ end;
 procedure TClientThread.Execute;
 var
   DataSize: Integer;
+  ReadCnt, Remains: integer;
+
 begin
   while (not Terminated) do
   begin
@@ -142,7 +148,12 @@ begin
     FSocket.Read(Data[1], 4);
     DataSize:= DecodeSize(Data);
     SetLength(Data, DataSize);
-    FSocket.Read(Data[1], DataSize);
+    Remains := DataSize;
+    Repeat
+       ReadCnt:=FSocket.Read(Data[DataSize-Remains+1], Remains);
+       Remains:=Remains-ReadCnt;
+    until Remains = 0;
+
     if DataSize < 1 then
       Exit;
     Synchronize(@DoReceive);
@@ -239,10 +250,16 @@ begin
                           TrackBar1.Position:=StrToInt(r.Param);
                     end;
 
-     INFO_COVER : begin
+     INFO_COVERURL : begin
                     if URIToFilename(r.param,s) then
                        image1.Picture.LoadFromFile(s);
                   end;
+     INFO_COVERIMG : begin
+                     if r.Param <> ''then
+                       DecodeImage(r.Param);
+
+                  end;
+
 
      INFO_ENGINE_STATE : begin
                            ComboBox1.ItemIndex:=StrToIntDef(r.Param,-1);
@@ -252,6 +269,10 @@ begin
                              Timer1.Enabled:=false;
                            end;
                          end;
+
+     INFO_FULLPLAYLIST :begin
+                           DecodePlaylist( r.Param);
+                        end;
 
    end;
 
@@ -310,6 +331,47 @@ begin
   TrackBar1.Max:= Tags.Duration;
 end;
 
+procedure TForm1.DecodePlaylist(s: string);
+var
+  tmp:string;
+  cnt: integer;
+  i: integer;
+  tags: TCommonTags;
+begin
+  tmp:= ExtractField(s);
+ // delete(s,1,4);
+  cnt:= StrToInt(tmp);
+  ListBox1.Clear;
+  try
+  for i := 0 to cnt -1 do
+    begin
+        tags:=DecodeMetaData(s);
+        ListBox1.Items.Add(inttostr(i)+'='+Tags.Title);
+    end;
+
+  except
+  end;
+
+end;
+
+procedure TForm1.DecodeImage(s: string);
+var
+  DecodedStream: TMemoryStream;
+  EncodedStream: TStringStream;
+  Decoder: TBase64DecodingStream;
+  Output: string;
+begin
+  EncodedStream := TStringStream.Create(S);
+  DecodedStream := TMemoryStream.Create;
+  Decoder       := TBase64DecodingStream.Create(EncodedStream);
+  DecodedStream.CopyFrom(Decoder, Decoder.Size);
+  DecodedStream.Position:=0;
+  Image1.Picture.LoadFromStream(DecodedStream);
+
+  DecodedStream.Free;
+  EncodedStream.Free;
+  Decoder.Free;
+end;
 
 end.
 

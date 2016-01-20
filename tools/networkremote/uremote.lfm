@@ -11,9 +11,9 @@ object Form1: TForm1
   Visible = False
   object memoReceived: TMemo
     Left = 0
-    Height = 82
-    Top = 648
-    Width = 1020
+    Height = 198
+    Top = 608
+    Width = 1068
     Align = alClient
     ScrollBars = ssAutoBoth
     TabOrder = 0
@@ -23,11 +23,11 @@ object Form1: TForm1
     Left = 0
     Height = 360
     Top = 168
-    Width = 1020
+    Width = 1068
     Align = alTop
     Caption = 'Common Tags'
     ClientHeight = 340
-    ClientWidth = 1016
+    ClientWidth = 1064
     TabOrder = 1
     object Label1: TLabel
       Left = 0
@@ -133,7 +133,7 @@ object Form1: TForm1
       Left = 100
       Height = 71
       Top = 202
-      Width = 682
+      Width = 586
       TabOrder = 5
     end
     object Label6: TLabel
@@ -196,13 +196,13 @@ object Form1: TForm1
       Left = 502
       Height = 194
       Top = 0
-      Width = 280
+      Width = 184
       Stretch = True
     end
     object ComboBox1: TComboBox
-      Left = 856
+      Left = 696
       Height = 23
-      Top = 6
+      Top = 0
       Width = 132
       Enabled = False
       ItemHeight = 15
@@ -227,16 +227,25 @@ object Form1: TForm1
       OnMouseUp = TrackBar1MouseUp
       TabOrder = 9
     end
+    object ListBox1: TListBox
+      Left = 696
+      Height = 248
+      Top = 32
+      Width = 280
+      Columns = 1
+      ItemHeight = 0
+      TabOrder = 10
+    end
   end
   object GroupBox1: TGroupBox
     Left = 0
     Height = 168
     Top = 0
-    Width = 1020
+    Width = 1068
     Align = alTop
     Caption = 'Controls'
     ClientHeight = 148
-    ClientWidth = 1016
+    ClientWidth = 1064
     TabOrder = 2
     object Button1: TButton
       Left = 329
@@ -382,9 +391,9 @@ object Form1: TForm1
   end
   object memoSent: TMemo
     Left = 0
-    Height = 120
+    Height = 80
     Top = 528
-    Width = 1020
+    Width = 1068
     Align = alTop
     ScrollBars = ssAutoBoth
     TabOrder = 3
@@ -393,7 +402,7 @@ object Form1: TForm1
   object Timer1: TTimer
     Enabled = False
     OnTimer = Timer1Timer
-    left = 869
-    top = 263
+    left = 792
+    top = 192
   end
 end
