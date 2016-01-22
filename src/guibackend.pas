@@ -102,7 +102,7 @@ type
     procedure HandleCommand(Command: TEngineCommand; Param: integer);
     function HandleExternalCommand(Command: RExternalCommand):boolean;
 
-    function GetImageFromfolder(Path: string): string;
+    function GetImageFromfolder(Path: string; LoadDefault:boolean=true): string;
     procedure SaveState;
     procedure SignalPlayListChange;
     property OnSaveInterfaceState: TNotifyEvent read FOnSaveInterfaceState write SetOnSaveInterfaceState;
@@ -244,7 +244,7 @@ end;
 
 
 
-function TBackEnd.GetImageFromfolder(Path: string): string;
+function TBackEnd.GetImageFromfolder(Path: string; LoadDefault:boolean): string;
 const
   CountName = 6;
   CoverName : array [0..CountName - 1] of string =
@@ -291,7 +291,7 @@ begin
        end;
      end;
 
-  if Result = '' then
+  if (Result = '') and LoadDefault then
     Result := Config.GetResourcesPath + 'nocover.png';
 end;
 
@@ -418,8 +418,7 @@ var
   imgLoaded : boolean;
   Song: TCustomSong;
   f: TTagReader;
-  Encoder: TBase64EncodingStream;
-  Outstream : TStringStream;
+  FileInput: TFileStream;
 
 begin
   result := '';
@@ -430,31 +429,26 @@ begin
   if Song.Tags.HasImage then
      begin
        f := GetFileTagsObject(Song.Tags.FileName);
-       f.Tags.Images[0].image.Position:=0;
-       try
-         Outstream:=TStringStream.Create('');
-         try
-           Encoder := TBase64EncodingStream.Create(Outstream);
-           try
-             Encoder.CopyFrom(f.Tags.Images[0].image, f.Tags.Images[0].image.Size);
-           finally
-             Encoder.Free;
-             end;
-           Result:=Outstream.DataString;
-         finally
-           Outstream.free;
-         end;
-         imgLoaded:= true;
-       Except
-       end;
+       Result := EncodeStream(f.Tags.Images[0].image);
+       imgLoaded:= true;
        f.Free;
-
      end;
 
   if not imgLoaded then
      begin
-      result := '';
+      result := BackEnd.GetImageFromfolder(IncludeTrailingPathDelimiter(Song.FilePath), False);
+      if Result<> '' then
+        begin
+          FileInput := TFileStream.Create(Result, fmOpenRead);
+          try
+            Result := EncodeStream(FileInput);
+
+          finally
+            FileInput.Free;
+          end;
+        end;
      end;
+
 
 end;
 

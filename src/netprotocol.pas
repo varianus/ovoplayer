@@ -83,9 +83,11 @@ This 3-byte integer is then encoded in Base64, so it became a 4 byte ASCII strin
 function EncodeSize(Size:Integer):string;
 function DecodeSize(Size:string):integer;
 Function EncodeString(S:String): string;
+Function EncodeStream(inStream:TStream):string;
 
 function BuildCommand(Category: string; Command: string; Param:string=''; IPCSeparator:boolean=false):string;
 Function SplitCommand(ACommand:string): RExternalCommand;
+
 
 Function EncodeMetaData(Tags:TCommonTags): String;
 Function DecodeMetaData(var StringTags:string): TCommonTags;
@@ -173,6 +175,16 @@ begin
     end;
 end;
 
+Function ExtractField(var StringTags:String ):String;
+var
+  size: integer;
+begin
+  size:= DecodeSize(Copy(StringTags,1,4));
+  Result := copy(StringTags, 5, size);
+  inc(size,4);
+  Delete(StringTags, 1, size);
+end;
+
 function EncodeMetaData(Tags: TCommonTags): String;
 begin
   result := EncodeString(   // is this encoding really needed ??? Maybe only for check
@@ -189,17 +201,6 @@ begin
                 EncodeString(Tags.Year)
            );
 end;
-
-Function ExtractField(var StringTags:String ):String;
-var
-  size: integer;
-begin
-  size:= DecodeSize(Copy(StringTags,1,4));
-  Result := copy(StringTags, 5, size);
-  inc(size,4);
-  Delete(StringTags, 1, size);
-end;
-
 
 function DecodeMetaData(var StringTags: string): TCommonTags;
 var
@@ -218,6 +219,35 @@ begin
   Result.Title       := ExtractField(StringTags);
   Result.TrackString := ExtractField(StringTags);
   Result.Year        := ExtractField(StringTags);
+
+end;
+
+Function EncodeStream(inStream:TStream):string;
+var
+  Encoder: TBase64EncodingStream;
+  Outstream : TStringStream;
+begin
+  Result := EmptyStr;
+
+  if not Assigned(inStream) then
+    exit;
+
+  if inStream.Size = 0 then
+    exit;
+
+  Outstream:=TStringStream.Create('');
+  try
+    Encoder := TBase64EncodingStream.Create(Outstream);
+    try
+      inStream.Position:=0;
+      Encoder.CopyFrom(inStream, inStream.Size);
+    finally
+      Encoder.Free;
+      end;
+    Result:=Outstream.DataString;
+  finally
+    Outstream.free;
+  end;
 
 end;
 
