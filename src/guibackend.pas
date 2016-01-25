@@ -129,6 +129,11 @@ uses Graphics, LCLProc, FilesSupport, AudioTag, AppConsts, ExtendedInfo, uripars
 var
   fBackEnd: TBackEnd;
 
+const
+  RCommandString : array [TEngineCommand] of string =
+                  ('', COMMAND_STOP, COMMAND_PREVIOUS, COMMAND_PLAYPAUSE, COMMAND_NEXT,
+                   COMMAND_PAUSE, COMMAND_SEEK, '');
+
 
 { TBackEnd }
 
@@ -632,17 +637,15 @@ begin
 end;
 
 procedure TBackEnd.HandleCommand(Command: TEngineCommand; Param: integer);
+var
+  tmpCommand: RExternalCommand ;
 begin
-  case command of
-    ecNext: Next;
-    ecPrevious: Previous;
-    ecPlay: if AudioEngine.State = ENGINE_PLAY then
-        Pause
-      else
-        Play;
-    ecStop: Stop;
-    ecSeek: Position := Param;
-    end;
+
+  tmpCommand.Category := CATEGORY_ACTION;
+  tmpCommand.Command := RCommandString[Command];
+  tmpCommand.Param := inttostr(Param);
+  HandleExternalCommand(tmpCommand);
+
 end;
 
 function TBackEnd.HandleExternalCommand(Command: RExternalCommand):boolean;
