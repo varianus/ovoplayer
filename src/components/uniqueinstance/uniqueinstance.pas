@@ -54,9 +54,9 @@ type
     FEnabled: Boolean;
 FPriorInstanceRunning: Boolean;
     procedure ReceiveMessage(Sender: TObject);
-    {$ifdef unix}
+//    {$ifdef unix}
     procedure CheckMessage(Sender: TObject);
-    {$endif}
+ //   {$endif}
   protected
     procedure Loaded; override;
   public
@@ -109,19 +109,19 @@ begin
   end;
 end;
 
-{$ifdef unix}
+//{$ifdef unix}
 procedure TUniqueInstance.CheckMessage(Sender: TObject);
 begin
   FIPCServer.PeekMessage(1, True);
 end;
-{$endif}
+//{$endif}
 
 procedure TUniqueInstance.Loaded;
 var
   IPCClient: TSimpleIPCClient;
-  {$ifdef unix}
+//  {$ifdef unix}
   Timer: TTimer;
-  {$endif}
+//  {$endif}
 begin
   if not (csDesigning in ComponentState) and FEnabled then
   begin
@@ -147,14 +147,14 @@ begin
       FIPCServer.OnMessage := @ReceiveMessage;
       //there's no more need for IPCClient
       IPCClient.Destroy;
-      {$ifdef unix}
+   //   {$ifdef unix}
       if Assigned(FOnOtherInstance) then
       begin
         Timer := TTimer.Create(Self);
         Timer.Interval := FUpdateInterval;
         Timer.OnTimer := @CheckMessage;
       end;
-      {$endif}
+   //   {$endif}
     end;
   end;//if
   inherited;
