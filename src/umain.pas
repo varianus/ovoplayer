@@ -1517,14 +1517,20 @@ begin
   BaseNode.FullPath:=EmptyStr;
 
   AutoPlayList := TStringList.Create;
-  BuildFileList(BackEnd.Config.GetPlaylistsPath+'*'+CustomPlaylistExtension,faAnyFile, AutoPlayList,False);
-  for i := 0 to AutoPlayList.Count -1 do
-    begin
-      plname := DecodeSafeFileName(ExtractFileNameOnly(AutoPlayList[i]));
-      node:= TPlayListTreeNode(PlaylistTree.Items.AddChild(BaseNode, plName));
-      node.FullPath:=AutoPlayList[i];
-      Node.Automatic:=true;
-    end;
+  AutoPlayList.OwnsObjects:=True;
+  try
+    BuildFileList(BackEnd.Config.GetPlaylistsPath+'*'+CustomPlaylistExtension,faAnyFile, AutoPlayList,False);
+    for i := 0 to AutoPlayList.Count -1 do
+      begin
+        plname := DecodeSafeFileName(ExtractFileNameOnly(AutoPlayList[i]));
+        node:= TPlayListTreeNode(PlaylistTree.Items.AddChild(BaseNode, plName));
+        node.FullPath:=AutoPlayList[i];
+        Node.Automatic:=true;
+      end;
+
+  finally
+    AutoPlayList.Free;
+  end;
 
   BaseNode.Expand(true);
 end;
