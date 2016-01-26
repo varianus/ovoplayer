@@ -77,6 +77,7 @@ begin
   Sock.Socket.StopAccepting(False);
   Sock.Free;
   inherited Terminate;
+
 end;
 
 constructor TTCPRemoteDaemon.Create(net: TNetIntf);
@@ -89,7 +90,6 @@ end;
 
 destructor TTCPRemoteDaemon.Destroy;
 begin
-//  Sock.free;
   Inherited Destroy();
 end;
 
@@ -104,6 +104,7 @@ begin
     if (not Terminated) and (Sock.lastError = 0) then
       TTCPRemoteThrd.Create(ClientSock, fnet);
   until terminated;
+
 end;
 
 { TEchoThrd }
@@ -305,7 +306,8 @@ end;
 
 destructor TNetIntf.Destroy;
 begin
-  DeActivate;
+  if FActivated then
+     DeActivate;
   inherited Destroy;
 
 end;
