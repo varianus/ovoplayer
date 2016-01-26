@@ -1333,7 +1333,10 @@ begin
 
   {$IFDEF NETWORK_INTF}
   if Assigned(MyNetIntf) then
-     MyNetIntf.DeActivate;
+    begin
+      MyNetIntf.DeActivate;
+      MyNetIntf.Free;
+    end;
   {$ENDIF}
 
   if Assigned(fMiniPlayer) then

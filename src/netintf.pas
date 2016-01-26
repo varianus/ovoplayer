@@ -31,14 +31,19 @@ type
     property Activated: boolean read FActivated;
   end;
 
+  { TTCPRemoteDaemon }
+
   TTCPRemoteDaemon = class(TThread)
   private
     Sock: TTcpIpServerSocket;
     fnet: TNetIntf;
+  protected
+
   public
     constructor Create(net: TNetIntf);
     destructor Destroy; override;
     procedure Execute; override;
+    procedure Terminate;
   end;
 
   { TTCPRemoteThrd }
@@ -67,6 +72,13 @@ uses GeneralFunc;
 
 { TEchoDaemon }
 
+procedure TTCPRemoteDaemon.Terminate;
+begin
+  Sock.Socket.StopAccepting(False);
+  Sock.Free;
+  inherited Terminate;
+end;
+
 constructor TTCPRemoteDaemon.Create(net: TNetIntf);
 begin
   inherited Create(False);
@@ -77,7 +89,7 @@ end;
 
 destructor TTCPRemoteDaemon.Destroy;
 begin
-  Sock.Free;
+//  Sock.free;
   Inherited Destroy();
 end;
 
@@ -85,18 +97,13 @@ procedure TTCPRemoteDaemon.Execute;
 var
   ClientSock: TSocket;
 begin
-  with sock do
-    begin
-    bind;
-    listen;
-    repeat
-      if terminated then
-        break;
-      ClientSock := accept;
-      if lastError = 0 then
-        TTCPRemoteThrd.Create(ClientSock, fnet);
-    until False;
-    end;
+  sock.bind;
+  sock.listen;
+  repeat
+    ClientSock := sock.accept;
+    if (not Terminated) and (Sock.lastError = 0) then
+      TTCPRemoteThrd.Create(ClientSock, fnet);
+  until terminated;
 end;
 
 { TEchoThrd }
@@ -283,10 +290,8 @@ procedure TNetIntf.DeActivate;
 begin
   if Assigned(DaemonThread) then
     begin
-      DaemonThread.Sock.Socket.StopAccepting(True);
       DaemonThread.Terminate;
-      DaemonThread.WaitFor;
-      DaemonThread := nil;
+//      DaemonThread.Free;
       FActivated:=false;
     end;
 end;
