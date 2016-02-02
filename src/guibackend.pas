@@ -78,7 +78,7 @@ type
     procedure SetStatus(AValue: TEngineState);
     procedure SetVolume(AValue: cardinal);
     Function GetCoverURL: String;
-    Function GetCover: String;
+    Function GetCover(Width: integer=-1; Height:Integer=-1): String;
 
 
     Procedure Play;
@@ -124,7 +124,7 @@ Procedure FreeBackend;
 implementation
 
 uses Graphics, LCLProc, FilesSupport, AudioTag, AppConsts, ExtendedInfo, uriparser,
-     NetProtocol, base64;
+     NetProtocol, NetSupport, ImagesSupport, base64;
 
 var
   fBackEnd: TBackEnd;
@@ -417,43 +417,68 @@ begin
 
 end;
 
-function TBackEnd.GetCover: String;
+function TBackEnd.GetCover(Width: integer=-1; Height:Integer=-1): String;
 var
   Picture: TPicture;
   imgLoaded : boolean;
   Song: TCustomSong;
+  img: TPicture;
+  tmpStream: TMemoryStream;
+
   f: TTagReader;
-  FileInput: TFileStream;
+  FileName: string;
 
 begin
   result := '';
   Song :=  PlayList.CurrentItem;
   if not assigned(song) then exit;
 
-  imgloaded := false;
+  img := TPicture.Create;
+
+  imgLoaded := false;
   if Song.Tags.HasImage then
      begin
        f := GetFileTagsObject(Song.Tags.FileName);
-       Result := EncodeStream(f.Tags.Images[0].image);
+       img.LoadFromStream(f.Tags.Images[0].image);
+       f.free;
        imgLoaded:= true;
-       f.Free;
      end;
 
   if not imgLoaded then
      begin
-      result := BackEnd.GetImageFromfolder(IncludeTrailingPathDelimiter(Song.FilePath), False);
-      if Result<> '' then
+      FileName := BackEnd.GetImageFromfolder(IncludeTrailingPathDelimiter(Song.FilePath), False);
+      if FileName <> '' then
         begin
-          FileInput := TFileStream.Create(Result, fmOpenRead);
-          try
-            Result := EncodeStream(FileInput);
-
-          finally
-            FileInput.Free;
-          end;
+          Img.LoadFromFile(FileName);
+          imgLoaded := true;
         end;
      end;
 
+  if not imgLoaded then
+    begin
+      img.free;
+      exit
+    end;
+
+  try
+    if (Width <> -1) and (Height <> -1) then
+      ResizeBitmap(img.Bitmap, Width, Height);
+
+    tmpStream := TMemoryStream.Create;
+    try
+      img.SaveToStreamWithFileExt(tmpStream, '.jpg');
+      DebugLn('STSize: '+IntToStr(tmpStream.Size));
+      Result := EncodeStream(tmpStream);
+      DebugLn('IMGSize: '+inttostr(length(result)));
+
+    finally
+      img.free;
+      tmpStream.Free;
+    end;
+
+
+  Except
+  end;
 
 end;
 
