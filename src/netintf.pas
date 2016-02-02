@@ -68,7 +68,7 @@ type
   end;
 
 implementation
-uses GeneralFunc;
+uses GeneralFunc, netsupport;
 
 { TEchoDaemon }
 
@@ -128,6 +128,7 @@ var
   Item: integer;
   i: integer;
   fPlaylist: String;
+  H, W: integer;
 
 begin
   Command := SplitCommand(Data);
@@ -155,12 +156,16 @@ begin
             INFO_VOLUME: Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.Volume))));
             INFO_PLAYLISTCOUNT: Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_PLAYLISTCOUNT, IntToStr(fnet.fBackEnd.PlayListCount))));
             INFO_COVERURL : sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_COVERURL, fnet.fBackEnd.GetCoverURL)));
-            INFO_COVERIMG : sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_COVERIMG, fnet.fBackEnd.GetCover)));
+            INFO_COVERIMG :  begin
+                                DecodeImageSize(Command.Param, W, H);
+                                sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_COVERIMG, fnet.fBackEnd.GetCover(W,H))));
+                             end;
             INFO_FULLPLAYLIST : begin
                                  fPlaylist:=EncodeString(IntToStr(fnet.fBackEnd.PlayListCount));
                                  for i := 1 to fnet.fBackEnd.PlayListCount  do
                                     fPlaylist:= fPlaylist+EncodeMetaData(fnet.fBackEnd.GetMetadata(i));
                                  Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_FULLPLAYLIST, fPlaylist)));
+                                 DebugLn(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_FULLPLAYLIST, fPlaylist)));
                                 end;
           end;
         end;

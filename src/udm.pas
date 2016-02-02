@@ -114,7 +114,7 @@ implementation
 
 {$R *.lfm}
 uses lclproc, strutils, AudioTag, AppConsts, GeneralFunc, GUIBackEnd,
-  netprotocol;
+  netprotocol, netsupport;
 
 { TDM }
 // for traceback porpouse

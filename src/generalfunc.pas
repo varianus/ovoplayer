@@ -60,7 +60,7 @@ uses
 {$DEFINE USESMODE}
   {$i generalfuncimpl.inc}
 {$UNDEF USESMODE}
- strutils, SimpleIPC, AsyncProcess;
+ strutils, SimpleIPC, AsyncProcess, netsupport;
 
 const
   OneKB = 1024;

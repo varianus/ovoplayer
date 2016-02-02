@@ -101,6 +101,7 @@ if TargetOS = 'linux' then
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
+        <CommandLineParams Value="--lang en"/>
       </local>
     </RunParams>
     <RequiredPackages Count="5">
@@ -122,7 +123,7 @@ if TargetOS = 'linux' then
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="78">
+    <Units Count="80">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -498,6 +499,15 @@ if TargetOS = 'linux' then
         <Filename Value="netprotocol.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit77>
+      <Unit78>
+        <Filename Value="imagessupport.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ImagesSupport"/>
+      </Unit78>
+      <Unit79>
+        <Filename Value="netsupport.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit79>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -554,7 +564,7 @@ if TargetOS = 'linux' then
     </Other>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="6">
+    <Exceptions Count="7">
       <Item1>
         <Name Value="EAbort"/>
       </Item1>
@@ -574,6 +584,9 @@ if TargetOS = 'linux' then
       <Item6>
         <Name Value="EReadError"/>
       </Item6>
+      <Item7>
+        <Name Value="ESocketError"/>
+      </Item7>
     </Exceptions>
   </Debugging>
 </CONFIG>
