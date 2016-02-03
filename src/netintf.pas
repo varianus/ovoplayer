@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, types, BaseTypes, coreinterfaces, TcpIpServer, TcpIpClient, sockets,
-  NullInterfacedObject, netprotocol,lclproc;
+  NullInterfacedObject, netprotocol,netsupport, lclproc;
 
 type
 
@@ -56,6 +56,7 @@ type
     fnet: TNetIntf;
     Data: string;
     DataSize: integer;
+    ConnectionCfg: RConnectionCfg;
     procedure SetKeepOpen(AValue: boolean);
   private
     procedure SyncRunner;
@@ -68,7 +69,7 @@ type
   end;
 
 implementation
-uses GeneralFunc, netsupport;
+uses GeneralFunc;
 
 { TEchoDaemon }
 
@@ -137,9 +138,13 @@ begin
       Case Command.Command of
         COMMAND_KEEP : KeepOpen := true;
         COMMAND_PIN: ;
+        COMMAND_SIZEMODE: begin
+                            if Command.Param = '1' then
+                              ConnectionCfg.SizeMode:=smUTF8Char;
+                            if Command.Param = '0' then
+                              ConnectionCfg.SizeMode:=smByte;
+                          end;
       end;
-
-      exit;
     end;
 
  if not  fnet.fBackEnd.HandleExternalCommand(Command) then
@@ -147,25 +152,25 @@ begin
       if Command.Category = CATEGORY_REQUEST then
         begin
           case Command.Command of
-            INFO_ENGINE_STATE: sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_ENGINE_STATE, IntToStr(ord(fnet.fBackEnd.Status)))));
+            INFO_ENGINE_STATE: sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_ENGINE_STATE, IntToStr(ord(fnet.fBackEnd.Status))),ConnectionCfg));
             INFO_METADATA: begin
                              item := StrToInt64Def(Command.Param, -1);
-                             sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata(item)))));
+                             sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata(item),ConnectionCfg)),ConnectionCfg));
                            end;
-            INFO_POSITION : sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.Position))));
-            INFO_VOLUME: Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.Volume))));
-            INFO_PLAYLISTCOUNT: Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_PLAYLISTCOUNT, IntToStr(fnet.fBackEnd.PlayListCount))));
-            INFO_COVERURL : sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_COVERURL, fnet.fBackEnd.GetCoverURL)));
+            INFO_POSITION : sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.Position)),ConnectionCfg));
+            INFO_VOLUME: Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.Volume)),ConnectionCfg));
+            INFO_PLAYLISTCOUNT: Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_PLAYLISTCOUNT, IntToStr(fnet.fBackEnd.PlayListCount)),ConnectionCfg));
+            INFO_COVERURL : sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_COVERURL, fnet.fBackEnd.GetCoverURL),ConnectionCfg));
             INFO_COVERIMG :  begin
                                 DecodeImageSize(Command.Param, W, H);
-                                sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_COVERIMG, fnet.fBackEnd.GetCover(W,H))));
+                                sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_COVERIMG, fnet.fBackEnd.GetCover(W,H)),ConnectionCfg));
                              end;
             INFO_FULLPLAYLIST : begin
-                                 fPlaylist:=EncodeString(IntToStr(fnet.fBackEnd.PlayListCount));
+                                 fPlaylist:=EncodeString(IntToStr(fnet.fBackEnd.PlayListCount),ConnectionCfg);
                                  for i := 1 to fnet.fBackEnd.PlayListCount  do
-                                    fPlaylist:= fPlaylist+EncodeMetaData(fnet.fBackEnd.GetMetadata(i));
-                                 Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_FULLPLAYLIST, fPlaylist)));
-                                 DebugLn(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_FULLPLAYLIST, fPlaylist)));
+                                    fPlaylist:= fPlaylist+EncodeMetaData(fnet.fBackEnd.GetMetadata(i),ConnectionCfg);
+                                 Sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_FULLPLAYLIST, fPlaylist),ConnectionCfg));
+                                 DebugLn(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_FULLPLAYLIST, fPlaylist),ConnectionCfg));
                                 end;
           end;
         end;
@@ -181,17 +186,17 @@ begin
       begin
         if fnet.fBackEnd.Status = ENGINE_PLAY then
           begin
-            tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata()));
-            Sock.WriteStr(EncodeString(tmpstr));
+            tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata(),ConnectionCfg));
+            Sock.WriteStr(EncodeString(tmpstr,ConnectionCfg));
           end;
         tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_ENGINE_STATE, IntToStr(ord(fnet.fBackEnd.Status)));
       end;
     cpVolume: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.Volume));
     cpPosition: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.Position));
-    cpMetadata: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata()));
+    cpMetadata: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata(),ConnectionCfg));
     cpClosing:  tmpstr:= BuildCommand(CATEGORY_APP, COMMAND_CLOSE);
     end;
-  Sock.WriteStr(EncodeString(tmpstr));
+  Sock.WriteStr(EncodeString(tmpstr,ConnectionCfg));
 end;
 
 constructor TTCPRemoteThrd.Create(hsock: TSocket; net: TNetIntf);
@@ -200,6 +205,7 @@ begin
   fnet := net;
   Csock := Hsock;
   fnet.fBackEnd.Attach(self);
+  ConnectionCfg.SizeMode:=smByte;
   FreeOnTerminate := True;
 end;
 

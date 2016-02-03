@@ -27,6 +27,8 @@ Const
   CATEGORY_CONFIG = 'cfg';  // client --> server
     COMMAND_PIN = 'pin';
     COMMAND_KEEP = 'keep'; // keep connection open
+    COMMAND_SIZEMODE = 'size'; // param  0: length of messages is computed in bytes
+                               //        1: length of messages is computed in UTF8 codepoints (for Android mode)
 
   CATEGORY_ACTION = 'action';  // client --> server
     COMMAND_PLAY = 'play';

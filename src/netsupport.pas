@@ -8,6 +8,13 @@ uses
   Classes, SysUtils, base64, BaseTypes, basetag,
   netprotocol;
 
+type
+
+  TSizeMode = (smByte, smUTF8Char);
+
+  RConnectionCfg = record
+    SizeMode :TSizeMode;
+  end;
 
 function EncodeSize(Size:Integer):string;
 function DecodeSize(Size:string):integer;
@@ -15,14 +22,13 @@ function DecodeSize(Size:string):integer;
 function EncodeImageSize(Width, Height: integer):string;
 Procedure DecodeImageSize(Size:string; Out Width, Height: integer);
 
-Function EncodeString(S:String): string;
+Function EncodeString(S:String; ConnectionCfg: RConnectionCfg): string;
 Function EncodeStream(inStream:TStream):string;
 
 function BuildCommand(Category: string; Command: string; Param:string=''; IPCSeparator:boolean=false):string;
 Function SplitCommand(ACommand:string): RExternalCommand;
 
-
-Function EncodeMetaData(Tags:TCommonTags): String;
+Function EncodeMetaData(Tags:TCommonTags; ConnectionCfg: RConnectionCfg): String;
 Function DecodeMetaData(var StringTags:string): TCommonTags;
 
 Function ExtractField(var StringTags:String ):String;
@@ -84,9 +90,12 @@ begin
   end;
 end;
 
-Function EncodeString(S:String): string;
+Function EncodeString(S:String; ConnectionCfg: RConnectionCfg): string;
 begin
-  Result := EncodeSize(UTF8Length(s))+s;
+  case ConnectionCfg.SizeMode of
+    smUTF8Char :   Result := EncodeSize(UTF8Length(s))+s;
+    smByte :   Result := EncodeSize(Length(s))+s;
+  end;
 end;
 
 function BuildCommand(Category: string; Command: string; Param: string;
@@ -144,20 +153,21 @@ begin
   Delete(StringTags, 1, size);
 end;
 
-function EncodeMetaData(Tags: TCommonTags): String;
+function EncodeMetaData(Tags: TCommonTags; ConnectionCfg: RConnectionCfg): String;
 begin
   result := EncodeString(   // is this encoding really needed ??? Maybe only for check
-                EncodeString(inttostr(Tags.id))+
-                EncodeString(Tags.FileName)+
-                EncodeString(Tags.Album)+
-                EncodeString(Tags.AlbumArtist)+
-                EncodeString(Tags.Artist)+
-                EncodeString(Tags.Comment)+
-                EncodeString(Inttostr(Tags.Duration))+
-                EncodeString(Tags.Genre)+
-                EncodeString(Tags.Title)+
-                EncodeString(Tags.TrackString)+
-                EncodeString(Tags.Year)
+                EncodeString(inttostr(Tags.id),ConnectionCfg)+
+                EncodeString(Tags.FileName,ConnectionCfg)+
+                EncodeString(Tags.Album,ConnectionCfg)+
+                EncodeString(Tags.AlbumArtist,ConnectionCfg)+
+                EncodeString(Tags.Artist,ConnectionCfg)+
+                EncodeString(Tags.Comment,ConnectionCfg)+
+                EncodeString(Inttostr(Tags.Duration),ConnectionCfg)+
+                EncodeString(Tags.Genre,ConnectionCfg)+
+                EncodeString(Tags.Title,ConnectionCfg)+
+                EncodeString(Tags.TrackString,ConnectionCfg)+
+                EncodeString(Tags.Year,ConnectionCfg),
+                ConnectionCfg
            );
 end;
 
