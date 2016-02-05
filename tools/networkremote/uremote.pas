@@ -26,7 +26,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, Spin, ComCtrls, CustomDrawnControls, myhello, TcpIpClient,
-  netprotocol, BaseTypes, basetag, uriparser;
+  netprotocol, netsupport, BaseTypes, basetag, uriparser;
 
 type
 
@@ -94,6 +94,7 @@ type
     procedure Button1Click(Sender: TObject);
     procedure Button8Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
+    procedure FormCreate(Sender: TObject);
     procedure tbConnChange(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure TrackBar1Change(Sender: TObject);
@@ -107,6 +108,7 @@ type
     Seeking: boolean;
     FClient: TTcpIpClientSocket;
     FThread: TClientThread;
+    cfg : RConnectionCfg;
     procedure DecodeImage(s: string);
     procedure TagsToMap(Tags:TCommonTags);
     procedure DecodePlaylist(s: string);
@@ -179,10 +181,10 @@ begin
        FClient := TTcpIpClientSocket.Create('127.0.0.1', 6860);
        FThread := TClientThread.Create(FClient);
        FThread.OnReceive := @DoClientReceive;
-       s:=EncodeString(BuildCommand(CATEGORY_REQUEST, INFO_ENGINE_STATE));
+       s:=EncodeString(BuildCommand(CATEGORY_REQUEST, INFO_ENGINE_STATE), cfg);
        memoSent.lines.Add(s);
        FClient.WriteStr(s);
-       s:=EncodeString(BuildCommand(CATEGORY_REQUEST, INFO_METADATA));
+       s:=EncodeString(BuildCommand(CATEGORY_REQUEST, INFO_METADATA), cfg);
        memoSent.lines.Add(s);
        FClient.WriteStr(s);
      end
@@ -200,7 +202,7 @@ procedure TForm1.Timer1Timer(Sender: TObject);
 var
   s:string;
 begin
-  s:=EncodeString(BuildCommand(CATEGORY_REQUEST, INFO_POSITION));
+  s:=EncodeString(BuildCommand(CATEGORY_REQUEST, INFO_POSITION), cfg);
   memoSent.lines.Add(s);
   fClient.WriteStr(s);
 
@@ -211,7 +213,7 @@ var
   s:string;
 begin
   if not Seeking then exit;
-  s:=EncodeString(BuildCommand(CATEGORY_ACTION, COMMAND_SEEK, inttostr(TrackBar1.Position)));
+  s:=EncodeString(BuildCommand(CATEGORY_ACTION, COMMAND_SEEK, inttostr(TrackBar1.Position)), cfg);
   memoSent.lines.Add(s);
   fClient.WriteStr(s);
 end;
@@ -289,7 +291,7 @@ procedure TForm1.Button8Click(Sender: TObject);
 var
   s :string;
 begin
-  s:=EncodeString(BuildCommand(CATEGORY_ACTION, (sender as tbutton).caption));
+  s:=EncodeString(BuildCommand(CATEGORY_ACTION, (sender as tbutton).caption), cfg);
   memoSent.lines.Add(s);
   FClient.WriteStr(s);
 end;
@@ -304,6 +306,11 @@ begin
 
     end;
 
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  cfg.SizeMode:=smByte;
 end;
 
 procedure TForm1.TagsToMap(Tags:TCommonTags);
