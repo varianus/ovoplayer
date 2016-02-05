@@ -128,6 +128,7 @@ begin
   CommonTags.Title       := edTitle.Caption;
   CommonTags.Year        := IntTostr(seYear.Value);
   CommonTags.Track       := seTrack.Value;
+  CommonTags.Comment     := meComment.Lines.Text;
 end;
 
 procedure TForm1.TagsToMap;
