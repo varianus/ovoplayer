@@ -407,11 +407,16 @@ procedure TID3Frame.SetAsString(Const AValue: string);
 var
   xValue: UTf8String;
   wValue: UnicodeString;
+  NeedLanguage: Boolean;
+  LanguageOffset:integer;
 begin
   xValue := (AValue);
 
-  if copy(ID, 1, 3) = 'COM' then
-      Xvalue := Space(3) + XValue;
+  NeedLanguage := copy(ID, 1, 3) = 'COM';
+  if NeedLanguage then
+     LanguageOffset:= 3
+  else
+     LanguageOffset:= 0;
 
   fSize := UTF8Length(xValue);
   if fSize = 0 then
@@ -422,22 +427,35 @@ begin
 
   if TID3Tags(Tagger).Version >= TAG_VERSION_2_4 then
      begin
-       inc(fSize,3);
+       inc(fSize,3 + LanguageOffset);
        SetLength(Data, fSize);
        Data[1] := #03;
-       StrPCopy(@(Data[2]), xValue);
+       if NeedLanguage then
+         begin
+           Data[2]:=#32;
+           Data[3]:=#32;
+           Data[4]:=#32;
+         end;
+       StrPCopy(@(Data[2+LanguageOffset]), xValue);
        Data[fSize-1] := #00;
        Data[fSize-2] := #00;
      end
   else
      begin
        wvalue := UTF8ToUTF16(xValue);
-       fSize:=Length(wValue) * sizeof( UnicodeChar ) + 5;
+       fSize:=Length(wValue) * sizeof( UnicodeChar ) + 5 + LanguageOffset;
        SetLength(Data, fSize);
        Data[1] := #01;
        Data[2] := #$FF;
        Data[3] := #$FE;
-       StrPCopy(@(Data[4]), pWideChar(wValue));
+       if NeedLanguage then
+         begin
+           Data[4]:=#32;
+           Data[5]:=#32;
+           Data[6]:=#32;
+         end;
+
+       StrPCopy(@(Data[4+LanguageOffset]), pWideChar(wValue));
        Data[fSize-1] := #00;
        Data[fSize-2] := #00;
 

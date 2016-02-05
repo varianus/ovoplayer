@@ -188,8 +188,8 @@ begin
         // skip comment descriptor
         while (l < size) and (pbyte(p)^ <> 0) do
           begin
-          Inc(l);
-          Inc(p);
+          Dec(l);
+          inc(p);
           end;
         end;
 
@@ -200,19 +200,30 @@ begin
         Inc(p);
         Dec(size);
         size := size and $fffffffe;
-        l := 0;
-        while (l < size) and (pword(p + l)^ <> 0) do
-          Inc(l, 2);
+        l:= size;
         if LanguageID then
           begin
           Inc(p, 3);
-          Dec(l, 3);
+          dec(l, 3);
           if pword(p + 2)^ = 0 then
             begin
             Inc(p, 4);
-            Dec(l, 4);
+            DEC(l, 4);
             end;
           end;
+
+        while (l < size) and (pbyte(p)^ <> 0) do
+          begin
+          Dec(l);
+          inc(p);
+          end;
+      if LanguageID then
+        begin
+          Inc(p,2);
+          DEC(l,2);
+
+        end;
+
 
         if l = 0 then
           be := False
@@ -233,6 +244,7 @@ begin
             else
               be := p^ = 2;
           end;
+        L:= ((L+1) DIV 2) *2;
         setlength(ws, l div 2);
         if be then
           begin
