@@ -108,7 +108,8 @@ type
     Seeking: boolean;
     FClient: TTcpIpClientSocket;
     FThread: TClientThread;
-    cfg : RConnectionCfg;
+    OutCfg : RConnectionCfg;
+    InCfg : RConnectionCfg;
     procedure DecodeImage(s: string);
     procedure TagsToMap(Tags:TCommonTags);
     procedure DecodePlaylist(s: string);
@@ -181,10 +182,10 @@ begin
        FClient := TTcpIpClientSocket.Create('127.0.0.1', 6860);
        FThread := TClientThread.Create(FClient);
        FThread.OnReceive := @DoClientReceive;
-       s:=EncodeString(BuildCommand(CATEGORY_REQUEST, INFO_ENGINE_STATE), cfg);
+       s:=EncodeString(BuildCommand(CATEGORY_REQUEST, INFO_ENGINE_STATE), OutCfg);
        memoSent.lines.Add(s);
        FClient.WriteStr(s);
-       s:=EncodeString(BuildCommand(CATEGORY_REQUEST, INFO_METADATA), cfg);
+       s:=EncodeString(BuildCommand(CATEGORY_REQUEST, INFO_METADATA), OutCfg);
        memoSent.lines.Add(s);
        FClient.WriteStr(s);
      end
@@ -202,7 +203,7 @@ procedure TForm1.Timer1Timer(Sender: TObject);
 var
   s:string;
 begin
-  s:=EncodeString(BuildCommand(CATEGORY_REQUEST, INFO_POSITION), cfg);
+  s:=EncodeString(BuildCommand(CATEGORY_REQUEST, INFO_POSITION), OutCfg);
   memoSent.lines.Add(s);
   fClient.WriteStr(s);
 
@@ -213,7 +214,7 @@ var
   s:string;
 begin
   if not Seeking then exit;
-  s:=EncodeString(BuildCommand(CATEGORY_ACTION, COMMAND_SEEK, inttostr(TrackBar1.Position)), cfg);
+  s:=EncodeString(BuildCommand(CATEGORY_ACTION, COMMAND_SEEK, inttostr(TrackBar1.Position)), OutCfg);
   memoSent.lines.Add(s);
   fClient.WriteStr(s);
 end;
@@ -244,7 +245,7 @@ begin
   if (r.Category = CATEGORY_INFORMATION) then
    case r.Command of
      INFO_METADATA : begin
-                       tags := DecodeMetaData(r.Param);
+                       tags := DecodeMetaData(r.Param, InCfg);
                        TagsToMap(tags);
                     end;
      INFO_POSITION : begin
@@ -291,7 +292,7 @@ procedure TForm1.Button8Click(Sender: TObject);
 var
   s :string;
 begin
-  s:=EncodeString(BuildCommand(CATEGORY_ACTION, (sender as tbutton).caption), cfg);
+  s:=EncodeString(BuildCommand(CATEGORY_ACTION, (sender as tbutton).caption), OutCfg);
   memoSent.lines.Add(s);
   FClient.WriteStr(s);
 end;
@@ -310,7 +311,8 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  cfg.SizeMode:=smByte;
+  OutCfg.SizeMode:=smByte;
+  InCfg.SizeMode:=smByte;
 end;
 
 procedure TForm1.TagsToMap(Tags:TCommonTags);
@@ -345,14 +347,14 @@ var
   i: integer;
   tags: TCommonTags;
 begin
-  tmp:= ExtractField(s);
+  tmp:= ExtractField(s, InCfg);
  // delete(s,1,4);
   cnt:= StrToInt(tmp);
   ListBox1.Clear;
   try
   for i := 0 to cnt -1 do
     begin
-        tags:=DecodeMetaData(s);
+        tags:=DecodeMetaData(s, incfg);
         ListBox1.Items.Add(inttostr(i)+'='+Tags.Title);
     end;
 

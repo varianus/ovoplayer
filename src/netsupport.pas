@@ -29,9 +29,9 @@ function BuildCommand(Category: string; Command: string; Param:string=''; IPCSep
 Function SplitCommand(ACommand:string): RExternalCommand;
 
 Function EncodeMetaData(Tags:TCommonTags; ConnectionCfg: RConnectionCfg): String;
-Function DecodeMetaData(var StringTags:string): TCommonTags;
+Function DecodeMetaData(var StringTags:string; ConnectionCfg: RConnectionCfg): TCommonTags;
 
-Function ExtractField(var StringTags:String ):String;
+Function ExtractField(var StringTags:String; ConnectionCfg: RConnectionCfg):String;
 
 
 implementation
@@ -143,14 +143,26 @@ begin
     end;
 end;
 
-Function ExtractField(var StringTags:String ):String;
+Function ExtractField(var StringTags:String; ConnectionCfg: RConnectionCfg):String;
 var
   size: integer;
 begin
   size:= DecodeSize(Copy(StringTags,1,4));
-  Result := copy(StringTags, 5, size);
-  inc(size,4);
-  Delete(StringTags, 1, size);
+
+
+  case ConnectionCfg.SizeMode of
+    smUTF8Char : begin
+                   Result := copy(StringTags, 5, size);
+                   inc(size,4);
+                   Delete(StringTags, 1, size);
+                 end;
+    smByte :     begin
+                   Result := UTF8copy(StringTags, 5, size);
+                   inc(size,4);
+                   UTF8Delete(StringTags, 1, size);
+                 end;
+  end;
+
 end;
 
 function EncodeMetaData(Tags: TCommonTags; ConnectionCfg: RConnectionCfg): String;
@@ -171,23 +183,23 @@ begin
            );
 end;
 
-function DecodeMetaData(var StringTags: string): TCommonTags;
+function DecodeMetaData(var StringTags: string; ConnectionCfg: RConnectionCfg): TCommonTags;
 var
   tmp: string;
 begin
   Delete(StringTags, 1, 4);
 
-  Result.ID          := StrToInt64Def(ExtractField(StringTags),0);
-  Result.FileName    := ExtractField(StringTags);
-  Result.Album       := ExtractField(StringTags);
-  Result.AlbumArtist := ExtractField(StringTags);
-  Result.Artist      := ExtractField(StringTags);
-  Result.Comment     := ExtractField(StringTags);
-  Result.Duration    := StrToInt64Def(ExtractField(StringTags),0);
-  Result.Genre       := ExtractField(StringTags);
-  Result.Title       := ExtractField(StringTags);
-  Result.TrackString := ExtractField(StringTags);
-  Result.Year        := ExtractField(StringTags);
+  Result.ID          := StrToInt64Def(ExtractField(StringTags, ConnectionCfg),0);
+  Result.FileName    := ExtractField(StringTags, ConnectionCfg);
+  Result.Album       := ExtractField(StringTags, ConnectionCfg);
+  Result.AlbumArtist := ExtractField(StringTags, ConnectionCfg);
+  Result.Artist      := ExtractField(StringTags, ConnectionCfg);
+  Result.Comment     := ExtractField(StringTags, ConnectionCfg);
+  Result.Duration    := StrToInt64Def(ExtractField(StringTags, ConnectionCfg),0);
+  Result.Genre       := ExtractField(StringTags, ConnectionCfg);
+  Result.Title       := ExtractField(StringTags, ConnectionCfg);
+  Result.TrackString := ExtractField(StringTags, ConnectionCfg);
+  Result.Year        := ExtractField(StringTags, ConnectionCfg);
 
 end;
 
