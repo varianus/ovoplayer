@@ -284,10 +284,12 @@ procedure TID3Tags.DecodeFrameToImage(Frame: TID3Frame; Image: TImageElement);
 var
   wData: PChar;
   wDatasize: Dword;
+  Encoding: byte;
 begin
   image.FrameRef := Frame;
   wData := PChar(Frame.Data);
   wDatasize := Frame.fSize;
+  Encoding := pByte(wData)^;
   Inc(wData);
   Dec(wDatasize);
   image.MIMEType := pAnsiChar(wData);
@@ -297,13 +299,28 @@ begin
   if Version > TAG_VERSION_2_2 then
   begin
     Image.PictureType := pByte(wData)^;
-    Inc(wData);
-    Dec(wDatasize);
+    Inc(wData, 1);
+    Dec(wDatasize, 1);
   end;
 
-  image.Description := pAnsiChar(wData);
-  Inc(wData, Length(image.Description) + 1);
-  Dec(wDataSize, Length(image.Description) + 1);
+  if (pWord(wData)^ = $fffe)  or (pWord(wData)^ = $fefF) then
+  begin
+    Inc(wData, 2);
+    Dec(wDatasize, 2);
+  end;
+
+  if encoding = 0 then
+    begin
+      image.Description := pAnsiChar(wData);
+      Inc(wData, Length(image.Description) + 1 );
+      Dec(wDataSize, Length(image.Description) + 1 );
+    end
+  else
+    begin
+      image.Description := pWideChar(wData);
+      Inc(wData, Length(image.Description) *2  + 2);
+      Dec(wDataSize, Length(image.Description) *2  + 2);
+    end;
 
   Image.Image.WriteBuffer(wData[0], wDatasize);
   image.Image.Position := 0;
