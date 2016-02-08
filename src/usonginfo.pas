@@ -501,6 +501,9 @@ end;
 
 procedure TfSongInfo.ShowLibraryInfo(Info: TExtendedInfo);
 begin
+  if Not Assigned(info) then
+   exit;
+
   lePlayCount.Caption := IntToStr(info.PlayCount);
   leAdded.Caption := DateTimeToStr(Info.Added);
   if Info.LastPlay <> 0 then
