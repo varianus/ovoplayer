@@ -81,7 +81,7 @@ type
     Function GetCover(Width: integer=-1; Height:Integer=-1): String;
 
 
-    Procedure Play;
+    Procedure Play(Index:integer=-1);
     Procedure Stop;
     Procedure Pause;
     Procedure UnPause;
@@ -467,9 +467,9 @@ begin
     tmpStream := TMemoryStream.Create;
     try
       img.SaveToStreamWithFileExt(tmpStream, '.jpg');
-      DebugLn('STSize: '+IntToStr(tmpStream.Size));
+    //  DebugLn('STSize: '+IntToStr(tmpStream.Size));
       Result := EncodeStream(tmpStream);
-      DebugLn('IMGSize: '+inttostr(length(result)));
+    //  DebugLn('IMGSize: '+inttostr(length(result)));
 
     finally
       img.free;
@@ -482,14 +482,18 @@ begin
 
 end;
 
-procedure TBackEnd.Play;
+procedure TBackEnd.Play(Index:integer=-1);
 begin
-  if AudioEngine.State = ENGINE_PAUSE then
+  if (AudioEngine.State = ENGINE_PAUSE) and
+     ((index = -1) or (Index =  PlayList.ItemIndex)) then
     AudioEngine.UnPause
   else
     begin
       if PlayList.Count = 0 then
          exit;
+
+      if Index <> -1 then
+        PlayList.ItemIndex:= index;
 
       if PlayList.ItemIndex = -1 then
         PlayList.ItemIndex := 0;
@@ -682,7 +686,10 @@ begin
 
   if Command.Category = CATEGORY_ACTION then
     case Command.Command of
-       COMMAND_PLAY     : begin Play; Handled := true; end;
+       COMMAND_PLAY     : begin
+
+                            Play(StrToIntDef(Command.Param, -1));
+                            Handled := true; end;
        COMMAND_STOP     : begin Stop; Handled := true; end;
        COMMAND_PAUSE    : begin Pause; Handled := true; end;
        COMMAND_PLAYPAUSE: begin

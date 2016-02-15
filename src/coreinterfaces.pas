@@ -63,7 +63,7 @@ type
     procedure SetStatus(AValue: TEngineState);
     procedure SetVolume(AValue: cardinal);
  // Procedures
-    Procedure Play;
+    Procedure Play(Index:integer=-1);
     Procedure Stop;
     Procedure Pause;
     Procedure UnPause;

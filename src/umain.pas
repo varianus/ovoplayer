@@ -846,6 +846,7 @@ var
   id:integer;
   f:TTagReader;
   imgLoaded : boolean;
+//  tmp:Tmemorystream;
 
 begin
   Application.ProcessMessages;
@@ -875,7 +876,9 @@ begin
        CurrentCover := '';
        f := GetFileTagsObject(Song.Tags.FileName);
        f.Tags.Images[0].image.Position:=0;
-
+     //  tmp:= TMemoryStream.Create;
+     //  tmp.LoadFromStream( f.Tags.Images[0].image);
+     //  tmp.SaveToFile('/tmp/imagetemp');
        f.Tags.Images[0].image.Position:=0;
        try
           imgCover.Picture.LoadFromStream(f.Tags.Images[0].image);
@@ -1954,7 +1957,7 @@ var
 begin
   index := sgPlayList.Row;
   BackEnd.PlayList.ItemIndex := index - 1;
-  BackEnd.AudioEngine.Play(BackEnd.PlayList.CurrentItem);
+  BackEnd.Play(BackEnd.PlayList.ItemIndex);
   BackEnd.Notify(cpStatus);
   sgPlayList.Invalidate;
 
