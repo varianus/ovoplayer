@@ -94,6 +94,8 @@ type
     Procedure OpenURI(URI: String);
     procedure Seek(AValue: int64);
     Function PlayListCount : integer;
+    Function GetCurrentSongIndex : integer;
+
 
     Procedure Attach(observer: iObserver);
     Procedure Remove(observer: iObserver);
@@ -608,6 +610,11 @@ end;
 function TBackEnd.PlayListCount: integer;
 begin
   Result:=PlayList.Count;
+end;
+
+function TBackEnd.GetCurrentSongIndex: integer;
+begin
+  Result := PlayList.ItemIndex + 1;
 end;
 
 procedure TBackEnd.Attach(observer: iObserver);

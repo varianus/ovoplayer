@@ -165,6 +165,7 @@ begin
                                 DecodeImageSize(Command.Param, W, H);
                                 sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_COVERIMG, fnet.fBackEnd.GetCover(W,H)),ConnectionCfg));
                              end;
+            INFO_PLAYLISTINDEX : sock.WriteStr(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_PLAYLISTINDEX, IntToStr(fnet.fBackEnd.GetCurrentSongIndex)),ConnectionCfg));
             INFO_FULLPLAYLIST : begin
                                  fPlaylist:=EncodeString(IntToStr(fnet.fBackEnd.PlayListCount),ConnectionCfg);
                                  for i := 1 to fnet.fBackEnd.PlayListCount  do
@@ -190,6 +191,8 @@ begin
             Sock.WriteStr(EncodeString(tmpstr,ConnectionCfg));
           end;
         tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_ENGINE_STATE, IntToStr(ord(fnet.fBackEnd.Status)));
+        Sock.WriteStr(EncodeString(tmpstr,ConnectionCfg));
+        tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_PLAYLISTINDEX, IntToStr(fnet.fBackEnd.GetCurrentSongIndex));
       end;
     cpVolume: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.Volume));
     cpPosition: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.Position));

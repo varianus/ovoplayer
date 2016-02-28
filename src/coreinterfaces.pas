@@ -80,6 +80,7 @@ type
     Function GetCoverURL: String;
     Function GetCover(Width: integer=-1; Height:Integer=-1): String;
     Function PlayListCount : integer;
+    Function GetCurrentSongIndex : integer;
     // property
     Property Status: TEngineState read GetStatus write SetStatus;
     Property Position: int64 read GetPosition write SetPosition;
