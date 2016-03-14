@@ -191,6 +191,7 @@ begin
            (t1.Track       = t2.Track) and
            (t1.Title       = t2.Title) and
            (t1.Album       = t2.Album) and
+           (t1.Comment     = t2.Comment) and
            (t1.AlbumArtist = t2.AlbumArtist) and
            (t1.Artist      = t2.Artist) and
            (t1.Genre       = t2.Genre) and
@@ -209,6 +210,7 @@ begin
   Tags.AlbumArtist  := '';
   Tags.Artist       := '';
   Tags.Genre        := '';
+  Tags.Comment      := '';
   Tags.Year         := '';
   Tags.Duration     := 0;
   Tags.HasImage     := False;

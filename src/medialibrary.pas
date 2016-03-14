@@ -119,7 +119,7 @@ implementation
 uses AppConsts, AudioTag, lazfileutils, dateutils;
 
 const
-  CURRENTDBVERSION = 3;
+  CURRENTDBVERSION = 4;
 
   CREATESONGTABLE = 'CREATE TABLE songs ('
                  + ' "ID" INTEGER primary key,'
@@ -133,6 +133,7 @@ const
                  + ' "Genre" VARCHAR COLLATE NOCASE,'
                  + ' "year" VARCHAR COLLATE NOCASE,'
                  + ' "Duration" INTEGER default 0,'
+                 + ' "Comment" VARCHAR COLLATE NOCASE,'
                  + ' "Playcount" INTEGER,'
                  + ' "Rating" INTEGER ,'
                  + ' "LastPlay" DATETIME,'
@@ -163,14 +164,15 @@ const
   INSERTINTOSONG = 'INSERT INTO songs ('
                  + ' Filename, TrackString, Track, Title, Album, Artist,'
                  + ' AlbumArtist, Genre, year, elabflag, Duration,'
-                 + ' Playcount, Rating, LastPlay, Added, FileSize, FileDate'
-                 + ')'
+                 + ' Playcount, Rating, LastPlay, Added, '
+                 + ' FileSize, FileDate, Comment'
+                 + ' )'
                  + ' VALUES ('
                  + ' :Filename, :TrackString, :Track, :Title, :Album, :Artist,'
                  + ' :AlbumArtist, :Genre, :year, :elabflag, :Duration,'
                  + ' :Playcount, :Rating, :LastPlay, :added, '
-                 + ' :FileSize, :FileDate'
-                 + ')';
+                 + ' :FileSize, :FileDate, :Comment'
+                 + ' )';
 
   UPDATESONG     =  'update songs'
                  + ' set Filename = :Filename'
@@ -186,6 +188,7 @@ const
                  + ' ,Duration = :Duration'
                  + ' ,FileSize = :FileSize'
                  + ' ,FileDate = :FileDate'
+                 + ' ,Comment = :Comment'
                  + ' where ID = :ID';
 
   UPDATEFILEINFO =  'update songs'
@@ -359,6 +362,9 @@ const
   ToV2_2 = 'ALTER TABLE songs ADD COLUMN FileDate DATETIME;' ;
   ToV3_1 = 'update songs set added = Julianday(added) + (%0:s) ;';
   ToV3_2 = 'update songs set LastPlay = julianday(LastPlay) + (%0:s) where lastplay is not null;';
+  ToV4_1 = 'ALTER TABLE songs ADD COLUMN Comment VARCHAR COLLATE NOCASE;' ;
+
+  FORCE_FULL_SCAN = 'update songs set filesize = 0;' ;
 begin
 
   MustUpdate := false;
@@ -386,11 +392,19 @@ begin
         MustUpdate := true;
       end;
 
-//
-//   if LoadedDBVersion < 4 then
+
+   if LoadedDBVersion < 4 then
+      begin
+        Fdb.ExecuteDirect(Tov4_1);
+        Fdb.ExecuteDirect(FORCE_FULL_SCAN); // next update will need a full scan
+        MustUpdate := true;
+      end;
+
+//   if LoadedDBVersion < 5 then
 //      begin
-//         sql for upgrade to version 4
+//         sql for upgrade to version 5
 //      end;
+
 
     if MustUpdate then
        fDB.ExecuteDirect(format(UPDATESTATUS,[CURRENTDBVERSION]));
@@ -479,6 +493,7 @@ begin
   fUpdateSong.Params.ParamByName('Duration').AsInteger   := Tags.Duration;
   fUpdateSong.Params.ParamByName('FileDate').Asfloat     := FileInfo.ModifyDate;
   fUpdateSong.Params.ParamByName('FileSize').AsLargeint  := FileInfo.Size;
+  fUpdateSong.Params.ParamByName('Comment').AsString     := Tags.Comment;
 
   fUpdateSong.Params.ParamByName('elabflag').Clear;
   fUpdateSong.ExecSQL;
@@ -534,6 +549,7 @@ begin
   wrkSong.Params.ParamByName('Duration').AsInteger   := Tags.Duration;
   wrkSong.Params.ParamByName('FileDate').AsFloat     := FileInfo.ModifyDate;
   wrkSong.Params.ParamByName('FileSize').AsLargeint  := FileInfo.Size;
+  wrkSong.Params.ParamByName('Comment').AsString     := Tags.Comment;
 
   wrkSong.Params.ParamByName('elabflag').Clear;
   try
@@ -696,6 +712,7 @@ begin
   Result.Genre       := (Table.FieldByName('Genre').AsString);
   Result.Year        := (Table.FieldByName('year').AsString);
   Result.Duration    := Table.FieldByName('Duration').AsInteger;
+  Result.Comment     := (Table.FieldByName('Comment').AsString);
 
 end;
 
