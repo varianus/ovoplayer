@@ -205,24 +205,30 @@ begin
           begin
           Inc(p, 3);
           dec(l, 3);
-          if pword(p + 2)^ = 0 then
+          if ( (pword(p)^ = $feff) or (pword(p)^ = $feff)) and
+               (pword(p + 2)^ = 0) then
             begin
             Inc(p, 4);
             DEC(l, 4);
             end;
+            while (l < size) and (pbyte(p)^ = 0) do
+              begin
+              Dec(l);
+              inc(p);
+              end;
           end;
 
-        while (l < size) and (pbyte(p)^ <> 0) do
+   {     while (l < size) and (pbyte(p)^ <> 0) do
           begin
           Dec(l);
           inc(p);
-          end;
-      if LanguageID then
+          end;  }
+   {   if LanguageID then
         begin
           Inc(p,2);
           DEC(l,2);
 
-        end;
+        end;       }
 
 
         if l = 0 then

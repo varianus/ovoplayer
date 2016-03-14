@@ -460,17 +460,18 @@ begin
   else
      begin
        wvalue := UTF8ToUTF16(xValue);
-       fSize:=Length(wValue) * sizeof( UnicodeChar ) + 5 + LanguageOffset;
+       fSize:= Length(wValue) * sizeof( UnicodeChar ) + 5 + LanguageOffset;
        SetLength(Data, fSize);
        Data[1] := #01;
-       Data[2] := #$FF;
-       Data[3] := #$FE;
        if NeedLanguage then
          begin
+           Data[2]:=#32;
+           Data[3]:=#32;
            Data[4]:=#32;
-           Data[5]:=#32;
-           Data[6]:=#32;
          end;
+
+       Data[2+LanguageOffset] := #$FF;
+       Data[3+LanguageOffset] := #$FE;
 
        StrPCopy(@(Data[4+LanguageOffset]), pWideChar(wValue));
        Data[fSize-1] := #00;
