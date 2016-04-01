@@ -27,7 +27,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls,
   ExtCtrls, StdCtrls, Buttons, ButtonPanel, ColorBox, Menus, Spin, EditBtn,
-  GUIBackEnd, uOSD, AudioEngine, LCLProc, ValEdit, BaseTypes, Grids;
+  GUIBackEnd, uOSD, AudioEngine, LCLProc, ValEdit, BaseTypes, AppConsts, Grids;
 
 type
     { TfConfig }
@@ -58,6 +58,7 @@ type
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
+    lbWarning: TLabel;
     lbMLPath: TListBox;
     lbRestart: TLabel;
     FontDialog1: TFontDialog;
@@ -104,6 +105,7 @@ type
     procedure sbLibraryClick(Sender: TObject);
     procedure sbNetRemoteClick(Sender: TObject);
     procedure sbNotificationClick(Sender: TObject);
+    procedure sePortChange(Sender: TObject);
     procedure tbTransparencyChange(Sender: TObject);
     procedure tsEngineShow(Sender: TObject);
     procedure tsInterfaceShow(Sender: TObject);
@@ -394,6 +396,14 @@ end;
 procedure TfConfig.sbNotificationClick(Sender: TObject);
 begin
   pcConfig.ActivePage := tsOSD;
+end;
+
+procedure TfConfig.sePortChange(Sender: TObject);
+begin
+  if sePort.Value < 1024 then
+     lbWarning.Caption:= rLowPortWarning
+  else
+     lbWarning.Caption:= '';
 end;
 
 procedure TfConfig.tbTransparencyChange(Sender: TObject);

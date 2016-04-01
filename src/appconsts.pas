@@ -84,6 +84,9 @@ Resourcestring
 
   rMatchingItems = '%0:d songs matching current filter (%1:s, %2:s)';
 
+  rLowPortWarning = 'ATTENTION! Setting a port number lower than 1024 may require'+sLineBreak+
+                    'administrative rights on some OSes (e.g. Linux).';
+
 
 implementation
 

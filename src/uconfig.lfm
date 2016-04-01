@@ -10,15 +10,15 @@ object fConfig: TfConfig
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '1.7'
+  Visible = False
   object GroupBox1: TGroupBox
     Left = 0
-    Height = 449
+    Height = 601
     Top = 0
     Width = 153
     Align = alLeft
     Caption = 'Categories'
-    ClientHeight = 430
+    ClientHeight = 581
     ClientWidth = 149
     Color = clWindow
     ParentColor = False
@@ -83,13 +83,13 @@ object fConfig: TfConfig
     object pnlRestart: TPanel
       Left = 1
       Height = 101
-      Top = 328
+      Top = 479
       Width = 147
       Align = alBottom
       BorderSpacing.Around = 1
       BorderStyle = bsSingle
-      ClientHeight = 99
-      ClientWidth = 145
+      ClientHeight = 97
+      ClientWidth = 143
       Color = clActiveCaption
       ParentColor = False
       TabOrder = 0
@@ -98,7 +98,7 @@ object fConfig: TfConfig
         Left = 4
         Height = 56
         Top = 4
-        Width = 137
+        Width = 135
         Align = alTop
         AutoSize = False
         BorderSpacing.Around = 3
@@ -136,8 +136,8 @@ object fConfig: TfConfig
   object ButtonPanel: TButtonPanel
     Left = 6
     Height = 48
-    Top = 455
-    Width = 690
+    Top = 607
+    Width = 770
     AutoSize = False
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
@@ -155,12 +155,12 @@ object fConfig: TfConfig
   end
   object pcConfig: TPageControl
     Left = 153
-    Height = 449
+    Height = 601
     Top = 0
-    Width = 549
-    ActivePage = tsEngine
+    Width = 629
+    ActivePage = tsNetRemote
     Align = alClient
-    TabIndex = 1
+    TabIndex = 4
     TabOrder = 2
     object tsInterface: TTabSheet
       Caption = 'Interfaces'
@@ -213,7 +213,7 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 62
+        ClientHeight = 61
         ClientWidth = 197
         Items.Strings = (
           'Gnome D-BUS mode'
@@ -243,14 +243,14 @@ object fConfig: TfConfig
     end
     object tsEngine: TTabSheet
       Caption = 'Engine'
-      ClientHeight = 414
-      ClientWidth = 543
+      ClientHeight = 421
+      ClientWidth = 541
       OnShow = tsEngineShow
       object rgAudioEngine: TRadioGroup
         Left = 4
-        Height = 52
+        Height = 51
         Top = 0
-        Width = 220
+        Width = 198
         AutoFill = True
         AutoSize = True
         Caption = 'Audio Engine'
@@ -262,8 +262,8 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 33
-        ClientWidth = 216
+        ClientHeight = 31
+        ClientWidth = 194
         Items.Strings = (
           'Sample row for builded engine'
         )
@@ -290,14 +290,14 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          421
+          402
         )
       end
       object EngineInfoView: TValueListEditor
         Left = 208
-        Height = 201
+        Height = 208
         Top = 8
-        Width = 325
+        Width = 323
         Anchors = [akTop, akLeft, akRight, akBottom]
         AutoEdit = False
         DefaultColWidth = 100
@@ -316,7 +316,7 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          223
+          202
         )
       end
     end
@@ -333,7 +333,6 @@ object fConfig: TfConfig
         ItemHeight = 0
         ScrollWidth = 382
         TabOrder = 0
-        TopIndex = -1
       end
       object Label1: TLabel
         Left = 11
@@ -421,7 +420,7 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 86
+        ClientHeight = 85
         ClientWidth = 181
         Items.Strings = (
           'None'
@@ -476,14 +475,14 @@ object fConfig: TfConfig
     end
     object tsNetRemote: TTabSheet
       Caption = 'NetRemote'
-      ClientHeight = 414
-      ClientWidth = 543
+      ClientHeight = 573
+      ClientWidth = 621
       OnShow = tsNetRemoteShow
       object cbNetRemote: TCheckBox
         Left = 8
-        Height = 21
+        Height = 19
         Top = 8
-        Width = 163
+        Width = 142
         Caption = 'Enable network remote'
         OnChange = cbNetRemoteChange
         TabOrder = 0
@@ -492,26 +491,35 @@ object fConfig: TfConfig
         Left = 8
         Height = 314
         Top = 40
-        Width = 472
+        Width = 520
         BevelOuter = bvNone
         ClientHeight = 314
-        ClientWidth = 472
+        ClientWidth = 520
         TabOrder = 1
         object sePort: TSpinEdit
           Left = 72
-          Height = 27
+          Height = 23
           Top = 3
           Width = 104
           MaxValue = 65536
+          OnChange = sePortChange
           TabOrder = 0
           Value = 6860
         end
         object Label5: TLabel
           Left = 0
-          Height = 17
+          Height = 15
           Top = 8
-          Width = 26
+          Width = 22
           Caption = 'Port'
+          ParentColor = False
+        end
+        object lbWarning: TLabel
+          Left = 0
+          Height = 15
+          Top = 48
+          Width = 132
+          Caption = '                                            '
           ParentColor = False
         end
       end
