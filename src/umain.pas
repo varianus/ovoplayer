@@ -1390,13 +1390,10 @@ var
   coverForm: TfCover;
 begin
   coverForm := TfCover.Create(Self);
-  try
-    coverForm.ImageCover.Picture.Assign(imgCover.Picture);
-    coverForm.SetSize(imgCover.Picture.Height,imgCover.Picture.Width);
-    coverForm.ShowModal;
-  finally
-     coverForm.free;
-  end;
+
+  coverForm.ImageCover.Picture.Assign(imgCover.Picture);
+  coverForm.Show;
+  coverForm.SetSize(imgCover.Picture.Height,imgCover.Picture.Width);
 
 end;
 
