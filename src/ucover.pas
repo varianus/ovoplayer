@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils,  Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls, Buttons;
+  StdCtrls, Buttons, ComCtrls;
 
 type
 
@@ -19,9 +19,13 @@ type
     ImageCover: TImage;
     pnlSize: TPanel;
     ScrollBox1: TScrollBox;
+    StatusBar1: TStatusBar;
     procedure btnZoomInClick(Sender: TObject);
     procedure btnZoomOutClick(Sender: TObject);
     procedure btnZoomResetClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
+    procedure FormShow(Sender: TObject);
+    procedure ScrollBox1Resize(Sender: TObject);
   private
     CurrHeight, CurrWidth : integer;
   public
@@ -55,14 +59,37 @@ begin
   SetSize(ImageCover.Picture.Height,ImageCover.Picture.Width);
 end;
 
+procedure TfCover.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  CloseAction:= caFree;
+end;
+
+procedure TfCover.FormShow(Sender: TObject);
+begin
+  SetSize(CurrHeight, CurrWidth);
+end;
+
+procedure TfCover.ScrollBox1Resize(Sender: TObject);
+begin
+  SetSize(CurrHeight, CurrWidth);
+end;
+
 procedure TfCover.SetSize(imageHeigth, imageWidth: integer);
 begin
-  ClientHeight := min(Screen.Height, imageHeigth + pnlSize.Height + HorzScrollBar.Size);
-  ClientWidth := min(Screen.Width, imageWidth + VertScrollBar.size);
-  ImageCover.Height := imageHeigth;
-  ImageCover.Width := imageWidth;
   CurrHeight:= imageHeigth;
   CurrWidth := imageWidth;
+
+  ImageCover.Height := imageHeigth;
+  ImageCover.Width := imageWidth;
+  if imageHeigth <= ScrollBox1.ClientHeight then
+    ImageCover.Top:= (ScrollBox1.ClientHeight - imageHeigth) div 2
+  else
+    ImageCover.Top:= 0;
+  if imageWidth <= ScrollBox1.ClientWidth then
+    ImageCover.left:= (ScrollBox1.ClientWidth - imageWidth) div 2
+  else
+    ImageCover.left:= 0;
+
 end;
 
 end.

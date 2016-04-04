@@ -1,31 +1,39 @@
 object fCover: TfCover
   Left = 329
-  Height = 281
+  Height = 448
   Top = 214
-  Width = 350
+  Width = 483
+  ActiveControl = btnZoomIn
   Caption = 'Cover Viewer'
-  ClientHeight = 281
-  ClientWidth = 350
+  ClientHeight = 448
+  ClientWidth = 483
   Constraints.MinHeight = 40
   Constraints.MinWidth = 350
+  OnClose = FormClose
+  OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '1.1'
+  Visible = False
   object ScrollBox1: TScrollBox
     Left = 0
-    Height = 241
+    Height = 461
     Top = 40
-    Width = 350
-    HorzScrollBar.Page = 346
-    VertScrollBar.Page = 237
+    Width = 531
+    HorzScrollBar.Page = 284
+    VertScrollBar.Page = 244
     Align = alClient
-    ClientHeight = 237
-    ClientWidth = 346
+    ClientHeight = 457
+    ClientWidth = 527
     TabOrder = 0
+    OnResize = ScrollBox1Resize
     object ImageCover: TImage
-      Left = 0
+      Left = 184
       Height = 100
-      Top = 0
+      Top = 144
       Width = 100
+      AntialiasingMode = amOn
+      KeepOriginXWhenClipped = True
+      KeepOriginYWhenClipped = True
+      Proportional = True
       Stretch = True
     end
   end
@@ -33,10 +41,10 @@ object fCover: TfCover
     Left = 0
     Height = 40
     Top = 0
-    Width = 350
+    Width = 531
     Align = alTop
     ClientHeight = 40
-    ClientWidth = 350
+    ClientWidth = 531
     Constraints.MinHeight = 40
     Constraints.MinWidth = 330
     TabOrder = 1
@@ -463,5 +471,12 @@ object fCover: TfCover
       OnClick = btnZoomResetClick
       TabOrder = 2
     end
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Height = 23
+    Top = 501
+    Width = 531
+    Panels = <>
   end
 end
