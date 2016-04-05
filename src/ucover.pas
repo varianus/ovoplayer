@@ -6,20 +6,25 @@ interface
 
 uses
   Classes, SysUtils,  Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls, Buttons, ComCtrls;
+  StdCtrls, Buttons, ComCtrls, ExtDlgs;
 
 type
 
   { TfCover }
 
   TfCover = class(TForm)
+    btnSaveAs: TBitBtn;
+    btnFitToScreen: TBitBtn;
     btnZoomIn: TBitBtn;
     btnZoomOut: TBitBtn;
     btnZoomReset: TBitBtn;
     ImageCover: TImage;
     pnlSize: TPanel;
+    SavePictureDialog1: TSavePictureDialog;
     ScrollBox1: TScrollBox;
     StatusBar1: TStatusBar;
+    procedure btnFitToScreenClick(Sender: TObject);
+    procedure btnSaveAsClick(Sender: TObject);
     procedure btnZoomInClick(Sender: TObject);
     procedure btnZoomOutClick(Sender: TObject);
     procedure btnZoomResetClick(Sender: TObject);
@@ -47,6 +52,17 @@ Const
 procedure TfCover.btnZoomInClick(Sender: TObject);
 begin
   SetSize(round(CurrHeight * zoomRatio), round(CurrWidth * zoomRatio));
+end;
+
+procedure TfCover.btnSaveAsClick(Sender: TObject);
+begin
+  if SavePictureDialog1.Execute then
+    ImageCover.Picture.SaveToFile(SavePictureDialog1.FileName, ExtractFileExt(SavePictureDialog1.FileName));
+end;
+
+procedure TfCover.btnFitToScreenClick(Sender: TObject);
+begin
+  SetSize(ScrollBox1.ClientHeight, ScrollBox1.ClientWidth);
 end;
 
 procedure TfCover.btnZoomOutClick(Sender: TObject);
