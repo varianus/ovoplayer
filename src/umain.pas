@@ -1393,7 +1393,7 @@ begin
 
   coverForm.ImageCover.Picture.Assign(imgCover.Picture);
   coverForm.Show;
-  coverForm.SetSize(imgCover.Picture.Height,imgCover.Picture.Width);
+  coverForm.SetSize(coverForm.ScrollBox1.Height, coverForm.ScrollBox1.Width);
 
 end;
 

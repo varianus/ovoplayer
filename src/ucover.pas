@@ -106,6 +106,7 @@ begin
   else
     ImageCover.left:= 0;
 
+  StatusBar1.SimpleText:= format('%d x %d (%d%%)',[ImageCover.Picture.Width, ImageCover.Picture.Height,trunc((imageWidth/ImageCover.Picture.Width ) * 100)]);
 end;
 
 end.
