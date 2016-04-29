@@ -971,7 +971,12 @@ begin
                 Quitting:= true;
                 LCLIntf.PostMessage(Self.Handle, LM_CLOSEQUERY, 0, 0);
               end;
-    end;
+    cpPlayPos: begin
+                 if not seeking then
+                   TrackBar.Position := BackEnd.Position;
+                   lbTime.Caption := TimeToStr(BackEnd.Position / MSecsPerDay);
+               end;
+  end;
 
 end;
 
@@ -2488,13 +2493,13 @@ end;
 
 procedure TfMainForm.TimerTimer(Sender: TObject);
 begin
-  if (BackEnd.AudioEngine.State = ENGINE_PLAY)  then
-  begin
-    if not seeking then
-      TrackBar.Position := BackEnd.Position;
-  end;
-
-  lbTime.Caption := TimeToStr(BackEnd.Position / MSecsPerDay);
+  //if (BackEnd.AudioEngine.State = ENGINE_PLAY)  then
+  //begin
+  //  if not seeking then
+  //    TrackBar.Position := BackEnd.Position;
+  //end;
+  //
+  //lbTime.Caption := TimeToStr(BackEnd.Position / MSecsPerDay);
 end;
 
 procedure TfMainForm.btnUpDirClick(Sender: TObject);

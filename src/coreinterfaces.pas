@@ -32,7 +32,7 @@ const
 type
 
   TChangedProperty = (cpStatus, cpVolume, cpPosition, cpMetadata,
-                      cpLooping, cpCurrentItem, cpClosing);
+                      cpLooping, cpCurrentItem, cpClosing, cpPlayPos);
 
   { IBackEnd }
 
@@ -81,6 +81,7 @@ type
     Function GetCover(Width: integer=-1; Height:Integer=-1): String;
     Function PlayListCount : integer;
     Function GetCurrentSongIndex : integer;
+    Procedure AutoSendPosEvents(Active: boolean);
     // property
     Property Status: TEngineState read GetStatus write SetStatus;
     Property Position: int64 read GetPosition write SetPosition;

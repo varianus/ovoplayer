@@ -29,7 +29,8 @@ uses
   BaseTypes, CoreInterfaces,  forms,
   PlayList, AudioEngine, AudioEngine_dummy,
   PlayListManager, MediaLibrary, basetag, CustomSong,
-  Config, NullInterfacedObject;
+  Config, NullInterfacedObject,
+  FpTimer;
 
 type
 
@@ -48,6 +49,7 @@ type
 
     FOnSaveInterfaceState: TNotifyEvent;
     ObserverList : TInterfaceList;
+    IntTimer: TFPTimer;
 
     procedure AudioEngineSongEnd(Sender: TObject);
     procedure PlaylistOnSongAdd(Sender: Tobject; Index: Integer; ASong: TCustomSong);
@@ -56,6 +58,7 @@ type
     procedure SetOnPlayListChange(const AValue: TNotifyEvent);
     procedure SetOnPlayListLoad(const AValue: TNotifyEvent);
     procedure SetOnSaveInterfaceState(AValue: TNotifyEvent);
+    procedure TimerEvent(Sender: TObject);
 
   public
 
@@ -95,7 +98,7 @@ type
     procedure Seek(AValue: int64);
     Function PlayListCount : integer;
     Function GetCurrentSongIndex : integer;
-
+    Procedure AutoSendPosEvents(Active: boolean);
 
     Procedure Attach(observer: iObserver);
     Procedure Remove(observer: iObserver);
@@ -107,6 +110,7 @@ type
     function GetImageFromfolder(Path: string; LoadDefault:boolean=true): string;
     procedure SaveState;
     procedure SignalPlayListChange;
+
     property OnSaveInterfaceState: TNotifyEvent read FOnSaveInterfaceState write SetOnSaveInterfaceState;
     property OnPlayListChange: TNotifyEvent read FOnPlayListChange write SetOnPlayListChange;
     property OnPlayListLoad: TNotifyEvent read FOnPlayListLoad write SetOnPlayListLoad;
@@ -179,6 +183,7 @@ var
    end;
 
 begin
+  IntTimer := nil;
   Config := TConfig.Create;
   Manager  := TPlayListManager.Create;
   Playlist := TPlayList.Create;
@@ -227,7 +232,11 @@ end;
 
 destructor TBackEnd.Destroy;
 begin
-
+  if Assigned(IntTimer) then
+    begin
+      IntTimer.StopTimer;
+      IntTimer.Free;
+    end;
   try
     SaveState;
     if Assigned(FOnSaveInterfaceState) then
@@ -640,6 +649,35 @@ procedure TBackEnd.SignalPlayListChange;
 begin
   if Assigned(OnPlayListChange) then
     OnPlayListChange(PlayList);
+
+end;
+
+procedure TBackEnd.TimerEvent(Sender: TObject);
+begin
+  if AudioEngine.State = ENGINE_PLAY then
+    Notify(cpPlayPos);
+end;
+
+
+procedure TBackEnd.AutoSendPosEvents(Active: boolean);
+begin
+  if Active then
+    begin
+      if not Assigned(IntTimer) then
+        begin
+          IntTimer := TFPTimer.Create(nil);
+          IntTimer.Interval:= 665;
+          IntTimer.OnTimer:=@TimerEvent;
+        end;
+      IntTimer.StartTimer;
+    end
+  Else
+    begin
+      if Assigned(IntTimer) then
+        begin
+          IntTimer.StopTimer;
+        end;
+    end;
 
 end;
 
