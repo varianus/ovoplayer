@@ -34,6 +34,7 @@ uses
   {$IFDEF NOTIFYDBUS} notification,{$ENDIF}
   {$IFDEF TASKBAR_EXTENSION}taskbar_ext,{$ENDIF}
   {$IFDEF NETWORK_INTF}NetIntf,{$ENDIF}
+  {$IFDEF MULTIMEDIA_KEYS}MultimediaKeys, {$ENDIF}
   ucover, ucustomplaylist, playlistbuilder, netprotocol;
 
 type
@@ -390,6 +391,9 @@ type
     {$ENDIF}
     {$IFDEF NETWORK_INTF}
     MyNetIntf : TNetIntf;
+    {$ENDIF}
+    {$IFDEF MULTIMEDIA_KEYS}
+    fMultimediaKeys:   TMultimediaKeys;
     {$ENDIF}
     function AdjustPos(pt: tpoint): Tpoint;
     Function ColumnSize(aCol: Integer):Integer;
@@ -1294,6 +1298,13 @@ begin
       MyNetIntf.Activate(BackEnd);
     end;
   {$ENDIF}
+  {$IFDEF MULTIMEDIA_KEYS}
+  if BackEnd.Config.InterfaceParam.CaptureMMKeys then
+    begin
+      fMultimediaKeys := TMultimediaKeys.Create(BackEnd.Config.InterfaceParam.CaptureMMkeysMode, BackEnd);
+    end;
+  {$ENDIF}
+
   try
     if FileExistsUTF8(Backend.Config.ConfigDir + LASTPLAYLISTNAME) then
        BackEnd.Manager.ImportFromXSPF(Backend.Config.ConfigDir + LASTPLAYLISTNAME, BackEnd.PlayList)
@@ -1341,6 +1352,12 @@ begin
       MyNetIntf.Free;
     end;
   {$ENDIF}
+
+  {$IFDEF MULTIMEDIA_KEYS}
+  if Assigned(fMultimediaKeys) then
+    fMultimediaKeys.Free;
+  {$ENDIF}
+
 
   if Assigned(fMiniPlayer) then
     FreeAndNil(fMiniPlayer);

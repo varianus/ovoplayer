@@ -29,7 +29,7 @@ uses
   BaseTypes, CoreInterfaces,  forms,
   PlayList, AudioEngine, AudioEngine_dummy,
   PlayListManager, MediaLibrary, basetag, CustomSong,
-  MultimediaKeys, Config, NullInterfacedObject;
+  Config, NullInterfacedObject;
 
 type
 
@@ -45,7 +45,7 @@ type
     FOnExternalCommand: TOnExternalCommand;
     FOnPlayListChange: TNotifyEvent;
     FOnPlayListLoad:   TNotifyEvent;
-    fMultimediaKeys:   TMultimediaKeys;
+
     FOnSaveInterfaceState: TNotifyEvent;
     ObserverList : TInterfaceList;
 
@@ -216,11 +216,6 @@ begin
   AudioEngine.MainVolume:= Config.EngineParam.Volume;
   PlayList.OnSongAdd:=@PlaylistOnSongAdd;
 
-  if Config.InterfaceParam.CaptureMMKeys then
-    begin
-      fMultimediaKeys := TMultimediaKeys.Create(Config.InterfaceParam.CaptureMMkeysMode, self);
-    end;
-
 end;
 
 procedure TBackEnd.SaveState;
@@ -239,7 +234,6 @@ begin
        FOnSaveInterfaceState(Self);
   except
   end;
-  fMultimediaKeys.Free;
   Manager.Free;
   PlayList.Free;
   AudioEngine.Free;
