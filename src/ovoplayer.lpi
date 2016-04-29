@@ -34,7 +34,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir);platform\$(TargetOS)"/>
-            <OtherUnitFiles Value="import-engines;ovotag;components\uniqueinstance;platform\$(TargetOS)"/>
+            <OtherUnitFiles Value="import-engines;ovotag;components\uniqueinstance;components\network;platform\$(TargetOS)"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Conditionals Value="if TargetOS = 'darwin' then
@@ -518,7 +518,7 @@ if TargetOS = 'linux' then
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir);platform\$(TargetOS);import-engines"/>
-      <OtherUnitFiles Value="import-engines;ovotag;components\uniqueinstance;platform\$(TargetOS);components\network"/>
+      <OtherUnitFiles Value="import-engines;ovotag;components\uniqueinstance;components\network;platform\$(TargetOS)"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Conditionals Value="if TargetOS = 'darwin' then

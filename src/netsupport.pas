@@ -151,16 +151,18 @@ begin
 
 
   case ConnectionCfg.SizeMode of
-    smUTF8Char : begin
-                   Result := copy(StringTags, 5, size);
-                   inc(size,4);
-                   Delete(StringTags, 1, size);
-                 end;
-    smByte :     begin
-                   Result := UTF8copy(StringTags, 5, size);
-                   inc(size,4);
-                   UTF8Delete(StringTags, 1, size);
-                 end;
+    smByte:
+      begin
+        Result := copy(StringTags, 5, size);
+        inc(size,4);
+        Delete(StringTags, 1, size);
+      end;
+    smUTF8Char:
+      begin
+        Result := UTF8copy(StringTags, 5, size);
+       inc(size,4);
+        UTF8Delete(StringTags, 1, size);
+      end;
   end;
 
 end;

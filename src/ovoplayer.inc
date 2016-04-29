@@ -94,7 +94,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {$ENDIF LCLWin32}
 
 //Other Features
-{$DEFINE NETWORK_INTF} // Activate network interface for remote control, depends on Synapse packages
+{$DEFINE NETWORK_INTF} // Activate network interface for remote control
 
 //if release is defined, try to be quiet and efficient...
 {$IFDEF RELEASE}

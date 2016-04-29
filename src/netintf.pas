@@ -138,6 +138,12 @@ begin
       Case Command.Command of
         COMMAND_KEEP : KeepOpen := true;
         COMMAND_PIN: ;
+        COMMAND_WANTPOS: begin
+                           if Command.Param = '1' then
+                              fnet.fBackEnd.AutoSendPosEvents(true);
+                           if Command.Param = '0' then
+                              fnet.fBackEnd.AutoSendPosEvents(False);
+                         end;
         COMMAND_SIZEMODE: begin
                             if Command.Param = '1' then
                               ConnectionCfg.SizeMode:=smUTF8Char;
@@ -195,7 +201,8 @@ begin
         tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_PLAYLISTINDEX, IntToStr(fnet.fBackEnd.GetCurrentSongIndex));
       end;
     cpVolume: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.Volume));
-    cpPosition: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.Position));
+    cpPosition,
+    cpPlayPos : tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.Position));
     cpMetadata: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata(),ConnectionCfg));
     cpClosing:  tmpstr:= BuildCommand(CATEGORY_APP, COMMAND_CLOSE);
     end;

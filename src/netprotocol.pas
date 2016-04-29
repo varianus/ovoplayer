@@ -29,6 +29,7 @@ Const
     COMMAND_KEEP = 'keep'; // keep connection open
     COMMAND_SIZEMODE = 'size'; // param  0: length of messages is computed in bytes
                                //        1: length of messages is computed in UTF8 codepoints (for Android mode)
+    COMMAND_WANTPOS = 'autopos'; // auto send current position events
 
   CATEGORY_ACTION = 'action';  // client --> server
     COMMAND_PLAY = 'play';
