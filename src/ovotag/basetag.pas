@@ -179,9 +179,11 @@ type
 Procedure ClearTags(var Tags:TcommonTags); inline;
 function GetTagByID(Tags:TcommonTags; Field: TIDFields):string; inline;
 Procedure SetTagByID(var Tags:TcommonTags; Field: TIDFields; Value :string); inline;
+Function ExportToJson(const Tags: TcommonTags):string;
+
 
 implementation
-uses LazFileUtils, lclProc;
+uses LazFileUtils, fpjson;
 
 operator = (t1 : TCommonTags; t2 : TCommonTags) b : boolean;
 begin
@@ -228,6 +230,8 @@ begin
     idTitle       : Result := Tags.Title;
     idTrack       : Result := Tags.TrackString;
     idYear        : Result := Tags.Year;
+  else
+    Result := '';
   end;
 end;
 
@@ -242,6 +246,28 @@ begin
     idTitle       : Tags.Title := Value;
     idTrack       : Tags.TrackString := Value;
     idYear        : Tags.Year := Value;
+  end;
+
+end;
+
+Function ExportToJson(const Tags: TcommonTags):string;
+var
+  FsongObj : TJSONObject;
+begin
+  FsongObj:= TJSONObject.Create;
+  try
+    FSongObj.Add('Title',Tags.Title);
+    FSongObj.Add('Album',Tags.Album);
+    FSongObj.Add('AlbumArtist',Tags.AlbumArtist);
+    FSongObj.Add('Artist',Tags.Artist);
+    FSongObj.Add('Comment',Tags.Comment);
+    FSongObj.Add('Duration',Tags.Duration);
+    FSongObj.Add('Genre',Tags.Genre);
+    FSongObj.Add('TrackString',Tags.TrackString);
+    FSongObj.Add('Year',Tags.Year);
+    Result:= FsongObj.AsJSON;
+  finally
+    FsongObj.Free;
   end;
 
 end;
