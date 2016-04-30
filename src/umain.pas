@@ -984,8 +984,8 @@ procedure TfMainForm.OnConfigDone(Sender: TObject; ChangedConf: boolean);
 begin
   if not ChangedConf then
     exit;
-  {$IFDEF NETWORK_INTF}
 
+  {$IFDEF NETWORK_INTF}
   if BackEnd.Config.NetRemoteParam.Enabled then
     begin
      if not Assigned(MyNetIntf) then
@@ -999,7 +999,6 @@ begin
    if Assigned(MyNetIntf) then
      begin
        FreeAndNil(MyNetIntf);
-
      end;
 
   if Assigned(MyNetIntf) then
@@ -1332,6 +1331,7 @@ begin
        end;
   end;
 
+  BackEnd.AutoSendPosEvents(True);
   OnLoaded(self);
 
 end;

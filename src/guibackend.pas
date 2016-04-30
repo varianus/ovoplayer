@@ -668,6 +668,7 @@ begin
           IntTimer := TFPTimer.Create(nil);
           IntTimer.Interval:= 665;
           IntTimer.OnTimer:=@TimerEvent;
+          IntTimer.Enabled:=true;
         end;
       IntTimer.StartTimer;
     end
