@@ -25,7 +25,7 @@ unit AudioEngine;
 interface
 
 uses
-  Classes, SysUtils, ExtCtrls, Song, BaseTypes;
+  Classes, SysUtils, Song, BaseTypes;
 
 type
 

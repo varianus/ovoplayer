@@ -62,7 +62,7 @@ uses
   {$IFDEF LCLCARBON}CarbonPrivate, CarbonDef,{$ENDIF}
   {$IFDEF LCLGTK2}Gtk2, {$IFDEF UNIX}Gdk2x,{$ENDIF}{$ENDIF}
   {$IFDEF LCLQT}Qt4, QtWidgets, {$ENDIF}
-  SysUtils{$IFDEF UNIX}, Dialogs{$ENDIF};
+  SysUtils{$IFDEF UNIX},lclproc{$ENDIF};
 
 (**
  * Real path to libvlc.dll
@@ -5457,7 +5457,7 @@ begin
   {$IFDEF MSWINDOWS}
   MessageBox(0, PChar(function_name + ' require libvlc ' + require_version), 'libvlc', MB_ICONHAND or MB_OK);
   {$ELSE}
-  ShowMessage(function_name + ' require libvlc ' + require_version);
+  debugln(function_name + ' require libvlc ' + require_version);
   {$ENDIF}
 end;
 

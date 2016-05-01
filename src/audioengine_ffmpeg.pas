@@ -25,7 +25,7 @@ unit AudioEngine_FFMpeg;
 interface
 
 uses
-  lclproc,Classes, SysUtils, ExtCtrls, decoupler, song, Basetypes, AudioEngine,
+  lclproc,Classes, SysUtils,  decoupler, song, Basetypes, AudioEngine,
   ffmpeg, UOS_portaudio, ctypes;
 
 type

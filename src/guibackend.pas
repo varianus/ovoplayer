@@ -26,7 +26,7 @@ interface
 
 uses
   Classes, SysUtils, LazFileUtils,
-  BaseTypes, CoreInterfaces,  forms,
+  BaseTypes, CoreInterfaces,
   PlayList, AudioEngine, AudioEngine_dummy,
   PlayListManager, MediaLibrary, basetag, CustomSong,
   Config, NullInterfacedObject,

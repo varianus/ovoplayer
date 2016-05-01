@@ -25,7 +25,7 @@ unit AudioEngine_OpenLib;
 interface
 
 uses
-  Classes, SysUtils, ExtCtrls, decoupler, Process, Song,
+  Classes, SysUtils,  decoupler, Process, Song,
   AudioEngine, basetypes,
   UOS_libsndfile, UOS_mpg123, UOS_portaudio;
 

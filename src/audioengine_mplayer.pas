@@ -25,7 +25,7 @@ unit AudioEngine_MPlayer;
 interface
 
 uses
-  Classes, SysUtils, ExtCtrls, Process, UTF8Process, Song, BaseTypes, AudioEngine;
+  Classes, SysUtils,  Process, fptimer, UTF8Process, Song, BaseTypes, AudioEngine;
 
 type
 
@@ -39,7 +39,7 @@ type
     fPlayerState: TEngineState;
     FPlayRunningI: boolean;
     fPosition: integer;
-    fTimer: TTimer;
+    fTimer: TFPTimer;
     fMuted: boolean;
     ExePath: string;
     Params:  string;
@@ -213,10 +213,11 @@ constructor TAudioEngineMPlayer.Create;
 begin
   inherited Create;
   fMainVolume := 127;
-  fTimer := TTimer.Create(nil);
+  fTimer := TFpTimer.Create(nil);
   fTimer.Enabled:=false;
   fTimer.Interval :=150;
   fTimer.OnTimer  := @TimerEvent;
+  fTimer.StartTimer;
 
 end;
 
@@ -443,7 +444,7 @@ begin
   SendMPlayerCommand('quit');
   if Running then
      fPlayerProcess.Terminate(0);
-
+  fTimer.free;
   inherited Destroy;
 end;
 
