@@ -72,7 +72,8 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
     // Application forms and related
   Udm, uMain, uAbout, ulicense, uConfig, uOSD, uMiniPlayer, uSongInfo, uCover,
   lazlogger, customdrawndrawers, customdrawn_ovoplayer, DefaultTranslator,
-  customdrawn, ucustomplaylist, ufrfield, playlistbuilder, netprotocol;
+  customdrawn, ucustomplaylist, ufrfield, playlistbuilder, netprotocol,
+  ImagesSupport, netsupport;
 
 {$R *.res}
 begin
