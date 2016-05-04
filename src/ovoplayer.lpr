@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 program ovoplayer;
 
 {$I ovoplayer.inc}
+{$I backend.inc}  // needed here to add units to project
 {$mode objfpc}{$H+}
 
 uses {$IFDEF UNIX} {$IFDEF UseCThreads}
@@ -73,7 +74,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   Udm, uMain, uAbout, ulicense, uConfig, uOSD, uMiniPlayer, uSongInfo, uCover,
   lazlogger, customdrawndrawers, customdrawn_ovoplayer, DefaultTranslator,
   customdrawn, ucustomplaylist, ufrfield, playlistbuilder, netprotocol,
-  ImagesSupport, netsupport;
+  ImagesSupport, netsupport, guiconfig;
 
 {$R *.res}
 begin

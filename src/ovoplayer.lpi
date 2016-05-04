@@ -90,7 +90,7 @@ if TargetOS = 'linux' then
         <Item2 ID="410165404427" Type="IDEMacro" MacroName="LCLWidgetType" Value="qt"/>
         <Item3 ID="829386383577" Type="IDEMacro" MacroName="LCLWidgetType" Value="customdrawn"/>
         <Item4 ID="280527481958" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk3"/>
-        <Item5 ID="185779540059" Modes="Debug" Value="-dEnableUTF8RTL"/>
+        <Item5 ID="185779540059" Value="-dEnableUTF8RTL"/>
       </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
@@ -123,7 +123,7 @@ if TargetOS = 'linux' then
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="80">
+    <Units Count="81">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -508,6 +508,11 @@ if TargetOS = 'linux' then
         <Filename Value="netsupport.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit79>
+      <Unit80>
+        <Filename Value="guiconfig.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="GuiConfig"/>
+      </Unit80>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -558,6 +563,9 @@ if TargetOS = 'linux' then
       <ConfigFile>
         <ConfigFilePath Value="..\extrafpc.cfg"/>
       </ConfigFile>
+      <OtherDefines Count="1">
+        <Define0 Value="aaa"/>
+      </OtherDefines>
       <ExecuteBefore>
         <Command Value="$(LazarusDir)\tools\svn2revisioninc$(ExeExt) .. ovorevision.inc --c=ovoRevision"/>
       </ExecuteBefore>

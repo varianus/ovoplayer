@@ -27,37 +27,13 @@ interface
 uses
   Classes, SysUtils, Graphics, inifiles;
 
-const
-  npkOSD = 2;
-  npkNotifications = 1;
-
 type
-
-  TNotificationParam = record
-    Kind: integer;
-    X:    integer;
-    Y:    integer;
-    BackColor: TColor;
-    FontColor: TColor;
-    Transparency: integer;
-    TimeOut: integer;
-  end;
-
   TMediaLibraryParam = record
     LibraryPaths: TStringList;
     CheckOnStart: boolean;
   end;
 
-  TInterfaceParam = record
-    ShowTrayIcon: boolean;
-    MinimizeOnClose: boolean;
-    GroupBy: Integer;
-    CaptureMMKeys: boolean;
-    CaptureMMkeysMode: Integer;
-    EnableSoundMenu: boolean;
-  end;
-
-  TPlayListParam = record
+ TPlayListParam = record
     Restart: boolean;
     RepeatMode:Integer;
   end;
@@ -70,14 +46,6 @@ type
   TGeneralParam = record
     LastImportFolder: String;
   end;
-
- {$IFDEF NETWORK_INTF}
-  TNetRemoteParam = record
-    Enabled:boolean;
-    Port: integer;
-  end;
- {$EndIf}
-
   { TConfig }
 
 
@@ -88,21 +56,14 @@ type
     FNeedRestart: boolean;
     ResourcesPath: string;
     fIniFiles:     TMemIniFile;
-    function ReadColor(const Section, Ident: string; const Default: TColor): TColor;
     procedure SetNeedRestart(AValue: boolean);
     procedure WriteStringS(Section: string; BaseName: string; Values: TStrings);
     function ReadStrings(Section: string; Name: string; Values: TStrings): integer;
-    procedure WriteColor(const Section, Ident: string; const Value: TColor);
   public
-    NotificationParam: TNotificationParam;
     MediaLibraryParam: TMediaLibraryParam;
-    InterfaceParam:    TInterfaceParam;
     PlayListParam:     TPlayListParam;
     EngineParam:       TEngineParam;
     GeneralParam:      TGeneralParam;
-    {$IFDEF NETWORK_INTF}
-    NetRemoteParam:    TNetRemoteParam;
-    {$ENDIF}
     EngineSubParams:   TStringList;
     constructor Create;
     procedure ReadConfig;
@@ -120,6 +81,9 @@ type
     procedure Flush;
     destructor Destroy; override;
   end;
+
+
+
 
 implementation
 
@@ -173,22 +137,6 @@ begin
   WriteStringS('MediaLibraryPaths', 'Path', MediaLibraryParam.LibraryPaths);
   fIniFiles.WriteBool('MediaLibrary', 'CheckOnStart', MediaLibraryParam.CheckOnStart);
 
-  // NOTIFICATION
-  fIniFiles.WriteInteger('Notification', 'Kind', NotificationParam.Kind);
-  WriteColor('Notification', 'BackColor', NotificationParam.BackColor);
-  WriteColor('Notification', 'FontColor', NotificationParam.FontColor);
-  fIniFiles.WriteInteger('Notification', 'TimeOut', NotificationParam.TimeOut);
-  fIniFiles.WriteInteger('Notification', 'X', NotificationParam.X);
-  fIniFiles.WriteInteger('Notification', 'Y', NotificationParam.Y);
-  fIniFiles.WriteInteger('Notification', 'Transparency', NotificationParam.Transparency);
-
-  // INTERFACE
-  fIniFiles.WriteBool('Interface', 'MinimizeOnClose', InterfaceParam.MinimizeOnClose);
-  fIniFiles.WriteBool('Interface', 'ShowTrayIcon', InterfaceParam.ShowTrayIcon);
-  fIniFiles.WriteInteger('Interface', 'GroupBy', InterfaceParam.GroupBy);
-  fIniFiles.WriteBool('Interface', 'CaptureMMKeys', InterfaceParam.CaptureMMKeys);
-  fIniFiles.WriteInteger('Interface', 'CaptureMMKeysMode', InterfaceParam.CaptureMMkeysMode);
-  fIniFiles.WriteBool('Interface', 'EnableSoundMenu', InterfaceParam.EnableSoundMenu);
 
   // PLAYLIST
   fIniFiles.WriteBool('PlayList', 'Restart', PlayListParam.Restart);
@@ -198,12 +146,6 @@ begin
   fIniFiles.WriteString('AudioEngine', 'Kind', EngineParam.EngineKind);
   fIniFiles.WriteInteger('AudioEngine', 'Volume', EngineParam.Volume);
   fIniFiles.WriteInteger('AudioEngine', 'Volume', EngineParam.Volume);
-
-  {$IFDEF NETWORK_INTF}
-  // NETREMOTE
-  fIniFiles.WriteBool('NetRemote', 'Enabled', NetRemoteParam.Enabled);
-  fIniFiles.WriteInteger('NetRemote', 'Port', NetRemoteParam.Port);
-  {$ENDIf}
 
   //GENERAL
   fIniFiles.WriteString('General', 'LastFolder', GeneralParam.LastImportFolder);
@@ -266,23 +208,6 @@ begin
   ReadStrings('MediaLibraryPaths', 'Path', MediaLibraryParam.LibraryPaths);
   MediaLibraryParam.CheckOnStart := fIniFiles.ReadBool('MediaLibrary', 'CheckOnStart', False);
 
-  // NOTIFICATION
-  NotificationParam.Kind := fIniFiles.ReadInteger('Notification', 'Kind', 2);
-  NotificationParam.BackColor := ReadColor('Notification', 'BackColor', $00B66F18);
-  NotificationParam.FontColor := ReadColor('Notification', 'FontColor', $00000000);
-  NotificationParam.TimeOut := fIniFiles.ReadInteger('Notification', 'TimeOut', 3000);
-  NotificationParam.X := fIniFiles.ReadInteger('Notification', 'X', 100);
-  NotificationParam.Y := fIniFiles.ReadInteger('Notification', 'Y', 100);
-  NotificationParam.Transparency := fIniFiles.ReadInteger('Notification', 'Transparency', 230);
-
-  // INTERFACE
-  InterfaceParam.MinimizeOnClose := fIniFiles.ReadBool('Interface', 'MinimizeOnClose', True);
-  InterfaceParam.ShowTrayIcon := fIniFiles.ReadBool('Interface', 'ShowTrayIcon', True);
-  InterfaceParam.GroupBy := fIniFiles.ReadInteger('Interface', 'GroupBy', 0);
-  InterfaceParam.CaptureMMKeys := fIniFiles.ReadBool('Interface', 'CaptureMMKeys', False);
-  InterfaceParam.CaptureMMkeysMode := fIniFiles.ReadInteger('Interface', 'CaptureMMkeysMode', 0);
-  InterfaceParam.EnableSoundMenu := fIniFiles.ReadBool('Interface', 'EnableSoundMenu', True);
-
   // PLAYLIST
   PlayListParam.Restart :=  fIniFiles.ReadBool('PlayList', 'Restart', true);
   PlayListParam.RepeatMode :=  fIniFiles.ReadInteger('PlayList', 'RepeatMode', 0);
@@ -291,12 +216,6 @@ begin
   EngineParam.EngineKind := fIniFiles.ReadString('AudioEngine', 'Kind', '');
   EngineParam.Volume := fIniFiles.ReadInteger('AudioEngine', 'Volume', 50);
   ReadSubParams;
-
-  // NETREMOTE
-  {$IFDEF NETWORK_INTF}
-  NetRemoteParam.Enabled := fIniFiles.ReadBool('NetRemote', 'Enabled', False);
-  NetRemoteParam.Port := fIniFiles.ReadInteger('NetRemote', 'Port', 6860);
-  {$ENDIF}
 
   //GENERAL
   GeneralParam.LastImportFolder := fIniFiles.ReadString('General', 'LastFolder', GetUserDir);
@@ -338,24 +257,10 @@ begin
 
 end;
 
-function TConfig.ReadColor(const Section, Ident: string; const Default: TColor): TColor;
-var
-  tmpString: string;
-begin
-  tmpString := fIniFiles.ReadString(Section, Ident, IntToHex(Default, 8));
-  if not TryStrToInt(tmpString, Result) then
-    Result := Default;
-end;
-
 procedure TConfig.SetNeedRestart(AValue: boolean);
 begin
   if FNeedRestart=AValue then Exit;
   FNeedRestart:=AValue;
-end;
-
-procedure TConfig.WriteColor(const Section, Ident: string; const Value: TColor);
-begin
-  fIniFiles.WriteString(Section, Ident, '$' + IntToHex(Value, 8));
 end;
 
 procedure TConfig.Flush;

@@ -35,7 +35,8 @@ uses
   {$IFDEF TASKBAR_EXTENSION}taskbar_ext,{$ENDIF}
   {$IFDEF NETWORK_INTF}NetIntf,{$ENDIF}
   {$IFDEF MULTIMEDIA_KEYS}MultimediaKeys, {$ENDIF}
-  ucover, ucustomplaylist, playlistbuilder, netprotocol;
+  ucover, ucustomplaylist, playlistbuilder, netprotocol,
+  GuiConfig;
 
 type
   TSortFields = record
@@ -825,7 +826,7 @@ end;
 
 procedure TfMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
-  if (BackEnd.Config.InterfaceParam.MinimizeOnClose) and not Quitting then
+  if (GuiConfigObj.InterfaceParam.MinimizeOnClose) and not Quitting then
     begin
       Application.ShowMainForm:=False;
       {$IFDEF TASKBAR_EXTENSION}
@@ -837,6 +838,7 @@ begin
   else
     begin
       BackEnd.SaveState;
+      GuiConfigObj.SaveConfig;
       SaveConfig(nil);
       CloseAction:=caFree;
     end;
@@ -925,10 +927,10 @@ begin
   if not Assigned(ASong) then
     exit;
 
-  if BackEnd.Config.NotificationParam.Kind = npkOSD then
+  if GuiConfigObj.NotificationParam.Kind = npkOSD then
     ShowOSD(ASong, imgCover.Picture);
 
-  if BackEnd.Config.NotificationParam.Kind = npkNotifications then
+  if GuiConfigObj.NotificationParam.Kind = npkNotifications then
     begin
      {$IFDEF NOTIFYDBUS}
       MyNotification.Summary:=ASong.tags.Title;
@@ -945,7 +947,7 @@ begin
         Notifier.free;
       end;
      {$ELSE} // Use standard balloon hint on other widgetset
-      TrayIcon.BalloonTimeout := BackEnd.Config.NotificationParam.TimeOut;
+      TrayIcon.BalloonTimeout := GuiConfigObj.NotificationParam.TimeOut;
       TrayIcon.BalloonTitle   := ASong.tags.Title;
       tmpstr  := UTF8Encode(aSong.Tags.Album + LineEnding + ASong.Tags.Artist + LineEnding +
                       ASong.Tags.TrackString);
@@ -986,12 +988,12 @@ begin
     exit;
 
   {$IFDEF NETWORK_INTF}
-  if BackEnd.Config.NetRemoteParam.Enabled then
+  if GuiConfigObj.NetRemoteParam.Enabled then
     begin
      if not Assigned(MyNetIntf) then
        begin
          MyNetIntf :=  TNetIntf.Create;
-         MyNetIntf.Port := BackEnd.Config.NetRemoteParam.Port;
+         MyNetIntf.Port := GuiConfigObj.NetRemoteParam.Port;
          MyNetIntf.Activate(BackEnd);
        end;
     end
@@ -1002,7 +1004,7 @@ begin
      end;
 
   if Assigned(MyNetIntf) then
-     MyNetIntf.Port := BackEnd.Config.NetRemoteParam.Port;
+     MyNetIntf.Port := GuiConfigObj.NetRemoteParam.Port;
   {$ENDIF}
 end;
 
@@ -1089,7 +1091,7 @@ begin
   SortFields.F1 := ArrayGroup[cbGroupBy.ItemIndex].F1;
   SortFields.F2 := ArrayGroup[cbGroupBy.ItemIndex].F2;
   SortFields.F3 := ArrayGroup[cbGroupBy.ItemIndex].F3;
-  BackEnd.Config.InterfaceParam.GroupBy := cbGroupBy.ItemIndex;
+  GuiConfigObj.InterfaceParam.GroupBy := cbGroupBy.ItemIndex;
   LoadTree;
 end;
 
@@ -1243,6 +1245,9 @@ begin
   slVolume.Max:= 255;//BackEnd.AudioEngine.MaxVolume;
   slVolume.Position := BackEnd.Config.EngineParam.Volume;
 
+  GuiConfigObj := TGuiConfig.Create(BackEnd.Config);
+  GuiConfigObj.ReadConfig;
+
   ReadConfig(Self);
 
   case TplRepeat(BackEnd.Config.PlayListParam.RepeatMode) of
@@ -1252,7 +1257,7 @@ begin
     rptPlayList : dm.actRepeatAll.Checked := true;
   end;
 
-  if BackEnd.Config.InterfaceParam.ShowTrayIcon then
+  if GuiConfigObj.InterfaceParam.ShowTrayIcon then
     begin
        tmpIcon:=TIcon.Create;
        tmpIcon.LoadFromResourceName(HINSTANCE,'MAINICON');
@@ -1264,7 +1269,7 @@ begin
        tmpIcon.free;
     end;
 
-  if BackEnd.Config.InterfaceParam.ShowTrayIcon then
+  if GuiConfigObj.InterfaceParam.ShowTrayIcon then
      begin
        Application.ShowMainForm := True;
        TrayIcon.Visible := True;
@@ -1278,12 +1283,12 @@ begin
   slVolume.Position := BackEnd.Volume;
   BackEnd.Attach(Self);
 
-  cbGroupBy.ItemIndex := BackEnd.Config.InterfaceParam.GroupBy;
+  cbGroupBy.ItemIndex := GuiConfigObj.InterfaceParam.GroupBy;
   cbGroupBy.OnChange(self);
   SetLength(fColumnsWidth, 0);
 
   {$IFDEF MPRIS2}
-  if BackEnd.Config.InterfaceParam.EnableSoundMenu then
+  if GuiConfigObj.InterfaceParam.EnableSoundMenu then
     begin
       Mpris := TMpris2.Create;
       Mpris.Activate(BackEnd);
@@ -1295,17 +1300,17 @@ begin
   {$ENDIF}
 
   {$IFDEF NETWORK_INTF}
-  if BackEnd.Config.NetRemoteParam.Enabled then
+  if GuiConfigObj.NetRemoteParam.Enabled then
     begin
       MyNetIntf := TNetIntf.Create;
-      MyNetIntf.Port:=BackEnd.Config.NetRemoteParam.Port;
+      MyNetIntf.Port:=GuiConfigObj.NetRemoteParam.Port;
       MyNetIntf.Activate(BackEnd);
     end;
   {$ENDIF}
   {$IFDEF MULTIMEDIA_KEYS}
-  if BackEnd.Config.InterfaceParam.CaptureMMKeys then
+  if GuiConfigObj.InterfaceParam.CaptureMMKeys then
     begin
-      fMultimediaKeys := TMultimediaKeys.Create(BackEnd.Config.InterfaceParam.CaptureMMkeysMode, BackEnd);
+      fMultimediaKeys := TMultimediaKeys.Create(GuiConfigObj.InterfaceParam.CaptureMMkeysMode, BackEnd);
     end;
   {$ENDIF}
 
@@ -1333,6 +1338,7 @@ begin
 
   BackEnd.AutoSendPosEvents(True);
   OnLoaded(self);
+
 
 end;
 

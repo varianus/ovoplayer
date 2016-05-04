@@ -89,7 +89,7 @@ procedure ShowOSDConfig;
 
 implementation
 
-uses AppConsts, lclproc, Math, graphutil;
+uses AppConsts, lclproc, Math, graphutil, GuiConfig;
 
 procedure ShowOSD(Song: TSong; Image: TPicture);
 var
@@ -236,13 +236,13 @@ end;
 procedure TfOSD.FormMouseEnter(Sender: TObject);
 begin
   if not ConfigMode then
-    AlphaBlendValue := BackEnd.Config.NotificationParam.Transparency div 2;
+    AlphaBlendValue := GuiConfigObj.NotificationParam.Transparency div 2;
 end;
 
 procedure TfOSD.FormMouseLeave(Sender: TObject);
 begin
   if not ConfigMode then
-    AlphaBlendValue := BackEnd.Config.NotificationParam.Transparency;
+    AlphaBlendValue := GuiConfigObj.NotificationParam.Transparency;
 end;
 
 {$IFDEF SUPPORT_SHAPING}
@@ -276,28 +276,28 @@ procedure TfOSD.LoadFromConfig;
 var
   i: integer;
 begin
-  timShow.Interval := BackEnd.Config.NotificationParam.TimeOut;
+  timShow.Interval := GuiConfigObj.NotificationParam.TimeOut;
   timPaint.Interval:=40;
-  Top := BackEnd.Config.NotificationParam.Y;
-  Left := BackEnd.Config.NotificationParam.X;
+  Top := GuiConfigObj.NotificationParam.Y;
+  Left := GuiConfigObj.NotificationParam.X;
   Width:=430;
   Height:=103;
-  Color := BackEnd.Config.NotificationParam.BackColor;
-  AlphaBlendValue := BackEnd.Config.NotificationParam.Transparency;
+  Color := GuiConfigObj.NotificationParam.BackColor;
+  AlphaBlendValue := GuiConfigObj.NotificationParam.Transparency;
   for i := 0 to ComponentCount - 1 do
     if Components[i] is TStaticText then
     begin
       TStaticText(Components[i]).color := color;
       TStaticText(Components[i]).Font.color :=
-        BackEnd.Config.NotificationParam.FontColor;
+        GuiConfigObj.NotificationParam.FontColor;
     end;
 end;
 
 procedure TfOSD.UpdateAspect;
 begin
-  BackGroundColor := BackEnd.Config.NotificationParam.BackColor;
-  AlphaBlendValue := BackEnd.Config.NotificationParam.Transparency;
-  FontColor := BackEnd.Config.NotificationParam.FontColor;
+  BackGroundColor := GuiConfigObj.NotificationParam.BackColor;
+  AlphaBlendValue := GuiConfigObj.NotificationParam.Transparency;
+  FontColor := GuiConfigObj.NotificationParam.FontColor;
 
 end;
 

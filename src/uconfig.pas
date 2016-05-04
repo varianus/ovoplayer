@@ -132,7 +132,7 @@ Procedure ShowConfigurationEditor(CallBack:TOnConfigDone=nil; Page:TConfigPage=c
 
 implementation
 {$R *.lfm}
-uses udm, GeneralFunc;
+uses udm, GeneralFunc, GuiConfig;
 var
   fConfig: TfConfig;
 
@@ -152,8 +152,8 @@ procedure TfConfig.OKButtonClick(Sender: TObject);
 begin
   if Assigned(FOSD) and fOSD.Visible then
     begin
-      BackEnd.Config.NotificationParam.X := fOsd.left;
-      BackEnd.Config.NotificationParam.Y := fOsd.top;
+      GuiConfigObj.NotificationParam.X := fOsd.left;
+      GuiConfigObj.NotificationParam.Y := fOsd.top;
       FreeAndNil(fOSD);
     end;
   FSaved:=true;
@@ -269,13 +269,14 @@ procedure TfConfig.bRestartClick(Sender: TObject);
 begin
   if Assigned(FOSD) and fOSD.Visible then
     begin
-      BackEnd.Config.NotificationParam.X := fOsd.left;
-      BackEnd.Config.NotificationParam.Y := fOsd.top;
+      GuiConfigObj.NotificationParam.X := fOsd.left;
+      GuiConfigObj.NotificationParam.Y := fOsd.top;
       FreeAndNil(fOSD);
     end;
 
   MapToConfig;
   BackEnd.Config.SaveConfig;
+  GuiConfigObj.SaveConfig;
   BackEnd.Config.Flush;
   Restart(Application);
 end;
@@ -302,14 +303,14 @@ end;
 
 procedure TfConfig.colorBackgroundChange(Sender: TObject);
 begin
-  BackEnd.Config.NotificationParam.BackColor := colorBackground.Selected;
+  GuiConfigObj.NotificationParam.BackColor := colorBackground.Selected;
   if Assigned(Fosd) and fOSD.Visible then
     fosd.UpdateAspect;
 end;
 
 procedure TfConfig.ColorFontChange(Sender: TObject);
 begin
-  BackEnd.Config.NotificationParam.FontColor := ColorFont.Selected;
+  GuiConfigObj.NotificationParam.FontColor := ColorFont.Selected;
   if Assigned(Fosd) and fOSD.Visible then
     fosd.UpdateAspect;
 
@@ -408,7 +409,7 @@ end;
 
 procedure TfConfig.tbTransparencyChange(Sender: TObject);
 begin
-  BackEnd.Config.NotificationParam.Transparency := tbTransparency.Position;
+  GuiConfigObj.NotificationParam.Transparency := tbTransparency.Position;
   if Assigned(Fosd) and fOSD.Visible then
     fosd.UpdateAspect;
 
@@ -438,8 +439,8 @@ procedure TfConfig.tsOSDHide(Sender: TObject);
 begin
   if Assigned(Fosd) and fOSD.Visible then
     begin
-      BackEnd.Config.NotificationParam.X := fosd.left;
-      BackEnd.Config.NotificationParam.Y := fosd.top;
+      GuiConfigObj.NotificationParam.X := fosd.left;
+      GuiConfigObj.NotificationParam.Y := fosd.top;
       FreeAndNil(fOSD);
     end;
 end;
@@ -458,17 +459,17 @@ begin
   BackEnd.Config.MediaLibraryParam.CheckOnStart   := cbScanOnStart.Checked;
 
   // NOTIFICATION
-  BackEnd.Config.NotificationParam.Kind           := rgOSDKind.ItemIndex;
-  BackEnd.Config.NotificationParam.BackColor      := ColorBackground.Selected;
-  BackEnd.Config.NotificationParam.FontColor      := ColorFont.Selected;
-  BackEnd.Config.NotificationParam.Transparency   := tbTransparency.Position;
+  GuiConfigObj.NotificationParam.Kind           := rgOSDKind.ItemIndex;
+  GuiConfigObj.NotificationParam.BackColor      := ColorBackground.Selected;
+  GuiConfigObj.NotificationParam.FontColor      := ColorFont.Selected;
+  GuiConfigObj.NotificationParam.Transparency   := tbTransparency.Position;
 
   // INTERFACE
-  BackEnd.Config.InterfaceParam.MinimizeOnClose   := cbMinimizeOnClose.checked;
-  BackEnd.Config.InterfaceParam.ShowTrayIcon      := cbTrayVisible.checked;
-  BackEnd.Config.InterfaceParam.CaptureMMKeys     := cbCaptureMMKeys.checked;
-  BackEnd.Config.InterfaceParam.CaptureMMkeysMode := rgKeyCaptureMode.ItemIndex;
-  BackEnd.Config.InterfaceParam.EnableSoundMenu   := cbEnableSoundMenu.Checked;
+  GuiConfigObj.InterfaceParam.MinimizeOnClose   := cbMinimizeOnClose.checked;
+  GuiConfigObj.InterfaceParam.ShowTrayIcon      := cbTrayVisible.checked;
+  GuiConfigObj.InterfaceParam.CaptureMMKeys     := cbCaptureMMKeys.checked;
+  GuiConfigObj.InterfaceParam.CaptureMMkeysMode := rgKeyCaptureMode.ItemIndex;
+  GuiConfigObj.InterfaceParam.EnableSoundMenu   := cbEnableSoundMenu.Checked;
 
   // PLAYLIST
   BackEnd.Config.PlayListParam.Restart            := cbRestart.Checked;
@@ -478,8 +479,8 @@ begin
 
   // NETREMOTE
   {$IFDEF NETWORK_INTF}
-  BackEnd.Config.NetRemoteParam.Enabled           := cbNetRemote.checked;
-  BackEnd.Config.NetRemoteParam.Port              := sePort.Value;
+  GuiConfigObj.NetRemoteParam.Enabled           := cbNetRemote.checked;
+  GuiConfigObj.NetRemoteParam.Port              := sePort.Value;
   {$ENDIF NETWORK_INTF}
 
   //GENERAL
@@ -502,17 +503,17 @@ begin
   cbScanOnStart.Checked      := BackEnd.Config.MediaLibraryParam.CheckOnStart;
 
   // NOTIFICATION
-  rgOSDKind.ItemIndex        := BackEnd.Config.NotificationParam.Kind;
-  ColorBackground.Selected   := BackEnd.Config.NotificationParam.BackColor;
-  ColorFont.Selected         := BackEnd.Config.NotificationParam.FontColor;
-  tbTransparency.Position    := BackEnd.Config.NotificationParam.Transparency;
+  rgOSDKind.ItemIndex        := GuiConfigObj.NotificationParam.Kind;
+  ColorBackground.Selected   := GuiConfigObj.NotificationParam.BackColor;
+  ColorFont.Selected         := GuiConfigObj.NotificationParam.FontColor;
+  tbTransparency.Position    := GuiConfigObj.NotificationParam.Transparency;
 
   // INTERFACE
-  cbMinimizeOnClose.checked  := BackEnd.Config.InterfaceParam.MinimizeOnClose;
-  cbTrayVisible.checked      := BackEnd.Config.InterfaceParam.ShowTrayIcon;
-  cbCaptureMMKeys.checked    := BackEnd.Config.InterfaceParam.CaptureMMKeys;
-  rgKeyCaptureMode.ItemIndex := BackEnd.Config.InterfaceParam.CaptureMMkeysMode;
-  cbEnableSoundMenu.Checked  := BackEnd.Config.InterfaceParam.EnableSoundMenu;
+  cbMinimizeOnClose.checked  := GuiConfigObj.InterfaceParam.MinimizeOnClose;
+  cbTrayVisible.checked      := GuiConfigObj.InterfaceParam.ShowTrayIcon;
+  cbCaptureMMKeys.checked    := GuiConfigObj.InterfaceParam.CaptureMMKeys;
+  rgKeyCaptureMode.ItemIndex := GuiConfigObj.InterfaceParam.CaptureMMkeysMode;
+  cbEnableSoundMenu.Checked  := GuiConfigObj.InterfaceParam.EnableSoundMenu;
 
   // PLAYLIST
   cbRestart.Checked          := BackEnd.Config.PlayListParam.Restart;
@@ -527,8 +528,8 @@ begin
 
   {$IFDEF NETWORK_INTF}
   // NETREMOTE
-  cbNetRemote.Checked       := BackEnd.Config.NetRemoteParam.Enabled;
-  sePort.Value              := BackEnd.Config.NetRemoteParam.Port;
+  cbNetRemote.Checked       := GuiConfigObj.NetRemoteParam.Enabled;
+  sePort.Value              := GuiConfigObj.NetRemoteParam.Port;
   {$ENDIF NETWORK_INTF}
   //GENERAL
   pnlRestart.visible := Backend.Config.NeedRestart;

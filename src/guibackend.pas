@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 }
-{$I ovoplayer.inc}
+{$I backend.inc}
 unit GUIBackEnd;
 
 {$mode objfpc}{$H+}
@@ -27,8 +27,19 @@ interface
 uses
   Classes, SysUtils, LazFileUtils,
   BaseTypes, CoreInterfaces,
-  PlayList, AudioEngine, AudioEngine_dummy,
-  PlayListManager, MediaLibrary, basetag, CustomSong,
+  audioengine, audioengine_dummy, AudioEngine_MPlayer,
+  {$IFDEF GSTREAMER} gstreamer, audioengine_gstreamer, {$ENDIF}
+  {$IFDEF VLC} PasLibVlcUnit, audioengine_vlc, {$ENDIF}
+  {$IFDEF XINE} xine, audioengine_Xine,{$ENDIF}
+  {$IFDEF BASS} lazdynamic_bass, audioengine_bass,{$ENDIF}
+  {$IFDEF DSHOW} mediadshow, audioengine_dshow,{$ENDIF}
+  {$IFDEF MEDIAFOUNDATION} mediafoundation, audioengine_mf,{$ENDIF}
+  {$IFDEF OPENSOURCELIB} uos_libsndfile, uos_mpg123, uos_portaudio, audioengine_OpenLib,{$ENDIF}
+  {$IFDEF UOS} UOS, uos_libsndfile, uos_mpg123, uos_portaudio, audioengine_UOS,{$ENDIF}
+  {$IFDEF FFMPEG} ffmpeg, audioengine_FFMPEG,{$ENDIF}
+  {$IFDEF LIBMPV} libmpv, audioengine_libmpv,{$ENDIF}
+
+  PlayList, PlayListManager, MediaLibrary, basetag, CustomSong,
   Config, NullInterfacedObject,
   FpTimer;
 
