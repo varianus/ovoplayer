@@ -36,6 +36,10 @@ function ExtractTrack(const TrackString: string): word;
 
 function ExtractString(p: pbyte; size: cardinal; LanguageID: boolean = False): string;
 
+function ExtractString_ANSI(p: pbyte; size: cardinal; LanguageID: boolean = False): string;
+function ExtractString_UTF8(p: pbyte; size: cardinal; LanguageID: boolean = False): string;
+function ExtractString_UTF16(p: pbyte; size: cardinal; LanguageID: boolean = False): string;
+
 
 procedure FixTrack(const TrackString: string; const TrackNr: integer; out TrackStringFixed: string;
   out TrackNrFixed: integer); overload;
@@ -172,124 +176,169 @@ end;
 
 function ExtractString(p: pbyte; size: cardinal; LanguageID: boolean = False): string;
 var
-  l, i: cardinal;
-  be: boolean;
-  ws: WideString;
+  Encoding : byte;
+  l: cardinal;
 begin
-
-  if size <> 0 then
+  Result:= '';
+  if size > 0 then
     begin
-    if p^ = 0 then
-      begin
-      if LanguageID then
-        begin
-        l := size - 4;
-        Inc(p, 4);
-        // skip comment descriptor
-        while (l < size) and (pbyte(p)^ <> 0) do
-          begin
-          Dec(l);
-          inc(p);
-          end;
-        end;
-
-      Result := ISO_8859_1ToUTF8((PAnsiChar(p) + 1));
-      end
-    else if p^ in [1, 2] then
-        begin
-        Inc(p);
-        Dec(size);
-        size := size and $fffffffe;
-        l:= size;
-        if LanguageID then
-          begin
-          Inc(p, 3);
-          dec(l, 3);
-          if ( (pword(p)^ = $feff) or (pword(p)^ = $feff)) and
-               (pword(p + 2)^ = 0) then
-            begin
-            Inc(p, 4);
-            DEC(l, 4);
-            end;
-            while (l < size) and (pbyte(p)^ = 0) do
-              begin
-              Dec(l);
-              inc(p);
-              end;
-          end;
-
-   {     while (l < size) and (pbyte(p)^ <> 0) do
-          begin
-          Dec(l);
-          inc(p);
-          end;  }
-   {   if LanguageID then
-        begin
-          Inc(p,2);
-          DEC(l,2);
-
-        end;       }
-
-
-        if l = 0 then
-          be := False
-        else
-          begin
-          if pword(p)^ = $feff then
-            begin
-            be := False;
-            Inc(p, 2);
-            Dec(l, 2);
-            end
-          else if pword(p)^ = $fffe then
-              begin
-              be := True;
-              Inc(p, 2);
-              Dec(l, 2);
-              end
-            else
-              be := p^ = 2;
-          end;
-        L:= ((L+1) DIV 2) *2;
-        setlength(ws, l div 2);
-        if be then
-          begin
-          for i := 1 to l div 2 do
-            begin
-            word(ws[i]) := BeToN(pword(p)^);
-            Inc(p, 2);
-            end;
-          end
-        else
-          move(p^, ws[1], l);
-        Result := UTF16ToUTF8(ws);
-        end
-      else if p^ = 3 then
-          begin
-          Inc(p);
-          Dec(size);
-          l := 0;
-          if LanguageID then
-            begin
-            Inc(p, 3);
-            while (l < size) and (pbyte(p)^ <> 0) do
-              begin
-              Inc(p);
-              Inc(l);
-              end;
-            Dec(size, l);
-            Inc(p);
-            end;
-
-          while (l < size) and (pbyte(p + l)^ <> 0) do
-            Inc(l);
-          Result := (copy(PChar(p), 1, l));
-          end;
+       Encoding := P^;
+       dec(size);
+       Inc(p);
+       case Encoding of
+         0   : Result := ExtractString_ANSI(p,size,LanguageID);
+         1,2 : Result := ExtractString_UTF16(p,size,LanguageID);
+         3   : Result := ExtractString_UTF8(p,size,LanguageID);
+       end;
     end;
   l := length(Result);
   while (l > 0) and (Result[l] = #0) do
     Dec(l);
   setlength(Result, l);
+end;
+
+function ExtractString_ANSI(p: pbyte; size: cardinal; LanguageID: boolean = False): string;
+var
+ l: cardinal;
+begin
+  if LanguageID then
+    begin
+      l := size - 3;
+      Inc(p, 3);
+      if p^ = 0 then
+        begin
+          dec(l);
+          inc(p);
+        end
+      else
+        while (l < size) and (pbyte(p)^ <> 0) do
+          begin
+            Dec(l);
+            inc(p);
+          end;
+    end;
+
+  Result := ISO_8859_1ToUTF8(PAnsiChar(p));
+
+end;
+
+function ExtractString_UTF8(p: pbyte; size: cardinal; LanguageID: boolean = False): string;
+var
+ l: cardinal;
+begin
+  l := 0;
+  if LanguageID then
+    begin
+      Inc(p, 3);
+      if p^ = 0 then
+        begin
+          inc(l);
+          inc(p);
+        end
+      else
+       begin
+        while (l < size) and (pbyte(p)^ <> 0) do
+          begin
+            Inc(p);
+            Inc(l);
+          end;
+
+        Dec(size, l);
+        Inc(p);
+       end;
+    end;
+
+  while (l < size) and (pbyte(p + l)^ <> 0) do
+    Inc(l);
+  Result := (copy(PChar(p), 1, l));
+end;
+
+function ExtractString_UTF16(p: pbyte; size: cardinal; LanguageID: boolean = False): string;
+var
+  l, i: cardinal;
+  OldP: pbyte;
+  oldL: Cardinal;
+  be: boolean;
+  ws: WideString;
+begin
+  size := size and $fffffffe;
+  l:= size;
+  if LanguageID then
+    begin
+    if ( (pword(p)^ = $feff) or (pword(p)^ = $fffe)) then   // corruption protection
+      begin
+        Inc(p, 8);
+        dec(l, 8);
+      end
+    else
+      begin
+        Inc(p, 3);
+        dec(l, 3);
+      end;
+
+    if ( (pword(p)^ = $feff) or (pword(p)^ = $fffe)) and  // empty description
+         (pword(p + 2)^ = 0) then
+      begin
+        Inc(p, 4);
+        DEC(l, 4);
+      end
+    else
+      begin
+        OldP:=p;   // save current position for corrupted description
+        OldL:=L;
+        while (l >= 2) and (pword(p)^ <> 0) do
+            begin
+              Dec(l,2);
+              inc(p,2);
+            end;
+          if l >=2 then
+            begin
+              Dec(l,2);
+              inc(p,2);
+            end
+          else
+            begin
+              p := OldP;  // missing description, restore search position
+              L := OldL;
+            end;
+        end;
+    end;
+
+  if l = 0 then
+    be := False
+  else
+    begin
+    if pword(p)^ = $feff then
+      begin
+        be := False;
+        Inc(p, 2);
+        Dec(l, 2);
+      end
+    else
+    if pword(p)^ = $fffe then
+      begin
+        be := True;
+        Inc(p, 2);
+        Dec(l, 2);
+      end
+    else
+      be := p^ = 2;
+    end;
+
+  L:= ((L+1) DIV 2) *2;     // Ensure an even number of byte if
+  setlength(ws, l div 2);   // endian conversion is needed
+  if be then
+    begin
+    for i := 1 to l div 2 do
+      begin
+        word(ws[i]) := BeToN(pword(p)^);
+        Inc(p, 2);
+      end;
+    end
+  else
+    move(p^, ws[1], l);
+
+  Result := UTF16ToUTF8(ws);
 
 end;
 
