@@ -1381,6 +1381,8 @@ begin
   RatingFront.Free;
   DM.Free;
 
+  GuiConfigObj.Free;
+
   FreeBackEnd;
 
 end;

@@ -125,6 +125,7 @@ begin
   NetRemoteParam.Port :=StrToIntDef(TmpSt.Values['Port'], 6860);
   {$ENDIF}
 
+  TmpSt.free;
 
 end;
 
