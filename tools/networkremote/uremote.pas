@@ -153,9 +153,13 @@ begin
     SetLength(Data, DataSize);
     Remains := DataSize;
     Repeat
-       ReadCnt:=FSocket.Read(Data[DataSize-Remains+1], Remains);
-       Remains:=Remains-ReadCnt;
-    until Remains = 0;
+       try
+         ReadCnt:=FSocket.Read(Data[DataSize-Remains+1], Remains);
+         Remains:=Remains-ReadCnt;
+       Except
+         Remains := 0;
+       end;
+    until (Remains = 0) or (FSocket.LastError <> 0);
 
     if DataSize < 1 then
       Exit;
