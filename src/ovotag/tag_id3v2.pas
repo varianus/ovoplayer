@@ -66,7 +66,7 @@ type
 
   TID3Tags = class(TTags)
   private
-    fSize: DWORD;
+    fTotalSize: DWORD;
     procedure DecodeFrameToImage(Frame: TID3Frame; Image: TImageElement);
     function GetBestMatch(Index1, Index2: integer; NewFrame: boolean): string;
     function ImportFromID3V1(AStream: TStream): boolean;
@@ -74,7 +74,7 @@ type
     Version: word;
     FromV1: boolean;
   public
-    property Size: DWORD read fSize;
+    property Size: DWORD read fTotalSize;
     function GetCommonTags: TCommonTags; override;
     procedure SetCommonTags(CommonTags: TCommonTags); override;
     function ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean; override;
@@ -84,7 +84,7 @@ type
 
 implementation
 
-uses CommonFunctions, ID3v1Genres, lazutf8;
+uses CommonFunctions, ID3v1Genres, lazutf8, LazUTF16;
 
 type
 
@@ -153,7 +153,7 @@ var
   V1Rec: TID3V1Record;
   Frame: TID3Frame;
 begin
-  fSize := 0;
+  fTotalSize := 0;
   Result := False;
   AStream.Seek(AStream.Size - SizeOf(V1Rec), soFromBeginning);
   AStream.Read(V1Rec, SizeOf(V1Rec));
@@ -379,10 +379,10 @@ begin
   end;
 
   Version := header.Version;
-  fSize := SyncSafe_Decode(header.size);
+  fTotalSize := SyncSafe_Decode(header.size);
   Stop := False;
-  if (Version in [TAG_VERSION_2_2..TAG_VERSION_2_4]) and (fSize > 0) then
-    while (AStream.Position < (fSize + SizeOf(header))) and not stop do
+  if (Version in [TAG_VERSION_2_2..TAG_VERSION_2_4]) and (fTotalSize > 0) then
+    while (AStream.Position < (fTotalSize + SizeOf(header))) and not stop do
     begin
       Frame := TID3Frame.Create;
       Frame.Tagger := self;
@@ -403,6 +403,8 @@ begin
       end;
     end;
   Result := Count > 0;
+  if Result then
+    fTotalSize := fTotalSize +SizeOf(header);
 
 end;
 
@@ -473,7 +475,8 @@ begin
        Data[2+LanguageOffset] := #$FF;
        Data[3+LanguageOffset] := #$FE;
 
-       StrPCopy(@(Data[4+LanguageOffset]), pWideChar(wValue));
+      Move(pchar(wValue)^, pchar(@Data[4+LanguageOffset])^, Length(wValue) * SizeOf(WideChar));
+//       StrLCopy(@(Data[4+LanguageOffset]), pChar(wValue), Length(wValue) * SizeOf(WideChar));
        Data[fSize-1] := #00;
        Data[fSize-2] := #00;
 
