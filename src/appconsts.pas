@@ -25,7 +25,7 @@ unit AppConsts;
 interface
 
 uses
-  Classes, SysUtils, LCLVersion;
+  Classes, SysUtils, LCLVersion, versionresource;
 
 var
    AppNameServerID :string  = 'ovoplayer';
@@ -82,7 +82,7 @@ Resourcestring
   rMultipleValue = '<Multiple Value>';
   rDragToChangePosition = 'Drag to change position';
 
-  rMatchingItems = '%0:d songs matching current filter (%1:s, %2:s)';
+  rMatchingItems = '%0:d songs matching current filter (total time %1:s, total size %2:s)';
 
   rLowPortWarning = 'ATTENTION! Setting a port number lower than 1024 may require'+sLineBreak+
                     'administrative rights on some OSes (e.g. Linux).';
