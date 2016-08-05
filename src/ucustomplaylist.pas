@@ -144,7 +144,7 @@ begin
         begin
           PlayListData := BackEnd.mediaLibrary.FilterInfo(PlayListBuilder.Filter);
           lbFilterResults.Caption:= Format(rMatchingItems,[PlayListData.Count,
-                                                          TimeToStr(PlayListData.TotalTime / MSecsPerDay),
+                                                          FormatDateTime('[hh]:mm:ss', PlayListData.TotalTime / MSecsPerDay,[fdoInterval]),
                                                           FormatByteString(PlayListData.TotalSize)]);
 
       end;
