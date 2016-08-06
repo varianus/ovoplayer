@@ -1,6 +1,6 @@
 unit playlistbuilder;
 
-{$mode objfpc}{$H+}
+{$mode DELPHI}{$H+}
 
 interface
 
@@ -53,9 +53,9 @@ type
     Property FieldID : integer read FFieldID write SetFieldID;
 
   end;
-  TIntPlayListBuilder = specialize TFPGObjectList<TFieldFilter>;
 
-  TPlayListBuilder = class (TIntPlayListBuilder)
+
+  TPlayListBuilder = class (TFPGObjectList<TFieldFilter>)
   private
     FName: string;
     FSongLimit: integer;
@@ -158,23 +158,10 @@ const
    (ID :16; FieldName : 'FileDate'; FieldLabel :RS_FileDate; Kind: EkDate)
    );
 
-Procedure SortFields;
-
 Function FindIndexByID(const ID: Integer): Integer;
 
 implementation
 
-function MyCompare (const Item1, Item2: integer): Integer;
-  begin
-    result := CompareText(FieldArray[item1].FieldLabel, FieldArray[item2].FieldLabel);
-  end;
-
-procedure SortFields;
-type
-  myArr = specialize TSortArray<FieldRec>;
-begin
-  myArr.Sort(FieldArray, @MyCompare);
-end;
 
 function FindIndexByID(const ID:Integer): Integer;
 var
@@ -341,11 +328,16 @@ end;
 function TFieldFilter.AsDate: TDate;
 var
   tmp : Integer;
+  dbl:double;
 begin
   if not TryStrToInt(FStringValue,tmp) then
      Result:=0
   else
-     Result := TDate(tmp);
+     begin
+        dbl := tmp;
+        Result := TDate(dbl);
+
+     end;
 end;
 
 function TFieldFilter.isExecutable: boolean;

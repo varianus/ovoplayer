@@ -38,18 +38,6 @@ function CompareBoolean (a, b: Boolean): Integer;
 procedure GetModuleByAddr(addr: pointer; var baseaddr: pointer; var filename: string);
 Function ProcessRunningByPID(Pid:DWORD):Boolean;
 
-type
-
-  { TSortArray }
-  TArrayCompareFunc = function(const Item1, Item2: Integer): Integer;
-
-  generic TSortArray<T> = class (TObject)
-  private
-     class procedure IntQuickSort(var Arr: Array of T; L, R: Longint;
-        Compare: TArrayCompareFunc);
-  public
-    Class Procedure Sort (var Arr: Array of T; Compare:TArrayCompareFunc);
-  end;
 
  type
   TByteStringFormat = (bsfDefault, bsfBytes, bsfKB, bsfMB, bsfGB, bsfTB);
@@ -82,6 +70,13 @@ begin
   Datetimetostring(result, fmt, Duration / MSecsPerDay);;
 
 end;
+
+function CompareBoolean (a, b: Boolean): Integer;
+const
+   BoolOrder: Array [False..True] Of Integer = (0,1); // o 1,0 se si desidera ordinare il contrario
+Begin
+   result := BoolOrder [a] - BoolOrder [b];
+End ;
 
 // code from David Heffernan, from http://stackoverflow.com/questions/30548940/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-delphi
 function FormatByteString(Bytes: UInt64; Format: TByteStringFormat = bsfDefault): string;
@@ -200,51 +195,6 @@ begin
   result := not alive;
 
 end;
-
-{ TSortArray }
-
-class procedure TSortArray.IntQuickSort(var Arr: Array of T; L, R: Longint;
-  Compare: TArrayCompareFunc);
-
-var
-  I, J, P : Longint;
-  Q : T;
-begin
- repeat
-   I := L;
-   J := R;
-   P :=  (L + R) div 2 ;
-   repeat
-     while Compare(P, i) > 0 do
-       I := I + 1;
-     while Compare(P, J) < 0 do
-       J := J - 1;
-     If I <= J then
-     begin
-       Q := Arr[I];
-       Arr[I] := Arr[J];
-       Arr[J] := Q;
-       I := I + 1;
-       J := J - 1;
-     end;
-   until I > J;
-   if L < J then
-     intQuickSort(Arr, L, J, Compare);
-   L := I;
- until I >= R;
-end;
-
-class procedure TSortArray.Sort(var Arr: array of T; Compare: TArrayCompareFunc);
-begin
-  IntQuickSort(Arr,low(arr), High(Arr), Compare);
-end;
-
-function CompareBoolean (a, b: Boolean): Integer;
-const
-   BoolOrder: Array [False..True] Of Integer = (0,1); // o 1,0 se si desidera ordinare il contrario
-Begin
-   result := BoolOrder [a] - BoolOrder [b];
-End ;
 
 {$i generalfuncimpl.inc}
 end.

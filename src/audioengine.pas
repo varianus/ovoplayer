@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {$I ovoplayer.inc}
 unit AudioEngine;
 
-{$mode objfpc}{$H+}
+{$MODE DELPHI}{$H+}
 
 interface
 
@@ -121,10 +121,8 @@ var
   EngineArray : array of RAudioEngine;
 
 implementation
-uses LazFileUtils, GeneralFunc, math;
+uses LazFileUtils, GeneralFunc, math, Generics.Collections, Generics.Defaults;
 
-Type
-  TEngineSorter = specialize TSortArray<RAudioEngine>;
 
 procedure RegisterEngineClass(const EngineClass: TAudioEngineClass;
                               const Priority: Integer;
@@ -169,23 +167,20 @@ begin
        end;
 end;
 
-function CompareEngine(const Item1, Item2: Integer): Integer;
+function CompareEngine(const Item1, Item2: RAudioEngine ): Integer;
   begin
-    result := CompareBoolean(EngineArray[item1].Failed,EngineArray[item2].Failed);
+    result := CompareBoolean(item1.Failed ,item2.Failed);
     if result = 0 then
-       result := CompareValue(EngineArray[item1].Priority,EngineArray[item2].Priority);
+       result := TCompare.Integer(item1.Priority,item2.Priority);
   end;
-
-procedure SortEngines;
-begin
-  TEngineSorter.Sort(EngineArray, @CompareEngine);
-end;
 
 function GetBestEngine: TAudioEngineClass;
 var
   i:integer;
 begin
-  SortEngines;
+
+  TArrayHelper<RAudioEngine>.Sort(EngineArray, TComparer<RAudioEngine>.Construct(@CompareEngine));
+
   result:=nil;
   for i := Low(EngineArray) to High(EngineArray) do
     if EngineArray[i].Engine.isAvalaible(nil) and not (EngineArray[i].Failed) then
@@ -215,16 +210,16 @@ end;
 
 procedure TAudioEngine.SetOnSongEnd(const AValue: TNotifyEvent);
 begin
-  if FOnSongEnd = AValue then
+  if @FOnSongEnd = @AValue then
     exit;
-  FOnSongEnd := AValue;
+  @FOnSongEnd := @AValue;
 end;
 
 procedure TAudioEngine.SetOnSongStart(const AValue: TNotifyEvent);
 begin
-  if FOnSongStart = AValue then
+  if @FOnSongStart = @AValue then
     exit;
-  FOnSongStart := AValue;
+  @FOnSongStart := @AValue;
 end;
 
 procedure TAudioEngine.SetPaused(const AValue: boolean);
