@@ -379,6 +379,7 @@ type
     fColumnsWidth : array of integer;
     RatingBack, RatingFront:TBitmap;
     Quitting: boolean;
+    LoadedPlaylist: boolean;
     TrayMenuActive:boolean;
     {$IFDEF MPRIS2}
     Mpris : TMpris2;
@@ -429,6 +430,8 @@ type
 
   public
     { public declarations }
+    procedure LoadLastPlaylist;
+
   end;
 
 var
@@ -1314,11 +1317,23 @@ begin
     end;
   {$ENDIF}
 
+  LoadedPlaylist:= False;
+  BackEnd.AutoSendPosEvents(True);
+  OnLoaded(self);
+
+end;
+
+Procedure TfMainForm.LoadLastPlaylist;
+begin
+
   try
     if FileExistsUTF8(Backend.Config.ConfigDir + LASTPLAYLISTNAME) then
        BackEnd.Manager.ImportFromXSPF(Backend.Config.ConfigDir + LASTPLAYLISTNAME, BackEnd.PlayList)
     else
        BackEnd.PlayList.clear;
+
+    OnLoaded(Self);
+
     if (BackEnd.Manager.SavedTime <> 0) and
        BackEnd.Config.PlayListParam.Restart and
        (BackEnd.PlayList.CurrentItem <> nil) then
@@ -1335,9 +1350,6 @@ begin
           BackEnd.PlayList.clear;
        end;
   end;
-
-  BackEnd.AutoSendPosEvents(True);
-  OnLoaded(self);
 
 
 end;
@@ -1413,6 +1425,12 @@ begin
        ShowMessage(rMissingConfig);
        ActShowPreferences.Execute;
      end;
+  if Not LoadedPlaylist then
+    begin
+      LoadedPlaylist:= true;
+      LoadLastPlaylist;
+    end;
+
 end;
 
 procedure TfMainForm.imgCoverDblClick(Sender: TObject);

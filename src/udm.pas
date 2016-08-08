@@ -26,9 +26,10 @@ interface
 
 uses
   Classes, SysUtils, LazFileUtils, ActnList, Controls, Dialogs, Forms, LResources,
+  singleinstance, AdvancedIPC, AdvancedSingleInstance,
   BaseTypes, CoreInterfaces,
   AudioEngine, LazUTF8,  LazLogger,
-  PlayListManager, MediaLibrary, FilesSupport, UniqueInstance;
+  PlayListManager, MediaLibrary, FilesSupport;
 
 type
 
@@ -68,7 +69,6 @@ type
     OpenDialogFiles: TOpenDialog;
     SaveDialogPlayList: TSaveDialog;
     SelectDirectoryDialog: TSelectDirectoryDialog;
-    UniqueInstanceI: TUniqueInstance;
     procedure actExitExecute(Sender: TObject);
     procedure actFastScanExecute(Sender: TObject);
     procedure actMuteExecute(Sender: TObject);
@@ -95,14 +95,17 @@ type
     procedure ApplicationPropertiesDropFiles(Sender: TObject;
       const FileNames: array of String);
     procedure ApplicationPropertiesException(Sender: TObject; E: Exception);
+    procedure ApplicationPropertiesIdle(Sender: TObject; var Done: Boolean);
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure SaveDialogPlaylistTypeChange(Sender: TObject);
-    procedure UniqueInstanceIOtherInstance(Sender: TObject; ParamCount: Integer;
-      Parameters: array of String);
+    procedure ServerReceivedParams(Sender: TBaseSingleInstance; aParams: TStringList
+      );
     // -- --
   private
     procedure DebugLnHook(Sender: TObject; S: string; var Handled: Boolean);
+    procedure ServerReceivedCustomRequest(Sender: TBaseSingleInstance;
+      MsgID: Integer; aMsgType: TMessageType; MsgData: TStream);
   public
 
   end;
@@ -122,25 +125,45 @@ var
   f: text;
 
 
-procedure TDM.DataModuleCreate(Sender: TObject);
-begin
-//  Application.OnException := @ApplicationPropertiesException;
+procedure TDM.ServerReceivedCustomRequest(
+  Sender: TBaseSingleInstance; MsgID: Integer; aMsgType: TMessageType;
+  MsgData: TStream);
+var
+  xData: string;
+  xStringStream: TStringStream;
+  Command: RExternalCommand;
 
-  UniqueInstanceI:= TUniqueInstance.Create(Self);
-  with UniqueInstanceI do
+begin
+  MsgData.Position := 0;
+  SetLength(xData, MsgData.Size div SizeOf(Char));
+  if MsgData.Size > 0 then
+   begin
+      MsgData.ReadBuffer(xData[1], MsgData.Size);
+      Command := SplitCommand(xdata);
+      BackEnd.HandleExternalCommand(Command);
+    end;
+end;
+
+procedure TDM.ServerReceivedParams(Sender: TBaseSingleInstance;
+  aParams: TStringList);
+var
+  I: Integer;
     begin
-      Identifier := AppNameServerID;
-      UpdateInterval := 500;
-      OnOtherInstance := @UniqueInstanceIOtherInstance;
-      Enabled := True;
-      Loaded;
+  Writeln('-----');
+  Writeln('Params:');
+  for I := 0 to aParams.Count-1 do
+    Writeln(aParams[I]);
+  Writeln('-----');
     end;
 
+procedure TDM.DataModuleCreate(Sender: TObject);
+begin
+  (Application.SingleInstance as TAdvancedSingleInstance).OnServerReceivedCustomRequest := @ServerReceivedCustomRequest;
 end;
 
 procedure TDM.DataModuleDestroy(Sender: TObject);
 begin
-  UniqueInstanceI.free;
+  //UniqueInstanceI.free;
 end;
 
 procedure TDM.SaveDialogPlaylistTypeChange(Sender: TObject);
@@ -153,22 +176,6 @@ begin
     3 : NewExt:='.m3u';
   end;
   ChangeFileExt(SaveDialogPlayList.FileName,'newExt');
-end;
-
-procedure TDM.UniqueInstanceIOtherInstance(Sender: TObject;
-  ParamCount: Integer; Parameters: array of String);
-var
-  i:integer;
-  idx: integer;
-  Command: RExternalCommand;
-begin
-  //
-  if ParamCount > 0 then
-    for i:= 0 to ParamCount - 1 do
-      begin
-        Command := SplitCommand(Parameters[i]);
-        BackEnd.HandleExternalCommand(Command);
-     end;
 end;
 
 procedure TDM.DebugLnHook(Sender: TObject; S: string; var Handled: Boolean);
@@ -416,6 +423,11 @@ begin
   Flush(F);
   CloseFile(F);
 
+end;
+
+procedure TDM.ApplicationPropertiesIdle(Sender: TObject; var Done: Boolean);
+begin
+  Application.SingleInstance.ServerCheckMessages;
 end;
 
 initialization

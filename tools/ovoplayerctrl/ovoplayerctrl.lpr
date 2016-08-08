@@ -31,12 +31,12 @@ uses
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
   {$ENDIF}{$ENDIF}
-  Classes, SysUtils, appconsts, netprotocol, CustApp,  lclproc,
+  Classes, SysUtils, appconsts, netprotocol, netsupport, CustApp,  lclproc,
   { you can add units after this }
   {$IFDEF CONSOLEHACK}
   windows,  JwaWinUser,
   {$ENDIF}
-   SimpleIPC;
+  singleinstance, AdvancedSingleInstance, AdvancedIPC;
 
 type
 
@@ -81,20 +81,25 @@ type
 {$ENDIF}
 
   var
-  BaseServerId:string = 'tuniqueinstance_';
-  AppNameServerID :string  = 'ovoplayer';
+  BaseServerId:string = 'SI_';
+  AppNameServerID :string  = 'ovoplayer_exe';
   AppVersion : string = {$I ..\..\src\version.inc};
 
 function TOvoPlayerCtrl.PostCommand(Category:string; Command:string;Parameter:string=''): Boolean;
+var
+  xstream: TstringStream;
+  Inst: TAdvancedSingleInstance;
 begin
-  with TSimpleIPCClient.Create(nil) do
+  inst := TAdvancedSingleInstance.Create(nil);
   try
-    ServerId := BaseServerId + AppNameServerID;
-    Result := ServerRunning;
+    Inst.ID := BaseServerId + AppNameServerID;
+
+    Result := inst.Start = siClient;
     if Result then
       begin
-        Active := True;
-        SendStringMessage(BuildCommand(Category, Command, Parameter, true));
+        xstream := TStringStream.Create(BuildCommand(Category, Command, Parameter, false));
+        inst.ClientPostCustomRequest(0, xstream);
+        xstream.free;
       end
     else
      begin
@@ -103,7 +108,7 @@ begin
        DoneConsole;
      end;
   finally
-    Free;
+    inst.Free;
   end;
 end;
 
@@ -297,4 +302,3 @@ begin
   Application.Run;
   Application.Free;
 end.
-

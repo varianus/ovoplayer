@@ -17,6 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 }
+{$DEFINE EXTRA}
 program ovoplayer;
 
 {$I ovoplayer.inc}
@@ -26,7 +27,7 @@ program ovoplayer;
 uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   cthreads, {$ENDIF} {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms,
+  Forms, AdvancedSingleInstance,
   // general functions
   AppConsts, GeneralFunc, decoupler, FilesSupport,
   CommonFunctions,
@@ -74,7 +75,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   Udm, uMain, uAbout, ulicense, uConfig, uOSD, uMiniPlayer, uSongInfo, uCover,
   lazlogger, customdrawndrawers, customdrawn_ovoplayer, DefaultTranslator,
   customdrawn, ucustomplaylist, ufrfield, playlistbuilder, netprotocol,
-  ImagesSupport, netsupport, guiconfig;
+  ImagesSupport, netsupport, guiconfig, singleinstance;
 
 {$R *.res}
 begin
@@ -85,13 +86,20 @@ begin
   // needed to output exception to a file
   Application.Flags := Application.Flags + [appNoExceptionMessages];
 
-  if not isAppRunning(Application) then
-   begin
-      Application.Title:='OvoPlayer';
-      Application.Initialize;
+  Application.SingleInstanceClass:= TAdvancedSingleInstance;
+  Application.SingleInstanceEnabled:= True;
+  Application.Title:='OvoPlayer';
+  Application.Initialize;
+ // WriteLn(Application.SingleInstance.StartResult);
+
+  if Application.SingleInstance.StartResult <> siClient then
+    begin
       Application.CreateForm(TDM, dm);
       Application.CreateForm(TfMainForm, fMainForm);
-      fMainForm.show;
       Application.Run;
+    end
+  else
+    begin
+     Application.Free;
    end;
 end.
