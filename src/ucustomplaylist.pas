@@ -1,6 +1,6 @@
 unit ucustomplaylist;
 
-{$mode delphi}{$H+}
+{$mode objfpc}{$H+}
 
 interface
 
@@ -12,7 +12,7 @@ uses
 type
 
   { TfCustomPlayList }
-  TEditorsContainer = TFPGObjectList<TfrField>;
+   TEditorsContainer = specialize TFPGObjectList<TfrField>;
 
   TfCustomPlayList = class(TForm)
     ApplicationProperties1: TApplicationProperties;
@@ -56,7 +56,7 @@ uses
 
 { TfCustomPlayList }
 
-function MyCompare (const Item1, Item2: FieldRec): Integer;
+function MyCompare (constref Item1, Item2: FieldRec): Integer;
 begin
   result := CompareText(Item1.FieldLabel, item2.FieldLabel);
 end;
@@ -70,7 +70,7 @@ begin
   // Sort field names based on label.
   // Doing it here should sort the already translated ones
 
-  TArrayHelper<FieldRec>.Sort(FieldArray, TComparer<FieldRec>.Construct(@myCompare));
+  specialize TArrayHelper<FieldRec>.Sort(FieldArray, specialize TComparer<FieldRec>.Construct(@myCompare));
 
   //Find at wich index is the title field, used as a default
   fDefaultIndex:=0;

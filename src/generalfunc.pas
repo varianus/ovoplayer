@@ -32,12 +32,11 @@ Function ShortestDurationFormat(const Duration:int64):string;
 Function isAppRunning(Application:TCustomApplication):Boolean;
 Function Restart(Application:TCustomApplication):Boolean;
 Function CheckRestarting(Application:TCustomApplication):Boolean;
-function CompareBoolean (a, b: Boolean): Integer;
 
 // Platform dependant function
 procedure GetModuleByAddr(addr: pointer; var baseaddr: pointer; var filename: string);
 Function ProcessRunningByPID(Pid:DWORD):Boolean;
-
+function CompareBoolean (a, b: Boolean): Integer;
 
  type
   TByteStringFormat = (bsfDefault, bsfBytes, bsfKB, bsfMB, bsfGB, bsfTB);

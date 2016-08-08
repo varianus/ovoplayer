@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {$I ovoplayer.inc}
 unit AudioEngine;
 
-{$MODE DELPHI}{$H+}
+{$MODE objfpc}{$H+}
 
 interface
 
@@ -167,7 +167,7 @@ begin
        end;
 end;
 
-function CompareEngine(const Item1, Item2: RAudioEngine ): Integer;
+function CompareEngine(constref Item1, Item2: RAudioEngine ): Integer;
   begin
     result := CompareBoolean(item1.Failed ,item2.Failed);
     if result = 0 then
@@ -179,7 +179,7 @@ var
   i:integer;
 begin
 
-  TArrayHelper<RAudioEngine>.Sort(EngineArray, TComparer<RAudioEngine>.Construct(@CompareEngine));
+  specialize TArrayHelper<RAudioEngine>.Sort(EngineArray, specialize TComparer<RAudioEngine>.Construct(@CompareEngine));
 
   result:=nil;
   for i := Low(EngineArray) to High(EngineArray) do
@@ -210,16 +210,16 @@ end;
 
 procedure TAudioEngine.SetOnSongEnd(const AValue: TNotifyEvent);
 begin
-  if @FOnSongEnd = @AValue then
+  if FOnSongEnd = AValue then
     exit;
-  @FOnSongEnd := @AValue;
+  FOnSongEnd := AValue;
 end;
 
 procedure TAudioEngine.SetOnSongStart(const AValue: TNotifyEvent);
 begin
-  if @FOnSongStart = @AValue then
+  if FOnSongStart = AValue then
     exit;
-  @FOnSongStart := @AValue;
+  FOnSongStart := AValue;
 end;
 
 procedure TAudioEngine.SetPaused(const AValue: boolean);
