@@ -38,6 +38,7 @@ uses
   {$IFDEF UOS} UOS, uos_libsndfile, uos_mpg123, uos_portaudio, audioengine_UOS,{$ENDIF}
   {$IFDEF FFMPEG} ffmpeg, audioengine_FFMPEG,{$ENDIF}
   {$IFDEF LIBMPV} libmpv, audioengine_libmpv,{$ENDIF}
+  extctrls,
 
   PlayList, PlayListManager, MediaLibrary, basetag, CustomSong,
   Config, NullInterfacedObject,
@@ -60,7 +61,7 @@ type
 
     FOnSaveInterfaceState: TNotifyEvent;
     ObserverList : TInterfaceList;
-    IntTimer: TFPTimer;
+    IntTimer: TTimer;
 
     procedure AudioEngineSongEnd(Sender: TObject);
     procedure PlaylistOnSongAdd(Sender: Tobject; Index: Integer; ASong: TCustomSong);
@@ -245,7 +246,8 @@ destructor TBackEnd.Destroy;
 begin
   if Assigned(IntTimer) then
     begin
-      IntTimer.StopTimer;
+   //   IntTimer.StopTimer;
+      IntTimer.Enabled:= false;
       IntTimer.Free;
     end;
   try
@@ -676,18 +678,20 @@ begin
     begin
       if not Assigned(IntTimer) then
         begin
-          IntTimer := TFPTimer.Create(nil);
-          IntTimer.Interval:= 665;
+          IntTimer := TTimer.Create(nil);
+          IntTimer.Interval:= 500;
           IntTimer.OnTimer:=@TimerEvent;
           IntTimer.Enabled:=true;
         end;
-      IntTimer.StartTimer;
+//      IntTimer.StartTimer;
+        IntTimer.Enabled:=true;
     end
   Else
     begin
       if Assigned(IntTimer) then
         begin
-          IntTimer.StopTimer;
+//          IntTimer.StopTimer;
+            IntTimer.Enabled:=False;
         end;
     end;
 
