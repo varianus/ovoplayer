@@ -33,8 +33,14 @@ msgstr ""
 msgid "Failed:"
 msgstr ""
 
+#: appconsts.rlowportwarning
+msgid ""
+"ATTENTION! Setting a port number lower than 1024 may require\n"
+"administrative rights on some OSes (e.g. Linux).\n"
+msgstr ""
+
 #: appconsts.rmatchingitems
-msgid "%0:d songs matching current filter (%1:s, %2:s)"
+msgid "%0:d songs matching current filter (total time %1:s, total size %2:s)"
 msgstr ""
 
 #: appconsts.rmissing
@@ -150,6 +156,10 @@ msgctxt "playlistbuilder.rs_added"
 msgid "Date Added"
 msgstr ""
 
+#: playlistbuilder.rs_after
+msgid "after"
+msgstr ""
+
 #: playlistbuilder.rs_album
 msgctxt "playlistbuilder.rs_album"
 msgid "Album"
@@ -163,6 +173,14 @@ msgstr ""
 #: playlistbuilder.rs_artist
 msgctxt "playlistbuilder.rs_artist"
 msgid "Artist"
+msgstr ""
+
+#: playlistbuilder.rs_before
+msgid "before"
+msgstr ""
+
+#: playlistbuilder.rs_between
+msgid "between"
 msgstr ""
 
 #: playlistbuilder.rs_biggerthan
@@ -203,6 +221,10 @@ msgctxt "playlistbuilder.rs_genre"
 msgid "Genre"
 msgstr ""
 
+#: playlistbuilder.rs_inthelast
+msgid "in the last"
+msgstr ""
+
 #: playlistbuilder.rs_is
 msgctxt "playlistbuilder.rs_is"
 msgid "is"
@@ -237,8 +259,20 @@ msgstr ""
 msgid "not equal to"
 msgstr ""
 
+#: playlistbuilder.rs_notinthelast
+msgid "not in the last"
+msgstr ""
+
+#: playlistbuilder.rs_noton
+msgid "not on"
+msgstr ""
+
 #: playlistbuilder.rs_notrated
 msgid "not rated"
+msgstr ""
+
+#: playlistbuilder.rs_on
+msgid "on"
 msgstr ""
 
 #: playlistbuilder.rs_playcount
@@ -593,11 +627,6 @@ msgstr ""
 msgid "&License"
 msgstr ""
 
-#: tfabout.caption
-msgctxt "TFABOUT.CAPTION"
-msgid "About"
-msgstr ""
-
 #: tfabout.label1.caption
 msgctxt "tfabout.label1.caption"
 msgid "OvoPlayer"
@@ -641,7 +670,7 @@ msgid "SVN rev:"
 msgstr ""
 
 #: tfabout.lhomepage.caption
-msgid "http://code.google.com/p/ovoplayer/"
+msgid "http://ovoplayer.altervista.org/"
 msgstr ""
 
 #: tfabout.lversion.caption
@@ -663,10 +692,6 @@ msgstr ""
 
 #: tfconfig.brestart.caption
 msgid "Restart Now"
-msgstr ""
-
-#: tfconfig.caption
-msgid "Config"
 msgstr ""
 
 #: tfconfig.cbcapturemmkeys.caption
@@ -723,6 +748,10 @@ msgstr ""
 
 #: tfconfig.lbrestart.caption
 msgid "A restart is required for this change to take effect."
+msgstr ""
+
+#: tfconfig.lbwarning.caption
+msgid "                                            "
 msgstr ""
 
 #: tfconfig.rgaudioengine.caption
@@ -785,27 +814,27 @@ msgstr ""
 msgid "OSD"
 msgstr ""
 
-#: tfcover.btnzoomin.caption
-msgctxt "TFCOVER.BTNZOOMIN.CAPTION"
+#: tfcover.btnfittoscreen.hint
+msgid "Fit To Screen"
+msgstr ""
+
+#: tfcover.btnsaveas.hint
+msgid "Save as..."
+msgstr ""
+
+#: tfcover.btnzoomin.hint
+msgctxt "TFCOVER.BTNZOOMIN.HINT"
 msgid "Zoom +"
 msgstr ""
 
-#: tfcover.btnzoomout.caption
-msgctxt "TFCOVER.BTNZOOMOUT.CAPTION"
+#: tfcover.btnzoomout.hint
+msgctxt "TFCOVER.BTNZOOMOUT.HINT"
 msgid "Zoom -"
 msgstr ""
 
-#: tfcover.btnzoomreset.caption
-msgctxt "TFCOVER.BTNZOOMRESET.CAPTION"
+#: tfcover.btnzoomreset.hint
+msgctxt "TFCOVER.BTNZOOMRESET.HINT"
 msgid "Original size"
-msgstr ""
-
-#: tfcover.caption
-msgid "Cover Viewer"
-msgstr ""
-
-#: tfcustomplaylist.caption
-msgid "Custom Playlist "
 msgstr ""
 
 #: tfcustomplaylist.cbsortdirection.caption
@@ -901,11 +930,6 @@ msgctxt "TFMAINFORM.BTNUPDIR.CAPTION"
 msgid "Up"
 msgstr ""
 
-#: tfmainform.caption
-msgctxt "TFMAINFORM.CAPTION"
-msgid "OvoPlayer"
-msgstr ""
-
 #: tfmainform.cbgroupby.hint
 msgid "Group song"
 msgstr ""
@@ -933,28 +957,8 @@ msgctxt "TFMAINFORM.LBTIME.CAPTION"
 msgid "00:00:00"
 msgstr ""
 
-#: tfmainform.menuitem13.caption
-msgctxt "TFMAINFORM.MENUITEM13.CAPTION"
-msgid "-"
-msgstr ""
-
 #: tfmainform.menuitem14.caption
 msgid "View"
-msgstr ""
-
-#: tfmainform.menuitem15.caption
-msgctxt "TFMAINFORM.MENUITEM15.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tfmainform.menuitem18.caption
-msgctxt "TFMAINFORM.MENUITEM18.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tfmainform.menuitem20.caption
-msgctxt "TFMAINFORM.MENUITEM20.CAPTION"
-msgid "-"
 msgstr ""
 
 #: tfmainform.menuitem25.caption
@@ -980,28 +984,8 @@ msgctxt "TFMAINFORM.MENUITEM29.CAPTION"
 msgid "Duration"
 msgstr ""
 
-#: tfmainform.menuitem3.caption
-msgctxt "TFMAINFORM.MENUITEM3.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tfmainform.menuitem34.caption
-msgctxt "TFMAINFORM.MENUITEM34.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tfmainform.menuitem38.caption
-msgctxt "TFMAINFORM.MENUITEM38.CAPTION"
-msgid "-"
-msgstr ""
-
 #: tfmainform.menuitem42.caption
 msgid "Repeat Mode"
-msgstr ""
-
-#: tfmainform.menuitem47.caption
-msgctxt "TFMAINFORM.MENUITEM47.CAPTION"
-msgid "-"
 msgstr ""
 
 #: tfmainform.menuitem49.caption
@@ -1011,11 +995,6 @@ msgstr ""
 
 #: tfmainform.menuitem50.caption
 msgid "*"
-msgstr ""
-
-#: tfmainform.menuitem51.caption
-msgctxt "TFMAINFORM.MENUITEM51.CAPTION"
-msgid "-"
 msgstr ""
 
 #: tfmainform.menuitem52.caption
@@ -1038,11 +1017,6 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: tfmainform.menuitem58.caption
-msgctxt "TFMAINFORM.MENUITEM58.CAPTION"
-msgid "-"
-msgstr ""
-
 #: tfmainform.menuitem59.caption
 msgctxt "TFMAINFORM.MENUITEM59.CAPTION"
 msgid "Enqueue"
@@ -1053,23 +1027,8 @@ msgctxt "TFMAINFORM.MENUITEM60.CAPTION"
 msgid "Play"
 msgstr ""
 
-#: tfmainform.menuitem64.caption
-msgctxt "TFMAINFORM.MENUITEM64.CAPTION"
-msgid "-"
-msgstr ""
-
-#: tfmainform.menuitem65.caption
-msgctxt "TFMAINFORM.MENUITEM65.CAPTION"
-msgid "-"
-msgstr ""
-
 #: tfmainform.menuitem66.caption
 msgid "Edit"
-msgstr ""
-
-#: tfmainform.menuitem9.caption
-msgctxt "TFMAINFORM.MENUITEM9.CAPTION"
-msgid "-"
 msgstr ""
 
 #: tfmainform.mnucollection.caption
@@ -1141,9 +1100,66 @@ msgstr ""
 msgid "Restore"
 msgstr ""
 
-#: tfmainform.mnuseparator.caption
-msgctxt "TFMAINFORM.MNUSEPARATOR.CAPTION"
-msgid "-"
+#: tfmainform.sgplaylist.columns[0].title.caption
+msgid "#"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[10].title.caption
+msgctxt "tfmainform.sgplaylist.columns[10].title.caption"
+msgid "Rating"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[1].title.caption
+msgctxt "tfmainform.sgplaylist.columns[1].title.caption"
+msgid "Title"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[2].title.caption
+msgctxt "tfmainform.sgplaylist.columns[2].title.caption"
+msgid "Album"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[3].title.caption
+msgctxt "tfmainform.sgplaylist.columns[3].title.caption"
+msgid "Artist"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[4].title.caption
+msgid "Time"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[5].title.caption
+msgctxt "tfmainform.sgplaylist.columns[5].title.caption"
+msgid "Track"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[6].title.caption
+msgctxt "tfmainform.sgplaylist.columns[6].title.caption"
+msgid "Genre"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[7].title.caption
+msgctxt "tfmainform.sgplaylist.columns[7].title.caption"
+msgid "Year"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[8].title.caption
+msgctxt "tfmainform.sgplaylist.columns[8].title.caption"
+msgid "Album Artist"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[9].title.caption
+msgid "FileName"
+msgstr ""
+
+#: tfmainform.sgstats.columns[0].title.caption
+msgctxt "tfmainform.sgstats.columns[0].title.caption"
+msgid "Title"
+msgstr ""
+
+#: tfmainform.sgstats.columns[1].title.caption
+msgctxt "tfmainform.sgstats.columns[1].title.caption"
+msgid "Title"
 msgstr ""
 
 #: tfmainform.tbrepeat.caption
@@ -1193,6 +1209,11 @@ msgstr ""
 msgid "0"
 msgstr ""
 
+#: tfrfield.testdate.text
+msgctxt "TFRFIELD.TESTDATE.TEXT"
+msgid "equal to"
+msgstr ""
+
 #: tfrfield.testnumber.text
 msgctxt "TFRFIELD.TESTNUMBER.TEXT"
 msgid "equal to"
@@ -1224,10 +1245,6 @@ msgstr ""
 
 #: tfsonginfo.buttonpanel1.okbutton.caption
 msgid "Save"
-msgstr ""
-
-#: tfsonginfo.caption
-msgid "Song Information"
 msgstr ""
 
 #: tfsonginfo.groupbox1.caption
