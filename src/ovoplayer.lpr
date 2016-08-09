@@ -27,7 +27,7 @@ program ovoplayer;
 uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   cthreads, {$ENDIF} {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, AdvancedSingleInstance,
+  Forms, singleinstance,
   // general functions
   AppConsts, GeneralFunc, decoupler, FilesSupport,
   CommonFunctions,
@@ -38,7 +38,6 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   ExtendedInfo, MediaLibrary,
   MultimediaKeys,  Config,
   BaseTypes, coreinterfaces, GUIBackEnd,
-  UniqueInstanceRaw,
 
   // Audio Engines
   audioengine, audioengine_dummy, AudioEngine_MPlayer,
@@ -75,7 +74,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   Udm, uMain, uAbout, ulicense, uConfig, uOSD, uMiniPlayer, uSongInfo, uCover,
   lazlogger, customdrawndrawers, customdrawn_ovoplayer, DefaultTranslator,
   customdrawn, ucustomplaylist, ufrfield, playlistbuilder, netprotocol,
-  ImagesSupport, netsupport, guiconfig, singleinstance;
+  ImagesSupport, netsupport, guiconfig, SimpleSingleInstance;
 
 {$R *.res}
 begin
@@ -86,10 +85,12 @@ begin
   // needed to output exception to a file
   Application.Flags := Application.Flags + [appNoExceptionMessages];
 
-  Application.SingleInstanceClass:= TAdvancedSingleInstance;
+  Application.SingleInstanceClass:= DefaultSingleInstanceClass;
   Application.SingleInstanceEnabled:= True;
   Application.Title:='OvoPlayer';
+
   Application.Initialize;
+
  // WriteLn(Application.SingleInstance.StartResult);
 
   if Application.SingleInstance.StartResult <> siClient then

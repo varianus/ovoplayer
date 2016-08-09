@@ -47,8 +47,9 @@ msgstr "Fallite:"
 msgid ""
 "ATTENTION! Setting a port number lower than 1024 may require\n"
 "administrative rights on some OSes (e.g. Linux).\n"
-msgstr "ATTENZIONE! Impostare una porta minore di 1024 può \n"
-"richiedere i diritti di amministratore in alcuni S.O. ( ad es. Linux)"
+msgstr ""
+"ATTENZIONE! Impostare una porta minore di 1024 può \n"
+"richiedere i diritti di amministratore in alcuni S.O. ( ad es. Linux)\n"
 
 #: appconsts.rmatchingitems
 #, fuzzy
@@ -321,6 +322,30 @@ msgstr "Testo Traccia"
 msgctxt "playlistbuilder.rs_year"
 msgid "Year"
 msgstr "Anno"
+
+#: simplesingleinstance.serrsetsingleinstanceglobalstarted
+msgid "You cannot change the single instance global property when it's been started."
+msgstr ""
+
+#: simplesingleinstance.serrsetsingleinstanceidstarted
+msgid "You cannot change the single instance ID when it's been started."
+msgstr ""
+
+#: simplesingleinstance.serrsingleinstancenotclient
+msgid "Current instance is not a client."
+msgstr ""
+
+#: simplesingleinstance.serrsingleinstancenotserver
+msgid "Current instance is not a server."
+msgstr ""
+
+#: simplesingleinstance.serrsingleinstancestartresultnotavailable
+msgid "Single instance hasn't been started yet."
+msgstr ""
+
+#: simplesingleinstance.serrstartsingleinstancestarted
+msgid "You cannot start single instance when it's been already started."
+msgstr ""
 
 #: tbackend.actexit.caption
 msgctxt "tbackend.actexit.caption"

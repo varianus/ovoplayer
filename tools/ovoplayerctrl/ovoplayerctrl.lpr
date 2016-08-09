@@ -36,7 +36,7 @@ uses
   {$IFDEF CONSOLEHACK}
   windows,  JwaWinUser,
   {$ENDIF}
-  singleinstance, AdvancedSingleInstance, AdvancedIPC;
+  singleinstance, SimpleSingleInstance;
 
 type
 
@@ -87,19 +87,16 @@ type
 
 function TOvoPlayerCtrl.PostCommand(Category:string; Command:string;Parameter:string=''): Boolean;
 var
-  xstream: TstringStream;
-  Inst: TAdvancedSingleInstance;
+  Inst: TSimpleSingleInstance;
 begin
-  inst := TAdvancedSingleInstance.Create(nil);
+  inst := TSimpleSingleInstance.Create(nil);
   try
     Inst.ID := BaseServerId + AppNameServerID;
 
     Result := inst.Start = siClient;
     if Result then
       begin
-        xstream := TStringStream.Create(BuildCommand(Category, Command, Parameter, false));
-        inst.ClientPostCustomRequest(0, xstream);
-        xstream.free;
+        inst.ClientPostString(BuildCommand(Category, Command, Parameter, false));
       end
     else
      begin

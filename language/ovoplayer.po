@@ -309,6 +309,30 @@ msgctxt "playlistbuilder.rs_year"
 msgid "Year"
 msgstr ""
 
+#: simplesingleinstance.serrsetsingleinstanceglobalstarted
+msgid "You cannot change the single instance global property when it's been started."
+msgstr ""
+
+#: simplesingleinstance.serrsetsingleinstanceidstarted
+msgid "You cannot change the single instance ID when it's been started."
+msgstr ""
+
+#: simplesingleinstance.serrsingleinstancenotclient
+msgid "Current instance is not a client."
+msgstr ""
+
+#: simplesingleinstance.serrsingleinstancenotserver
+msgid "Current instance is not a server."
+msgstr ""
+
+#: simplesingleinstance.serrsingleinstancestartresultnotavailable
+msgid "Single instance hasn't been started yet."
+msgstr ""
+
+#: simplesingleinstance.serrstartsingleinstancestarted
+msgid "You cannot start single instance when it's been already started."
+msgstr ""
+
 #: tbackend.actexit.caption
 msgctxt "tbackend.actexit.caption"
 msgid "Quit"

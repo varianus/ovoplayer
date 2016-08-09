@@ -26,7 +26,7 @@ interface
 
 uses
   Classes, SysUtils, LazFileUtils, ActnList, Controls, Dialogs, Forms, LResources,
-  singleinstance, AdvancedIPC, AdvancedSingleInstance,
+  singleinstance,
   BaseTypes, CoreInterfaces,
   AudioEngine, LazUTF8,  LazLogger,
   PlayListManager, MediaLibrary, FilesSupport;
@@ -99,13 +99,10 @@ type
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
     procedure SaveDialogPlaylistTypeChange(Sender: TObject);
-    procedure ServerReceivedParams(Sender: TBaseSingleInstance; aParams: TStringList
-      );
+    procedure ServerReceivedParams(Sender: TBaseSingleInstance; aParams: TStringList );
     // -- --
   private
     procedure DebugLnHook(Sender: TObject; S: string; var Handled: Boolean);
-    procedure ServerReceivedCustomRequest(Sender: TBaseSingleInstance;
-      MsgID: Integer; aMsgType: TMessageType; MsgData: TStream);
   public
 
   end;
@@ -124,46 +121,27 @@ uses lclproc, strutils, AudioTag, AppConsts, GeneralFunc, GUIBackEnd,
 var
   f: text;
 
-
-procedure TDM.ServerReceivedCustomRequest(
-  Sender: TBaseSingleInstance; MsgID: Integer; aMsgType: TMessageType;
-  MsgData: TStream);
-var
-  xData: string;
-  xStringStream: TStringStream;
-  Command: RExternalCommand;
-
-begin
-  MsgData.Position := 0;
-  SetLength(xData, MsgData.Size div SizeOf(Char));
-  if MsgData.Size > 0 then
-   begin
-      MsgData.ReadBuffer(xData[1], MsgData.Size);
-      Command := SplitCommand(xdata);
-      BackEnd.HandleExternalCommand(Command);
-    end;
-end;
-
 procedure TDM.ServerReceivedParams(Sender: TBaseSingleInstance;
   aParams: TStringList);
 var
   I: Integer;
-    begin
-  Writeln('-----');
-  Writeln('Params:');
+  Command: RExternalCommand;
+begin
   for I := 0 to aParams.Count-1 do
-    Writeln(aParams[I]);
-  Writeln('-----');
+    begin
+      Command := SplitCommand(aParams[i]);
+      BackEnd.HandleExternalCommand(Command);
     end;
+end;
 
 procedure TDM.DataModuleCreate(Sender: TObject);
 begin
-  (Application.SingleInstance as TAdvancedSingleInstance).OnServerReceivedCustomRequest := @ServerReceivedCustomRequest;
+  Application.SingleInstance.OnServerReceivedParams := @ServerReceivedParams;
 end;
 
 procedure TDM.DataModuleDestroy(Sender: TObject);
 begin
-  //UniqueInstanceI.free;
+  Application.SingleInstance.OnServerReceivedParams:= nil;
 end;
 
 procedure TDM.SaveDialogPlaylistTypeChange(Sender: TObject);
