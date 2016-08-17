@@ -264,7 +264,8 @@ begin
   BackEnd := TMpris2(user_data).fBackEnd;
   message_type := dbus_message_get_type(message_);
   s_val := dbus_message_get_path(message_);
-  if (strcomp(dbus_message_get_path(message_), path1) = 0) then
+  if (strcomp(dbus_message_get_path(message_), path1) = 0) or
+     (strcomp(dbus_message_get_path(message_), '/') = 0) then
     begin
     //            gm_log(verbose, G_LOG_LEVEL_DEBUG, 'Path matched %s', dbus_message_get_path(message_));
 
