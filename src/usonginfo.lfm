@@ -12,6 +12,7 @@ object fSongInfo: TfSongInfo
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
+  LCLVersion = '1.7'
   Visible = False
   object pcSongInfo: TPageControl
     Left = 168
@@ -24,8 +25,8 @@ object fSongInfo: TfSongInfo
     TabOrder = 0
     object tsTags: TTabSheet
       Caption = 'Tags'
-      ClientHeight = 322
-      ClientWidth = 585
+      ClientHeight = 329
+      ClientWidth = 583
       object laArtist: TLabel
         Left = 0
         Height = 15
@@ -41,7 +42,7 @@ object fSongInfo: TfSongInfo
       end
       object edArtist: TEdit
         Left = 98
-        Height = 27
+        Height = 23
         Top = 43
         Width = 384
         OnChange = edArtistChange
@@ -62,7 +63,7 @@ object fSongInfo: TfSongInfo
       end
       object edAlbum: TEdit
         Left = 98
-        Height = 27
+        Height = 23
         Top = 74
         Width = 384
         OnChange = edAlbumChange
@@ -83,7 +84,7 @@ object fSongInfo: TfSongInfo
       end
       object edTitle: TEdit
         Left = 98
-        Height = 27
+        Height = 23
         Top = 9
         Width = 384
         OnChange = edTitleChange
@@ -104,7 +105,7 @@ object fSongInfo: TfSongInfo
       end
       object edAlbumArtist: TEdit
         Left = 98
-        Height = 27
+        Height = 23
         Top = 107
         Width = 384
         OnChange = edAlbumArtistChange
@@ -172,7 +173,7 @@ object fSongInfo: TfSongInfo
       end
       object edTrack: TEdit
         Left = 381
-        Height = 27
+        Height = 23
         Top = 171
         Width = 101
         OnChange = edTrackChange
@@ -180,7 +181,7 @@ object fSongInfo: TfSongInfo
       end
       object edYear: TEdit
         Left = 98
-        Height = 27
+        Height = 23
         Top = 171
         Width = 101
         OnChange = edYearChange
@@ -188,12 +189,12 @@ object fSongInfo: TfSongInfo
       end
       object edGenre: TComboBox
         Left = 98
-        Height = 27
+        Height = 23
         Top = 139
         Width = 384
         AutoComplete = True
         AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
-        ItemHeight = 0
+        ItemHeight = 15
         OnChange = edGenreChange
         Sorted = True
         TabOrder = 7
@@ -336,7 +337,7 @@ object fSongInfo: TfSongInfo
         Top = 33
         Width = 280
         Caption = 'Library'
-        ClientHeight = 141
+        ClientHeight = 140
         ClientWidth = 276
         TabOrder = 0
         object Label16: TLabel
@@ -431,7 +432,6 @@ object fSongInfo: TfSongInfo
     ScrollWidth = 166
     ShowHint = True
     TabOrder = 1
-    TopIndex = -1
   end
   object pnlMoveSelection: TPanel
     Left = 0

@@ -1867,6 +1867,7 @@ object DM: TDM
   end
   object ApplicationProperties: TApplicationProperties
     OnException = ApplicationPropertiesException
+    OnIdle = ApplicationPropertiesIdle
     OnDropFiles = ApplicationPropertiesDropFiles
     left = 359
     top = 144

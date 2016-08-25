@@ -1,0 +1,6 @@
+{"version":1,"strings":[
+{"hash":146268527,"name":"tfrfield.testdate.text","sourcebytes":[101,113,117,97,108,32,116,111],"value":"equal to"},
+{"hash":1795,"name":"tfrfield.testtext.text","sourcebytes":[105,115],"value":"is"},
+{"hash":146268527,"name":"tfrfield.testnumber.text","sourcebytes":[101,113,117,97,108,32,116,111],"value":"equal to"},
+{"hash":146268527,"name":"tfrfield.testrating.text","sourcebytes":[101,113,117,97,108,32,116,111],"value":"equal to"}
+]}

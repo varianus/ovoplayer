@@ -1,0 +1,6 @@
+{"version":1,"strings":[
+{"hash":346165,"name":"tfcustomplaylist.edtplaylistname.editlabel.caption","sourcebytes":[78,97,109,101],"value":"Name"},
+{"hash":67512848,"name":"tfcustomplaylist.cklimit.caption","sourcebytes":[76,105,109,105,116,32,116,111,32],"value":"Limit to "},
+{"hash":174679753,"name":"tfcustomplaylist.lbsort.caption","sourcebytes":[83,111,114,116,32,98,121],"value":"Sort by"},
+{"hash":129122834,"name":"tfcustomplaylist.cbsortdirection.caption","sourcebytes":[105,110,32,97,115,99,101,110,100,105,110,103,32,111,114,100,101,114],"value":"in ascending order"}
+]}

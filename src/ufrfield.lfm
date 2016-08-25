@@ -6,8 +6,6 @@ object frField: TfrField
   ClientHeight = 32
   ClientWidth = 579
   TabOrder = 0
-  DesignLeft = 2115
-  DesignTop = 517
   object bMinus: TBitBtn
     Left = 548
     Height = 32
@@ -101,8 +99,6 @@ object frField: TfrField
         Top = 4
         Width = 128
         CalendarDisplaySettings = [dsShowHeadings, dsShowDayNames]
-        OKCaption = 'OK'
-        CancelCaption = 'Cancel'
         DateOrder = doNone
         ButtonWidth = 23
         BorderSpacing.Left = 3

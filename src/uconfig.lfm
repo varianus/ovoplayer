@@ -10,15 +10,16 @@ object fConfig: TfConfig
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
+  LCLVersion = '1.7'
   Visible = False
   object GroupBox1: TGroupBox
     Left = 0
-    Height = 601
+    Height = 449
     Top = 0
     Width = 153
     Align = alLeft
     Caption = 'Categories'
-    ClientHeight = 581
+    ClientHeight = 429
     ClientWidth = 149
     Color = clWindow
     ParentColor = False
@@ -83,7 +84,7 @@ object fConfig: TfConfig
     object pnlRestart: TPanel
       Left = 1
       Height = 101
-      Top = 479
+      Top = 327
       Width = 147
       Align = alBottom
       BorderSpacing.Around = 1
@@ -136,8 +137,8 @@ object fConfig: TfConfig
   object ButtonPanel: TButtonPanel
     Left = 6
     Height = 48
-    Top = 607
-    Width = 770
+    Top = 455
+    Width = 690
     AutoSize = False
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
@@ -155,9 +156,9 @@ object fConfig: TfConfig
   end
   object pcConfig: TPageControl
     Left = 153
-    Height = 601
+    Height = 449
     Top = 0
-    Width = 629
+    Width = 549
     ActivePage = tsNetRemote
     Align = alClient
     TabIndex = 4
@@ -475,8 +476,8 @@ object fConfig: TfConfig
     end
     object tsNetRemote: TTabSheet
       Caption = 'NetRemote'
-      ClientHeight = 573
-      ClientWidth = 621
+      ClientHeight = 421
+      ClientWidth = 541
       OnShow = tsNetRemoteShow
       object cbNetRemote: TCheckBox
         Left = 8

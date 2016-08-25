@@ -1,0 +1,7 @@
+{"version":1,"strings":[
+{"hash":102129451,"name":"tfcover.btnzoomin.hint","sourcebytes":[90,111,111,109,32,43],"value":"Zoom +"},
+{"hash":102129453,"name":"tfcover.btnzoomout.hint","sourcebytes":[90,111,111,109,32,45],"value":"Zoom -"},
+{"hash":23626005,"name":"tfcover.btnzoomreset.hint","sourcebytes":[79,114,105,103,105,110,97,108,32,115,105,122,101],"value":"Original size"},
+{"hash":124639694,"name":"tfcover.btnsaveas.hint","sourcebytes":[83,97,118,101,32,97,115,46,46,46],"value":"Save as..."},
+{"hash":144494830,"name":"tfcover.btnfittoscreen.hint","sourcebytes":[70,105,116,32,84,111,32,83,99,114,101,101,110],"value":"Fit To Screen"}
+]}
