@@ -6,7 +6,7 @@
 
 Ovoplayer is a free multi-platform music manager and player.
 
-Windows installer and Debian packages are avalaible [here](http://ovoplayer.altervista.org/downloads.html)
+Windows installer and Debian packages are avalaible [here](http://ovoplayer.altervista.org/downloads)
 
 ### Features
 *   **Play music**
