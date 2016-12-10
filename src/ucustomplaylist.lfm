@@ -22,7 +22,7 @@ object fCustomPlayList: TfCustomPlayList
     TabOrder = 0
     object edtPlayListName: TLabeledEdit
       Left = 80
-      Height = 23
+      Height = 27
       Top = 16
       Width = 456
       EditLabel.AnchorSideTop.Control = edtPlayListName
@@ -30,10 +30,10 @@ object fCustomPlayList: TfCustomPlayList
       EditLabel.AnchorSideRight.Control = edtPlayListName
       EditLabel.AnchorSideBottom.Control = edtPlayListName
       EditLabel.AnchorSideBottom.Side = asrBottom
-      EditLabel.Left = 45
-      EditLabel.Height = 15
-      EditLabel.Top = 20
-      EditLabel.Width = 32
+      EditLabel.Left = 43
+      EditLabel.Height = 17
+      EditLabel.Top = 21
+      EditLabel.Width = 34
       EditLabel.Caption = 'Name'
       EditLabel.ParentColor = False
       LabelPosition = lpLeft
@@ -42,8 +42,8 @@ object fCustomPlayList: TfCustomPlayList
   end
   object ButtonPanel1: TButtonPanel
     Left = 6
-    Height = 34
-    Top = 481
+    Height = 35
+    Top = 480
     Width = 628
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
@@ -59,7 +59,7 @@ object fCustomPlayList: TfCustomPlayList
   end
   object sbFieldContainer: TScrollBox
     Left = 0
-    Height = 324
+    Height = 323
     Top = 72
     Width = 640
     HorzScrollBar.Page = 1
@@ -70,7 +70,7 @@ object fCustomPlayList: TfCustomPlayList
   object Panel2: TPanel
     Left = 0
     Height = 79
-    Top = 396
+    Top = 395
     Width = 640
     Align = alBottom
     Anchors = [akLeft]
@@ -125,9 +125,9 @@ object fCustomPlayList: TfCustomPlayList
     object ckLimit: TCheckBox
       AnchorSideRight.Control = seLimits
       Left = 412
-      Height = 19
+      Height = 21
       Top = 14
-      Width = 64
+      Width = 67
       Caption = 'Limit to '
       Checked = True
       Color = clDefault
@@ -139,8 +139,8 @@ object fCustomPlayList: TfCustomPlayList
       AnchorSideTop.Control = ckLimit
       AnchorSideTop.Side = asrCenter
       Left = 484
-      Height = 23
-      Top = 12
+      Height = 27
+      Top = 11
       Width = 90
       MaxValue = 99999
       MinValue = 1
@@ -156,26 +156,26 @@ object fCustomPlayList: TfCustomPlayList
     end
     object cbFieldName: TComboBox
       Left = 80
-      Height = 23
+      Height = 29
       Top = 9
       Width = 128
-      ItemHeight = 15
+      ItemHeight = 0
       Style = csDropDownList
       TabOrder = 3
     end
     object lbSort: TLabel
       Left = 24
-      Height = 15
+      Height = 17
       Top = 14
-      Width = 37
+      Width = 39
       Caption = 'Sort by'
       ParentColor = False
     end
     object cbSortDirection: TCheckBox
       Left = 224
-      Height = 19
+      Height = 21
       Top = 14
-      Width = 118
+      Width = 127
       Caption = 'in ascending order'
       Checked = True
       State = cbChecked

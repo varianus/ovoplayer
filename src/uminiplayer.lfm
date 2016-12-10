@@ -26,15 +26,15 @@ object fMiniPlayer: TfMiniPlayer
     BevelInner = bvLowered
     BorderWidth = 2
     BorderStyle = bsSingle
-    ClientHeight = 54
-    ClientWidth = 199
+    ClientHeight = 56
+    ClientWidth = 201
     ParentColor = False
     TabOrder = 0
     object tbPlayControls: TToolBar
       Left = 4
       Height = 22
       Top = 4
-      Width = 191
+      Width = 193
       AutoSize = True
       EdgeInner = esNone
       EdgeOuter = esNone
@@ -80,9 +80,9 @@ object fMiniPlayer: TfMiniPlayer
     end
     object TrackBar: TCDTrackBar
       Left = 4
-      Height = 24
+      Height = 26
       Top = 26
-      Width = 191
+      Width = 193
       Max = 100
       Min = 0
       OnChangeByUser = TrackBarChange

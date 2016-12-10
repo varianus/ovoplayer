@@ -17,6 +17,10 @@ msgstr ""
 msgid "Scanning Collection"
 msgstr ""
 
+#: appconsts.rdeleteplaylistconfirmation
+msgid "Are you sure to delete this playlist?"
+msgstr ""
+
 #: appconsts.rdragtochangeposition
 msgid "Drag to change position"
 msgstr ""

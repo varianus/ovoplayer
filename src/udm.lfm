@@ -15,6 +15,7 @@ object DM: TDM
     object actPlaylistLoad: TAction
       Category = 'PlayList'
       Caption = 'Open Playlist ...'
+      DisableIfNoHandler = False
       Hint = 'Load a Playlist'
       ImageIndex = 12
       OnExecute = actPlaylistLoadExecute
@@ -23,6 +24,7 @@ object DM: TDM
     object actPlaylistSave: TAction
       Category = 'PlayList'
       Caption = 'Save PlayList ...'
+      DisableIfNoHandler = False
       Hint = 'Save current playlist'
       ImageIndex = 13
       OnExecute = actPlaylistSaveExecute
@@ -31,6 +33,7 @@ object DM: TDM
     object actPlay: TAction
       Category = 'Controls'
       Caption = 'Play'
+      DisableIfNoHandler = False
       Hint = 'Play'
       ImageIndex = 2
       OnExecute = actPlayExecute
@@ -38,6 +41,7 @@ object DM: TDM
     object actStop: TAction
       Category = 'Controls'
       Caption = 'Stop'
+      DisableIfNoHandler = False
       Hint = 'Stop'
       ImageIndex = 3
       OnExecute = actStopExecute
@@ -45,6 +49,7 @@ object DM: TDM
     object actNext: TAction
       Category = 'Controls'
       Caption = 'Next'
+      DisableIfNoHandler = False
       Hint = 'Next'
       ImageIndex = 8
       OnExecute = actNextExecute
@@ -52,6 +57,7 @@ object DM: TDM
     object actPrevious: TAction
       Category = 'Controls'
       Caption = 'Previous'
+      DisableIfNoHandler = False
       Hint = 'Previous'
       ImageIndex = 7
       OnExecute = actPreviousExecute
@@ -59,6 +65,7 @@ object DM: TDM
     object actPause: TAction
       Category = 'Controls'
       Caption = 'Pause'
+      DisableIfNoHandler = False
       Hint = 'Pause'
       ImageIndex = 1
       OnExecute = actPauseExecute
@@ -66,51 +73,60 @@ object DM: TDM
     object actRescanCollection: TAction
       Category = 'Collection'
       Caption = 'Update Collection'
+      DisableIfNoHandler = False
       ImageIndex = 11
       OnExecute = actRescanCollectionExecute
     end
     object actPlayListClear: TAction
       Category = 'PlayList'
       Caption = 'Clear'
+      DisableIfNoHandler = False
       OnExecute = actPlayListClearExecute
     end
     object actPlayListAddFiles: TAction
       Category = 'PlayList'
       Caption = 'Add Files ...'
+      DisableIfNoHandler = False
       OnExecute = actPlayListAddFilesExecute
     end
     object actImportDirectory: TAction
       Category = 'PlayList'
       Caption = 'Import Directory ...'
+      DisableIfNoHandler = False
       OnExecute = actImportDirectoryExecute
     end
     object actPlayListShuffle: TAction
       Category = 'PlayList'
       Caption = 'Shuffle'
+      DisableIfNoHandler = False
       ImageIndex = 9
       OnExecute = actPlayListShuffleExecute
     end
     object actSkipForward: TAction
       Category = 'Controls'
       Caption = 'Skip Forward'
+      DisableIfNoHandler = False
       ImageIndex = 6
       OnExecute = actSkipForwardExecute
     end
     object actSkipBackward: TAction
       Category = 'Controls'
       Caption = 'Skip Backward'
+      DisableIfNoHandler = False
       ImageIndex = 5
       OnExecute = actSkipBackwardExecute
     end
     object actExit: TAction
       Category = 'Interface'
       Caption = 'Quit'
+      DisableIfNoHandler = False
       OnExecute = actExitExecute
       ShortCut = 16465
     end
     object actRepeatTrack: TAction
       Category = 'PlayList'
       Caption = 'Repeat track'
+      DisableIfNoHandler = False
       GroupIndex = 1
       ImageIndex = 10
       OnExecute = actRepeatTrackExecute
@@ -118,16 +134,19 @@ object DM: TDM
     object actRemoveMissing: TAction
       Category = 'Collection'
       Caption = 'Remove Missing'
+      DisableIfNoHandler = False
       OnExecute = actRemoveMissingExecute
     end
     object actMute: TAction
       Caption = 'Mute'
+      DisableIfNoHandler = False
       ImageIndex = 19
       OnExecute = actMuteExecute
     end
     object actRepeatAlbum: TAction
       Category = 'PlayList'
       Caption = 'Repeat Album'
+      DisableIfNoHandler = False
       GroupIndex = 1
       ImageIndex = 10
       OnExecute = actRepeatAlbumExecute
@@ -135,6 +154,7 @@ object DM: TDM
     object actRepeatAll: TAction
       Category = 'PlayList'
       Caption = 'Repeat Playlist'
+      DisableIfNoHandler = False
       GroupIndex = 1
       ImageIndex = 10
       OnExecute = actRepeatAllExecute
@@ -142,6 +162,7 @@ object DM: TDM
     object actRepeatNone: TAction
       Category = 'PlayList'
       Caption = 'Not Repeat'
+      DisableIfNoHandler = False
       GroupIndex = 1
       ImageIndex = 10
       OnExecute = actRepeatNoneExecute
@@ -153,11 +174,13 @@ object DM: TDM
     object actRestart: TAction
       Category = 'Interface'
       Caption = 'Restart'
+      DisableIfNoHandler = False
       OnExecute = actRestartExecute
     end
     object actFastScan: TAction
       Category = 'Collection'
       Caption = 'Fast Scan'
+      DisableIfNoHandler = False
       OnExecute = actFastScanExecute
     end
   end
