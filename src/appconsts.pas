@@ -71,6 +71,7 @@ Resourcestring
   rAllFiles     = 'All Files(%0:s)|%0:s';
   rEmbedded  = 'Embedded in file';
   rAutomaticPlaylist = 'Automatic Playlist';
+  rDeletePlaylistConfirmation = 'Are you sure to delete this playlist?';
 
   rBeginCollectionScan  = 'Scanning Collection';
   rAddedTrack   = 'Added:';

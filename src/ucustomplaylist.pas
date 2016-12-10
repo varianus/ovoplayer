@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   ButtonPanel, Buttons, StdCtrls, Spin, ufrfield, fgl, PlaylistBuilder,
-  GUIBackEnd, MediaLibrary, AppConsts, GeneralFunc;
+  GUIBackEnd, MediaLibrary, AppConsts, GeneralFunc, fpjson;
 
 type
 
@@ -29,7 +29,6 @@ type
     sbFieldContainer: TScrollBox;
     seLimits: TSpinEdit;
     procedure ApplicationProperties1Idle(Sender: TObject; var Done: Boolean);
-    procedure bPlus2Click(Sender: TObject);
     procedure bPlusClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -39,7 +38,9 @@ type
     PlayListBuilder: TPlayListBuilder;
     Editors: TEditorsContainer;
   public
-    function LoadFromFile(AfileName:TfileName):boolean;
+    Index: integer;
+    Container: TPlayListContainer;
+    function LoadFromJson(Json: TJSONObject):boolean;
     Function AddField:TfrField;
     Procedure DeleteField(AField:TfrField);
     Procedure UpdateBuilder;
@@ -106,23 +107,26 @@ var
   i: integer;
 begin
   UpdateBuilder;
-  PlayListBuilder.ToJson(BackEnd.Config.GetPlaylistsPath+ EncodeSafeFileName(edtPlayListName.Text)+CustomPlaylistExtension);
+
+  Container.SetByIndex(Index, PlayListBuilder.ToJson());
+  Container.Save;
 
   //BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
   //      PlayListBuilder.Filter, PlayListBuilder.SortClause );
 
 end;
 
-function TfCustomPlayList.LoadFromFile(AfileName: TfileName): boolean;
+function TfCustomPlayList.LoadFromJson(Json: TJSONObject): boolean;
 begin
   try
-    PlayListBuilder.FromJson(AfileName);
+    PlayListBuilder.FromJson(Json);
     UpdateFromBuilder(true);
     result := true;
   except
     Result:= false
   end;
 end;
+
 
 procedure TfCustomPlayList.bPlusClick(Sender: TObject);
 begin
@@ -157,12 +161,6 @@ begin
       end;
     end;
 
-end;
-
-procedure TfCustomPlayList.bPlus2Click(Sender: TObject);
-begin
-  PlayListBuilder.FromJson('testfile.json');
-  UpdateFromBuilder(True);
 end;
 
 function TfCustomPlayList.AddField: TfrField;

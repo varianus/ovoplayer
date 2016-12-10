@@ -296,6 +296,7 @@ type
     procedure MenuItem59Click(Sender: TObject);
     procedure MenuItem60Click(Sender: TObject);
     procedure mnuColumnsClick(Sender: TObject);
+    procedure mnuDeletePlaylistClick(Sender: TObject);
     procedure mnuEnqueuePlaylistClick(Sender: TObject);
     procedure mnuPlayPlaylistClick(Sender: TObject);
     procedure mnuNewPlayListClick(Sender: TObject);
@@ -381,6 +382,7 @@ type
     Quitting: boolean;
     LoadedPlaylist: boolean;
     TrayMenuActive:boolean;
+    PlaylistContainer: TPlaylistContainer;
     {$IFDEF MPRIS2}
     Mpris : TMpris2;
     {$ENDIF MPRIS}
@@ -733,6 +735,7 @@ procedure TfMainForm.PlayListHandler(Enqueue: boolean);
 var
   playlistbuilder : TPlayListBuilder;
   item: TPlayListTreeNode;
+  Str: String;
 begin
   item := TPlayListTreeNode( PlaylistTree.Selected);
   if item = nil then
@@ -741,7 +744,7 @@ begin
     BackEnd.PlayList.Clear;
   playlistbuilder := TPlayListBuilder.Create;
   try
-    playlistbuilder.FromJson(item.FullPath);
+    playlistbuilder.FromJson(PlaylistContainer.GetByName(item.FullPath));
     BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
           PlayListBuilder.Filter, PlayListBuilder.SortClause );
 
@@ -1216,6 +1219,7 @@ begin
   TrayMenuActive:=False;
   Quitting := false;
   PlaylistSelected := TRowsSelection.Create;
+  PlaylistContainer := nil;
   PathHistory := TStringList.Create;
   PathHistory.Duplicates := dupIgnore;
 
@@ -1385,6 +1389,9 @@ begin
   if Assigned(fMiniPlayer) then
     FreeAndNil(fMiniPlayer);
 
+  if Assigned(PlaylistContainer) then
+    FreeAndNil(PlaylistContainer);
+
   PathHistory.Free;
   PlaylistSelected.ClearAll;
   PlaylistSelected.SetSize(0);
@@ -1460,6 +1467,21 @@ begin
   LoadColumnsMenu(mnuColumns);
 end;
 
+procedure TfMainForm.mnuDeletePlaylistClick(Sender: TObject);
+var
+  item: TPlayListTreeNode;
+begin
+  item := TPlayListTreeNode( PlaylistTree.Selected);
+  if item = nil then
+     exit;
+  if MessageDlg(rDeletePlaylistConfirmation, mtWarning, mbYesNo, 0) = mrYes then
+    begin
+     PlaylistContainer.Delete(item.Index);
+     PlaylistContainer.Save;
+     LoadAutomaticPlaylist;
+    end;
+end;
+
 procedure TfMainForm.mnuEnqueuePlaylistClick(Sender: TObject);
 begin
   PlayListHandler(True);
@@ -1474,6 +1496,8 @@ procedure TfMainForm.mnuNewPlayListClick(Sender: TObject);
 begin
   with TfCustomPlayList.Create(self) do
     begin
+      Container := PlaylistContainer;
+      Index := -1;
       if showmodal = mrOK then
         LoadAutomaticPlaylist;
 
@@ -1489,7 +1513,9 @@ begin
      exit;
   with TfCustomPlayList.Create(self) do
     begin
-      if LoadFromFile(item.FullPath) then
+      Container := PlaylistContainer;
+      Index:= item.Index;
+      if LoadFromJson(PlaylistContainer.GetByName(item.FullPath)) then
         begin
          if showmodal = mrOK then
            LoadAutomaticPlaylist;
@@ -1517,14 +1543,15 @@ end;
 
 procedure TfMainForm.RemoveSelectionFromPlaylist;
 var
-  Index: Integer;
+  Index, PrevIndex: Integer;
 begin
   // Work in reverse order. Removing an item on playlist shift up remaining ones..
   index := PlaylistSelected.LastSelected ;
   While Index > -1 do
     begin
+      Previndex:= PlaylistSelected.PreviousSelected(index);
       BackEnd.PlayList.Delete(Index);
-      index:= PlaylistSelected.PreviousSelected(index);
+      Index:= Previndex;
     end;
 
   OnLoaded(sgPlayList);
@@ -1562,15 +1589,25 @@ var
   i: integer;
   Node, BaseNode: TPlayListTreeNode;
   plName:string;
+  //
+  tmp1 : TPlaylistContainer;
+  tmp2: TstringList;
+
 begin
   PlaylistTree.Items.Clear;
   BaseNode:= TPlayListTreeNode(PlaylistTree.Items.Add(nil, rAutomaticPlaylist));
   BaseNode.FullPath:=EmptyStr;
 
   AutoPlayList := TStringList.Create;
-  AutoPlayList.OwnsObjects:=True;
+
   try
-    BuildFileList(BackEnd.Config.GetPlaylistsPath+'*'+CustomPlaylistExtension,faAnyFile, AutoPlayList,False);
+    //
+    if not Assigned(PlaylistContainer) then
+       PlaylistContainer:= TPlaylistContainer.Create(BackEnd.Config.GetPlaylistsPath+'playlist.opl');
+    PlaylistContainer.GetPlaylists(AutoPlayList);
+    //
+
+//    BuildFileList(BackEnd.Config.GetPlaylistsPath+'*'+CustomPlaylistExtension,faAnyFile, AutoPlayList,False);
     for i := 0 to AutoPlayList.Count -1 do
       begin
         plname := DecodeSafeFileName(ExtractFileNameOnly(AutoPlayList[i]));

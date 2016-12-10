@@ -61,7 +61,6 @@ type
     FSongLimit: integer;
     FSortAscending: boolean;
     FSortFieldID: integer;
-
     function GetExecutable: boolean;
     function GetFilter: string;
     function GetSortClause: string;
@@ -74,8 +73,11 @@ type
     constructor Create;
     Destructor Destroy; override;
    //
-    Procedure ToJson(FileName:TfileName);
-    procedure FromJson(FileName: TfileName);
+    //Procedure ToJson(FileName:TfileName);
+    //procedure FromJson(FileName: TfileName);
+
+    function ToJson(): TJSONObject;
+    procedure FromJson(json: TJSONObject);
 
     Property Filter : string read GetFilter;
     property isExecutable: boolean read GetExecutable;
@@ -89,7 +91,25 @@ type
     property SortAscending: boolean read FSortAscending write SetSortAscending;
 
     //
+  end;
 
+  { TPlaylistContainer }
+
+  TPlaylistContainer = class
+  private
+    FFileName:TFileName;
+    JSONArray: TJSONArray;
+    Stream: TFileStreamUTF8;
+  public
+    procedure Save;
+    function GetPlaylists(List: TStrings): integer;
+    Function GetByName(PlaylistName:string): TJSONObject;
+    Function GetByIndex(Index:integer): TJSONObject;
+    procedure SetByIndex(Index:integer; Json: TJSONObject);
+    Procedure Delete(Index:integer);
+  public
+    constructor Create(FileName:TFileName);
+    Destructor Destroy; override;
 
   end;
 
@@ -177,6 +197,78 @@ begin
     end;
  Result:= -1;
 
+end;
+
+{ TPlaylistContainer }
+
+procedure TPlaylistContainer.Save;
+begin
+ Stream.position := 0;
+ JSONArray.DumpJSON(Stream);
+end;
+
+function TPlaylistContainer.GetPlaylists(List: TStrings): integer;
+var
+  i: integer;
+begin
+  Result := 0;
+  List.Clear;
+  for i := 0 to JSONArray.Count -1 do
+     begin
+       List.AddObject(JSONArray[i].GetPath('Name').AsString, Pointer(PtrUInt(i)));
+     end;
+  Result := List.Count;
+end;
+
+function TPlaylistContainer.GetByName(PlaylistName: string): TJSONObject;
+var
+  i: integer;
+begin
+  Result := nil;
+  for i := 0 to JSONArray.Count -1 do
+     begin
+       if JSONArray[i].GetPath('Name').AsString = PlaylistName then
+         Result := TJSONObject(JSONArray[i]);
+     end;
+end;
+
+function TPlaylistContainer.GetByIndex(Index: integer): TJSONObject;
+begin
+  if (Index > -1) and (index < JSONArray.Count) then
+    Result := TJSONObject(JSONArray[Index])
+  else
+    Result := nil;
+end;
+
+procedure TPlaylistContainer.SetByIndex(Index: integer; Json: TJSONObject);
+begin
+  if Index = -1 then
+    JSONArray.Add(Json)
+  else
+    begin
+      JSONArray[index] := Json;
+    end;
+end;
+
+procedure TPlaylistContainer.Delete(Index: integer);
+begin
+  JSONArray.Delete(Index);
+end;
+
+
+constructor TPlaylistContainer.Create(FileName:TFileName);
+begin
+  FFileName:= FileName;
+  Stream:= TFileStreamUTF8.Create(FFileNAme, fmOpenReadWrite);
+  JSONArray := TJSONArray(GetJSON(Stream, True));
+
+end;
+
+destructor TPlaylistContainer.Destroy;
+begin
+  inherited Destroy;
+  JSONArray.Free;
+  Stream.Free;
 end;
 
 
@@ -419,65 +511,66 @@ begin
   FSortFieldID:=AValue;
 end;
 
-procedure TPlayListBuilder.ToJson(FileName: TfileName);
-var
-  i: integer;
-  Streamer  : TJSONStreamer;
-  JSONString : string;
-  JSONOnject : TJSONObject;
-  JSONArray: TJSONArray;
-  Stream: TFileStreamUTF8;
-begin
-  Streamer := TJSONStreamer.Create(nil);
+//procedure TPlayListBuilder.ToJson(FileName: TfileName);
+//var
+//  i: integer;
+//  Streamer  : TJSONStreamer;
+//  JSONString : string;
+//  JSONOnject : TJSONObject;
+//  JSONArray: TJSONArray;
+//  Stream: TFileStreamUTF8;
+//begin
+//  Streamer := TJSONStreamer.Create(nil);
+//  Streamer.Options:= Streamer.Options + [jsoUseFormatString];
+//  JSONOnject := Streamer.ObjectToJSON(Self);
+//  JSONArray := TJSONArray.Create;
+//
+//  for i := 0 to Count -1 do
+//     JSONArray.Add(Streamer.ObjectToJSON(Items[i]));
+//
+//  JSONOnject.Add('Filters',JSONArray);
+//
+//  Stream := TFileStreamUTF8.Create(FileName, fmOpenWrite + fmCreate);
+//
+//  JSONOnject.DumpJSON(Stream);
+//  Stream.Free;
+//
+//  Streamer.Free;
+//  JSONOnject.Free;
+//
+//end;
+//
+//procedure TPlayListBuilder.FromJson(FileName: TfileName);
+//var
+//  i: integer;
+//  DeStreamer  : TJSONDeStreamer;
+//  JSONString : string;
+//  JSONOnject : TJSONObject;
+//  JSONArray: TJSONArray;
+//  Stream: TFileStreamUTF8;
+//  item: TFieldFilter;
+//begin
+//  Stream:= TFileStreamUTF8.Create(FileName, fmOpenRead);
+//  JSONOnject := TJSONObject(GetJSON(Stream, True));
+//
+//  DeStreamer := TJSONDeStreamer.Create(nil);
+//  DeStreamer.JSONToObject(JSONOnject, self);
+//
+//  Clear;
+//  JSONArray := nil;
+//  JSONArray := JSONOnject.Get('Filters',JSONArray);
+//
+//  for i := 0 to JSONArray.Count -1 do
+//     begin
+//       Item := TFieldFilter.Create;
+//       DeStreamer.JSONToObject(JSONArray.Objects[i],item);
+//       Add(item);
+//     end;
+//  Stream.Free;
+//  DeStreamer.Free;
+//  JSONOnject.Free;
+//end;
 
-  JSONOnject := Streamer.ObjectToJSON(Self);
-  JSONArray := TJSONArray.Create;
-
-  for i := 0 to Count -1 do
-     JSONArray.Add(Streamer.ObjectToJSON(Items[i]));
-
-  JSONOnject.Add('Filters',JSONArray);
-
-  Stream := TFileStreamUTF8.Create(FileName, fmOpenWrite + fmCreate);
-
-  JSONOnject.DumpJSON(Stream);
-  Stream.Free;
-
-  Streamer.Free;
-  JSONOnject.Free;
-
-end;
-
-procedure TPlayListBuilder.FromJson(FileName: TfileName);
-var
-  i: integer;
-  DeStreamer  : TJSONDeStreamer;
-  JSONString : string;
-  JSONOnject : TJSONObject;
-  JSONArray: TJSONArray;
-  Stream: TFileStreamUTF8;
-  item: TFieldFilter;
-begin
-  Stream:= TFileStreamUTF8.Create(FileName, fmOpenRead);
-  JSONOnject := TJSONObject(GetJSON(Stream, True));
-
-  DeStreamer := TJSONDeStreamer.Create(nil);
-  DeStreamer.JSONToObject(JSONOnject, self);
-
-  Clear;
-  JSONArray := nil;
-  JSONArray := JSONOnject.Get('Filters',JSONArray);
-
-  for i := 0 to JSONArray.Count -1 do
-     begin
-       Item := TFieldFilter.Create;
-       DeStreamer.JSONToObject(JSONArray.Objects[i],item);
-       Add(item);
-     end;
-  Stream.Free;
-  DeStreamer.Free;
-  JSONOnject.Free;
-end;
 
 constructor TPlayListBuilder.Create;
 begin
@@ -487,6 +580,56 @@ end;
 destructor TPlayListBuilder.Destroy;
 begin
   inherited Destroy;
+end;
+
+function TPlayListBuilder.ToJson(): TJSONObject;
+var
+  i: integer;
+  Streamer  : TJSONStreamer;
+  JSONString : string;
+  JSONOnject : TJSONObject;
+  JSONArray: TJSONArray;
+  Stream: TFileStreamUTF8;
+begin
+  Streamer := TJSONStreamer.Create(nil);
+  Streamer.Options:= Streamer.Options + [jsoUseFormatString];
+  JSONOnject := Streamer.ObjectToJSON(Self);
+
+  JSONArray := TJSONArray.Create;
+
+  for i := 0 to Count -1 do
+     JSONArray.Add(Streamer.ObjectToJSON(Items[i]));
+
+  JSONOnject.Add('Filters',JSONArray);
+
+  Result := JSONOnject;
+
+  Streamer.Free;
+end;
+
+procedure TPlayListBuilder.FromJson(json: TJSONObject);
+var
+  i: integer;
+  DeStreamer  : TJSONDeStreamer;
+  JSONArray: TJSONArray;
+  Stream: TFileStreamUTF8;
+  item: TFieldFilter;
+begin
+  DeStreamer := TJSONDeStreamer.Create(nil);
+  DeStreamer.JSONToObject(json, self);
+
+  Clear;
+  JSONArray := nil;
+  JSONArray := json.Get('Filters',JSONArray);
+
+  for i := 0 to JSONArray.Count -1 do
+     begin
+       Item := TFieldFilter.Create;
+       DeStreamer.JSONToObject(JSONArray.Objects[i],item);
+       Add(item);
+     end;
+  DeStreamer.Free;
+
 end;
 
 end.
