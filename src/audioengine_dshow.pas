@@ -167,13 +167,20 @@ function TAudioEngineDShow.CreateAppWindow: boolean;
 
 function TAudioEngineDShow.GetMainVolume: integer;
 begin
+
   Result := -1;
+  if not Assigned(AudioControl) then
+    exit;
+
   AudioControl.get_Volume( Result) ;
   result := GetBasicAudioVolume(Result);
 end;
 
 procedure TAudioEngineDShow.SetMainVolume(const AValue: integer);
 begin
+  if not Assigned(AudioControl) then
+    exit;
+
   AudioControl.put_Volume( SetBasicAudioVolume(Avalue));
 end;
 
@@ -222,7 +229,6 @@ begin
 
   Result := CreateAppWindow;
   Initialized := Result;
-
 end;
 
 
