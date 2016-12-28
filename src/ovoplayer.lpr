@@ -24,8 +24,14 @@ program ovoplayer;
 {$I backend.inc}  // needed here to add units to project
 {$mode objfpc}{$H+}
 
-uses {$IFDEF UNIX} {$IFDEF UseCThreads}
-  cthreads, {$ENDIF} {$ENDIF}
+uses
+ {$IFDEF UNIX}
+    {$IFDEF UseCThreads}
+  cthreads,
+    {$ENDIF}
+  clocale,
+  {$ENDIF}
+
   Interfaces, // this includes the LCL widgetset
   Forms, singleinstance,
   // general functions
