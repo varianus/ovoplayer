@@ -198,10 +198,10 @@ begin
   fHint.HideInterval := 3000;
   fHint.AutoHide := True;
   {$ENDIF}
-  for i := 0 to ComponentCount - 1 do
-    if Components[i] is TLabel then
-      if Tlabel(Components[i]).OptimalFill then
-        Tlabel(Components[i]).AdjustFontForOptimalFill;
+  //for i := 0 to ComponentCount - 1 do
+  //  if Components[i] is TLabel then
+  //    if Tlabel(Components[i]).OptimalFill then
+  //      Tlabel(Components[i]).AdjustFontForOptimalFill;
 
 end;
 

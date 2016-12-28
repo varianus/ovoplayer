@@ -7,21 +7,21 @@ object fSongInfo: TfSongInfo
   Caption = 'Song Information'
   ClientHeight = 407
   ClientWidth = 759
+  DesignTimePPI = 95
   OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
   LCLVersion = '1.7'
-  Visible = False
   object pcSongInfo: TPageControl
     Left = 168
     Height = 357
     Top = 0
     Width = 591
-    ActivePage = tsTags
+    ActivePage = tsMediaProperty
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     object tsTags: TTabSheet
       Caption = 'Tags'
@@ -205,10 +205,9 @@ object fSongInfo: TfSongInfo
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'Duration'
-        Font.Height = 16
+        Font.Height = 11
         ParentColor = False
         ParentFont = False
-        OptimalFill = True
       end
       object leDuration: TLabel
         Left = 123
@@ -234,10 +233,9 @@ object fSongInfo: TfSongInfo
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'BitRate'
-        Font.Height = 16
+        Font.Height = 11
         ParentColor = False
         ParentFont = False
-        OptimalFill = True
       end
       object Label12: TLabel
         Left = 6
@@ -247,10 +245,9 @@ object fSongInfo: TfSongInfo
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'Sampling'
-        Font.Height = 16
+        Font.Height = 11
         ParentColor = False
         ParentFont = False
-        OptimalFill = True
       end
       object leSampling: TLabel
         Left = 123
@@ -261,17 +258,16 @@ object fSongInfo: TfSongInfo
         ParentColor = False
       end
       object Label13: TLabel
-        Left = 6
+        Left = 8
         Height = 16
         Top = 169
         Width = 106
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'Channels'
-        Font.Height = 16
+        Font.Height = 11
         ParentColor = False
         ParentFont = False
-        OptimalFill = True
       end
       object leChannels: TLabel
         Left = 123
@@ -289,10 +285,9 @@ object fSongInfo: TfSongInfo
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'File Name'
-        Font.Height = 16
+        Font.Height = 11
         ParentColor = False
         ParentFont = False
-        OptimalFill = True
       end
       object Label15: TLabel
         Left = 6
@@ -302,10 +297,9 @@ object fSongInfo: TfSongInfo
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'Size'
-        Font.Height = 16
+        Font.Height = 11
         ParentColor = False
         ParentFont = False
-        OptimalFill = True
       end
       object leSize: TLabel
         Left = 123
@@ -332,10 +326,8 @@ object fSongInfo: TfSongInfo
           Alignment = taRightJustify
           AutoSize = False
           Caption = 'Play Count'
-          Font.Height = 16
           ParentColor = False
           ParentFont = False
-          OptimalFill = True
         end
         object lePlayCount: TLabel
           Left = 140
@@ -348,15 +340,13 @@ object fSongInfo: TfSongInfo
         object Label17: TLabel
           Left = 6
           Height = 16
-          Top = 35
+          Top = 36
           Width = 116
           Alignment = taRightJustify
           AutoSize = False
           Caption = 'Added to collection'
-          Font.Height = 16
           ParentColor = False
           ParentFont = False
-          OptimalFill = True
         end
         object leAdded: TLabel
           Left = 140
@@ -369,15 +359,13 @@ object fSongInfo: TfSongInfo
         object Label18: TLabel
           Left = 6
           Height = 16
-          Top = 67
+          Top = 68
           Width = 116
           Alignment = taRightJustify
           AutoSize = False
           Caption = 'Last Played'
-          Font.Height = 16
           ParentColor = False
           ParentFont = False
-          OptimalFill = True
         end
         object leLastPlayed: TLabel
           Left = 140
