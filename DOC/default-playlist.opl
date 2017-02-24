@@ -1,0 +1,63 @@
+[{
+	"Name": "25 Random songs",
+	"SongLimit": 25,
+	"SortAscending": true,
+	"SortFieldID": -1,
+	"Filters": []
+},
+{
+	"Name": "All songs",
+	"SongLimit": -1,
+	"SortAscending": false,
+	"SortFieldID": -1,
+	"Filters": []
+},
+{
+	"Name": "Most played",
+	"SongLimit": 50,
+	"SortAscending": false,
+	"SortFieldID": 11,
+	"Filters": []
+},
+{
+	"Name": "Never played",
+	"SongLimit": 100,
+	"SortAscending": true,
+	"SortFieldID": -1,
+	"Filters": [{
+		"FieldID": 11,
+		"Kind": "ekText",
+		"TestIndex": 0,
+		"Value": "0"
+	},
+	{
+		"FieldID": 7,
+		"Kind": "ekText",
+		"TestIndex": 1,
+		"Value": "vangelis"
+	}]
+},
+{
+	"Name": "Longest time from last play",
+	"SongLimit": 25,
+	"SortAscending": true,
+	"SortFieldID": 13,
+	"Filters": [{
+		"FieldID": 11,
+		"Kind": "ekText",
+		"TestIndex": 2,
+		"Value": "0"
+	}]
+},
+{
+	"Name": "Newer songs",
+	"SongLimit": 100,
+	"SortAscending": false,
+	"SortFieldID": 14,
+	"Filters": [{
+		"FieldID": 11,
+		"Kind": "ekText",
+		"TestIndex": 0,
+		"Value": "0"
+	}]
+}]
