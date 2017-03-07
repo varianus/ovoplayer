@@ -12,10 +12,12 @@ type
   { TSimpleSingleInstance }
   TSimpleSingleInstance = class(TBaseSingleInstance)
   private
+    FDefaultMessage: string;
     FGlobal: Boolean;
     FID: string;
     FServer: TSimpleIPCServer;
     FClient: TSimpleIPCClient;
+    procedure SetDefaultMessage(AValue: string);
     procedure SetGlobal(const aGlobal: Boolean);
     procedure SetID(const aID: string);
   protected
@@ -32,6 +34,8 @@ type
     procedure ClientPostParams; override;
     procedure ClientPostString(Message: String);
   public
+    // this message will be sent if there are no params in the current instance
+    property DefaultMessage: string read FDefaultMessage write SetDefaultMessage;
     property ID: string read FID write SetID;
     property Global: Boolean read FGlobal write SetGlobal;
   end;
@@ -56,6 +60,12 @@ begin
     raise ESingleInstance.Create(SErrSetSingleInstanceGlobalStarted);
   FGlobal := aGlobal;
 
+end;
+
+procedure TSimpleSingleInstance.SetDefaultMessage(AValue: string);
+begin
+  if FDefaultMessage=AValue then Exit;
+  FDefaultMessage:=AValue;
 end;
 
 procedure TSimpleSingleInstance.SetID(const aID: string);
@@ -141,8 +151,8 @@ begin
     FServer.ServerID:=FID;
     FServer.StartServer(false);
     Result := siServer;
-  end
-
+  end;
+  SetStartResult(Result);
 end;
 
 procedure TSimpleSingleInstance.Stop;
@@ -171,7 +181,10 @@ begin
         for I := 0 to ParamCount do
           xSL.Add(ParamStr(I));
         FClient.SendStringMessage(xSL.DelimitedText);
-      end;
+      end
+    else
+      if DefaultMessage <> EmptyStr then
+        FClient.SendStringMessage(DefaultMessage);
   finally
     xSL.Free;
   end;

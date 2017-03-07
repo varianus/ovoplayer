@@ -93,6 +93,7 @@ begin
 
   Application.SingleInstanceClass:= DefaultSingleInstanceClass;
   Application.SingleInstanceEnabled:= True;
+  TSimpleSingleInstance(Application.SingleInstance).DefaultMessage := BuildCommand(CATEGORY_APP, COMMAND_ACTIVATE);
   Application.Title:='OvoPlayer';
 
   Application.Initialize;
