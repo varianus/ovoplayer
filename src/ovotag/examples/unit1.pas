@@ -174,7 +174,7 @@ begin
       ShowMessage('Not implemented for this file format!');
       exit;
     end;
-  SaveDialog1.FileName := ExtractFileNameOnly(TagReader.GetCommonTags.FileName) +
+  SaveDialog1.FileName := ExtractFileNameWithoutExt(TagReader.GetCommonTags.FileName) +
                           '.new' +
                           ExtractFileExt(TagReader.GetCommonTags.FileName);
 
