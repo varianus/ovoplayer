@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="9"/>
+    <Version Value="10"/>
     <PathDelim Value="\"/>
     <General>
       <SessionStorage Value="InProjectDir"/>
@@ -21,7 +21,9 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MajorVersionNr Value="1"/>
-      <StringTable CompanyName="Marco Caselli" ProductVersion=""/>
+      <MinorVersionNr Value="3"/>
+      <Attributes pvaPreRelease="True"/>
+      <StringTable CompanyName="Marco Caselli" OriginalFilename="ovoplayer.lpr"/>
     </VersionInfo>
     <BuildModes Count="2">
       <Item1 Name="Debug" Default="True"/>
@@ -101,7 +103,7 @@ if TargetOS = 'linux' then
     <RunParams>
       <local>
         <FormatVersion Value="1"/>
-        <CommandLineParams Value="--lang en"/>
+        <CommandLineParams Value="--debug-log=c:\temp\dbg.log"/>
       </local>
     </RunParams>
     <RequiredPackages Count="5">
@@ -123,7 +125,7 @@ if TargetOS = 'linux' then
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="81">
+    <Units Count="82">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -513,6 +515,11 @@ if TargetOS = 'linux' then
         <IsPartOfProject Value="True"/>
         <UnitName Value="GuiConfig"/>
       </Unit80>
+      <Unit81>
+        <Filename Value="simplesingleinstance.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="SimpleSingleInstance"/>
+      </Unit81>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -523,7 +530,7 @@ if TargetOS = 'linux' then
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir);platform\$(TargetOS);import-engines"/>
-      <OtherUnitFiles Value="import-engines;ovotag;components\uniqueinstance;components\network;platform\$(TargetOS)"/>
+      <OtherUnitFiles Value="import-engines;ovotag;components\network;platform\$(TargetOS)"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Conditionals Value="if TargetOS = 'darwin' then
@@ -563,6 +570,7 @@ if TargetOS = 'linux' then
       <ConfigFile>
         <ConfigFilePath Value="..\extrafpc.cfg"/>
       </ConfigFile>
+      <CustomOptions Value="-Xm"/>
       <OtherDefines Count="1">
         <Define0 Value="aaa"/>
       </OtherDefines>
