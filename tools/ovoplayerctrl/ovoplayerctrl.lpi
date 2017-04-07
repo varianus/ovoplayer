@@ -54,12 +54,11 @@
               <CustomConfigFile Value="True"/>
               <ConfigFilePath Value="..\..\extrafpc.cfg"/>
             </ConfigFile>
-            <CustomOptions Value="-FcUTF8"/>
           </Other>
         </CompilerOptions>
       </Item2>
       <SharedMatrixOptions Count="1">
-        <Item1 ID="906470382694" Modes="Debug,Release" Value="-dEnableUTF8RTL"/>
+        <Item1 ID="906470382694"/>
       </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
@@ -136,7 +135,6 @@
         <CustomConfigFile Value="True"/>
         <ConfigFilePath Value="..\..\extrafpc.cfg"/>
       </ConfigFile>
-      <CustomOptions Value="-FcUTF8"/>
     </Other>
   </CompilerOptions>
   <Debugging>
