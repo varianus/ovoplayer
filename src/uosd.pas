@@ -425,13 +425,13 @@ begin
 end;
 
 procedure TfOSD.FormShow(Sender: TObject);
-var
-  i: integer;
+//var
+//  i: integer;
 begin
-  for i := 0 to ComponentCount - 1 do
-    if Components[i] is TLabel then
-      if Tlabel(Components[i]).OptimalFill then
-        Tlabel(Components[i]).AdjustFontForOptimalFill;
+  //for i := 0 to ComponentCount - 1 do
+  //  if Components[i] is TLabel then
+  //    if Tlabel(Components[i]).OptimalFill then
+  //      Tlabel(Components[i]).AdjustFontForOptimalFill;
 
 end;
 

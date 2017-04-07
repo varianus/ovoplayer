@@ -9,7 +9,6 @@ object fAbout: TfAbout
   ClientWidth = 456
   OnShow = FormShow
   LCLVersion = '1.7'
-  Visible = False
   object Image1: TImage
     Left = 0
     Height = 108
@@ -399,7 +398,6 @@ object fAbout: TfAbout
     Font.Height = 26
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object Label2: TLabel
     Left = 69
@@ -409,10 +407,8 @@ object fAbout: TfAbout
     Alignment = taRightJustify
     AutoSize = False
     Caption = 'Version'
-    Font.Height = 18
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object lVersion: TLabel
     Left = 138
@@ -425,7 +421,6 @@ object fAbout: TfAbout
     Font.Style = [fsBold]
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object Label3: TLabel
     Left = 138
@@ -437,7 +432,6 @@ object fAbout: TfAbout
     Font.Height = 14
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object Label4: TLabel
     Left = 138
@@ -449,7 +443,6 @@ object fAbout: TfAbout
     Font.Height = 15
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object Label6: TLabel
     Left = 17
@@ -462,7 +455,6 @@ object fAbout: TfAbout
     Font.Height = 18
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object lHomePage: TLabel
     Left = 136
@@ -478,7 +470,6 @@ object fAbout: TfAbout
     OnMouseDown = lHomePageMouseDown
     OnMouseEnter = lHomePageMouseEnter
     OnMouseLeave = lHomePageMouseLeave
-    OptimalFill = True
   end
   object bClose: TBitBtn
     Left = 360
@@ -506,50 +497,42 @@ object fAbout: TfAbout
   object lbLazVersion: TLabel
     Left = 138
     Height = 14
-    Top = 174
+    Top = 168
     Width = 59
     AutoSize = False
-    Font.Height = 14
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object Label7: TLabel
     Left = 69
     Height = 14
-    Top = 197
+    Top = 193
     Width = 60
     Alignment = taRightJustify
     AutoSize = False
     Caption = 'FPC'
-    Font.Height = 14
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object lbFPCVersion: TLabel
     Left = 138
     Height = 14
-    Top = 197
+    Top = 193
     Width = 59
     AutoSize = False
-    Font.Height = 14
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object Label5: TLabel
     Left = 69
-    Height = 14
-    Top = 174
+    Height = 16
+    Top = 168
     Width = 60
     Alignment = taRightJustify
     AutoSize = False
     Caption = 'Lazarus'
-    Font.Height = 14
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object Label8: TLabel
     Left = 69
@@ -559,10 +542,8 @@ object fAbout: TfAbout
     Alignment = taRightJustify
     AutoSize = False
     Caption = 'Build Date'
-    Font.Height = 14
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object lbBuildDate: TLabel
     Left = 138
@@ -570,10 +551,8 @@ object fAbout: TfAbout
     Top = 218
     Width = 59
     AutoSize = False
-    Font.Height = 14
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object Label9: TLabel
     Left = 69
@@ -583,10 +562,8 @@ object fAbout: TfAbout
     Alignment = taRightJustify
     AutoSize = False
     Caption = 'SVN rev:'
-    Font.Height = 14
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object lbSVNRev: TLabel
     Left = 138
@@ -594,33 +571,28 @@ object fAbout: TfAbout
     Top = 240
     Width = 59
     AutoSize = False
-    Font.Height = 14
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object Label10: TLabel
     Left = 232
-    Height = 14
-    Top = 174
-    Width = 92
+    Height = 16
+    Top = 168
+    Width = 91
     Alignment = taRightJustify
     AutoSize = False
     Caption = 'Current Engine'
-    Font.Height = 11
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
   object lbEngine: TLabel
     Left = 336
-    Height = 14
-    Top = 174
+    Height = 16
+    Top = 168
     Width = 115
     AutoSize = False
     Font.Height = 14
     ParentColor = False
     ParentFont = False
-    OptimalFill = True
   end
 end
