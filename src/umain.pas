@@ -2369,7 +2369,9 @@ begin
        RemoveSelectionFromPlaylist;
     VK_SPACE:
        if (ssCtrl in Shift) then
-          PlaylistSelected[CurrRow] := not PlaylistSelected[CurrRow];
+          PlaylistSelected[CurrRow] := not PlaylistSelected[CurrRow]
+       else
+          BackEnd.Pause;
     VK_A:
        if (ssCtrl in Shift) then
           PlaylistSelected.SelectAll;
@@ -2450,7 +2452,6 @@ begin
      end;
 
   sgPlayList.Invalidate;
-
 
 end;
 
