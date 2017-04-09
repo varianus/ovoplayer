@@ -83,6 +83,12 @@ Resourcestring
   rMultipleValue = '<Multiple Value>';
   rDragToChangePosition = 'Drag to change position';
 
+
+  // About Dialog
+  rVersionString = 'Version: %0:s (SVN Rev.: %1:s Date %2:s)';
+  rBuildEnv = 'Build environment: Lazarus %0:s  FPC %1:s';
+  rCurrentEngine = 'Current audio engine: %s';
+
   rMatchingItems = '%0:d songs matching current filter (total time %1:s, total size %2:s)';
 
   rLowPortWarning = 'ATTENTION! Setting a port number lower than 1024 may require'+sLineBreak+

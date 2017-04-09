@@ -36,22 +36,12 @@ type
     bLicense: TBitBtn;
     Image1: TImage;
     Label1: TLabel;
-    Label10: TLabel;
-    Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
-    Label5: TLabel;
-    Label6: TLabel;
-    Label7: TLabel;
-    Label8: TLabel;
-    Label9: TLabel;
-    lbSVNRev: TLabel;
-    lbFPCVersion: TLabel;
-    lbBuildDate: TLabel;
+    lbBuildEnv: TLabel;
     lbEngine: TLabel;
     lVersion: TLabel;
     lHomePage: TLabel;
-    lbLazVersion: TLabel;
     procedure bCloseClick(Sender: TObject);
     procedure bLicenseClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -80,12 +70,9 @@ procedure TfAbout.FormShow(Sender: TObject);
 var
   i:Integer;
 begin
-  lVersion.caption     := AppVersion;
-  lbFPCVersion.Caption := fpcVersion;
-  lbLazVersion.Caption := lazVersion;
-  lbBuildDate.Caption  := BuildDate;
-  lbSVNRev.Caption     := ovoRevision;
-  lbEngine.Caption     := BackEnd.AudioEngine.GetEngineName;
+  lVersion.caption     := format (rVersionString,[AppVersion, ovoRevision, BuildDate]);
+  lbBuildEnv.Caption   := format (rBuildEnv,[lazVersion, fpcVersion]);
+  lbEngine.Caption     := format (rCurrentEngine, [BackEnd.AudioEngine.GetEngineName]);
 
   //for i := 0 to ComponentCount -1 do
   //   if Components[i] is TLabel then

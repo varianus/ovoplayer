@@ -1,19 +1,20 @@
 object fAbout: TfAbout
-  Left = 835
-  Height = 306
-  Top = 242
-  Width = 456
+  Left = 585
+  Height = 253
+  Top = 266
+  Width = 422
   BorderStyle = bsDialog
   Caption = 'About'
-  ClientHeight = 306
-  ClientWidth = 456
+  ClientHeight = 253
+  ClientWidth = 422
+  DesignTimePPI = 95
   OnShow = FormShow
   LCLVersion = '1.7'
   object Image1: TImage
     Left = 0
-    Height = 108
+    Height = 80
     Top = 0
-    Width = 125
+    Width = 96
     Picture.Data = {
       1754506F727461626C654E6574776F726B47726170686963042E000089504E47
       0D0A1A0A0000000D494844520000007C0000006B0806000000B5CDE69D000000
@@ -388,83 +389,63 @@ object fAbout: TfAbout
     Stretch = True
   end
   object Label1: TLabel
-    Left = 136
+    Left = 100
     Height = 32
     Top = 8
-    Width = 216
+    Width = 313
     Alignment = taCenter
+    Anchors = [akTop, akLeft, akRight]
     AutoSize = False
     Caption = 'OvoPlayer'
     Font.Height = 26
     ParentColor = False
     ParentFont = False
   end
-  object Label2: TLabel
-    Left = 69
-    Height = 17
-    Top = 143
-    Width = 60
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'Version'
-    ParentColor = False
-    ParentFont = False
-  end
   object lVersion: TLabel
-    Left = 138
+    Left = 100
     Height = 17
-    Top = 143
-    Width = 170
+    Top = 65
+    Width = 313
+    Alignment = taCenter
+    Anchors = [akTop, akLeft, akRight]
     AutoSize = False
     Caption = 'Version'
-    Font.Height = 18
     Font.Style = [fsBold]
     ParentColor = False
     ParentFont = False
   end
   object Label3: TLabel
-    Left = 138
-    Height = 14
-    Top = 74
-    Width = 184
+    Left = 100
+    Height = 17
+    Top = 155
+    Width = 313
+    Alignment = taCenter
     AutoSize = False
-    Caption = 'Author : Marco Caselli'
-    Font.Height = 14
+    Caption = '(C) 2011, Marco Caselli <marcocas@gmail.com>'
     ParentColor = False
     ParentFont = False
   end
   object Label4: TLabel
-    Left = 138
-    Height = 15
-    Top = 49
-    Width = 214
+    Left = 100
+    Height = 17
+    Top = 43
+    Width = 313
+    Alignment = taCenter
+    Anchors = [akTop, akLeft, akRight]
     AutoSize = False
     Caption = 'Another free music player'
-    Font.Height = 15
-    ParentColor = False
-    ParentFont = False
-  end
-  object Label6: TLabel
-    Left = 17
-    Height = 17
-    Top = 115
-    Width = 112
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'Home Page'
-    Font.Height = 18
     ParentColor = False
     ParentFont = False
   end
   object lHomePage: TLabel
-    Left = 136
+    Left = 100
     Height = 17
-    Top = 115
-    Width = 301
+    Top = 182
+    Width = 313
+    Alignment = taCenter
     AutoSize = False
     Caption = 'http://ovoplayer.altervista.org/'
     Font.Color = clBlue
-    Font.Height = 18
     ParentColor = False
     ParentFont = False
     OnMouseDown = lHomePageMouseDown
@@ -472,11 +453,11 @@ object fAbout: TfAbout
     OnMouseLeave = lHomePageMouseLeave
   end
   object bClose: TBitBtn
-    Left = 360
+    Left = 344
     Height = 26
-    Top = 272
-    Width = 88
-    Anchors = [akLeft, akRight, akBottom]
+    Top = 219
+    Width = 70
+    Anchors = [akRight, akBottom]
     Default = True
     DefaultCaption = True
     Kind = bkClose
@@ -485,113 +466,34 @@ object fAbout: TfAbout
     TabOrder = 0
   end
   object bLicense: TBitBtn
-    Left = 257
-    Height = 25
-    Top = 272
+    Left = 223
+    Height = 17
+    Top = 219
     Width = 65
     Anchors = [akRight, akBottom]
     Caption = '&License'
     OnClick = bLicenseClick
     TabOrder = 1
   end
-  object lbLazVersion: TLabel
-    Left = 138
-    Height = 14
-    Top = 168
-    Width = 59
-    AutoSize = False
-    ParentColor = False
-    ParentFont = False
-  end
-  object Label7: TLabel
-    Left = 69
-    Height = 14
-    Top = 193
-    Width = 60
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'FPC'
-    ParentColor = False
-    ParentFont = False
-  end
-  object lbFPCVersion: TLabel
-    Left = 138
-    Height = 14
-    Top = 193
-    Width = 59
-    AutoSize = False
-    ParentColor = False
-    ParentFont = False
-  end
-  object Label5: TLabel
-    Left = 69
-    Height = 16
-    Top = 168
-    Width = 60
-    Alignment = taRightJustify
+  object lbBuildEnv: TLabel
+    Left = 100
+    Height = 17
+    Top = 109
+    Width = 313
+    Alignment = taCenter
     AutoSize = False
     Caption = 'Lazarus'
     ParentColor = False
     ParentFont = False
   end
-  object Label8: TLabel
-    Left = 69
-    Height = 14
-    Top = 218
-    Width = 60
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'Build Date'
-    ParentColor = False
-    ParentFont = False
-  end
-  object lbBuildDate: TLabel
-    Left = 138
-    Height = 14
-    Top = 218
-    Width = 59
-    AutoSize = False
-    ParentColor = False
-    ParentFont = False
-  end
-  object Label9: TLabel
-    Left = 69
-    Height = 14
-    Top = 240
-    Width = 60
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'SVN rev:'
-    ParentColor = False
-    ParentFont = False
-  end
-  object lbSVNRev: TLabel
-    Left = 138
-    Height = 14
-    Top = 240
-    Width = 59
-    AutoSize = False
-    ParentColor = False
-    ParentFont = False
-  end
-  object Label10: TLabel
-    Left = 232
-    Height = 16
-    Top = 168
-    Width = 91
-    Alignment = taRightJustify
-    AutoSize = False
-    Caption = 'Current Engine'
-    ParentColor = False
-    ParentFont = False
-  end
   object lbEngine: TLabel
-    Left = 336
-    Height = 16
-    Top = 168
-    Width = 115
+    Left = 101
+    Height = 17
+    Top = 131
+    Width = 313
+    Alignment = taCenter
     AutoSize = False
-    Font.Height = 14
+    Caption = 'Engine'
     ParentColor = False
     ParentFont = False
   end
