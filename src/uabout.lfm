@@ -466,8 +466,8 @@ object fAbout: TfAbout
     TabOrder = 0
   end
   object bLicense: TBitBtn
-    Left = 223
-    Height = 17
+    Left = 248
+    Height = 26
     Top = 219
     Width = 65
     Anchors = [akRight, akBottom]
