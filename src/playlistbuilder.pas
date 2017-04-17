@@ -108,6 +108,7 @@ type
     procedure SetByIndex(Index:integer; Json: TJSONObject);
     Procedure Delete(Index:integer);
   public
+    class Procedure CreateDefaultFileIfMissing(FileName:TFileName);
     constructor Create(FileName:TFileName);
     Destructor Destroy; override;
 
@@ -157,6 +158,14 @@ ResourceString
   RS_InTheLast    = 'in the last';
   RS_NotInTheLast = 'not in the last';
 
+// Titles of standardPlaylist
+  RS_Name25_Random_songs = '25 Random songs';
+  RS_NameAllsongs = 'All songs';
+  RS_NameMostplayed = 'Most played';
+  RS_NameNeverplayed = 'Never played';
+  RS_NameLongesttimefromlastplay = 'Longest time from last play';
+  RS_NameNewersongs = 'Newer songs';
+
 const
    FieldCount = 16;
    FieldArray : array [0..FieldCount-1] of FieldRec =  (
@@ -178,9 +187,22 @@ const
    (ID :16; FieldName : 'FileDate'; FieldLabel :RS_FileDate; Kind: EkDate)
    );
 
+  DefaultPlayList =
+    '[{"Name":"%0:s","SongLimit":25,"SortAscending":true,"SortFieldID":-1,"Filter'
+  +'s":[]},{"Name":"%1:s","SongLimit":-1,"SortAscending":false,"SortFieldID":-1'
+  +',"Filters":[]},{"Name":"%2:s","SongLimit":50,"SortAscending":false,"SortFie'
+  +'ldID":11,"Filters":[]},{"Name":"%3:s","SongLimit":100,"SortAscending":true,'
+  +'"SortFieldID":-1,"Filters":[{"FieldID":11,"Kind":"ekText","TestIndex":0,"Va'
+  +'lue":"0"}]},{"Name":"%4:s","SongLimit":25,"SortAscending":true,"SortFieldID'
+  +'":13,"Filters":[{"FieldID":11,"Kind":"ekText","TestIndex":2,"Value":"0"}]},'
+  +'{"Name":"%5:s","SongLimit":100,"SortAscending":false,"SortFieldID":14,"Filt'
+  +'ers":[{"FieldID":11,"Kind":"ekText","TestIndex":0,"Value":"0"}]}]';
+
+
 Function FindIndexByID(const ID: Integer): Integer;
 
 implementation
+//{$R defaultplaylist.rc}
 
 
 function FindIndexByID(const ID:Integer): Integer;
@@ -253,6 +275,28 @@ end;
 procedure TPlaylistContainer.Delete(Index: integer);
 begin
   JSONArray.Delete(Index);
+end;
+
+class procedure TPlaylistContainer.CreateDefaultFileIfMissing(
+  FileName: TFileName);
+var
+  FStream: TFileStreamUTF8;
+  str:string;
+begin
+  if not FileExists(FileName) then
+    begin
+      fStream:= TFileStreamUTF8.Create(FileNAme, fmOpenWrite + fmCreate);
+      str := Format(DefaultPlayList, [
+                             RS_Name25_Random_songs,
+                             RS_NameAllsongs,
+                             RS_NameMostplayed,
+                             RS_NameNeverplayed,
+                             RS_NameLongesttimefromlastplay,
+                             RS_NameNewersongs
+                             ]);
+      fStream.WriteBuffer(str[1], Length(str));
+     fStream.free;
+    end;
 end;
 
 
