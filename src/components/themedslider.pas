@@ -22,6 +22,7 @@ type
     FStep: cardinal;
     InternalBitmap: TBitmap;
     procedure RedrawControl;
+    procedure Seek(X: Integer);
     procedure SetMax(const AValue: Cardinal);
     procedure SetMin(const AValue: Cardinal);
     procedure SetPosition(const AValue: Cardinal);
@@ -35,6 +36,7 @@ type
     procedure MouseMove(Shift: TShiftState; X,Y: Integer); override;
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);  override;
     procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+    procedure Click; override;
   public
     Constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -119,6 +121,7 @@ begin
      InternalBitmap.canvas.Brush.Color:= WidgetSet.GetSysColor(COLOR_BTNFACE);
 
   InternalBitmap.Canvas.FillRect(0, 0, InternalBitmap.Width, InternalBitmap.Height);
+
   InternalBitmap.Transparent:=true;
   InternalBitmap.TransparentMode:=tmAuto;
   r1:=rect(0, BorderWidth +2, Width, (Height - BorderWidth-2));
@@ -151,6 +154,14 @@ begin
         InternalBitmap.Canvas.FillRect(R1.Left + (BorderWidth div 2), r1.Top + BorderWidth,
                             pos - HalfSlider, r1.Bottom - BorderWidth);
      end;
+//
+//  if pos < Width - SLIDERWIDTH then
+//     begin
+//        InternalBitmap.canvas.Brush.Color:= WidgetSet.GetSysColor(COLOR_WINDOW);
+//        InternalBitmap.Canvas.FillRect(pos + HalfSlider, r1.Top + BorderWidth,
+//                             Width - HalfSlider, r1.Bottom - BorderWidth);
+//     end;
+
  Invalidate;
 end;
 
@@ -186,24 +197,30 @@ begin
 
 end;
 
-procedure TThemedSlider.MouseMove(Shift: TShiftState; X, Y: Integer);
+procedure TThemedSlider.Seek(X: Integer);
 var
   tmppos :Cardinal;
+begin
+  if x < 0 then
+     x := 0;
+  tmppos := Round(X / ( width / (fmax - fmin)));
+  if tmppos < fmin then
+     tmppos:=FMin;
+  if tmppos > FMax then
+     tmppos:=FMax;
+
+  fPosition := tmppos;
+  RedrawControl;
+
+end;
+
+procedure TThemedSlider.MouseMove(Shift: TShiftState; X, Y: Integer);
 begin
   if ssLeft in Shift then
     begin
       fseeking := true;
       Cursor := crHSplit;
-      if x < 0 then
-         x := 0;
-      tmppos := Round(X / ( width / (fmax - fmin)));
-      if tmppos < fmin then
-         tmppos:=FMin;
-      if tmppos > FMax then
-         tmppos:=FMax;
-
-      fPosition := tmppos;
-      RedrawControl;
+      Seek(X);
       if Assigned(FOnChange) then
          FOnChange(self);
       end
@@ -231,6 +248,19 @@ begin
   fSeeking := False;
   RedrawControl;
   inherited MouseUp(Button, Shift, X, Y);
+end;
+
+procedure TThemedSlider.Click;
+var
+  X: integer;
+  p: Tpoint;
+begin
+  p := Mouse.CursorPos;
+  x:= ScreenToClient(p).X;
+  fSeeking:=true;
+  Seek(x);
+  fSeeking:=false;
+  inherited Click;
 end;
 
 constructor TThemedSlider.Create(AOwner: TComponent);
