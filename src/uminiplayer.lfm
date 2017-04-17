@@ -1,13 +1,14 @@
 object fMiniPlayer: TfMiniPlayer
   Left = 737
-  Height = 58
+  Height = 57
   Top = 333
-  Width = 203
+  Width = 201
   BorderStyle = bsNone
   Caption = 'MiniPlayer'
-  ClientHeight = 58
-  ClientWidth = 203
+  ClientHeight = 57
+  ClientWidth = 201
   Color = 11955992
+  DesignTimePPI = 95
   FormStyle = fsSystemStayOnTop
   KeyPreview = True
   OnClose = FormClose
@@ -16,25 +17,24 @@ object fMiniPlayer: TfMiniPlayer
   OnMouseLeave = FormMouseLeave
   OnShow = FormShow
   LCLVersion = '1.7'
-  Visible = False
   object Panel1: TPanel
     Left = 0
-    Height = 58
+    Height = 57
     Top = 0
-    Width = 203
+    Width = 201
     Align = alClient
     BevelInner = bvLowered
     BorderWidth = 2
     BorderStyle = bsSingle
-    ClientHeight = 56
-    ClientWidth = 201
+    ClientHeight = 55
+    ClientWidth = 199
     ParentColor = False
     TabOrder = 0
     object tbPlayControls: TToolBar
       Left = 4
       Height = 22
       Top = 4
-      Width = 193
+      Width = 191
       AutoSize = True
       EdgeInner = esNone
       EdgeOuter = esNone
@@ -78,22 +78,25 @@ object fMiniPlayer: TfMiniPlayer
         Action = DM.actSkipForward
       end
     end
-    object TrackBar: TCDTrackBar
+    object TrackBar: TThemedSlider
       Left = 4
-      Height = 26
+      Height = 25
       Top = 26
-      Width = 193
+      Width = 191
+      Align = alClient
+      BorderWidth = 2
+      Step = 0
       Max = 100
       Min = 0
-      OnChangeByUser = TrackBarChange
       Position = 0
-      Align = alClient
-      DrawStyle = dsExtra2
+      Sliderwidth = 6
+      OnChange = TrackBarChange
+      OnClick = TrackBarChange
     end
   end
   object Timer: TTimer
     Interval = 333
     OnTimer = TimerTimer
-    left = 96
+    Left = 96
   end
 end

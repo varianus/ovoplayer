@@ -1,15 +1,16 @@
 object fMainForm: TfMainForm
-  Left = 667
+  Left = 668
   Height = 611
-  Top = 157
+  Top = 156
   Width = 866
   ActiveControl = pcMain
   AllowDropFiles = True
   Caption = 'OvoPlayer'
-  ClientHeight = 591
+  ClientHeight = 590
   ClientWidth = 866
   Constraints.MinHeight = 200
   Constraints.MinWidth = 500
+  DesignTimePPI = 95
   Menu = MainMenu
   OnActivate = FormActivate
   OnClose = FormClose
@@ -23,17 +24,17 @@ object fMainForm: TfMainForm
   LCLVersion = '1.7'
   object pnlleft: TPanel
     Left = 0
-    Height = 591
+    Height = 590
     Top = 0
     Width = 243
     Align = alLeft
     BevelOuter = bvNone
-    ClientHeight = 591
+    ClientHeight = 590
     ClientWidth = 243
     TabOrder = 0
     object pcMain: TPageControl
       Left = 0
-      Height = 482
+      Height = 481
       Top = 0
       Width = 243
       ActivePage = tsPlayList
@@ -64,7 +65,7 @@ object fMainForm: TfMainForm
             Top = 6
             Width = 228
             Anchors = [akTop, akLeft, akRight]
-            ItemHeight = 15
+            ItemHeight = 0
             ItemIndex = 0
             Items.Strings = (
               'AlbumArtist / Album'
@@ -257,16 +258,15 @@ object fMainForm: TfMainForm
       end
       object tsPlayList: TTabSheet
         Caption = 'PlayList'
-        ClientHeight = 454
-        ClientWidth = 235
+        ClientHeight = 446
+        ClientWidth = 237
         OnShow = tsPlayListShow
         object PlaylistTree: TTreeView
           Left = 0
-          Height = 454
+          Height = 446
           Top = 0
-          Width = 235
+          Width = 237
           Align = alClient
-          DefaultItemHeight = 18
           ExpandSignSize = 16
           PopupMenu = pmPlaylists
           ReadOnly = True
@@ -288,11 +288,11 @@ object fMainForm: TfMainForm
     object gbStats: TGroupBox
       Left = 0
       Height = 109
-      Top = 482
+      Top = 481
       Width = 243
       Align = alBottom
       Caption = 'Stats'
-      ClientHeight = 89
+      ClientHeight = 90
       ClientWidth = 239
       ParentFont = False
       TabOrder = 1
@@ -348,7 +348,7 @@ object fMainForm: TfMainForm
       end
       object sgStats: TStringGrid
         Left = 0
-        Height = 89
+        Height = 90
         Top = 0
         Width = 217
         Align = alClient
@@ -380,19 +380,19 @@ object fMainForm: TfMainForm
   end
   object pnlMain: TPanel
     Left = 247
-    Height = 591
+    Height = 590
     Top = 0
     Width = 619
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 591
+    ClientHeight = 590
     ClientWidth = 619
     Constraints.MinWidth = 439
     TabOrder = 1
     object pnlControl: TPanel
       Left = 0
       Height = 53
-      Top = 538
+      Top = 537
       Width = 619
       Align = alBottom
       Anchors = [akLeft, akRight]
@@ -513,16 +513,18 @@ object fMainForm: TfMainForm
           Top = 0
           Action = DM.actMute
         end
-        object slVolume: TCDTrackBar
+        object slVolume: TThemedSlider
           Left = 347
           Height = 23
           Top = 0
           Width = 100
+          BorderWidth = 2
+          Step = 0
           Max = 255
           Min = 0
-          OnChangeByUser = slVolumeChange
           Position = 255
-          DrawStyle = dsExtra2
+          Sliderwidth = 12
+          OnChange = slVolumeChange
         end
       end
       object pnlTimePos: TPanel
@@ -545,38 +547,50 @@ object fMainForm: TfMainForm
           Anchors = [akRight, akBottom]
           AutoSize = False
           Caption = '00:00:00'
-          Font.Height = 18
+          Font.Height = 20
           ParentColor = False
           ParentFont = False
-          OptimalFill = True
         end
-        object TrackBar: TCDTrackBar
+        object TrackBar: TThemedSlider
           Left = 0
           Height = 25
           Top = 0
           Width = 523
+          Align = alClient
+          BorderWidth = 2
+          Step = 0
           Max = 10
           Min = 0
-          OnChangeByUser = TrackBarChange
           Position = 0
-          Align = alClient
-          DrawStyle = dsExtra2
+          Sliderwidth = 12
+          OnChange = TrackBarChange
+          OnClick = TrackBarChange
+        end
+        object RadioButton1: TRadioButton
+          Left = 405
+          Height = 21
+          Top = 17
+          Width = 98
+          Caption = 'RadioButton1'
+          Checked = True
+          TabOrder = 1
+          TabStop = True
         end
       end
     end
     object pnlPlaylist: TPanel
       Left = 0
-      Height = 433
+      Height = 432
       Top = 105
       Width = 619
       Align = alClient
-      ClientHeight = 433
+      ClientHeight = 432
       ClientWidth = 619
       Constraints.MinWidth = 494
       TabOrder = 1
       object sgPlayList: TStringGrid
         Left = 1
-        Height = 431
+        Height = 430
         Top = 1
         Width = 617
         Align = alClient
@@ -732,6 +746,7 @@ object fMainForm: TfMainForm
       ClientWidth = 619
       TabOrder = 2
       object imgCover: TImage
+        Cursor = crHandPoint
         Left = 0
         Height = 100
         Top = 4
@@ -749,12 +764,11 @@ object fMainForm: TfMainForm
         Anchors = [akTop, akLeft, akRight]
         AutoSize = False
         Caption = 'Title'
-        Font.Height = 24
+        Font.Height = 18
         Font.Style = [fsBold]
         ParentColor = False
         ParentFont = False
         OnDblClick = TrackDblClick
-        OptimalFill = True
       end
       object Album: TLabel
         Left = 108
@@ -764,11 +778,10 @@ object fMainForm: TfMainForm
         Anchors = [akTop, akLeft, akRight]
         AutoSize = False
         Caption = 'Album'
-        Font.Height = 22
+        Font.Height = 16
         ParentColor = False
         ParentFont = False
         OnDblClick = TrackDblClick
-        OptimalFill = True
       end
       object Artist: TLabel
         Left = 109
@@ -778,23 +791,24 @@ object fMainForm: TfMainForm
         Anchors = [akTop, akLeft, akRight]
         AutoSize = False
         Caption = 'Artist'
-        Font.Height = 22
+        Font.Height = 16
         ParentColor = False
         ParentFont = False
         OnDblClick = TrackDblClick
-        OptimalFill = True
       end
       object Track: TLabel
         AnchorSideLeft.Control = Album
         AnchorSideLeft.Side = asrBottom
         Left = 561
         Height = 21
-        Top = 49
+        Top = 36
         Width = 50
         Anchors = [akLeft, akRight, akBottom]
         AutoSize = False
         BorderSpacing.Left = 6
+        Font.Height = 16
         ParentColor = False
+        ParentFont = False
         OnDblClick = TrackDblClick
         OptimalFill = True
       end
@@ -802,7 +816,7 @@ object fMainForm: TfMainForm
   end
   object Splitter1: TSplitter
     Left = 243
-    Height = 591
+    Height = 590
     Top = 0
     Width = 4
   end

@@ -1,9 +1,9 @@
-# varianus <marcocas@gmail.com>, 2016.
+# varianus <marcocas@gmail.com>, 2016, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: Ovoplayer 1.3\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-12-10 15:57+0200\n"
+"PO-Revision-Date: 2017-04-09 16:45+0200\n"
 "Last-Translator: varianus <marcocas@gmail.com>\n"
 "Language-Team: Marco Caselli\n"
 "Language: it\n"
@@ -28,6 +28,15 @@ msgstr "Scaletta Automatica"
 #: appconsts.rbegincollectionscan
 msgid "Scanning Collection"
 msgstr "Scansione Collezione"
+
+#: appconsts.rbuildenv
+msgid "Build environment: Lazarus %0:s  FPC %1:s"
+msgstr "Ambiente di sviluppo: Lazarus %0:s  FPC %1:s"
+
+#: appconsts.rcurrentengine
+#| msgid "Current audio engine : %s"
+msgid "Current audio engine: %s"
+msgstr "Motore di riproduzione attuale: %s"
 
 #: appconsts.rdeleteplaylistconfirmation
 msgid "Are you sure to delete this playlist?"
@@ -60,8 +69,7 @@ msgstr ""
 #: appconsts.rmatchingitems
 #| msgid "%0:d songs matching current filter (%1:s, %2:s)"
 msgid "%0:d songs matching current filter (total time %1:s, total size %2:s)"
-msgstr ""
-"Il filtro corrente estrae %0:d tracce (Tempo totale %1:s, Dim. Totale%2:s)"
+msgstr "Il filtro corrente estrae %0:d tracce (Tempo totale %1:s, Dim. Totale%2:s)"
 
 #: appconsts.rmissing
 msgid "<missing>"
@@ -90,6 +98,11 @@ msgstr "Rimossi:"
 #: appconsts.rupdatedtrack
 msgid "Updated:"
 msgstr "Aggiornate:"
+
+#: appconsts.rversionstring
+#| msgid "Version: %0:s (SVN Rev: %1:s Date %2:s)"
+msgid "Version: %0:s (SVN Rev.: %1:s Date %2:s)"
+msgstr "Versione: %0:s (Rev. SVN: %1:s Data %2:s)"
 
 #: medialibrary.rs_added
 msgctxt "medialibrary.rs_added"
@@ -270,6 +283,40 @@ msgstr "Data Ultima Riproduzione"
 #: playlistbuilder.rs_lessthan
 msgid "less than"
 msgstr "minore di"
+
+#: playlistbuilder.rs_name25_random_songs
+msgid "25 Random songs"
+msgstr "25 Brani casuali"
+
+#: playlistbuilder.rs_nameallsongs
+#, fuzzy
+msgctxt "playlistbuilder.rs_nameallsongs"
+msgid "All songs"
+msgstr "Tutte le canzoni"
+
+#: playlistbuilder.rs_namelongesttimefromlastplay
+#, fuzzy
+msgctxt "playlistbuilder.rs_namelongesttimefromlastplay"
+msgid "Longest time from last play"
+msgstr "Non riprodotte da più tempo"
+
+#: playlistbuilder.rs_namemostplayed
+#, fuzzy
+msgctxt "playlistbuilder.rs_namemostplayed"
+msgid "Most played"
+msgstr "Più riprodotte"
+
+#: playlistbuilder.rs_nameneverplayed
+#, fuzzy
+msgctxt "playlistbuilder.rs_nameneverplayed"
+msgid "Never played"
+msgstr "Mai riprodotti"
+
+#: playlistbuilder.rs_namenewersongs
+#, fuzzy
+msgctxt "playlistbuilder.rs_namenewersongs"
+msgid "Newer songs"
+msgstr "Nuovi brani"
 
 #: playlistbuilder.rs_notcontains
 msgid "not contains"
@@ -671,48 +718,34 @@ msgstr "Apri Scaletta"
 msgid "&License"
 msgstr "&Licenza"
 
+#: tfabout.caption
+msgctxt "tfabout.caption"
+msgid "About"
+msgstr "Informazioni"
+
 #: tfabout.label1.caption
 msgctxt "tfabout.label1.caption"
 msgid "OvoPlayer"
 msgstr "OvoPlayer"
 
-#: tfabout.label10.caption
-msgid "Current Engine"
-msgstr "Motore Audio corrente"
-
-#: tfabout.label2.caption
-#| msgid "Version :"
-msgctxt "tfabout.label2.caption"
-msgid "Version"
-msgstr "Versione"
-
 #: tfabout.label3.caption
-msgid "Author : Marco Caselli"
-msgstr "Autore : Marco Caselli"
+#| msgid "Copyright (C) 2011, Marco Caselli <marcocas@gmail.com>"
+msgid "(C) 2011, Marco Caselli <marcocas@gmail.com>"
+msgstr "(C) 2011, Marco Caselli <marcocas@gmail.com>"
 
 #: tfabout.label4.caption
 msgid "Another free music player"
 msgstr "Un altro riproduttore musicale libero"
 
-#: tfabout.label5.caption
+#: tfabout.lbbuildenv.caption
+msgctxt "tfabout.lbbuildenv.caption"
 msgid "Lazarus"
-msgstr ""
+msgstr "Lazarus"
 
-#: tfabout.label6.caption
-msgid "Home Page"
-msgstr "Home Page"
-
-#: tfabout.label7.caption
-msgid "FPC"
-msgstr ""
-
-#: tfabout.label8.caption
-msgid "Build Date"
-msgstr "Data file"
-
-#: tfabout.label9.caption
-msgid "SVN rev:"
-msgstr "Rev. SVN:"
+#: tfabout.lbengine.caption
+msgctxt "tfabout.lbengine.caption"
+msgid "Engine"
+msgstr "Motore"
 
 #: tfabout.lhomepage.caption
 msgid "http://ovoplayer.altervista.org/"
@@ -738,6 +771,10 @@ msgstr "Cerca Adesso"
 #: tfconfig.brestart.caption
 msgid "Restart Now"
 msgstr "Riavvia ora"
+
+#: tfconfig.caption
+msgid "Config"
+msgstr "Configurazione"
 
 #: tfconfig.cbcapturemmkeys.caption
 msgid "Use multimedia Keys"
@@ -975,6 +1012,11 @@ msgctxt "TFMAINFORM.BTNUPDIR.CAPTION"
 msgid "Up"
 msgstr "Su"
 
+#: tfmainform.caption
+msgctxt "tfmainform.caption"
+msgid "OvoPlayer"
+msgstr "OvoPlayer"
+
 #: tfmainform.cbgroupby.hint
 msgid "Group song"
 msgstr "Raggruppa"
@@ -1145,6 +1187,10 @@ msgstr "Rimuovi da Scaletta"
 msgid "Restore"
 msgstr "Ripristina"
 
+#: tfmainform.radiobutton1.caption
+msgid "RadioButton1"
+msgstr ""
+
 #: tfmainform.sgplaylist.columns[0].title.caption
 msgid "#"
 msgstr ""
@@ -1292,6 +1338,10 @@ msgstr "Abbandona"
 msgid "Save"
 msgstr "Salva"
 
+#: tfsonginfo.caption
+msgid "Song Information"
+msgstr "Informazioni sul brano"
+
 #: tfsonginfo.groupbox1.caption
 msgid "Library"
 msgstr "Libreria"
@@ -1382,3 +1432,4 @@ msgstr "Proprietà Media"
 #: tfsonginfo.tstags.caption
 msgid "Tags"
 msgstr "Etichette"
+

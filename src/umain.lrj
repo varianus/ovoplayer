@@ -18,6 +18,7 @@
 {"hash":5966629,"name":"tfmainform.sgstats.columns[1].title.caption","sourcebytes":[84,105,116,108,101],"value":"Title"},
 {"hash":2236960,"name":"tfmainform.tbrepeat.caption","sourcebytes":[32,32,32,32,32],"value":"     "},
 {"hash":64175616,"name":"tfmainform.lbtime.caption","sourcebytes":[48,48,58,48,48,58,48,48],"value":"00:00:00"},
+{"hash":206317089,"name":"tfmainform.radiobutton1.caption","sourcebytes":[82,97,100,105,111,66,117,116,116,111,110,49],"value":"RadioButton1"},
 {"hash":35,"name":"tfmainform.sgplaylist.columns[0].title.caption","sourcebytes":[35],"value":"#"},
 {"hash":5966629,"name":"tfmainform.sgplaylist.columns[1].title.caption","sourcebytes":[84,105,116,108,101],"value":"Title"},
 {"hash":4729277,"name":"tfmainform.sgplaylist.columns[2].title.caption","sourcebytes":[65,108,98,117,109],"value":"Album"},

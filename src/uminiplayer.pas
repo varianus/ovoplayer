@@ -26,14 +26,13 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls,
-  ExtCtrls, customdrawncontrols, udm, GUIBackEnd;
+  ExtCtrls,  udm, GUIBackEnd, ThemedSlider;
 
 type
 
   { TfMiniPlayer }
 
   TfMiniPlayer = class(TForm)
-    TrackBar: TCDTrackBar;
     Panel1: TPanel;
     tbPlayControls: TToolBar;
     Timer: TTimer;
@@ -44,6 +43,7 @@ type
     ToolButton5: TToolButton;
     ToolButton6: TToolButton;
     ToolButton7: TToolButton;
+    TrackBar: TThemedSlider;
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormHide(Sender: TObject);

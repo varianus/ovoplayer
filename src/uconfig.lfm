@@ -7,11 +7,11 @@ object fConfig: TfConfig
   Caption = 'Config'
   ClientHeight = 509
   ClientWidth = 702
+  DesignTimePPI = 95
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
   LCLVersion = '1.7'
-  Visible = False
   object GroupBox1: TGroupBox
     Left = 0
     Height = 449
@@ -159,9 +159,9 @@ object fConfig: TfConfig
     Height = 449
     Top = 0
     Width = 549
-    ActivePage = tsNetRemote
+    ActivePage = tsEngine
     Align = alClient
-    TabIndex = 4
+    TabIndex = 1
     TabOrder = 2
     object tsInterface: TTabSheet
       Caption = 'Interfaces'
@@ -249,9 +249,9 @@ object fConfig: TfConfig
       OnShow = tsEngineShow
       object rgAudioEngine: TRadioGroup
         Left = 4
-        Height = 51
+        Height = 52
         Top = 0
-        Width = 198
+        Width = 209
         AutoFill = True
         AutoSize = True
         Caption = 'Audio Engine'
@@ -263,8 +263,8 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 32
-        ClientWidth = 194
+        ClientHeight = 33
+        ClientWidth = 205
         Items.Strings = (
           'Sample row for builded engine'
         )
@@ -291,14 +291,14 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          419
+          421
         )
       end
       object EngineInfoView: TValueListEditor
-        Left = 208
+        Left = 216
         Height = 208
         Top = 8
-        Width = 323
+        Width = 315
         Anchors = [akTop, akLeft, akRight, akBottom]
         AutoEdit = False
         DefaultColWidth = 100
@@ -317,7 +317,7 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          219
+          213
         )
       end
     end
@@ -332,6 +332,7 @@ object fConfig: TfConfig
         Top = 34
         Width = 384
         ItemHeight = 0
+        Options = [lboDrawFocusRect]
         ScrollWidth = 382
         TabOrder = 0
         TopIndex = -1
@@ -530,15 +531,15 @@ object fConfig: TfConfig
   object FontDialog1: TFontDialog
     MinFontSize = 0
     MaxFontSize = 0
-    left = 496
-    top = 96
+    Left = 496
+    Top = 96
   end
   object OpenDialog1: TOpenDialog
-    left = 393
-    top = 116
+    Left = 393
+    Top = 116
   end
   object SelectDirectoryDialog1: TSelectDirectoryDialog
-    left = 464
-    top = 224
+    Left = 464
+    Top = 224
   end
 end

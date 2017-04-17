@@ -78,14 +78,13 @@ uses
 
     // Application forms and related
   Udm, uMain, uAbout, ulicense, uConfig, uOSD, uMiniPlayer, uSongInfo, uCover,
-  lazlogger, customdrawndrawers, customdrawn_ovoplayer, DefaultTranslator,
-  customdrawn, ucustomplaylist, ufrfield, playlistbuilder, netprotocol,
-  ImagesSupport, netsupport, guiconfig, SimpleSingleInstance;
+  lazlogger, DefaultTranslator,
+  ucustomplaylist, ufrfield, playlistbuilder, netprotocol,
+  ImagesSupport, netsupport, guiconfig, SimpleSingleInstance, mcaselli;
 
 {$R *.res}
 begin
-
-  defaultstyle := dsExtra2;
+  Application.Scaled:=True;
 
   CheckRestarting(Application);
   // needed to output exception to a file

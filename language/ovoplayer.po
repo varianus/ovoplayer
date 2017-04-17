@@ -17,6 +17,14 @@ msgstr ""
 msgid "Scanning Collection"
 msgstr ""
 
+#: appconsts.rbuildenv
+msgid "Build environment: Lazarus %0:s  FPC %1:s"
+msgstr ""
+
+#: appconsts.rcurrentengine
+msgid "Current audio engine: %s"
+msgstr ""
+
 #: appconsts.rdeleteplaylistconfirmation
 msgid "Are you sure to delete this playlist?"
 msgstr ""
@@ -73,6 +81,10 @@ msgstr ""
 
 #: appconsts.rupdatedtrack
 msgid "Updated:"
+msgstr ""
+
+#: appconsts.rversionstring
+msgid "Version: %0:s (SVN Rev.: %1:s Date %2:s)"
 msgstr ""
 
 #: medialibrary.rs_added
@@ -253,6 +265,35 @@ msgstr ""
 
 #: playlistbuilder.rs_lessthan
 msgid "less than"
+msgstr ""
+
+#: playlistbuilder.rs_name25_random_songs
+msgid "25 Random songs"
+msgstr ""
+
+#: playlistbuilder.rs_nameallsongs
+msgctxt "playlistbuilder.rs_nameallsongs"
+msgid "All songs"
+msgstr ""
+
+#: playlistbuilder.rs_namelongesttimefromlastplay
+msgctxt "playlistbuilder.rs_namelongesttimefromlastplay"
+msgid "Longest time from last play"
+msgstr ""
+
+#: playlistbuilder.rs_namemostplayed
+msgctxt "playlistbuilder.rs_namemostplayed"
+msgid "Most played"
+msgstr ""
+
+#: playlistbuilder.rs_nameneverplayed
+msgctxt "playlistbuilder.rs_nameneverplayed"
+msgid "Never played"
+msgstr ""
+
+#: playlistbuilder.rs_namenewersongs
+msgctxt "playlistbuilder.rs_namenewersongs"
+msgid "Newer songs"
 msgstr ""
 
 #: playlistbuilder.rs_notcontains
@@ -655,46 +696,32 @@ msgstr ""
 msgid "&License"
 msgstr ""
 
+#: tfabout.caption
+msgctxt "tfabout.caption"
+msgid "About"
+msgstr ""
+
 #: tfabout.label1.caption
 msgctxt "tfabout.label1.caption"
 msgid "OvoPlayer"
 msgstr ""
 
-#: tfabout.label10.caption
-msgid "Current Engine"
-msgstr ""
-
-#: tfabout.label2.caption
-msgctxt "tfabout.label2.caption"
-msgid "Version"
-msgstr ""
-
 #: tfabout.label3.caption
-msgid "Author : Marco Caselli"
+msgid "(C) 2011, Marco Caselli <marcocas@gmail.com>"
 msgstr ""
 
 #: tfabout.label4.caption
 msgid "Another free music player"
 msgstr ""
 
-#: tfabout.label5.caption
+#: tfabout.lbbuildenv.caption
+msgctxt "tfabout.lbbuildenv.caption"
 msgid "Lazarus"
 msgstr ""
 
-#: tfabout.label6.caption
-msgid "Home Page"
-msgstr ""
-
-#: tfabout.label7.caption
-msgid "FPC"
-msgstr ""
-
-#: tfabout.label8.caption
-msgid "Build Date"
-msgstr ""
-
-#: tfabout.label9.caption
-msgid "SVN rev:"
+#: tfabout.lbengine.caption
+msgctxt "tfabout.lbengine.caption"
+msgid "Engine"
 msgstr ""
 
 #: tfabout.lhomepage.caption
@@ -720,6 +747,10 @@ msgstr ""
 
 #: tfconfig.brestart.caption
 msgid "Restart Now"
+msgstr ""
+
+#: tfconfig.caption
+msgid "Config"
 msgstr ""
 
 #: tfconfig.cbcapturemmkeys.caption
@@ -958,6 +989,11 @@ msgctxt "TFMAINFORM.BTNUPDIR.CAPTION"
 msgid "Up"
 msgstr ""
 
+#: tfmainform.caption
+msgctxt "tfmainform.caption"
+msgid "OvoPlayer"
+msgstr ""
+
 #: tfmainform.cbgroupby.hint
 msgid "Group song"
 msgstr ""
@@ -1128,6 +1164,10 @@ msgstr ""
 msgid "Restore"
 msgstr ""
 
+#: tfmainform.radiobutton1.caption
+msgid "RadioButton1"
+msgstr ""
+
 #: tfmainform.sgplaylist.columns[0].title.caption
 msgid "#"
 msgstr ""
@@ -1273,6 +1313,10 @@ msgstr ""
 
 #: tfsonginfo.buttonpanel1.okbutton.caption
 msgid "Save"
+msgstr ""
+
+#: tfsonginfo.caption
+msgid "Song Information"
 msgstr ""
 
 #: tfsonginfo.groupbox1.caption

@@ -7,6 +7,7 @@
       <SessionStorage Value="InProjectDir"/>
       <MainUnit Value="0"/>
       <Title Value="OvoPlayer"/>
+      <Scaled Value="True"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
       <XPManifest>
@@ -111,7 +112,7 @@ if TargetOS = 'linux' then
         <PackageName Value="FCL"/>
       </Item1>
       <Item2>
-        <PackageName Value="customdrawn"/>
+        <PackageName Value="mcaselli"/>
       </Item2>
       <Item3>
         <PackageName Value="SQLDBLaz"/>
@@ -571,9 +572,6 @@ if TargetOS = 'linux' then
         <ConfigFilePath Value="..\extrafpc.cfg"/>
       </ConfigFile>
       <CustomOptions Value="-Xm"/>
-      <OtherDefines Count="1">
-        <Define0 Value="aaa"/>
-      </OtherDefines>
       <ExecuteBefore>
         <Command Value="$(LazarusDir)\tools\svn2revisioninc$(ExeExt) .. ovorevision.inc --c=ovoRevision"/>
       </ExecuteBefore>

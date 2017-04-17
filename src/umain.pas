@@ -28,15 +28,15 @@ uses
   Classes, types, SysUtils, lazFileUtils, Forms, Controls, Graphics,
   Dialogs, ComCtrls, Menus, ExtCtrls, Buttons, StdCtrls, Song, CustomSong, uOSD,
   BaseTypes, GUIBackEnd, Config, MediaLibrary, coreinterfaces,
-  DefaultTranslator, Grids, EditBtn, ActnList, customdrawncontrols,
-  customdrawn_common, customdrawn_ovoplayer, LCLIntf, Lmessages,
+  DefaultTranslator, Grids, EditBtn, ActnList,
+  LCLIntf, Lmessages,
   {$IFDEF MPRIS2} Mpris2,{$ENDIF}
   {$IFDEF NOTIFYDBUS} notification,{$ENDIF}
   {$IFDEF TASKBAR_EXTENSION}taskbar_ext,{$ENDIF}
   {$IFDEF NETWORK_INTF}NetIntf,{$ENDIF}
   {$IFDEF MULTIMEDIA_KEYS}MultimediaKeys, {$ENDIF}
   ucover, ucustomplaylist, playlistbuilder, netprotocol,
-  GuiConfig;
+  GuiConfig, ThemedSlider;
 
 type
   TSortFields = record
@@ -141,6 +141,7 @@ type
     MenuItem59: TMenuItem;
     MenuItem60: TMenuItem;
     pmPlaylists: TPopupMenu;
+    RadioButton1: TRadioButton;
     RateStars: TImageList;
     MenuItem21: TMenuItem;
     MenuItem40: TMenuItem;
@@ -158,9 +159,8 @@ type
     MenuItem53: TMenuItem;
     MenuItem54: TMenuItem;
     MenuItem55: TMenuItem;
-    slVolume: TCDTrackBar;
     sgPlayList: TStringGrid;
-    TrackBar: TCDTrackBar;
+    slVolume: TThemedSlider;
     edtFilter: TLabeledEdit;
     ePath: TDirectoryEdit;
     gbStats: TGroupBox;
@@ -222,6 +222,7 @@ type
     ToolButton11: TToolButton;
     ToolButton12: TToolButton;
     ToolButton13: TToolButton;
+    TrackBar: TThemedSlider;
     tvCollection: TTreeView;
     tsPlayList: TTabSheet;
     tbDirectory: TToolBar;
@@ -1321,6 +1322,17 @@ begin
     end;
   {$ENDIF}
 
+  try
+    if Not FileExists(BackEnd.Config.GetPlaylistsPath+'playlist.opl') then
+      begin
+
+      end;
+
+  except
+    on e : exception do
+    //
+  end;
+
   LoadedPlaylist:= False;
   BackEnd.AutoSendPosEvents(True);
   OnLoaded(self);
@@ -1589,9 +1601,6 @@ var
   i: integer;
   Node, BaseNode: TPlayListTreeNode;
   plName:string;
-  //
-  tmp1 : TPlaylistContainer;
-  tmp2: TstringList;
 
 begin
   PlaylistTree.Items.Clear;
@@ -1603,7 +1612,11 @@ begin
   try
     //
     if not Assigned(PlaylistContainer) then
-       PlaylistContainer:= TPlaylistContainer.Create(BackEnd.Config.GetPlaylistsPath+'playlist.opl');
+       begin
+         TPlaylistContainer.CreateDefaultFileIfMissing(BackEnd.Config.GetPlaylistsPath+'playlist.opl');
+         PlaylistContainer:= TPlaylistContainer.Create(BackEnd.Config.GetPlaylistsPath+'playlist.opl');
+
+       end;
     PlaylistContainer.GetPlaylists(AutoPlayList);
     //
 
