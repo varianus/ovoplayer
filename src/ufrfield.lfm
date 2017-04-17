@@ -6,7 +6,10 @@ object frField: TfrField
   ClientHeight = 32
   ClientWidth = 573
   DesignTimePPI = 95
+  ParentFont = False
   TabOrder = 0
+  DesignLeft = 49
+  DesignTop = 33
   object bMinus: TBitBtn
     Left = 542
     Height = 32

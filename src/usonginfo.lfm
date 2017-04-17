@@ -1,12 +1,13 @@
 object fSongInfo: TfSongInfo
   Left = 561
-  Height = 407
+  Height = 403
   Top = 239
-  Width = 759
+  Width = 751
   BorderStyle = bsDialog
   Caption = 'Song Information'
-  ClientHeight = 407
-  ClientWidth = 759
+  ClientHeight = 403
+  ClientWidth = 751
+  DesignTimePPI = 95
   OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
@@ -14,23 +15,23 @@ object fSongInfo: TfSongInfo
   OnShow = FormShow
   LCLVersion = '1.7'
   object pcSongInfo: TPageControl
-    Left = 168
-    Height = 357
+    Left = 166
+    Height = 354
     Top = 0
-    Width = 591
-    ActivePage = tsMediaProperty
+    Width = 585
+    ActivePage = tsTags
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 0
     object tsTags: TTabSheet
       Caption = 'Tags'
-      ClientHeight = 322
-      ClientWidth = 585
+      ClientHeight = 319
+      ClientWidth = 579
       object laArtist: TLabel
         Left = 0
         Height = 15
         Top = 46
-        Width = 92
+        Width = 91
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'Artist'
@@ -38,18 +39,18 @@ object fSongInfo: TfSongInfo
         ParentFont = False
       end
       object edArtist: TEdit
-        Left = 98
+        Left = 97
         Height = 27
         Top = 43
-        Width = 384
+        Width = 380
         OnChange = edArtistChange
         TabOrder = 1
       end
       object laAlbum: TLabel
         Left = 0
         Height = 15
-        Top = 78
-        Width = 92
+        Top = 77
+        Width = 91
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'Album'
@@ -57,10 +58,10 @@ object fSongInfo: TfSongInfo
         ParentFont = False
       end
       object edAlbum: TEdit
-        Left = 98
+        Left = 97
         Height = 27
-        Top = 74
-        Width = 384
+        Top = 73
+        Width = 380
         OnChange = edAlbumChange
         TabOrder = 2
       end
@@ -68,7 +69,7 @@ object fSongInfo: TfSongInfo
         Left = 0
         Height = 15
         Top = 14
-        Width = 92
+        Width = 91
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'Title'
@@ -76,18 +77,18 @@ object fSongInfo: TfSongInfo
         ParentFont = False
       end
       object edTitle: TEdit
-        Left = 98
+        Left = 97
         Height = 27
         Top = 9
-        Width = 384
+        Width = 380
         OnChange = edTitleChange
         TabOrder = 0
       end
       object laAlbumArtist: TLabel
         Left = 0
         Height = 15
-        Top = 111
-        Width = 92
+        Top = 110
+        Width = 91
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'Album Artist'
@@ -95,18 +96,18 @@ object fSongInfo: TfSongInfo
         ParentFont = False
       end
       object edAlbumArtist: TEdit
-        Left = 98
+        Left = 97
         Height = 27
-        Top = 107
-        Width = 384
+        Top = 106
+        Width = 380
         OnChange = edAlbumArtistChange
         TabOrder = 3
       end
       object laGenre: TLabel
         Left = 0
         Height = 15
-        Top = 144
-        Width = 92
+        Top = 142
+        Width = 91
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'Genre'
@@ -114,18 +115,18 @@ object fSongInfo: TfSongInfo
         ParentFont = False
       end
       object meComment: TMemo
-        Left = 100
-        Height = 107
-        Top = 203
-        Width = 328
+        Left = 99
+        Height = 106
+        Top = 201
+        Width = 325
         OnChange = meCommentChange
         TabOrder = 5
       end
       object laComment: TLabel
         Left = 0
         Height = 15
-        Top = 206
-        Width = 92
+        Top = 204
+        Width = 91
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'Comment'
@@ -135,8 +136,8 @@ object fSongInfo: TfSongInfo
       object laYear: TLabel
         Left = 0
         Height = 15
-        Top = 176
-        Width = 93
+        Top = 174
+        Width = 92
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'Year'
@@ -144,10 +145,10 @@ object fSongInfo: TfSongInfo
         ParentFont = False
       end
       object laTrack: TLabel
-        Left = 282
+        Left = 279
         Height = 16
-        Top = 175
-        Width = 93
+        Top = 173
+        Width = 92
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'Track'
@@ -155,38 +156,38 @@ object fSongInfo: TfSongInfo
         ParentFont = False
       end
       object edTrack: TEdit
-        Left = 381
+        Left = 377
         Height = 27
-        Top = 171
-        Width = 101
+        Top = 169
+        Width = 100
         OnChange = edTrackChange
         TabOrder = 4
       end
       object edYear: TEdit
-        Left = 98
+        Left = 97
         Height = 27
-        Top = 171
-        Width = 101
+        Top = 169
+        Width = 100
         OnChange = edYearChange
         TabOrder = 6
       end
       object edGenre: TComboBox
-        Left = 98
-        Height = 23
-        Top = 139
-        Width = 384
+        Left = 97
+        Height = 27
+        Top = 138
+        Width = 380
         AutoComplete = True
         AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactSearchAscending]
-        ItemHeight = 15
+        ItemHeight = 0
         OnChange = edGenreChange
         Sorted = True
         TabOrder = 7
       end
       object imgCover: TImage
-        Left = 452
-        Height = 107
-        Top = 203
-        Width = 124
+        Left = 447
+        Height = 106
+        Top = 201
+        Width = 123
         ParentShowHint = False
         ShowHint = True
         Stretch = True
@@ -194,13 +195,13 @@ object fSongInfo: TfSongInfo
     end
     object tsMediaProperty: TTabSheet
       Caption = 'Media Property'
-      ClientHeight = 329
-      ClientWidth = 583
+      ClientHeight = 319
+      ClientWidth = 579
       object Label9: TLabel
         Left = 6
         Height = 16
-        Top = 80
-        Width = 106
+        Top = 79
+        Width = 105
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'Duration'
@@ -209,26 +210,26 @@ object fSongInfo: TfSongInfo
         ParentFont = False
       end
       object leDuration: TLabel
-        Left = 123
+        Left = 122
         Height = 16
-        Top = 80
-        Width = 146
+        Top = 79
+        Width = 144
         AutoSize = False
         ParentColor = False
       end
       object leBitRate: TLabel
-        Left = 123
+        Left = 122
         Height = 16
-        Top = 106
-        Width = 146
+        Top = 105
+        Width = 144
         AutoSize = False
         ParentColor = False
       end
       object Label11: TLabel
         Left = 6
         Height = 16
-        Top = 106
-        Width = 106
+        Top = 105
+        Width = 105
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'BitRate'
@@ -239,8 +240,8 @@ object fSongInfo: TfSongInfo
       object Label12: TLabel
         Left = 6
         Height = 16
-        Top = 138
-        Width = 106
+        Top = 137
+        Width = 105
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'Sampling'
@@ -249,18 +250,18 @@ object fSongInfo: TfSongInfo
         ParentFont = False
       end
       object leSampling: TLabel
-        Left = 123
+        Left = 122
         Height = 16
-        Top = 138
-        Width = 146
+        Top = 137
+        Width = 144
         AutoSize = False
         ParentColor = False
       end
       object Label13: TLabel
         Left = 8
         Height = 16
-        Top = 169
-        Width = 106
+        Top = 167
+        Width = 105
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'Channels'
@@ -269,10 +270,10 @@ object fSongInfo: TfSongInfo
         ParentFont = False
       end
       object leChannels: TLabel
-        Left = 123
+        Left = 122
         Height = 16
-        Top = 169
-        Width = 146
+        Top = 167
+        Width = 144
         AutoSize = False
         ParentColor = False
       end
@@ -280,7 +281,7 @@ object fSongInfo: TfSongInfo
         Left = 6
         Height = 16
         Top = 16
-        Width = 106
+        Width = 105
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'File Name'
@@ -292,7 +293,7 @@ object fSongInfo: TfSongInfo
         Left = 6
         Height = 16
         Top = 48
-        Width = 106
+        Width = 105
         Alignment = taRightJustify
         AutoSize = False
         Caption = 'Size'
@@ -301,27 +302,27 @@ object fSongInfo: TfSongInfo
         ParentFont = False
       end
       object leSize: TLabel
-        Left = 123
+        Left = 122
         Height = 16
         Top = 48
-        Width = 146
+        Width = 144
         AutoSize = False
         ParentColor = False
       end
       object GroupBox1: TGroupBox
-        Left = 300
-        Height = 160
+        Left = 297
+        Height = 158
         Top = 33
-        Width = 280
+        Width = 277
         Caption = 'Library'
-        ClientHeight = 140
-        ClientWidth = 276
+        ClientHeight = 139
+        ClientWidth = 273
         TabOrder = 0
         object Label16: TLabel
           Left = 6
           Height = 16
           Top = 8
-          Width = 116
+          Width = 115
           Alignment = taRightJustify
           AutoSize = False
           Caption = 'Play Count'
@@ -329,10 +330,10 @@ object fSongInfo: TfSongInfo
           ParentFont = False
         end
         object lePlayCount: TLabel
-          Left = 140
+          Left = 139
           Height = 16
           Top = 8
-          Width = 125
+          Width = 124
           AutoSize = False
           ParentColor = False
         end
@@ -340,7 +341,7 @@ object fSongInfo: TfSongInfo
           Left = 6
           Height = 16
           Top = 36
-          Width = 116
+          Width = 115
           Alignment = taRightJustify
           AutoSize = False
           Caption = 'Added to collection'
@@ -348,18 +349,18 @@ object fSongInfo: TfSongInfo
           ParentFont = False
         end
         object leAdded: TLabel
-          Left = 140
+          Left = 139
           Height = 16
           Top = 36
-          Width = 125
+          Width = 124
           AutoSize = False
           ParentColor = False
         end
         object Label18: TLabel
           Left = 6
           Height = 16
-          Top = 68
-          Width = 116
+          Top = 67
+          Width = 115
           Alignment = taRightJustify
           AutoSize = False
           Caption = 'Last Played'
@@ -367,19 +368,19 @@ object fSongInfo: TfSongInfo
           ParentFont = False
         end
         object leLastPlayed: TLabel
-          Left = 140
+          Left = 139
           Height = 16
-          Top = 68
-          Width = 125
+          Top = 67
+          Width = 124
           AutoSize = False
           ParentColor = False
         end
       end
       object leFileName: TEdit
-        Left = 123
+        Left = 122
         Height = 16
         Top = 16
-        Width = 457
+        Width = 452
         AutoSize = False
         BorderStyle = bsNone
         Color = clNone
@@ -390,34 +391,36 @@ object fSongInfo: TfSongInfo
   end
   object lbFiles: TListBox
     Left = 0
-    Height = 357
+    Height = 354
     Top = 0
-    Width = 168
+    Width = 166
     Align = alLeft
     ItemHeight = 0
     MultiSelect = True
     OnMouseLeave = lbFilesMouseLeave
     OnMouseMove = lbFilesMouseMove
     OnSelectionChange = lbFilesSelectionChange
+    Options = [lboDrawFocusRect]
     ParentShowHint = False
-    ScrollWidth = 166
+    ScrollWidth = 164
     ShowHint = True
     TabOrder = 1
+    TopIndex = -1
   end
   object pnlMoveSelection: TPanel
     Left = 0
-    Height = 50
-    Top = 357
-    Width = 759
+    Height = 49
+    Top = 354
+    Width = 751
     Align = alBottom
-    ClientHeight = 50
-    ClientWidth = 759
+    ClientHeight = 49
+    ClientWidth = 751
     TabOrder = 2
     object bNext: TBitBtn
-      Left = 101
-      Height = 34
+      Left = 100
+      Height = 33
       Top = 8
-      Width = 96
+      Width = 95
       Align = alLeft
       BorderSpacing.Top = 5
       BorderSpacing.Bottom = 5
@@ -493,9 +496,9 @@ object fSongInfo: TfSongInfo
     end
     object bPrevious: TBitBtn
       Left = 3
-      Height = 34
+      Height = 33
       Top = 8
-      Width = 96
+      Width = 95
       Align = alLeft
       BorderSpacing.Top = 5
       BorderSpacing.Bottom = 5
@@ -570,10 +573,10 @@ object fSongInfo: TfSongInfo
       TabOrder = 1
     end
     object ButtonPanel1: TButtonPanel
-      Left = 203
-      Height = 36
+      Left = 201
+      Height = 35
       Top = 7
-      Width = 549
+      Width = 543
       Align = alClient
       AutoSize = False
       OKButton.Name = 'OKButton'
