@@ -112,20 +112,18 @@ var
   pos :integer;
   HalfSlider:Integer;
 //  Color : DWORD;
+const
+  FrameWidth=1;
 begin
   HalfSlider := FSliderwidth div 2;
 
-  if Focused then
-     InternalBitmap.canvas.Brush.Color:= WidgetSet.GetSysColor(COLOR_HOTLIGHT)
-  else
-     InternalBitmap.canvas.Brush.Color:= WidgetSet.GetSysColor(COLOR_BTNFACE);
-
+  InternalBitmap.canvas.Brush.Color:= WidgetSet.GetSysColor(COLOR_BTNFACE);
   InternalBitmap.Canvas.FillRect(0, 0, InternalBitmap.Width, InternalBitmap.Height);
 
   InternalBitmap.Transparent:=true;
   InternalBitmap.TransparentMode:=tmAuto;
-  r1:=rect(0, BorderWidth +2, Width, (Height - BorderWidth-2));
-  WidgetSet.Frame3d(InternalBitmap.canvas.Handle, r1, BorderWidth, bvLowered);
+  r1:=rect(BorderWidth, BorderWidth, Width - BorderWidth, Height - BorderWidth);
+  WidgetSet.Frame3d(InternalBitmap.canvas.Handle, r1, FrameWidth, bvLowered);
   if fMax = 0 then
      pos:=0
   else
@@ -140,7 +138,7 @@ begin
   if fSeeking then
      begin
        WidgetSet.DrawFrameControl(InternalBitmap.canvas.Handle, r2, DFC_BUTTON, DFCS_PUSHED+DFCS_BUTTONPUSH);
-       WidgetSet.DrawEdge(InternalBitmap.canvas.Handle, r2, EDGE_SUNKEN, BF_RECT+ BF_FLAT);
+       WidgetSet.DrawEdge(InternalBitmap.canvas.Handle, r2, EDGE_SUNKEN, BF_RECT+ BF_MONO);
      end
   else
      begin
@@ -151,16 +149,16 @@ begin
   if pos > SLIDERWIDTH then
      begin
         InternalBitmap.canvas.Brush.Color:= WidgetSet.GetSysColor(COLOR_HIGHLIGHT);
-        InternalBitmap.Canvas.FillRect(R1.Left + (BorderWidth div 2), r1.Top + BorderWidth,
-                            pos - HalfSlider, r1.Bottom - BorderWidth);
+        InternalBitmap.Canvas.FillRect(R1.Left + (FrameWidth), r1.Top + FrameWidth,
+                            pos - HalfSlider, r1.Bottom - FrameWidth);
      end;
-//
-//  if pos < Width - SLIDERWIDTH then
-//     begin
-//        InternalBitmap.canvas.Brush.Color:= WidgetSet.GetSysColor(COLOR_WINDOW);
-//        InternalBitmap.Canvas.FillRect(pos + HalfSlider, r1.Top + BorderWidth,
-//                             Width - HalfSlider, r1.Bottom - BorderWidth);
-//     end;
+
+  if pos < Width - SLIDERWIDTH then
+     begin
+        InternalBitmap.canvas.Brush.Color:= WidgetSet.GetSysColor(COLOR_WINDOW);
+        InternalBitmap.Canvas.FillRect(pos + HalfSlider, r1.Top + FrameWidth,
+                             Width - FrameWidth  -BorderWidth , r1.Bottom - FrameWidth);
+     end;
 
  Invalidate;
 end;
