@@ -433,7 +433,7 @@ end;
 
 procedure TPlayList.PushPos;
 begin
-  if ItemIndex <> -1 then
+  if (ItemIndex <> -1) and (Count > 0) then
     fSavedPointer := List^[FItemIndex]
   else
     fSavedPointer := nil;
