@@ -134,7 +134,7 @@ begin
   if pos < HalfSlider then pos := HalfSlider;
   if pos > Width - HalfSlider then pos:= Width - HalfSlider;
 
-  r2:=Rect(pos - HalfSlider, 1, pos + HalfSlider,  Height-1);
+  r2:=Rect(pos - HalfSlider, BorderWidth div 2, pos + HalfSlider,  Height- (BorderWidth div 2));
   if fSeeking then
      begin
        WidgetSet.DrawFrameControl(InternalBitmap.canvas.Handle, r2, DFC_BUTTON, DFCS_PUSHED+DFCS_BUTTONPUSH);
