@@ -168,7 +168,10 @@ ResourceString
 
 const
    FieldCount = 16;
-   FieldArray : array [0..FieldCount-1] of FieldRec =  (
+type
+   TFieldArray = array [0..FieldCount-1] of FieldRec;
+const
+   FieldArray : TFieldArray =  (
    (ID : 1; FieldName : 'Filename'; FieldLabel : RS_Filename; Kind: ekText),
    (ID : 2; FieldName : 'TrackString'; FieldLabel :RS_TrackString; Kind: ekText),
    (ID : 3; FieldName : 'Track'; FieldLabel : RS_Track; Kind: ekNumber),

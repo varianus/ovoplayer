@@ -1012,11 +1012,6 @@ msgctxt "TFMAINFORM.BTNUPDIR.CAPTION"
 msgid "Up"
 msgstr "Su"
 
-#: tfmainform.caption
-msgctxt "tfmainform.caption"
-msgid "OvoPlayer"
-msgstr "OvoPlayer"
-
 #: tfmainform.cbgroupby.hint
 msgid "Group song"
 msgstr "Raggruppa"
@@ -1186,10 +1181,6 @@ msgstr "Rimuovi da Scaletta"
 #: tfmainform.mnurestore.caption
 msgid "Restore"
 msgstr "Ripristina"
-
-#: tfmainform.radiobutton1.caption
-msgid "RadioButton1"
-msgstr ""
 
 #: tfmainform.sgplaylist.columns[0].title.caption
 msgid "#"

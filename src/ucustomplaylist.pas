@@ -47,31 +47,43 @@ type
     Procedure UpdateFromBuilder(LoadFilters: boolean);
   end;
 
+  { TFieldComparer }
+
+  TFieldComparer = class
+     class function c(const Item1, Item2: FieldRec ): boolean;
+  end;
+
 var
   fCustomPlayList: TfCustomPlayList;
 
 implementation
 uses
-  FilesSupport, Generics.Collections, Generics.Defaults;
+  FilesSupport, garrayutils, gutil;//, Generics.Collections, Generics.Defaults;
 {$R *.lfm}
 
-{ TfCustomPlayList }
 
-function MyCompare (constref Item1, Item2: FieldRec): Integer;
+{ TFieldComparer }
+
+class function TFieldComparer.c(const Item1, Item2: FieldRec): boolean;
 begin
-  result := CompareText(Item1.FieldLabel, item2.FieldLabel);
+   result := CompareText(Item1.FieldLabel, item2.FieldLabel) < 0;
 end;
+
+{ TfCustomPlayList }
 
 procedure TfCustomPlayList.FormCreate(Sender: TObject);
 var
   i: integer;
+  SortList: specialize TOrderingArrayUtils<TFieldArray, FieldRec, TFieldComparer>;
 begin
   PlayListBuilder := TPlayListBuilder.Create;
 
   // Sort field names based on label.
   // Doing it here should sort the already translated ones
 
-  specialize TArrayHelper<FieldRec>.Sort(FieldArray, specialize TComparer<FieldRec>.Construct(@myCompare));
+  SortList.sort(FieldArray, FieldCount);
+
+//  specialize TArrayHelper< FieldRec>.Sort(FieldArray, specialize TComparer<FieldRec>.Construct(@myCompare));
 
   //Find at wich index is the title field, used as a default
   fDefaultIndex:=0;

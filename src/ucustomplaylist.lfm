@@ -7,33 +7,33 @@ object fCustomPlayList: TfCustomPlayList
   Caption = 'Custom Playlist '
   ClientHeight = 516
   ClientWidth = 633
-  DesignTimePPI = 95
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  LCLVersion = '1.7'
+  LCLVersion = '1.8.0.1'
+  Visible = False
   object Panel1: TPanel
     Left = 0
-    Height = 71
+    Height = 72
     Top = 0
-    Width = 633
+    Width = 640
     Align = alTop
-    ClientHeight = 71
-    ClientWidth = 633
+    ClientHeight = 72
+    ClientWidth = 640
     TabOrder = 0
     object edtPlayListName: TLabeledEdit
-      Left = 79
-      Height = 27
+      Left = 80
+      Height = 23
       Top = 16
-      Width = 451
+      Width = 456
       EditLabel.AnchorSideTop.Control = edtPlayListName
       EditLabel.AnchorSideTop.Side = asrCenter
       EditLabel.AnchorSideRight.Control = edtPlayListName
       EditLabel.AnchorSideBottom.Control = edtPlayListName
       EditLabel.AnchorSideBottom.Side = asrBottom
-      EditLabel.Left = 42
-      EditLabel.Height = 17
-      EditLabel.Top = 21
-      EditLabel.Width = 34
+      EditLabel.Left = 45
+      EditLabel.Height = 15
+      EditLabel.Top = 20
+      EditLabel.Width = 32
       EditLabel.Caption = 'Name'
       EditLabel.ParentColor = False
       LabelPosition = lpLeft
@@ -42,9 +42,9 @@ object fCustomPlayList: TfCustomPlayList
   end
   object ButtonPanel1: TButtonPanel
     Left = 6
-    Height = 35
-    Top = 475
-    Width = 621
+    Height = 34
+    Top = 481
+    Width = 628
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
     OKButton.OnClick = OKButtonClick
@@ -59,9 +59,9 @@ object fCustomPlayList: TfCustomPlayList
   end
   object sbFieldContainer: TScrollBox
     Left = 0
-    Height = 320
-    Top = 71
-    Width = 633
+    Height = 324
+    Top = 72
+    Width = 640
     HorzScrollBar.Page = 1
     VertScrollBar.Page = 1
     Align = alClient
@@ -69,16 +69,16 @@ object fCustomPlayList: TfCustomPlayList
   end
   object Panel2: TPanel
     Left = 0
-    Height = 78
-    Top = 391
-    Width = 633
+    Height = 79
+    Top = 396
+    Width = 640
     Align = alBottom
     Anchors = [akLeft]
-    ClientHeight = 78
-    ClientWidth = 633
+    ClientHeight = 79
+    ClientWidth = 640
     TabOrder = 3
     object bPlus: TBitBtn
-      Left = 600
+      Left = 607
       Height = 30
       Top = 11
       Width = 31
@@ -124,10 +124,10 @@ object fCustomPlayList: TfCustomPlayList
     end
     object ckLimit: TCheckBox
       AnchorSideRight.Control = seLimits
-      Left = 392
+      Left = 396
       Height = 21
       Top = 14
-      Width = 128
+      Width = 129
       AutoSize = False
       Caption = 'Limit to '
       Checked = True
@@ -139,10 +139,10 @@ object fCustomPlayList: TfCustomPlayList
     object seLimits: TSpinEdit
       AnchorSideTop.Control = ckLimit
       AnchorSideTop.Side = asrCenter
-      Left = 520
-      Height = 27
-      Top = 11
-      Width = 48
+      Left = 525
+      Height = 23
+      Top = 13
+      Width = 49
       MaxValue = 99999
       MinValue = 1
       TabOrder = 1
@@ -151,16 +151,16 @@ object fCustomPlayList: TfCustomPlayList
     object lbFilterResults: TLabel
       Left = 8
       Height = 1
-      Top = 55
+      Top = 56
       Width = 1
       ParentColor = False
     end
     object cbFieldName: TComboBox
-      Left = 88
-      Height = 29
+      Left = 89
+      Height = 23
       Top = 8
-      Width = 127
-      ItemHeight = 0
+      Width = 128
+      ItemHeight = 15
       Style = csDropDownList
       TabOrder = 3
     end
@@ -168,17 +168,17 @@ object fCustomPlayList: TfCustomPlayList
       Left = 0
       Height = 17
       Top = 14
-      Width = 79
+      Width = 80
       Alignment = taRightJustify
       AutoSize = False
       Caption = 'Sort by'
       ParentColor = False
     end
     object cbSortDirection: TCheckBox
-      Left = 222
-      Height = 21
+      Left = 224
+      Height = 19
       Top = 14
-      Width = 127
+      Width = 118
       Caption = 'in ascending order'
       Checked = True
       State = cbChecked
@@ -187,7 +187,7 @@ object fCustomPlayList: TfCustomPlayList
   end
   object ApplicationProperties1: TApplicationProperties
     OnIdle = ApplicationProperties1Idle
-    Left = 108
-    Top = 142
+    left = 108
+    top = 142
   end
 end

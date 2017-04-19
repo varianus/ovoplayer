@@ -1,8 +1,7 @@
 {"version":1,"strings":[
-{"hash":74635538,"name":"tfmainform.caption","sourcebytes":[79,118,111,80,108,97,121,101,114],"value":"OvoPlayer"},
 {"hash":46008942,"name":"tfmainform.tscollection.caption","sourcebytes":[67,111,108,108,101,99,116,105,111,110],"value":"Collection"},
 {"hash":203656487,"name":"tfmainform.cbgroupby.hint","sourcebytes":[71,114,111,117,112,32,115,111,110,103],"value":"Group song"},
-{"hash":14634573,"name":"tfmainform.cbgroupby.text","sourcebytes":[65,108,98,117,109,65,114,116,105,115,116,32,47,32,65,108,98,117,109],"value":"AlbumArtist / Album"},
+{"hash":14634573,"name":"tfmainform.cbgroupby.text","sourcebytes":[65,108,98,117,109,65,114,116,105,115,116,32,47,32,65,108,98,117,109],"value":"AlbumArtist \/ Album"},
 {"hash":80755394,"name":"tfmainform.edtfilter.hint","sourcebytes":[70,105,108,116,101,114],"value":"Filter"},
 {"hash":80755394,"name":"tfmainform.edtfilter.editlabel.caption","sourcebytes":[70,105,108,116,101,114],"value":"Filter"},
 {"hash":4863637,"name":"tfmainform.btnfiltercancel.caption","sourcebytes":[67,108,111,115,101],"value":"Close"},
@@ -18,7 +17,6 @@
 {"hash":5966629,"name":"tfmainform.sgstats.columns[1].title.caption","sourcebytes":[84,105,116,108,101],"value":"Title"},
 {"hash":2236960,"name":"tfmainform.tbrepeat.caption","sourcebytes":[32,32,32,32,32],"value":"     "},
 {"hash":64175616,"name":"tfmainform.lbtime.caption","sourcebytes":[48,48,58,48,48,58,48,48],"value":"00:00:00"},
-{"hash":206317089,"name":"tfmainform.radiobutton1.caption","sourcebytes":[82,97,100,105,111,66,117,116,116,111,110,49],"value":"RadioButton1"},
 {"hash":35,"name":"tfmainform.sgplaylist.columns[0].title.caption","sourcebytes":[35],"value":"#"},
 {"hash":5966629,"name":"tfmainform.sgplaylist.columns[1].title.caption","sourcebytes":[84,105,116,108,101],"value":"Title"},
 {"hash":4729277,"name":"tfmainform.sgplaylist.columns[2].title.caption","sourcebytes":[65,108,98,117,109],"value":"Album"},

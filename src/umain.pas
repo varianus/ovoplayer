@@ -141,7 +141,6 @@ type
     MenuItem59: TMenuItem;
     MenuItem60: TMenuItem;
     pmPlaylists: TPopupMenu;
-    RadioButton1: TRadioButton;
     RateStars: TImageList;
     MenuItem21: TMenuItem;
     MenuItem40: TMenuItem;
@@ -1437,6 +1436,7 @@ end;
 
 procedure TfMainForm.FormShow(Sender: TObject);
 begin
+  Application.ShowMainForm:=False;
   ScrollIntoView;
 
   if (BackEnd.AudioEngine = nil) or (BackEnd.AudioEngine.GetEngineName = 'dummy') then
@@ -1731,6 +1731,7 @@ end;
 
 procedure TfMainForm.mnuRestoreClick(Sender: TObject);
 begin
+  ShowOnTop;
   Show;
 end;
 
@@ -2869,9 +2870,11 @@ begin
     case Command.command of
       COMMAND_ACTIVATE:
         begin
-           FormStyle := fsSystemStayOnTop;
-           FormStyle := fsNormal;
+          //if WindowState = wsMinimized then
+          //   WindowState := wsNormal;
+          // FormStyle := fsNormal;
            Handled:= true;
+           ShowOnTop;
            Show;
         end;
     end;

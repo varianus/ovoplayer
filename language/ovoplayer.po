@@ -989,11 +989,6 @@ msgctxt "TFMAINFORM.BTNUPDIR.CAPTION"
 msgid "Up"
 msgstr ""
 
-#: tfmainform.caption
-msgctxt "tfmainform.caption"
-msgid "OvoPlayer"
-msgstr ""
-
 #: tfmainform.cbgroupby.hint
 msgid "Group song"
 msgstr ""
@@ -1162,10 +1157,6 @@ msgstr ""
 
 #: tfmainform.mnurestore.caption
 msgid "Restore"
-msgstr ""
-
-#: tfmainform.radiobutton1.caption
-msgid "RadioButton1"
 msgstr ""
 
 #: tfmainform.sgplaylist.columns[0].title.caption

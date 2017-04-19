@@ -107,6 +107,12 @@ type
     Property MaxVolume: Integer Read GetMaxVolume;
   end;
 
+  { TAudioEngineComparer }
+
+  TAudioEngineComparer = class
+     class function c(const Item1, Item2: RAudioEngine ): boolean;
+  end;
+
 Procedure RegisterEngineClass(const EngineClass: TAudioEngineClass;
                               const Priority:Integer;
                               const ForceSelection: boolean = false;
@@ -117,11 +123,13 @@ Procedure SetEngineFailed(const Engine: TAudioEngineClass);
 
 Function GetBestEngine: TAudioEngineClass;
 
+Type
+  TEngineArray= array of RAudioEngine;
 var
-  EngineArray : array of RAudioEngine;
+  EngineArray : TEngineArray;
 
 implementation
-uses LazFileUtils, GeneralFunc, math, Generics.Collections, Generics.Defaults;
+uses LazFileUtils, GeneralFunc, math, garrayutils; //, Generics.Collections, Generics.Defaults;
 
 
 procedure RegisterEngineClass(const EngineClass: TAudioEngineClass;
@@ -167,19 +175,13 @@ begin
        end;
 end;
 
-function CompareEngine(constref Item1, Item2: RAudioEngine ): Integer;
-  begin
-    result := CompareBoolean(item1.Failed ,item2.Failed);
-    if result = 0 then
-       result := TCompare.Integer(item1.Priority,item2.Priority);
-  end;
-
 function GetBestEngine: TAudioEngineClass;
 var
   i:integer;
+  sortList: specialize TOrderingArrayUtils<TEngineArray, RAudioEngine, TAudioEngineComparer>;
 begin
 
-  specialize TArrayHelper<RAudioEngine>.Sort(EngineArray, specialize TComparer<RAudioEngine>.Construct(@CompareEngine));
+  SortList.Sort(EngineArray, Length(EngineArray));
 
   result:=nil;
   for i := Low(EngineArray) to High(EngineArray) do
@@ -189,6 +191,19 @@ begin
          break;
        end;
 
+end;
+
+{ TAudioEngineComparer }
+
+class function TAudioEngineComparer.c(const Item1, Item2: RAudioEngine
+  ): boolean;
+var
+  tmp : integer;
+begin
+  tmp := CompareBoolean(item1.Failed ,item2.Failed) ;
+  if tmp = 0 then
+     tmp := CompareValue(item1.Priority,item2.Priority);
+  Result := tmp <0;
 end;
 
 { TAudioEngine }
