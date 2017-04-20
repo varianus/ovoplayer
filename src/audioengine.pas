@@ -178,7 +178,8 @@ end;
 function GetBestEngine: TAudioEngineClass;
 var
   i:integer;
-  sortList: specialize TOrderingArrayUtils<TEngineArray, RAudioEngine, TAudioEngineComparer>;
+type
+  sortList= specialize TOrderingArrayUtils<TEngineArray, RAudioEngine, TAudioEngineComparer>;
 begin
 
   SortList.Sort(EngineArray, Length(EngineArray));

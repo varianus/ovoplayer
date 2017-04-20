@@ -74,15 +74,14 @@ end;
 procedure TfCustomPlayList.FormCreate(Sender: TObject);
 var
   i: integer;
-  SortList: specialize TOrderingArrayUtils<TFieldArray, FieldRec, TFieldComparer>;
+type
+  SortList= specialize TOrderingArrayUtils<TFieldArray, FieldRec, TFieldComparer>;
 begin
   PlayListBuilder := TPlayListBuilder.Create;
 
   // Sort field names based on label.
   // Doing it here should sort the already translated ones
-
-  SortList.sort(FieldArray, FieldCount);
-
+   SortList.Sort(FieldArray, FieldCount);
 //  specialize TArrayHelper< FieldRec>.Sort(FieldArray, specialize TComparer<FieldRec>.Construct(@myCompare));
 
   //Find at wich index is the title field, used as a default
