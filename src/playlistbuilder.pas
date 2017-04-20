@@ -159,12 +159,12 @@ ResourceString
   RS_NotInTheLast = 'not in the last';
 
 // Titles of standardPlaylist
-  RS_Name25_Random_songs = '25 Random songs';
-  RS_NameAllsongs = 'All songs';
+  RS_Name25_Random_songs = '25 Random tracks';
+  RS_NameAllsongs = 'All tracks';
   RS_NameMostplayed = 'Most played';
   RS_NameNeverplayed = 'Never played';
   RS_NameLongesttimefromlastplay = 'Longest time from last play';
-  RS_NameNewersongs = 'Newer songs';
+  RS_NameNewersongs = 'Newer tracks';
 
 const
    FieldCount = 16;

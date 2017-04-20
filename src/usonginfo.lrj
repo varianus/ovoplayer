@@ -1,5 +1,4 @@
 {"version":1,"strings":[
-{"hash":41108862,"name":"tfsonginfo.caption","sourcebytes":[83,111,110,103,32,73,110,102,111,114,109,97,116,105,111,110],"value":"Song Information"},
 {"hash":370659,"name":"tfsonginfo.tstags.caption","sourcebytes":[84,97,103,115],"value":"Tags"},
 {"hash":76132516,"name":"tfsonginfo.laartist.caption","sourcebytes":[65,114,116,105,115,116],"value":"Artist"},
 {"hash":4729277,"name":"tfsonginfo.laalbum.caption","sourcebytes":[65,108,98,117,109],"value":"Album"},

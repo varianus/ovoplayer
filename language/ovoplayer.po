@@ -52,7 +52,7 @@ msgid ""
 msgstr ""
 
 #: appconsts.rmatchingitems
-msgid "%0:d songs matching current filter (total time %1:s, total size %2:s)"
+msgid "%0:d tracks matching current filter (total time %1:s, total size %2:s)"
 msgstr ""
 
 #: appconsts.rmissing
@@ -268,12 +268,12 @@ msgid "less than"
 msgstr ""
 
 #: playlistbuilder.rs_name25_random_songs
-msgid "25 Random songs"
+msgid "25 Random tracks"
 msgstr ""
 
 #: playlistbuilder.rs_nameallsongs
 msgctxt "playlistbuilder.rs_nameallsongs"
-msgid "All songs"
+msgid "All tracks"
 msgstr ""
 
 #: playlistbuilder.rs_namelongesttimefromlastplay
@@ -293,7 +293,7 @@ msgstr ""
 
 #: playlistbuilder.rs_namenewersongs
 msgctxt "playlistbuilder.rs_namenewersongs"
-msgid "Newer songs"
+msgid "Newer tracks"
 msgstr ""
 
 #: playlistbuilder.rs_notcontains
@@ -990,7 +990,7 @@ msgid "Up"
 msgstr ""
 
 #: tfmainform.cbgroupby.hint
-msgid "Group song"
+msgid "Group by"
 msgstr ""
 
 #: tfmainform.cbgroupby.text
@@ -1304,10 +1304,6 @@ msgstr ""
 
 #: tfsonginfo.buttonpanel1.okbutton.caption
 msgid "Save"
-msgstr ""
-
-#: tfsonginfo.caption
-msgid "Song Information"
 msgstr ""
 
 #: tfsonginfo.groupbox1.caption

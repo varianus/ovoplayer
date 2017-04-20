@@ -36,8 +36,8 @@
             <Filename Value="..\bin\$(TargetOS)\ovoplayer"/>
           </Target>
           <SearchPaths>
-            <IncludeFiles Value="$(ProjOutDir);platform\$(TargetOS)"/>
-            <OtherUnitFiles Value="import-engines;ovotag;components\uniqueinstance;components\network;platform\$(TargetOS)"/>
+            <IncludeFiles Value="$(ProjOutDir);platform\$(TargetOS);import-engines"/>
+            <OtherUnitFiles Value="import-engines;ovotag;components\network;platform\$(TargetOS);components"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Conditionals Value="if TargetOS = 'darwin' then
@@ -109,10 +109,10 @@ if TargetOS = 'linux' then
     </RunParams>
     <RequiredPackages Count="5">
       <Item1>
-        <PackageName Value="FCL"/>
+        <PackageName Value="mcaselli"/>
       </Item1>
       <Item2>
-        <PackageName Value="mcaselli"/>
+        <PackageName Value="FCL"/>
       </Item2>
       <Item3>
         <PackageName Value="SQLDBLaz"/>
@@ -531,7 +531,7 @@ if TargetOS = 'linux' then
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir);platform\$(TargetOS);import-engines"/>
-      <OtherUnitFiles Value="import-engines;ovotag;components\network;platform\$(TargetOS)"/>
+      <OtherUnitFiles Value="import-engines;ovotag;components\network;platform\$(TargetOS);components"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Conditionals Value="if TargetOS = 'darwin' then

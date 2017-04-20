@@ -36,33 +36,33 @@ object fMainForm: TfMainForm
       Height = 487
       Top = 0
       Width = 246
-      ActivePage = tsPlayList
+      ActivePage = tsCollection
       Align = alClient
       MultiLine = True
-      TabIndex = 2
+      TabIndex = 0
       TabOrder = 0
       TabPosition = tpBottom
       Options = [nboMultiLine, nboHidePageListPopup]
       object tsCollection: TTabSheet
         Caption = 'Collection'
-        ClientHeight = 446
-        ClientWidth = 237
+        ClientHeight = 459
+        ClientWidth = 238
         object pnlCollection: TPanel
           Left = 0
           Height = 71
           Top = 0
-          Width = 235
+          Width = 238
           Align = alTop
           BevelOuter = bvNone
           ClientHeight = 71
-          ClientWidth = 235
+          ClientWidth = 238
           TabOrder = 0
           object cbGroupBy: TComboBox
             Left = 4
             Height = 23
-            Hint = 'Group song'
+            Hint = 'Group by'
             Top = 6
-            Width = 228
+            Width = 231
             Anchors = [akTop, akLeft, akRight]
             ItemHeight = 15
             ItemIndex = 0
@@ -82,7 +82,7 @@ object fMainForm: TfMainForm
             Height = 23
             Hint = 'Filter'
             Top = 38
-            Width = 165
+            Width = 168
             Anchors = [akTop, akLeft, akRight]
             EditLabel.AnchorSideTop.Control = edtFilter
             EditLabel.AnchorSideTop.Side = asrCenter
@@ -100,7 +100,7 @@ object fMainForm: TfMainForm
             OnChange = edtFilterChange
           end
           object btnFilterCancel: TSpeedButton
-            Left = 211
+            Left = 214
             Height = 22
             Top = 39
             Width = 22
@@ -151,9 +151,9 @@ object fMainForm: TfMainForm
         end
         object tvCollection: TTreeView
           Left = 0
-          Height = 404
-          Top = 70
-          Width = 235
+          Height = 388
+          Top = 71
+          Width = 238
           Align = alClient
           DefaultItemHeight = 18
           DragMode = dmAutomatic
@@ -1165,6 +1165,7 @@ object fMainForm: TfMainForm
       Category = 'Preferences'
       Caption = 'Collection Preferences ...'
       DisableIfNoHandler = False
+      OnExecute = ActShowPreferencesMediaLibraryExecute
     end
   end
   object RateStars: TImageList

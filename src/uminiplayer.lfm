@@ -8,7 +8,6 @@ object fMiniPlayer: TfMiniPlayer
   ClientHeight = 57
   ClientWidth = 201
   Color = 11955992
-  DesignTimePPI = 95
   FormStyle = fsSystemStayOnTop
   KeyPreview = True
   OnClose = FormClose
@@ -16,7 +15,7 @@ object fMiniPlayer: TfMiniPlayer
   OnHide = FormHide
   OnMouseLeave = FormMouseLeave
   OnShow = FormShow
-  LCLVersion = '1.7'
+  Visible = False
   object Panel1: TPanel
     Left = 0
     Height = 57
@@ -26,15 +25,15 @@ object fMiniPlayer: TfMiniPlayer
     BevelInner = bvLowered
     BorderWidth = 2
     BorderStyle = bsSingle
-    ClientHeight = 55
-    ClientWidth = 199
+    ClientHeight = 53
+    ClientWidth = 197
     ParentColor = False
     TabOrder = 0
     object tbPlayControls: TToolBar
       Left = 4
       Height = 22
       Top = 4
-      Width = 191
+      Width = 189
       AutoSize = True
       EdgeInner = esNone
       EdgeOuter = esNone
@@ -48,41 +47,41 @@ object fMiniPlayer: TfMiniPlayer
         Action = DM.actPrevious
       end
       object ToolButton2: TToolButton
-        Left = 47
+        Left = 53
         Top = 0
         Action = DM.actPlay
       end
       object ToolButton3: TToolButton
-        Left = 93
+        Left = 105
         Top = 0
         Action = DM.actStop
       end
       object ToolButton4: TToolButton
-        Left = 139
+        Left = 157
         Top = 0
         Action = DM.actNext
       end
       object ToolButton5: TToolButton
-        Left = 70
+        Left = 79
         Top = 0
         Action = DM.actPause
       end
       object ToolButton6: TToolButton
-        Left = 24
+        Left = 27
         Top = 0
         Action = DM.actSkipBackward
       end
       object ToolButton7: TToolButton
-        Left = 116
+        Left = 131
         Top = 0
         Action = DM.actSkipForward
       end
     end
     object TrackBar: TThemedSlider
       Left = 4
-      Height = 25
+      Height = 23
       Top = 26
-      Width = 191
+      Width = 189
       Align = alClient
       BorderWidth = 2
       Step = 0
@@ -97,6 +96,6 @@ object fMiniPlayer: TfMiniPlayer
   object Timer: TTimer
     Interval = 333
     OnTimer = TimerTimer
-    Left = 96
+    left = 96
   end
 end

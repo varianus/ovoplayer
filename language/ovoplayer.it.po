@@ -34,7 +34,6 @@ msgid "Build environment: Lazarus %0:s  FPC %1:s"
 msgstr "Ambiente di sviluppo: Lazarus %0:s  FPC %1:s"
 
 #: appconsts.rcurrentengine
-#| msgid "Current audio engine : %s"
 msgid "Current audio engine: %s"
 msgstr "Motore di riproduzione attuale: %s"
 
@@ -67,8 +66,7 @@ msgstr ""
 "richiedere i diritti di amministratore in alcuni S.O. (ad es. Linux).\n"
 
 #: appconsts.rmatchingitems
-#| msgid "%0:d songs matching current filter (%1:s, %2:s)"
-msgid "%0:d songs matching current filter (total time %1:s, total size %2:s)"
+msgid "%0:d tracks matching current filter (total time %1:s, total size %2:s)"
 msgstr "Il filtro corrente estrae %0:d tracce (Tempo totale %1:s, Dim. Totale%2:s)"
 
 #: appconsts.rmissing
@@ -100,7 +98,6 @@ msgid "Updated:"
 msgstr "Aggiornate:"
 
 #: appconsts.rversionstring
-#| msgid "Version: %0:s (SVN Rev: %1:s Date %2:s)"
 msgid "Version: %0:s (SVN Rev.: %1:s Date %2:s)"
 msgstr "Versione: %0:s (Rev. SVN: %1:s Data %2:s)"
 
@@ -285,37 +282,32 @@ msgid "less than"
 msgstr "minore di"
 
 #: playlistbuilder.rs_name25_random_songs
-msgid "25 Random songs"
+msgid "25 Random tracks"
 msgstr "25 Brani casuali"
 
 #: playlistbuilder.rs_nameallsongs
-#, fuzzy
 msgctxt "playlistbuilder.rs_nameallsongs"
-msgid "All songs"
-msgstr "Tutte le canzoni"
+msgid "All tracks"
+msgstr "Tutti i brani"
 
 #: playlistbuilder.rs_namelongesttimefromlastplay
-#, fuzzy
 msgctxt "playlistbuilder.rs_namelongesttimefromlastplay"
 msgid "Longest time from last play"
-msgstr "Non riprodotte da più tempo"
+msgstr "Non riprodotti da più tempo"
 
 #: playlistbuilder.rs_namemostplayed
-#, fuzzy
 msgctxt "playlistbuilder.rs_namemostplayed"
 msgid "Most played"
-msgstr "Più riprodotte"
+msgstr "Più riprodotti"
 
 #: playlistbuilder.rs_nameneverplayed
-#, fuzzy
 msgctxt "playlistbuilder.rs_nameneverplayed"
 msgid "Never played"
 msgstr "Mai riprodotti"
 
 #: playlistbuilder.rs_namenewersongs
-#, fuzzy
 msgctxt "playlistbuilder.rs_namenewersongs"
-msgid "Newer songs"
+msgid "Newer tracks"
 msgstr "Nuovi brani"
 
 #: playlistbuilder.rs_notcontains
@@ -562,7 +554,7 @@ msgstr "Esci"
 
 #: tdm.actfastscan.caption
 msgid "Fast Scan"
-msgstr "Scanzione Rapida"
+msgstr "Scansione Rapida"
 
 #: tdm.actimportdirectory.caption
 msgctxt "tdm.actimportdirectory.caption"
@@ -729,7 +721,6 @@ msgid "OvoPlayer"
 msgstr "OvoPlayer"
 
 #: tfabout.label3.caption
-#| msgid "Copyright (C) 2011, Marco Caselli <marcocas@gmail.com>"
 msgid "(C) 2011, Marco Caselli <marcocas@gmail.com>"
 msgstr "(C) 2011, Marco Caselli <marcocas@gmail.com>"
 
@@ -1013,7 +1004,7 @@ msgid "Up"
 msgstr "Su"
 
 #: tfmainform.cbgroupby.hint
-msgid "Group song"
+msgid "Group by"
 msgstr "Raggruppa"
 
 #: tfmainform.cbgroupby.text
@@ -1328,10 +1319,6 @@ msgstr "Abbandona"
 #: tfsonginfo.buttonpanel1.okbutton.caption
 msgid "Save"
 msgstr "Salva"
-
-#: tfsonginfo.caption
-msgid "Song Information"
-msgstr "Informazioni sul brano"
 
 #: tfsonginfo.groupbox1.caption
 msgid "Library"
