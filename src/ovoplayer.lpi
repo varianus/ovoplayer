@@ -531,7 +531,7 @@ if TargetOS = 'linux' then
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir);platform\$(TargetOS);import-engines"/>
-      <OtherUnitFiles Value="import-engines;ovotag;components\network;platform\$(TargetOS);components"/>
+      <OtherUnitFiles Value="import-engines;ovotag;components\network;platform\$(TargetOS)"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Conditionals Value="if TargetOS = 'darwin' then
