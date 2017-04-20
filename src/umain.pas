@@ -269,6 +269,7 @@ type
     procedure actShowLeftExecute(Sender: TObject);
     procedure actShowPLMediainfoExecute(Sender: TObject);
     procedure ActShowPreferencesExecute(Sender: TObject);
+    procedure ActShowPreferencesMediaLibraryExecute(Sender: TObject);
     procedure BackEndSongStart(Sender: TObject);
     procedure btnBackDirClick(Sender: TObject);
     procedure btnFilterCancelClick(Sender: TObject);
@@ -1017,6 +1018,11 @@ end;
 procedure TfMainForm.ActShowPreferencesExecute(Sender: TObject);
 begin
   ShowConfigurationEditor(@OnConfigDone);
+end;
+
+procedure TfMainForm.ActShowPreferencesMediaLibraryExecute(Sender: TObject);
+begin
+  ShowConfigurationEditor(@OnConfigDone, cpMediaLibrary);
 end;
 
 procedure TfMainForm.actShowAboutExecute(Sender: TObject);
