@@ -241,7 +241,6 @@ type
     TrayMenu:   TPopupMenu;
     Splitter1:  TSplitter;
     ToolButton5: TToolButton;
-    Track:      TLabel;
     imgCover:   TImage;
     Album:      TLabel;
     Timer:      TTimer;
@@ -869,7 +868,7 @@ begin
   ScrollIntoView;
 
   Title.Caption     := Song.tags.Title;
-  track.Caption     := Song.Tags.TrackString;
+//  track.Caption     := Song.Tags.TrackString;
   Album.Caption     := Song.Tags.Album;
   Artist.Caption    := Song.Tags.Artist;
   TrackBar.Max      := Song.Tags.Duration;
@@ -2851,7 +2850,7 @@ begin
   Title.Caption     := rNotPlaying;
   Album.Caption     := '';
   Artist.Caption    := '';
-  Track.Caption     := '';
+//  Track.Caption     := '';
   TrackBar.Position := 0;
   lbTime.caption    := TimeToStr(0);
   lFile := backend.Config.GetResourcesPath + 'logo.png';

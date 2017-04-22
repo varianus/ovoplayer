@@ -910,6 +910,10 @@ msgctxt "tfcover.btnzoomreset.hint"
 msgid "Original size"
 msgstr "Dimens. originale"
 
+#: tfcustomplaylist.caption
+msgid "Custom Playlist "
+msgstr ""
+
 #: tfcustomplaylist.cbsortdirection.caption
 msgid "in ascending order"
 msgstr "in ordine crescente"
@@ -1002,6 +1006,12 @@ msgstr ""
 msgctxt "TFMAINFORM.BTNUPDIR.CAPTION"
 msgid "Up"
 msgstr "Su"
+
+#: tfmainform.caption
+#, fuzzy
+msgctxt "tfmainform.caption"
+msgid "OvoPlayer"
+msgstr "OvoPlayer"
 
 #: tfmainform.cbgroupby.hint
 msgid "Group by"

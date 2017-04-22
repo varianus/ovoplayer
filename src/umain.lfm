@@ -6,7 +6,7 @@ object fMainForm: TfMainForm
   ActiveControl = pcMain
   AllowDropFiles = True
   Caption = 'OvoPlayer'
-  ClientHeight = 597
+  ClientHeight = 576
   ClientWidth = 875
   Constraints.MinHeight = 202
   Constraints.MinWidth = 505
@@ -20,20 +20,20 @@ object fMainForm: TfMainForm
   OnResize = FormResize
   OnShow = FormShow
   ShowHint = True
-  Visible = False
+  LCLVersion = '1.7'
   object pnlleft: TPanel
     Left = 0
-    Height = 597
+    Height = 576
     Top = 0
     Width = 246
     Align = alLeft
     BevelOuter = bvNone
-    ClientHeight = 597
+    ClientHeight = 576
     ClientWidth = 246
     TabOrder = 0
     object pcMain: TPageControl
       Left = 0
-      Height = 487
+      Height = 466
       Top = 0
       Width = 246
       ActivePage = tsCollection
@@ -45,26 +45,26 @@ object fMainForm: TfMainForm
       Options = [nboMultiLine, nboHidePageListPopup]
       object tsCollection: TTabSheet
         Caption = 'Collection'
-        ClientHeight = 459
-        ClientWidth = 238
+        ClientHeight = 431
+        ClientWidth = 240
         object pnlCollection: TPanel
           Left = 0
           Height = 71
           Top = 0
-          Width = 238
+          Width = 240
           Align = alTop
           BevelOuter = bvNone
           ClientHeight = 71
-          ClientWidth = 238
+          ClientWidth = 240
           TabOrder = 0
           object cbGroupBy: TComboBox
             Left = 4
-            Height = 23
+            Height = 25
             Hint = 'Group by'
             Top = 6
-            Width = 231
+            Width = 233
             Anchors = [akTop, akLeft, akRight]
-            ItemHeight = 15
+            ItemHeight = 0
             ItemIndex = 0
             Items.Strings = (
               'AlbumArtist / Album'
@@ -79,20 +79,20 @@ object fMainForm: TfMainForm
           end
           object edtFilter: TLabeledEdit
             Left = 47
-            Height = 23
+            Height = 27
             Hint = 'Filter'
             Top = 38
-            Width = 168
+            Width = 170
             Anchors = [akTop, akLeft, akRight]
             EditLabel.AnchorSideTop.Control = edtFilter
             EditLabel.AnchorSideTop.Side = asrCenter
             EditLabel.AnchorSideRight.Control = edtFilter
             EditLabel.AnchorSideBottom.Control = edtFilter
             EditLabel.AnchorSideBottom.Side = asrBottom
-            EditLabel.Left = 18
-            EditLabel.Height = 15
-            EditLabel.Top = 42
-            EditLabel.Width = 26
+            EditLabel.Left = 16
+            EditLabel.Height = 17
+            EditLabel.Top = 43
+            EditLabel.Width = 28
             EditLabel.Caption = 'Filter'
             EditLabel.ParentColor = False
             LabelPosition = lpLeft
@@ -100,7 +100,7 @@ object fMainForm: TfMainForm
             OnChange = edtFilterChange
           end
           object btnFilterCancel: TSpeedButton
-            Left = 214
+            Left = 216
             Height = 22
             Top = 39
             Width = 22
@@ -151,11 +151,10 @@ object fMainForm: TfMainForm
         end
         object tvCollection: TTreeView
           Left = 0
-          Height = 388
+          Height = 360
           Top = 71
-          Width = 238
+          Width = 240
           Align = alClient
-          DefaultItemHeight = 18
           DragMode = dmAutomatic
           ExpandSignType = tvestPlusMinus
           Images = DM.ilSmall
@@ -178,8 +177,8 @@ object fMainForm: TfMainForm
       end
       object tsDirectory: TTabSheet
         Caption = 'Directory'
-        ClientHeight = 446
-        ClientWidth = 237
+        ClientHeight = 431
+        ClientWidth = 240
         OnShow = tsDirectoryShow
         object tbDirectory: TToolBar
           Left = 0
@@ -257,8 +256,8 @@ object fMainForm: TfMainForm
       end
       object tsPlayList: TTabSheet
         Caption = 'PlayList'
-        ClientHeight = 459
-        ClientWidth = 238
+        ClientHeight = 431
+        ClientWidth = 240
         OnShow = tsPlayListShow
         object PlaylistTree: TTreeView
           Left = 0
@@ -288,11 +287,11 @@ object fMainForm: TfMainForm
     object gbStats: TGroupBox
       Left = 0
       Height = 110
-      Top = 487
+      Top = 466
       Width = 246
       Align = alBottom
       Caption = 'Stats'
-      ClientHeight = 90
+      ClientHeight = 91
       ClientWidth = 242
       ParentFont = False
       TabOrder = 1
@@ -348,7 +347,7 @@ object fMainForm: TfMainForm
       end
       object sgStats: TStringGrid
         Left = 0
-        Height = 90
+        Height = 91
         Top = 0
         Width = 220
         Align = alClient
@@ -381,19 +380,19 @@ object fMainForm: TfMainForm
   end
   object pnlMain: TPanel
     Left = 250
-    Height = 597
+    Height = 576
     Top = 0
     Width = 625
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 597
+    ClientHeight = 576
     ClientWidth = 625
     Constraints.MinWidth = 444
     TabOrder = 1
     object pnlControl: TPanel
       Left = 0
       Height = 54
-      Top = 543
+      Top = 522
       Width = 625
       Align = alBottom
       Anchors = [akLeft, akRight]
@@ -423,54 +422,54 @@ object fMainForm: TfMainForm
           Action = DM.actPrevious
         end
         object ToolButton2: TToolButton
-          Left = 61
+          Left = 55
           Top = 0
           Action = DM.actPlay
         end
         object ToolButton3: TToolButton
-          Left = 121
+          Left = 109
           Top = 0
           Action = DM.actStop
         end
         object ToolButton4: TToolButton
-          Left = 173
+          Left = 155
           Top = 0
           Action = DM.actNext
         end
         object ToolButton5: TToolButton
-          Left = 95
+          Left = 86
           Top = 0
           Action = DM.actPause
         end
         object ToolButton6: TToolButton
-          Left = 27
+          Left = 24
           Top = 0
           Action = DM.actSkipBackward
         end
         object ToolButton7: TToolButton
-          Left = 147
+          Left = 132
           Top = 0
           Action = DM.actSkipForward
         end
         object ToolButton8: TToolButton
-          Left = 87
+          Left = 78
           Height = 23
           Top = 0
           Style = tbsSeparator
         end
         object ToolButton9: TToolButton
-          Left = 53
+          Left = 47
           Height = 23
           Top = 0
           Style = tbsSeparator
         end
         object ToolButton10: TToolButton
-          Left = 245
+          Left = 224
           Top = 0
           Action = DM.actPlayListShuffle
         end
         object tbRepeat: TToolButton
-          Left = 207
+          Left = 186
           Top = 0
           Caption = '     '
           DropdownMenu = RepeatMenu
@@ -480,17 +479,17 @@ object fMainForm: TfMainForm
           Style = tbsDropDown
         end
         object ToolButton16: TToolButton
-          Left = 305
+          Left = 278
           Top = 0
           Action = DM.actPlaylistLoad
         end
         object ToolButton17: TToolButton
-          Left = 279
+          Left = 255
           Top = 0
           Action = DM.actPlaylistSave
         end
         object ToolButton18: TToolButton
-          Left = 199
+          Left = 178
           Height = 23
           Top = 0
           AutoSize = True
@@ -498,24 +497,24 @@ object fMainForm: TfMainForm
           Style = tbsSeparator
         end
         object ToolButton12: TToolButton
-          Left = 271
+          Left = 247
           Height = 23
           Top = 0
           Style = tbsSeparator
         end
         object ToolButton13: TToolButton
-          Left = 331
+          Left = 301
           Top = 0
           Enabled = False
           ShowCaption = False
         end
         object ToolButton11: TToolButton
-          Left = 354
+          Left = 324
           Top = 0
           Action = DM.actMute
         end
         object slVolume: TThemedSlider
-          Left = 380
+          Left = 347
           Height = 23
           Top = 0
           Width = 101
@@ -571,17 +570,17 @@ object fMainForm: TfMainForm
     end
     object pnlPlaylist: TPanel
       Left = 0
-      Height = 437
+      Height = 416
       Top = 106
       Width = 625
       Align = alClient
-      ClientHeight = 437
+      ClientHeight = 416
       ClientWidth = 625
       Constraints.MinWidth = 499
       TabOrder = 1
       object sgPlayList: TStringGrid
         Left = 1
-        Height = 435
+        Height = 414
         Top = 1
         Width = 623
         Align = alClient
@@ -776,7 +775,7 @@ object fMainForm: TfMainForm
         Left = 109
         Height = 21
         Top = 36
-        Width = 451
+        Width = 508
         Anchors = [akTop, akLeft, akRight]
         AutoSize = False
         Caption = 'Album'
@@ -798,34 +797,18 @@ object fMainForm: TfMainForm
         ParentFont = False
         OnDblClick = TrackDblClick
       end
-      object Track: TLabel
-        AnchorSideLeft.Control = Album
-        AnchorSideLeft.Side = asrBottom
-        Left = 566
-        Height = 21
-        Top = 36
-        Width = 51
-        Anchors = [akLeft, akRight, akBottom]
-        AutoSize = False
-        BorderSpacing.Left = 6
-        Font.Height = 16
-        ParentColor = False
-        ParentFont = False
-        OnDblClick = TrackDblClick
-        OptimalFill = True
-      end
     end
   end
   object Splitter1: TSplitter
     Left = 246
-    Height = 597
+    Height = 576
     Top = 0
     Width = 4
   end
   object MainMenu: TMainMenu
     Images = DM.ilButtons
-    left = 425
-    top = 184
+    Left = 425
+    Top = 184
     object mnuFile: TMenuItem
       Caption = '&File'
       object mnuSavePlaylist: TMenuItem
@@ -930,8 +913,8 @@ object fMainForm: TfMainForm
     Enabled = False
     Interval = 333
     OnTimer = TimerTimer
-    left = 320
-    top = 408
+    Left = 320
+    Top = 408
   end
   object TrayIcon: TTrayIcon
     BalloonFlags = bfInfo
@@ -940,13 +923,13 @@ object fMainForm: TfMainForm
     OnClick = TrayIconClick
     OnDblClick = TrayIconDblClick
     OnMouseDown = TrayIconMouseDown
-    left = 616
-    top = 256
+    Left = 616
+    Top = 256
   end
   object TrayMenu: TPopupMenu
     Images = DM.ilButtons
-    left = 680
-    top = 256
+    Left = 680
+    Top = 256
     object MenuItem6: TMenuItem
       Action = DM.actPlay
     end
@@ -1001,8 +984,8 @@ object fMainForm: TfMainForm
   end
   object PlaylistMenu: TPopupMenu
     Images = DM.ilButtons
-    left = 424
-    top = 264
+    Left = 424
+    Top = 264
     object MenuItem17: TMenuItem
       Action = DM.actPlayListAddFiles
     end
@@ -1047,8 +1030,8 @@ object fMainForm: TfMainForm
   object pmdirectories: TPopupMenu
     Images = DM.ilButtons
     OnPopup = pmdirectoriesPopup
-    left = 152
-    top = 184
+    Left = 152
+    Top = 184
     object MenuItem59: TMenuItem
       Caption = 'Enqueue'
       OnClick = MenuItem59Click
@@ -1068,8 +1051,8 @@ object fMainForm: TfMainForm
   object pnCollection: TPopupMenu
     Images = DM.ilButtons
     OnPopup = pnCollectionPopup
-    left = 59
-    top = 248
+    Left = 59
+    Top = 248
     object mnuEnqueueItems: TMenuItem
       Caption = 'Enqueue'
       Default = True
@@ -1094,15 +1077,15 @@ object fMainForm: TfMainForm
   end
   object pnHeaderPlaylist: TPopupMenu
     OnPopup = pnHeaderPlaylistPopup
-    left = 536
-    top = 184
+    Left = 536
+    Top = 184
     object MenuItem32: TMenuItem
     end
   end
   object RepeatMenu: TPopupMenu
     Images = DM.ilButtons
-    left = 425
-    top = 350
+    Left = 425
+    Top = 350
     object MenuItem37: TMenuItem
       Action = DM.actRepeatNone
       GroupIndex = 1
@@ -1126,8 +1109,8 @@ object fMainForm: TfMainForm
   end
   object ActionList: TActionList
     Images = DM.ilButtons
-    left = 272
-    top = 184
+    Left = 272
+    Top = 184
     object ActShowPreferences: TAction
       Category = 'Preferences'
       Caption = 'Preferences ...'
@@ -1171,8 +1154,8 @@ object fMainForm: TfMainForm
   object RateStars: TImageList
     Height = 15
     Width = 80
-    left = 560
-    top = 360
+    Left = 560
+    Top = 360
     Bitmap = {
       4C6902000000500000000F000000FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00969696EF969696E7FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -1479,8 +1462,8 @@ object fMainForm: TfMainForm
   end
   object pmPlaylists: TPopupMenu
     OnPopup = pmPlaylistsPopup
-    left = 128
-    top = 336
+    Left = 128
+    Top = 336
     object mnuNewPlayList: TMenuItem
       Caption = 'New playlist'
       OnClick = mnuNewPlayListClick
