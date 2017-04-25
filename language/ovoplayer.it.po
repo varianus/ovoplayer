@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ovoplayer 1.3\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2017-04-09 16:45+0200\n"
+"PO-Revision-Date: 2017-04-25 18:06+0200\n"
 "Last-Translator: varianus <marcocas@gmail.com>\n"
 "Language-Team: Marco Caselli\n"
 "Language: it\n"
@@ -378,19 +378,19 @@ msgstr ""
 
 #: simplesingleinstance.serrsingleinstancenotclient
 msgid "Current instance is not a client."
-msgstr ""
+msgstr "L'istanza corrente non è un client."
 
 #: simplesingleinstance.serrsingleinstancenotserver
 msgid "Current instance is not a server."
-msgstr ""
+msgstr "L'istanza corrente non è un server."
 
 #: simplesingleinstance.serrsingleinstancestartresultnotavailable
 msgid "Single instance hasn't been started yet."
-msgstr ""
+msgstr "Istanza singola non è ancora avviata."
 
 #: simplesingleinstance.serrstartsingleinstancestarted
 msgid "You cannot start single instance when it's been already started."
-msgstr ""
+msgstr "Non puoi avviare istanza singola se è già avviata."
 
 #: tbackend.actexit.caption
 msgctxt "tbackend.actexit.caption"
@@ -763,10 +763,6 @@ msgstr "Cerca Adesso"
 msgid "Restart Now"
 msgstr "Riavvia ora"
 
-#: tfconfig.caption
-msgid "Config"
-msgstr "Configurazione"
-
 #: tfconfig.cbcapturemmkeys.caption
 msgid "Use multimedia Keys"
 msgstr "Usa tasti Multimediali"
@@ -881,11 +877,11 @@ msgstr "Libreria Musicale"
 
 #: tfconfig.tsnetremote.caption
 msgid "NetRemote"
-msgstr ""
+msgstr "Tele"
 
 #: tfconfig.tsosd.caption
 msgid "OSD"
-msgstr ""
+msgstr "OSD"
 
 #: tfcover.btnfittoscreen.hint
 msgid "Fit To Screen"
@@ -912,7 +908,7 @@ msgstr "Dimens. originale"
 
 #: tfcustomplaylist.caption
 msgid "Custom Playlist "
-msgstr ""
+msgstr "Playlist Customizzata"
 
 #: tfcustomplaylist.cbsortdirection.caption
 msgid "in ascending order"
@@ -1000,7 +996,7 @@ msgstr "Avanti"
 #: tfmainform.btnhomedir.caption
 msgctxt "TFMAINFORM.BTNHOMEDIR.CAPTION"
 msgid "Home"
-msgstr ""
+msgstr "Casa"
 
 #: tfmainform.btnupdir.caption
 msgctxt "TFMAINFORM.BTNUPDIR.CAPTION"
@@ -1008,7 +1004,6 @@ msgid "Up"
 msgstr "Su"
 
 #: tfmainform.caption
-#, fuzzy
 msgctxt "tfmainform.caption"
 msgid "OvoPlayer"
 msgstr "OvoPlayer"
@@ -1209,7 +1204,7 @@ msgstr "Artista"
 
 #: tfmainform.sgplaylist.columns[4].title.caption
 msgid "Time"
-msgstr ""
+msgstr "Tempo"
 
 #: tfmainform.sgplaylist.columns[5].title.caption
 msgctxt "tfmainform.sgplaylist.columns[5].title.caption"
@@ -1420,4 +1415,3 @@ msgstr "Proprietà Media"
 #: tfsonginfo.tstags.caption
 msgid "Tags"
 msgstr "Etichette"
-
