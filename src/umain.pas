@@ -735,7 +735,6 @@ procedure TfMainForm.PlayListHandler(Enqueue: boolean);
 var
   playlistbuilder : TPlayListBuilder;
   item: TPlayListTreeNode;
-  Str: String;
 begin
   item := TPlayListTreeNode( PlaylistTree.Selected);
   if item = nil then
@@ -2438,7 +2437,6 @@ procedure TfMainForm.sgPlayListMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 var
   ACol, ARow : Integer;
-  idx :integer;
 begin
   sgPlayList.MouseToCell(X, Y, ACol, ARow);
   if ACol = 11 then
@@ -2639,8 +2637,6 @@ begin
 end;
 
 procedure TfMainForm.TrayIconClick(Sender: TObject);
-var
-  pt: Tpoint;
 begin
   //  ShowNotification;
 end;
@@ -2685,7 +2681,6 @@ procedure TfMainForm.TrayIconMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 var
   pt : Tpoint;
-  r:Trect;
 begin
   if button = mbMiddle then
     begin

@@ -162,6 +162,7 @@ var
   dpo, dpo1: MFTIME;
   hr: hresult;
 begin
+  Result := 0;
   if not assigned(pClock) then
     exit;
   dpo := 0;

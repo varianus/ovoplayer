@@ -118,6 +118,7 @@ end;
 
 function ExtractTags(FileTags: TTagReader): TCommonTags;
 begin
+  Result := Default(TCommonTags);
   if FileTags = nil  then
      exit;
   Result := FileTags.GetCommonTags;

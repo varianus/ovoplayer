@@ -83,8 +83,9 @@ begin
     tkGenre: Result  := Tags.Genre;
     tkTrack: Result  := tags.TrackString;
     tkNone: Result   := '';
-
-    end;
+  else
+    Result :=''
+  end;
 end;
 
 function TSong.GetTitle: string;

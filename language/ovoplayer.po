@@ -366,14 +366,6 @@ msgstr ""
 msgid "Current instance is not a client."
 msgstr ""
 
-#: simplesingleinstance.serrsingleinstancenotserver
-msgid "Current instance is not a server."
-msgstr ""
-
-#: simplesingleinstance.serrsingleinstancestartresultnotavailable
-msgid "Single instance hasn't been started yet."
-msgstr ""
-
 #: simplesingleinstance.serrstartsingleinstancestarted
 msgid "You cannot start single instance when it's been already started."
 msgstr ""
@@ -696,11 +688,6 @@ msgstr ""
 msgid "&License"
 msgstr ""
 
-#: tfabout.caption
-msgctxt "tfabout.caption"
-msgid "About"
-msgstr ""
-
 #: tfabout.label1.caption
 msgctxt "tfabout.label1.caption"
 msgid "OvoPlayer"
@@ -747,10 +734,6 @@ msgstr ""
 
 #: tfconfig.brestart.caption
 msgid "Restart Now"
-msgstr ""
-
-#: tfconfig.caption
-msgid "Config"
 msgstr ""
 
 #: tfconfig.cbcapturemmkeys.caption
@@ -807,10 +790,6 @@ msgstr ""
 
 #: tfconfig.lbrestart.caption
 msgid "A restart is required for this change to take effect."
-msgstr ""
-
-#: tfconfig.lbwarning.caption
-msgid "                                            "
 msgstr ""
 
 #: tfconfig.rgaudioengine.caption
@@ -894,10 +873,6 @@ msgstr ""
 #: tfcover.btnzoomreset.hint
 msgctxt "TFCOVER.BTNZOOMRESET.HINT"
 msgid "Original size"
-msgstr ""
-
-#: tfcustomplaylist.caption
-msgid "Custom Playlist "
 msgstr ""
 
 #: tfcustomplaylist.cbsortdirection.caption
@@ -991,11 +966,6 @@ msgstr ""
 #: tfmainform.btnupdir.caption
 msgctxt "TFMAINFORM.BTNUPDIR.CAPTION"
 msgid "Up"
-msgstr ""
-
-#: tfmainform.caption
-msgctxt "tfmainform.caption"
-msgid "OvoPlayer"
 msgstr ""
 
 #: tfmainform.cbgroupby.hint

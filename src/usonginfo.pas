@@ -190,8 +190,8 @@ begin
 end;
 
 procedure TfSongInfo.FormShow(Sender: TObject);
-var
-  i: integer;
+//var
+//  i: integer;
 begin
   {$IFDEF SUPPORT_LISTBOX_HINT}
   fHint := THintWindow.Create(Self);
@@ -281,7 +281,9 @@ begin
           begin
             currpos:=BackEnd.AudioEngine.Position div 1000;
             BackEnd.AudioEngine.Stop;
-          end;
+          end
+       else
+         Currpos :=0;
 
        fTagList[i].TagReader.SetCommonTags(fTagList[i].Tags);
        fTagList[i].TagReader.UpdateFile;
@@ -645,8 +647,6 @@ begin
 end;
 
 procedure TfSongInfo.UpdateHiglighting(Modified: TIDFieldsSet);
-var
-  Highlight: boolean;
 begin
 
   if idAlbum in Modified then

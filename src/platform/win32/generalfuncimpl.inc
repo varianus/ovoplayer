@@ -11,7 +11,7 @@ begin
     then raise Exception.Create('The VirualQuery() call failed.');
   baseaddr:=Tmm.AllocationBase;
   TST[0]:= #0;
-  GetModuleFileName(THandle(Tmm.AllocationBase), TST, SizeOf(TST));
+  GetModuleFileName(UIntPtr(Tmm.AllocationBase), TST, SizeOf(TST));
   filename:= String(PChar(@TST));
 end;
 

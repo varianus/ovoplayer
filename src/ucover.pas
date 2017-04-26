@@ -42,8 +42,6 @@ var
 
 implementation
 {$R *.lfm}
-uses
-  math;
 Const
   zoomRatio = 1.5;
 

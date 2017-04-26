@@ -88,23 +88,22 @@ function TkeyCaptureWin.CreateAppWindow: boolean;
   end; // RegisterWindowClass - Nested Function
 
 begin
+  Result := false;
+
   if not RegisterWindowClass then
-    begin
      exit;
-    end;
+
   HWindow := CreateWindowEx(WS_EX_NOACTIVATE or WS_EX_TRANSPARENT,
     PChar(WinClassName), PChar(WinClassName), Ws_popup or WS_CLIPSIBLINGS, 0,
     0, 0, 0, 0, 0, HInstance, nil);
+
   if HWindow <> 0 then
     begin
     ShowWindow(HWindow, SW_HIDE);
     SetWindowLongPtr(HWindow,GWL_USERDATA,PtrInt(Self));
     UpdateWindow(HWindow);
     Result := True;
-    Exit;
     end;
-
-  Result := False;
 end; // CreateAppWindow
 
 procedure TkeyCaptureWin.BeginGrab;

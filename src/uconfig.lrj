@@ -1,5 +1,4 @@
 {"version":1,"strings":[
-{"hash":78007543,"name":"tfconfig.caption","sourcebytes":[67,111,110,102,105,103],"value":"Config"},
 {"hash":199366499,"name":"tfconfig.groupbox1.caption","sourcebytes":[67,97,116,101,103,111,114,105,101,115],"value":"Categories"},
 {"hash":42959595,"name":"tfconfig.sbengine.caption","sourcebytes":[80,108,97,121,98,97,99,107],"value":"Playback"},
 {"hash":181272990,"name":"tfconfig.sbnotification.caption","sourcebytes":[78,111,116,105,102,105,99,97,116,105,111,110],"value":"Notification"},
@@ -30,6 +29,5 @@
 {"hash":114511097,"name":"tfconfig.label4.caption","sourcebytes":[84,114,97,110,112,97,114,101,110,99,121],"value":"Tranparency"},
 {"hash":160199269,"name":"tfconfig.tsnetremote.caption","sourcebytes":[78,101,116,82,101,109,111,116,101],"value":"NetRemote"},
 {"hash":213677429,"name":"tfconfig.cbnetremote.caption","sourcebytes":[69,110,97,98,108,101,32,110,101,116,119,111,114,107,32,114,101,109,111,116,101],"value":"Enable network remote"},
-{"hash":358036,"name":"tfconfig.label5.caption","sourcebytes":[80,111,114,116],"value":"Port"},
-{"hash":35790848,"name":"tfconfig.lbwarning.caption","sourcebytes":[32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32],"value":"                                            "}
+{"hash":358036,"name":"tfconfig.label5.caption","sourcebytes":[80,111,114,116],"value":"Port"}
 ]}

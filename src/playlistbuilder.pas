@@ -5,7 +5,7 @@ unit playlistbuilder;
 interface
 
 uses
- Classes, LazUTF8Classes, SysUtils, GeneralFunc, fgl, FPJSON, jsonparser, fpjsonrtti;
+ Classes, LazUTF8Classes, SysUtils, fgl, FPJSON, jsonparser, fpjsonrtti;
 
 type
 
@@ -25,9 +25,9 @@ type
   TFieldFilter = class
   private
     FFieldID: integer;
-    FFloatValue: Double;
+//    FFloatValue: Double;
     FIdx: integer;
-    FIntegerValue: int64;
+//    FIntegerValue: int64;
     FKind: EditorKind;
     FStringValue: string;
     FTestIndex: integer;
@@ -633,10 +633,8 @@ function TPlayListBuilder.ToJson(): TJSONObject;
 var
   i: integer;
   Streamer  : TJSONStreamer;
-  JSONString : string;
   JSONOnject : TJSONObject;
   JSONArray: TJSONArray;
-  Stream: TFileStreamUTF8;
 begin
   Streamer := TJSONStreamer.Create(nil);
   Streamer.Options:= Streamer.Options + [jsoUseFormatString];

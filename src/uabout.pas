@@ -67,8 +67,8 @@ uses AppConsts, lclintf, GUIBackEnd;
 { TfAbout }
 
 procedure TfAbout.FormShow(Sender: TObject);
-var
-  i:Integer;
+//var
+//  i:Integer;
 begin
   lVersion.caption     := format (rVersionString,[AppVersion, ovoRevision, BuildDate]);
   lbBuildEnv.Caption   := format (rBuildEnv,[lazVersion, fpcVersion]);

@@ -176,7 +176,7 @@ type
     Property MediaProperty: TMediaProperty read DumpInfo;
   end;
 
-Procedure ClearTags(var Tags:TcommonTags); inline;
+//Procedure ClearTags(var Tags:TcommonTags); inline;
 function GetTagByID(Tags:TcommonTags; Field: TIDFields):string; inline;
 Procedure SetTagByID(var Tags:TcommonTags; Field: TIDFields; Value :string); inline;
 Function ExportToJson(const Tags: TcommonTags):string;
@@ -201,23 +201,23 @@ begin
            (t1.Duration    = t2.Duration);
 end;
 
-procedure ClearTags(var Tags:TcommonTags);
-begin
-  Tags.ID           := 0;
-  Tags.FileName     := '';
-  Tags.TrackString  := '';
-  Tags.Track        := 0;
-  Tags.Title        := '';
-  Tags.Album        := '';
-  Tags.AlbumArtist  := '';
-  Tags.Artist       := '';
-  Tags.Genre        := '';
-  Tags.Comment      := '';
-  Tags.Year         := '';
-  Tags.Duration     := 0;
-  Tags.HasImage     := False;
-
-end;
+//procedure ClearTags(var Tags:TcommonTags);
+//begin
+//  Tags.ID           := 0;
+//  Tags.FileName     := '';
+//  Tags.TrackString  := '';
+//  Tags.Track        := 0;
+//  Tags.Title        := '';
+//  Tags.Album        := '';
+//  Tags.AlbumArtist  := '';
+//  Tags.Artist       := '';
+//  Tags.Genre        := '';
+//  Tags.Comment      := '';
+//  Tags.Year         := '';
+//  Tags.Duration     := 0;
+//  Tags.HasImage     := False;
+//
+//end;
 
 function GetTagByID(Tags:TcommonTags; Field: TIDFields):string;
 begin
@@ -363,7 +363,7 @@ begin
   if Assigned(Tags) then
      Result := Tags.GetCommonTags
   else
-     ClearTags(Result);
+     Result := Default(TCommonTags);
 
   Result.FileName := FFileName;
   Result.Duration:= GetDuration;

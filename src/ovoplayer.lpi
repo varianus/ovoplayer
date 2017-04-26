@@ -37,7 +37,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir);platform\$(TargetOS);import-engines"/>
-            <OtherUnitFiles Value="import-engines;ovotag;components\network;platform\$(TargetOS);components"/>
+            <OtherUnitFiles Value="import-engines;ovotag;components\network;platform\$(TargetOS)"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Conditionals Value="if TargetOS = 'darwin' then
@@ -458,10 +458,12 @@ if TargetOS = 'linux' then
       <Unit68>
         <Filename Value="ovotag\file_mp4.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="file_Mp4"/>
       </Unit68>
       <Unit69>
         <Filename Value="ovotag\tag_mp4.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="tag_MP4"/>
       </Unit69>
       <Unit70>
         <Filename Value="platform\win32\taskbar_ext.pas"/>

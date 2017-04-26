@@ -237,6 +237,7 @@ end;
 
 function TAudioEngineMPlayer.DoPlay(Song: TSong; offset: Integer): boolean;
 begin
+  Result := False;
   if not Assigned(Song) then
     exit;
 

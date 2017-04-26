@@ -40,7 +40,6 @@ uses strutils, LazUTF8;
 function EncodeSize(Size:Integer):string;
 var
   s : RawByteString;
-  v:integer;
 begin
   SetLength(s,3);
   s[1] := AnsiChar((Size and $ff0000 ) shr 16);
@@ -52,7 +51,6 @@ end;
 function DecodeSize(Size: String): integer;
 var
   s : RawByteString;
-  v:integer;
 begin
   try
     s:= DecodeStringBase64(Size, True);
@@ -72,7 +70,6 @@ end;
 
 Procedure DecodeImageSize(Size: string; out Width, Height: integer);
 var
-  tmpW: string;
   pX: integer;
 begin
   Width:=-1;
@@ -116,7 +113,6 @@ end;
 function SplitCommand(ACommand: string): RExternalCommand;
 var
   pColon, pEqual: integer;
-  tmpstr: string;
   cmdlength: integer;
 begin
   Result.Category:=EmptyStr;
@@ -186,8 +182,6 @@ begin
 end;
 
 function DecodeMetaData(var StringTags: string; ConnectionCfg: RConnectionCfg): TCommonTags;
-var
-  tmp: string;
 begin
   Delete(StringTags, 1, 4);
 

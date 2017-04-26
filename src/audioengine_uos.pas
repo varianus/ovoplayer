@@ -117,7 +117,9 @@ end;
 function TAudioEngineUOS.GetSongPos: integer;
 begin
   if Assigned(UOS_Player) and (fState in [ENGINE_PLAY,ENGINE_PAUSE]) then
-     Result := Trunc(UOS_Player.InputPositionSeconds(fStreamIndex)* 1000);
+     Result := Trunc(UOS_Player.InputPositionSeconds(fStreamIndex)* 1000)
+  else
+     Result := 0;
 end;
 
 procedure TAudioEngineUOS.SetSongPos(const AValue: integer);

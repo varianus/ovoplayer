@@ -142,7 +142,7 @@ Procedure FreeBackend;
 implementation
 
 uses Graphics, LCLProc, FilesSupport, AudioTag, AppConsts, ExtendedInfo, uriparser,
-     NetProtocol, NetSupport, ImagesSupport, base64;
+     NetProtocol, NetSupport, ImagesSupport;
 
 var
   fBackEnd: TBackEnd;
@@ -354,7 +354,9 @@ end;
 function TBackEnd.GetLooping: TplRepeat;
 begin
   if Assigned(PlayList) then
-     Result := PlayList.RepeatMode;
+    Result := PlayList.RepeatMode
+  else
+    Result := rptNone;
 end;
 
 function TBackEnd.GetPosition: int64;
@@ -365,7 +367,10 @@ end;
 function TBackEnd.GetStatus: TEngineState;
 begin
   if Assigned(AudioEngine) then
-     Result := AudioEngine.State;
+     Result := AudioEngine.State
+  else
+     Result := ENGINE_OFF_LINE;
+
 end;
 
 function TBackEnd.GetVolume: cardinal;
@@ -437,7 +442,6 @@ end;
 
 function TBackEnd.GetCover(Width: integer=-1; Height:Integer=-1): String;
 var
-  Picture: TPicture;
   imgLoaded : boolean;
   Song: TCustomSong;
   img: TPicture;
@@ -605,7 +609,7 @@ end;
 
 function TBackEnd.GetMetadata(Index:integer=-1): TCommonTags;
 begin
-  ClearTags(Result);
+  Result := Default(TCommonTags);
 
   If (index<1) then
     begin

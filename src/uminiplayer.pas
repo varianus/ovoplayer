@@ -26,7 +26,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls,
-  ExtCtrls,  udm, GUIBackEnd, ThemedSlider;
+  ExtCtrls, GUIBackEnd, ThemedSlider;
 
 type
 

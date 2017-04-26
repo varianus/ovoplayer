@@ -144,6 +144,8 @@ begin
     0: Result := Utf16toUtf8(fValue);
     1: Result := '<bytes>';
     2..5: Result := IntToStr(fValueInt);
+  else
+    Result :='';
   end;
 
 end;
@@ -154,6 +156,8 @@ begin
     0: fValue := Utf8ToUtf16(AValue);
     1: raise Exception.Create('Unsupported');
     2..5: fValueInt := StrToInt(AValue);
+  else
+    fValue := '';
   end;
 
 end;

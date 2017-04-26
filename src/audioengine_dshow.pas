@@ -146,10 +146,11 @@ function TAudioEngineDShow.CreateAppWindow: boolean;
     end; // RegisterWindowClass - Nested Function
 
   begin
+    Result := False;
+
     if not RegisterWindowClass then
-      begin
-       exit;
-      end;
+      exit;
+
     HWindow := CreateWindowEx(WS_EX_NOACTIVATE or WS_EX_TRANSPARENT,
       PChar(WinClassName), PChar(WinClassName), Ws_popup or WS_CLIPSIBLINGS, 0,
       0, 0, 0, 0, 0, HInstance, nil);
@@ -159,10 +160,8 @@ function TAudioEngineDShow.CreateAppWindow: boolean;
       SetWindowLongPtr(HWindow,GWL_USERDATA,PtrInt(Self));
       UpdateWindow(HWindow);
       Result := True;
-      Exit;
       end;
 
-    Result := False;
   end; // CreateAppWindow
 
 function TAudioEngineDShow.GetMainVolume: integer;

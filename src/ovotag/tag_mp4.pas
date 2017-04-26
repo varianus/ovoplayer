@@ -72,6 +72,7 @@ const
 
 function TMp4Frame.GetAsString: string;
 begin
+  result := '';
   if (fFlags and $00ffffff) = 1 then
     Result := (Data);
 
@@ -82,7 +83,6 @@ begin
       else
          Result := Inttostr(BEtoN(PWord(@data[1])^));
     end;
-
 
 end;
 

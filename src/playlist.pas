@@ -317,8 +317,7 @@ begin
         end;
       Result := CurrentItem;
     end;
-
-  rptNone:
+  else
     begin
       if ItemIndex < Count - 1 then
          ItemIndex := ItemIndex + 1

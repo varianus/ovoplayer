@@ -15,7 +15,8 @@ object fMiniPlayer: TfMiniPlayer
   OnHide = FormHide
   OnMouseLeave = FormMouseLeave
   OnShow = FormShow
-  LCLVersion = '1.7'
+  LCLVersion = '1.8.0.1'
+  Visible = False
   object Panel1: TPanel
     Left = 0
     Height = 57
@@ -25,15 +26,15 @@ object fMiniPlayer: TfMiniPlayer
     BevelInner = bvLowered
     BorderWidth = 2
     BorderStyle = bsSingle
-    ClientHeight = 55
-    ClientWidth = 199
+    ClientHeight = 53
+    ClientWidth = 197
     ParentColor = False
     TabOrder = 0
     object tbPlayControls: TToolBar
       Left = 4
       Height = 22
       Top = 4
-      Width = 191
+      Width = 189
       AutoSize = True
       EdgeInner = esNone
       EdgeOuter = esNone
@@ -79,9 +80,9 @@ object fMiniPlayer: TfMiniPlayer
     end
     object TrackBar: TThemedSlider
       Left = 4
-      Height = 25
+      Height = 23
       Top = 26
-      Width = 191
+      Width = 189
       Align = alClient
       BorderWidth = 6
       Step = 0
@@ -96,6 +97,6 @@ object fMiniPlayer: TfMiniPlayer
   object Timer: TTimer
     Interval = 333
     OnTimer = TimerTimer
-    Left = 96
+    left = 96
   end
 end

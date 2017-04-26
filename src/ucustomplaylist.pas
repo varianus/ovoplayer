@@ -58,7 +58,7 @@ var
 
 implementation
 uses
-  FilesSupport, garrayutils, gutil;//, Generics.Collections, Generics.Defaults;
+  garrayutils;//, Generics.Collections, Generics.Defaults;
 {$R *.lfm}
 
 
@@ -82,9 +82,9 @@ begin
   // Sort field names based on label.
   // Doing it here should sort the already translated ones
    SortList.Sort(FieldArray, FieldCount);
-//  specialize TArrayHelper< FieldRec>.Sort(FieldArray, specialize TComparer<FieldRec>.Construct(@myCompare));
+//ver for trunk FPC  specialize TArrayHelper< FieldRec>.Sort(FieldArray, specialize TComparer<FieldRec>.Construct(@myCompare));
 
-  //Find at wich index is the title field, used as a default
+  //Find at which index is the title field, used as a default
   fDefaultIndex:=0;
   for i := 0 to FieldCount -1 do
     if FieldArray[i].Id = 4 then
@@ -114,8 +114,6 @@ begin
 end;
 
 procedure TfCustomPlayList.OKButtonClick(Sender: TObject);
-var
-  i: integer;
 begin
   UpdateBuilder;
 

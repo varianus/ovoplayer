@@ -7,14 +7,14 @@ object fAbout: TfAbout
   Caption = 'About'
   ClientHeight = 253
   ClientWidth = 422
-  DesignTimePPI = 95
   OnShow = FormShow
-  LCLVersion = '1.7'
+  LCLVersion = '1.8.0.1'
+  Visible = False
   object Image1: TImage
     Left = 0
-    Height = 80
+    Height = 81
     Top = 0
-    Width = 96
+    Width = 97
     Picture.Data = {
       1754506F727461626C654E6574776F726B47726170686963042E000089504E47
       0D0A1A0A0000000D494844520000007C0000006B0806000000B5CDE69D000000
@@ -389,10 +389,10 @@ object fAbout: TfAbout
     Stretch = True
   end
   object Label1: TLabel
-    Left = 100
+    Left = 101
     Height = 32
     Top = 8
-    Width = 313
+    Width = 316
     Alignment = taCenter
     Anchors = [akTop, akLeft, akRight]
     AutoSize = False
@@ -402,10 +402,10 @@ object fAbout: TfAbout
     ParentFont = False
   end
   object lVersion: TLabel
-    Left = 100
+    Left = 101
     Height = 17
-    Top = 65
-    Width = 313
+    Top = 66
+    Width = 316
     Alignment = taCenter
     Anchors = [akTop, akLeft, akRight]
     AutoSize = False
@@ -415,10 +415,10 @@ object fAbout: TfAbout
     ParentFont = False
   end
   object Label3: TLabel
-    Left = 100
+    Left = 101
     Height = 17
-    Top = 155
-    Width = 313
+    Top = 157
+    Width = 316
     Alignment = taCenter
     AutoSize = False
     Caption = '(C) 2011, Marco Caselli <marcocas@gmail.com>'
@@ -426,10 +426,10 @@ object fAbout: TfAbout
     ParentFont = False
   end
   object Label4: TLabel
-    Left = 100
+    Left = 101
     Height = 17
     Top = 43
-    Width = 313
+    Width = 316
     Alignment = taCenter
     Anchors = [akTop, akLeft, akRight]
     AutoSize = False
@@ -438,10 +438,10 @@ object fAbout: TfAbout
     ParentFont = False
   end
   object lHomePage: TLabel
-    Left = 100
+    Left = 101
     Height = 17
-    Top = 182
-    Width = 313
+    Top = 184
+    Width = 316
     Alignment = taCenter
     AutoSize = False
     Caption = 'http://ovoplayer.altervista.org/'
@@ -453,10 +453,10 @@ object fAbout: TfAbout
     OnMouseLeave = lHomePageMouseLeave
   end
   object bClose: TBitBtn
-    Left = 344
+    Left = 347
     Height = 26
-    Top = 219
-    Width = 70
+    Top = 222
+    Width = 71
     Anchors = [akRight, akBottom]
     Default = True
     DefaultCaption = True
@@ -466,20 +466,20 @@ object fAbout: TfAbout
     TabOrder = 0
   end
   object bLicense: TBitBtn
-    Left = 248
+    Left = 250
     Height = 26
-    Top = 219
-    Width = 65
+    Top = 222
+    Width = 66
     Anchors = [akRight, akBottom]
     Caption = '&License'
     OnClick = bLicenseClick
     TabOrder = 1
   end
   object lbBuildEnv: TLabel
-    Left = 100
+    Left = 101
     Height = 17
-    Top = 109
-    Width = 313
+    Top = 110
+    Width = 316
     Alignment = taCenter
     AutoSize = False
     Caption = 'Lazarus'
@@ -487,10 +487,10 @@ object fAbout: TfAbout
     ParentFont = False
   end
   object lbEngine: TLabel
-    Left = 101
+    Left = 102
     Height = 17
-    Top = 131
-    Width = 313
+    Top = 132
+    Width = 316
     Alignment = taCenter
     AutoSize = False
     Caption = 'Engine'

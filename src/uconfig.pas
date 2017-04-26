@@ -361,8 +361,8 @@ end;
 
 
 procedure TfConfig.FormShow(Sender: TObject);
-var
-  i:Integer;
+//var
+//  i:Integer;
 begin
 {  for i := 0 to ComponentCount -1 do
      if Components[i] is TLabel then

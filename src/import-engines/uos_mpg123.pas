@@ -817,6 +817,7 @@ end;
 
 function mp_unload(): boolean;
 begin
+  Result := falsE;
   // < Reference counting
   if ReferenceCounter > 0 then
     Dec(ReferenceCounter);

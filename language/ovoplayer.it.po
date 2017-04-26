@@ -380,14 +380,6 @@ msgstr ""
 msgid "Current instance is not a client."
 msgstr "L'istanza corrente non è un client."
 
-#: simplesingleinstance.serrsingleinstancenotserver
-msgid "Current instance is not a server."
-msgstr "L'istanza corrente non è un server."
-
-#: simplesingleinstance.serrsingleinstancestartresultnotavailable
-msgid "Single instance hasn't been started yet."
-msgstr "Istanza singola non è ancora avviata."
-
 #: simplesingleinstance.serrstartsingleinstancestarted
 msgid "You cannot start single instance when it's been already started."
 msgstr "Non puoi avviare istanza singola se è già avviata."
@@ -710,11 +702,6 @@ msgstr "Apri Scaletta"
 msgid "&License"
 msgstr "&Licenza"
 
-#: tfabout.caption
-msgctxt "tfabout.caption"
-msgid "About"
-msgstr "Informazioni"
-
 #: tfabout.label1.caption
 msgctxt "tfabout.label1.caption"
 msgid "OvoPlayer"
@@ -819,10 +806,6 @@ msgstr "Porta"
 msgid "A restart is required for this change to take effect."
 msgstr "È richiesto un riavvio affinché questa modifica abbia effetto."
 
-#: tfconfig.lbwarning.caption
-msgid "                                            "
-msgstr "                                            "
-
 #: tfconfig.rgaudioengine.caption
 msgctxt "tfconfig.rgaudioengine.caption"
 msgid "Audio Engine"
@@ -905,10 +888,6 @@ msgstr "Riduci"
 msgctxt "tfcover.btnzoomreset.hint"
 msgid "Original size"
 msgstr "Dimens. originale"
-
-#: tfcustomplaylist.caption
-msgid "Custom Playlist "
-msgstr "Playlist Customizzata"
 
 #: tfcustomplaylist.cbsortdirection.caption
 msgid "in ascending order"
@@ -1002,11 +981,6 @@ msgstr "Casa"
 msgctxt "TFMAINFORM.BTNUPDIR.CAPTION"
 msgid "Up"
 msgstr "Su"
-
-#: tfmainform.caption
-msgctxt "tfmainform.caption"
-msgid "OvoPlayer"
-msgstr "OvoPlayer"
 
 #: tfmainform.cbgroupby.hint
 msgid "Group by"
@@ -1415,3 +1389,4 @@ msgstr "Proprietà Media"
 #: tfsonginfo.tstags.caption
 msgid "Tags"
 msgstr "Etichette"
+

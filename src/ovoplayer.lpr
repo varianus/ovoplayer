@@ -86,6 +86,7 @@ uses
 begin
   Application.Scaled:=True;
 
+
   CheckRestarting(Application);
   // needed to output exception to a file
   Application.Flags := Application.Flags + [appNoExceptionMessages];

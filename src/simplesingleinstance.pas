@@ -46,10 +46,7 @@ Resourcestring
   SErrSetSingleInstanceIDStarted = 'You cannot change the single instance ID when it''s been started.';
   SErrSetSingleInstanceGlobalStarted = 'You cannot change the single instance global property when it''s been started.';
   SErrStartSingleInstanceStarted = 'You cannot start single instance when it''s been already started.';
-  SErrSingleInstanceStartResultNotAvailable = 'Single instance hasn''t been started yet.';
   SErrSingleInstanceNotClient = 'Current instance is not a client.';
-  SErrSingleInstanceNotServer = 'Current instance is not a server.';
-
 
 { TSimpleSingleInstance }
 

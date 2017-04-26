@@ -24,7 +24,7 @@ unit GeneralFunc;
 interface
 
 uses
-  Classes, SysUtils, AppConsts, CustApp, lclProc, BaseTypes,
+  Classes, SysUtils, AppConsts, CustApp, lclProc,
   netprotocol;
 
 function TimeToMSec(Time: double): int64;
@@ -47,7 +47,7 @@ uses
 {$DEFINE USESMODE}
   {$i generalfuncimpl.inc}
 {$UNDEF USESMODE}
- strutils, SimpleIPC, AsyncProcess, netsupport;
+ SimpleIPC, AsyncProcess, netsupport;
 
 const
   OneKB = 1024;

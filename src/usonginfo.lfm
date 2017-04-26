@@ -13,6 +13,7 @@ object fSongInfo: TfSongInfo
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
+  LCLVersion = '1.8.0.1'
   Visible = False
   object pcSongInfo: TPageControl
     Left = 168

@@ -5,7 +5,7 @@ unit NetIntf;
 interface
 
 uses
-  Classes, SysUtils, types, BaseTypes, coreinterfaces, TcpIpServer, TcpIpClient, sockets,
+  Classes, SysUtils, BaseTypes, coreinterfaces, TcpIpServer, TcpIpClient, sockets,
   NullInterfacedObject, netprotocol,netsupport, lclproc;
 
 type
@@ -69,7 +69,6 @@ type
   end;
 
 implementation
-uses GeneralFunc;
 
 { TEchoDaemon }
 
@@ -299,12 +298,8 @@ begin
   fBackEnd := BackEnd;
 
   DaemonThread := TTCPRemoteDaemon.Create(self);
-
-  if not Assigned(fBackEnd) then
-    exit;
-
-  Result := True;
-  FActivated:= True;
+  Result := Assigned(fBackEnd);
+  FActivated:= Result;
 
 end;
 

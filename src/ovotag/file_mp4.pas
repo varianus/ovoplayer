@@ -290,9 +290,7 @@ function TMp4Reader.LoadFromFile(AFileName: Tfilename): boolean;
 var
   fStream: TFileStreamUTF8;
   Transferred: DWord;
-  AtomList, traks:TMP4AtomList;
-  vers: DWord;
-  i,j: integer;
+  AtomList:TMP4AtomList;
   moov, trak, mdhd, ilst, CurrAtom: TMp4Atom;
   Data: array of byte;
   version:byte;

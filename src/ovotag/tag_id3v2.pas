@@ -522,6 +522,8 @@ var
   headsize : DWord;
 
 begin
+  Result := 0;
+
   if fSize = 0 then
      exit;
 

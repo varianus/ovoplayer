@@ -26,7 +26,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, StdCtrls, Buttons, ComCtrls,
-  Spin, ExtCtrls, EditBtn, playlistbuilder, Types;
+  Spin, ExtCtrls, EditBtn, playlistbuilder;
 
 type
 

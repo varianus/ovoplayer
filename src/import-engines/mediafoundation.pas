@@ -448,6 +448,7 @@ var
 
 begin
   // Media foundation is avalaible only for Vista and later Windows versions
+  Result := False;
   GetVersionEx(OsVer);
   if OsVer.dwMajorVersion < 6 then
     exit;
@@ -456,7 +457,6 @@ begin
   MustFree := LibMF_Handle = 0;
 
   libMF_dynamic_dll_init();
-  Result := False;
   // exit, report error
   if (LibMF_Handle = 0) then
     begin

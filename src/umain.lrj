@@ -1,8 +1,7 @@
 {"version":1,"strings":[
-{"hash":74635538,"name":"tfmainform.caption","sourcebytes":[79,118,111,80,108,97,121,101,114],"value":"OvoPlayer"},
 {"hash":46008942,"name":"tfmainform.tscollection.caption","sourcebytes":[67,111,108,108,101,99,116,105,111,110],"value":"Collection"},
 {"hash":158081657,"name":"tfmainform.cbgroupby.hint","sourcebytes":[71,114,111,117,112,32,98,121],"value":"Group by"},
-{"hash":14634573,"name":"tfmainform.cbgroupby.text","sourcebytes":[65,108,98,117,109,65,114,116,105,115,116,32,47,32,65,108,98,117,109],"value":"AlbumArtist / Album"},
+{"hash":14634573,"name":"tfmainform.cbgroupby.text","sourcebytes":[65,108,98,117,109,65,114,116,105,115,116,32,47,32,65,108,98,117,109],"value":"AlbumArtist \/ Album"},
 {"hash":80755394,"name":"tfmainform.edtfilter.hint","sourcebytes":[70,105,108,116,101,114],"value":"Filter"},
 {"hash":80755394,"name":"tfmainform.edtfilter.editlabel.caption","sourcebytes":[70,105,108,116,101,114],"value":"Filter"},
 {"hash":4863637,"name":"tfmainform.btnfiltercancel.caption","sourcebytes":[67,108,111,115,101],"value":"Close"},

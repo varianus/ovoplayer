@@ -9,7 +9,8 @@ type
     ENGINE_PLAY,
     ENGINE_PAUSE,
     ENGINE_SONG_END,
-    ENGINE_ON_LINE);
+    ENGINE_ON_LINE,
+    ENGINE_OFF_LINE);
 
   TEngineCommand = (ecInvalid, ecStop, ecPrevious, ecPlay, ecNext, ecPause, ecSeek, ecCustom);
 

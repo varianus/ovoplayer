@@ -28,7 +28,7 @@ interface
 
 uses
   Windows, Classes, SysUtils, shlobj, comobj, coreinterfaces, uDM, NullInterfacedObject,
-  InterfaceBase, guibackend, LazUTF8;
+  guibackend, LazUTF8;
 
 const
       IID_ITaskbarList3: TGUID = '{ea1afb91-9e28-4b86-90e9-9e9f8a5eefaf}';
@@ -159,8 +159,9 @@ begin
      PrevWndProc := Ptrint(GetWindowLongPtr(fApplication,GWL_WNDPROC));
      SetWindowLongPtr(fApplication,GWL_WNDPROC,PtrInt(@WndCallback));
      AddButtons;
-    end;
-
+    end
+  else
+    Result := False;
 end;
 
 procedure TTaskBarExtender.Update;
