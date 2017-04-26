@@ -78,13 +78,15 @@ uses
 
     // Application forms and related
   Udm, uMain, uAbout, ulicense, uConfig, uOSD, uMiniPlayer, uSongInfo, uCover,
-  lazlogger, DefaultTranslator,
+  lazlogger, DefaultTranslator,  LCLVersion,
   ucustomplaylist, ufrfield, playlistbuilder, netprotocol,
   ImagesSupport, netsupport, guiconfig, SimpleSingleInstance, mcaselli;
 
 {$R *.res}
 begin
+  {$IF lcl_fullversion>=1080001}
   Application.Scaled:=True;
+  {$ENDIF}
 
 
   CheckRestarting(Application);
