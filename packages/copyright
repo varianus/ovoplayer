@@ -1,12 +1,10 @@
 Format-Specification: http://svn.debian.org/wsvn/dep/web/deps/dep5.mdwn?op=file&rev=135
 Name: ovoplayer
 Maintainer: Marco Caselli <marcocas@gmail.com>
-Source: http://code.google.com/p/ovoplayer/
+Source: https://github.com/varianus/ovoplayer/
 
 Files: *
 Copyright: 2011, Marco Caselli <marcocas@gmail.com>
-License: GPL-2+
-
 License: GPL-2+
   This program is free software; you can redistribute it
   and/or modify it under the terms of the GNU General Public

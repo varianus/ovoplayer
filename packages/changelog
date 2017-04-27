@@ -1,6 +1,29 @@
-ovoplayer (1.1.0); urgency=low
+ovoplayer (1.3.0) UNSTABLE; urgency=low
+
+  * Automatic Playlist. Create a playlist with extensive filtering/search capabilities
+  * Add support for GStreamer 1.0, if installed
+
+ -- Marco Caselli <marcocas@gmail.com>  Thu, 15 Dec 2016 13:00:00 +0100
+
+ovoplayer (1.2.1) stable; urgency=low
+  
+  * Fix some bugs and memory leaks
+  * Reenable tag caching: 
+    dramatically improve performance of user interface and reduce disk activity
+
+ -- Marco Caselli <marcocas@gmail.com>   Fri, 19 Jun 2015 12:10:00 +0200
+ 
+ovoplayer (1.2.0) stable; urgency=low
+  
+  * Added support for libMPV audio engine
+  * Better support for Unicode in filename and tags
+  * Support MP4 tags, only reading
+
+ -- Marco Caselli <marcocas@gmail.com>  Sat, 21 Mar 2015 12:00:00 +0200
+
+ovoplayer (1.1.0) stable; urgency=low
 
   * Full Unicode Support
   * Fast Scan of music library
 
- -- Marco Caselli <marcocas@gmail.com>  2014-04-25
+ -- Marco Caselli <marcocas@gmail.com>  Fri, 25 Apr 2014 11:00:00 +0200
