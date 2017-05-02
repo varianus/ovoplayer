@@ -157,7 +157,6 @@ object fMainForm: TfMainForm
           Align = alClient
           DefaultItemHeight = 18
           DragMode = dmAutomatic
-          ExpandSignType = tvestPlusMinus
           Images = DM.ilSmall
           Indent = 20
           MultiSelect = True
@@ -178,14 +177,14 @@ object fMainForm: TfMainForm
       end
       object tsDirectory: TTabSheet
         Caption = 'Directory'
-        ClientHeight = 431
-        ClientWidth = 240
+        ClientHeight = 438
+        ClientWidth = 238
         OnShow = tsDirectoryShow
         object tbDirectory: TToolBar
           Left = 0
           Height = 50
           Top = 0
-          Width = 237
+          Width = 238
           Flat = False
           Images = DM.ilButtons
           TabOrder = 0
@@ -204,14 +203,14 @@ object fMainForm: TfMainForm
             OnClick = btnForwardDirClick
           end
           object btnUpDir: TToolButton
-            Left = 54
+            Left = 53
             Top = 2
             Caption = 'Up'
             ImageIndex = 17
             OnClick = btnUpDirClick
           end
           object btnHomeDir: TToolButton
-            Left = 80
+            Left = 79
             Top = 2
             Caption = 'Home'
             ImageIndex = 14
@@ -219,7 +218,7 @@ object fMainForm: TfMainForm
           end
           object ePath: TDirectoryEdit
             Left = 1
-            Height = 27
+            Height = 23
             Top = 24
             Width = 204
             OnAcceptDirectory = ePathAcceptDirectory
@@ -233,12 +232,12 @@ object fMainForm: TfMainForm
         end
         object FilesTree: TTreeView
           Left = 0
-          Height = 418
-          Top = 49
-          Width = 237
+          Height = 388
+          Top = 50
+          Width = 238
           Align = alClient
+          DefaultItemHeight = 18
           DragMode = dmAutomatic
-          ExpandSignType = tvestPlusMinus
           HideSelection = False
           Images = DM.ilSmall
           MultiSelect = True
