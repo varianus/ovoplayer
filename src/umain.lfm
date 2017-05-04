@@ -266,7 +266,6 @@ object fMainForm: TfMainForm
           Width = 238
           Align = alClient
           DefaultItemHeight = 18
-          ExpandSignSize = 16
           PopupMenu = pmPlaylists
           ReadOnly = True
           RightClickSelect = True
