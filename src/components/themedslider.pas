@@ -10,21 +10,25 @@ uses
 type
 
   { TThemedSlider }
+  TThemedSliderOrientation = (ttsHorizontal, ttsVertical);
+
 
   TThemedSlider = class(TCustomControl)
   private
     FMax: Cardinal;
     FMin: Cardinal;
     FOnChange: TNotifyEvent;
+    FOrientation: TThemedSliderOrientation;
     FPosition: Cardinal;
     fSeeking : Boolean;
     FSliderwidth: Integer;
     FStep: cardinal;
     InternalBitmap: TBitmap;
     procedure RedrawControl;
-    procedure Seek(X: Integer);
+    procedure Seek(X, Y: Integer);
     procedure SetMax(const AValue: Cardinal);
     procedure SetMin(const AValue: Cardinal);
+    procedure SetOrientation(AValue: TThemedSliderOrientation);
     procedure SetPosition(const AValue: Cardinal);
     procedure SetSliderwidth(const AValue: Integer);
     procedure SetStep(const AValue: cardinal);
@@ -53,6 +57,7 @@ type
     Property Position: Cardinal read FPosition write SetPosition;
     Property Sliderwidth: Integer read FSliderwidth write SetSliderwidth;
     Property OnChange: TNotifyEvent read FOnChange write FOnChange;
+    property Orientation : TThemedSliderOrientation read FOrientation write SetOrientation;
     property OnClick;
 
   end;
@@ -83,6 +88,26 @@ begin
   RedrawControl;
 end;
 
+procedure TThemedSlider.SetOrientation(AValue: TThemedSliderOrientation);
+var
+  OldWidth: LongInt;
+  OldHeight: LongInt;
+begin
+  if FOrientation <> AValue then
+  begin
+    FOrientation := AValue;
+    // switch width and height, but not when loading, because we assume that the
+    // lfm contains a consistent combination of Orientation and (width, height)
+    if not (csLoading in ComponentState) then
+    begin
+      OldWidth:=Width;
+      OldHeight:=Height;
+      SetBounds(Left,Top,OldHeight,OldWidth);
+    end;
+  end;
+end;
+
+
 procedure TThemedSlider.SetPosition(const AValue: Cardinal);
 begin
   if fSeeking then
@@ -107,10 +132,12 @@ end;
 
 procedure TThemedSlider.RedrawControl;
 var
-  r1: TRect;
-  r2: TRect;
+  RectInnerArea: TRect;
+  RectSlider: TRect;
+  RectFilled: TRect;
   pos :integer;
   HalfSlider:Integer;
+  SlidingDimension: integer;
 //  Color : DWORD;
 const
   FrameWidth=1;
@@ -122,42 +149,64 @@ begin
 
   InternalBitmap.Transparent:=true;
   InternalBitmap.TransparentMode:=tmAuto;
-  r1:=rect(BorderWidth, BorderWidth, Width - BorderWidth, Height - BorderWidth);
-  WidgetSet.Frame3d(InternalBitmap.canvas.Handle, r1, FrameWidth, bvLowered);
-  if fMax = 0 then
-     pos:=0
-  else
-     pos:= trunc(Width * (FPosition / (fMax - fMin)));
+  RectInnerArea:=rect(BorderWidth, BorderWidth, Width - BorderWidth, Height - BorderWidth);
+  WidgetSet.Frame3d(InternalBitmap.canvas.Handle, RectInnerArea, FrameWidth, bvLowered);
+  RectInnerArea.Inflate(-FrameWidth, -FrameWidth);
 
+
+  case FOrientation of
+    ttsHorizontal: SlidingDimension := Width;
+    ttsVertical: SlidingDimension := Height;
+  end;
+
+  if fMax = 0 then
+    pos:=0
+  else
+    pos:= trunc(SlidingDimension * (FPosition / (fMax - fMin)));
 
   if pos < 0 then pos := HalfSlider;
   if pos < HalfSlider then pos := HalfSlider;
-  if pos > Width - HalfSlider then pos:= Width - HalfSlider;
 
-  r2:=Rect(pos - HalfSlider, BorderWidth div 2, pos + HalfSlider,  Height- (BorderWidth div 2));
+  if pos > SlidingDimension - HalfSlider then pos:= SlidingDimension - HalfSlider;
+
+  case FOrientation of
+    ttsHorizontal: RectSlider:=Rect(pos - HalfSlider, BorderWidth div 2, pos + HalfSlider,  Height- (BorderWidth div 2));
+    ttsVertical  : RectSlider:=Rect(BorderWidth div 2, pos - HalfSlider,  Width- (BorderWidth div 2),  pos + HalfSlider);
+  end;
+
   if fSeeking then
      begin
-       WidgetSet.DrawFrameControl(InternalBitmap.canvas.Handle, r2, DFC_BUTTON, DFCS_PUSHED+DFCS_BUTTONPUSH);
-       WidgetSet.DrawEdge(InternalBitmap.canvas.Handle, r2, EDGE_SUNKEN, BF_RECT+ BF_MONO);
+       WidgetSet.DrawFrameControl(InternalBitmap.canvas.Handle, RectSlider, DFC_BUTTON, DFCS_PUSHED+DFCS_BUTTONPUSH);
+       WidgetSet.DrawEdge(InternalBitmap.canvas.Handle, RectSlider, EDGE_SUNKEN, BF_RECT+ BF_MONO);
      end
   else
      begin
-       WidgetSet.DrawFrameControl(InternalBitmap.canvas.Handle, r2, DFC_BUTTON, DFCS_BUTTONPUSH);
-       WidgetSet.DrawEdge(InternalBitmap.canvas.Handle, r2, EDGE_Raised, BF_RECT+ BF_mono);
+       WidgetSet.DrawFrameControl(InternalBitmap.canvas.Handle, RectSlider, DFC_BUTTON, DFCS_BUTTONPUSH);
+       WidgetSet.DrawEdge(InternalBitmap.canvas.Handle, RectSlider, EDGE_Raised, BF_RECT+ BF_mono);
      end;
+
+  case FOrientation of
+       ttsHorizontal: RectFilled:=Rect(RectInnerArea.Left , RectInnerArea.Top, pos - HalfSlider, RectInnerArea.Bottom);
+       ttsVertical  : RectFilled:=Rect(RectInnerArea.left , RectInnerArea.Bottom, RectInnerArea.Right, pos + HalfSlider);
+  end;
 
   if pos > SLIDERWIDTH then
      begin
         InternalBitmap.canvas.Brush.Color:= WidgetSet.GetSysColor(COLOR_HIGHLIGHT);
-        InternalBitmap.Canvas.FillRect(R1.Left + (FrameWidth), r1.Top + FrameWidth,
-                            pos - HalfSlider, r1.Bottom - FrameWidth);
+        InternalBitmap.Canvas.FillRect(RectFilled);
      end;
 
-  if pos < Width - SLIDERWIDTH then
+
+  case FOrientation of
+    ttsHorizontal: RectFilled:=Rect(pos + HalfSlider, RectInnerArea.Top, RectInnerArea.Right , RectInnerArea.Bottom);
+    ttsVertical  : RectFilled:=Rect(RectInnerArea.left, RectInnerArea.top,  RectInnerArea.Right, RectInnerArea.top + pos - SLIDERWIDTH );
+  end;
+
+
+ if pos < SlidingDimension - SLIDERWIDTH then
      begin
         InternalBitmap.canvas.Brush.Color:= WidgetSet.GetSysColor(COLOR_WINDOW);
-        InternalBitmap.Canvas.FillRect(pos + HalfSlider, r1.Top + FrameWidth,
-                             Width - FrameWidth  -BorderWidth , r1.Bottom - FrameWidth);
+        InternalBitmap.Canvas.FillRect(RectFilled);
      end;
 
  Invalidate;
@@ -195,13 +244,28 @@ begin
 
 end;
 
-procedure TThemedSlider.Seek(X: Integer);
+procedure TThemedSlider.Seek(X, Y: Integer);
 var
   tmppos :Cardinal;
+  SlidingDimension: integer;
+  Refer: integer;
 begin
-  if x < 0 then
-     x := 0;
-  tmppos := Round(X / ( width / (fmax - fmin)));
+
+  case FOrientation of
+      ttsHorizontal: begin
+                       SlidingDimension := Width;
+                       Refer := x;
+                     end;
+      ttsVertical:  begin
+                       SlidingDimension := Height;
+                       Refer := y;
+                     end;
+    end;
+
+  if Refer < 0 then
+     Refer := 0;
+
+  tmppos := Round(Refer / ( SlidingDimension / (fmax - fmin)));
   if tmppos < fmin then
      tmppos:=FMin;
   if tmppos > FMax then
@@ -217,8 +281,11 @@ begin
   if ssLeft in Shift then
     begin
       fseeking := true;
-      Cursor := crHSplit;
-      Seek(X);
+      case FOrientation of
+          ttsHorizontal: Cursor := crHSplit;
+          ttsVertical:  Cursor := crVSplit;
+        end;
+      Seek(X, Y);
       if Assigned(FOnChange) then
          FOnChange(self);
       end
@@ -254,9 +321,9 @@ var
   p: Tpoint;
 begin
   p := Mouse.CursorPos;
-  x:= ScreenToClient(p).X;
+  P:= ScreenToClient(p);
   fSeeking:=true;
-  Seek(x);
+  Seek(p.x, p.y);
   fSeeking:=false;
   inherited Click;
 end;
@@ -276,6 +343,7 @@ begin
   InternalBitmap.Width:= Width;
   BorderWidth:=2;
   FSliderwidth:= 6;
+  FOrientation:= ttsHorizontal;
   fseeking:=false;
 
   RedrawControl;
