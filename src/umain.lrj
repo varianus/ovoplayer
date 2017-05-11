@@ -65,6 +65,7 @@
 {"hash":76180388,"name":"tfmainform.actshowpreferencesinterface.caption","sourcebytes":[65,115,112,101,99,116],"value":"Aspect"},
 {"hash":5206101,"name":"tfmainform.actshowpreferencesengine.caption","sourcebytes":[65,117,100,105,111,32,69,110,103,105,110,101],"value":"Audio Engine"},
 {"hash":142300366,"name":"tfmainform.actshowpreferencesmedialibrary.caption","sourcebytes":[67,111,108,108,101,99,116,105,111,110,32,80,114,101,102,101,114,101,110,99,101,115,32,46,46,46],"value":"Collection Preferences ..."},
+{"hash":206550110,"name":"tfmainform.actshowequalizer.caption","sourcebytes":[69,113,117,97,108,105,122,101,114,32,46,46,46],"value":"Equalizer ..."},
 {"hash":130336724,"name":"tfmainform.mnunewplaylist.caption","sourcebytes":[78,101,119,32,112,108,97,121,108,105,115,116],"value":"New playlist"},
 {"hash":357001,"name":"tfmainform.mnuplayplaylist.caption","sourcebytes":[80,108,97,121],"value":"Play"},
 {"hash":207142133,"name":"tfmainform.mnuenqueueplaylist.caption","sourcebytes":[69,110,113,117,101,117,101],"value":"Enqueue"},

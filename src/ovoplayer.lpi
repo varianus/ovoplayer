@@ -126,7 +126,7 @@ if TargetOS = 'linux' then
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="82">
+    <Units Count="84">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -523,6 +523,20 @@ if TargetOS = 'linux' then
         <IsPartOfProject Value="True"/>
         <UnitName Value="SimpleSingleInstance"/>
       </Unit81>
+      <Unit82>
+        <Filename Value="equalizerband.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frEqualizer"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Unit82>
+      <Unit83>
+        <Filename Value="uequalizer.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fEqualizer"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit83>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

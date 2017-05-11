@@ -524,6 +524,7 @@ object fMainForm: TfMainForm
           Position = 255
           Sliderwidth = 12
           OnChange = slVolumeChange
+          Orientation = ttsHorizontal
         end
       end
       object pnlTimePos: TPanel
@@ -563,6 +564,7 @@ object fMainForm: TfMainForm
           Position = 0
           Sliderwidth = 12
           OnChange = TrackBarChange
+          Orientation = ttsHorizontal
           OnClick = TrackBarChange
         end
       end
@@ -866,6 +868,9 @@ object fMainForm: TfMainForm
       object MenuItem51: TMenuItem
         Caption = '-'
       end
+      object MenuItem62: TMenuItem
+        Action = actShowEqualizer
+      end
       object MenuItem67: TMenuItem
         Action = ActShowPreferences
       end
@@ -1148,6 +1153,10 @@ object fMainForm: TfMainForm
       Caption = 'Collection Preferences ...'
       DisableIfNoHandler = False
       OnExecute = ActShowPreferencesMediaLibraryExecute
+    end
+    object actShowEqualizer: TAction
+      Caption = 'Equalizer ...'
+      OnExecute = actShowEqualizerExecute
     end
   end
   object RateStars: TImageList

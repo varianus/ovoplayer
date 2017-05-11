@@ -1,0 +1,45 @@
+object frEqualizer: TfrEqualizer
+  Left = 0
+  Height = 213
+  Top = 0
+  Width = 70
+  ClientHeight = 213
+  ClientWidth = 70
+  TabOrder = 0
+  object slValue: TThemedSlider
+    Left = 26
+    Height = 179
+    Top = 15
+    Width = 13
+    Anchors = [akTop, akBottom]
+    BorderWidth = 1
+    Step = 0
+    Max = 100
+    Min = 0
+    Position = 50
+    Sliderwidth = 15
+    OnChange = slValueChange
+    Orientation = ttsVertical
+    OnClick = slValueChange
+  end
+  object lbBand: TLabel
+    Left = 0
+    Height = 15
+    Top = 0
+    Width = 70
+    Align = alTop
+    Alignment = taCenter
+    Caption = 'Band'
+    ParentColor = False
+  end
+  object lbValue: TLabel
+    Left = 0
+    Height = 15
+    Top = 198
+    Width = 70
+    Align = alBottom
+    Alignment = taCenter
+    Caption = 'Value'
+    ParentColor = False
+  end
+end

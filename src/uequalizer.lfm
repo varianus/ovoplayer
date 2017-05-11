@@ -1,0 +1,44 @@
+object fEqualizer: TfEqualizer
+  Left = 0
+  Height = 317
+  Top = 0
+  Width = 1094
+  ActiveControl = ButtonPanel1.CloseButton
+  Caption = 'Equalizer'
+  ClientHeight = 317
+  ClientWidth = 1094
+  OnCreate = FormCreate
+  Visible = False
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 277
+    Width = 1082
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 0
+    ShowButtons = [pbOK, pbClose]
+  end
+  object pnlHeader: TPanel
+    Left = 0
+    Height = 50
+    Top = 0
+    Width = 1094
+    Align = alTop
+    TabOrder = 1
+  end
+  object pnlContainer: TPanel
+    Left = 0
+    Height = 221
+    Top = 50
+    Width = 1094
+    Align = alClient
+    TabOrder = 2
+  end
+end

@@ -80,7 +80,8 @@ uses
   Udm, uMain, uAbout, ulicense, uConfig, uOSD, uMiniPlayer, uSongInfo, uCover,
   lazlogger, DefaultTranslator,  LCLVersion,
   ucustomplaylist, ufrfield, playlistbuilder, netprotocol,
-  ImagesSupport, netsupport, guiconfig, SimpleSingleInstance, mcaselli;
+  ImagesSupport, netsupport, guiconfig, SimpleSingleInstance, mcaselli, 
+equalizerband, uequalizer;
 
 {$R *.res}
 begin

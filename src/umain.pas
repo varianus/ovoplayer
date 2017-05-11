@@ -36,7 +36,7 @@ uses
   {$IFDEF NETWORK_INTF}NetIntf,{$ENDIF}
   {$IFDEF MULTIMEDIA_KEYS}MultimediaKeys, {$ENDIF}
   ucover, ucustomplaylist, playlistbuilder, netprotocol,
-  GuiConfig, ThemedSlider;
+  GuiConfig, uequalizer, ThemedSlider;
 
 type
   TSortFields = record
@@ -108,6 +108,7 @@ type
 
 
   TfMainForm = class(TForm, IObserver)
+    actShowEqualizer: TAction;
     ActShowPreferencesInterface: TAction;
     ActShowPreferencesEngine: TAction;
     ActShowPreferencesMediaLibrary: TAction;
@@ -122,6 +123,7 @@ type
     MenuItem20: TMenuItem;
     MenuItem38: TMenuItem;
     MenuItem39: TMenuItem;
+    MenuItem62: TMenuItem;
     mnuColumns: TMenuItem;
     MenuItem51: TMenuItem;
     MenuItem56: TMenuItem;
@@ -265,6 +267,7 @@ type
     tsCollection: TTabSheet;
     tsDirectory:  TTabSheet;
     procedure actShowAboutExecute(Sender: TObject);
+    procedure actShowEqualizerExecute(Sender: TObject);
     procedure actShowLeftExecute(Sender: TObject);
     procedure actShowPLMediainfoExecute(Sender: TObject);
     procedure ActShowPreferencesExecute(Sender: TObject);
@@ -1028,6 +1031,14 @@ var
   theForm : TfAbout;
 begin
   theForm:= TfAbout.create(application);
+  theForm.ShowModal;
+end;
+
+procedure TfMainForm.actShowEqualizerExecute(Sender: TObject);
+var
+  theForm : TfEqualizer;
+begin
+  theForm:= TfEqualizer.create(application);
   theForm.ShowModal;
 end;
 
