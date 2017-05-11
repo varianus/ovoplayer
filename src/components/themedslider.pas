@@ -135,7 +135,7 @@ var
   RectInnerArea: TRect;
   RectSlider: TRect;
   RectFilled: TRect;
-  pos :integer;
+  pos, invpos :integer;
   HalfSlider:Integer;
   SlidingDimension: integer;
 //  Color : DWORD;
@@ -164,33 +164,21 @@ begin
   else
     pos:= trunc(SlidingDimension * (FPosition / (fMax - fMin)));
 
-  if pos < 0 then pos := HalfSlider;
-  if pos < HalfSlider then pos := HalfSlider;
+  if pos < HalfSlider then
+      pos := HalfSlider;
 
-  if pos > SlidingDimension - HalfSlider then pos:= SlidingDimension - HalfSlider;
+  if pos > SlidingDimension - HalfSlider then
+    pos:= SlidingDimension - HalfSlider;
 
-  case FOrientation of
-    ttsHorizontal: RectSlider:=Rect(pos - HalfSlider, BorderWidth div 2, pos + HalfSlider,  Height- (BorderWidth div 2));
-    ttsVertical  : RectSlider:=Rect(BorderWidth div 2, pos - HalfSlider,  Width- (BorderWidth div 2),  pos + HalfSlider);
-  end;
-
-  if fSeeking then
-     begin
-       WidgetSet.DrawFrameControl(InternalBitmap.canvas.Handle, RectSlider, DFC_BUTTON, DFCS_PUSHED+DFCS_BUTTONPUSH);
-       WidgetSet.DrawEdge(InternalBitmap.canvas.Handle, RectSlider, EDGE_SUNKEN, BF_RECT+ BF_MONO);
-     end
-  else
-     begin
-       WidgetSet.DrawFrameControl(InternalBitmap.canvas.Handle, RectSlider, DFC_BUTTON, DFCS_BUTTONPUSH);
-       WidgetSet.DrawEdge(InternalBitmap.canvas.Handle, RectSlider, EDGE_Raised, BF_RECT+ BF_mono);
-     end;
+  if FOrientation = ttsVertical then
+     invpos := Height - pos;
 
   case FOrientation of
        ttsHorizontal: RectFilled:=Rect(RectInnerArea.Left , RectInnerArea.Top, pos - HalfSlider, RectInnerArea.Bottom);
-       ttsVertical  : RectFilled:=Rect(RectInnerArea.left , RectInnerArea.Bottom, RectInnerArea.Right, pos + HalfSlider);
+       ttsVertical  : RectFilled:=Rect(RectInnerArea.left , RectInnerArea.Bottom, RectInnerArea.Right, invpos + HalfSlider);
   end;
 
-  if pos > SLIDERWIDTH then
+   if pos > HalfSlider then
      begin
         InternalBitmap.canvas.Brush.Color:= WidgetSet.GetSysColor(COLOR_HIGHLIGHT);
         InternalBitmap.Canvas.FillRect(RectFilled);
@@ -199,17 +187,32 @@ begin
 
   case FOrientation of
     ttsHorizontal: RectFilled:=Rect(pos + HalfSlider, RectInnerArea.Top, RectInnerArea.Right , RectInnerArea.Bottom);
-    ttsVertical  : RectFilled:=Rect(RectInnerArea.left, RectInnerArea.top,  RectInnerArea.Right, RectInnerArea.top + pos - SLIDERWIDTH );
+    ttsVertical  : RectFilled:=Rect(RectInnerArea.left, RectInnerArea.top,  RectInnerArea.Right, RectInnerArea.top + invpos - HalfSlider);
   end;
 
+  if pos < SlidingDimension - SLIDERWIDTH then
+    begin
+       InternalBitmap.canvas.Brush.Color:= WidgetSet.GetSysColor(COLOR_WINDOW);
+       InternalBitmap.Canvas.FillRect(RectFilled);
+    end;
 
- if pos < SlidingDimension - SLIDERWIDTH then
-     begin
-        InternalBitmap.canvas.Brush.Color:= WidgetSet.GetSysColor(COLOR_WINDOW);
-        InternalBitmap.Canvas.FillRect(RectFilled);
-     end;
+  case FOrientation of
+    ttsHorizontal: RectSlider:=Rect(pos - HalfSlider, BorderWidth div 2, pos + HalfSlider,  Height- (BorderWidth div 2));
+    ttsVertical  : RectSlider:=Rect(BorderWidth div 2, invpos - HalfSlider,  Width- (BorderWidth div 2),  invpos + HalfSlider);
+  end;
 
- Invalidate;
+  if fSeeking then
+    begin
+      WidgetSet.DrawFrameControl(InternalBitmap.canvas.Handle, RectSlider, DFC_BUTTON, DFCS_PUSHED+DFCS_BUTTONPUSH);
+      WidgetSet.DrawEdge(InternalBitmap.canvas.Handle, RectSlider, EDGE_SUNKEN, BF_RECT+ BF_MONO);
+    end
+  else
+    begin
+      WidgetSet.DrawFrameControl(InternalBitmap.canvas.Handle, RectSlider, DFC_BUTTON, DFCS_BUTTONPUSH);
+      WidgetSet.DrawEdge(InternalBitmap.canvas.Handle, RectSlider, EDGE_Raised, BF_RECT+ BF_mono);
+    end;
+
+  Invalidate;
 end;
 
 procedure TThemedSlider.Paint;
@@ -266,10 +269,14 @@ begin
      Refer := 0;
 
   tmppos := Round(Refer / ( SlidingDimension / (fmax - fmin)));
+
   if tmppos < fmin then
      tmppos:=FMin;
   if tmppos > FMax then
      tmppos:=FMax;
+
+  if FOrientation = ttsVertical then
+     tmppos := FMax - tmppos;
 
   fPosition := tmppos;
   RedrawControl;
