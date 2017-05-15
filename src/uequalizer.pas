@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ButtonPanel,
-  ExtCtrls, equalizerband, fgl;
+  ExtCtrls, StdCtrls, equalizerband, fgl;
 
 type
 
@@ -15,11 +15,13 @@ type
 
   TfEqualizer = class(TForm)
     ButtonPanel1: TButtonPanel;
+    cbEnableEq: TCheckBox;
     pnlHeader: TPanel;
     pnlContainer: TPanel;
     procedure FormCreate(Sender: TObject);
   private
     EQBandList: TEQBandList;
+    procedure BandChanged(Sender: TObject; const BandNo:integer; const Value: single);
   public
 
 
@@ -45,18 +47,26 @@ begin
 
   EQBandList:= TEQBandList.Create(false);
 
+  pnlContainer.DisableAlign;
   for i := 1 to EQCounter do
   begin
     EQBand:= TfrEqualizer.Create(pnlContainer);
     EQBandList.Add(EQBand);
     EQBand.Name:='eq'+IntToStr(i);
     EQBand.Parent:= pnlContainer;
-    EQBand.Align:= alLeft;
+    EQBand.OnBandChanged:=@BandChanged;
+    EQBand.Align := alLeft;
+    EQBand.Left := i* EQBand.Width;
+    EQBand.InitBand(i,inttostr(i*10), i, -12,+12);
   end;
+  pnlContainer.EnableAlign;
 
-  for i:= 0 to pred(EQCounter) do
-    EQBandList[i].InitBand(i,inttostr(i*10), i, -12,+12);
 
+end;
+
+procedure TfEqualizer.BandChanged(Sender: TObject; const BandNo: integer;
+  const Value: single);
+begin
 
 end;
 
