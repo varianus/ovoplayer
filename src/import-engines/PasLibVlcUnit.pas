@@ -1,10 +1,10 @@
 (*
  *******************************************************************************
- * PasLibVlcUnit.pas - pascal interface for VideoLAN libvlc 2.1.3
+ * PasLibVlcUnit.pas - pascal interface for VideoLAN libvlc 2.2.4
  *
  * See copyright notice below.
  *
- * Last modified: 2014.04.08
+ * Last modified: 2016.10.28
  *
  * author: Robert Jêdrzejczyk
  * e-mail: robert@prog.olsztyn.pl
@@ -42,7 +42,7 @@
  *
  * libvlc is part of project VideoLAN
  *
- * Copyright (c) 1996-2010 VideoLAN Team
+ * Copyright (c) 1996-2016 VideoLAN Team
  *
  * For more information about VideoLAN
  *
@@ -61,8 +61,16 @@ uses
   {$IFDEF MSWINDOWS}Windows,{$ENDIF}
   {$IFDEF LCLCARBON}CarbonPrivate, CarbonDef,{$ENDIF}
   {$IFDEF LCLGTK2}Gtk2, {$IFDEF UNIX}Gdk2x,{$ENDIF}{$ENDIF}
-  {$IFDEF LCLQT}Qt4, QtWidgets, {$ENDIF}
-  SysUtils{$IFDEF UNIX},lclproc{$ENDIF};
+  {$IFDEF LCLQT}Qt4, QtWidgets,{$ENDIF}
+  {$IFDEF UNIX}Dialogs,{$ENDIF}
+  {$IFDEF MACOS}FMX.Dialogs,Posix.Unistd,{$ENDIF}
+  SysUtils, Classes, Math;
+
+{$IFDEF HAS_EXCEPTION_MASK}
+const
+  VLC_EXCEPTION_MASK_ALL = [exInvalidOp, exDenormalized, exZeroDivide, exOverflow, exUnderflow, exPrecision];
+  VLC_EXCEPTION_MASK_MIN = [exPrecision, exInvalidOp];
+{$ENDIF}
 
 (**
  * Real path to libvlc.dll
@@ -119,6 +127,8 @@ procedure libvlc_dynamic_dll_init_with_path(vlc_install_path: string);
  
 procedure libvlc_dynamic_dll_done();
 
+Function Check_libvlc:boolean;
+
 {$IFNDEF HAS_PATH_DELIM}
 const
   PathDelim = '\';
@@ -154,7 +164,7 @@ type
 
 type
   libvlc_log_message_t_ptr = ^libvlc_log_message_t;
-  libvlc_log_message_t = packed record
+  libvlc_log_message_t = record
     i_severity  : Integer;   // 0=INFO, 1=ERR, 2=WARN, 3=DBG
     psz_type    : PAnsiChar; // module type
     psz_name    : PAnsiChar; // module name
@@ -180,7 +190,14 @@ type
     libvlc_meta_Publisher,
     libvlc_meta_EncodedBy,
     libvlc_meta_ArtworkURL,
-    libvlc_meta_TrackID
+    libvlc_meta_TrackID,
+    // from VLC 2.2.0
+    libvlc_meta_TrackTotal,
+    libvlc_meta_Director,
+    libvlc_meta_Season,
+    libvlc_meta_Episode,
+    libvlc_meta_ShowName,
+    libvlc_meta_Actors
     // Add new meta types HERE
 );
 
@@ -220,7 +237,7 @@ const
 
 type
   libvlc_media_stats_t_ptr = ^libvlc_media_stats_t;
-  libvlc_media_stats_t = packed record
+  libvlc_media_stats_t = record
     // Input
     i_read_bytes          : Integer;
     f_input_bitrate       : Single; // Float
@@ -245,20 +262,20 @@ type
   end;
 
 type
-  libvlc_media_track_info_t_audio = packed record
+  libvlc_media_track_info_t_audio = record
     i_channels : LongWord;
     i_rate     : LongWord
   end;
 
 type
-  libvlc_media_track_info_t_video = packed record
+  libvlc_media_track_info_t_video = record
     i_height : LongWord;
     i_width  : LongWord;
   end;
 
 type
   libvlc_media_track_info_t_ptr = ^libvlc_media_track_info_t;
-  libvlc_media_track_info_t = packed record
+  libvlc_media_track_info_t = record
     // Codec fourcc
     i_codec : LongWord;
     i_id    : Integer;
@@ -275,14 +292,14 @@ type
 
 type
   libvlc_audio_track_t_ptr = ^libvlc_audio_track_t;
-  libvlc_audio_track_t = packed record
+  libvlc_audio_track_t = record
     i_channels : LongWord;
     i_rate     : LongWord;
   end;
 
 type
   libvlc_video_track_t_ptr = ^libvlc_video_track_t;
-  libvlc_video_track_t = packed record
+  libvlc_video_track_t = record
     i_height         : LongWord;
     i_width          : LongWord;
     i_sar_num        : LongWord;
@@ -293,12 +310,12 @@ type
 
 type
   libvlc_subtitle_track_t_ptr = ^libvlc_subtitle_track_t;
-  libvlc_subtitle_track_t = packed record
+  libvlc_subtitle_track_t = record
     psz_encoding : PAnsiChar;
   end;
 
 type
-  libvlc_media_track_t_union = packed record
+  libvlc_media_track_t_union = record
     case Byte of
       0: (audio : libvlc_audio_track_t);
       1: (video : libvlc_video_track_t);
@@ -307,7 +324,7 @@ type
 
 type
   libvlc_media_track_t_ptr = ^libvlc_media_track_t;
-  libvlc_media_track_t = packed record
+  libvlc_media_track_t = record
 
     // Codec fourcc
     i_codec           : LongWord;
@@ -333,7 +350,7 @@ type
  *)
 type
   libvlc_track_description_t_ptr = ^libvlc_track_description_t;
-  libvlc_track_description_t = packed record
+  libvlc_track_description_t = record
     i_id     : Integer;
     psz_name : PAnsiChar;
     p_next   : libvlc_track_description_t_ptr;
@@ -345,7 +362,7 @@ type
  *)
 type
   libvlc_audio_output_t_ptr = ^libvlc_audio_output_t;
-  libvlc_audio_output_t = packed record
+  libvlc_audio_output_t = record
     psz_name        : PAnsiChar;
     psz_description : PAnsiChar;
     p_next          : libvlc_audio_output_t_ptr;
@@ -356,24 +373,36 @@ type
  *)
 type
   libvlc_audio_output_device_t_ptr = ^libvlc_audio_output_device_t;
-  libvlc_audio_output_device_t = packed record
+  libvlc_audio_output_device_t = record
     p_next          : libvlc_audio_output_device_t_ptr; // Next entry in list
     psz_device      : PAnsiChar;                        // Device identifier string
     psz_description : PAnsiChar;                        // User-friendly device description
     // More fields may be added here in later versions
   end;
 
+type
+  libvlc_equalizer_t_ptr = Pointer;
+  unsigned_t = LongWord;
+
 (**
  * Rectangle type for video geometry
  *)
 type
   libvlc_rectangle_t_ptr = ^libvlc_rectangle_t;
-  libvlc_rectangle_t = packed record
+  libvlc_rectangle_t = record
     top    : Integer;
     left   : Integer;
     bottom : Integer;
     right  : Integer;
   end;
+
+type
+  libvlc_opacity_t = 0..255;
+
+const
+  libvlc_opacity_None   = 0;
+  libvlc_opacity_Medium = 128;
+  libvlc_opacity_Full   = 255;
 
 (**
  * Marq options definition
@@ -410,22 +439,11 @@ const
   libvlc_video_marquee_color_Navy    = $00000080;
   libvlc_video_marquee_color_Blue    = $000000FF;
   libvlc_video_marquee_color_Aqua    = $0000FFFF;
+type
+  libvlc_video_marquee_color_t = libvlc_video_marquee_color_Black..libvlc_video_marquee_color_White;
 
 const
-  libvlc_video_marquee_opacity_None   = 0;
-  libvlc_video_marquee_opacity_Medium = 128;
-  libvlc_video_marquee_opacity_Full   = 255;
-
-const
-  libvlc_video_marquee_position_Center       = 0;
-  libvlc_video_marquee_position_Left         = 1;
-  libvlc_video_marquee_position_Right        = 2;
-  libvlc_video_marquee_position_Top          = 3;
-  libvlc_video_marquee_position_Bottom       = 4;
-  libvlc_video_marquee_position_Top_Left     = 5;
-  libvlc_video_marquee_position_Top_Right    = 6;
-  libvlc_video_marquee_position_Bottom_Left  = 7;
-  libvlc_video_marquee_position_Bottom_Right = 8;
+  libvlc_video_marquee_default_font_size = 12;
 
 type
   libvlc_video_logo_option_t = (
@@ -438,17 +456,6 @@ type
     libvlc_logo_Opacity,  // 6,
     libvlc_logo_Position  // 7
  );
-
-const
-  libvlc_video_logo_position_Center       = 0;
-  libvlc_video_logo_position_Left         = 1;
-  libvlc_video_logo_position_Right        = 2;
-  libvlc_video_logo_position_Top          = 3;
-  libvlc_video_logo_position_Bottom       = 4;
-  libvlc_video_logo_position_Top_Left     = 5;
-  libvlc_video_logo_position_Top_Right    = 6;
-  libvlc_video_logo_position_Bottom_Left  = 7;
-  libvlc_video_logo_position_Bottom_Right = 8;
 
 (**
  * Audio device types
@@ -484,12 +491,13 @@ const
 {$IFDEF HAS_ENUM_ORDINALITY}
 type
   libvlc_audio_output_channel_t = (
-    libvlc_AudioChannel_Error   = -1,
-    libvlc_AudioChannel_Stereo  =  1,
-    libvlc_AudioChannel_RStereo =  2,
-    libvlc_AudioChannel_Left    =  3,
-    libvlc_AudioChannel_Right   =  4,
-    libvlc_AudioChannel_Dolbys  =  5
+    libvlc_AudioChannel_Error    = -1,
+    libvlc_AudioChannel_NotAvail =  0,
+    libvlc_AudioChannel_Stereo   =  1,
+    libvlc_AudioChannel_RStereo  =  2,
+    libvlc_AudioChannel_Left     =  3,
+    libvlc_AudioChannel_Right    =  4,
+    libvlc_AudioChannel_Dolbys   =  5
   );
 {$ELSE}
 type
@@ -529,31 +537,31 @@ type
 {$IFDEF HAS_ENUM_ORDINALITY}
 type
   libvlc_position_t = (
-    libvlc_position_disable = -1,
-    libvlc_position_center,
-    libvlc_position_left,
-    libvlc_position_right,
-    libvlc_position_top,
-    libvlc_position_top_left,
-    libvlc_position_top_right,
-    libvlc_position_bottom,
-    libvlc_position_bottom_left,
-    libvlc_position_bottom_right
+    libvlc_position_disable      = -1,
+    libvlc_position_center       = 0,
+    libvlc_position_left         = 1,
+    libvlc_position_right        = 2,
+    libvlc_position_top          = 4,
+    libvlc_position_top_left     = 5,
+    libvlc_position_top_right    = 6,
+    libvlc_position_bottom       = 8,
+    libvlc_position_bottom_left  = 9,
+    libvlc_position_bottom_right = 10
   );
 {$ELSE}
-type
-  libvlc_position_t = -1..8;
 const
   libvlc_position_disable      = -1;
   libvlc_position_center       = 0;
   libvlc_position_left         = 1;
   libvlc_position_right        = 2;
-  libvlc_position_top          = 3;
-  libvlc_position_top_left     = 4;
-  libvlc_position_top_right    = 5;
-  libvlc_position_bottom       = 6;
-  libvlc_position_bottom_left  = 7;
-  libvlc_position_bottom_right = 8;
+  libvlc_position_top          = 4;
+  libvlc_position_top_left     = 5;
+  libvlc_position_top_right    = 6;
+  libvlc_position_bottom       = 8;
+  libvlc_position_bottom_left  = 9;
+  libvlc_position_bottom_right = 10;
+type
+  libvlc_position_t = libvlc_position_disable..libvlc_position_bottom_right;
 {$ENDIF}
 
 (*
@@ -595,6 +603,13 @@ type
     libvlc_MediaPlayerSnapshotTaken,
     libvlc_MediaPlayerLengthChanged,
     libvlc_MediaPlayerVout,
+    libvlc_MediaPlayerScrambledChanged,
+
+    libvlc_MediaPlayerCorked = libvlc_MediaPlayerScrambledChanged + 3 + 1,
+    libvlc_MediaPlayerUncorked,
+    libvlc_MediaPlayerMuted,
+    libvlc_MediaPlayerUnmuted,
+    libvlc_MediaPlayerAudioVolume,
 
     libvlc_MediaListItemAdded = $200,
     libvlc_MediaListWillAddItem,
@@ -656,6 +671,13 @@ const
   libvlc_MediaPlayerSnapshotTaken      = $110;
   libvlc_MediaPlayerLengthChanged      = $111;
   libvlc_MediaPlayerVout               = $112;
+  libvlc_MediaPlayerScrambledChanged   = $113;
+
+  libvlc_MediaPlayerCorked             = libvlc_MediaPlayerScrambledChanged + 3 + 1;
+  libvlc_MediaPlayerUncorked           = libvlc_MediaPlayerCorked           + 1;
+  libvlc_MediaPlayerMuted              = libvlc_MediaPlayerUncorked         + 1;
+  libvlc_MediaPlayerUnmuted            = libvlc_MediaPlayerMuted            + 1;
+  libvlc_MediaPlayerAudioVolume        = libvlc_MediaPlayerUnmuted          + 1;
 
   libvlc_MediaListItemAdded            = $200;
   libvlc_MediaListWillAddItem          = $201;
@@ -692,126 +714,134 @@ const
  *)
 
 type
-  event_media_meta_changed_t = packed record
+  event_media_meta_changed_t = record
     meta_type : libvlc_meta_t;
   end;
 
 type
-  event_media_subitem_added_t = packed record
+  event_media_subitem_added_t = record
     new_child : libvlc_media_t_ptr;
   end;
 
 type
-  event_media_duration_changed_t = packed record
+  event_media_duration_changed_t = record
     new_duration : Int64;
   end;
 
 type
-  media_parsed_changed_t = packed record
+  media_parsed_changed_t = record
     new_status : Integer;
   end;
 
 type
-  media_freed_t = packed record
+  media_freed_t = record
     md : libvlc_media_t_ptr;
   end;
 
 type
-  media_state_changed_t = packed record
+  media_state_changed_t = record
     new_state : libvlc_state_t;
   end;
 
 type
-  media_subitemtree_added_t = packed record
+  media_subitemtree_added_t = record
     item : libvlc_media_t_ptr; 
   end;
 
 type
-  media_player_buffering_t = packed record
+  media_player_buffering_t = record
     new_cache : Single; // float
   end;
 
 type
-  media_player_media_changed_t = packed record
+  media_player_media_changed_t = record
     new_media : libvlc_media_t_ptr;
   end;
 
 type
-  media_player_time_changed_t = packed record
+  media_player_time_changed_t = record
     new_time : libvlc_time_t;
   end;
   
 type
-  media_player_position_changed_t = packed record
+  media_player_position_changed_t = record
     new_position : Single; // float
   end;
 
 type
-  media_player_seekable_changed_t = packed record
+  media_player_seekable_changed_t = record
     new_seekable : Integer;
   end;
 
 type
-  media_player_pausable_changed_t = packed record
+  media_player_pausable_changed_t = record
     new_pausable : Integer;
   end;
 
 type
-  media_player_vout_t = packed record
+  media_player_vout_t = record
     new_count : Integer;
   end;
 
 type
-  media_player_snapshot_taken_t = packed record
+  media_player_scrambled_changed_t = record
+    new_scrambled : Integer;
+  end;
+
+type
+  media_player_snapshot_taken_t = record
     psz_filename : PAnsiChar;
   end;
 
 type
-  media_player_length_changed_t = packed record
+  media_player_length_changed_t = record
     new_length : libvlc_time_t;
   end;
 
 type
-  media_player_title_changed_t = packed record
+  media_player_title_changed_t = record
     new_title : Integer;
   end;
 
 type
-  media_list_item_added_t = packed record
+  media_list_item_added_t = record
     item  : libvlc_media_t_ptr;
     index : Integer;
   end;
 
 type
-  media_list_will_add_item_t = packed record
+  media_list_will_add_item_t = record
     item  : libvlc_media_t_ptr;
     index : Integer;
   end;
 
 type
-  media_list_item_deleted_t = packed record
+  media_list_item_deleted_t = record
     item  : libvlc_media_t_ptr;
     index : Integer;
   end;
 
 type
-  media_list_will_delete_item_t = packed record
+  media_list_will_delete_item_t = record
     item  : libvlc_media_t_ptr;
     index : Integer;
   end;
 
 type
-  media_list_player_next_item_set_t = packed record
+  media_list_player_next_item_set_t = record
     item : libvlc_media_t_ptr;
   end;
 
 type
-  vlm_media_event_t = packed record
+  vlm_media_event_t = record
     psz_media_name    : PAnsiChar;
     psz_instance_name : PAnsiChar;
   end;
 
-{$IFDEF CPUX64}{$A8}{$Z4}{$ENDIF}
+type
+  media_player_audio_volume_t = record
+    volume : Single; // float
+  end;
 
 type
   libvlc_event_t_ptr = ^libvlc_event_t;
@@ -822,40 +852,42 @@ type
     case libvlc_event_type_t of
 
     // Extra MediaPlayer
-    libvlc_MediaPlayerMediaChanged    : (media_player_media_changed      : media_player_media_changed_t);
+    libvlc_MediaPlayerMediaChanged     : (media_player_media_changed      : media_player_media_changed_t);
+    libvlc_MediaPlayerAudioVolume      : (media_player_audio_volume       : media_player_audio_volume_t);
 
     // media list player
-    libvlc_MediaListPlayerNextItemSet : (media_list_player_next_item_set : media_list_player_next_item_set_t);
+    libvlc_MediaListPlayerNextItemSet  : (media_list_player_next_item_set : media_list_player_next_item_set_t);
 
     // snapshot taken
-    libvlc_MediaPlayerSnapshotTaken   : (media_player_snapshot_taken     : media_player_snapshot_taken_t);
+    libvlc_MediaPlayerSnapshotTaken    : (media_player_snapshot_taken     : media_player_snapshot_taken_t);
 
     // Length changed
-    libvlc_MediaPlayerLengthChanged   : (media_player_length_changed     : media_player_length_changed_t);
+    libvlc_MediaPlayerLengthChanged    : (media_player_length_changed     : media_player_length_changed_t);
 
-    // media descriptor 
-    libvlc_MediaMetaChanged           : (media_meta_changed              : event_media_meta_changed_t);
-    libvlc_MediaSubItemAdded          : (media_subitem_added             : event_media_subitem_added_t);
-    libvlc_MediaDurationChanged       : (media_duration_changed          : event_media_duration_changed_t);
-    libvlc_MediaParsedChanged         : (media_parsed_changed            : media_parsed_changed_t);
-    libvlc_MediaFreed                 : (media_freed                     : media_freed_t);
-    libvlc_MediaStateChanged          : (media_state_changed             : media_state_changed_t);
-    libvlc_MediaSubItemTreeAdded      : (media_subitemtree_added         : media_subitemtree_added_t);
+    // media descriptor
+    libvlc_MediaMetaChanged            : (media_meta_changed              : event_media_meta_changed_t);
+    libvlc_MediaSubItemAdded           : (media_subitem_added             : event_media_subitem_added_t);
+    libvlc_MediaDurationChanged        : (media_duration_changed          : event_media_duration_changed_t);
+    libvlc_MediaParsedChanged          : (media_parsed_changed            : media_parsed_changed_t);
+    libvlc_MediaFreed                  : (media_freed                     : media_freed_t);
+    libvlc_MediaStateChanged           : (media_state_changed             : media_state_changed_t);
+    libvlc_MediaSubItemTreeAdded       : (media_subitemtree_added         : media_subitemtree_added_t);
 
     // media instance
-    libvlc_MediaPlayerBuffering       : (media_player_buffering          : media_player_buffering_t);
-    libvlc_MediaPlayerPositionChanged : (media_player_position_changed   : media_player_position_changed_t);
-    libvlc_MediaPlayerTimeChanged     : (media_player_time_changed       : media_player_time_changed_t);
-    libvlc_MediaPlayerTitleChanged    : (media_player_title_changed      : media_player_title_changed_t);
-    libvlc_MediaPlayerSeekableChanged : (media_player_seekable_changed   : media_player_seekable_changed_t);
-    libvlc_MediaPlayerPausableChanged : (media_player_pausable_changed   : media_player_pausable_changed_t);
-    libvlc_MediaPlayerVout            : (media_player_vout               : media_player_vout_t);
+    libvlc_MediaPlayerBuffering        : (media_player_buffering          : media_player_buffering_t);
+    libvlc_MediaPlayerPositionChanged  : (media_player_position_changed   : media_player_position_changed_t);
+    libvlc_MediaPlayerTimeChanged      : (media_player_time_changed       : media_player_time_changed_t);
+    libvlc_MediaPlayerTitleChanged     : (media_player_title_changed      : media_player_title_changed_t);
+    libvlc_MediaPlayerSeekableChanged  : (media_player_seekable_changed   : media_player_seekable_changed_t);
+    libvlc_MediaPlayerPausableChanged  : (media_player_pausable_changed   : media_player_pausable_changed_t);
+    libvlc_MediaPlayerVout             : (media_player_vout               : media_player_vout_t);
+    libvlc_MediaPlayerScrambledChanged : (media_player_scrambled_changed  : media_player_scrambled_changed_t);
 
     // media list
-    libvlc_MediaListItemAdded         : (media_list_item_added           : media_list_item_added_t);
-    libvlc_MediaListWillAddItem       : (media_list_will_add_item        : media_list_will_add_item_t);
-    libvlc_MediaListItemDeleted       : (media_list_item_deleted         : media_list_item_deleted_t);
-    libvlc_MediaListWillDeleteItem    : (media_list_will_delete_item     : media_list_will_delete_item_t);
+    libvlc_MediaListItemAdded          : (media_list_item_added           : media_list_item_added_t);
+    libvlc_MediaListWillAddItem        : (media_list_will_add_item        : media_list_will_add_item_t);
+    libvlc_MediaListItemDeleted        : (media_list_item_deleted         : media_list_item_deleted_t);
+    libvlc_MediaListWillDeleteItem     : (media_list_will_delete_item     : media_list_will_delete_item_t);
 
     // VLM media
     libvlc_VlmMediaAdded,
@@ -937,7 +969,7 @@ var
  * Any previous error is overridden.
  * param fmt the format string
  * param ap the arguments
- * @return a nul terminated string in any case
+ * return  a nul terminated string in any case
  *)
 
 {$IFDEF FPC}
@@ -959,7 +991,7 @@ var
  * Any previous error is overridden.
  * param fmt the format string
  * param args the arguments
- * @return a nul terminated string in any case
+ * return  a nul terminated string in any case
  *)
 
 {$IFDEF FPC}
@@ -1033,7 +1065,7 @@ var
  *
  * param p_instance the instance
  * param name interface name, or NULL for default
- * @return 0 on success, -1 on error.
+ * return  0 on success, -1 on error.
  *)
 
 var
@@ -1123,7 +1155,7 @@ var
  *
  * Example: "1.1.0-git The Luggage"
  *
- * @return a string containing the libvlc version
+ * return  a string containing the libvlc version
  *)
 
 var
@@ -1134,7 +1166,7 @@ var
  *
  * Example: "gcc version 4.2.3 (Ubuntu 4.2.3-2ubuntu6)"
  *
- * @return a string containing the libvlc compiler version
+ * return  a string containing the libvlc compiler version
  *)
 
 var
@@ -1145,7 +1177,7 @@ var
  *
  * Example: "aa9bce0bc4"
  *
- * @return a string containing the libvlc changeset
+ * return  a string containing the libvlc changeset
  *)
 
 var
@@ -1185,7 +1217,7 @@ var
  * param i_event_type the desired event to which we want to listen
  * param f_callback the function to call when i_event_type occurs
  * param user_data user provided data to carry with the event
- * @return 0 on success, ENOMEM on error
+ * return  0 on success, ENOMEM on error
  *)
 
 var
@@ -1272,13 +1304,13 @@ var
   libvlc_log_get_context : procedure(
     ctx : libvlc_log_t_ptr;
     var module : PAnsiChar;
-    var file_name : PANsiChar;
+    var file_name : PAnsiChar;
     var line : LongWord); cdecl;
 
 (**
  * Gets VLC object informations about a log message: the type name of the VLC
  * object emitting the message, the object header if any and a temporaly-unique
- * object identifier. These informations are mainly meant for <b>manual</b>
+ * object identifier. These informations are mainly meant for MANUAL
  * troubleshooting.
  *
  * The returned type name may be "generic" if unknown, but it cannot be NULL.
@@ -1310,28 +1342,59 @@ var
  * param ctx message context (meta-informations about the message)
  * param fmt printf() format string (as defined by ISO C11)
  * param args variable argument list for the format
- * note Log message handlers <b>must</b> be thread-safe.
+ * note Log message handlers MUST be thread-safe.
  * warning The message context pointer, the format string parameters and the
  *          variable arguments are only valid until the callback returns.
  *)
 
-{$IFDEF FPC}
+(* fmt format strings
+
+http://docwiki.embarcadero.com/RADStudio/Berlin/en/Format_Specifiers_in_C/C%2B%2B
+
+Format Specifiers in C/C++
+
+d, i - Decimal or integer. The argument must be an integer value. The value is converted to a string of decimal digits.
+       If the format string contains a precision specifier, it indicates that the resulting string must contain at least
+       the specified number of digits; if the value has less digits, the resulting string is left-padded with zeros.
+u    - Unsigned int. Similar to "d" and "i", but it has no sign.
+o    - Octal. The argument must be an integer value. The value is converted to a string of octal digits.
+       If the format string contains a precision specifier, it indicates that the resulting string must contain at least
+       the specified number of digits; if the value has less digits, the resulting string is left-padded with zeros.
+x,X  - Hexadecimal. The argument must be an integer value. The value is converted to a string of decimal digits.
+       If the format string contains a precision specifier, it indicates that the resulting string must contain at least
+       the specified number of digits; if the value has less digits, the resulting string is left-padded with zeros.
+f    - Floating point. The argument must be a floating-point value. The value is converted to a string of the form "-ddd.ddd...".
+       The resulting string starts with a minus sign if the number is negative. The number of digits after the decimal point is given by
+       the precision specifier in the format string; a default of 2 decimal digits is assumed if no precision specifier is present.
+e    - Scientific. The argument must be a floating-point value. The value is converted to a string of the form "-d.ddd...E+ddd".
+       The resulting string starts with a minus sign if the number is negative. One digit always precedes the decimal point.
+       The total number of digits in the resulting string (including the one before the decimal point) is given by the precision specifier
+       in the format string; a default precision of 15 is assumed if no precision specifier is present. The "E" exponent character
+       in the resulting string is always followed by a plus or minus sign and at least 3 digits.
+g    - Double. The argument must be a floating-point value. The value is converted to the shortest possible decimal string using fixed or scientific format.
+       The number of significant digits in the resulting string is given by the precision specifier in the format string;
+       a default precision of 15 is assumed if no precision specifier is present. Trailing zeros are removed from the resulting string, and a decimal point
+       appears only if necessary. The resulting string uses fixed point format if the number of digits to the left of the decimal point in the value is less
+       than or equal to the specified precision, and if the value is greater than or equal to 0.00001. Otherwise the resulting string uses scientific format.
+c    - Character. The argument must be a single character value.
+s    - String. The argument must be a character, a string, or a char* value. The string or character is inserted in place of the format specifier.
+       The precision specifier, if present in the format string, specifies the maximum length of the resulting string. If the argument is a string
+       that is longer than this maximum, the string is truncated.
+n    - Pointer to int. Stores (in the location pointed to by the input argument) a count of the chars written so far.
+p    - Pointer. Prints the input argument as a pointer; format depends on which memory model was used. It will be either XXXX:YYYY or YYYY (offset only).
+
+*)
+
+type
+  TVaPtrListPtr = ^Pointer;
+
 type
   libvlc_log_cb = procedure(
-    data  : Pointer;
-    level : Integer;
-    ctx   : libvlc_log_t_ptr;
-    fmt   : PAnsiChar;
-    args  : Pointer); cdecl;
-{$ELSE}
-type
-  libvlc_log_cb = procedure(
-    data  : Pointer;
-    level : Integer;
-    ctx   : libvlc_log_t_ptr;
-    fmt   : PAnsiChar;
-    args  : array of const); cdecl;
-{$ENDIF}
+    data      : Pointer;
+    level     : libvlc_log_level_t;
+    const ctx : libvlc_log_t_ptr;
+    const fmt : PAnsiChar;
+    args      : TVaPtrListPtr); cdecl;
 
 (**
  * Unsets the logging callback for a LibVLC instance. This is rarely needed:
@@ -1365,7 +1428,7 @@ var
  *)
 var
   libvlc_log_set : procedure(
-    p_instance: libvlc_instance_t_ptr;
+    p_instance : libvlc_instance_t_ptr;
     cb : libvlc_log_cb;
     data : Pointer); cdecl;
 
@@ -1386,7 +1449,7 @@ var
  * Return the VLC messaging verbosity level.
  *
  * param p_instance libvlc instance
- * @return verbosity level for messages
+ * return  verbosity level for messages
  *)
 
 // DEPRECATED
@@ -1413,7 +1476,7 @@ var
  * Open a VLC message log instance.
  *
  * param p_instance libvlc instance
- * @return log message instance or NULL on error
+ * return  log message instance or NULL on error
  *)
 
 var
@@ -1435,8 +1498,8 @@ var
 (**
  * Returns the number of messages in a log instance.
  *
- * \param p_log libvlc log instance or NULL
- * @return number of log messages, 0 if p_log is NULL
+ * param p_log libvlc log instance or NULL
+ * return  number of log messages, 0 if p_log is NULL
  *)
 
 var
@@ -1462,7 +1525,7 @@ var
  * Allocate and returns a new iterator to messages in log.
  *
  * param p_log libvlc log instance
- * @return log iterator object or NULL on error
+ * return  log iterator object or NULL on error
  *)
 
 var
@@ -1485,7 +1548,7 @@ var
  * Return whether log iterator has more messages.
  *
  * param p_iter libvlc log iterator or NULL
- * @return true if iterator has more message objects, else false
+ * return  true if iterator has more message objects, else false
  *)
 
 var
@@ -1500,7 +1563,7 @@ var
  *
  * param p_iter libvlc log iterator or NULL
  * param p_buffer log buffer
- * @return log message object or NULL if none left
+ * return  log message object or NULL if none left
  *)
 
 var
@@ -1515,7 +1578,7 @@ var
  *)
 type
   libvlc_module_description_t_ptr = ^libvlc_module_description_t;
-  libvlc_module_description_t = packed record
+  libvlc_module_description_t = record
     psz_name      : PAnsiChar;
     psz_shortname : PAnsiChar;
     psz_longname  : PAnsiChar;
@@ -1538,7 +1601,8 @@ var
  *
  * param p_instance libvlc instance
  *
- * return a list of module descriptions. It should be freed with libvlc_module_description_list_release().
+ * return a list of module descriptions.
+ * It should be freed with libvlc_module_description_list_release().
  *         In case of an error, NULL is returned.
  *
  * see libvlc_module_description_t
@@ -1554,7 +1618,8 @@ var
  *
  * param p_instance libvlc instance
  *
- * return a list of module descriptions. It should be freed with libvlc_module_description_list_release().
+ * return a list of module descriptions.
+ * It should be freed with libvlc_module_description_list_release().
  *         In case of an error, NULL is returned.
  *
  * see libvlc_module_description_t
@@ -1593,7 +1658,7 @@ function libvlc_delay(pts : Int64) : Int64;{$IFDEF DELPHI2005_UP}inline;{$ENDIF}
  * for instance a valid URL.
  *
  * To refer to a local file with this function,
- * the file://... URI syntax <b>must</b> be used (see IETF RFC3986).
+ * the file://... URI syntax MUST be used (see IETF RFC3986).
  * We recommend using libvlc_media_new_path() instead when dealing with
  * local files.
  *
@@ -1601,7 +1666,7 @@ function libvlc_delay(pts : Int64) : Int64;{$IFDEF DELPHI2005_UP}inline;{$ENDIF}
  *
  * param p_instance the instance
  * param psz_mrl the media location
- * @return the newly created media or NULL on error
+ * return  the newly created media or NULL on error
  *)
 
 var
@@ -1617,7 +1682,7 @@ var
  *
  * param p_instance the instance
  * param path local filesystem path
- * @return the newly created media or NULL on error
+ * return  the newly created media or NULL on error
  *)
 
 var
@@ -1637,7 +1702,7 @@ var
  * Sockets are supported on all platforms where they are file descriptors,
  * i.e. all except Windows.
  *
- * This library will <b>not</b> automatically close the file descriptor
+ * This library will NOT automatically close the file descriptor
  * under any circumstance. Nevertheless, a file descriptor can usually only be
  * rendered once in a media player. To render it a second time, the file
  * descriptor should probably be rewound to the beginning with lseek().
@@ -1648,7 +1713,7 @@ var
  *
  * param p_instance the instance
  * param fd open file descriptor
- * @return the newly created media or NULL on error
+ * return  the newly created media or NULL on error
  *)
  
 var
@@ -1664,7 +1729,7 @@ var
  *
  * param p_instance the instance
  * param psz_name the name of the node
- * @return the new empty media or NULL on error
+ * return  the new empty media or NULL on error
  *)
 
 var
@@ -1757,7 +1822,7 @@ var
  * Get the media resource locator (mrl) from a media descriptor object
  *
  * param p_md a media descriptor object
- * @return string with mrl of media descriptor object
+ * return  string with mrl of media descriptor object
  *)
 
 var
@@ -1791,7 +1856,7 @@ var
  *
  * param p_md the media descriptor
  * param e_meta the meta to read
- * @return the media's meta
+ * return  the media's meta
  *)
 
 var
@@ -1820,7 +1885,7 @@ var
  * Save the meta previously set
  *
  * param p_md the media desriptor
- * @return true if the write operation was successfull
+ * return  true if the write operation was successfull
  *)
 
 var
@@ -1837,7 +1902,7 @@ var
  *
  * see libvlc_state_t
  * param p_meta_desc a media descriptor object
- * @return state of media descriptor object
+ * return  state of media descriptor object
  *)
 
 var
@@ -1851,7 +1916,7 @@ var
  * param p_md: media descriptor object
  * param p_stats: structure that contain the statistics about the media
  *                (this structure must be allocated by the caller)
- * @return true if the statistics are available, false otherwise
+ * return  true if the statistics are available, false otherwise
  *)
 
 var
@@ -1866,7 +1931,7 @@ var
  * libvlc_media_list_release() to decrement the reference counting.
  *
  * param p_md media descriptor object
- * @return list of media descriptor subitems or NULL
+ * return  list of media descriptor subitems or NULL
  *)
 
 var
@@ -1879,7 +1944,7 @@ var
  * NOTE: this function doesn't increment reference counting.
  *
  * param p_md a media descriptor object
- * @return event manager object
+ * return  event manager object
  *)
 
 var
@@ -1891,7 +1956,7 @@ var
  * Get duration (in ms) of media descriptor object item.
  *
  * param p_md media descriptor object
- * @return duration of media item or -1 on error
+ * return  duration of media item or -1 on error
  *)
 
 var
@@ -1946,7 +2011,7 @@ var
  * see libvlc_MediaParsedChanged
  *
  * param p_md media descriptor object
- * @return true if media object has been parsed otherwise it returns false
+ * return  true if media object has been parsed otherwise it returns false
  *)
 
 var
@@ -2002,7 +2067,7 @@ var
  * param tracks address to store an allocated array of Elementary Streams
  * descriptions (must be freed by the caller)
  *
- * @return the number of Elementary Streams
+ * return  the number of Elementary Streams
  *)
 
 var
@@ -2025,7 +2090,7 @@ var
  *        descriptions (must be freed with libvlc_media_tracks_release
           by the caller) [OUT]
  *
- * @return the number of Elementary Streams (zero on error)
+ * return  the number of Elementary Streams (zero on error)
  *)
 var
   libvlc_media_tracks_get : function(
@@ -2057,7 +2122,7 @@ var
  *
  * param p_instance the libvlc instance in which the Media Player
  *        should be created.
- * @return a new media player object, or NULL on error.
+ * return  a new media player object, or NULL on error.
  *)
 
 var
@@ -2069,7 +2134,7 @@ var
  * Create a Media Player object from a Media
  *
  * param p_md the media. Afterwards the p_md can be safely destroyed.
- * @return a new media player object, or NULL on error.
+ * return  a new media player object, or NULL on error.
  *)
 
 var
@@ -2122,7 +2187,7 @@ var
  * Get the media used by the media_player.
  *
  * param p_mi the Media Player
- * @return the media associated with p_mi, or NULL if no media is associated
+ * return  the media associated with p_mi, or NULL if no media is associated
  *)
 
 var
@@ -2134,7 +2199,7 @@ var
  * Get the Event Manager from which the media player send event.
  *
  * param p_mi the Media Player
- * @return the event manager associated with p_mi
+ * return  the event manager associated with p_mi
  *)
 
 var
@@ -2146,7 +2211,7 @@ var
  * is_playing
  *
  * param p_mi the Media Player
- * @return 1 if the media player is playing, 0 otherwise
+ * return  1 if the media player is playing, 0 otherwise
  *)
 
 var
@@ -2158,7 +2223,7 @@ var
  * Play
  *
  * param p_mi the Media Player
- * @return 0 if playback started (and was already started), or -1 on error.
+ * return  0 if playback started (and was already started), or -1 on error.
  *)
 
 var
@@ -2212,7 +2277,7 @@ var
  * param opaque private pointer as passed to libvlc_video_set_callbacks() [IN]
  * param planes start address of the pixel planes (LibVLC allocates the array
  *             of void pointers, this callback must initialize the array) [OUT]
- * @return a private pointer for the display and unlock callbacks to identify the picture buffers
+ * return  a private pointer for the display and unlock callbacks to identify the picture buffers
  *)
 
 type
@@ -2235,7 +2300,7 @@ type
  *)
 
 type
-  libvlc_video_unlock_cb = function(opaque : Pointer; picture : Pointer; planes : Pointer) : Pointer; cdecl;
+  libvlc_video_unlock_cb = procedure(opaque : Pointer; picture : Pointer; planes : Pointer); cdecl;
 
 (**
  * Callback prototype to display a picture.
@@ -2248,7 +2313,7 @@ type
  *)
 
 type
-  libvlc_video_display_cb = function(opaque : Pointer; picture : Pointer) : Pointer; cdecl;
+  libvlc_video_display_cb = procedure(opaque : Pointer; picture : Pointer); cdecl;
 
 (**
  * Set callbacks and private data to render decoded video to a custom area
@@ -2314,7 +2379,7 @@ var
  * param pitches table of scanline pitches in bytes for each pixel plane
  *                (the table is allocated by LibVLC) [OUT]
  * param lines table of scanlines count for each plane [OUT]
- * @return the number of picture buffers allocated, 0 indicates failure
+ * return  the number of picture buffers allocated, 0 indicates failure
  *
  * note
  * For each pixels plane, the scanline pitch must be bigger than or equal to
@@ -2326,14 +2391,21 @@ var
  * in the video decoders, video filters and/or video converters.
  *)
 
+const
+  VOUT_MAX_PLANES = 5;
+
 type
-  libvlc_video_format_cb = procedure (
-    var opaque : Pointer;
-    chroma : PAnsiChar;
-    var width : LongWord;
-    var height : LongWord;
-    var pitches : LongWord;
-    var lines : LongWord); cdecl;
+  TVCBPitches = array[0..VOUT_MAX_PLANES-1] of LongWord;
+  TVCBLines   = array[0..VOUT_MAX_PLANES-1] of LongWord;
+  
+type
+  libvlc_video_format_cb = function (
+    var opaque  : Pointer;
+    chroma      : PAnsiChar;
+    var width   : LongWord;
+    var height  : LongWord;
+    var pitches : TVCBPitches;
+    var lines   : TVCBLines) : LongWord; cdecl;
 
 (**
  * Callback prototype to configure picture buffers format.
@@ -2430,7 +2502,7 @@ var
  * Get the agl handler previously set with libvlc_media_player_set_agl().
  *
  * param p_mi the Media Player
- * @return the agl handler or 0 if none where set
+ * return  the agl handler or 0 if none where set
  *)
 
 var
@@ -2444,7 +2516,7 @@ var
  * no effects.
  *
  * The specified identifier must correspond to an existing Input/Output class
- * X11 window. Pixmaps are <b>not</b> supported. The caller shall ensure that
+ * X11 window. Pixmaps are NOT supported. The caller shall ensure that
  * the X11 server is the same as the one the VLC instance has been configured
  * with. This function must be called before video playback is started;
  * otherwise it will only take effect after playback stop and restart.
@@ -2466,7 +2538,7 @@ var
  * audio-only input).
  *
  * param p_mi the Media Player
- * @return an X window ID, or 0 if none where set.
+ * return  an X window ID, or 0 if none where set.
  *)
 
 var
@@ -2514,7 +2586,7 @@ var
 type
   libvlc_audio_play_cb = procedure(
     data : Pointer;
-    const samples : Pointer;
+    samples : Pointer;
     count : Cardinal;
     pts : Int64); cdecl;
 
@@ -2553,7 +2625,7 @@ type
 (**
  * Callback prototype for audio buffer drain
  * (i.e. wait for pending buffers to be played).
- * \param data data pointer as passed to libvlc_audio_set_callbacks() [IN]
+ * param data data pointer as passed to libvlc_audio_set_callbacks() [IN]
  *)
 type
   libvlc_audio_drain_cb = procedure(data : Pointer);
@@ -2595,7 +2667,8 @@ var
     opaque : Pointer ); cdecl;
 
 (**
- * Set callbacks and private data for decoded audio.
+ * Set callbacks and private data for decoded audio. This only works in
+ * combination with libvlc_audio_set_callbacks().
  * Use libvlc_audio_set_format() or libvlc_audio_set_format_callbacks()
  * to configure the decoded audio format.
  *
@@ -2621,9 +2694,12 @@ var
  * return 0 on success, anything else to skip audio playback
  *)
 type
+  libvlc_audio_setup_cb_format_t = packed array[0..3] of AnsiChar;
+  
+type
   libvlc_audio_setup_cb = function(
     var data : Pointer;
-    var format : PAnsiChar;
+    var format : libvlc_audio_setup_cb_format_t;
     var rate  : Cardinal;
     var channels : Cardinal) : Integer; cdecl;
 
@@ -2681,7 +2757,7 @@ var
  * Get the current movie length (in ms).
  *
  * param p_mi the Media Player
- * @return the movie length (in ms), or -1 if there is no media.
+ * return  the movie length (in ms), or -1 if there is no media.
  *)
 
 var
@@ -2693,7 +2769,7 @@ var
  * Get the current movie time (in ms).
  *
  * param p_mi the Media Player
- * @return the movie time (in ms), or -1 if there is no media.
+ * return  the movie time (in ms), or -1 if there is no media.
  *)
 
 var
@@ -2719,7 +2795,7 @@ var
  * Get movie position as percentage between 0.0 and 1.0.
  *
  * param p_mi the Media Player
- * @return movie position in range 0..1, or -1. in case of error
+ * return  movie position in range 0..1, or -1. in case of error
  *)
 
 var
@@ -2759,7 +2835,7 @@ var
  * Get movie chapter.
  *
  * param p_mi the Media Player
- * @return chapter number currently playing, or -1 if there is no media.
+ * return  chapter number currently playing, or -1 if there is no media.
  *)
 
 var
@@ -2771,7 +2847,7 @@ var
  * Get movie chapter count
  *
  * param p_mi the Media Player
- * @return number of chapters in movie, or -1.
+ * return  number of chapters in movie, or -1.
  *)
 
 var
@@ -2783,7 +2859,7 @@ var
  * Is the player able to play
  *
  * param p_mi the Media Player
- * @return boolean
+ * return  boolean
  *)
 
 var
@@ -2796,7 +2872,7 @@ var
  *
  * param p_mi the Media Player
  * param i_title title
- * @return number of chapters in title, or -1
+ * return  number of chapters in title, or -1
  *)
 
 var
@@ -2822,7 +2898,7 @@ var
  * Get movie title
  *
  * param p_mi the Media Player
- * @return title number currently playing, or -1
+ * return  title number currently playing, or -1
  *)
 
 var
@@ -2834,7 +2910,7 @@ var
  * Get movie title count
  *
  * param p_mi the Media Player
- * @return title number count, or -1
+ * return  title number count, or -1
  *)
 
 var
@@ -2870,7 +2946,7 @@ var
  * different from the real playback rate.
  *
  * param p_mi the Media Player
- * @return movie play rate
+ * return  movie play rate
  *)
 
 var
@@ -2883,7 +2959,7 @@ var
  *
  * param p_mi the Media Player
  * param rate movie play rate to set
- * @return -1 if an error was detected, 0 otherwise (but even then, it might
+ * return  -1 if an error was detected, 0 otherwise (but even then, it might
  * not actually work depending on the underlying media protocol)
  *)
 
@@ -2897,7 +2973,7 @@ var
  * Get current movie state
  *
  * param p_mi the Media Player
- * @return the current state of the media player (playing, paused, ...)
+ * return  the current state of the media player (playing, paused, ...)
  * see libvlc_state_t
  *)
 
@@ -2910,7 +2986,7 @@ var
  * Get movie fps rate
  *
  * param p_mi the Media Player
- * @return frames per second (fps) for this playing movie, or 0 if unspecified
+ * return  frames per second (fps) for this playing movie, or 0 if unspecified
  *)
 
 var
@@ -2928,7 +3004,7 @@ var
  * How many video outputs does this media player have?
  *
  * param p_mi the media player
- * @return the number of video outputs
+ * return  the number of video outputs
  *)
 
 var
@@ -2940,7 +3016,7 @@ var
  * Is this media player seekable?
  *
  * param p_mi the media player
- * @return true if the media player can seek
+ * return  true if the media player can seek
  *)
 
 var
@@ -2952,7 +3028,7 @@ var
  * Can this media player be paused?
  *
  * param p_mi the media player
- * @return true if the media player can pause
+ * return  true if the media player can pause
  *)
 
 var
@@ -2960,6 +3036,19 @@ var
     p_mi : libvlc_media_player_t_ptr
   ) : Integer; cdecl;
 
+(**
+ * Check if the current program is scrambled
+ *
+ * param p_mi the media player
+ * return true if the current program is scrambled
+ *
+ * libvlc_return_bool
+ * version LibVLC 2.2.0 or later
+ *)
+var
+  libvlc_media_player_program_scrambled: function(
+    p_mi : libvlc_media_player_t_ptr
+  ) : Integer; cdecl;
 
 (**
  * Display the next frame (if supported)
@@ -2987,9 +3076,12 @@ var
 (**
  * Set if, and how, the video title will be shown when media is played.
  *
- * param p_mi the media player
- * param position position at which to display the title, or libvlc_position_disable to prevent the title from being displayed
- * param timeout title display timeout in milliseconds (ignored if libvlc_position_disable)
+ * param p_mi       the media player
+ * param position   position at which to display the title,
+ *                  or libvlc_position_disable to prevent
+ *                  the title from being displayed
+ * param timeout    title display timeout in milliseconds
+ *                  (ignored if libvlc_position_disable)
  * version libVLC 2.1.0 or later
  *)
 var
@@ -3040,7 +3132,7 @@ var
  * full-screen mode. Hence, this function will not operate properly if
  * libvlc_media_player_set_xwindow() was used to embed the video in a
  * non-top-level window. In that case, the embedding window must be reparented
- * to the root window <b>before</b> fullscreen mode is enabled. You will want
+ * to the root window BEFORE fullscreen mode is enabled. You will want
  * to reparent it back to its normal parent when disabling fullscreen.
  *
  * param p_mi the media player
@@ -3057,7 +3149,7 @@ var
  * Get current fullscreen status.
  *
  * param p_mi the media player
- * @return the fullscreen status (boolean)
+ * return  the fullscreen status (boolean)
  *)
 
 var
@@ -3114,7 +3206,7 @@ var
  * param num number of the video (starting from, and most commonly 0)
  * param px pointer to get the pixel width [OUT]
  * param py pointer to get the pixel height [OUT]
- * @return 0 on success, -1 if the specified video does not exist
+ * return  0 on success, -1 if the specified video does not exist
  *)
 
 var
@@ -3130,7 +3222,7 @@ var
  * You should use libvlc_video_get_size() instead.
  *
  * param p_mi the media player
- * @return the video pixel height or 0 if not applicable
+ * return  the video pixel height or 0 if not applicable
  *)
 
 var
@@ -3145,7 +3237,7 @@ var
  * You should use libvlc_video_get_size() instead.
  *
  * param p_mi the media player
- * @return the video pixel width or 0 if not applicable
+ * return  the video pixel width or 0 if not applicable
  *)
 
 var
@@ -3157,7 +3249,7 @@ var
 (**
  * Get the mouse pointer coordinates over a video.
  * Coordinates are expressed in terms of the decoded video resolution,
- * <b>not</b> in terms of pixels on the screen/viewport (to get the latter,
+ * NOT in terms of pixels on the screen/viewport (to get the latter,
  * you can query your windowing system directly).
  *
  * Either of the coordinates may be negative or larger than the corresponding
@@ -3174,7 +3266,7 @@ var
  * param num number of the video (starting from, and most commonly 0)
  * param px pointer to get the abscissa [OUT]
  * param py pointer to get the ordinate [OUT]
- * @return 0 on success, -1 if the specified video does not exist
+ * return  0 on success, -1 if the specified video does not exist
  *)
 
 var
@@ -3189,7 +3281,7 @@ var
  * See also libvlc_video_set_scale().
  *
  * param p_mi the media player
- * @return the currently configured zoom factor, or 0. if the video is set
+ * return  the currently configured zoom factor, or 0. if the video is set
  * to fit to the output window/drawable automatically.
  *)
 
@@ -3220,7 +3312,7 @@ var
  * Get current video aspect ratio.
  *
  * param p_mi the media player
- * @return the video aspect ratio or NULL if unspecified
+ * return  the video aspect ratio or NULL if unspecified
  * (the result must be released with free() or libvlc_free()).
  *)
 
@@ -3247,7 +3339,7 @@ var
  * Get current video subtitle.
  *
  * param p_mi the media player
- * @return the video subtitle selected, or -1 if none
+ * return  the video subtitle selected, or -1 if none
  *)
 
 var
@@ -3259,7 +3351,7 @@ var
  * Get the number of available video subtitles.
  *
  * param p_mi the media player
- * @return the number of available video subtitles
+ * return  the number of available video subtitles
  *)
 
 var
@@ -3271,7 +3363,7 @@ var
  * Get the description of available video subtitles.
  *
  * param p_mi the media player
- * @return list containing description of available video subtitles
+ * return  list containing description of available video subtitles
  *)
 
 var
@@ -3284,7 +3376,7 @@ var
  *
  * param p_mi the media player
  * param i_spu video subtitle track to select (i_id from track description)
- * @return 0 on success, -1 if out of range
+ * return  0 on success, -1 if out of range
  *)
 
 var
@@ -3298,7 +3390,7 @@ var
  *
  * param p_mi the media player
  * param psz_subtitle new video subtitle file
- * @return the success status (boolean)
+ * return  the success status (boolean)
  *)
 
 var
@@ -3343,7 +3435,7 @@ var
  * Get the description of available titles.
  *
  * param p_mi the media player
- * @return list containing description of available titles
+ * return  list containing description of available titles
  *)
 
 var
@@ -3356,7 +3448,7 @@ var
  *
  * param p_mi the media player
  * param i_title selected title
- * @return list containing description of available chapter for title i_title
+ * return  list containing description of available chapter for title i_title
  *)
 
 var
@@ -3369,7 +3461,7 @@ var
  * Get current crop filter geometry.
  *
  * param p_mi the media player
- * @return the crop filter geometry or NULL if unset
+ * return  the crop filter geometry or NULL if unset
  *)
 
 var
@@ -3394,7 +3486,7 @@ var
  * Get current teletext page requested.
  *
  * param p_mi the media player
- * @return the current teletext page requested.
+ * return  the current teletext page requested.
  *)
 
 var
@@ -3430,7 +3522,7 @@ var
  * Get number of available video tracks.
  *
  * param p_mi media player
- * @return the number of available video tracks (int)
+ * return  the number of available video tracks (int)
  *)
 
 var
@@ -3442,7 +3534,7 @@ var
  * Get the description of available video tracks.
  *
  * param p_mi media player
- * @return list with description of available video tracks, or NULL on error
+ * return  list with description of available video tracks, or NULL on error
  *)
 
 var
@@ -3454,7 +3546,7 @@ var
  * Get current video track.
  *
  * param p_mi media player
- * @return the video track ID (int) or -1 if no active input
+ * return  the video track ID (int) or -1 if no active input
  *)
 
 var
@@ -3467,7 +3559,7 @@ var
  *
  * param p_mi media player
  * param i_track the track ID (i_id field from track description)
- * @return 0 on success, -1 if out of range
+ * return  0 on success, -1 if out of range
  *)
 
 var
@@ -3487,7 +3579,7 @@ var
  * param psz_filepath the path where to save the screenshot to
  * param i_width the snapshot's width
  * param i_height the snapshot's height
- * @return 0 on success, -1 if the video was not found
+ * return  0 on success, -1 if the video was not found
  *)
 
 var
@@ -3516,7 +3608,7 @@ var
  * Get an integer marquee option value
  *
  * param p_mi libvlc media player
- * param option marq option to get \see libvlc_video_marquee_int_option_t
+ * param option marq option to get see libvlc_video_marquee_int_option_t
  *)
 
 var
@@ -3560,7 +3652,7 @@ var
  * Set a marquee string option
  *
  * param p_mi libvlc media player
- * param option marq option to set \see libvlc_video_marquee_string_option_t
+ * param option marq option to set see libvlc_video_marquee_string_option_t
  * param psz_text marq option value
  *)
 
@@ -3619,6 +3711,7 @@ var
   ); cdecl;
 
 (** option values for libvlc_video_{get,set}_adjust_{int,float,bool} *)
+{$IFDEF HAS_ENUM_ORDINALITY}
 type
   libvlc_video_adjust_option_t = (
     libvlc_adjust_Enable,    // 0
@@ -3628,6 +3721,17 @@ type
     libvlc_adjust_Saturation,
     libvlc_adjust_Gamma
   );
+{$ELSE}
+type
+  libvlc_video_adjust_option_t = 0..5;
+const
+  libvlc_adjust_Enable     = 0;
+  libvlc_adjust_Contrast   = 1;
+  libvlc_adjust_Brightness = 2;
+  libvlc_adjust_Hue        = 3;
+  libvlc_adjust_Saturation = 4;
+  libvlc_adjust_Gamma      = 5;
+{$ENDIF}
 
 (**
  * Get integer adjust option.
@@ -3639,7 +3743,7 @@ type
 var
   libvlc_video_get_adjust_int : function(
     p_mi   : libvlc_media_player_t_ptr;
-    option : LongWord
+    option : libvlc_video_adjust_option_t
   ) : Integer; cdecl;
 
 (**
@@ -3656,7 +3760,7 @@ var
 var
   libvlc_video_set_adjust_int : procedure(
     p_mi   : libvlc_media_player_t_ptr;
-    option : LongWord;
+    option : libvlc_video_adjust_option_t;
     value  : Integer
   ); cdecl;
 
@@ -3670,7 +3774,7 @@ var
 var
   libvlc_video_get_adjust_float : function(
     p_mi   : libvlc_media_player_t_ptr;
-    option : LongWord
+    option : libvlc_video_adjust_option_t
   ) : Single; cdecl;
 
 (**
@@ -3685,15 +3789,15 @@ var
 var
   libvlc_video_set_adjust_float : procedure(
     p_mi   : libvlc_media_player_t_ptr;
-    option : LongWord;
+    option : libvlc_video_adjust_option_t;
     value  : Single
   ); cdecl;
 
 (**
- * Get the list of available audio outputs
+ * Gets the list of available audio output modules
  *
  * param p_instance libvlc instance
- * @return list of available audio outputs. It must be freed it with
+ * return  list of available audio outputs. It must be freed it with
  * see libvlc_audio_output_list_release see libvlc_audio_output_t .
  * In case of error, NULL is returned.
  *)
@@ -3704,7 +3808,7 @@ var
   ) : libvlc_audio_output_t_ptr; cdecl;
 
 (**
- * Free the list of available audio outputs
+ * Free the list of available audio output modules
  *
  * param p_list list with audio outputs for release
  *)
@@ -3715,14 +3819,14 @@ var
   ); cdecl;
 
 (**
- * Sets the audio output.
+ * Selects an audio output module.
  * note Any change will take be effect only after playback is stopped and
  * restarted. Audio output cannot be changed while playing.
  *
  * param p_mi media player
  * param psz_name name of audio output,
  *               use psz_name of see libvlc_audio_output_t
- * @return 0 if function succeded, -1 on error
+ * return  0 if function succeded, -1 on error
  *)
 
 var
@@ -3733,57 +3837,89 @@ var
 
 (**
  * Get count of devices for audio output, these devices are hardware oriented
- * like analor or digital output of sound card
+ * like analog or digital output of sound card
  *
  * param p_instance libvlc instance
  * param psz_audio_output - name of audio output, see libvlc_audio_output_t
- * @return number of devices
+ * return  number of devices
  *)
 
+{$IFDEF USE_VLC_DEPRECATED_API}
 var
   libvlc_audio_output_device_count : function(
     p_instance       : libvlc_instance_t_ptr;
     psz_audio_output : PAnsiChar
   ) : Integer; cdecl;
+{$ENDIF}
 
 (**
  * Get long name of device, if not available short name given
  *
  * param p_instance libvlc instance
- * param psz_audio_output - name of audio output, \see libvlc_audio_output_t
+ * param psz_audio_output - name of audio output, see libvlc_audio_output_t
  * param i_device device index
- * @return long name of device
+ * return  long name of device
  *)
 
+{$IFDEF USE_VLC_DEPRECATED_API}
 var
   libvlc_audio_output_device_longname : function(
     p_instance       : libvlc_instance_t_ptr;
     psz_audio_output : PAnsiChar;
     i_device         : Integer
   ) : PAnsiChar; cdecl;
+{$ENDIF}
 
 (**
  * Get id name of device
  *
  * param p_instance libvlc instance
- * param psz_audio_output - name of audio output, \see libvlc_audio_output_t
+ * param psz_audio_output - name of audio output, see libvlc_audio_output_t
  * param i_device device index
- * @return id name of device, use for setting device, need to be free after use
+ * return  id name of device, use for setting device, need to be free after use
  *)
 
+{$IFDEF USE_VLC_DEPRECATED_API}
 var
   libvlc_audio_output_device_id : function(
     p_instance       : libvlc_instance_t_ptr;
     psz_audio_output : PAnsiChar;
     i_device         : Integer
   ) : PAnsiChar; cdecl;
+{$ENDIF}
+
+(**
+ * Gets a list of potential audio output devices,
+ * see libvlc_audio_output_device_set().
+ *
+ * note Not all audio outputs support enumerating devices.
+ * The audio output may be functional even if the list is empty (NULL).
+ *
+ * note The list may not be exhaustive.
+
+ *
+ * warning Some audio output devices in the list might not actually work in
+ * some circumstances. By default, it is recommended to not specify any
+ * explicit audio device.
+ *
+ * param mp media player
+
+
+ * return A NULL-terminated linked list of potential audio output devices.
+ * It must be freed it with libvlc_audio_output_device_list_release()
+ * version LibVLC 2.2.0 or later.
+ *)
+var
+  libvlc_audio_output_device_enum : function(
+    p_mi : libvlc_media_player_t_ptr
+  ) : libvlc_audio_output_device_t_ptr; cdecl;
 
 (**
  * Gets a list of audio output devices for a given audio output.
  * see libvlc_audio_output_device_set().
  *
  * note Not all audio outputs support this. In particular, an empty (NULL)
- * list of devices does <b>not</b> imply that the specified audio output does
+ * list of devices does NOT imply that the specified audio output does
  * not work.
  *
  * note The list might not be exhaustive.
@@ -3795,7 +3931,7 @@ var
  * param p_instance libvlc instance
  * param psz_aout audio output name
  *                 (as returned by libvlc_audio_output_list_get())
- * @return A NULL-terminated linked list of potential audio output devices.
+ * return  A NULL-terminated linked list of potential audio output devices.
  * It must be freed it with libvlc_audio_output_device_list_release()
  * version LibVLC 2.1.0 or later.
  *)
@@ -3818,22 +3954,41 @@ var
   ); cdecl;
 
 (**
- * Configures an explicit audio output device for a given audio output plugin.
- * A list of possible devices can be obtained with
+ * Configures an explicit audio output device.
+ *
+ * If the module paramater is NULL, audio output will be moved to the device
+ * specified by the device identifier string immediately. This is the
+ * recommended usage.
+ *
+ * A list of adequate potential device strings can be obtained with
+ * libvlc_audio_output_device_enum().
+ *
+ * However passing NULL is supported in LibVLC version 2.2.0 and later only;
+ * in earlier versions, this function would have no effects when the module
+ * parameter was NULL.
+ *
+ * If the module parameter is not NULL, the device parameter of the
+ * corresponding audio output, if it exists, will be set to the specified
+ * string. Note that some audio output modules do not have such a parameter
+ * (notably MMDevice and PulseAudio).
+ *
+ * A list of adequate potential device strings can be obtained with
  * libvlc_audio_output_device_list_get().
  *
  * note This function does not select the specified audio output plugin.
  * libvlc_audio_output_set() is used for that purpose.
  *
  * warning The syntax for the device parameter depends on the audio output.
- * This is not portable. Only use this function if you know what you are doing.
- * Some audio outputs do not support this function (e.g. PulseAudio, WASAPI).
- * Some audio outputs require further parameters (e.g. ALSA: channels map).
  *
- * param p_mi media player
- * param psz_audio_output - name of audio output, \see libvlc_audio_output_t
- * param psz_device_id device
- * @return Nothing. Errors are ignored.
+ * Some audio output modules require further parameters (e.g. a channels map
+ * in the case of ALSA).
+ *
+ * param mp media player
+ * param module If NULL, current audio output module.
+ *               if non-NULL, name of audio output module
+                 (see libvlc_audio_output_t)
+ * param device_id device identifier string
+ * return Nothing. Errors are ignored (this is a design bug).
  *)
 
 var
@@ -3848,7 +4003,7 @@ var
  * character of output sound - stereo sound, 2.1, 5.1 etc
  *
  * param p_mi media player
- * @return the audio devices type see libvlc_audio_output_device_types_t
+ * return  the audio devices type see libvlc_audio_output_device_types_t
  *)
 
 var
@@ -3889,7 +4044,7 @@ var
  * Get current mute status.
  *
  * param p_mi media player
- * @return the mute status (boolean) if defined, -1 if undefined/unapplicable
+ * return  the mute status (boolean) if defined, -1 if undefined/unapplicable
  *)
 
 var
@@ -3947,7 +4102,7 @@ var
  * Get number of available audio tracks.
  *
  * param p_mi media player
- * @return the number of available audio tracks (int), or -1 if unavailable
+ * return  the number of available audio tracks (int), or -1 if unavailable
  *)
 
 var
@@ -3959,7 +4114,7 @@ var
  * Get the description of available audio tracks.
  *
  * param p_mi media player
- * @return list with description of available audio tracks, or NULL
+ * return  list with description of available audio tracks, or NULL
  *)
 
 var
@@ -3971,7 +4126,7 @@ var
  * Get current audio track.
  *
  * param p_mi media player
- * @return the audio track ID or -1 if no active input.
+ * return  the audio track ID or -1 if no active input.
  *)
 
 var
@@ -3984,7 +4139,7 @@ var
  *
  * param p_mi media player
  * param i_track the track ID (i_id field from track description)
- * @return 0 on success, -1 on error
+ * return  0 on success, -1 on error
  *)
 
 var
@@ -3997,7 +4152,7 @@ var
  * Get current audio channel.
  *
  * param p_mi media player
- * @return the audio channel \see libvlc_audio_output_channel_t
+ * return  the audio channel see libvlc_audio_output_channel_t
  *)
 
 var
@@ -4009,8 +4164,8 @@ var
  * Set current audio channel.
  *
  * param p_mi media player
- * param channel the audio channel, \see libvlc_audio_output_channel_t
- * @return 0 on success, -1 on error
+ * param channel the audio channel, see libvlc_audio_output_channel_t
+ * return  0 on success, -1 on error
  *)
 
 var
@@ -4044,6 +4199,205 @@ var
     p_mi    : libvlc_media_player_t_ptr;
     i_delay : Int64
   ) : Integer; cdecl;
+  
+(**
+ * Get the number of equalizer presets.
+ *
+ * return number of presets
+ * version LibVLC 2.2.0 or later
+ *)
+var
+  libvlc_audio_equalizer_get_preset_count : function() : unsigned_t; cdecl; 
+
+(**
+ * Get the name of a particular equalizer preset.
+ *
+ * This name can be used, for example, to prepare a preset label or menu in a user
+ * interface.
+ *
+ * param u_index index of the preset, counting from zero
+ * return preset name, or NULL if there is no such preset
+ * version LibVLC 2.2.0 or later
+ *)
+var
+  libvlc_audio_equalizer_get_preset_name : function(
+    u_index : unsigned_t
+  ): PAnsiChar; cdecl;
+
+(**
+ * Get the number of distinct frequency bands for an equalizer.
+ *
+ * return number of frequency bands
+ * version LibVLC 2.2.0 or later
+ *)
+var
+  libvlc_audio_equalizer_get_band_count : function() : unsigned_t; cdecl;
+
+(**
+ * Get a particular equalizer band frequency.
+ *
+ * This value can be used, for example, to create a label for an equalizer band control
+ * in a user interface.
+ *
+ * param u_index index of the band, counting from zero
+ * return equalizer band frequency (Hz), or -1 if there is no such band
+ * version LibVLC 2.2.0 or later
+ *)
+var
+  libvlc_audio_equalizer_get_band_frequency : function(
+    u_index : unsigned_t
+  ) : Single; cdecl; // float 
+
+(**
+ * Create a new default equalizer, with all frequency values zeroed.
+ *
+ * The new equalizer can subsequently be applied to a media player by invoking
+ * libvlc_media_player_set_equalizer().
+ *
+ * The returned handle should be freed via libvlc_audio_equalizer_release() when
+ * it is no longer needed.
+ *
+ * return opaque equalizer handle, or NULL on error
+ * version LibVLC 2.2.0 or later
+ *)
+var
+  libvlc_audio_equalizer_new : function() : libvlc_equalizer_t_ptr; cdecl;
+
+(**
+ * Create a new equalizer, with initial frequency values copied from an existing
+ * preset.
+ *
+ * The new equalizer can subsequently be applied to a media player by invoking
+ * libvlc_media_player_set_equalizer().
+ *
+ * The returned handle should be freed via libvlc_audio_equalizer_release() when
+ * it is no longer needed.
+ *
+ * param u_index index of the preset, counting from zero
+ * return opaque equalizer handle, or NULL on error
+ * version LibVLC 2.2.0 or later
+ *)
+var
+  libvlc_audio_equalizer_new_from_preset : function(
+    u_index : unsigned_t
+  ) : libvlc_equalizer_t_ptr; cdecl;
+
+(**
+ * Release a previously created equalizer instance.
+ *
+ * The equalizer was previously created by using libvlc_audio_equalizer_new() or
+ * libvlc_audio_equalizer_new_from_preset().
+ *
+ * It is safe to invoke this method with a NULL p_equalizer parameter for no effect.
+ *
+ * param p_equalizer opaque equalizer handle, or NULL
+ * version LibVLC 2.2.0 or later
+ *)
+var
+  libvlc_audio_equalizer_release : procedure(
+    p_equalizer : libvlc_equalizer_t_ptr
+  ); cdecl;
+
+(**
+ * Set a new pre-amplification value for an equalizer.
+ *
+ * The new equalizer settings are subsequently applied to a media player by invoking
+ * libvlc_media_player_set_equalizer().
+ *
+ * The supplied amplification value will be clamped to the -20.0 to +20.0 range.
+ *
+ * param p_equalizer valid equalizer handle, must not be NULL
+ * param f_preamp preamp value (-20.0 to 20.0 Hz)
+ * return zero on success, -1 on error
+ * version LibVLC 2.2.0 or later
+ *)
+var
+  libvlc_audio_equalizer_set_preamp : function(
+    p_equalizer : libvlc_equalizer_t_ptr;
+    f_preamp    : Single // float
+  ) : Integer; cdecl;
+
+(**
+ * Get the current pre-amplification value from an equalizer.
+ *
+ * param p_equalizer valid equalizer handle, must not be NULL
+ * return preamp value (Hz)
+ * version LibVLC 2.2.0 or later
+ *)
+var
+  libvlc_audio_equalizer_get_preamp : function(
+    p_equalizer : libvlc_equalizer_t_ptr
+  ) : Single; cdecl; // float
+
+(**
+ * Set a new amplification value for a particular equalizer frequency band.
+ *
+ * The new equalizer settings are subsequently applied to a media player by invoking
+ * libvlc_media_player_set_equalizer().
+ *
+ * The supplied amplification value will be clamped to the -20.0 to +20.0 range.
+ *
+ * param p_equalizer valid equalizer handle, must not be NULL
+ * param f_amp amplification value (-20.0 to 20.0 Hz)
+ * param u_band index, counting from zero, of the frequency band to set
+ * return zero on success, -1 on error
+ * version LibVLC 2.2.0 or later
+ *)
+var
+  libvlc_audio_equalizer_set_amp_at_index : function(
+    p_equalizer : libvlc_equalizer_t_ptr;
+    f_amp       : Single;// float
+    u_band      : unsigned_t
+  ) : Integer; cdecl;
+
+(**
+ * Get the amplification value for a particular equalizer frequency band.
+ *
+ * param p_equalizer valid equalizer handle, must not be NULL
+ * param u_band index, counting from zero, of the frequency band to get
+ * return amplification value (Hz); NaN if there is no such frequency band
+ * version LibVLC 2.2.0 or later
+ *)
+var
+  libvlc_audio_equalizer_get_amp_at_index : function(
+    p_equalizer : libvlc_equalizer_t_ptr;
+    u_band      : unsigned_t
+  ) : Single; cdecl;
+
+(**
+ * Apply new equalizer settings to a media player.
+ *
+ * The equalizer is first created by invoking libvlc_audio_equalizer_new() or
+ * libvlc_audio_equalizer_new_from_preset().
+ *
+ * It is possible to apply new equalizer settings to a media player whether the media
+ * player is currently playing media or not.
+ *
+ * Invoking this method will immediately apply the new equalizer settings to the audio
+ * output of the currently playing media if there is any.
+ *
+ * If there is no currently playing media, the new equalizer settings will be applied
+ * later if and when new media is played.
+ *
+ * Equalizer settings will automatically be applied to subsequently played media.
+ *
+ * To disable the equalizer for a media player invoke this method passing NULL for the
+ * p_equalizer parameter.
+ *
+ * The media player does not keep a reference to the supplied equalizer so it is safe
+ * for an application to release the equalizer reference any time after this method
+ * returns.
+ *
+ * param p_mi opaque media player handle
+ * param p_equalizer opaque equalizer handle, or NULL to disable the equalizer for this media player
+ * return zero on success, -1 on error
+ * version LibVLC 2.2.0 or later
+ *)
+var
+  libvlc_media_player_set_equalizer : function(
+    p_mi        : libvlc_media_player_t_ptr;
+    p_equalizer : libvlc_equalizer_t_ptr
+  ) : Integer; cdecl;
 
 (*
  *******************************************************************************
@@ -4055,7 +4409,7 @@ var
  * Create an empty media list.
  *
  * param p_instance libvlc instance
- * @return empty media list, or NULL on error
+ * return  empty media list, or NULL on error
  *)
 
 var
@@ -4128,7 +4482,7 @@ var
  *
  * param p_ml a media list instance
  * param p_md a media instance
- * @return 0 on success, -1 if the media list is read-only
+ * return  0 on success, -1 if the media list is read-only
  *)
 
 var
@@ -4144,7 +4498,7 @@ var
  * param p_ml a media list instance
  * param p_md a media instance
  * param i_pos position in array where to insert
- * @return 0 on success, -1 if the media list si read-only
+ * return  0 on success, -1 if the media list si read-only
  *)
 
 var
@@ -4160,7 +4514,7 @@ var
  *
  * param p_ml a media list instance
  * param i_pos position in array where to insert
- * @return 0 on success, -1 if the list is read-only or the item was not found
+ * return  0 on success, -1 if the list is read-only or the item was not found
  *)
 
 var
@@ -4174,7 +4528,7 @@ var
  * The libvlc_media_list_lock should be held upon entering this function.
  *
  * param p_ml a media list instance
- * @return number of items in media list
+ * return  number of items in media list
  *)
 
 var
@@ -4188,7 +4542,7 @@ var
  *
  * param p_ml a media list instance
  * param i_pos position in array where to insert
- * @return media instance at position i_pos, or -1 if not found.
+ * return  media instance at position i_pos, or -1 if not found.
  * In case of success, libvlc_media_retain() is called to increase the refcount
  * on the media.
  *)
@@ -4206,7 +4560,7 @@ var
  *
  * param p_ml a media list instance
  * param p_md media list instance
- * @return position of media instance
+ * return  position of media instance
  *)
 
 var
@@ -4219,7 +4573,7 @@ var
  * This indicates if this media list is read-only from a user point of view
  *
  * param p_ml media list instance
- * @return 1 on readonly, 0 on readwrite
+ * return  1 on readonly, 0 on readwrite
  *)
 
 var
@@ -4255,7 +4609,7 @@ var
  * The p_event_manager is immutable, so you don't have to hold the lock
  *
  * param p_ml a media list instance
- * @return libvlc_event_manager
+ * return  libvlc_event_manager
  *)
 
 var
@@ -4280,7 +4634,7 @@ var
  * Create new media_list_player.
  *
  * param p_instance libvlc instance
- * @return media list player instance or NULL on error
+ * return  media list player instance or NULL on error
  *)
 
 var
@@ -4319,7 +4673,7 @@ var
  * Return the event manager of this media_list_player.
  *
  * param p_mlp media list player instance
- * @return the event manager
+ * return  the event manager
  *)
 
 var
@@ -4379,7 +4733,7 @@ var
  * Is media list playing?
  *
  * param p_mlp media list player instance
- * @return true for playing and false for not playing
+ * return  true for playing and false for not playing
  *)
 
 var
@@ -4391,7 +4745,7 @@ var
  * Get current libvlc_state of media list player
  *
  * param p_mlp media list player instance
- * @return libvlc_state_t for media list player
+ * return  libvlc_state_t for media list player
  *)
 
 var
@@ -4404,7 +4758,7 @@ var
  *
  * param p_mlp media list player instance
  * param i_index index in media list to play
- * @return 0 upon success -1 if the item wasn't found
+ * return  0 upon success -1 if the item wasn't found
  *)
 
 var
@@ -4418,7 +4772,7 @@ var
  *
  * param p_mlp media list player instance
  * param p_md the media instance
- * @return 0 upon success, -1 if the media is not part of the media list
+ * return  0 upon success, -1 if the media is not part of the media list
  *)
 
 var
@@ -4442,7 +4796,7 @@ var
  * Play next item from media list
  *
  * param p_mlp media list player instance
- * @return 0 upon success -1 if there is no next item
+ * return  0 upon success -1 if there is no next item
  *)
 
 var
@@ -4454,7 +4808,7 @@ var
  * Play previous item from media list
  *
  * param p_mlp media list player instance
- * @return 0 upon success -1 if there is no previous item
+ * return  0 upon success -1 if there is no previous item
  *)
 
 var
@@ -4485,7 +4839,7 @@ var
  * Create an new Media Library object
  *
  * param p_instance the libvlc instance
- * @return a new object or NULL on error
+ * return  a new object or NULL on error
  *)
 
 var
@@ -4523,7 +4877,7 @@ var
  * Load media library.
  *
  * param p_mlib media library object
- * @return 0 on success, -1 on error
+ * return  0 on success, -1 on error
  *)
 
 var
@@ -4535,7 +4889,7 @@ var
  * Get media library subitems.
  *
  * param p_mlib media library object
- * @return media list subitems
+ * return  media list subitems
  *)
 
 var
@@ -4561,7 +4915,7 @@ var
  *
  * param p_inst libvlc instance
  * param psz_name service name
- * @return media discover object or NULL in case of error
+ * return  media discover object or NULL in case of error
  *)
 
 var
@@ -4586,7 +4940,7 @@ var
  * Get media service discover object its localized name.
  *
  * param p_mdis media discover object
- * @return localized name
+ * return  localized name
  *)
 
 var
@@ -4598,7 +4952,7 @@ var
  * Get media service discover media list.
  *
  * param p_mdis media service discover object
- * @return list of media items
+ * return  list of media items
  *)
 
 var
@@ -4610,7 +4964,7 @@ var
  * Get event manager from media service discover object.
  *
  * param p_mdis media service discover object
- * @return event manager object.
+ * return  event manager object.
  *)
 
 var
@@ -4622,7 +4976,7 @@ var
  * Query if media service discover object is running.
  *
  * param p_mdis media service discover object
- * @return true if running, false if not
+ * return  true if running, false if not
  *)
 
 var
@@ -4658,7 +5012,7 @@ var
  * param ppsz_options additional options
  * param b_enabled boolean for enabling the new broadcast
  * param b_loop Should this broadcast be played in loop ?
- * @return 0 on success, -1 on error
+ * return  0 on success, -1 on error
  *)
 
 var
@@ -4683,7 +5037,7 @@ var
  * param ppsz_options additional options
  * param b_enabled boolean for enabling the new vod
  * param psz_mux the muxer of the vod media
- * @return 0 on success, -1 on error
+ * return  0 on success, -1 on error
  *)
 
 var
@@ -4702,7 +5056,7 @@ var
  *
  * param p_instance the instance
  * param psz_name the media to delete
- * @return 0 on success, -1 on error
+ * return  0 on success, -1 on error
  *)
 
 var
@@ -4717,7 +5071,7 @@ var
  * param p_instance the instance
  * param psz_name the media to work on
  * param b_enabled the new status
- * @return 0 on success, -1 on error
+ * return  0 on success, -1 on error
  *)
 
 var
@@ -4733,7 +5087,7 @@ var
  * param p_instance the instance
  * param psz_name the media to work on
  * param psz_output the output MRL (the parameter to the "sout" variable)
- * @return 0 on success, -1 on error
+ * return  0 on success, -1 on error
  *)
 
 var
@@ -4750,7 +5104,7 @@ var
  * param p_instance the instance
  * param psz_name the media to work on
  * param psz_input the input MRL
- * @return 0 on success, -1 on error
+ * return  0 on success, -1 on error
  *)
 
  var
@@ -4766,7 +5120,7 @@ var
  * param p_instance the instance
  * param psz_name the media to work on
  * param psz_input the input MRL
- * @return 0 on success, -1 on error
+ * return  0 on success, -1 on error
  *)
 
 var
@@ -4782,7 +5136,7 @@ var
  * param p_instance the instance
  * param psz_name the media to work on
  * param b_loop the new status
- * @return 0 on success, -1 on error
+ * return  0 on success, -1 on error
  *)
 
 var
@@ -4820,7 +5174,7 @@ var
  * param ppsz_options additional options
  * param b_enabled boolean for enabling the new broadcast
  * param b_loop Should this broadcast be played in loop ?
- * @return 0 on success, -1 on error
+ * return  0 on success, -1 on error
  *)
 
 var
@@ -4840,7 +5194,7 @@ var
  *
  * param p_instance the instance
  * param psz_name the name of the broadcast
- * @return 0 on success, -1 on error
+ * return  0 on success, -1 on error
  *)
 
 var
@@ -4854,7 +5208,7 @@ var
  *
  * param p_instance the instance
  * param psz_name the name of the broadcast
- * @return 0 on success, -1 on error
+ * return  0 on success, -1 on error
  *)
 
 var
@@ -4868,7 +5222,7 @@ var
  *
  * param p_instance the instance
  * param psz_name the name of the broadcast
- * @return 0 on success, -1 on error
+ * return  0 on success, -1 on error
  *)
 
 var
@@ -4883,7 +5237,7 @@ var
  * param p_instance the instance
  * param psz_name the name of the broadcast
  * param f_percentage the percentage to seek to
- * @return 0 on success, -1 on error
+ * return  0 on success, -1 on error
  *)
 
 var
@@ -4908,7 +5262,7 @@ var
  * param p_instance the instance
  * param psz_name the name of the media,
  *      if the name is an empty string, all media is described
- * @return string with information about named media, or NULL on error
+ * return  string with information about named media, or NULL on error
  *)
 
 var
@@ -4923,7 +5277,7 @@ var
  * param p_instance a libvlc instance
  * param psz_name name of vlm media instance
  * param i_instance instance id
- * @return position as float or -1. on error
+ * return  position as float or -1. on error
  *)
 
 var
@@ -4939,7 +5293,7 @@ var
  * param p_instance a libvlc instance
  * param psz_name name of vlm media instance
  * param i_instance instance id
- * @return time as integer or -1 on error
+ * return  time as integer or -1 on error
  *)
 
 var
@@ -4955,7 +5309,7 @@ var
  * param p_instance a libvlc instance
  * param psz_name name of vlm media instance
  * param i_instance instance id
- * @return length of media item or -1 on error
+ * return  length of media item or -1 on error
  *)
 
 var
@@ -4971,7 +5325,7 @@ var
  * param p_instance a libvlc instance
  * param psz_name name of vlm media instance
  * param i_instance instance id
- * @return playback rate or -1 on error
+ * return  playback rate or -1 on error
  *)
 
 var
@@ -4989,7 +5343,7 @@ var
  * param p_instance a libvlc instance
  * param psz_name name of vlm media instance
  * param i_instance instance id
- * @return title as number or -1 on error
+ * return  title as number or -1 on error
  *)
 
 var
@@ -5006,7 +5360,7 @@ var
  * param p_instance a libvlc instance
  * param psz_name name of vlm media instance
  * param i_instance instance id
- * @return chapter as number or -1 on error
+ * return  chapter as number or -1 on error
  *)
 
 var
@@ -5023,7 +5377,7 @@ var
  * param p_instance a libvlc instance
  * param psz_name name of vlm media instance
  * param i_instance instance id
- * @return 1 if seekable, 0 if not, -1 if media does not exist
+ * return  1 if seekable, 0 if not, -1 if media does not exist
  *)
 
 var
@@ -5039,7 +5393,7 @@ var
  * The p_event_manager is immutable, so you don't have to hold the lock
  *
  * param p_instance a libvlc instance
- * @return libvlc_event_manager
+ * return  libvlc_event_manager
  *)
 
 var
@@ -5079,8 +5433,6 @@ var
   
 {$ENDIF}
 
-Function Check_libvlc:boolean;
-
 {$IFDEF MSWINDOWS}
   {$IFDEF LCLGTK2}
 
@@ -5089,10 +5441,20 @@ Function Check_libvlc:boolean;
   {$ENDIF}
 {$ENDIF}
 
+{$IFDEF MACOS}
 procedure libvlc_media_player_set_display_window(
   p_mi : libvlc_media_player_t_ptr;
-  window_handle : THandle
-);
+  window_handle : Pointer);
+{$ELSE}
+procedure libvlc_media_player_set_display_window(
+  p_mi : libvlc_media_player_t_ptr;
+  window_handle : THandle);
+{$ENDIF}
+
+function libvlc_media_record_str(fileName : WideString; mux : string = 'mp4';
+  vCodec : string = 'h264'; vBitRate : Integer = 2048; vFps : Integer = 25; vScale : Integer = 1;
+  aCodec : string = 'mp3';  aBitRate : Integer = 128; aChannels : Integer = 2; aSampleRate : Integer = 44100;
+  duplicate : Boolean = TRUE) : AnsiString;
 
 {$IFNDEF HAS_UTF8_ENCODE_DECODE}
 
@@ -5101,14 +5463,57 @@ function Utf8Decode(const sUTF8: AnsiString): WideString;
 
 {$ENDIF}
 
+const
+  ARGC_ARGV_MAX_SIZE = 1024;
+  
+type
+  TArgcArgs = class
+  private
+    Fargv : packed array[0..ARGC_ARGV_MAX_SIZE - 1] of AnsiString;
+    Fargs : packed array[0..ARGC_ARGV_MAX_SIZE - 1] of PAnsiChar;
+    Fargc : Integer;
+
+    function  GetArgc() : LongInt;
+    function  GetArgs() : Pointer;
+
+  public
+
+    constructor Create(values : array of WideString; ignoreEmptyStrings : Boolean = TRUE; allowDuplicates : Boolean = FALSE);
+    destructor Destroy; override;
+
+    procedure Clear;
+    function AddArg(value : AnsiString; ignoreEmptyStrings : Boolean = TRUE; allowDuplicates : Boolean = FALSE) : Integer; overload;
+
+    // without this D4 not complie
+    // [Error] PasLibVlcUnit.pas(8403): Ambiguous overloaded call to 'AddArg'
+    {$IFDEF DELPHI6_UP}
+    function AddArg(value : WideString; ignoreEmptyStrings : Boolean = TRUE; allowDuplicates : Boolean = FALSE) : Integer; overload;
+    {$ENDIF}
+    function AddArg(values : array of WideString; ignoreEmptyStrings : Boolean = TRUE; allowDuplicates : Boolean = FALSE) : Integer; overload;
+    function AddArg(values : TStringList; ignoreEmptyStrings : Boolean = TRUE; allowDuplicates : Boolean = FALSE) : Integer; overload;    
+    
+    property ARGC : LongInt read GetArgc;
+    property ARGS : Pointer read GetArgs;
+  end;
+
 implementation
 
+{$IFDEF DELPHI_XE2_UP}
+uses
+    System.AnsiStrings;
+{$ENDIF}
+
 const
-  {$IFDEF UNIX}
-  LIBVLC_DLL_NAME = 'libvlc.' + SharedSuffix; // from dynlibs.inc
-  {$ENDIF}
   {$IFDEF MSWINDOWS}
   LIBVLC_DLL_NAME = 'libvlc.dll';
+  {$ENDIF}
+
+  {$IFDEF MACOS}
+  LIBVLC_DLL_NAME = 'libvlc.dylib';
+  {$ENDIF}
+
+  {$IFDEF UNIX}
+  LIBVLC_DLL_NAME = 'libvlc.so';
   {$ENDIF}
   
 var
@@ -5347,38 +5752,65 @@ end;
 
 {$ENDIF}
 
+{$HINTS OFF}
 function libvlc_get_install_path() : string;
-{$IFDEF UNIX}
-  // Linux searches a library in the paths of the environment variable
-  // LD_LIBRARY_PATH, then in /lib, then /usr/lib and finally the paths of
-  // /etc/ld.so.conf.
+
+{$IFDEF MSWINDOWS}
+var
+  reKey : HKEY;
+  reRes : Longint;
+  vType : DWORD;
+  vSize : DWORD;
+  vBuff : packed array[0..2047] of Char;
+begin
+  Result := '';
+  FillChar(vBuff, sizeof(vBuff), 0);
+  reKey := INVALID_HANDLE_VALUE;
+  reRes := RegOpenKeyEx(HKEY_LOCAL_MACHINE, 'Software\VideoLAN\VLC', 0, KEY_READ, reKey);
+  if (reRes = ERROR_SUCCESS) then
+  begin
+    vSize := sizeof(vBuff);
+    vType := REG_SZ;
+    reRes := RegQueryValueEx(reKey, 'InstallDir', NIL, PDWORD(@vType), Pointer(@vBuff), PDWORD(@vSize));
+    if (reRes = ERROR_SUCCESS) and (vType = REG_SZ) then
+    begin
+      Result := string(PChar(@vBuff));
+    end;
+  end;
+  RegCloseKey(reKey);
+end;
+{$ENDIF}
+
+{$IFDEF MACOS}
 const
-  pathLst : array[0..3] of string = (
-    '/usr/lib',
-    '/lib',
-    '/usr/local/lib',
+  pathLst : array[0..2] of string = (
+    '~/Desktop/VLC.app/Contents/MacOS/lib',
+    '~/Applications/VLC.app/Contents/MacOS/lib',
     '/Applications/VLC.app/Contents/MacOS/lib'
   );
 var
   pathIdx : Integer;
+  pathStr : string;
   sr : TSearchRec;
   re : Integer;
 begin
   for pathIdx := Low(pathLst) to High(pathLst) do
   begin
-    if not DirectoryExists(pathLst[pathIdx]) then continue;
-    // look for libvlc.so
-    if FileExists(pathLst[pathIdx] + PathDelim + LIBVLC_DLL_NAME) then
+    pathStr := pathLst[pathIdx];
+
+    if not DirectoryExists(pathStr) then continue;
+    // look for libvlc.dylib
+    if FileExists(pathStr + PathDelim + LIBVLC_DLL_NAME) then
     begin
-      Result := pathLst[pathIdx];
+      Result := pathStr;
       exit;
     end;
-    // look for libvlc.so.x.x
-    re := SysUtils.FindFirst(pathLst[pathIdx] + PathDelim + LIBVLC_DLL_NAME + '.*', faAnyFile, sr);
+    // look for libvlc.x.dylib
+    re := SysUtils.FindFirst(pathStr + PathDelim + 'libvlc.*.dylib', faAnyFile, sr);
     FindClose(sr);
     if (re = 0) then
     begin
-      Result := pathLst[pathIdx];
+      Result := pathStr;
       exit;
     end;
   end;
@@ -5386,33 +5818,89 @@ begin
 end;
 {$ENDIF}
 
-{$IFDEF MSWINDOWS}
+{$IFDEF UNIX}
+  // Linux searches a library in the paths of the environment variable
+  // LD_LIBRARY_PATH, then in /lib, then /usr/lib and finally the paths of
+  // /etc/ld.so.conf.
+const
+  pathLst : array[0..2] of string = (
+    '/usr/lib',
+    '/lib',
+    '/usr/local/lib'
+  );
 var
-  key : HKEY;
-  res : Longint;
-  vType : DWORD;
-  vBuff : packed array[0..2047] of Char;
-  vSize : DWORD; 
+  pathIdx : Integer;
+  pathStr : string;
+  sr : TSearchRec;
+  re : Integer;
 begin
-  Result := '';
-  key := INVALID_HANDLE_VALUE;
-  res := RegOpenKeyEx(HKEY_LOCAL_MACHINE, 'Software\VideoLAN\VLC', 0, KEY_READ, key);
-  if (res = ERROR_SUCCESS) then
+  for pathIdx := Low(pathLst) to High(pathLst) do
   begin
-    vSize := 2048;
-    FillChar(vBuff, sizeof(vBuff), 0);
-    vType := REG_SZ;
-    res := RegQueryValueEx(key, 'InstallDir', NIL, @vType, Pointer(@vBuff), @vSize);
-    if (res = ERROR_SUCCESS) and (vType = REG_SZ) then
+    pathStr := pathLst[pathIdx];
+    if not DirectoryExists(pathStr) then continue;
+    // look for libvlc.so
+    if FileExists(pathStr + PathDelim + LIBVLC_DLL_NAME) then
     begin
-      Result := string(PChar(@vBuff));
+      Result := pathStr;
+      exit;
+    end;
+    // look for libvlc.so.x.x
+    re := SysUtils.FindFirst(pathStr + PathDelim + LIBVLC_DLL_NAME + '.*', faAnyFile, sr);
+    FindClose(sr);
+    if (re = 0) then
+    begin
+      Result := pathStr;
+      exit;
     end;
   end;
-  RegCloseKey(key);
+  Result := '';
+end;
+{$ENDIF}
+{$HINTS ON}
+
+function libvlc_get_install_file(libvlc_install_path : string) : string;
+{$IFDEF MSWINDOWS}
+begin
+  // look for libvlc.dll
+  if (DirectoryExists(libvlc_install_path)) then
+  begin
+    Result := LIBVLC_DLL_NAME;
+    if FileExists(libvlc_install_path + PathDelim + Result) then
+    begin
+      exit;
+    end;
+  end;
+  Result := '';
 end;
 {$ENDIF}
 
-function libvlc_get_install_file(libvlc_install_path : string) : string;
+{$IFDEF MACOS}
+var
+  sr : TSearchRec;
+  re : Integer;
+begin
+  if (DirectoryExists(libvlc_install_path)) then
+  begin
+    Result := LIBVLC_DLL_NAME;
+    // look for libvlc.dylib
+    if FileExists(libvlc_install_path + PathDelim + Result) then
+    begin
+      exit;
+    end;
+    // look for libvlc.x.dylib
+    re := SysUtils.FindFirst(libvlc_install_path + PathDelim + 'libvlc.*.dylib', faAnyFile, sr);
+    SysUtils.FindClose(sr);
+    if (re = 0) then
+    begin
+      Result := sr.Name;
+      exit;
+    end;
+  end;
+  Result := '';
+end;
+{$ENDIF}
+
+{$IFDEF UNIX}
 var
   sr : TSearchRec;
   re : Integer;
@@ -5424,7 +5912,7 @@ begin
     if FileExists(libvlc_install_path + PathDelim + Result) then exit;
     // look for libvlc.so.x.x
     re := SysUtils.FindFirst(libvlc_install_path + PathDelim + LIBVLC_DLL_NAME + '.*', faAnyFile, sr);
-    FindClose(sr);
+    SysUtils.FindClose(sr);
     if (re = 0) then
     begin
       Result := sr.Name;
@@ -5433,31 +5921,64 @@ begin
   end;
   Result := '';
 end;
+{$ENDIF}
 
+{$IFDEF MSWINDOWS}
 function libvlc_dll_get_proc_addr(
   var addr   : Pointer;
   const name : PAnsiChar
   ) : Boolean;
 begin
-  {$IFDEF UNIX}
-  addr := GetProcedureAddress(libvlc_handle, name);
-  {$ENDIF}
-  {$IFDEF MSWINDOWS}
   addr := GetProcAddress(libvlc_handle, name);
-  {$ENDIF}
   Result := (addr <> NIL);
   if not Result then
   begin
-    libvlc_dynamic_dll_error := 'Procedure "' + name + '" not found!';
+    libvlc_dynamic_dll_error := 'Entry point "' + name + '" not found!';
   end;
 end;
+{$ENDIF}
+
+{$IFDEF MACOS}
+function libvlc_dll_get_proc_addr(
+  var addr   : Pointer;
+  const name : PWideChar
+  ) : Boolean;
+begin
+  addr := GetProcAddress(libvlc_handle, name);
+  Result := (addr <> NIL);
+  if not Result then
+  begin
+    libvlc_dynamic_dll_error := 'Entry point "' + name + '" not found!';
+  end;
+end;
+{$ENDIF}
+
+{$IFDEF UNIX}
+function libvlc_dll_get_proc_addr(
+  var addr   : Pointer;
+  const name : PAnsiChar
+  ) : Boolean;
+begin
+  addr := GetProcedureAddress(libvlc_handle, name);
+  Result := (addr <> NIL);
+  if not Result then
+  begin
+    libvlc_dynamic_dll_error := 'Entry point "' + name + '" not found!';
+  end;
+end;
+{$ENDIF}
 
 procedure require_version(function_name, require_version: string);
 begin
+  if IsConsole then
+  begin
+    WriteLn(function_name + ' require libvlc ' + require_version);
+    Halt;
+  end;
   {$IFDEF MSWINDOWS}
   MessageBox(0, PChar(function_name + ' require libvlc ' + require_version), 'libvlc', MB_ICONHAND or MB_OK);
   {$ELSE}
-  debugln(function_name + ' require libvlc ' + require_version);
+  ShowMessage(function_name + ' require libvlc ' + require_version);
   {$ENDIF}
 end;
 
@@ -6015,7 +6536,124 @@ procedure require_version_libvlc_log_set_file(
     stream : THandle
   ); cdecl;
 begin
-  require_version('require_version_libvlc_log_set_file', '2.1.0');
+  require_version('libvlc_log_set_file', '2.1.0');
+end;
+
+{$IFDEF DELPHI2005_UP}{$ENDREGION}{$ENDIF}
+
+{$IFDEF DELPHI2005_UP}{$REGION '2.2.0'}{$ENDIF}
+
+function require_version_libvlc_media_player_program_scrambled(
+    p_mi : libvlc_media_player_t_ptr
+  ) : Integer; cdecl;
+begin
+  Result := 0;
+  require_version('libvlc_media_player_program_scrambled', '2.2.0');
+end;
+  
+function require_version_libvlc_audio_output_device_enum(
+    p_mi : libvlc_media_player_t_ptr
+  ) : libvlc_audio_output_device_t_ptr; cdecl;
+begin
+  Result := NIL;
+  require_version('libvlc_audio_output_device_enum ', '2.2.0');
+end;
+
+function require_version_libvlc_audio_equalizer_get_preset_count(
+  ) : unsigned_t; cdecl;
+begin
+  Result := 0;
+  require_version('libvlc_audio_equalizer_get_preset_count', '2.2.0');
+end;
+
+function require_version_libvlc_audio_equalizer_get_preset_name(
+    u_index : unsigned_t
+  ): PAnsiChar; cdecl;
+begin
+  Result := NIL;
+  require_version('libvlc_audio_equalizer_get_preset_name', '2.2.0');
+end;
+
+function require_version_libvlc_audio_equalizer_get_band_count(
+  ) : unsigned_t; cdecl;
+begin
+  Result := 0;
+  require_version('libvlc_audio_equalizer_get_band_count', '2.2.0');
+end;
+
+function require_version_libvlc_audio_equalizer_get_band_frequency(
+    u_index : unsigned_t
+  ) : Single; cdecl;
+begin
+  Result := 0;
+  require_version('libvlc_audio_equalizer_get_band_frequency', '2.2.0');
+end;
+
+function require_version_libvlc_audio_equalizer_new(
+  ) : libvlc_equalizer_t_ptr; cdecl;
+begin
+  Result := NIL;
+  require_version('libvlc_audio_equalizer_new', '2.2.0');
+end;
+
+function require_version_libvlc_audio_equalizer_new_from_preset(
+    u_index : unsigned_t
+  ) : libvlc_equalizer_t_ptr; cdecl;
+begin
+  Result := NIL;
+  require_version('libvlc_audio_equalizer_new_from_preset', '2.2.0');
+end;
+
+procedure require_version_libvlc_audio_equalizer_release(
+    p_equalizer : libvlc_equalizer_t_ptr
+  ); cdecl;
+begin
+  require_version('libvlc_audio_equalizer_release', '2.2.0');
+end;
+
+function require_version_libvlc_audio_equalizer_set_preamp(
+    p_equalizer : libvlc_equalizer_t_ptr;
+    f_preamp    : Single
+  ) : Integer; cdecl;
+begin
+  Result := 0;
+  require_version('libvlc_audio_equalizer_set_preamp', '2.2.0');
+end;
+
+function require_version_libvlc_audio_equalizer_get_preamp(
+    p_equalizer : libvlc_equalizer_t_ptr
+  ) : Single; cdecl;
+begin
+  Result := 0;
+  require_version('libvlc_audio_equalizer_get_preamp', '2.2.0');
+end;
+
+function require_version_libvlc_audio_equalizer_set_amp_at_index(
+    p_equalizer : libvlc_equalizer_t_ptr;
+    f_amp       : Single;
+    u_band      : unsigned_t
+  ) : Integer; cdecl;
+begin
+  Result := 0;
+  require_version('libvlc_audio_equalizer_set_amp_at_index', '2.2.0');
+end;
+
+function require_version_libvlc_audio_equalizer_get_amp_at_index(
+    p_equalizer : libvlc_equalizer_t_ptr;
+    u_band      : unsigned_t
+  ) : Single; cdecl;
+begin
+  Result := 0;
+  require_version('libvlc_audio_equalizer_get_amp_at_index', '2.2.0');
+end;
+
+function require_version_libvlc_media_player_set_equalizer(
+    p_mi        : libvlc_media_player_t_ptr;
+    p_equalizer : libvlc_equalizer_t_ptr
+  ) : Integer; cdecl;
+begin
+  Result := 0;
+  require_version('libvlc_media_player_set_equalizer', '2.2.0');
 end;
 
 {$IFDEF DELPHI2005_UP}{$ENDREGION}{$ENDIF}
@@ -6126,13 +6764,13 @@ begin
   libvlc_set_fullscreen := NIL;
   libvlc_get_fullscreen := NIL;
   
-  {$IFDEF USE_VLC_DEPRECATED_API}
+{$IFDEF USE_VLC_DEPRECATED_API}
   libvlc_video_get_height := NIL;
-  {$ENDIF}
+{$ENDIF}
 
-  {$IFDEF USE_VLC_DEPRECATED_API}
+{$IFDEF USE_VLC_DEPRECATED_API}
   libvlc_video_get_width := NIL;
-  {$ENDIF}
+{$ENDIF}
 
   libvlc_video_get_scale := NIL;
   libvlc_video_set_scale := NIL;
@@ -6158,9 +6796,11 @@ begin
   libvlc_audio_output_list_get := NIL;
   libvlc_audio_output_list_release := NIL;
   libvlc_audio_output_set := NIL;
+{$IFDEF USE_VLC_DEPRECATED_API}
   libvlc_audio_output_device_count := NIL;
   libvlc_audio_output_device_longname := NIL;
   libvlc_audio_output_device_id := NIL;
+{$ENDIF}
   libvlc_audio_output_device_set := NIL;
   libvlc_audio_output_get_device_type := NIL;
   libvlc_audio_output_set_device_type := NIL;
@@ -6179,9 +6819,9 @@ begin
   libvlc_media_list_release := NIL;
   libvlc_media_list_retain := NIL;
 
-  {$IFDEF USE_VLC_DEPRECATED_API}
+{$IFDEF USE_VLC_DEPRECATED_API}
   libvlc_media_list_add_file_content := NIL;
-  {$ENDIF}
+{$ENDIF}
 
   libvlc_media_list_set_media := NIL;
   libvlc_media_list_media := NIL;
@@ -6239,117 +6879,341 @@ begin
   libvlc_vlm_get_media_instance_length := NIL;
   libvlc_vlm_get_media_instance_rate := NIL;
 
-  {$IFDEF IS_0_GT_1}
+{$IFDEF IS_0_GT_1}
    libvlc_vlm_get_media_instance_title := NIL;
    libvlc_vlm_get_media_instance_chapter := NIL;
    libvlc_vlm_get_media_instance_seekable := NIL;
-  {$ENDIF}
+{$ENDIF}
 
-  {$IFDEF USE_VLC_DEPRECATED_API}
+{$IFDEF USE_VLC_DEPRECATED_API}
   libvlc_playlist_play := NIL;
-  {$ENDIF}
+{$ENDIF}
 
   (* 1.1.0 *)
 
-  libvlc_errmsg                          := require_version_libvlc_errmsg;
-  libvlc_clearerr                        := require_version_libvlc_clearerr;
-  libvlc_printerr                        := require_version_libvlc_printerr;
-  {$IFNDEF FPC}
-  libvlc_vprinterr                       := require_version_libvlc_vprinterr;
-  {$ENDIF}
-  libvlc_video_get_logo_int              := require_version_libvlc_video_get_logo_int;
-  libvlc_video_set_logo_int              := require_version_libvlc_video_set_logo_int;
-  libvlc_video_set_logo_string           := require_version_libvlc_video_set_logo_string;
-  libvlc_video_get_marquee_int           := require_version_libvlc_video_get_marquee_int;
-  libvlc_video_get_marquee_string        := require_version_libvlc_video_get_marquee_string;
-  libvlc_video_set_marquee_int           := require_version_libvlc_video_set_marquee_int;
-  libvlc_video_set_marquee_string        := require_version_libvlc_video_set_marquee_string;
-  libvlc_video_get_cursor                := require_version_libvlc_video_get_cursor;
-  libvlc_video_get_size                  := require_version_libvlc_video_get_size;
-  libvlc_video_set_key_input             := require_version_libvlc_video_set_key_input;
-  libvlc_video_set_mouse_input           := require_version_libvlc_video_set_mouse_input;
-  libvlc_video_set_deinterlace           := require_version_libvlc_video_set_deinterlace;
+  libvlc_errmsg                          := @require_version_libvlc_errmsg;
+  libvlc_clearerr                        := @require_version_libvlc_clearerr;
+  libvlc_printerr                        := @require_version_libvlc_printerr;
+{$IFNDEF FPC}
+  libvlc_vprinterr                       := @require_version_libvlc_vprinterr;
+{$ENDIF}
+  libvlc_video_get_logo_int              := @require_version_libvlc_video_get_logo_int;
+  libvlc_video_set_logo_int              := @require_version_libvlc_video_set_logo_int;
+  libvlc_video_set_logo_string           := @require_version_libvlc_video_set_logo_string;
+  libvlc_video_get_marquee_int           := @require_version_libvlc_video_get_marquee_int;
+  libvlc_video_get_marquee_string        := @require_version_libvlc_video_get_marquee_string;
+  libvlc_video_set_marquee_int           := @require_version_libvlc_video_set_marquee_int;
+  libvlc_video_set_marquee_string        := @require_version_libvlc_video_set_marquee_string;
+  libvlc_video_get_cursor                := @require_version_libvlc_video_get_cursor;
+  libvlc_video_get_size                  := @require_version_libvlc_video_get_size;
+  libvlc_video_set_key_input             := @require_version_libvlc_video_set_key_input;
+  libvlc_video_set_mouse_input           := @require_version_libvlc_video_set_mouse_input;
+  libvlc_video_set_deinterlace           := @require_version_libvlc_video_set_deinterlace;
 
-  libvlc_media_player_next_frame         := require_version_libvlc_media_player_next_frame;
+  libvlc_media_player_next_frame         := @require_version_libvlc_media_player_next_frame;
 
-  libvlc_media_list_player_event_manager     := require_version_libvlc_media_list_player_event_manager;
-  libvlc_media_list_player_set_playback_mode := require_version_libvlc_media_list_player_set_playback_mode;
-  libvlc_media_list_player_previous          := require_version_libvlc_media_list_player_previous;
+  libvlc_media_list_player_event_manager     := @require_version_libvlc_media_list_player_event_manager;
+  libvlc_media_list_player_set_playback_mode := @require_version_libvlc_media_list_player_set_playback_mode;
+  libvlc_media_list_player_previous          := @require_version_libvlc_media_list_player_previous;
 
-  libvlc_media_parse                     := require_version_libvlc_media_parse;
-  libvlc_media_parse_async               := require_version_libvlc_media_parse_async;
-  libvlc_media_is_parsed                 := require_version_libvlc_media_is_parsed;
-  libvlc_media_new_location              := require_version_libvlc_media_new_location;
-  libvlc_media_new_path                  := require_version_libvlc_media_new_path;
-  libvlc_media_add_option_flag           := require_version_libvlc_media_add_option_flag;
-  libvlc_media_set_meta                  := require_version_libvlc_media_set_meta;
-  libvlc_media_save_meta                 := require_version_libvlc_media_save_meta;
-  libvlc_media_get_tracks_info           := require_version_libvlc_media_get_tracks_info;
-  libvlc_media_get_stats                 := require_version_libvlc_media_get_stats;
+  libvlc_media_parse                     := @require_version_libvlc_media_parse;
+  libvlc_media_parse_async               := @require_version_libvlc_media_parse_async;
+  libvlc_media_is_parsed                 := @require_version_libvlc_media_is_parsed;
+  libvlc_media_new_location              := @require_version_libvlc_media_new_location;
+  libvlc_media_new_path                  := @require_version_libvlc_media_new_path;
+  libvlc_media_add_option_flag           := @require_version_libvlc_media_add_option_flag;
+  libvlc_media_set_meta                  := @require_version_libvlc_media_set_meta;
+  libvlc_media_save_meta                 := @require_version_libvlc_media_save_meta;
+  libvlc_media_get_tracks_info           := @require_version_libvlc_media_get_tracks_info;
+  libvlc_media_get_stats                 := @require_version_libvlc_media_get_stats;
 
-  libvlc_vlm_get_event_manager           := require_version_libvlc_vlm_get_event_manager;
+  libvlc_vlm_get_event_manager           := @require_version_libvlc_vlm_get_event_manager;
   
   (* 1.1.1 *)
 
-  libvlc_set_user_agent                  := require_version_libvlc_set_user_agent;
-  libvlc_video_set_callbacks             := require_version_libvlc_video_set_callbacks;
-  libvlc_audio_get_delay                 := require_version_libvlc_audio_get_delay;
-  libvlc_audio_set_delay                 := require_version_libvlc_audio_set_delay;
-  libvlc_video_set_format                := require_version_libvlc_video_set_format;
-  libvlc_video_get_adjust_int            := require_version_libvlc_video_get_adjust_int;
-  libvlc_video_set_adjust_int            := require_version_libvlc_video_set_adjust_int;
-  libvlc_video_get_adjust_float          := require_version_libvlc_video_get_adjust_float;
-  libvlc_video_set_adjust_float          := require_version_libvlc_video_set_adjust_float;
-  libvlc_media_player_set_pause          := require_version_libvlc_media_player_set_pause;
+  libvlc_set_user_agent                  := @require_version_libvlc_set_user_agent;
+  libvlc_video_set_callbacks             := @require_version_libvlc_video_set_callbacks;
+  libvlc_audio_get_delay                 := @require_version_libvlc_audio_get_delay;
+  libvlc_audio_set_delay                 := @require_version_libvlc_audio_set_delay;
+  libvlc_video_set_format                := @require_version_libvlc_video_set_format;
+  libvlc_video_get_adjust_int            := @require_version_libvlc_video_get_adjust_int;
+  libvlc_video_set_adjust_int            := @require_version_libvlc_video_set_adjust_int;
+  libvlc_video_get_adjust_float          := @require_version_libvlc_video_get_adjust_float;
+  libvlc_video_set_adjust_float          := @require_version_libvlc_video_set_adjust_float;
+  libvlc_media_player_set_pause          := @require_version_libvlc_media_player_set_pause;
 
   (* 1.1.5 *)
 
-  libvlc_media_new_fd                    := require_version_libvlc_media_new_fd;
+  libvlc_media_new_fd                    := @require_version_libvlc_media_new_fd;
+
+  (* 2.0.0 *)
+
+  libvlc_audio_filter_list_get           := @require_version_libvlc_audio_filter_list_get;
+  libvlc_audio_set_callbacks             := @require_version_libvlc_audio_set_callbacks;
+  libvlc_audio_set_volume_callback       := @require_version_libvlc_audio_set_volume_callback;
+  libvlc_audio_set_format_callbacks      := @require_version_libvlc_audio_set_format_callbacks;
+  libvlc_audio_set_format                := @require_version_libvlc_audio_set_format;
+  libvlc_video_filter_list_get           := @require_version_libvlc_video_filter_list_get;
+  libvlc_video_set_format_callbacks      := @require_version_libvlc_video_set_format_callbacks;
+  libvlc_video_get_spu_delay             := @require_version_libvlc_video_get_spu_delay;
+  libvlc_video_set_spu_delay             := @require_version_libvlc_video_set_spu_delay;
+  libvlc_media_player_navigate           := @require_version_libvlc_media_player_navigate;
+  libvlc_media_list_player_retain        := @require_version_libvlc_media_list_player_retain;
+  libvlc_module_description_list_release := @require_version_libvlc_module_description_list_release;
+  libvlc_set_exit_handler                := @require_version_libvlc_set_exit_handler;
+  libvlc_free                            := @require_version_libvlc_free;
+  libvlc_track_description_list_release  := @require_version_libvlc_track_description_list_release;
 
   (* 2.1.0 *)
+  libvlc_media_player_set_video_title_display := @require_version_libvlc_media_player_set_video_title_display;
+  libvlc_audio_output_device_list_get         := @require_version_libvlc_audio_output_device_list_get;
+  libvlc_audio_output_device_list_release     := @require_version_libvlc_audio_output_device_list_release;
+  libvlc_media_tracks_get                     := @require_version_libvlc_media_tracks_get;
+  libvlc_media_tracks_release                 := @require_version_libvlc_media_tracks_release;
+  libvlc_set_app_id                           := @require_version_libvlc_set_app_id;
+  libvlc_log_get_context                      := @require_version_libvlc_log_get_context;
+  libvlc_log_get_object                       := @require_version_libvlc_log_get_object;
+  libvlc_log_set                              := @require_version_libvlc_log_set;
+  libvlc_log_unset                            := @require_version_libvlc_log_unset;
+  libvlc_log_set_file                         := @require_version_libvlc_log_set_file;
 
-  libvlc_audio_filter_list_get           := require_version_libvlc_audio_filter_list_get;
-  libvlc_audio_set_callbacks             := require_version_libvlc_audio_set_callbacks;
-  libvlc_audio_set_volume_callback       := require_version_libvlc_audio_set_volume_callback;
-  libvlc_audio_set_format_callbacks      := require_version_libvlc_audio_set_format_callbacks;
-  libvlc_audio_set_format                := require_version_libvlc_audio_set_format;
-  libvlc_video_filter_list_get           := require_version_libvlc_video_filter_list_get;
-  libvlc_video_set_format_callbacks      := require_version_libvlc_video_set_format_callbacks;
-  libvlc_video_get_spu_delay             := require_version_libvlc_video_get_spu_delay;
-  libvlc_video_set_spu_delay             := require_version_libvlc_video_set_spu_delay;
-  libvlc_media_player_navigate           := require_version_libvlc_media_player_navigate;
-  libvlc_media_list_player_retain        := require_version_libvlc_media_list_player_retain;
-  libvlc_module_description_list_release := require_version_libvlc_module_description_list_release;
-  libvlc_set_exit_handler                := require_version_libvlc_set_exit_handler;
-  libvlc_free                            := require_version_libvlc_free;
-  libvlc_track_description_list_release  := require_version_libvlc_track_description_list_release;
-
-  (* 2.1.0 *)
-  libvlc_media_player_set_video_title_display := require_version_libvlc_media_player_set_video_title_display;
-  libvlc_audio_output_device_list_get         := require_version_libvlc_audio_output_device_list_get;
-  libvlc_audio_output_device_list_release     := require_version_libvlc_audio_output_device_list_release;
-  libvlc_media_tracks_get                     := require_version_libvlc_media_tracks_get;
-  libvlc_media_tracks_release                 := require_version_libvlc_media_tracks_release;
-  libvlc_set_app_id                           := require_version_libvlc_set_app_id;
-  libvlc_log_get_context                      := require_version_libvlc_log_get_context;
-  libvlc_log_get_object                       := require_version_libvlc_log_get_object;
-  libvlc_log_set                              := require_version_libvlc_log_set;
-  libvlc_log_unset                            := require_version_libvlc_log_unset;
-  libvlc_log_set_file                         := require_version_libvlc_log_set_file;
+  (* 2.2.0 *)
+  libvlc_media_player_program_scrambled     := @require_version_libvlc_media_player_program_scrambled;
+  libvlc_audio_output_device_enum           := @require_version_libvlc_audio_output_device_enum;
+  libvlc_audio_equalizer_get_preset_count   := @require_version_libvlc_audio_equalizer_get_preset_count;
+  libvlc_audio_equalizer_get_preset_name    := @require_version_libvlc_audio_equalizer_get_preset_name;
+  libvlc_audio_equalizer_get_band_count     := @require_version_libvlc_audio_equalizer_get_band_count;
+  libvlc_audio_equalizer_get_band_frequency := @require_version_libvlc_audio_equalizer_get_band_frequency;
+  libvlc_audio_equalizer_new                := @require_version_libvlc_audio_equalizer_new;
+  libvlc_audio_equalizer_new_from_preset    := @require_version_libvlc_audio_equalizer_new_from_preset;
+  libvlc_audio_equalizer_release            := @require_version_libvlc_audio_equalizer_release;
+  libvlc_audio_equalizer_set_preamp         := @require_version_libvlc_audio_equalizer_set_preamp;
+  libvlc_audio_equalizer_get_preamp         := @require_version_libvlc_audio_equalizer_get_preamp;
+  libvlc_audio_equalizer_set_amp_at_index   := @require_version_libvlc_audio_equalizer_set_amp_at_index;
+  libvlc_audio_equalizer_get_amp_at_index   := @require_version_libvlc_audio_equalizer_get_amp_at_index;
+  libvlc_media_player_set_equalizer         := @require_version_libvlc_media_player_set_equalizer;
+  
+  (* 3.0.0 *)
 end;
 
+function libvlc_dynamic_dll_architecture(file_path_name : string) : Integer;
+{$IFDEF MSWINDOWS}
+const
+  IMAGE_FILE_MACHINE_I386    = $014c;
+  IMAGE_FILE_MACHINE_IA64    = $0200;
+  IMAGE_FILE_MACHINE_ALPHA64 = $0284;
+  IMAGE_FILE_MACHINE_AMD64   = $8664;
+var
+  f_handle  : THandle;
+  id_header : TImageDosHeader;
+  pe_sign   : Cardinal;
+  machine   : Word;
+begin
+  Result := -1;
+  f_handle := FileOpen(file_path_name, fmOpenRead);
+  if (f_handle <> INVALID_HANDLE_VALUE) then
+  begin
+    Result := 0;
+    if (FileRead(f_handle, id_header, sizeof(id_header)) = sizeof(id_header)) then
+    begin
+      if (id_header.e_magic = IMAGE_DOS_SIGNATURE) then
+      begin
+        if (FileSeek(f_handle, id_header._lfanew, 0) = id_header._lfanew) then
+        begin
+          if (FileRead(f_handle, pe_sign, sizeof(pe_sign)) = sizeof(pe_sign)) then
+          begin
+            if (pe_sign = IMAGE_NT_SIGNATURE) then
+            begin
+              if (FileRead(f_handle, machine, sizeof(machine)) = sizeof(machine)) then
+              begin
+                case machine of
+                  IMAGE_FILE_MACHINE_I386     : Result := 32;
+                  IMAGE_FILE_MACHINE_IA64,
+                  IMAGE_FILE_MACHINE_ALPHA64,
+                  IMAGE_FILE_MACHINE_AMD64    : Result := 64;
+                end;
+              end;
+            end;
+          end;
+        end;
+      end;
+    end;
+    FileClose(f_handle);
+  end;
+end;
+{$ENDIF}
+{$IFDEF MACOS}
+const
+  MH_MAGIC_32 = $feedface;
+  MH_MAGIC_64 = $feedfacf;
+  FAT_MAGIC   = $cafebabe;
+const
+  CPU_ARCH_MASK  = $ff000000; // mask for architecture bits
+  CPU_ARCH_ABI64 = $01000000; // 64 bit ABI
+type
+  mach_header_t = packed record
+    magic      : Cardinal; // mach magic number identifier
+    cputype    : Cardinal; // cpu specifier
+    cpusubtype : Cardinal; // machine specifier
+    filetype   : Cardinal; // type of file
+    ncmds      : Cardinal; // number of load commands
+    sizeofcmds : Cardinal; // the size of all the load commands
+    flags      : Cardinal; // flags
+  end;
+type
+  fat_arch_t = packed record
+    cputype    : Cardinal;
+    cpusubtype : Cardinal;
+    offset     : Cardinal;
+    size       : Cardinal;
+    align      : Cardinal;
+  end;
+var
+  f_handle  : THandle;
+  magic     : Cardinal;
+  cputype   : Cardinal;
+  fat_count : Cardinal;
+  fat_arch  : fat_arch_t;
+begin
+  Result := -1;
+  f_handle := FileOpen(file_path_name, fmOpenRead);
+  if (f_handle <> INVALID_HANDLE_VALUE) then
+  begin
+    Result := 0;
+    if (FileRead(f_handle, magic, sizeof(magic)) = sizeof(magic)) then
+    begin
+      if (magic = MH_MAGIC_32) then
+      begin
+        FileRead(f_handle, cputype, sizeof(cputype));
+        if ((cputype and CPU_ARCH_MASK) <> CPU_ARCH_ABI64) then
+        begin
+          Result := 32;
+        end;
+      end
+      else if (magic = MH_MAGIC_64) then
+      begin
+        FileRead(f_handle, cputype, sizeof(cputype));
+        if ((cputype and CPU_ARCH_MASK) = CPU_ARCH_ABI64) then
+        begin
+          Result := 64;
+        end;
+      end
+      // Available in OS X v10.8 and later.
+      // not tested
+      else if (magic = FAT_MAGIC) then
+      begin
+        if (FileRead(f_handle, fat_count, sizeof(fat_count)) = sizeof(fat_count)) then
+        begin
+          while (fat_count > 0) do
+          begin
+            Dec(fat_count);
+            if (FileRead(f_handle, fat_arch, sizeof(fat_arch)) <> sizeof(fat_arch)) then
+            begin
+              break;
+            end;
+            if ((cputype and CPU_ARCH_MASK) = CPU_ARCH_ABI64) then
+            begin
+              Result := Result or 64;
+            end
+            else
+            begin
+              Result := Result or 32;
+            end;
+            if (Result = 96) then break;            
+          end;
+        end;
+      end;
+    end;
+    FileClose(f_handle);
+  end;
+end;
+{$ENDIF}
+{$IFDEF UNIX}
+// http://en.wikipedia.org/wiki/Executable_and_Linkable_Format
+type
+  TElfHeader = packed record
+    e_ident_MAGIC      : packed array[0..3] of Byte; // 0x7F followed by ELF in ASCII; these four bytes constitute the magic number.
+    e_ident_CLASS      : Byte; // This byte is set to either 1 or 2 to signify 32- or 64-bit format, respectively.
+    e_ident_DATA       : Byte; // This byte is set to either 1 or 2 to signify little or big endianness, respectively. This affects interpretation of multi-byte fields starting with offset 0x10.
+    e_ident_VERSION    : Byte; // Set to 1 for the original version of ELF.
+    e_ident_OSABI      : Byte; // 0x00 System V, 0x01 HP-UX, 0x02 NetBSD, 0x03 Linux, 0x06 Solaris, 0x07 AIX, 0x08 IRIX, 0x09 FreeBSD, 0x0C OpenBSD, 0x0D OpenVMS
+    e_ident_ABIVERSION : Byte; // Further specifies the ABI version. Its interpretation depends on the target ABI. Linux kernel (after at least 2.6) has no definition of it.[4] In that case, offset and size of EI_PAD are 8.
+    e_ident_PAD        : packed array[0..6] of Byte; //currently unused
+    e_type             : Word; // 1, 2, 3, 4 specify whether the object is relocatable, executable, shared, or core, respectively.
+    e_machine          : Word; // 0x02 SPARC, 0x03 x86, 0x08 MIPS, 0x14 PowerPC, 0x28 ARM, 0x2A SuperH, 0x32 IA-64, 0x3E x86-64, 0xB7 AArch64
+
+    (*
+    e_version          : Cardinal; // Set to 1 for the original version of ELF.
+
+    // This fields is either 32 or 64 bits long depending on the format defined earlier (e_ident_CLASS).
+    e_entry : Cardinal; // This is the memory address of the entry point from where the process starts executing.
+
+    // This fields is either 32 or 64 bits long depending on the format defined earlier (e_ident_CLASS).
+    e_phoff : Cardinal; // Points to the start of the program header table. It usually follows the file header immediately making the offset 0x40 for 64-bit ELF executables.
+
+    // This fields is either 32 or 64 bits long depending on the format defined earlier.
+    e_shoff : Cardinal; // Points to the start of the section header table.
+
+    e_flags      : Cardinal;
+    e_ehsize     : Word; // Contains the size of this header, normally 64 bytes for 64-bit and 52 for 32-bit format.
+    e_phentsize  : Word; // Contains the size of a program header table entry.
+    e_phnum      : Word; // Contains the number of entries in the program header table.
+    e_shentsize  : Word; // Contains the size of a section header table entry.
+    e_shnum      : Word; // Contains the number of entries in the section header table.
+    e_shstrndx   : Word; // Contains index of the section header table entry that contains the section names.
+    *)
+  end;
+var
+  eh : TElfHeader;
+  f_handle: THandle;
+begin
+  Result := 0;
+  Result := -1;
+  f_handle := FileOpen(file_path_name, fmOpenRead);
+  if (f_handle <> -1) then
+  begin
+    Result := 0;
+    if (FileRead(f_handle, eh, sizeof(eh)) = sizeof(eh)) then
+    begin
+      if (eh.e_ident_MAGIC[0] = $7F) and (eh.e_ident_MAGIC[1] = Byte('E')) and (eh.e_ident_MAGIC[2] = Byte('L')) and (eh.e_ident_MAGIC[3] = Byte('F'))then
+      begin
+        if (eh.e_machine = $03) or (eh.e_machine = $3E) then
+        begin
+          Result := Result or 32;
+        end;
+        if (eh.e_machine = $32) or  (eh.e_machine = $3E) or (eh.e_machine = $B7) then
+        begin
+          Result := Result or 64;
+        end;
+      end;
+    end;
+  end;
+end;
+{$ENDIF}
+
+{$WARNINGS OFF}
 procedure libvlc_dynamic_dll_init_with_path(vlc_install_path: string);
 var
-  cdir: string;
+  cdir : string;
+  dll_path : string;
+  dll_arch : Integer;
   va, vb, vc : LongWord;
-  vp : PChar;
+  vp : PAnsiChar;
 begin
+  {$IFDEF HAS_EXCEPTION_MASK}
+  SetExceptionMask(GetExceptionMask() + VLC_EXCEPTION_MASK_MIN);
+  {$ENDIF}
+  
   if (libvlc_handle <> 0) then exit;
+
+  {$IFDEF MSWINDOWS}
+  SetErrorMode(SEM_FAILCRITICALERRORS or SEM_NOALIGNMENTFAULTEXCEPT);
+  {$ENDIF};
 
   // no error
   libvlc_dynamic_dll_error := '';
-  libvlc_dynamic_dll_path := vlc_install_path;
-  libvlc_dynamic_dll_file := libvlc_get_install_file(vlc_install_path);
+  libvlc_dynamic_dll_path  := vlc_install_path;
+  libvlc_dynamic_dll_file  := libvlc_get_install_file(vlc_install_path);
 
   // remove path separator from end of path
   while ((libvlc_dynamic_dll_path <> '') and (libvlc_dynamic_dll_path[Length(libvlc_dynamic_dll_path)] = PathDelim)) do
@@ -6357,44 +7221,79 @@ begin
     SetLength(libvlc_dynamic_dll_path, Length(libvlc_dynamic_dll_path)-1);
   end;
 
-  // try load library 
-  // before loading libvlc.dll program nust change directry to
+  cdir := GetCurrentDir();
+
+  // try load library
+  // before loading libvlc.dll application must change dir to
   // libvlc_dynamic_dll_path
-  if libvlc_dynamic_dll_file <> '' then
+  if (libvlc_dynamic_dll_path <> '') then
   begin
+    SetCurrentDir(libvlc_dynamic_dll_path);
+    dll_path := libvlc_dynamic_dll_path + PathDelim + libvlc_dynamic_dll_file;
+  end
+  else
+  begin
+    dll_path := libvlc_dynamic_dll_file;
+  end;
+
+  // determine DLL architecture
+  dll_arch := libvlc_dynamic_dll_architecture(dll_path);
+{$IFDEF CPUX64}
+  if (dll_arch = 32) then
+  begin
+    libvlc_dynamic_dll_error := 'Application is 64 bit, but ' + libvlc_dynamic_dll_file + ' library is 32 bit';
     if (libvlc_dynamic_dll_path <> '') then
     begin
-      cdir := GetCurrentDir();
-      SetCurrentDir(libvlc_dynamic_dll_path);
-      {$IFDEF SUPPORTS_UNICODE}
-      libvlc_handle := LoadLibrary(PWideChar(libvlc_dynamic_dll_path + PathDelim + libvlc_dynamic_dll_file));
-      {$ELSE}
-      libvlc_handle := LoadLibrary(PAnsiChar(libvlc_dynamic_dll_path + PathDelim + libvlc_dynamic_dll_file));
-      {$ENDIF}
       SetCurrentDir(cdir);
-    end
-    else
-    begin
-      {$IFDEF SUPPORTS_UNICODE}
-      libvlc_handle := LoadLibrary(PWideChar(libvlc_dynamic_dll_file));
-      {$ELSE}
-      libvlc_handle := LoadLibrary(PAnsiChar(libvlc_dynamic_dll_file));
-      {$ENDIF}
     end;
+    exit;
+  end;
+{$ELSE}
+  if (dll_arch = 64) then
+  begin
+    libvlc_dynamic_dll_error := 'Application is 32 bit, but ' + libvlc_dynamic_dll_file + ' library is 64 bit';
+    if (libvlc_dynamic_dll_path <> '') then
+    begin
+      SetCurrentDir(cdir);
+    end;
+    exit;
+  end;
+{$ENDIF}
+
+// if 64bit application, then we must preload libgcc_s_seh-1.dll
+{$IFDEF MSWINDOWS}
+  {$IFDEF CPUX64}
+    LoadLibrary('libgcc_s_seh-1.dll');
+  {$ENDIF}
+{$ENDIF}
+
+
+{$IFDEF SUPPORTS_UNICODE}
+  libvlc_handle := LoadLibrary(PWideChar(dll_path));
+{$ELSE}
+  libvlc_handle := LoadLibrary(PAnsiChar(dll_path));
+{$ENDIF}
+
+  if (libvlc_dynamic_dll_path <> '') then
+  begin
+    SetCurrentDir(cdir);
   end;
 
   // exit, report error
   if (libvlc_handle = 0) then
   begin
     libvlc_dynamic_dll_error :=
-      'Library not found ' + LIBVLC_DLL_NAME + ', '+
-      {$IFDEF UNIX}
-      'GetLastError() = ' + IntToStr(GetLastOSError())
-      {$ENDIF}
-      {$IFDEF MSWINDOWS}
-      'GetLastError() = ' + IntToStr(GetLastError())
-      {$ENDIF}
-      ;
+      'Library not found ' + LIBVLC_DLL_NAME + ', '
+{$IFDEF UNIX}
+      + 'GetLastError() = ' + IntToStr(GetLastOSError())
+{$ENDIF}
+{$IFDEF MSWINDOWS}
+      + 'GetLastError() = ' + IntToStr(GetLastError())
+{$ENDIF}
+{$IFDEF MACOS}
+      + 'GetLastError() = ' + IntToStr(GetLastError())
+{$ENDIF}
+      + '';
     exit;
   end;
   
@@ -6406,7 +7305,7 @@ begin
     'libvlc_get_version') then exit;
 
   vp := libvlc_get_version();
-  libvlc_dynamic_dll_version := (vp);
+  libvlc_dynamic_dll_version := {$IFDEF DELPHI_XE2_UP}UTF8ToWideString{$ELSE}UTF8Decode{$ENDIF}(vp);
 
   va := read_dec_number(vp) and $ff;
   vb := read_dec_number(vp) and $ff;
@@ -6416,11 +7315,11 @@ begin
 
   (****************************************************************************)
 
-  if (libvlc_dynamic_dll_version_bin < $010100) then
+  if (libvlc_dynamic_dll_version_bin < $010000) then
   begin
     libvlc_dynamic_dll_error :=
       'Current libvlc version: ' + IntToStr(va) + '.' + IntToStr(vb) + '.' + IntToStr(vc) +
-      ', minimum supported version is 1.1.0';
+      ', minimum supported version is 1.0.0';
     exit;
   end;
   
@@ -6660,15 +7559,13 @@ begin
   if not libvlc_dll_get_proc_addr(@libvlc_get_fullscreen,
     'libvlc_get_fullscreen') then exit;
 
-  {$IFDEF USE_VLC_DEPRECATED_API}
+{$IFDEF USE_VLC_DEPRECATED_API}
   if not libvlc_dll_get_proc_addr(@libvlc_video_get_height,
     'libvlc_video_get_height') then exit;
-  {$ENDIF}
 
-  {$IFDEF USE_VLC_DEPRECATED_API}
   if not libvlc_dll_get_proc_addr(@libvlc_video_get_width,
     'libvlc_video_get_width') then exit;
-  {$ENDIF}
+{$ENDIF}
 
   if not libvlc_dll_get_proc_addr(@libvlc_video_get_scale,
     'libvlc_video_get_scale') then exit;
@@ -6742,6 +7639,7 @@ begin
   if not libvlc_dll_get_proc_addr(@libvlc_audio_output_set,
     'libvlc_audio_output_set') then exit;
 
+{$IFDEF USE_VLC_DEPRECATED_API}
   if not libvlc_dll_get_proc_addr(@libvlc_audio_output_device_count,
     'libvlc_audio_output_device_count') then exit;
 
@@ -6750,6 +7648,7 @@ begin
 
   if not libvlc_dll_get_proc_addr(@libvlc_audio_output_device_id,
     'libvlc_audio_output_device_id') then exit;
+{$ENDIF}
 
   if not libvlc_dll_get_proc_addr(@libvlc_audio_output_device_set,
     'libvlc_audio_output_device_set') then exit;
@@ -6802,10 +7701,10 @@ begin
   if not libvlc_dll_get_proc_addr(@libvlc_media_list_retain,
     'libvlc_media_list_retain') then exit;
 
-  {$IFDEF USE_VLC_DEPRECATED_API}
+{$IFDEF USE_VLC_DEPRECATED_API}
   if not libvlc_dll_get_proc_addr(@libvlc_media_list_add_file_content,
     'libvlc_media_list_add_file_content') then exit;
-  {$ENDIF}
+{$ENDIF}
 
   if not libvlc_dll_get_proc_addr(@libvlc_media_list_set_media,
     'libvlc_media_list_set_media') then exit;
@@ -6926,7 +7825,7 @@ begin
 
   if not libvlc_dll_get_proc_addr(@libvlc_vlm_set_enabled,
     'libvlc_vlm_set_enabled') then exit;
-	
+
   if not libvlc_dll_get_proc_addr(@libvlc_vlm_set_output,
     'libvlc_vlm_set_output') then exit;
 
@@ -6972,19 +7871,19 @@ begin
   if not libvlc_dll_get_proc_addr(@libvlc_vlm_get_media_instance_rate,
     'libvlc_vlm_get_media_instance_rate') then exit;
 
-  {$IFDEF IS_0_GT_1}
+{$IFDEF IS_0_GT_1}
    if not libvlc_dll_get_proc_addr(@libvlc_vlm_get_media_instance_title,
      'libvlc_vlm_get_media_instance_title') then exit;
    if not libvlc_dll_get_proc_addr(@libvlc_vlm_get_media_instance_chapter,
      'libvlc_vlm_get_media_instance_chapter') then exit;
    if not libvlc_dll_get_proc_addr(@libvlc_vlm_get_media_instance_seekable,
      'libvlc_vlm_get_media_instance_seekable') then exit;
-  {$ENDIF}
+{$ENDIF}
 
-  {$IFDEF USE_VLC_DEPRECATED_API}
+{$IFDEF USE_VLC_DEPRECATED_API}
   if not libvlc_dll_get_proc_addr(@libvlc_playlist_play,
     'libvlc_playlist_play') then exit;
-  {$ENDIF}
+{$ENDIF}
 
   (****************************************************************************)
   if (libvlc_dynamic_dll_version_bin < $010100) then exit;
@@ -7174,10 +8073,6 @@ begin
     'libvlc_track_description_list_release') then exit;
 
   (****************************************************************************)
-  if (libvlc_dynamic_dll_version_bin < $020003) then exit;
-  (****************************************************************************)
-
-  (****************************************************************************)
   if (libvlc_dynamic_dll_version_bin < $020100) then exit;
   (****************************************************************************)
 
@@ -7213,7 +8108,58 @@ begin
 
   if not libvlc_dll_get_proc_addr(@libvlc_log_set_file,
     'libvlc_log_set_file') then exit;
+
+  (****************************************************************************)
+  if (libvlc_dynamic_dll_version_bin < $020200) then exit;
+  (****************************************************************************)
+
+  if not libvlc_dll_get_proc_addr(@libvlc_media_player_program_scrambled,
+    'libvlc_media_player_program_scrambled') then exit;
+
+  if not libvlc_dll_get_proc_addr(@libvlc_audio_output_device_enum,
+    'libvlc_audio_output_device_enum') then exit;
+
+  if not libvlc_dll_get_proc_addr(@libvlc_audio_equalizer_get_preset_count,
+    'libvlc_audio_equalizer_get_preset_count') then exit;
+
+  if not libvlc_dll_get_proc_addr(@libvlc_audio_equalizer_get_preset_name,
+    'libvlc_audio_equalizer_get_preset_name') then exit;
+
+  if not libvlc_dll_get_proc_addr(@libvlc_audio_equalizer_get_band_count,
+    'libvlc_audio_equalizer_get_band_count') then exit;
+
+  if not libvlc_dll_get_proc_addr(@libvlc_audio_equalizer_get_band_frequency,
+    'libvlc_audio_equalizer_get_band_frequency') then exit;
+
+  if not libvlc_dll_get_proc_addr(@libvlc_audio_equalizer_new,
+    'libvlc_audio_equalizer_new') then exit;
+
+  if not libvlc_dll_get_proc_addr(@libvlc_audio_equalizer_new_from_preset,
+    'libvlc_audio_equalizer_new_from_preset') then exit;
+
+  if not libvlc_dll_get_proc_addr(@libvlc_audio_equalizer_release,
+    'libvlc_audio_equalizer_release') then exit;
+
+  if not libvlc_dll_get_proc_addr(@libvlc_audio_equalizer_set_preamp,
+    'libvlc_audio_equalizer_set_preamp') then exit;
+
+  if not libvlc_dll_get_proc_addr(@libvlc_audio_equalizer_get_preamp,
+    'libvlc_audio_equalizer_get_preamp') then exit;
+
+  if not libvlc_dll_get_proc_addr(@libvlc_audio_equalizer_set_amp_at_index,
+    'libvlc_audio_equalizer_set_amp_at_index') then exit;
+
+  if not libvlc_dll_get_proc_addr(@libvlc_audio_equalizer_get_amp_at_index,
+    'libvlc_audio_equalizer_get_amp_at_index') then exit;
+
+  if not libvlc_dll_get_proc_addr(@libvlc_media_player_set_equalizer,
+    'libvlc_media_player_set_equalizer') then exit;
+
+  (****************************************************************************)
+  if (libvlc_dynamic_dll_version_bin < $030000) then exit;
+  (****************************************************************************)
 end;
+{$WARNINGS ON}
 
 procedure libvlc_dynamic_dll_init();
 begin
@@ -7223,30 +8169,27 @@ end;
 
 procedure libvlc_dynamic_dll_done();
 begin
-  {$IFDEF UNIX}
   if (libvlc_handle <> 0) then
   begin
-    if UnloadLibrary(libvlc_handle) then
-    begin
-      libvlc_handle := 0;
-    end;
-  end;
-  {$ENDIF}
-  {$IFDEF MSWINDOWS}
-  if (libvlc_handle <> 0) then
-  begin
+    {$IFDEF MSWINDOWS}
     if FreeLibrary(libvlc_handle) then
+    {$ENDIF}
+    {$IFDEF MACOS}
+    if FreeLibrary(libvlc_handle) then
+    {$ENDIF}
+    {$IFDEF UNIX}
+    if UnloadLibrary(libvlc_handle) then
+    {$ENDIF}
     begin
       libvlc_handle := 0;
     end;
   end;
-  {$ENDIF}
   
   libvlc_reset_function_pointers();
 end;
 
 (******************************************************************************)
-(* GDK_WINDOW_HWND is not defined in GDK2 for WIN32                           *)
+(* GDK_WINDOW_HWND is not defined in GDK2 for WIN32
 (******************************************************************************)
 
 {$IFDEF MSWINDOWS}
@@ -7284,7 +8227,7 @@ type
 
 function gdk_win32_drawable_get_handle(d : PGdkDrawable) : THandle; cdecl; external 'libgdk-win32-2.0-0.dll';
 
-function GDK_WINDOW_HWND(window: Pointer) : THandle;
+function GDK_WINDOW_HWND(window : Pointer) : THandle;
 begin
   Result := 0;
   if (window <> NIL) then
@@ -7298,52 +8241,232 @@ end;
 
 // http://www.videolan.org/developers/vlc/doc/doxygen/html/group__libvlc.html
 
+{$IFDEF MACOS}
+procedure libvlc_media_player_set_display_window(
+  p_mi : libvlc_media_player_t_ptr;
+  window_handle : Pointer);
+{$ELSE}
 procedure libvlc_media_player_set_display_window(
   p_mi : libvlc_media_player_t_ptr;
   window_handle : THandle);
+{$ENDIF}
 begin
-  {$IFDEF DARWIN}
-    {$IFDEF LCLCARBON}
-      // libvlc_media_player_set_nsobject(p_mi, TCarbonWidget(window_handle).Widget); // Carbon ???
-      // NSView *video = [[NSView alloc] init]; QMacCocoaViewContainer *container = new QMacCocoaViewContainer(video, parent); libvlc_media_player_set_nsobject(mp, video);
-      // uses
-      //   CocoaAll;
-      //  {$mode objfpc}{$H+}
-      //  {$modeswitch objectivec1}
-      // uses
-      //   FPCMacOSAll, AppKit, Foundation;
-      // svn co http://svn.freepascal.org/svn/lazarus/trunk/lcl/interfaces/carbon/objc objc
-      // svn co http://svn.freepascal.org/svn/lazarus/trunk/lcl/interfaces/carbon/pascocoa pascocoa
-      // http://wiki.freepascal.org/PasCocoa
+  {$IFDEF FPC}
+    {$IFDEF MSWINDOWS}
+      {$IFDEF LCLGTK2}
+        libvlc_media_player_set_hwnd(p_mi, GDK_WINDOW_HWND(PGtkWidget(window_handle)^.window));
+        exit;
+      {$ENDIF}
+
+      {$IFDEF LCLQT}
+        libvlc_media_player_set_hwnd(p_mi, QWidget_winid(TQtWidget(window_handle).Widget));
+        exit;
+      {$ENDIF}
+
+      libvlc_media_player_set_hwnd(p_mi, window_handle); // LCL WIN32
+      exit;
     {$ENDIF}
-  {$ELSE}
+
+    {$IFDEF DARWIN}
+      {$IFDEF LCLCARBON}
+        // libvlc_media_player_set_nsobject(p_mi, TCarbonWidget(window_handle).Widget); // Carbon ???
+        // NSView *video = [[NSView alloc] init]; QMacCocoaViewContainer *container = new QMacCocoaViewContainer(video, parent); libvlc_media_player_set_nsobject(mp, video);
+        // uses
+        //   CocoaAll;
+        //  {$mode objfpc}{$H+}
+        //  {$modeswitch objectivec1}
+        // uses
+        //   FPCMacOSAll, AppKit, Foundation;
+        // svn co http://svn.freepascal.org/svn/lazarus/trunk/lcl/interfaces/carbon/objc objc
+        // svn co http://svn.freepascal.org/svn/lazarus/trunk/lcl/interfaces/carbon/pascocoa pascocoa
+        // http://wiki.freepascal.org/PasCocoa
+        exit;
+      {$ENDIF}
+      exit;
+    {$ENDIF}
 
     {$IFDEF UNIX}
       {$IFDEF LCLGTK2}
         libvlc_media_player_set_xwindow(p_mi, GDK_WINDOW_XID(PGtkWidget(window_handle)^.window));
-      {$ELSE}
-        {$IFDEF LCLQT}
-          libvlc_media_player_set_xwindow(p_mi, QWidget_winid(TQtWidget(window_handle).Widget));
-        {$ELSE}
-          libvlc_media_player_set_xwindow(p_mi, window_handle); // NOT GTK2 AND NOT QT
-        {$ENDIF}
+        exit;
       {$ENDIF}
+      {$IFDEF LCLQT}
+        libvlc_media_player_set_xwindow(p_mi, QWidget_winid(TQtWidget(window_handle).Widget));
+        exit;
+      {$ENDIF}
+      libvlc_media_player_set_xwindow(p_mi, window_handle); // NOT GTK2 AND NOT QT
+      exit;
     {$ENDIF}
+    exit;
+  {$ENDIF}
 
-    {$IFDEF MSWINDOWS}
-      {$IFDEF LCLGTK2}
-        libvlc_media_player_set_hwnd(p_mi, GDK_WINDOW_HWND(PGtkWidget(window_handle)^.window));
-      {$ELSE}
-        {$IFDEF LCLQT}
-          libvlc_media_player_set_hwnd(p_mi, QWidget_winid(TQtWidget(window_handle).Widget));
-        {$ELSE}
-          libvlc_media_player_set_hwnd(p_mi, window_handle); // LCL WIN32
-        {$ENDIF}
-      {$ENDIF}
-    {$ENDIF}
-    
+  // DELPHI
+
+  {$IFDEF MSWINDOWS}
+    libvlc_media_player_set_hwnd(p_mi, window_handle); // LCL WIN32
+    exit;
+  {$ENDIF}
+
+  {$IFDEF MACOS}
+    libvlc_media_player_set_nsobject(p_mi, window_handle);
+    exit;
+  {$ENDIF}
+
+  {$IFDEF ANDROID}
+    exit;
   {$ENDIF}
 end;
+
+// http://www.videolan.org/doc/streaming-howto/en/ch03.html
+// :sout=#duplicate{dst=display,dst=std{access=file,mux=avi,dst=test.avi}}
+// :sout=#duplicate{dst=display,dst='transcode{vcodec=xvid,vb=1800,scale=1,fps=25,acodec=vorb,ab=352,channels=2,samplerate=44100}:std{access=file,mux=avi,dst="test.avi"}'}
+// :sout=#duplicate{dst=display,dst='transcode{vcodec=h264,vb=2048,scale=1,fps=25,acodec=mp3,ab=128,channels=2,samplerate=44100,venc=x264{keyint=15,bframes=0}}:std{access=file,mux=mp4,dst="test.mp4"}'}
+
+// #transcode{sfilter=logo{file="C:\Users\Name\Desktop\logo.png",position=10,transparency=150},vcodec=h264,venc=x264{bpyramid=none,weightp=0},vb=700,acodec=mp3,ab=96,channels=2}:std{access=http,mux=asf,dst=127.0.0.1:8090}
+// #transcode{sfilter=logo{file="C:\Users\Name\Desktop\logo.png",position=10,transparency=150},vcodec=h264,vb=1200,scale=1,acodec=mpga,ab=128,channels=2,samplerate=44100}:http{mux=ts,dst=:8090/}
+// #transcode{vcodec=h264,vb=1200,scale=1,acodec=mpga,ab=128,channels=2,samplerate=44100,sfilter={marq{marquee="MARQUEE",x=10,y=10}:logo{file="C:\_Lib\Vlc\logo1.png",position=10}}}:http{mux=ts,dst=:8090/}
+
+{$WARNINGS OFF}
+function libvlc_media_record_str(fileName : WideString; mux : string = 'mp4';
+  vCodec : string = 'h264'; vBitRate : Integer = 2048; vFps : Integer = 25; vScale : Integer = 1;
+  aCodec : string = 'mp3';  aBitRate : Integer = 128; aChannels : Integer = 2; aSampleRate : Integer = 44100;
+  duplicate : Boolean = TRUE) : AnsiString;
+var
+  sdst : string;
+begin
+  sdst := '';
+  if (vCodec    <> '') then sdst := sdst + ',vcodec='     + vCodec;
+  if (vBitRate   >  0) then sdst := sdst + ',vb='         + IntToStr(vBitRate);
+  if (vFps       >  0) then sdst := sdst + ',fps='        + IntToStr(vFps);
+  if (vScale     >  0) then sdst := sdst + ',scale='      + IntToStr(vScale);
+  if (aCodec    <> '') then sdst := sdst + ',acodec='     + aCodec;
+  if (aBitRate   >  0) then sdst := sdst + ',ab='         + IntToStr(aBitRate);
+  if (aChannels  >  0) then sdst := sdst + ',channels='   + IntToStr(aChannels);
+  if (aSampleRate > 0) then sdst := sdst + ',samplerate=' + IntToStr(aSampleRate);
+
+  if (sdst <> '') then
+  begin
+    // if (vCodec = 'h264') then tr := ',venc=x264{keyint=15,bframes=0}' + tr;
+    // remove first ','
+    Delete(sdst, 1, 1);
+    sdst := 'transcode{' + sdst +'}';
+  end;
+
+  if (sdst <> '') then sdst := sdst + ':';
+
+  sdst := sdst + 'std{access=file';
+  if (mux <> '') then sdst := sdst + ',mux=' + mux;
+  sdst := sdst + ',dst="' + fileName + '"}';
+
+  Result := Utf8Encode(':sout=#' + sdst);
+
+  if duplicate then
+  begin
+    Result := Utf8Encode(':sout=#duplicate{dst=display,dst=' + Chr(39) + sdst + Chr(39) + '}')
+  end;
+end;
+{$WARNINGS ON}
+
+// =============================================================================
+
+constructor TArgcArgs.Create(values : array of WideString; ignoreEmptyStrings : Boolean = TRUE; allowDuplicates : Boolean = FALSE);
+begin
+  inherited Create;
+  Clear();
+  AddArg(values, ignoreEmptyStrings, allowDuplicates);
+end;
+
+destructor TArgcArgs.Destroy;
+begin
+  Clear;
+  inherited Destroy;
+end;
+
+procedure TArgcArgs.Clear();
+var
+  aIdx : Integer;
+begin
+  Fargc := 0;
+  for aIdx := 0 to ARGC_ARGV_MAX_SIZE - 1 do
+  begin
+    Fargs[Fargc] := NIL;
+    Fargv[Fargc] := '';
+  end;
+end;
+
+function TArgcArgs.AddArg(value : AnsiString; ignoreEmptyStrings : Boolean = TRUE; allowDuplicates : Boolean = FALSE) : Integer;
+var
+  aIdx : Integer;
+begin
+  if (ignoreEmptyStrings) then
+  begin
+    if (Trim(value) = '') then
+    begin
+      Result := Fargc;
+      exit;
+    end;
+  end;
+  if not allowDuplicates then
+  begin
+    for aIdx := 0 to Fargc - 1 do
+    begin
+      if (Fargv[aIdx] = value) then
+      begin
+        Result := Fargc;
+        exit;
+      end;
+    end;
+  end;
+  if (Fargc < ARGC_ARGV_MAX_SIZE) then
+  begin
+    Fargv[Fargc] := value;
+    Fargs[Fargc] := PAnsiChar(Fargv[argc]);
+    Inc(Fargc);
+  end;
+  Result := Fargc;
+end;
+
+// without this D4 not complie
+// [Error] PasLibVlcUnit.pas(8403): Ambiguous overloaded call to 'AddArg'
+{$IFDEF DELPHI6_UP}
+function TArgcArgs.AddArg(value : WideString; ignoreEmptyStrings : Boolean = TRUE; allowDuplicates : Boolean = FALSE) : Integer;
+begin
+  Result := AddArg(AnsiString(Utf8Encode(value)), ignoreEmptyStrings, allowDuplicates);
+end;
+{$ENDIF}
+
+function TArgcArgs.AddArg(values : array of WideString; ignoreEmptyStrings : Boolean = TRUE; allowDuplicates : Boolean = FALSE) : Integer;
+var
+  aIdx : Integer;
+begin
+  for aIdx := Low(values) to High(values) do
+  begin
+    AddArg(AnsiString(Utf8Encode(values[aIdx])), ignoreEmptyStrings, allowDuplicates);
+  end;
+  Result := Fargc;
+end;
+
+function TArgcArgs.AddArg(values : TStringList; ignoreEmptyStrings : Boolean = TRUE; allowDuplicates : Boolean = FALSE) : Integer;
+var
+  aIdx : Integer;
+begin
+  for aIdx := 0 to values.Count-1 do
+  begin
+    AddArg(values.Strings[aIdx], ignoreEmptyStrings, allowDuplicates);
+  end;
+  Result := Fargc;
+end;
+
+function TArgcArgs.GetArgc() : LongInt;
+begin
+  Result := Fargc;
+end;
+
+function TArgcArgs.GetArgs() : Pointer;
+begin
+  Result := Pointer(@Fargs);
+end;
+
 Function Check_libvlc:boolean;
 var
   cdir: string;
@@ -7371,7 +8494,6 @@ begin
          end;
     end;
 end;
-
 initialization
 
   libvlc_handle := 0;
@@ -7384,5 +8506,10 @@ initialization
   
 finalization
 
-end.
+  // without this code Lazarus heaptrc report memory leaks
+  libvlc_dynamic_dll_path    := '';
+  libvlc_dynamic_dll_file    := '';
+  libvlc_dynamic_dll_version := '';
+  libvlc_dynamic_dll_error   := '';
 
+end.
