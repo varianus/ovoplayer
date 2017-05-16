@@ -25,7 +25,7 @@ unit AudioEngine;
 interface
 
 uses
-  Classes, SysUtils, Song, BaseTypes;
+  Classes, SysUtils, Song, BaseTypes, NullInterfacedObject;
 
 type
 
@@ -40,9 +40,29 @@ type
     Failed :boolean;
   end;
 
-  { TAudioEngine }
+  RBandInfo = record
+    Value : single;
+    Freq: single;
+  end;
+  ARBandinfo = array of RBandInfo;
 
-  TAudioEngine = class
+  { IEqualizer }
+  IEqualizer = interface
+    ['{95CADD9D-8BDD-4527-8660-53537B3052F5}']
+    function getActiveEQ: boolean;
+    function GetBandInfo: ARBandInfo;
+    function GetBandValue(Index: Integer): single;
+    procedure SetActiveEQ(AValue: boolean);
+    procedure SetBandValue(Index: Integer; AValue: single);
+//
+    property BandInfo: ARBandInfo read GetBandInfo;
+    Property ActiveEQ: boolean read getActiveEQ write SetActiveEQ;
+    Property BandValue[Index:Integer]: single read GetBandValue write SetBandValue;
+    Procedure EQApply;
+  end;
+
+  { TAudioEngine }
+  TAudioEngine = class (TNullInterfacedObject)
   private
     FInitialized: boolean;
     FOnSongEnd:   TNotifyEvent;
@@ -70,6 +90,7 @@ type
   public
     class Function GetEngineName: string; virtual; abstract;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; virtual; abstract;
+    Class Function SupportEQ: boolean; virtual;
     Class Function GetEngineParamsCount: Integer; virtual;
     Class Function GetEngineParams: AREngineParams; virtual;
     Class Function GetEngineInfo(IsCurrent:boolean): AREngineParams; virtual;
@@ -217,6 +238,11 @@ end;
 procedure TAudioEngine.SetInitialized(AValue: boolean);
 begin
   FInitialized := AValue;
+end;
+
+class function TAudioEngine.SupportEQ: boolean;
+begin
+  Result := false;
 end;
 
 class function TAudioEngine.GetEngineParamsCount: Integer;

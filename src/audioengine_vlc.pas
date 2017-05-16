@@ -31,14 +31,14 @@ type
 
   { TAudioEngineVLC }
 
-  TAudioEngineVLC = class(TAudioEngine)
+  TAudioEngineVLC = class(TAudioEngine, IEqualizer)
   private
     p_li: libvlc_instance_t_ptr;
     p_mi: libvlc_media_player_t_ptr;
     p_md: libvlc_media_t_ptr;
     p_mi_ev_mgr: libvlc_event_manager_t_ptr;
     fdecoupler: TDecoupler;
-
+    fEqualizer: libvlc_equalizer_t_ptr;
   protected
     function GetMainVolume: integer; override;
     procedure SetMainVolume(const AValue: integer); override;
@@ -53,6 +53,7 @@ type
     class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
     class function GetEngineInfo(IsCurrent: boolean): AREngineParams;  override;
+    Class Function SupportEQ: boolean; override;
 
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
@@ -63,10 +64,17 @@ type
     procedure Pause; override;
     function Playing: boolean; override;
     function Running: boolean; override;
+
     procedure Seek(Seconds: integer; SeekAbsolute: boolean); override;
     procedure Stop; override;
     procedure UnPause; override;
-
+// equalizer
+   function GetBandInfo: ARBandInfo;
+   function getActiveEQ: boolean;
+   function GetBandValue(Index: Integer): single;
+   procedure SetActiveEQ(AValue: boolean);
+   procedure SetBandValue(Index: Integer; AValue: single);
+   Procedure EQApply;
   end;
 
 
@@ -156,6 +164,7 @@ begin
   p_mi_ev_mgr := libvlc_media_player_event_manager(p_mi);
   libvlc_event_attach(p_mi_ev_mgr, libvlc_MediaPlayerEndReached, @lib_vlc_player_event_hdlr, SELF);
 
+  fEqualizer:= nil;
 
   Initialized:= result;
   fdecoupler := TDecoupler.Create;
@@ -359,6 +368,11 @@ begin
   ;
 end;
 
+class function TAudioEngineVLC.SupportEQ: boolean;
+begin
+  Result:= true;
+end;
+
 procedure TAudioEngineVLC.Seek(Seconds: integer; SeekAbsolute: boolean);
 var
   currpos: integer;
@@ -385,6 +399,64 @@ begin
     begin
       libvlc_media_player_set_pause(p_mi, 0);
     end;
+end;
+
+function TAudioEngineVLC.GetBandInfo: ARBandInfo;
+var
+  i, bCount: unsigned_t;
+
+begin
+  bCount := libvlc_audio_equalizer_get_band_count();
+  SetLength(Result, bCount);
+  for i := 0 to bCount -1 do
+    begin
+      Result[i].Value:= libvlc_audio_equalizer_get_amp_at_index(fEqualizer, i);
+      Result[i].Freq:= libvlc_audio_equalizer_get_band_frequency( i);
+    end;
+
+
+end;
+
+function TAudioEngineVLC.getActiveEQ: boolean;
+begin
+  Result := fEqualizer =nil;
+end;
+
+procedure TAudioEngineVLC.SetActiveEQ(AValue: boolean);
+begin
+  if AValue then
+   begin
+     if not Assigned(fEqualizer) then
+       fEqualizer:=libvlc_audio_equalizer_new_from_preset(0);
+   end
+  else
+   begin
+     libvlc_audio_equalizer_release(fEqualizer);
+     fEqualizer:=nil;
+   end;
+
+  libvlc_media_player_set_equalizer(p_mi, fEqualizer);
+
+end;
+
+function TAudioEngineVLC.GetBandValue(Index: Integer): single;
+begin
+  if Assigned(fEqualizer) then
+    Result := libvlc_audio_equalizer_get_amp_at_index(fEqualizer, Index)
+  else
+    Result:=0;
+end;
+
+procedure TAudioEngineVLC.SetBandValue(Index: Integer; AValue: single);
+begin
+  if Assigned(fEqualizer) then
+    libvlc_audio_equalizer_set_amp_at_index(fEqualizer, AValue, Index);
+
+end;
+
+procedure TAudioEngineVLC.EQApply;
+begin
+  libvlc_media_player_set_equalizer(p_mi, fEqualizer);
 end;
 
 initialization
