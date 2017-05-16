@@ -2,18 +2,19 @@ object fEqualizer: TfEqualizer
   Left = 0
   Height = 317
   Top = 0
-  Width = 1094
+  Width = 758
   ActiveControl = ButtonPanel1.CloseButton
   Caption = 'Equalizer'
   ClientHeight = 317
-  ClientWidth = 1094
+  ClientWidth = 758
+  OnClose = FormClose
   OnCreate = FormCreate
   Visible = False
   object ButtonPanel1: TButtonPanel
     Left = 6
     Height = 34
     Top = 277
-    Width = 1082
+    Width = 746
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
     HelpButton.Name = 'HelpButton'
@@ -29,15 +30,34 @@ object fEqualizer: TfEqualizer
     Left = 0
     Height = 50
     Top = 0
-    Width = 1094
+    Width = 758
     Align = alTop
+    ClientHeight = 50
+    ClientWidth = 758
     TabOrder = 1
+    object cbEnableEq: TCheckBox
+      Left = 8
+      Height = 19
+      Top = 16
+      Width = 105
+      Caption = 'Enable equalizer'
+      OnClick = cbEnableEqClick
+      TabOrder = 0
+    end
+    object lbMessage: TLabel
+      Left = 128
+      Height = 15
+      Top = 16
+      Width = 616
+      AutoSize = False
+      ParentColor = False
+    end
   end
   object pnlContainer: TPanel
     Left = 0
     Height = 221
     Top = 50
-    Width = 1094
+    Width = 758
     Align = alClient
     TabOrder = 2
   end
