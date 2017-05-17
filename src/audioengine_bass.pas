@@ -31,8 +31,15 @@ uses
 type
 
   { TAudioEngineBASS }
+  RBassBandInfo = record
+    Handle: HFX;
+    Value : single;
+    Freq: single;
+  end;
+  ARBassBandinfo = array of RBassBandInfo;
 
-  TAudioEngineBASS = class(TAudioEngine)
+
+  TAudioEngineBASS = class(TAudioEngine, IEqualizer)
   private
     Plugins:      array[0..9] of HPLUGIN;
     BassInfoParam: BASS_INFO;
@@ -40,6 +47,8 @@ type
     fSavedVolume: integer;
     fMuted: boolean;
     fdecoupler: TDecoupler;
+    fActiveEQ : boolean;
+    fBandInfo: ARBassBandinfo;
     procedure LoadPlugin(FileName: string; Index: integer; Flags: integer);
   protected
     function GetMainVolume: integer; override;
@@ -67,6 +76,13 @@ type
     procedure Seek(Seconds: integer; SeekAbsolute: boolean); override;
     procedure Stop; override;
     procedure UnPause; override;
+    // equalizer
+    function GetBandInfo: ARBandInfo;
+    function getActiveEQ: boolean;
+    function GetBandValue(Index: Integer): single;
+    procedure SetActiveEQ(AValue: boolean);
+    procedure SetBandValue(Index: Integer; AValue: single);
+    Procedure EQApply;
 
   end;
 
@@ -184,6 +200,21 @@ begin
   LoadPlugin('libbass_aac.so', 2, 0);
   LoadPlugin('libbass_ape.so', 3, 0);
   {$ENDIF LINUX}
+
+  SetLength(fBandInfo, 10);
+
+  fBandInfo[0].Freq := 31;
+  fBandInfo[1].Freq := 62;
+  fBandInfo[2].Freq := 125;
+  fBandInfo[3].Freq := 250;
+  fBandInfo[4].Freq := 500;
+  fBandInfo[5].Freq := 1000;
+  fBandInfo[6].Freq := 2000;
+  fBandInfo[7].Freq := 4000;
+  fBandInfo[8].Freq := 10000;
+  fBandInfo[9].Freq := 14000;
+  for i := 0 to 9 do
+    fBandInfo[i].Value := 0;
 
   fdecoupler := TDecoupler.Create;
   fdecoupler.OnCommand := ReceivedCommand;
@@ -377,6 +408,73 @@ end;
 procedure TAudioEngineBASS.UnPause;
 begin
   BASS_ChannelPlay(Channel, False);
+
+end;
+
+function TAudioEngineBASS.GetBandInfo: ARBandInfo;
+var
+  i: integer;
+begin
+  SetLength(Result, 10);
+  for i := 0 to 10 -1 do
+    begin
+      Result[i].Freq := fBandInfo[i].Freq;
+      Result[i].Value := fBandInfo[i].Value;
+    end;
+
+end;
+
+function TAudioEngineBASS.getActiveEQ: boolean;
+begin
+  Result := fActiveEQ;
+end;
+
+procedure TAudioEngineBASS.SetActiveEQ(AValue: boolean);
+var
+  EqP: BASS_DX8_PARAMEQ;
+  i: integer;
+begin
+   if AValue and not fActiveEQ then
+       for i := 0 to 9 do
+         begin
+           fBandInfo[i].Handle := BASS_ChannelSetFX(Channel, BASS_FX_DX8_PARAMEQ, 0);
+           BASS_FXGetParameters(fBandInfo[i].Handle, @EqP);
+           EqP.fGain      := fBandInfo[i].Value;
+           EqP.fBandwidth := 12;
+           EqP.fCenter    := fBandInfo[i].Freq;
+           BASS_FXSetParameters(fBandInfo[i].Handle, @EqP);
+        end;
+
+   if not AValue and fActiveEQ then
+     for i := 0 to 9 do
+       begin
+         BASS_ChannelRemoveFX(Channel, fBandInfo[i].Handle);
+         fBandInfo[i].Handle := 0;
+       end;
+
+end;
+
+function TAudioEngineBASS.GetBandValue(Index: Integer): single;
+begin
+  Result := fBandInfo[Index].Value;
+end;
+
+procedure TAudioEngineBASS.SetBandValue(Index: Integer; AValue: single);
+begin
+  fBandInfo[Index].Value:= AValue;
+end;
+
+procedure TAudioEngineBASS.EQApply;
+var
+  EqP: BASS_DX8_PARAMEQ;
+  i:   integer;
+begin
+  for i := 0 to 9 do
+    begin
+      BASS_FXGetParameters(fBandInfo[i].Handle, @EqP);
+      EqP.fGain := fBandInfo[i].Value;
+      BASS_FXSetParameters(fBandInfo[i].Handle, @EqP);
+    end;
 
 end;
 
