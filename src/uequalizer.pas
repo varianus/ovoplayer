@@ -63,7 +63,7 @@ begin
   EQBandList:= TEQBandList.Create(false);
 
   pnlContainer.DisableAlign;
-  for i := 1 to length(BandInfo) -1 do
+  for i := 1 to length(BandInfo) do
   begin
     EQBand:= TfrEqualizer.Create(pnlContainer);
     EQBandList.Add(EQBand);
