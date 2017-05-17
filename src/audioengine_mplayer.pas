@@ -31,7 +31,7 @@ type
 
   { TAudioEngineMPlayer }
 
-  TAudioEngineMPlayer = class(TAudioEngine)
+  TAudioEngineMPlayer = class(TAudioEngine, IEqualizer)
   private
     fMainVolume: integer;
     FPaused: boolean;
@@ -43,6 +43,7 @@ type
     fMuted: boolean;
     ExePath: string;
     Params:  string;
+    fBandInfo: ARBandinfo;
     procedure RunAndPlay(Filename: String);
     procedure SetPaused(const AValue: boolean);
     procedure SendMPlayerCommand(Cmd: string);
@@ -75,6 +76,13 @@ type
     procedure Seek(Seconds: integer; SeekAbsolute: boolean); override;
     procedure Stop; override;
     procedure UnPause; override;
+    // equalizer
+    function GetBandInfo: ARBandInfo;
+    function getActiveEQ: boolean;
+    function GetBandValue(Index: Integer): single;
+    procedure SetActiveEQ(AValue: boolean);
+    procedure SetBandValue(Index: Integer; AValue: single);
+    Procedure EQApply;
 
   end;
 
@@ -266,6 +274,8 @@ begin
 end;
 
 function TAudioEngineMPlayer.Initialize: boolean;
+var
+  i: integer;
 begin
   ExePath := fProgramPath;
   if not FilenameIsAbsolute(ExePath) then
@@ -273,6 +283,20 @@ begin
   Result := FileExists(ExePath);
   Initialized := result;
 
+  SetLength(fBandInfo, 10);
+
+  fBandInfo[0].Freq := 31;
+  fBandInfo[1].Freq := 62;
+  fBandInfo[2].Freq := 125;
+  fBandInfo[3].Freq := 250;
+  fBandInfo[4].Freq := 500;
+  fBandInfo[5].Freq := 1000;
+  fBandInfo[6].Freq := 2000;
+  fBandInfo[7].Freq := 4000;
+  fBandInfo[8].Freq := 8000;
+  fBandInfo[9].Freq := 16000;
+  for i := 0 to 9 do
+    fBandInfo[i].Value := 0;
 end;
 
 procedure TAudioEngineMPlayer.RunAndPlay(Filename:String);
@@ -299,6 +323,7 @@ begin
   fPlayerProcess.Parameters.add('-volume');  fPlayerProcess.Parameters.add(IntToStr(Self.MainVolume));
   fPlayerProcess.Parameters.add('-softvol');
   fPlayerProcess.Parameters.add('-softvol-max');  fPlayerProcess.Parameters.add('255');
+  fPlayerProcess.Parameters.add('-af');  fPlayerProcess.Parameters.add('equalizer');
   fPlayerProcess.Parameters.add('-nofontconfig');
   fPlayerProcess.Parameters.add(Filename);
   // -nofontconfig '; //  -priority abovenormal -really-quiet -identify
@@ -412,6 +437,53 @@ end;
 procedure TAudioEngineMPlayer.UnPause;
 begin
   SetPaused(False);
+end;
+
+function TAudioEngineMPlayer.GetBandInfo: ARBandInfo;
+var
+  i: integer;
+begin
+  SetLength(Result, 10);
+  for i := 0 to 10 -1 do
+    begin
+      Result[i].Freq := fBandInfo[i].Freq;
+      Result[i].Value := fBandInfo[i].Value;
+    end;
+
+end;
+
+function TAudioEngineMPlayer.getActiveEQ: boolean;
+begin
+
+end;
+
+function TAudioEngineMPlayer.GetBandValue(Index: Integer): single;
+begin
+  Result := fBandInfo[Index].Value;
+end;
+
+procedure TAudioEngineMPlayer.SetActiveEQ(AValue: boolean);
+begin
+
+end;
+
+procedure TAudioEngineMPlayer.SetBandValue(Index: Integer; AValue: single);
+begin
+  fBandInfo[Index].Value:= AValue;
+end;
+
+procedure TAudioEngineMPlayer.EQApply;
+var
+  tmp: string;
+  i: integer;
+begin
+  tmp:='';
+  for i := 0 to 9 do
+    tmp:=tmp+ ':'+Format('%2.0f',[fBandInfo[i].Value]);
+  Delete(tmp,1,1);
+
+  SendMPlayerCommand('af_eq_set_bands ' +tmp);
+
 end;
 
 function TAudioEngineMPlayer.Running: boolean;
