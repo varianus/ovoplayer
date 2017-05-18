@@ -451,7 +451,7 @@ begin
          BASS_ChannelRemoveFX(Channel, fBandInfo[i].Handle);
          fBandInfo[i].Handle := 0;
        end;
-
+   fActiveEq:=AValue;
 end;
 
 function TAudioEngineBASS.GetBandValue(Index: Integer): single;

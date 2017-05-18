@@ -43,6 +43,7 @@ type
     fMuted: boolean;
     ExePath: string;
     Params:  string;
+    fActiveEQ: boolean;
     fBandInfo: ARBandinfo;
     procedure RunAndPlay(Filename: String);
     procedure SetPaused(const AValue: boolean);
@@ -454,7 +455,7 @@ end;
 
 function TAudioEngineMPlayer.getActiveEQ: boolean;
 begin
-
+  Result := fActiveEQ;
 end;
 
 function TAudioEngineMPlayer.GetBandValue(Index: Integer): single;
@@ -464,7 +465,7 @@ end;
 
 procedure TAudioEngineMPlayer.SetActiveEQ(AValue: boolean);
 begin
-
+  fActiveEq:=AValue;
 end;
 
 procedure TAudioEngineMPlayer.SetBandValue(Index: Integer; AValue: single);
