@@ -25,18 +25,22 @@ unit audioengine_libmpv;
 interface
 
 uses
-  Classes, SysUtils, BaseTypes, AudioEngine, Song, decoupler, libmpv;
+  Classes, SysUtils, BaseTypes, AudioEngine, Song, decoupler, libmpv, LCLProc;
 
 type
 
   { TAudioEngineLibMPV }
 
-  TAudioEngineLibMPV = class(TAudioEngine)
+  TAudioEngineLibMPV = class(TAudioEngine, IEqualizer)
   private
     fhandle : Pmpv_handle;
     fState : TEngineState;
+    fBandInfo: ARBandinfo;
+    fActiveEq: Boolean;
+    function GetBandStr(Index: Integer): string;
     function GetBoolProperty(const PropertyName: string): boolean;
     procedure SetBoolProperty(const PropertyName: string; AValue: boolean);
+    procedure SetStringProperty(const PropertyName: string; AValue: String);
   protected
     fdecoupler :TDecoupler;
     function GetMainVolume: integer; override;
@@ -64,6 +68,13 @@ type
     procedure Seek(Seconds: integer; SeekAbsolute: boolean); override;
     procedure Stop; override;
     procedure UnPause; override;
+    // equalizer
+    function GetBandInfo: ARBandInfo;
+    function getActiveEQ: boolean;
+    procedure SetActiveEQ(AValue: boolean);
+    function GetBandValue(Index: Integer): single;
+    procedure SetBandValue(Index: Integer; AValue: single);
+    Procedure EQApply;
 
   end;
 
@@ -91,6 +102,7 @@ begin
   if (Data = nil) then
     exit;
   player := TAudioEngineLibMPV(Data);
+
   player.PostCommand(ecCustom, 1);
 end;
 
@@ -167,6 +179,7 @@ function TAudioEngineLibMPV.Initialize: boolean;
 var
    res: integer;
    flg:integer=1;
+   i: integer;
 begin
   fhandle := mpv_create();
   result := assigned(fhandle);
@@ -175,10 +188,29 @@ begin
   res := mpv_set_option(fhandle^,'no-video', MPV_FORMAT_FLAG,@flg);
 
   mpv_initialize(fhandle^);
+
+  mpv_request_log_messages(fhandle^, 'v'); //Verbose Mode
+ // mpv_request_log_messages(fhandle^, 'no');
+
   fdecoupler := TDecoupler.Create;
   fdecoupler.OnCommand := @ReceivedCommand;
   mpv_set_wakeup_callback(fhandle^,@LibMPVEvent, self);
   Initialized := true;
+
+  SetLength(fBandInfo,10);
+  fBandInfo[0].Freq := 31;
+  fBandInfo[1].Freq := 62;
+  fBandInfo[2].Freq := 125;
+  fBandInfo[3].Freq := 250;
+  fBandInfo[4].Freq := 500;
+  fBandInfo[5].Freq := 1000;
+  fBandInfo[6].Freq := 2000;
+  fBandInfo[7].Freq := 4000;
+  fBandInfo[8].Freq := 10000;
+  fBandInfo[9].Freq := 14000;
+  for i := 0 to 9 do
+    fBandInfo[i].Value := 0;
+
 end;
 
 function TAudioEngineLibMPV.GetState: TEngineState;
@@ -229,13 +261,23 @@ end;
 procedure TAudioEngineLibMPV.SetBoolProperty(const PropertyName:string; AValue: boolean);
 var
   res: integer;
-  p:integer;
+  p: Integer;
 begin
-  if AValue then
-    p:= 1
-  else
-    p:=0;
+   if AValue then
+     p:= 1
+   else
+     p:=0;
  res:=mpv_set_property(fhandle^,pchar(PropertyName),MPV_FORMAT_FLAG,@p);
+end;
+
+
+procedure TAudioEngineLibMPV.SetStringProperty(const PropertyName:string; AValue: String);
+var
+  res: integer;
+  p:PChar;
+begin
+  p:=PChar(AValue);
+ res:=mpv_set_property_string(fhandle^,pchar(PropertyName),p);
 end;
 
 function TAudioEngineLibMPV.GetBoolProperty(const PropertyName:string):boolean;
@@ -321,6 +363,11 @@ begin
              fState:= ENGINE_SONG_END;
              ReceivedCommand(self, ecNext, 0);
             end;
+          if (Event^.event_id =  MPV_EVENT_LOG_MESSAGE)then
+            begin
+               writeln(Pmpv_event_log_message(Event^.data)^.text);
+            end;
+
           Event := mpv_wait_event(fhandle^, 0);
         end;
     end
@@ -357,7 +404,7 @@ var
 begin
  setlength(args,2);
  args[0] := 'stop';
- args[3] := nil ;
+ args[1] := nil ;
  res:= mpv_command(fhandle^, ppchar(@args[0])) ;
  fState:= ENGINE_STOP;
 
@@ -372,6 +419,92 @@ begin
       fState := ENGINE_PLAY;
     end;
 end;
+
+function TAudioEngineLibMPV.GetBandInfo: ARBandInfo;
+var
+  i: integer;
+begin
+  SetLength(Result, 10);
+  for i := 0 to 10 -1 do
+    begin
+      Result[i].Freq := fBandInfo[i].Freq;
+      Result[i].Value := fBandInfo[i].Value;
+    end;
+end;
+
+function TAudioEngineLibMPV.getActiveEQ: boolean;
+begin
+  Result := fActiveEq;
+end;
+
+function TAudioEngineLibMPV.GetBandStr(Index:Integer):string;
+begin
+
+ Result:= ' f='+IntToStr(trunc(fBandInfo[Index].Freq))
+        + ' w='+IntToStr(trunc(fBandInfo[Index].Freq))
+        + ' g='+IntToStr(trunc(fBandInfo[Index].Value))
+        + ' t=0';
+
+end;
+
+procedure TAudioEngineLibMPV.SetActiveEQ(AValue: boolean);
+var
+  i: integer;
+  str: string;
+  bandstr: string;
+  res: longint;
+begin
+  bandstr := '';
+  if AValue and not fActiveEQ then
+    begin
+      str :='lavfi=[anequalizer=';
+      for i := 0 to 9 do
+        begin
+          bandstr:= bandstr + '|c'+inttostr(i)+GetBandStr(i);
+        end;
+      Delete(bandstr,1,1)
+    end;
+
+  if not AValue and fActiveEQ then
+    for i := 0 to 9 do
+      begin
+        str :='lavfi=['
+      end;
+
+  str:= str+bandstr+']';
+  SetStringProperty('af', str);
+  fActiveEq:=AValue;
+end;
+
+
+function TAudioEngineLibMPV.GetBandValue(Index: Integer): single;
+begin
+  Result := fBandInfo[Index].Value;
+end;
+
+procedure TAudioEngineLibMPV.SetBandValue(Index: Integer; AValue: single);
+begin
+  fBandInfo[Index].Value:= AValue;
+end;
+
+procedure TAudioEngineLibMPV.EQApply;
+var
+  i: integer;
+  str: string;
+  bandstr: string;
+  res: longint;
+begin
+  str :='lavfi=[anequalizer=';
+  bandstr := '';
+  for i := 0 to 9 do
+    begin
+      bandstr:= bandstr+'c'+inttostr(i)+GetBandStr(i)+'|';
+    end;
+  str:= str+bandstr+']';
+
+  SetStringProperty('af', str);
+end;
+
 
 initialization
   RegisterEngineClass(TAudioEngineLibMPV, 5, false, true);
