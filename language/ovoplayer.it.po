@@ -391,8 +391,8 @@ msgstr "Esci"
 
 #: tbackend.actimportdirectory.caption
 msgctxt "tbackend.actimportdirectory.caption"
-msgid "Import Directory ..."
-msgstr "Importa Directory ..."
+msgid "Import Directory …"
+msgstr "Importa Directory …"
 
 #: tbackend.actmute.caption
 msgctxt "tbackend.actmute.caption"
@@ -431,8 +431,8 @@ msgstr "Riproduci"
 
 #: tbackend.actplaylistaddfiles.caption
 msgctxt "TBACKEND.ACTPLAYLISTADDFILES.CAPTION"
-msgid "Add Files ..."
-msgstr "Aggiungi files ..."
+msgid "Add Files …"
+msgstr "Aggiungi files …"
 
 #: tbackend.actplaylistclear.caption
 msgctxt "tbackend.actplaylistclear.caption"
@@ -441,8 +441,8 @@ msgstr "Pulisci"
 
 #: tbackend.actplaylistload.caption
 msgctxt "tbackend.actplaylistload.caption"
-msgid "Load Playlist ..."
-msgstr "Carica Scaletta ..."
+msgid "Load Playlist …"
+msgstr "Carica Scaletta …"
 
 #: tbackend.actplaylistload.hint
 msgctxt "tbackend.actplaylistload.hint"
@@ -451,8 +451,8 @@ msgstr "Carica una scaletta"
 
 #: tbackend.actplaylistsave.caption
 msgctxt "tbackend.actplaylistsave.caption"
-msgid "Save PlayList ..."
-msgstr "Salva Scaletta ..."
+msgid "Save PlayList …"
+msgstr "Salva Scaletta …"
 
 #: tbackend.actplaylistsave.hint
 msgctxt "tbackend.actplaylistsave.hint"
@@ -550,8 +550,8 @@ msgstr "Scansione Rapida"
 
 #: tdm.actimportdirectory.caption
 msgctxt "tdm.actimportdirectory.caption"
-msgid "Import Directory ..."
-msgstr "Importa Directory ..."
+msgid "Import Directory …"
+msgstr "Importa Directory …"
 
 #: tdm.actmute.caption
 msgctxt "tdm.actmute.caption"
@@ -590,8 +590,8 @@ msgstr "Riproduci"
 
 #: tdm.actplaylistaddfiles.caption
 msgctxt "tdm.actplaylistaddfiles.caption"
-msgid "Add Files ..."
-msgstr "Aggiungi files ..."
+msgid "Add Files …"
+msgstr "Aggiungi files …"
 
 #: tdm.actplaylistclear.caption
 msgctxt "tdm.actplaylistclear.caption"
@@ -600,8 +600,8 @@ msgstr "Pulisci"
 
 #: tdm.actplaylistload.caption
 msgctxt "tdm.actplaylistload.caption"
-msgid "Open Playlist ..."
-msgstr "Apri Scaletta ..."
+msgid "Open Playlist …"
+msgstr "Apri Scaletta …"
 
 #: tdm.actplaylistload.hint
 msgctxt "tdm.actplaylistload.hint"
@@ -610,8 +610,8 @@ msgstr "Carica una scaletta"
 
 #: tdm.actplaylistsave.caption
 msgctxt "tdm.actplaylistsave.caption"
-msgid "Save PlayList ..."
-msgstr "Salva Scaletta ..."
+msgid "Save PlayList …"
+msgstr "Salva Scaletta …"
 
 #: tdm.actplaylistsave.hint
 msgctxt "tdm.actplaylistsave.hint"
@@ -735,8 +735,8 @@ msgid "Version"
 msgstr "Versione"
 
 #: tfconfig.badddir.caption
-msgid "Add ..."
-msgstr "Aggiungi ..."
+msgid "Add …"
+msgstr "Aggiungi …"
 
 #: tfconfig.bremovedir.caption
 msgid "Remove"
@@ -871,8 +871,8 @@ msgid "Fit To Screen"
 msgstr "Adatta allo schermo"
 
 #: tfcover.btnsaveas.hint
-msgid "Save as..."
-msgstr "Salva come..."
+msgid "Save as…"
+msgstr "Salva come…"
 
 #: tfcover.btnzoomin.hint
 msgctxt "tfcover.btnzoomin.hint"
@@ -905,6 +905,10 @@ msgstr "Nome"
 msgid "Sort by"
 msgstr "Ordine per"
 
+#: tfequalizer.cbenableeq.caption
+msgid "Enable equalizer"
+msgstr ""
+
 #: tflicense.caption
 msgid "License"
 msgstr "Licenza"
@@ -913,6 +917,10 @@ msgstr "Licenza"
 msgctxt "TFMAINFORM.ACTSHOWABOUT.CAPTION"
 msgid "About"
 msgstr "Informazioni su"
+
+#: tfmainform.actshowequalizer.caption
+msgid "Equalizer …"
+msgstr ""
 
 #: tfmainform.actshowleft.caption
 msgid "Show Left Panel"
@@ -925,8 +933,8 @@ msgstr "Informazione media"
 
 #: tfmainform.actshowpreferences.caption
 msgctxt "tfmainform.actshowpreferences.caption"
-msgid "Preferences ..."
-msgstr "Preferenze ..."
+msgid "Preferences …"
+msgstr "Preferenze …"
 
 #: tfmainform.actshowpreferencesengine.caption
 msgctxt "tfmainform.actshowpreferencesengine.caption"
@@ -939,8 +947,8 @@ msgstr "Aspetto"
 
 #: tfmainform.actshowpreferencesmedialibrary.caption
 msgctxt "tfmainform.actshowpreferencesmedialibrary.caption"
-msgid "Collection Preferences ..."
-msgstr "Preferenze Collezione ..."
+msgid "Collection Preferences …"
+msgstr "Preferenze Collezione …"
 
 #: tfmainform.album.caption
 msgctxt "TFMAINFORM.ALBUM.CAPTION"
@@ -1098,8 +1106,8 @@ msgid "Delete"
 msgstr "Cancella"
 
 #: tfmainform.mnueditplaylist.caption
-msgid "Edit ..."
-msgstr "Modifica ..."
+msgid "Edit …"
+msgstr "Modifica …"
 
 #: tfmainform.mnuenqueueitems.caption
 msgctxt "tfmainform.mnuenqueueitems.caption"
@@ -1260,6 +1268,14 @@ msgstr "Titolo"
 #: tfosd.track.caption
 msgid "0"
 msgstr "0"
+
+#: tfrequalizer.lbband.caption
+msgid "Band"
+msgstr ""
+
+#: tfrequalizer.lbvalue.caption
+msgid "Value"
+msgstr ""
 
 #: tfrfield.testdate.text
 msgctxt "tfrfield.testdate.text"

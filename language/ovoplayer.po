@@ -377,7 +377,7 @@ msgstr ""
 
 #: tbackend.actimportdirectory.caption
 msgctxt "tbackend.actimportdirectory.caption"
-msgid "Import Directory ..."
+msgid "Import Directory …"
 msgstr ""
 
 #: tbackend.actmute.caption
@@ -417,7 +417,7 @@ msgstr ""
 
 #: tbackend.actplaylistaddfiles.caption
 msgctxt "TBACKEND.ACTPLAYLISTADDFILES.CAPTION"
-msgid "Add Files ..."
+msgid "Add Files …"
 msgstr ""
 
 #: tbackend.actplaylistclear.caption
@@ -427,7 +427,7 @@ msgstr ""
 
 #: tbackend.actplaylistload.caption
 msgctxt "tbackend.actplaylistload.caption"
-msgid "Load Playlist ..."
+msgid "Load Playlist …"
 msgstr ""
 
 #: tbackend.actplaylistload.hint
@@ -437,7 +437,7 @@ msgstr ""
 
 #: tbackend.actplaylistsave.caption
 msgctxt "tbackend.actplaylistsave.caption"
-msgid "Save PlayList ..."
+msgid "Save PlayList …"
 msgstr ""
 
 #: tbackend.actplaylistsave.hint
@@ -536,7 +536,7 @@ msgstr ""
 
 #: tdm.actimportdirectory.caption
 msgctxt "TDM.ACTIMPORTDIRECTORY.CAPTION"
-msgid "Import Directory ..."
+msgid "Import Directory …"
 msgstr ""
 
 #: tdm.actmute.caption
@@ -576,7 +576,7 @@ msgstr ""
 
 #: tdm.actplaylistaddfiles.caption
 msgctxt "TDM.ACTPLAYLISTADDFILES.CAPTION"
-msgid "Add Files ..."
+msgid "Add Files …"
 msgstr ""
 
 #: tdm.actplaylistclear.caption
@@ -586,7 +586,7 @@ msgstr ""
 
 #: tdm.actplaylistload.caption
 msgctxt "TDM.ACTPLAYLISTLOAD.CAPTION"
-msgid "Open Playlist ..."
+msgid "Open Playlist …"
 msgstr ""
 
 #: tdm.actplaylistload.hint
@@ -596,7 +596,7 @@ msgstr ""
 
 #: tdm.actplaylistsave.caption
 msgctxt "TDM.ACTPLAYLISTSAVE.CAPTION"
-msgid "Save PlayList ..."
+msgid "Save PlayList …"
 msgstr ""
 
 #: tdm.actplaylistsave.hint
@@ -721,7 +721,7 @@ msgid "Version"
 msgstr ""
 
 #: tfconfig.badddir.caption
-msgid "Add ..."
+msgid "Add …"
 msgstr ""
 
 #: tfconfig.bremovedir.caption
@@ -857,7 +857,7 @@ msgid "Fit To Screen"
 msgstr ""
 
 #: tfcover.btnsaveas.hint
-msgid "Save as..."
+msgid "Save as…"
 msgstr ""
 
 #: tfcover.btnzoomin.hint
@@ -891,6 +891,10 @@ msgstr ""
 msgid "Sort by"
 msgstr ""
 
+#: tfequalizer.cbenableeq.caption
+msgid "Enable equalizer"
+msgstr ""
+
 #: tflicense.caption
 msgid "License"
 msgstr ""
@@ -898,6 +902,10 @@ msgstr ""
 #: tfmainform.actshowabout.caption
 msgctxt "TFMAINFORM.ACTSHOWABOUT.CAPTION"
 msgid "About"
+msgstr ""
+
+#: tfmainform.actshowequalizer.caption
+msgid "Equalizer …"
 msgstr ""
 
 #: tfmainform.actshowleft.caption
@@ -911,7 +919,7 @@ msgstr ""
 
 #: tfmainform.actshowpreferences.caption
 msgctxt "tfmainform.actshowpreferences.caption"
-msgid "Preferences ..."
+msgid "Preferences …"
 msgstr ""
 
 #: tfmainform.actshowpreferencesengine.caption
@@ -925,7 +933,7 @@ msgstr ""
 
 #: tfmainform.actshowpreferencesmedialibrary.caption
 msgctxt "TFMAINFORM.ACTSHOWPREFERENCESMEDIALIBRARY.CAPTION"
-msgid "Collection Preferences ..."
+msgid "Collection Preferences …"
 msgstr ""
 
 #: tfmainform.album.caption
@@ -1084,7 +1092,7 @@ msgid "Delete"
 msgstr ""
 
 #: tfmainform.mnueditplaylist.caption
-msgid "Edit ..."
+msgid "Edit …"
 msgstr ""
 
 #: tfmainform.mnuenqueueitems.caption
@@ -1245,6 +1253,14 @@ msgstr ""
 
 #: tfosd.track.caption
 msgid "0"
+msgstr ""
+
+#: tfrequalizer.lbband.caption
+msgid "Band"
+msgstr ""
+
+#: tfrequalizer.lbvalue.caption
+msgid "Value"
 msgstr ""
 
 #: tfrfield.testdate.text

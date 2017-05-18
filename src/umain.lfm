@@ -643,7 +643,6 @@ object fMainForm: TfMainForm
             SizePriority = 0
             Tag = 6
             Title.Caption = 'Genre'
-            Width = 0
             Visible = False
           end        
           item
@@ -653,7 +652,6 @@ object fMainForm: TfMainForm
             SizePriority = 0
             Tag = 7
             Title.Caption = 'Year'
-            Width = 0
             Visible = False
           end        
           item
@@ -662,7 +660,6 @@ object fMainForm: TfMainForm
             SizePriority = 0
             Tag = 8
             Title.Caption = 'Album Artist'
-            Width = 0
             Visible = False
           end        
           item
@@ -671,7 +668,6 @@ object fMainForm: TfMainForm
             SizePriority = 0
             Tag = 9
             Title.Caption = 'FileName'
-            Width = 0
             Visible = False
           end        
           item
@@ -688,7 +684,6 @@ object fMainForm: TfMainForm
             SizePriority = 0
             Tag = 10
             Title.Caption = 'Rating'
-            Width = 0
             Visible = False
           end>
         DefaultColWidth = 18
@@ -1117,7 +1112,7 @@ object fMainForm: TfMainForm
     top = 184
     object ActShowPreferences: TAction
       Category = 'Preferences'
-      Caption = 'Preferences ...'
+      Caption = 'Preferences …'
       DisableIfNoHandler = False
       OnExecute = ActShowPreferencesExecute
     end
@@ -1150,12 +1145,12 @@ object fMainForm: TfMainForm
     end
     object ActShowPreferencesMediaLibrary: TAction
       Category = 'Preferences'
-      Caption = 'Collection Preferences ...'
+      Caption = 'Collection Preferences …'
       DisableIfNoHandler = False
       OnExecute = ActShowPreferencesMediaLibraryExecute
     end
     object actShowEqualizer: TAction
-      Caption = 'Equalizer ...'
+      Caption = 'Equalizer …'
       OnExecute = actShowEqualizerExecute
     end
   end
@@ -1491,7 +1486,7 @@ object fMainForm: TfMainForm
       Caption = '-'
     end
     object mnuEditPlaylist: TMenuItem
-      Caption = 'Edit ...'
+      Caption = 'Edit …'
       OnClick = mnuEditPlaylistClick
     end
     object MenuItem65: TMenuItem

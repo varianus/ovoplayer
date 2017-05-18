@@ -479,7 +479,7 @@ object fCover: TfCover
     object btnSaveAs: TBitBtn
       Left = 312
       Height = 42
-      Hint = 'Save as...'
+      Hint = 'Save as…'
       Top = 1
       Width = 62
       AutoSize = True

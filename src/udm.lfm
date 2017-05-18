@@ -14,7 +14,7 @@ object DM: TDM
     top = 21
     object actPlaylistLoad: TAction
       Category = 'PlayList'
-      Caption = 'Open Playlist ...'
+      Caption = 'Open Playlist …'
       DisableIfNoHandler = False
       Hint = 'Load a Playlist'
       ImageIndex = 12
@@ -23,7 +23,7 @@ object DM: TDM
     end
     object actPlaylistSave: TAction
       Category = 'PlayList'
-      Caption = 'Save PlayList ...'
+      Caption = 'Save PlayList …'
       DisableIfNoHandler = False
       Hint = 'Save current playlist'
       ImageIndex = 13
@@ -85,13 +85,13 @@ object DM: TDM
     end
     object actPlayListAddFiles: TAction
       Category = 'PlayList'
-      Caption = 'Add Files ...'
+      Caption = 'Add Files …'
       DisableIfNoHandler = False
       OnExecute = actPlayListAddFilesExecute
     end
     object actImportDirectory: TAction
       Category = 'PlayList'
-      Caption = 'Import Directory ...'
+      Caption = 'Import Directory …'
       DisableIfNoHandler = False
       OnExecute = actImportDirectoryExecute
     end
