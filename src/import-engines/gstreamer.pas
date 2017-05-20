@@ -125,6 +125,11 @@ type
 //  gst_bus_func = function (bus: pointer; message:pgstmessage; user_data:pointer): boolean; cdecl;
 
   gst_bus_add_watch_T = function (bus: pointer;func:Pointer; user_data:pointer): dword; cdecl;
+  gst_element_get_static_pad_t = function (element: pointer; const name: pchar): pointer; cdecl;
+  gst_ghost_pad_new_t = function (const name: pchar; element: pointer): pointer; cdecl;
+  gst_pad_set_active_t = procedure (element: pointer; const active: boolean); cdecl;
+  gst_element_add_pad_t = procedure (element: pointer; pad: pointer); cdecl;
+
 
 
 var
@@ -148,6 +153,10 @@ var
   gst_element_query_position : gst_element_query_position_1_0_T;
   gst_element_query_position_OLD : gst_element_query_position_0_10_T;
   gst_is_initialized : gst_is_initialized_t;
+  gst_element_get_static_pad : gst_element_get_static_pad_t;
+  gst_ghost_pad_new : gst_ghost_pad_new_t;
+  gst_pad_set_active: gst_pad_set_active_t;
+  gst_element_add_pad: gst_element_add_pad_t;
 
 
   procedure libGST_dynamic_dll_init;
@@ -229,6 +238,11 @@ begin
   if not libGST_dll_get_proc_addr(pointer(gst_element_seek),  'gst_element_seek') then   exit;
   if not libGST_dll_get_proc_addr(pointer(gst_element_seek_simple),  'gst_element_seek_simple') then   exit;
   if not libGST_dll_get_proc_addr(pointer(gst_is_initialized),  'gst_is_initialized') then   exit;
+  if not libGST_dll_get_proc_addr(pointer(gst_element_get_static_pad),  'gst_element_get_static_pad') then   exit;
+  if not libGST_dll_get_proc_addr(pointer(gst_ghost_pad_new),  'gst_ghost_pad_new') then   exit;
+  if not libGST_dll_get_proc_addr(pointer(gst_pad_set_active),  'gst_pad_set_active') then   exit;
+  if not libGST_dll_get_proc_addr(pointer(gst_element_add_pad),  'gst_element_add_pad') then   exit;
+
 
 end;
 

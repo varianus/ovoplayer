@@ -32,9 +32,11 @@ type
 
   { TAudioEngineGStreamer }
 
-  TAudioEngineGStreamer = class(TAudioEngine)
+  TAudioEngineGStreamer = class(TAudioEngine, IEqualizer)
   private
     playbin : pointer;
+    equalizer, convert, sink : pointer;
+
     bus: pointer;
     fdecoupler: TDecoupler;
   protected
@@ -63,6 +65,12 @@ type
     procedure Seek(Seconds: integer; SeekAbsolute: boolean); override;
     procedure Stop; override;
     procedure UnPause; override;
+    function GetBandInfo: ARBandInfo;
+    function getActiveEQ: boolean;
+    procedure SetActiveEQ(AValue: boolean);
+    function GetBandValue(Index: Integer): single;
+    procedure SetBandValue(Index: Integer; AValue: single);
+    Procedure EQApply;
 
   end;
 
@@ -188,6 +196,8 @@ var
   res : gboolean;
   nilptr :pAnsichar = nil;
   argc : integer=0;
+  bin, pad, ghost_pad: pointer;
+
 begin
   Err.code:=0;
   res := gst_init_check(argc, nilptr, perr);
@@ -202,10 +212,42 @@ begin
 
     end;
 
-
   playbin := gst_element_factory_make('playbin2', 'play');
   if (playbin = nil) then
       playbin := gst_element_factory_make('playbin', 'play');
+
+  equalizer:=gst_element_factory_make('equalizer-10bands','eq');
+
+  convert := gst_element_factory_make ('audioconvert', 'convert');
+  sink := gst_element_factory_make ('autoaudiosink', 'audio_sink');//get the audio-sink
+ //   if (!equalizer || !convert || !sink)//check is all elements were created
+ //   {
+ //       g_printerr ("Not all elements could be created.\n");
+ //       //return -1;
+ //   }
+   bin := gst_bin_new ('audio_sink_bin');//get new bin
+   gst_bin_add_many ((bin), equalizer, [convert, sink, Nil]);//add elements to bin
+   if (not (gst_element_link_many (equalizer, convert, [sink, Nil]))) then//link all elements
+        writeln('Could not link all elements');
+
+    pad := gst_element_get_static_pad (equalizer, 'sink');//set equalizer to sink
+    ghost_pad := gst_ghost_pad_new ('sink', pad);//get a ghost pad to sink
+    gst_pad_set_active (ghost_pad, TRUE);
+    gst_element_add_pad (bin, ghost_pad);//add ghost pad to the bin
+    gst_object_unref (pad);//unreference pad
+    g_object_set ( (equalizer), 'band0', 0.0, NULL);
+    g_object_set ( (equalizer), 'band1', 0.0, NULL);
+    g_object_set ( (equalizer), 'band2', 0.0, NULL);
+    g_object_set ( (equalizer), 'band3', 0.0, NULL);
+    g_object_set ( (equalizer), 'band4', 0.0, NULL);
+    g_object_set ( (equalizer), 'band5', 0.0, NULL);
+    g_object_set ( (equalizer), 'band6', 0.0, NULL);
+    g_object_set ( (equalizer), 'band7', 0.0, NULL);
+    g_object_set ( (equalizer), 'band8', 0.0, NULL);
+    g_object_set ( (equalizer), 'band9', 0.0, NULL);
+    //* Set playbin2's audio sink to be our sink bin */
+    g_object_set ((playbin), 'audio-sink', bin, NULL);
+
   result := Assigned(playbin);
   if not result then exit;
   Initialized:= true;
@@ -372,6 +414,53 @@ begin
   gst_element_set_state(G_OBJECT(playbin), GST_STATE_PLAYING);
 
 end;
+
+function TAudioEngineGStreamer.GetBandInfo: ARBandInfo;
+var
+  i: integer;
+begin
+  SetLength(result, 10);
+
+  result[0].Freq := 31;
+  result[1].Freq := 62;
+  result[2].Freq := 125;
+  result[3].Freq := 250;
+  result[4].Freq := 500;
+  result[5].Freq := 1000;
+  result[6].Freq := 2000;
+  result[7].Freq := 4000;
+  result[8].Freq := 8000;
+  result[9].Freq := 16000;
+  for i := 0 to 9 do
+    result[i].Value := 0;
+end;
+
+function TAudioEngineGStreamer.getActiveEQ: boolean;
+begin
+
+end;
+
+procedure TAudioEngineGStreamer.SetActiveEQ(AValue: boolean);
+begin
+
+end;
+
+function TAudioEngineGStreamer.GetBandValue(Index: Integer): single;
+begin
+  g_object_get ( (equalizer), pgchar('band'+inttostr(index)), Result, NULL);
+end;
+
+procedure TAudioEngineGStreamer.SetBandValue(Index: Integer; AValue: single);
+begin
+  g_object_set ( (equalizer), pgchar('band'+inttostr(index)), AValue, NULL);
+end;
+
+procedure TAudioEngineGStreamer.EQApply;
+begin
+  // changes are in realtime
+end;
+
+
 
 initialization
   RegisterEngineClass(TAudioEngineGStreamer, 5, false, true);
