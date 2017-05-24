@@ -36,9 +36,9 @@ type
   private
     playbin : pointer;
     equalizer, convert, sink : pointer;
-
     bus: pointer;
     fdecoupler: TDecoupler;
+    fBandInfo: ARBandinfo;
   protected
     function GetMainVolume: integer; override;
     procedure SetMainVolume(const AValue: integer); override;
@@ -259,6 +259,8 @@ begin
   gst_bus_add_watch (bus, @bus_watch_callback, self);
   gst_object_unref (bus);
 
+  InitBands(fBandInfo);
+
 end;
 
 function TAudioEngineGStreamer.GetState: TEngineState;
@@ -416,23 +418,8 @@ begin
 end;
 
 function TAudioEngineGStreamer.GetBandInfo: ARBandInfo;
-var
-  i: integer;
 begin
-  SetLength(result, 10);
-
-  result[0].Freq := 31;
-  result[1].Freq := 62;
-  result[2].Freq := 125;
-  result[3].Freq := 250;
-  result[4].Freq := 500;
-  result[5].Freq := 1000;
-  result[6].Freq := 2000;
-  result[7].Freq := 4000;
-  result[8].Freq := 8000;
-  result[9].Freq := 16000;
-  for i := 0 to 9 do
-    result[i].Value := 0;
+  Result:= fBandInfo;
 end;
 
 function TAudioEngineGStreamer.getActiveEQ: boolean;
@@ -448,11 +435,13 @@ end;
 function TAudioEngineGStreamer.GetBandValue(Index: Integer): single;
 begin
   g_object_get ( (equalizer), pgchar('band'+inttostr(index)), Result, NULL);
+  fBandInfo[Index] := result;
 end;
 
 procedure TAudioEngineGStreamer.SetBandValue(Index: Integer; AValue: single);
 begin
   g_object_set ( (equalizer), pgchar('band'+inttostr(index)), AValue, NULL);
+  fBandInfo[Index] := value;
 end;
 
 procedure TAudioEngineGStreamer.EQApply;

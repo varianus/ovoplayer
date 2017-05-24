@@ -27,9 +27,8 @@ interface
 uses
   Classes, SysUtils, BaseTypes, AudioEngine, Song, decoupler, libmpv, LCLProc;
 
-  { TAudioEngineLibMPV }
 type
-
+  { TAudioEngineLibMPV }
   TAudioEngineLibMPV = class(TAudioEngine, IEqualizer)
   private
     fhandle : Pmpv_handle;

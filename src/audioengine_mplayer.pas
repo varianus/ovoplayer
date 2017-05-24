@@ -284,20 +284,8 @@ begin
   Result := FileExists(ExePath);
   Initialized := result;
 
-  SetLength(fBandInfo, 10);
+  InitBands(fBandInfo);
 
-  fBandInfo[0].Freq := 31;
-  fBandInfo[1].Freq := 62;
-  fBandInfo[2].Freq := 125;
-  fBandInfo[3].Freq := 250;
-  fBandInfo[4].Freq := 500;
-  fBandInfo[5].Freq := 1000;
-  fBandInfo[6].Freq := 2000;
-  fBandInfo[7].Freq := 4000;
-  fBandInfo[8].Freq := 8000;
-  fBandInfo[9].Freq := 16000;
-  for i := 0 to 9 do
-    fBandInfo[i].Value := 0;
 end;
 
 procedure TAudioEngineMPlayer.RunAndPlay(Filename:String);
