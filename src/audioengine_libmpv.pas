@@ -27,9 +27,8 @@ interface
 uses
   Classes, SysUtils, BaseTypes, AudioEngine, Song, decoupler, libmpv, LCLProc;
 
-type
-
   { TAudioEngineLibMPV }
+type
 
   TAudioEngineLibMPV = class(TAudioEngine, IEqualizer)
   private
@@ -179,7 +178,6 @@ function TAudioEngineLibMPV.Initialize: boolean;
 var
    res: integer;
    flg:integer=1;
-   i: integer;
 begin
   fhandle := mpv_create();
   result := assigned(fhandle);
@@ -197,19 +195,7 @@ begin
   mpv_set_wakeup_callback(fhandle^,@LibMPVEvent, self);
   Initialized := true;
 
-  SetLength(fBandInfo,10);
-  fBandInfo[0].Freq := 31;
-  fBandInfo[1].Freq := 62;
-  fBandInfo[2].Freq := 125;
-  fBandInfo[3].Freq := 250;
-  fBandInfo[4].Freq := 500;
-  fBandInfo[5].Freq := 1000;
-  fBandInfo[6].Freq := 2000;
-  fBandInfo[7].Freq := 4000;
-  fBandInfo[8].Freq := 10000;
-  fBandInfo[9].Freq := 14000;
-  for i := 0 to 9 do
-    fBandInfo[i].Value := 0;
+  InitBands(fBandInfo);
 
 end;
 
@@ -440,10 +426,10 @@ end;
 function TAudioEngineLibMPV.GetBandStr(Index:Integer):string;
 begin
 
- Result:= ' f='+IntToStr(trunc(fBandInfo[Index].Freq))
-        + ' w='+IntToStr(trunc(fBandInfo[Index].Freq))
-        + ' g='+IntToStr(trunc(fBandInfo[Index].Value))
-        + ' t=0';
+ Result:= 'f='+IntToStr(trunc(fBandInfo[Index].Freq))
+        + ':width_type=o'
+        + ':w=1'
+        + ':g='+IntToStr(trunc(fBandInfo[Index].Value))
 
 end;
 
@@ -455,23 +441,17 @@ var
   res: longint;
 begin
   bandstr := '';
+  str :='lavfi=''[';
   if AValue and not fActiveEQ then
     begin
-      str :='lavfi=[anequalizer=';
       for i := 0 to 9 do
         begin
-          bandstr:= bandstr + '|c'+inttostr(i)+GetBandStr(i);
+          bandstr:= bandstr + ',equalizer='+GetBandStr(i);
         end;
       Delete(bandstr,1,1)
     end;
 
-  if not AValue and fActiveEQ then
-    for i := 0 to 9 do
-      begin
-        str :='lavfi=['
-      end;
-
-  str:= str+bandstr+']';
+  str:= str+bandstr+''']';
   SetStringProperty('af', str);
   fActiveEq:=AValue;
 end;
@@ -494,12 +474,13 @@ var
   bandstr: string;
   res: longint;
 begin
-  str :='lavfi=[anequalizer=';
+  str :='lavfi=[';
   bandstr := '';
   for i := 0 to 9 do
     begin
-      bandstr:= bandstr+'c'+inttostr(i)+GetBandStr(i)+'|';
+      bandstr:= bandstr+',equalizer='+GetBandStr(i);
     end;
+  Delete(bandstr,1,1);
   str:= str+bandstr+']';
 
   SetStringProperty('af', str);
