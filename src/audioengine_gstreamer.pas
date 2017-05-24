@@ -435,13 +435,13 @@ end;
 function TAudioEngineGStreamer.GetBandValue(Index: Integer): single;
 begin
   g_object_get ( (equalizer), pgchar('band'+inttostr(index)), Result, NULL);
-  fBandInfo[Index] := result;
+  fBandInfo[Index].Value := result;
 end;
 
 procedure TAudioEngineGStreamer.SetBandValue(Index: Integer; AValue: single);
 begin
   g_object_set ( (equalizer), pgchar('band'+inttostr(index)), AValue, NULL);
-  fBandInfo[Index] := value;
+  fBandInfo[Index].value := Avalue;
 end;
 
 procedure TAudioEngineGStreamer.EQApply;
