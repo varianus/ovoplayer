@@ -141,8 +141,10 @@ Procedure RegisterEngineClass(const EngineClass: TAudioEngineClass;
 
 Function GetEngineByName(const Name: string): TAudioEngineClass;
 Procedure SetEngineFailed(const Engine: TAudioEngineClass);
-
 Function GetBestEngine: TAudioEngineClass;
+
+//Equalizer
+Procedure InitBands(var BandInfo: ARBandinfo);
 
 Type
   TEngineArray= array of RAudioEngine;
@@ -213,6 +215,26 @@ begin
          break;
        end;
 
+end;
+
+procedure InitBands(var BandInfo: ARBandinfo);
+var
+  i: integer;
+begin
+  SetLength(BandInfo, 10);
+
+  BandInfo[0].Freq := 31;
+  BandInfo[1].Freq := 62;
+  BandInfo[2].Freq := 125;
+  BandInfo[3].Freq := 250;
+  BandInfo[4].Freq := 500;
+  BandInfo[5].Freq := 1000;
+  BandInfo[6].Freq := 2000;
+  BandInfo[7].Freq := 4000;
+  BandInfo[8].Freq := 8000;
+  BandInfo[9].Freq := 16000;
+  for i := 0 to 9 do
+    BandInfo[i].Value := 0;
 end;
 
 { TAudioEngineComparer }
