@@ -201,6 +201,7 @@ begin
   {$ENDIF LINUX}
 
   InitBands(fBandinfo);
+  SetLength(fBassBands, 10);
 
   fdecoupler := TDecoupler.Create;
   fdecoupler.OnCommand := ReceivedCommand;
