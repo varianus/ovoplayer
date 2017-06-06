@@ -32,7 +32,7 @@ type
 
   { TAudioEngineGStreamer }
 
-  TAudioEngineGStreamer = class(TAudioEngine, IEqualizer)
+  TAudioEngineGStreamer = class(TAudioEngine)
   private
     playbin : pointer;
     equalizer, convert, sink : pointer;
@@ -53,6 +53,7 @@ type
     class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
     class function GetEngineInfo(IsCurrent: boolean): AREngineParams; override;
+    Class Function SupportEQ: boolean; override;
 
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
@@ -65,12 +66,12 @@ type
     procedure Seek(Seconds: integer; SeekAbsolute: boolean); override;
     procedure Stop; override;
     procedure UnPause; override;
-    function GetBandInfo: ARBandInfo;
-    function getActiveEQ: boolean;
-    procedure SetActiveEQ(AValue: boolean);
-    function GetBandValue(Index: Integer): single;
-    procedure SetBandValue(Index: Integer; AValue: single);
-    Procedure EQApply;
+    function GetBandInfo: ARBandInfo; override;
+    function getActiveEQ: boolean; override;
+    procedure SetActiveEQ(AValue: boolean); override;
+    function GetBandValue(Index: Integer): single; override;
+    procedure SetBandValue(Index: Integer; AValue: single); override;
+    Procedure EQApply; override;
 
   end;
 
@@ -364,7 +365,7 @@ class function TAudioEngineGStreamer.GetEngineInfo(IsCurrent:boolean): AREngineP
      Major:=0; Minor:=0; micro := 0; nano := 0;
    end;
 
-   GetModuleByAddr(gst_version,BaseAddr,ModuleName);
+   GetModuleByAddr(@gst_version,BaseAddr,ModuleName);
 
    SetLength(Result,2);
    result[0].Key:= 'Library';
@@ -377,6 +378,11 @@ class function TAudioEngineGStreamer.GetEngineInfo(IsCurrent:boolean): AREngineP
    if not IsCurrent then
      libGST_dynamic_dll_done();
 
+end;
+
+class function TAudioEngineGStreamer.SupportEQ: boolean;
+begin
+  Result:=true; //{ TODO 3 : Need to check if equalizer plugin is installed? }
 end;
 
 procedure TAudioEngineGStreamer.PostCommand(Command: TEngineCommand; Param: integer);

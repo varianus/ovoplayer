@@ -31,7 +31,7 @@ type
 
   { TAudioEngineVLC }
 
-  TAudioEngineVLC = class(TAudioEngine, IEqualizer)
+  TAudioEngineVLC = class(TAudioEngine)
   private
     p_li: libvlc_instance_t_ptr;
     p_mi: libvlc_media_player_t_ptr;
@@ -69,12 +69,12 @@ type
     procedure Stop; override;
     procedure UnPause; override;
 // equalizer
-   function GetBandInfo: ARBandInfo;
-   function getActiveEQ: boolean;
-   function GetBandValue(Index: Integer): single;
-   procedure SetActiveEQ(AValue: boolean);
-   procedure SetBandValue(Index: Integer; AValue: single);
-   Procedure EQApply;
+   function GetBandInfo: ARBandInfo; override;
+   function getActiveEQ: boolean; override;
+   function GetBandValue(Index: Integer): single; override;
+   procedure SetActiveEQ(AValue: boolean); override;
+   procedure SetBandValue(Index: Integer; AValue: single); override;
+   Procedure EQApply; override;
   end;
 
 

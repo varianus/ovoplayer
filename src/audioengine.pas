@@ -62,7 +62,7 @@ type
   end;
 
   { TAudioEngine }
-  TAudioEngine = class (TNullInterfacedObject)
+  TAudioEngine = class (TNullInterfacedObject, IEqualizer)
   private
     FInitialized: boolean;
     FOnSongEnd:   TNotifyEvent;
@@ -126,6 +126,13 @@ type
     property Position: integer read GetSongPos write SetSongPos;
     property State: TEngineState read GetState;
     Property MaxVolume: Integer Read GetMaxVolume;
+    // equalizer
+    function GetBandInfo: ARBandInfo; virtual;
+    function getActiveEQ: boolean;  virtual;
+    function GetBandValue(Index: Integer): single; virtual;
+    procedure SetActiveEQ(AValue: boolean); virtual;
+    procedure SetBandValue(Index: Integer; AValue: single); virtual;
+    Procedure EQApply; virtual;
   end;
 
   { TAudioEngineComparer }
@@ -202,7 +209,7 @@ function GetBestEngine: TAudioEngineClass;
 var
   i:integer;
 type
-  sortList= specialize TOrderingArrayUtils<TEngineArray, RAudioEngine, TAudioEngineComparer>;
+  sortList= specialize  TOrderingArrayUtils<TEngineArray, RAudioEngine, TAudioEngineComparer>;
 begin
 
   SortList.Sort(EngineArray, Length(EngineArray));
@@ -274,14 +281,14 @@ end;
 
 procedure TAudioEngine.SetOnSongEnd(const AValue: TNotifyEvent);
 begin
-  if FOnSongEnd = AValue then
+  if @FOnSongEnd = @AValue then
     exit;
   FOnSongEnd := AValue;
 end;
 
 procedure TAudioEngine.SetOnSongStart(const AValue: TNotifyEvent);
 begin
-  if FOnSongStart = AValue then
+  if @FOnSongStart = @AValue then
     exit;
   FOnSongStart := AValue;
 end;
@@ -331,6 +338,36 @@ end;
 procedure TAudioEngine.Pause;
 begin
  //
+end;
+
+function TAudioEngine.GetBandInfo: ARBandInfo;
+begin
+  SetLength(Result, 0);
+end;
+
+function TAudioEngine.getActiveEQ: boolean;
+begin
+  Result:= false;
+end;
+
+function TAudioEngine.GetBandValue(Index: Integer): single;
+begin
+  Result := 0;
+end;
+
+procedure TAudioEngine.SetActiveEQ(AValue: boolean);
+begin
+//
+end;
+
+procedure TAudioEngine.SetBandValue(Index: Integer; AValue: single);
+begin
+//
+end;
+
+procedure TAudioEngine.EQApply;
+begin
+//
 end;
 
 procedure TAudioEngine.Play(Song: TSong; offset:Integer=0);

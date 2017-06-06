@@ -31,7 +31,7 @@ type
 
   { TAudioEngineMPlayer }
 
-  TAudioEngineMPlayer = class(TAudioEngine, IEqualizer)
+  TAudioEngineMPlayer = class(TAudioEngine)
   private
     fMainVolume: integer;
     FPaused: boolean;
@@ -66,6 +66,7 @@ type
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
     Class Function GetEngineParams: AREngineParams; override;
     class function GetEngineParamsCount: Integer; override;
+    Class Function SupportEQ: boolean; override;
     constructor Create; override;
     procedure Activate; override;
     function Initialize: boolean; override;
@@ -78,12 +79,12 @@ type
     procedure Stop; override;
     procedure UnPause; override;
     // equalizer
-    function GetBandInfo: ARBandInfo;
-    function getActiveEQ: boolean;
-    function GetBandValue(Index: Integer): single;
-    procedure SetActiveEQ(AValue: boolean);
-    procedure SetBandValue(Index: Integer; AValue: single);
-    Procedure EQApply;
+    function GetBandInfo: ARBandInfo; override;
+    function getActiveEQ: boolean; override;
+    function GetBandValue(Index: Integer): single; override;
+    procedure SetActiveEQ(AValue: boolean); override;
+    procedure SetBandValue(Index: Integer; AValue: single); override;
+    Procedure EQApply; override;
 
   end;
 
@@ -398,6 +399,11 @@ end;
 class function TAudioEngineMPlayer.GetEngineParamsCount: Integer;
 begin
   Result := 1;
+end;
+
+class function TAudioEngineMPlayer.SupportEQ: boolean;
+begin
+  Result := true;
 end;
 
 class function TAudioEngineMPlayer.GetEngineParams: AREngineParams;

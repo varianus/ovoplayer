@@ -29,7 +29,7 @@ uses
 
 type
   { TAudioEngineLibMPV }
-  TAudioEngineLibMPV = class(TAudioEngine, IEqualizer)
+  TAudioEngineLibMPV = class(TAudioEngine)
   private
     fhandle : Pmpv_handle;
     fState : TEngineState;
@@ -54,6 +54,7 @@ type
     class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
     Class Function GetEngineInfo(IsCurrent:boolean): AREngineParams; override;
+    Class Function SupportEQ: boolean; override;
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     procedure ReceivedCommand(Sender: TObject; Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
@@ -67,12 +68,12 @@ type
     procedure Stop; override;
     procedure UnPause; override;
     // equalizer
-    function GetBandInfo: ARBandInfo;
-    function getActiveEQ: boolean;
-    procedure SetActiveEQ(AValue: boolean);
-    function GetBandValue(Index: Integer): single;
-    procedure SetBandValue(Index: Integer; AValue: single);
-    Procedure EQApply;
+    function GetBandInfo: ARBandInfo; override;
+    function getActiveEQ: boolean; override;
+    procedure SetActiveEQ(AValue: boolean); override;
+    function GetBandValue(Index: Integer): single; override;
+    procedure SetBandValue(Index: Integer; AValue: single); override;
+    Procedure EQApply; override;
 
   end;
 
@@ -312,7 +313,7 @@ class function TAudioEngineLibMPV.GetEngineInfo(IsCurrent:boolean): AREnginePara
      ver:=0;
    end;
 
-   GetModuleByAddr(mpv_client_api_version,BaseAddr,ModuleName);
+   GetModuleByAddr(@mpv_client_api_version,BaseAddr,ModuleName);
 
    SetLength(Result,2);
    result[0].Key:= 'Library';
@@ -325,6 +326,11 @@ class function TAudioEngineLibMPV.GetEngineInfo(IsCurrent:boolean): AREnginePara
    if not IsCurrent then
       Free_libmpv();
 
+end;
+
+class function TAudioEngineLibMPV.SupportEQ: boolean;
+begin
+  Result := true;
 end;
 
 procedure TAudioEngineLibMPV.PostCommand(Command: TEngineCommand; Param: integer);
