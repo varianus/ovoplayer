@@ -229,6 +229,8 @@ begin
         EngineCreation;
     end;
 
+  AudioEngine.SetActiveEQ(Config.EngineParam.ActiveEQ);
+  // if equalizer is active, try to load active preset
   AudioEngine.OnSongEnd := @AudioEngineSongEnd;
   AudioEngine.MainVolume:= Config.EngineParam.Volume;
   PlayList.OnSongAdd:=@PlaylistOnSongAdd;

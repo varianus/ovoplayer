@@ -41,6 +41,8 @@ type
   TEngineParam = record
     EngineKind : string;
     Volume : Integer;
+    ActiveEQ: boolean;
+    EQPreset: integer;
   end;
 
   TGeneralParam = record
@@ -145,7 +147,7 @@ begin
   // ENGINE
   fIniFiles.WriteString('AudioEngine', 'Kind', EngineParam.EngineKind);
   fIniFiles.WriteInteger('AudioEngine', 'Volume', EngineParam.Volume);
-  fIniFiles.WriteInteger('AudioEngine', 'Volume', EngineParam.Volume);
+  fIniFiles.WriteBool('AudioEngine', 'ActiveEQ', EngineParam.ActiveEQ);
 
   //GENERAL
   fIniFiles.WriteString('General', 'LastFolder', GeneralParam.LastImportFolder);
@@ -215,6 +217,7 @@ begin
   // ENGINE
   EngineParam.EngineKind := fIniFiles.ReadString('AudioEngine', 'Kind', '');
   EngineParam.Volume := fIniFiles.ReadInteger('AudioEngine', 'Volume', 50);
+  EngineParam.ActiveEQ := fIniFiles.ReadBool('AudioEngine', 'ActiveEQ', false);
   ReadSubParams;
 
   //GENERAL
