@@ -39,6 +39,8 @@ type
     Ao_Driver: Pxine_audio_port_t;
     queue: Pxine_event_queue_t;
     fdecoupler: TDecoupler;
+    FBandInfo: ARBandinfo;
+    FActiveEQ : Boolean;
   protected
     function GetMainVolume: integer; override;
     procedure SetMainVolume(const AValue: integer); override;
@@ -53,6 +55,7 @@ type
     class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
     class function GetEngineInfo(IsCurrent: boolean): AREngineParams; override;
+    Class Function SupportEQ: boolean; override;
 
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
@@ -66,6 +69,13 @@ type
     procedure Seek(Seconds: integer; SeekAbsolute: boolean); override;
     procedure Stop; override;
     procedure UnPause; override;
+    // equalizer
+    function GetBandInfo: ARBandInfo; override;
+    function getActiveEQ: boolean; override;
+    function GetBandValue(Index: Integer): Double; override;
+    procedure SetActiveEQ(AValue: boolean); override;
+    procedure SetBandValue(Index: Integer; AValue: Double); override;
+    Procedure EQApply; override;
 
   end;
 
@@ -156,7 +166,7 @@ begin
   fdecoupler := TDecoupler.Create;
   fdecoupler.OnCommand := @ReceivedCommand;
   Initialized := true;
-
+  InitBands(FBandInfo);
 
 end;
 
@@ -302,7 +312,7 @@ class function TAudioEngineXINE.GetEngineInfo(IsCurrent:boolean): AREngineParams
      Major:=0; Minor:=0; sub := 0;
    end;
 
-   GetModuleByAddr(xine_get_version,BaseAddr,ModuleName);
+   GetModuleByAddr(@xine_get_version,BaseAddr,ModuleName);
 
    SetLength(Result,2);
    result[0].Key:= 'Library';
@@ -315,6 +325,11 @@ class function TAudioEngineXINE.GetEngineInfo(IsCurrent:boolean): AREngineParams
    if not IsCurrent then
      Freexine();
 
+end;
+
+class function TAudioEngineXINE.SupportEQ: boolean;
+begin
+  Result:=true;
 end;
 
 procedure TAudioEngineXINE.PostCommand(Command: TEngineCommand; Param: integer);
@@ -355,6 +370,51 @@ begin
     begin
     xine_set_param(XINEStream,XINE_PARAM_SPEED,XINE_SPEED_NORMAL);
     end;
+end;
+
+function TAudioEngineXINE.GetBandInfo: ARBandInfo;
+begin
+ Result:= fBandInfo;
+end;
+
+function TAudioEngineXINE.getActiveEQ: boolean;
+begin
+  Result := fActiveEQ;
+end;
+
+function TAudioEngineXINE.GetBandValue(Index: Integer): Double;
+begin
+ // eq value range from -100 and +100
+ result := xine_get_param(XineStream, XINE_PARAM_EQ_30HZ + Index) * 12 / 100;
+ fBandInfo[Index].Value := result;
+end;
+
+procedure TAudioEngineXINE.SetActiveEQ(AValue: boolean);
+var
+  i: integer;
+begin
+  if AValue and not fActiveEQ then
+    for i := 0 to pred(EQUALIZER_BANDS) do
+      xine_set_param(XineStream, XINE_PARAM_EQ_30HZ + i, trunc(FBandInfo[i].Value/12*100));
+
+  if not AValue and fActiveEQ then
+    for i := 0 to pred(EQUALIZER_BANDS) do
+      xine_set_param(XineStream, XINE_PARAM_EQ_30HZ + i, 0);
+
+ fActiveEq:=AValue;
+
+end;
+
+procedure TAudioEngineXINE.SetBandValue(Index: Integer; AValue: Double);
+begin
+ // eq value range from -100 and +100
+ xine_set_param(XineStream, XINE_PARAM_EQ_30HZ + Index, trunc(AValue/12*100));
+ fBandInfo[Index].value := Avalue;
+end;
+
+procedure TAudioEngineXINE.EQApply;
+begin
+   // changes are in realtime
 end;
 
 initialization
