@@ -71,8 +71,8 @@ type
     function GetBandInfo: ARBandInfo; override;
     function getActiveEQ: boolean; override;
     procedure SetActiveEQ(AValue: boolean); override;
-    function GetBandValue(Index: Integer): single; override;
-    procedure SetBandValue(Index: Integer; AValue: single); override;
+    function GetBandValue(Index: Integer): Double; override;
+    procedure SetBandValue(Index: Integer; AValue: Double); override;
     Procedure EQApply; override;
 
   end;
@@ -449,7 +449,7 @@ begin
   str :='lavfi=''[';
   if AValue and not fActiveEQ then
     begin
-      for i := 0 to 9 do
+      for i := 0 to pred(EQUALIZER_BANDS) do
         begin
           bandstr:= bandstr + ',equalizer='+GetBandStr(i);
         end;
@@ -462,12 +462,12 @@ begin
 end;
 
 
-function TAudioEngineLibMPV.GetBandValue(Index: Integer): single;
+function TAudioEngineLibMPV.GetBandValue(Index: Integer): Double;
 begin
   Result := fBandInfo[Index].Value;
 end;
 
-procedure TAudioEngineLibMPV.SetBandValue(Index: Integer; AValue: single);
+procedure TAudioEngineLibMPV.SetBandValue(Index: Integer; AValue: Double);
 begin
   fBandInfo[Index].Value:= AValue;
 end;
@@ -481,7 +481,7 @@ var
 begin
   str :='lavfi=[';
   bandstr := '';
-  for i := 0 to 9 do
+  for i := 0 to pred(EQUALIZER_BANDS) do
     begin
       bandstr:= bandstr+',equalizer='+GetBandStr(i);
     end;

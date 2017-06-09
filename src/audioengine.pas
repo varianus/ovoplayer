@@ -27,10 +27,12 @@ interface
 uses
   Classes, SysUtils, Song, BaseTypes, NullInterfacedObject;
 
+const
+  EQUALIZER_BANDS = 10;
+
 type
 
   TAudioEngineClass = class of TAudioEngine;
-
   RAudioEngine = record
     Engine : TAudioEngineClass;
     Name: String;
@@ -41,8 +43,8 @@ type
   end;
 
   RBandInfo = record
-    Value : single;
-    Freq: single;
+    Value : Double;
+    Freq: Double;
   end;
   ARBandinfo = array of RBandInfo;
 
@@ -51,13 +53,13 @@ type
     ['{95CADD9D-8BDD-4527-8660-53537B3052F5}']
     function getActiveEQ: boolean;
     function GetBandInfo: ARBandInfo;
-    function GetBandValue(Index: Integer): single;
+    function GetBandValue(Index: Integer): Double;
     procedure SetActiveEQ(AValue: boolean);
-    procedure SetBandValue(Index: Integer; AValue: single);
+    procedure SetBandValue(Index: Integer; AValue: Double);
 //
     property BandInfo: ARBandInfo read GetBandInfo;
     Property ActiveEQ: boolean read getActiveEQ write SetActiveEQ;
-    Property BandValue[Index:Integer]: single read GetBandValue write SetBandValue;
+    Property BandValue[Index:Integer]: Double read GetBandValue write SetBandValue;
     Procedure EQApply;
   end;
 
@@ -129,9 +131,9 @@ type
     // equalizer
     function GetBandInfo: ARBandInfo; virtual;
     function getActiveEQ: boolean;  virtual;
-    function GetBandValue(Index: Integer): single; virtual;
+    function GetBandValue(Index: Integer): Double; virtual;
     procedure SetActiveEQ(AValue: boolean); virtual;
-    procedure SetBandValue(Index: Integer; AValue: single); virtual;
+    procedure SetBandValue(Index: Integer; AValue: Double); virtual;
     Procedure EQApply; virtual;
   end;
 
@@ -228,7 +230,7 @@ procedure InitBands(var BandInfo: ARBandinfo);
 var
   i: integer;
 begin
-  SetLength(BandInfo, 10);
+  SetLength(BandInfo, EQUALIZER_BANDS);
 
   BandInfo[0].Freq := 31;
   BandInfo[1].Freq := 62;
@@ -240,7 +242,7 @@ begin
   BandInfo[7].Freq := 4000;
   BandInfo[8].Freq := 8000;
   BandInfo[9].Freq := 16000;
-  for i := 0 to 9 do
+  for i := 0 to pred(EQUALIZER_BANDS) do
     BandInfo[i].Value := 0;
 end;
 
@@ -350,7 +352,7 @@ begin
   Result:= false;
 end;
 
-function TAudioEngine.GetBandValue(Index: Integer): single;
+function TAudioEngine.GetBandValue(Index: Integer): Double;
 begin
   Result := 0;
 end;
@@ -360,7 +362,7 @@ begin
 //
 end;
 
-procedure TAudioEngine.SetBandValue(Index: Integer; AValue: single);
+procedure TAudioEngine.SetBandValue(Index: Integer; AValue: Double);
 begin
 //
 end;

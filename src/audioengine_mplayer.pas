@@ -81,9 +81,9 @@ type
     // equalizer
     function GetBandInfo: ARBandInfo; override;
     function getActiveEQ: boolean; override;
-    function GetBandValue(Index: Integer): single; override;
+    function GetBandValue(Index: Integer): Double; override;
     procedure SetActiveEQ(AValue: boolean); override;
-    procedure SetBandValue(Index: Integer; AValue: single); override;
+    procedure SetBandValue(Index: Integer; AValue: Double); override;
     Procedure EQApply; override;
 
   end;
@@ -435,16 +435,8 @@ begin
 end;
 
 function TAudioEngineMPlayer.GetBandInfo: ARBandInfo;
-var
-  i: integer;
 begin
-  SetLength(Result, 10);
-  for i := 0 to 10 -1 do
-    begin
-      Result[i].Freq := fBandInfo[i].Freq;
-      Result[i].Value := fBandInfo[i].Value;
-    end;
-
+  Result := fBandInfo;
 end;
 
 function TAudioEngineMPlayer.getActiveEQ: boolean;
@@ -452,17 +444,24 @@ begin
   Result := fActiveEQ;
 end;
 
-function TAudioEngineMPlayer.GetBandValue(Index: Integer): single;
+function TAudioEngineMPlayer.GetBandValue(Index: Integer): Double;
 begin
   Result := fBandInfo[Index].Value;
 end;
 
 procedure TAudioEngineMPlayer.SetActiveEQ(AValue: boolean);
+var
+  i: integer;
 begin
-  fActiveEq:=AValue;
+  if AValue and not fActiveEQ then
+    EQApply;
+
+  if not AValue and fActiveEQ then
+    SendMPlayerCommand('af_eq_set_bands 0:0:0:0:0:0:0:0:0:0');
+
 end;
 
-procedure TAudioEngineMPlayer.SetBandValue(Index: Integer; AValue: single);
+procedure TAudioEngineMPlayer.SetBandValue(Index: Integer; AValue: Double);
 begin
   fBandInfo[Index].Value:= AValue;
 end;
@@ -473,7 +472,7 @@ var
   i: integer;
 begin
   tmp:='';
-  for i := 0 to 9 do
+  for i := 0 to pred(EQUALIZER_BANDS) do
     tmp:=tmp+ ':'+Format('%2.0f',[fBandInfo[i].Value]);
   Delete(tmp,1,1);
 

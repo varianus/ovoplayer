@@ -71,9 +71,9 @@ type
 // equalizer
    function GetBandInfo: ARBandInfo; override;
    function getActiveEQ: boolean; override;
-   function GetBandValue(Index: Integer): single; override;
+   function GetBandValue(Index: Integer): Double; override;
    procedure SetActiveEQ(AValue: boolean); override;
-   procedure SetBandValue(Index: Integer; AValue: single); override;
+   procedure SetBandValue(Index: Integer; AValue: Double); override;
    Procedure EQApply; override;
   end;
 
@@ -439,7 +439,7 @@ begin
 
 end;
 
-function TAudioEngineVLC.GetBandValue(Index: Integer): single;
+function TAudioEngineVLC.GetBandValue(Index: Integer): Double;
 begin
   if Assigned(fEqualizer) then
     Result := libvlc_audio_equalizer_get_amp_at_index(fEqualizer, Index)
@@ -447,7 +447,7 @@ begin
     Result:=0;
 end;
 
-procedure TAudioEngineVLC.SetBandValue(Index: Integer; AValue: single);
+procedure TAudioEngineVLC.SetBandValue(Index: Integer; AValue: Double);
 begin
   if Assigned(fEqualizer) then
     libvlc_audio_equalizer_set_amp_at_index(fEqualizer, AValue, Index);

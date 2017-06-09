@@ -78,9 +78,9 @@ type
     // equalizer
     function GetBandInfo: ARBandInfo; override;
     function getActiveEQ: boolean; override;
-    function GetBandValue(Index: Integer): single; override;
+    function GetBandValue(Index: Integer): Double; override;
     procedure SetActiveEQ(AValue: boolean); override;
-    procedure SetBandValue(Index: Integer; AValue: single); override;
+    procedure SetBandValue(Index: Integer; AValue: Double); override;
     Procedure EQApply; override;
 
   end;
@@ -414,7 +414,7 @@ var
   i: integer;
 begin
    if AValue and not fActiveEQ then
-       for i := 0 to 9 do
+       for i := 0 to Pred(EQUALIZER_BANDS) do
          begin
            fBassBands[i].Handle := BASS_ChannelSetFX(Channel, BASS_FX_DX8_PARAMEQ, 0);
            BASS_FXGetParameters(fBassBands[i].Handle, @EqP);
@@ -425,7 +425,7 @@ begin
         end;
 
    if not AValue and fActiveEQ then
-     for i := 0 to 9 do
+     for i := 0 to pred(EQUALIZER_BANDS) do
        begin
          BASS_ChannelRemoveFX(Channel, fBassBands[i].Handle);
          fBassBands[i].Handle := 0;
@@ -433,12 +433,12 @@ begin
    fActiveEq:=AValue;
 end;
 
-function TAudioEngineBASS.GetBandValue(Index: Integer): single;
+function TAudioEngineBASS.GetBandValue(Index: Integer): Double;
 begin
   Result := fBandinfo[Index].Value;
 end;
 
-procedure TAudioEngineBASS.SetBandValue(Index: Integer; AValue: single);
+procedure TAudioEngineBASS.SetBandValue(Index: Integer; AValue: Double);
 begin
   fBandinfo[Index].Value:= AValue;
 end;
@@ -448,7 +448,7 @@ var
   EqP: BASS_DX8_PARAMEQ;
   i:   integer;
 begin
-  for i := 0 to 9 do
+  for i := 0 to pred(EQUALIZER_BANDS) do
     begin
       BASS_FXGetParameters(fBassBands[i].Handle, @EqP);
       EqP.fGain := fBandinfo[i].Value;

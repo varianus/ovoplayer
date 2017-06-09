@@ -39,6 +39,7 @@ type
     bus: pointer;
     fdecoupler: TDecoupler;
     fBandInfo: ARBandinfo;
+    fActiveEQ: Boolean;
   protected
     function GetMainVolume: integer; override;
     procedure SetMainVolume(const AValue: integer); override;
@@ -69,18 +70,18 @@ type
     function GetBandInfo: ARBandInfo; override;
     function getActiveEQ: boolean; override;
     procedure SetActiveEQ(AValue: boolean); override;
-    function GetBandValue(Index: Integer): single; override;
-    procedure SetBandValue(Index: Integer; AValue: single); override;
+    function GetBandValue(Index: Integer): Double; override;
+    procedure SetBandValue(Index: Integer; AValue: Double); override;
     Procedure EQApply; override;
 
   end;
 
 
 implementation
-
-{ TAudioEngineGStreamer }
 uses  glib2,lclproc, GeneralFunc;
 
+var
+  DoubleZero: double=0.0;
 
 function bus_watch_callback(bus: pointer; AMessage:Pointer; user_data:pointer): boolean; cdecl;
 var
@@ -111,6 +112,7 @@ begin
 
 end;
 
+{ TAudioEngineGStreamer }
 function TAudioEngineGStreamer.GetMainVolume: integer;
 var
   Par: TGValue ;
@@ -236,16 +238,16 @@ begin
     gst_pad_set_active (ghost_pad, TRUE);
     gst_element_add_pad (bin, ghost_pad);//add ghost pad to the bin
     gst_object_unref (pad);//unreference pad
-    g_object_set ( (equalizer), 'band0', 0.0, NULL);
-    g_object_set ( (equalizer), 'band1', 0.0, NULL);
-    g_object_set ( (equalizer), 'band2', 0.0, NULL);
-    g_object_set ( (equalizer), 'band3', 0.0, NULL);
-    g_object_set ( (equalizer), 'band4', 0.0, NULL);
-    g_object_set ( (equalizer), 'band5', 0.0, NULL);
-    g_object_set ( (equalizer), 'band6', 0.0, NULL);
-    g_object_set ( (equalizer), 'band7', 0.0, NULL);
-    g_object_set ( (equalizer), 'band8', 0.0, NULL);
-    g_object_set ( (equalizer), 'band9', 0.0, NULL);
+    g_object_set ( (equalizer), 'band0', DoubleZero, NULL);
+    g_object_set ( (equalizer), 'band1', DoubleZero, NULL);
+    g_object_set ( (equalizer), 'band2', DoubleZero, NULL);
+    g_object_set ( (equalizer), 'band3', DoubleZero, NULL);
+    g_object_set ( (equalizer), 'band4', DoubleZero, NULL);
+    g_object_set ( (equalizer), 'band5', DoubleZero, NULL);
+    g_object_set ( (equalizer), 'band6', DoubleZero, NULL);
+    g_object_set ( (equalizer), 'band7', DoubleZero, NULL);
+    g_object_set ( (equalizer), 'band8', DoubleZero, NULL);
+    g_object_set ( (equalizer), 'band9', DoubleZero, NULL);
     //* Set playbin2's audio sink to be our sink bin */
     g_object_set ((playbin), 'audio-sink', bin, NULL);
 
@@ -430,21 +432,31 @@ end;
 
 function TAudioEngineGStreamer.getActiveEQ: boolean;
 begin
-
+  Result := fActiveEQ;
 end;
 
 procedure TAudioEngineGStreamer.SetActiveEQ(AValue: boolean);
+var
+  i: integer;
 begin
+  if AValue and not fActiveEQ then
+    for i := 0 to pred(EQUALIZER_BANDS) do
+      g_object_set ( (equalizer), pgchar('band'+inttostr(i)), fBandInfo[i].Value , NULL);
 
+  if not AValue and fActiveEQ then
+    for i := 0 to pred(EQUALIZER_BANDS) do
+      g_object_set ( (equalizer), pgchar('band'+inttostr(i)), DoubleZero , NULL);
+
+ fActiveEq:=AValue;
 end;
 
-function TAudioEngineGStreamer.GetBandValue(Index: Integer): single;
+function TAudioEngineGStreamer.GetBandValue(Index: Integer): Double;
 begin
   g_object_get ( (equalizer), pgchar('band'+inttostr(index)), Result, NULL);
   fBandInfo[Index].Value := result;
 end;
 
-procedure TAudioEngineGStreamer.SetBandValue(Index: Integer; AValue: single);
+procedure TAudioEngineGStreamer.SetBandValue(Index: Integer; AValue: Double);
 begin
   g_object_set ( (equalizer), pgchar('band'+inttostr(index)), AValue, NULL);
   fBandInfo[Index].value := Avalue;
