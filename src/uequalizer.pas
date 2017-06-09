@@ -20,7 +20,6 @@ type
     pnlHeader: TPanel;
     pnlContainer: TPanel;
     procedure cbEnableEqClick(Sender: TObject);
-    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
   private
     Eq: IEqualizer;
@@ -58,7 +57,6 @@ begin
       exit;
     end;
 
-  eq.ActiveEQ:=true;
   BandInfo := Eq.BandInfo;
   EQBandList:= TEQBandList.Create(false);
 
@@ -72,16 +70,12 @@ begin
     EQBand.OnBandChanged:=@BandChanged;
     EQBand.Align := alLeft;
     EQBand.Left := i* EQBand.Width;
+    // Some engines allow a range greater than -12/+12 db, this should be supported by all engines...
     EQBand.InitBand(i, FloatToStr(BandInfo[i].freq), BandInfo[i].Value, -12,+12);
   end;
   pnlContainer.EnableAlign;
 
 
-end;
-
-procedure TfEqualizer.FormClose(Sender: TObject; var CloseAction: TCloseAction);
-begin
-    eq.ActiveEQ:=false;
 end;
 
 procedure TfEqualizer.cbEnableEqClick(Sender: TObject);
