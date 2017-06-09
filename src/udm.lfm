@@ -8,6 +8,7 @@ object DM: TDM
   HorizontalOffset = 749
   VerticalOffset = 295
   Width = 481
+  PPI = 96
   object ActionList: TActionList
     Images = ilButtons
     left = 67

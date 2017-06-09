@@ -85,6 +85,7 @@ equalizerband, uequalizer;
 
 {$R *.res}
 begin
+
   {$IF lcl_fullversion>=1080001}
   Application.Scaled:=True;
   {$ENDIF}
