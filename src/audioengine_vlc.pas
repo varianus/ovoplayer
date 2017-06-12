@@ -25,7 +25,7 @@ unit audioengine_vlc;
 interface
 
 uses
-  Classes, SysUtils, BaseTypes, AudioEngine, PasLibVlcUnit, Song, decoupler, lclproc;
+  Classes, SysUtils, BaseTypes, AudioEngine, Equalizer, PasLibVlcUnit, Song, decoupler, lclproc;
 
 type
 

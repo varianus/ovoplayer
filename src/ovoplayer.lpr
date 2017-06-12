@@ -81,7 +81,7 @@ uses
   lazlogger, DefaultTranslator,  LCLVersion,
   ucustomplaylist, ufrfield, playlistbuilder, netprotocol,
   ImagesSupport, netsupport, guiconfig, SimpleSingleInstance, mcaselli, 
-equalizerband, uequalizer;
+equalizerband, uequalizer, equalizer;
 
 {$R *.res}
 begin

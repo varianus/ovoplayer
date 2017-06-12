@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ButtonPanel,
-  ExtCtrls, StdCtrls, equalizerband, fgl, AudioEngine;
+  ExtCtrls, StdCtrls, equalizerband, fgl, AudioEngine, Equalizer;
 
 type
 
@@ -16,10 +16,13 @@ type
   TfEqualizer = class(TForm)
     ButtonPanel1: TButtonPanel;
     cbEnableEq: TCheckBox;
+    cbPreset: TComboBox;
     lbMessage: TLabel;
     pnlHeader: TPanel;
     pnlContainer: TPanel;
+    StaticText1: TStaticText;
     procedure cbEnableEqClick(Sender: TObject);
+    procedure cbPresetChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
     Eq: IEqualizer;
@@ -37,9 +40,6 @@ uses GUIBackEnd;
 
 {$R *.lfm}
 
-const
-  EQCounter = 10;
-
 { TfEqualizer }
 
 procedure TfEqualizer.FormCreate(Sender: TObject);
@@ -52,9 +52,15 @@ begin
   if not  Supports(BackEnd.AudioEngine, IEqualizer, Eq) then
     begin
       lbMessage.Caption:='UNSUPPORTED ENGINE';
+      lbMessage.Visible:=True;
       pnlContainer.Enabled:=false;
       pnlHeader.Enabled:=false;
       exit;
+    end;
+
+  for i := 0 to pred(PRESET_COUNT) do
+    begin
+      cbPreset.Items.Add(ARPreset[i].Name);
     end;
 
   BandInfo := Eq.BandInfo;
@@ -82,6 +88,18 @@ procedure TfEqualizer.cbEnableEqClick(Sender: TObject);
 begin
   Eq.ActiveEQ:=cbEnableEq.Checked;
 
+end;
+
+procedure TfEqualizer.cbPresetChange(Sender: TObject);
+var
+  i: integer;
+begin
+  for i := 0 to pred(EQCounter) do
+    begin
+      eq.BandValue[i] := ARPreset[cbPreset.ItemIndex].Values[i];
+      EQBandList[i].Value:= ARPreset[cbPreset.ItemIndex].Values[i];
+    end;
+  Eq.EQApply;
 end;
 
 procedure TfEqualizer.BandChanged(Sender: TObject; const BandNo: integer;

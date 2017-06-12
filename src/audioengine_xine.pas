@@ -25,7 +25,7 @@ unit audioengine_Xine;
 interface
 
 uses
-  Classes, SysUtils, BaseTypes, AudioEngine, Xine, Song, decoupler, lclproc;
+  Classes, SysUtils, BaseTypes, AudioEngine, Equalizer, Xine, Song, decoupler, lclproc;
 
   { TAudioEngineXINE }
 const

@@ -241,6 +241,7 @@ procedure TBackEnd.SaveState;
 begin
   Manager.SaveToXSPF(Config.ConfigDir + 'lastplaylist.xspf', PlayList, AudioEngine.Position);
   Config.EngineParam.Volume := AudioEngine.MainVolume;
+  Config.EngineParam.ActiveEQ := AudioEngine.getActiveEQ;
 
 end;
 

@@ -1,20 +1,19 @@
 object fEqualizer: TfEqualizer
   Left = 0
-  Height = 317
+  Height = 467
   Top = 0
-  Width = 758
+  Width = 736
   ActiveControl = ButtonPanel1.CloseButton
   Caption = 'Equalizer'
-  ClientHeight = 317
-  ClientWidth = 758
+  ClientHeight = 467
+  ClientWidth = 736
   OnCreate = FormCreate
-  LCLVersion = '1.8.0.2'
   Visible = False
   object ButtonPanel1: TButtonPanel
     Left = 6
-    Height = 35
-    Top = 276
-    Width = 746
+    Height = 34
+    Top = 427
+    Width = 724
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
     HelpButton.Name = 'HelpButton'
@@ -28,37 +27,58 @@ object fEqualizer: TfEqualizer
   end
   object pnlHeader: TPanel
     Left = 0
-    Height = 50
+    Height = 66
     Top = 0
-    Width = 758
+    Width = 736
     Align = alTop
-    ClientHeight = 50
-    ClientWidth = 758
+    ClientHeight = 66
+    ClientWidth = 736
     TabOrder = 1
     object cbEnableEq: TCheckBox
-      Left = 8
-      Height = 21
-      Top = 16
-      Width = 116
+      Left = 9
+      Height = 19
+      Top = 40
+      Width = 105
       Caption = 'Enable equalizer'
       OnClick = cbEnableEqClick
       TabOrder = 0
     end
-    object lbMessage: TLabel
-      Left = 128
-      Height = 15
-      Top = 16
-      Width = 616
-      AutoSize = False
-      ParentColor = False
+    object StaticText1: TStaticText
+      Left = 8
+      Height = 17
+      Top = 11
+      Width = 106
+      Alignment = taRightJustify
+      Caption = 'Preset'
+      TabOrder = 1
+    end
+    object cbPreset: TComboBox
+      Left = 122
+      Height = 23
+      Top = 8
+      Width = 600
+      ItemHeight = 15
+      OnChange = cbPresetChange
+      TabOrder = 2
     end
   end
   object pnlContainer: TPanel
     Left = 0
-    Height = 220
-    Top = 50
-    Width = 758
+    Height = 355
+    Top = 66
+    Width = 736
     Align = alClient
+    ClientHeight = 355
+    ClientWidth = 736
     TabOrder = 2
+    object lbMessage: TLabel
+      Left = 40
+      Height = 56
+      Top = 48
+      Width = 672
+      AutoSize = False
+      ParentColor = False
+      Visible = False
+    end
   end
 end

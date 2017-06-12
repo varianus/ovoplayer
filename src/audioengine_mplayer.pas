@@ -25,7 +25,7 @@ unit AudioEngine_MPlayer;
 interface
 
 uses
-  Classes, SysUtils,  Process, fptimer, UTF8Process, Song, BaseTypes, AudioEngine;
+  Classes, SysUtils,  Process, fptimer, UTF8Process, Song, BaseTypes, AudioEngine, equalizer;
 
 type
 

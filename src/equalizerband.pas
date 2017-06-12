@@ -20,13 +20,16 @@ type
     slValue: TThemedSlider;
     procedure slValueChange(Sender: TObject);
   private
-    fNormalize: single;
+    fNormalize: Double;
     fBandNo: integer;
     FOnBandChanged: TBandChanged;
+    function GetValue: Double;
     procedure SetOnBandChanged(AValue: TBandChanged);
+    procedure SetValue(AValue: Double);
   public
-    Procedure InitBand(BandNo:Integer; Const Band:string; const Value: single; const Min,Max: single);
+    Procedure InitBand(BandNo:Integer; Const Band:string; const Value: Double; const Min,Max: Double);
     property OnBandChanged: TBandChanged read FOnBandChanged write SetOnBandChanged;
+    property Value: Double read GetValue write SetValue;
   end;
 
 implementation
@@ -52,8 +55,19 @@ begin
   FOnBandChanged:=AValue;
 end;
 
-procedure TfrEqualizer.InitBand(BandNo:Integer;const Band: string; const Value: single; const Min,
-  Max: single);
+function TfrEqualizer.GetValue: Double;
+begin
+  result := (slValue.Position /100) - fNormalize ;
+end;
+
+procedure TfrEqualizer.SetValue(AValue: Double);
+begin
+  slValue.Position:= trunc((AValue + fNormalize)*100);
+  lbValue.Caption:= format('%2.2f Db',[AValue]);
+end;
+
+procedure TfrEqualizer.InitBand(BandNo:Integer;const Band: string; const Value: Double; const Min,
+  Max: Double);
 begin
   fBandNo:= BandNo;
   lbBand.Caption:= Band;

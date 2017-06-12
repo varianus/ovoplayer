@@ -25,7 +25,7 @@ unit AudioEngine;
 interface
 
 uses
-  Classes, SysUtils, Song, BaseTypes, NullInterfacedObject;
+  Classes, SysUtils, Song, BaseTypes, NullInterfacedObject, equalizer;
 
 const
   EQUALIZER_BANDS = 10;
@@ -42,26 +42,6 @@ type
     Failed :boolean;
   end;
 
-  RBandInfo = record
-    Value : Double;
-    Freq: Double;
-  end;
-  ARBandinfo = array of RBandInfo;
-
-  { IEqualizer }
-  IEqualizer = interface
-    ['{95CADD9D-8BDD-4527-8660-53537B3052F5}']
-    function getActiveEQ: boolean;
-    function GetBandInfo: ARBandInfo;
-    function GetBandValue(Index: Integer): Double;
-    procedure SetActiveEQ(AValue: boolean);
-    procedure SetBandValue(Index: Integer; AValue: Double);
-//
-    property BandInfo: ARBandInfo read GetBandInfo;
-    Property ActiveEQ: boolean read getActiveEQ write SetActiveEQ;
-    Property BandValue[Index:Integer]: Double read GetBandValue write SetBandValue;
-    Procedure EQApply;
-  end;
 
   { TAudioEngine }
   TAudioEngine = class (TNullInterfacedObject, IEqualizer)

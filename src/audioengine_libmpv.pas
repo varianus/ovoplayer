@@ -25,7 +25,7 @@ unit audioengine_libmpv;
 interface
 
 uses
-  Classes, SysUtils, BaseTypes, AudioEngine, Song, decoupler, libmpv, LCLProc;
+  Classes, SysUtils, BaseTypes, AudioEngine, Equalizer, Song, decoupler, libmpv, LCLProc;
 
 type
   { TAudioEngineLibMPV }

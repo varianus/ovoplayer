@@ -1,3 +1,4 @@
 {"version":1,"strings":[
-{"hash":40024114,"name":"tfequalizer.cbenableeq.caption","sourcebytes":[69,110,97,98,108,101,32,101,113,117,97,108,105,122,101,114],"value":"Enable equalizer"}
+{"hash":40024114,"name":"tfequalizer.cbenableeq.caption","sourcebytes":[69,110,97,98,108,101,32,101,113,117,97,108,105,122,101,114],"value":"Enable equalizer"},
+{"hash":91802052,"name":"tfequalizer.statictext1.caption","sourcebytes":[80,114,101,115,101,116],"value":"Preset"}
 ]}

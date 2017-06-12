@@ -12,6 +12,8 @@
       <UseXPManifest Value="True"/>
       <XPManifest>
         <DpiAware Value="True"/>
+        <TextName Value="Varianus.OvoPlayer.Ovoplayer"/>
+        <TextDesc Value="A free multiplatform media player"/>
       </XPManifest>
       <Icon Value="0"/>
     </General>
@@ -22,8 +24,8 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MajorVersionNr Value="1"/>
-      <MinorVersionNr Value="3"/>
-      <Attributes pvaPreRelease="True"/>
+      <MinorVersionNr Value="4"/>
+      <Attributes pvaDebug="True" pvaPrivateBuild="True"/>
       <StringTable CompanyName="Marco Caselli" OriginalFilename="ovoplayer.lpr"/>
     </VersionInfo>
     <BuildModes Count="2">
@@ -126,7 +128,7 @@ if TargetOS = 'linux' then
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="84">
+    <Units Count="85">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -538,6 +540,11 @@ if TargetOS = 'linux' then
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit83>
+      <Unit84>
+        <Filename Value="equalizer.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Equalizer"/>
+      </Unit84>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
