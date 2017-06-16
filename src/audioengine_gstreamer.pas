@@ -26,7 +26,7 @@ interface
 
 uses
   Classes, SysUtils, BaseTypes,
-  AudioEngine, gstreamer, Song, uriparser, decoupler, ctypes;
+  AudioEngine, Equalizer, gstreamer, Song, uriparser, decoupler, ctypes;
 
 type
 
