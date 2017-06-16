@@ -99,8 +99,6 @@ begin
   end;
 
   case Format of
-  bsfBytes:
-    Result := SysUtils.Format('%d bytes', [Bytes]);
   bsfKB:
     Result := SysUtils.Format('%.1n KB', [Bytes / OneKB]);
   bsfMB:
@@ -109,6 +107,9 @@ begin
     Result := SysUtils.Format('%.1n GB', [Bytes / OneGB]);
   bsfTB:
     Result := SysUtils.Format('%.1n TB', [Bytes / OneTB]);
+  else  // bsfBytes:
+    Result := SysUtils.Format('%d bytes', [Bytes]);
+
   end;
 end;
 
