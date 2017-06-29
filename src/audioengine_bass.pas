@@ -64,6 +64,7 @@ type
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
     class Function GetEngineName: String; override;
     Class Function GetEngineInfo(IsCurrent:boolean): AREngineParams; override;
+    Class Function SupportEQ: boolean; override;
 
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
@@ -354,6 +355,11 @@ begin
   if not IsCurrent then
      Unload_BASSDLL;
 
+end;
+
+class function TAudioEngineBASS.SupportEQ: boolean;
+begin
+  Result:= true;
 end;
 
 procedure TAudioEngineBASS.PostCommand(Command: TEngineCommand; Param: integer);

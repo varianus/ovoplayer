@@ -49,7 +49,8 @@ var
   BandInfo: ARBandinfo;
 begin
 
-  if not  Supports(BackEnd.AudioEngine, IEqualizer, Eq) then
+  if (not BackEnd.AudioEngine.SupportEQ) or
+    not Supports(BackEnd.AudioEngine, IEqualizer, Eq) then
     begin
       lbMessage.Caption:='UNSUPPORTED ENGINE';
       lbMessage.Visible:=True;
@@ -63,7 +64,7 @@ begin
       cbPreset.Items.Add(ARPreset[i].Name);
     end;
 
-  BandInfo := Eq.BandInfo;
+  BandInfo := eq.BandInfo;
   EQBandList:= TEQBandList.Create(false);
 
   pnlContainer.DisableAlign;
@@ -77,7 +78,7 @@ begin
     EQBand.Align := alLeft;
     EQBand.Left := i* EQBand.Width;
     // Some engines allow a range greater than -12/+12 db, this should be supported by all engines...
-    EQBand.InitBand(i, FloatToStr(BandInfo[i].freq), BandInfo[i].Value, -12,+12);
+    EQBand.InitBand(i, FloatToStr(BandInfo[i].freq), BandInfo[i].Value, -12, +12);
   end;
   pnlContainer.EnableAlign;
 

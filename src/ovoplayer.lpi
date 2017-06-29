@@ -128,7 +128,7 @@ if TargetOS = 'linux' then
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="85">
+    <Units Count="87">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -545,6 +545,14 @@ if TargetOS = 'linux' then
         <IsPartOfProject Value="True"/>
         <UnitName Value="Equalizer"/>
       </Unit84>
+      <Unit85>
+        <Filename Value="import-engines\libZPlay.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit85>
+      <Unit86>
+        <Filename Value="audioengine_libzplay.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit86>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -602,7 +610,7 @@ if TargetOS = 'linux' then
     </Other>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="7">
+    <Exceptions Count="8">
       <Item1>
         <Name Value="EAbort"/>
       </Item1>
@@ -625,6 +633,9 @@ if TargetOS = 'linux' then
       <Item7>
         <Name Value="ESocketError"/>
       </Item7>
+      <Item8>
+        <Name Value="EInOutError"/>
+      </Item8>
     </Exceptions>
   </Debugging>
 </CONFIG>

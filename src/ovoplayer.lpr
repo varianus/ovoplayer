@@ -57,6 +57,7 @@ uses
   {$IFDEF UOS} UOS, uos_libsndfile, uos_mpg123, uos_portaudio, audioengine_UOS,{$ENDIF}
   {$IFDEF FFMPEG} ffmpeg, audioengine_FFMPEG,{$ENDIF}
   {$IFDEF LIBMPV} libmpv, audioengine_libmpv,{$ENDIF}
+  {$IFDEF LIBZPLAY} libZPlay, audioengine_libzplay,{$ENDIF}
 
   // Platform related
   {$IFDEF MPRIS2} mpris2,{$ENDIF}
@@ -81,7 +82,7 @@ uses
   lazlogger, DefaultTranslator,  LCLVersion,
   ucustomplaylist, ufrfield, playlistbuilder, netprotocol,
   ImagesSupport, netsupport, guiconfig, SimpleSingleInstance, mcaselli, 
-equalizerband, uequalizer, equalizer;
+  equalizerband, uequalizer, equalizer;
 
 {$R *.res}
 begin
@@ -89,7 +90,6 @@ begin
   {$IF lcl_fullversion>=1080001}
   Application.Scaled:=True;
   {$ENDIF}
-
 
   CheckRestarting(Application);
   // needed to output exception to a file
@@ -101,8 +101,6 @@ begin
   Application.Title:='OvoPlayer';
 
   Application.Initialize;
-
- // WriteLn(Application.SingleInstance.StartResult);
 
   if Application.SingleInstance.StartResult <> siClient then
     begin

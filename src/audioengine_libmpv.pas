@@ -115,9 +115,8 @@ begin
 end;
 
 procedure TAudioEngineLibMPV.SetMainVolume(const AValue: integer);
-var
-  vol : Double;
-    res:integer;
+var                                         vol : Double;
+  res:integer;
 begin
   vol := AValue * (MPVMAXVOLUME / 255);
   res := mpv_set_property(fhandle^,'volume',MPV_FORMAT_DOUBLE,@vol);
@@ -313,7 +312,7 @@ class function TAudioEngineLibMPV.GetEngineInfo(IsCurrent:boolean): AREnginePara
      ver:=0;
    end;
 
-   GetModuleByAddr(@mpv_client_api_version,BaseAddr,ModuleName);
+   GetModuleByAddr(mpv_client_api_version,BaseAddr,ModuleName);
 
    SetLength(Result,2);
    result[0].Key:= 'Library';
@@ -356,7 +355,7 @@ begin
             end;
           if (Event^.event_id =  MPV_EVENT_LOG_MESSAGE)then
             begin
-               writeln(Pmpv_event_log_message(Event^.data)^.text);
+               debugln(Pmpv_event_log_message(Event^.data)^.text);
             end;
 
           Event := mpv_wait_event(fhandle^, 0);
