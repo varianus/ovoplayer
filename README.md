@@ -26,7 +26,13 @@ Ovoplayer can use DirectShow, MediaFoundation VLC, XINE, BASS, Mplayer, GStreame
   * Mac OSX port - ~~working on~~ *Delayed, no Mac to work on …*
   * Streaming - *Delayed*
   * Equalizer - *Working on*
-  
+
+### Build environment
+To build Ovoplayer from sources you will need:
+
+*  [Free Pascal 3.0.3 ](http://www.freepascal.org)(last stable fixes branch) or above
+*  [Lazarus 1.8RC3](http://www.lazarus.freepascal.org) (current release candidate) or above
+
 ### Screenshot
 ![Screenshot](http://ovoplayer.altervista.org/images/OVOPlayer_scrn1.png)
 
