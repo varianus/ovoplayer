@@ -91,7 +91,8 @@ begin
   if (user_data = nil) then
     exit;
   player := TAudioEnginelibzplay(user_data);
-
+//  if msg <> MsgWaveBuffer then
+//    WRITELN('msg:'+inttostr(msg));
   player.PostCommand(ecCustom, ord(msg));
 end;
 
@@ -201,7 +202,7 @@ var
   res: longint;
 //  vol : Pchar;
 begin
-  Stop;
+//  Stop;
   res := zplay_OpenFile(fhandle,PAnsiChar(song.FullName), sfAutodetect);
   result := res = 1 ;
 
