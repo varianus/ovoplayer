@@ -984,7 +984,7 @@ begin
     cpPlayPos: begin
                  if not seeking then
                    TrackBar.Position := BackEnd.Position;
-                   lbTime.Caption := TimeToStr(BackEnd.Position / MSecsPerDay);
+                   lbTime.Caption := FormatTimeRange(BackEnd.Position);
                end;
   end;
 
@@ -1955,7 +1955,7 @@ begin
              1: Txt := ASong.Tags.Title;
              2: Txt := ASong.Tags.Album;
              3: Txt := ASong.Tags.Artist;
-             4: Txt := TimeToStr(ASong.Tags.Duration / MSecsPerDay);
+             4: Txt := FormatTimeRange(ASong.Tags.Duration);
              5: Txt := ASong.Tags.TrackString;
              6: Txt := ASong.Tags.Genre;
              7: Txt := ASong.Tags.Year;
@@ -2136,7 +2136,7 @@ begin
          1: Txt := ASong.Title;
          2: Txt := ASong.Tags.Album;
          3: Txt := ASong.Tags.Artist;
-         4: Txt := ShortestDurationFormat(ASong.Tags.Duration);
+         4: Txt := FormatTimeRange(ASong.Tags.Duration, true);
          5: Txt := ASong.Tags.TrackString;
          6: Txt := ASong.Tags.Genre;
          7: Txt := ASong.Tags.Year;
@@ -2858,7 +2858,7 @@ begin
   Artist.Caption    := '';
 //  Track.Caption     := '';
   TrackBar.Position := 0;
-  lbTime.caption    := TimeToStr(0);
+  lbTime.caption    := FormatTimeRange(0);
   lFile := backend.Config.GetResourcesPath + 'logo.png';
   if not FileExists(lFile) then
     DebugLn('[TfMainForm.ClearPanelInfo] File not found: ' + lFile)

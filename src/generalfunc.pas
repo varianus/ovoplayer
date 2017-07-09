@@ -28,10 +28,10 @@ uses
   netprotocol;
 
 function TimeToMSec(Time: double): int64;
-Function ShortestDurationFormat(const Duration:int64):string;
 Function isAppRunning(Application:TCustomApplication):Boolean;
 Function Restart(Application:TCustomApplication):Boolean;
 Function CheckRestarting(Application:TCustomApplication):Boolean;
+Function FormatTimeRange(const Time: TDateTime; ShortMode:boolean=false): string;
 
 // Platform dependant function
 procedure GetModuleByAddr(addr: pointer; var baseaddr: pointer; var filename: string);
@@ -57,16 +57,13 @@ const
 
   OneHour = MinsPerHour * SecsPerMin * MSecsPerSec;
 
-Function ShortestDurationFormat(const Duration:int64):string;
-var
-  fmt: string;
-begin
-  if Duration < OneHour then
-    fmt := 'N:SS'
-  else
-    fmt := 'H:NN:SS';
 
-  Datetimetostring(result, fmt, Duration / MSecsPerDay);;
+function FormatTimeRange(const Time: TDateTime; ShortMode:boolean=false): string;
+begin
+  if ShortMode and (Time < OneHour) then
+    result:=FormatDateTime('[mm]:ss', Time / MSecsPerDay,[fdoInterval])
+  else
+    result:=FormatDateTime('[hh]:mm:ss', Time / MSecsPerDay,[fdoInterval]);
 
 end;
 

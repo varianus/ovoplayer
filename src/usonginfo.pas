@@ -31,7 +31,7 @@ uses
   LCLIntf,
   {$ENDIF}
 
-  AudioTag, BaseTag, FilesSupport, ExtendedInfo, MediaLibrary;
+  AudioTag, BaseTag, FilesSupport, ExtendedInfo, MediaLibrary, GeneralFunc;
 
 type
 
@@ -545,7 +545,7 @@ begin
     end;
   fUpdating := True;
   leFileName.Caption := Tags.FileName;
-  leDuration.Caption := TimeToStr(Tags.Duration / MSecsPerDay);
+  leDuration.Caption := FormatTimeRange(Tags.Duration);
   edArtist.Caption := Tags.Artist;
   edAlbum.Caption := Tags.Album;
   edAlbumArtist.Caption := Tags.AlbumArtist;
