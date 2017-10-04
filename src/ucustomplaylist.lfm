@@ -9,8 +9,7 @@ object fCustomPlayList: TfCustomPlayList
   ClientWidth = 633
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  LCLVersion = '1.8.0.1'
-  Visible = False
+  LCLVersion = '1.9.0.0'
   object Panel1: TPanel
     Left = 0
     Height = 72

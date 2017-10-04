@@ -10,7 +10,6 @@ object fConfig: TfConfig
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '1.8.0.1'
   Visible = False
   object GroupBox1: TGroupBox
     Left = 0
@@ -99,7 +98,7 @@ object fConfig: TfConfig
         Left = 4
         Height = 57
         Top = 4
-        Width = 137
+        Width = 139
         Align = alTop
         AutoSize = False
         BorderSpacing.Around = 3

@@ -128,7 +128,7 @@ if TargetOS = 'linux' then
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="87">
+    <Units Count="86">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -299,6 +299,7 @@ if TargetOS = 'linux' then
       <Unit32>
         <Filename Value="ovotag\file_monkey.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="file_Monkey"/>
       </Unit32>
       <Unit33>
         <Filename Value="ovotag\tag_ape.pas"/>
@@ -308,6 +309,7 @@ if TargetOS = 'linux' then
       <Unit34>
         <Filename Value="ovotag\id3v1genres.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="ID3v1Genres"/>
       </Unit34>
       <Unit35>
         <Filename Value="ovotag\basetag.pas"/>
@@ -322,237 +324,236 @@ if TargetOS = 'linux' then
         <IsPartOfProject Value="True"/>
       </Unit37>
       <Unit38>
-        <Filename Value="customdrawn_ovoplayer.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit38>
-      <Unit39>
         <Filename Value="ovotag\file_dummy.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_Dummy"/>
-      </Unit39>
-      <Unit40>
+      </Unit38>
+      <Unit39>
         <Filename Value="ovotag\tag_dummy.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit40>
-      <Unit41>
+        <UnitName Value="tag_Dummy"/>
+      </Unit39>
+      <Unit40>
         <Filename Value="audioengine_dshow.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="audioengine_DShow"/>
-      </Unit41>
-      <Unit42>
+      </Unit40>
+      <Unit41>
         <Filename Value="import-engines\mediafoundation.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit42>
-      <Unit43>
+      </Unit41>
+      <Unit42>
         <Filename Value="ucover.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fCover"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uCover"/>
-      </Unit43>
-      <Unit44>
+      </Unit42>
+      <Unit43>
         <Filename Value="audioengine_openlib.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AudioEngine_OpenLib"/>
+      </Unit43>
+      <Unit44>
+        <Filename Value="import-engines\mediadshow.pas"/>
+        <IsPartOfProject Value="True"/>
       </Unit44>
       <Unit45>
-        <Filename Value="import-engines\mediadshow.pas"/>
+        <Filename Value="import-engines\uos.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit45>
       <Unit46>
-        <Filename Value="import-engines\uos.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit46>
-      <Unit47>
         <Filename Value="audioengine_uos.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AudioEngine_UOS"/>
+      </Unit46>
+      <Unit47>
+        <Filename Value="import-engines\uos_libsndfile.pas"/>
+        <IsPartOfProject Value="True"/>
       </Unit47>
       <Unit48>
-        <Filename Value="import-engines\uos_libsndfile.pas"/>
+        <Filename Value="import-engines\uos_mpg123.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit48>
       <Unit49>
-        <Filename Value="import-engines\uos_mpg123.pas"/>
+        <Filename Value="import-engines\uos_portaudio.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit49>
       <Unit50>
-        <Filename Value="import-engines\uos_portaudio.pas"/>
+        <Filename Value="platform\linux\mpris2.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit50>
       <Unit51>
-        <Filename Value="platform\linux\mpris2.pas"/>
+        <Filename Value="coreinterfaces.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit51>
       <Unit52>
-        <Filename Value="coreinterfaces.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit52>
-      <Unit53>
         <Filename Value="basetypes.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="BaseTypes"/>
+      </Unit52>
+      <Unit53>
+        <Filename Value="platform\linux\dbusextension.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DbusExtension"/>
       </Unit53>
       <Unit54>
-        <Filename Value="platform\linux\dbusextension.pas"/>
+        <Filename Value="platform\linux\notification.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit54>
       <Unit55>
-        <Filename Value="platform\linux\notification.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit55>
-      <Unit56>
         <Filename Value="udm.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="DM"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="uDM"/>
-      </Unit56>
-      <Unit57>
+      </Unit55>
+      <Unit56>
         <Filename Value="extendedinfo.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit57>
-      <Unit58>
+        <UnitName Value="ExtendedInfo"/>
+      </Unit56>
+      <Unit57>
         <Filename Value="audioengine_ffmpeg.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AudioEngine_FFMpeg"/>
+      </Unit57>
+      <Unit58>
+        <Filename Value="import-engines\ffmpeg.pas"/>
+        <IsPartOfProject Value="True"/>
       </Unit58>
       <Unit59>
-        <Filename Value="import-engines\ffmpeg.pas"/>
+        <Filename Value="audioengine_mf.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit59>
       <Unit60>
-        <Filename Value="audioengine_mf.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit60>
-      <Unit61>
         <Filename Value="nullinterfacedobject.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="NullInterfacedObject"/>
-      </Unit61>
-      <Unit62>
+      </Unit60>
+      <Unit61>
         <Filename Value="ovotag\audiotag.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AudioTag"/>
+      </Unit61>
+      <Unit62>
+        <Filename Value="import-engines\lazdynamic_bass.pas"/>
+        <IsPartOfProject Value="True"/>
       </Unit62>
       <Unit63>
-        <Filename Value="import-engines\lazdynamic_bass.pas"/>
+        <Filename Value="audioengine_gstreamer.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit63>
       <Unit64>
-        <Filename Value="audioengine_gstreamer.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit64>
-      <Unit65>
         <Filename Value="audioengine_xine.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="audioengine_Xine"/>
+      </Unit64>
+      <Unit65>
+        <Filename Value="import-engines\ctypes.inc"/>
+        <IsPartOfProject Value="True"/>
       </Unit65>
       <Unit66>
-        <Filename Value="import-engines\ctypes.inc"/>
+        <Filename Value="import-engines\gstreamer.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit66>
       <Unit67>
-        <Filename Value="import-engines\gstreamer.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit67>
-      <Unit68>
         <Filename Value="ovotag\file_mp4.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_Mp4"/>
-      </Unit68>
-      <Unit69>
+      </Unit67>
+      <Unit68>
         <Filename Value="ovotag\tag_mp4.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_MP4"/>
-      </Unit69>
-      <Unit70>
+      </Unit68>
+      <Unit69>
         <Filename Value="platform\win32\taskbar_ext.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit70>
-      <Unit71>
+      </Unit69>
+      <Unit70>
         <Filename Value="ucustomplaylist.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fCustomPlayList"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit71>
-      <Unit72>
+      </Unit70>
+      <Unit71>
         <Filename Value="ufrfield.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frField"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
+      </Unit71>
+      <Unit72>
+        <Filename Value="playlistbuilder.pas"/>
+        <IsPartOfProject Value="True"/>
       </Unit72>
       <Unit73>
-        <Filename Value="playlistbuilder.pas"/>
+        <Filename Value="audioengine_libmpv.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit73>
       <Unit74>
-        <Filename Value="audioengine_libmpv.pas"/>
+        <Filename Value="import-engines\libmpv.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit74>
       <Unit75>
-        <Filename Value="import-engines\libmpv.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit75>
-      <Unit76>
         <Filename Value="netintf.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="NetIntf"/>
-      </Unit76>
-      <Unit77>
+      </Unit75>
+      <Unit76>
         <Filename Value="netprotocol.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit77>
-      <Unit78>
+      </Unit76>
+      <Unit77>
         <Filename Value="imagessupport.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ImagesSupport"/>
-      </Unit78>
-      <Unit79>
+      </Unit77>
+      <Unit78>
         <Filename Value="netsupport.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit79>
-      <Unit80>
+      </Unit78>
+      <Unit79>
         <Filename Value="guiconfig.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="GuiConfig"/>
-      </Unit80>
-      <Unit81>
+      </Unit79>
+      <Unit80>
         <Filename Value="simplesingleinstance.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SimpleSingleInstance"/>
-      </Unit81>
-      <Unit82>
+      </Unit80>
+      <Unit81>
         <Filename Value="equalizerband.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frEqualizer"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
-      </Unit82>
-      <Unit83>
+      </Unit81>
+      <Unit82>
         <Filename Value="uequalizer.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fEqualizer"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit83>
-      <Unit84>
+      </Unit82>
+      <Unit83>
         <Filename Value="equalizer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Equalizer"/>
-      </Unit84>
-      <Unit85>
+      </Unit83>
+      <Unit84>
         <Filename Value="import-engines\libZPlay.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit85>
-      <Unit86>
+      </Unit84>
+      <Unit85>
         <Filename Value="audioengine_libzplay.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit86>
+      </Unit85>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
