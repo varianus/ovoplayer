@@ -25,7 +25,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, Spin, ComCtrls, CustomDrawnControls, myhello, TcpIpClient,
+  ExtCtrls, Spin, ComCtrls, TcpIpClient, tcpipwebsocket,
   netprotocol, netsupport, BaseTypes, basetag, uriparser;
 
 type
@@ -103,10 +103,10 @@ type
     procedure TrackBar1MouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
   protected
-    procedure DoClientReceive(Sender: TObject; const AData: string);
+    procedure DoClientReceive(Sender: ttcpipwebsocket; const AData: string);
   private
     Seeking: boolean;
-    FClient: TTcpIpClientSocket;
+    FClient: TTcpIpWebSocket;
     FThread: TClientThread;
     OutCfg : RConnectionCfg;
     InCfg : RConnectionCfg;
@@ -182,21 +182,31 @@ var
 begin
   if tbConn1.Checked then
      begin
-       tbConn1.Caption:= 'Disconnect';
-       FClient := TTcpIpClientSocket.Create('127.0.0.1', 6860);
-       FThread := TClientThread.Create(FClient);
-       FThread.OnReceive := @DoClientReceive;
+//       FClient := TTcpIpWebSocket.Create('127.0.0.1', 6860);
+       FClient := TTcpIpWebSocket.Create('ws://127.0.0.1:6860', 'self');
+       FClient.OnText:=@DoClientReceive;
+       if not FClient.Connect then
+         begin
+           tbConn1.Checked:=false;
+           FClient.Free;
+           exit;
+         end;
+
+//       FThread := TClientThread.Create(FClient);
+//       FThread.OnReceive := @DoClientReceive;
        s:=EncodeString(BuildCommand(CATEGORY_REQUEST, INFO_ENGINE_STATE), OutCfg);
        memoSent.lines.Add(s);
-       FClient.WriteStr(s);
+       FClient.WriteString(s);
        s:=EncodeString(BuildCommand(CATEGORY_REQUEST, INFO_METADATA), OutCfg);
        memoSent.lines.Add(s);
-       FClient.WriteStr(s);
+       FClient.WriteString(s);
+       tbConn1.Caption:= 'Disconnect';
      end
   else
      begin
-       FThread.Terminate;
-       FThread.WaitFor;
+    //   FThread.Terminate;
+    //   FThread.WaitFor;
+       FClient.Close;
        FClient.Free;
        tbConn1.Caption:= 'Connect';
      end;
@@ -209,7 +219,7 @@ var
 begin
   s:=EncodeString(BuildCommand(CATEGORY_REQUEST, INFO_POSITION), OutCfg);
   memoSent.lines.Add(s);
-  fClient.WriteStr(s);
+  fClient.WriteString(s);
 
 end;
 
@@ -220,7 +230,7 @@ begin
   if not Seeking then exit;
   s:=EncodeString(BuildCommand(CATEGORY_ACTION, COMMAND_SEEK, inttostr(TrackBar1.Position)), OutCfg);
   memoSent.lines.Add(s);
-  fClient.WriteStr(s);
+  fClient.WriteString(s);
 end;
 
 procedure TForm1.TrackBar1MouseDown(Sender: TObject; Button: TMouseButton;
@@ -237,14 +247,15 @@ begin
   Timer1.Enabled:=true;
 end;
 
-procedure TForm1.DoClientReceive(Sender: TObject; const AData: string);
+procedure TForm1.DoClientReceive(Sender: TTcpIpWebSocket; const AData: string);
 var
   r : RExternalCommand;
   tags: TCommonTags;
   s: string;
 begin
   memoReceived.lines.add(AData);
-  r:= SplitCommand(AData);
+  s:= Copy(Adata,5, Length(AData));
+  r:= SplitCommand(s);
 
   if (r.Category = CATEGORY_INFORMATION) then
    case r.Command of
@@ -288,7 +299,7 @@ end;
 
 procedure TForm1.Button1Click(Sender: TObject);
 begin
-  FClient.WriteStr(EncodeSize(Length(Edit1.caption)) + edit1.caption);
+  FClient.WriteString(EncodeSize(Length(Edit1.caption)) + edit1.caption);
   memoSent.Lines.Add(EncodeSize(Length(Edit1.caption)) + edit1.caption);
 end;
 
@@ -298,15 +309,15 @@ var
 begin
   s:=EncodeString(BuildCommand(CATEGORY_ACTION, (sender as tbutton).caption), OutCfg);
   memoSent.lines.Add(s);
-  FClient.WriteStr(s);
+  FClient.WriteString(s);
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   if tbConn1.Checked then
     begin
-       FThread.Terminate;
-       FThread.WaitFor;
+   //    FThread.Terminate;
+   //    FThread.WaitFor;
        FClient.Free;
 
     end;

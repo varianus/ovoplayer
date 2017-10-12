@@ -66,7 +66,8 @@ uses
 
   //Other Features
 
-  {$IFDEF NETWORK_INTF}NetIntf,{$ENDIF}
+  {$IFDEF NETWORK_SS}NetIntf,{$ENDIF}
+  {$IFDEF NETWORK_WS}NetIntfWS,{$ENDIF}
 
   // ovotag
   song, AudioTag, basetag,
@@ -86,6 +87,7 @@ uses
 
 {$R *.res}
 begin
+  Application.Scaled:=True;
 
   {$IF lcl_fullversion>=1080001}
   Application.Scaled:=True;

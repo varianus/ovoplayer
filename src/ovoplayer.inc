@@ -42,6 +42,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 //Other Features
 {$DEFINE NETWORK_INTF} // Activate network interface for remote control
+{$IFDEF NETWORK_INTF}
+    {.$DEFINE NETWORK_SS} // Activate network interface for remote control (web socket)
+    {$DEFINE NETWORK_WS} // Activate network interface for remote control (web socket)
+{$ENDIF NETWORK_INTF}
 
 //if release is defined, try to be quiet and efficient...
 {$IFDEF RELEASE}

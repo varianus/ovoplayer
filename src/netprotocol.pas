@@ -64,7 +64,7 @@ Const
     INFO_PLAYLISTCOUNT = 'count';
     INFO_PLAYLISTINDEX = 'index';
     INFO_COVERURL = 'coverurl';
-    INFO_COVERIMG = 'coverimg';
+    INFO_COVERIMG = 'coverimg'; // Base64 encoding of cover image
     INFO_FULLPLAYLIST = 'playlist';
 
   CATEGORY_HEART = 'heart';
@@ -80,6 +80,7 @@ is prefixed by it's length.
 
 To avoid sending binary data, length is defined as a 24 bit unsigned integer.
 This 3-byte integer is then encoded in Base64, so it became a 4 byte ASCII string
+This means that max message size is 16 Mb, I think this is a fair limit.
 }
 
 

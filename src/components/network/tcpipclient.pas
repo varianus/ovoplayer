@@ -61,8 +61,6 @@ type
 
 implementation
 
-//uses termio;
-
 { TInetSocketEx }
 
 destructor TInetSocketEx.Destroy;

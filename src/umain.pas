@@ -33,7 +33,10 @@ uses
   {$IFDEF MPRIS2} Mpris2,{$ENDIF}
   {$IFDEF NOTIFYDBUS} notification,{$ENDIF}
   {$IFDEF TASKBAR_EXTENSION}taskbar_ext,{$ENDIF}
-  {$IFDEF NETWORK_INTF}NetIntf,{$ENDIF}
+  {$IFDEF NETWORK_INTF}
+      {$ifdef Network_ss} netinf,{$ENDIF}
+      {$ifdef Network_Ws} netintfws,{$ENDIF}
+  {$ENDIF}
   {$IFDEF MULTIMEDIA_KEYS}MultimediaKeys, {$ENDIF}
   ucover, ucustomplaylist, playlistbuilder, netprotocol,
   GuiConfig, uequalizer, ThemedSlider;

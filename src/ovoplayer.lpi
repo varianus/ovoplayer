@@ -26,7 +26,7 @@
       <MajorVersionNr Value="1"/>
       <MinorVersionNr Value="4"/>
       <Attributes pvaDebug="True" pvaPrivateBuild="True"/>
-      <StringTable CompanyName="Marco Caselli" OriginalFilename="ovoplayer.lpr"/>
+      <StringTable CompanyName="Marco Caselli" OriginalFilename="ovoplayer.lpr" ProductVersion="1.4.0.0"/>
     </VersionInfo>
     <BuildModes Count="2">
       <Item1 Name="Debug" Default="True"/>
@@ -128,7 +128,7 @@ if TargetOS = 'linux' then
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="86">
+    <Units Count="87">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -554,6 +554,11 @@ if TargetOS = 'linux' then
         <Filename Value="audioengine_libzplay.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit85>
+      <Unit86>
+        <Filename Value="netintfws.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="NetIntfws"/>
+      </Unit86>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -605,6 +610,9 @@ if TargetOS = 'linux' then
         <ConfigFilePath Value="..\extrafpc.cfg"/>
       </ConfigFile>
       <CustomOptions Value="-Xm"/>
+      <OtherDefines Count="1">
+        <Define0 Value="aaa"/>
+      </OtherDefines>
       <ExecuteBefore>
         <Command Value="$(LazarusDir)\tools\svn2revisioninc$(ExeExt) .. ovorevision.inc --c=ovoRevision"/>
       </ExecuteBefore>

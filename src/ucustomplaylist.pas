@@ -174,7 +174,7 @@ begin
   isChanged:= false;
   Executable:= PlayListBuilder.isExecutable;
 
-  ButtonPanel1.OKButton.Enabled:=Executable;
+  ButtonPanel1.OKButton.Enabled:= Executable and (edtPlayListName.Text <> '');
 
   if Executable then
     begin
