@@ -123,7 +123,10 @@ begin
     ClientSock := sock.accept;
     if (not Terminated) and (Sock.lastError = 0) then
       begin
+        try
          ws:= TRemoteHandler.Create(ClientSock, fnet);
+        except
+        end;
 
 
       end;
@@ -238,14 +241,14 @@ begin
   inherited Create;
   fnet := net;
   Csock := Hsock;
-  Sock:= TTcpIpWebSocket.Create(CSock);
+  Sock:= TTcpIpWebSocket.Create(CSock,false);
   sock.OnText:=@MessageHandler;
   ConnectionCfg.SizeMode:=smByte;
 
   if sock.Listen then
     fnet.fBackEnd.Attach(self)
   else
-    Self.free;
+    raise exception.create('Cannot listen on WS');
 
 end;
 
