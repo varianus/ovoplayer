@@ -353,11 +353,6 @@ begin
              fState:= ENGINE_SONG_END;
              ReceivedCommand(self, ecNext, 0);
             end;
-          if (Event^.event_id =  MPV_EVENT_LOG_MESSAGE)then
-            begin
-               debugln(Pmpv_event_log_message(Event^.data)^.text);
-            end;
-
           Event := mpv_wait_event(fhandle^, 0);
         end;
     end
