@@ -19,9 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 }
 {$I backend.inc}
 unit GUIBackEnd;
-
 {$mode objfpc}{$H+}
-
 interface
 
 uses
@@ -167,10 +165,13 @@ procedure FreeBackend;
 var
   i: integer;
 begin
+  try
   if Assigned(fBackEnd.ObserverList) then
      for i := 0 to fBackEnd.ObserverList.Count -1 do
         fBackEnd.remove(IObserver(fBackEnd.ObserverList[i]));
-
+  except
+    // ignore exception on observer destroy
+  end;
   fBackEnd.Free;
   fBackEnd := nil;
 
@@ -421,15 +422,15 @@ begin
      begin
        f := GetFileTagsObject(Song.Tags.FileName);
        f.Tags.Images[0].image.Position:=0;
+       Picture:= tpicture.Create;
        try
-          Picture:= tpicture.Create;
-          Picture.LoadFromStream(f.Tags.Images[0].image);
-          result :=GetTempDir(true)+'ovoplayer-tmp-cover'+'.png';
-          Picture.SaveToFile(result);
-          Picture.free;
-          imgLoaded:= true;
-       Except
+         Picture.LoadFromStream(f.Tags.Images[0].image);
+         result :=GetTempDir(true)+'ovoplayer-tmp-cover'+'.png';
+         Picture.SaveToFile(result);
+         imgLoaded:= true;
+       except
        end;
+       Picture.free;
        f.Free;
      end;
 
@@ -464,14 +465,17 @@ begin
   if Song.Tags.HasImage then
      begin
        f := GetFileTagsObject(Song.Tags.FileName);
-       img.LoadFromStream(f.Tags.Images[0].image);
+       try
+         img.LoadFromStream(f.Tags.Images[0].image);
+         imgLoaded:= true;
+       except
+       end;
        f.free;
-       imgLoaded:= true;
      end;
 
   if not imgLoaded then
      begin
-      FileName := BackEnd.GetImageFromfolder(IncludeTrailingPathDelimiter(Song.FilePath), False);
+      FileName := BackEnd.GetImageFromfolder(IncludeTrailingPathDelimiter(Song.FilePath), false);
       if FileName <> '' then
         begin
           Img.LoadFromFile(FileName);
@@ -491,9 +495,10 @@ begin
 
     tmpStream := TMemoryStream.Create;
     try
-      img.SaveToStreamWithFileExt(tmpStream, '.jpg');
+//      img.SaveToStreamWithFileExt(tmpStream, '.jpg');
+      img.SaveToStream(tmpStream);
     //  DebugLn('STSize: '+IntToStr(tmpStream.Size));
-      Result := EncodeStream(tmpStream);
+      Result := 'data:'+img.Graphic.MimeType+';base64, '+ EncodeStream(tmpStream);
     //  DebugLn('IMGSize: '+inttostr(length(result)));
 
     finally

@@ -892,15 +892,14 @@ begin
      begin
        CurrentCover := '';
        f := GetFileTagsObject(Song.Tags.FileName);
-       f.Tags.Images[0].image.Position:=0;
-     //  tmp:= TMemoryStream.Create;
-     //  tmp.LoadFromStream( f.Tags.Images[0].image);
-     //  tmp.SaveToFile('/tmp/imagetemp');
-       f.Tags.Images[0].image.Position:=0;
        try
-          imgCover.Picture.LoadFromStream(f.Tags.Images[0].image);
-          imgCover.Hint:= rEmbedded;
-          imgloaded:= true;
+          f.Tags.Images[0].image.Position:=0;
+          if f.Tags.Images[0].image.size > 0 then
+            begin
+              imgCover.Picture.LoadFromStream(f.Tags.Images[0].image);
+              imgCover.Hint:= rEmbedded;
+              imgloaded:= true;
+           end;
        Except
        end;
        f.Free;
