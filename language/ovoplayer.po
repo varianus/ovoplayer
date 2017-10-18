@@ -875,6 +875,14 @@ msgctxt "TFCOVER.BTNZOOMRESET.HINT"
 msgid "Original size"
 msgstr ""
 
+#: tfcover.caption
+msgid "Cover Viewer"
+msgstr ""
+
+#: tfcustomplaylist.caption
+msgid "Custom Playlist "
+msgstr ""
+
 #: tfcustomplaylist.cbsortdirection.caption
 msgid "in ascending order"
 msgstr ""
@@ -891,8 +899,16 @@ msgstr ""
 msgid "Sort by"
 msgstr ""
 
+#: tfequalizer.caption
+msgid "Equalizer"
+msgstr ""
+
 #: tfequalizer.cbenableeq.caption
 msgid "Enable equalizer"
+msgstr ""
+
+#: tfequalizer.statictext1.caption
+msgid "Preset"
 msgstr ""
 
 #: tflicense.caption
@@ -974,6 +990,11 @@ msgstr ""
 #: tfmainform.btnupdir.caption
 msgctxt "TFMAINFORM.BTNUPDIR.CAPTION"
 msgid "Up"
+msgstr ""
+
+#: tfmainform.caption
+msgctxt "tfmainform.caption"
+msgid "OvoPlayer"
 msgstr ""
 
 #: tfmainform.cbgroupby.hint

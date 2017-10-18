@@ -1,7 +1,7 @@
 # varianus <marcocas@gmail.com>, 2016, 2017.
 msgid ""
 msgstr ""
-"Project-Id-Version: Ovoplayer 1.3\n"
+"Project-Id-Version: Ovoplayer 1.4\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2017-04-25 18:06+0200\n"
 "Last-Translator: varianus <marcocas@gmail.com>\n"
@@ -370,11 +370,11 @@ msgstr "Anno"
 
 #: simplesingleinstance.serrsetsingleinstanceglobalstarted
 msgid "You cannot change the single instance global property when it's been started."
-msgstr ""
+msgstr "Non puoi cambiare la proprietà globale dell'istanza singola quando è avviata"
 
 #: simplesingleinstance.serrsetsingleinstanceidstarted
 msgid "You cannot change the single instance ID when it's been started."
-msgstr ""
+msgstr "Non puoi cambiare l'ID dell'istanza singola quando è avviata"
 
 #: simplesingleinstance.serrsingleinstancenotclient
 msgid "Current instance is not a client."
@@ -889,6 +889,14 @@ msgctxt "tfcover.btnzoomreset.hint"
 msgid "Original size"
 msgstr "Dimens. originale"
 
+#: tfcover.caption
+msgid "Cover Viewer"
+msgstr "Visualizzatore copertina"
+
+#: tfcustomplaylist.caption
+msgid "Custom Playlist "
+msgstr "Playlist Personalizzata"
+
 #: tfcustomplaylist.cbsortdirection.caption
 msgid "in ascending order"
 msgstr "in ordine crescente"
@@ -905,9 +913,17 @@ msgstr "Nome"
 msgid "Sort by"
 msgstr "Ordine per"
 
+#: tfequalizer.caption
+msgid "Equalizer"
+msgstr "Equalizzatore"
+
 #: tfequalizer.cbenableeq.caption
 msgid "Enable equalizer"
-msgstr ""
+msgstr "Attiva Equalizzatore"
+
+#: tfequalizer.statictext1.caption
+msgid "Preset"
+msgstr "Preimpostazione"
 
 #: tflicense.caption
 msgid "License"
@@ -920,7 +936,7 @@ msgstr "Informazioni su"
 
 #: tfmainform.actshowequalizer.caption
 msgid "Equalizer …"
-msgstr ""
+msgstr "Equalizzatore …"
 
 #: tfmainform.actshowleft.caption
 msgid "Show Left Panel"
@@ -990,6 +1006,11 @@ msgctxt "TFMAINFORM.BTNUPDIR.CAPTION"
 msgid "Up"
 msgstr "Su"
 
+#: tfmainform.caption
+msgctxt "tfmainform.caption"
+msgid "OvoPlayer"
+msgstr "OvoPlayer"
+
 #: tfmainform.cbgroupby.hint
 msgid "Group by"
 msgstr "Raggruppa"
@@ -1015,7 +1036,7 @@ msgstr "Statistiche"
 #: tfmainform.lbtime.caption
 msgctxt "TFMAINFORM.LBTIME.CAPTION"
 msgid "00:00:00"
-msgstr ""
+msgstr "00:00:00"
 
 #: tfmainform.menuitem14.caption
 msgid "View"
@@ -1055,23 +1076,23 @@ msgstr "Valutazione"
 
 #: tfmainform.menuitem50.caption
 msgid "*"
-msgstr ""
+msgstr "*"
 
 #: tfmainform.menuitem52.caption
 msgid "*****"
-msgstr ""
+msgstr "*****"
 
 #: tfmainform.menuitem53.caption
 msgid "****"
-msgstr ""
+msgstr "****"
 
 #: tfmainform.menuitem54.caption
 msgid "***"
-msgstr ""
+msgstr "***"
 
 #: tfmainform.menuitem55.caption
 msgid "**"
-msgstr ""
+msgstr "**"
 
 #: tfmainform.menuitem56.caption
 msgid "None"
@@ -1162,7 +1183,7 @@ msgstr "Ripristina"
 
 #: tfmainform.sgplaylist.columns[0].title.caption
 msgid "#"
-msgstr ""
+msgstr "#"
 
 #: tfmainform.sgplaylist.columns[10].title.caption
 msgctxt "tfmainform.sgplaylist.columns[10].title.caption"
@@ -1271,11 +1292,11 @@ msgstr "0"
 
 #: tfrequalizer.lbband.caption
 msgid "Band"
-msgstr ""
+msgstr "Banda"
 
 #: tfrequalizer.lbvalue.caption
 msgid "Value"
-msgstr ""
+msgstr "Valore"
 
 #: tfrfield.testdate.text
 msgctxt "tfrfield.testdate.text"
