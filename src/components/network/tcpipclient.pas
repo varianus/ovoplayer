@@ -22,9 +22,13 @@ uses
 {$ELSE}
   WinSock2,
 {$ENDIF}
-  TcpIpBase, TcpIpUtils, SSockets, Sockets, sysutils;
+  TcpIpBase, TcpIpUtils, SSockets, Sockets, sysutils,fpopenssl, sslsockets;
 
 type
+
+  TTcpIpClientSocket = class;
+
+  TOnGetSocketHandler= procedure (Sender:TTcpIpClientSocket; out Handler:TSocketHandler) of object;
 
   { TInetSocketEx }
 
@@ -41,13 +45,16 @@ type
 
   TTcpIpClientSocket = class(TTcpIpSocket)
   private
+    FHandler: TSocketHandler;
+    FOnGetSocketHandler: TOnGetSocketHandler;
     FSocket: TInetSocketEx;
+    procedure SetOnGetSocketHandler(AValue: TOnGetSocketHandler);
   protected
     function GetLastError: Integer; override;
     function InternalSelect(AWriteFds, AReadFds: PFDSet;
       const ATimeOut: Integer): Boolean;
   public
-    constructor Create(const AHost: string; const APort: Word); override;
+    constructor Create(const AHost: string; const APort: Word); overload;
     constructor Create(const ASocket: LongInt); overload;
     destructor Destroy; override;
     function IsConnected: Boolean; override;
@@ -57,6 +64,7 @@ type
     function Write(const ABuffer; ACount: LongInt): LongInt; override;
     function Read(var ABuffer; ACount: LongInt): LongInt; override;
     property Socket: TInetSocketEx read FSocket;
+    property OnGetSocketHandler: TOnGetSocketHandler read FOnGetSocketHandler write SetOnGetSocketHandler;
   end;
 
 implementation
@@ -82,17 +90,39 @@ end;
 constructor TTcpIpClientSocket.Create(const AHost: string; const APort: Word);
 begin
   inherited Create(AHost, APort);
-  FSocket := TInetSocketEx.Create(AHost, APort);
+  fHandler := nil;
+
+  if Assigned (FOnGetSocketHandler)  then
+    FOnGetSocketHandler(self, fHandler);
+
+  FSocket := TInetSocketEx.Create(AHost, APort, fHandler);
+  FSocket.Connect;
 end;
 
 constructor TTcpIpClientSocket.Create(const ASocket: LongInt);
 begin
-  FSocket := TInetSocketEx.Create(ASocket);
+{  if ssl then
+    begin
+      fHandler := TSSLSocketHandler.Create;
+      fHandler.SSLType:=stTLSv1_2;
+      fHandler.RemoteHostName:='localhost';
+      fHandler.Certificate.FileName:='C:\source\ovoplayer\trunk\bin\win32\cert\localhost.crt';
+      fHandler.PrivateKey.FileName:='C:\source\ovoplayer\trunk\bin\win32\cert\localhost.key';
+    end}
+  fHandler := nil;
+
+  if Assigned (FOnGetSocketHandler)  then
+    FOnGetSocketHandler(self, fHandler);
+
+  FSocket := TInetSocketEx.Create(ASocket, fHandler);
+  if Assigned(fHandler) then
+    fHandler.Accept;
 end;
 
 destructor TTcpIpClientSocket.Destroy;
 begin
   FSocket.Free;
+  freeandnil(fHandler);
   inherited Destroy;
 end;
 
@@ -176,6 +206,12 @@ begin
  {$ENDIF}
 {$HINTS ON}
   Result := InternalSelect(nil, @VReadFd, ATimeOut);
+end;
+
+procedure TTcpIpClientSocket.SetOnGetSocketHandler(AValue: TOnGetSocketHandler);
+begin
+  if FOnGetSocketHandler=AValue then Exit;
+  FOnGetSocketHandler:=AValue;
 end;
 
 function TTcpIpClientSocket.GetLastError: Integer;

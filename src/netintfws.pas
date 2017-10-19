@@ -241,7 +241,7 @@ begin
   inherited Create;
   fnet := net;
   Csock := Hsock;
-  Sock:= TTcpIpWebSocket.Create(CSock,false);
+  Sock:= TTcpIpWebSocket.Create(CSock);
   sock.OnText:=@MessageHandler;
   ConnectionCfg.SizeMode:=smByte;
 

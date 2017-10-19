@@ -18,7 +18,7 @@ unit tcpipwebsocket;
 interface
 
 uses
-  Classes, TcpIpBase, TcpIpUtils, TcpIpClient, SysUtils, URIParser, DynQueue, math;
+  Classes, TcpIpBase, TcpIpUtils, TcpIpClient, SysUtils, URIParser, DynQueue, sslsockets;
 
 type
 
@@ -40,6 +40,7 @@ type
     procedure SendBinary;
   public
     constructor Create(websocket: TTcpIpWebSocket);
+    procedure Close; overload;
     procedure Execute; override;
     destructor Destroy; override;
   end;
@@ -48,9 +49,10 @@ type
   private
     FHandShakeDone: boolean;
     FonBinary: TTcpWSBinary;
+    FOnGetSocketHandler: TOnGetSocketHandler;
     FOnText: TTcpWSText;
     fResourceName: string;
-    ssl: boolean;
+    fssl: boolean;
     key: string;
     fURI: TURI;
     fOrigin: string;
@@ -64,6 +66,7 @@ type
     procedure SendHandShake;
     procedure SendSwitchHeader;
     procedure SetonBinary(AValue: TTcpWSBinary);
+    procedure SetOnGetSocketHandler(AValue: TOnGetSocketHandler);
     procedure SetOnText(AValue: TTcpWSText);
 
   public
@@ -77,6 +80,7 @@ type
     procedure Close;
     constructor Create(const URL: string; origin: string);
     constructor Create(const ASocket: longint);
+    destructor Destroy; override;
   end;
 
 const
@@ -210,6 +214,12 @@ begin
   inherited Create(False);
   FWebSocket := websocket;
   FreeOnTerminate := True;
+end;
+
+procedure TcpipListenThread.Close;
+begin
+  FWebSocket.IntSocket.Socket.Close;
+  inherited Terminate;
 end;
 
 procedure TcpipListenThread.Execute;
@@ -386,6 +396,12 @@ begin
   if FonBinary = AValue then
     Exit;
   FonBinary := AValue;
+end;
+
+procedure TTcpIpWebSocket.SetOnGetSocketHandler(AValue: TOnGetSocketHandler);
+begin
+  if FOnGetSocketHandler=AValue then Exit;
+  FOnGetSocketHandler:=AValue;
 end;
 
 procedure TTcpIpWebSocket.SetOnText(AValue: TTcpWSText);
@@ -633,7 +649,6 @@ begin
   begin
     FReadyState := rsClosing;
     Output($80+wsCodeClose,'',0);
-    IntSocket.Free;
     FReadyState := rsClosed;
   end;
   Self.Free;
@@ -644,14 +659,14 @@ begin
   fURI := URIParser.ParseURI(URL);
   if fUri.protocol = 'ws' then
   begin
-    ssl := False;
+    Fssl := False;
     if fUri.port = 0 then
       fUri.port := 80;
   end
   else
   if fUri.protocol = 'wss' then
   begin
-    ssl := True;
+    Fssl := True;
     if fUri.port = 0 then
       fUri.port := 443;
   end;
@@ -662,6 +677,14 @@ end;
 constructor TTcpIpWebSocket.Create(const ASocket: longint);
 begin
   IntSocket := TTcpIpClientSocket.Create(ASocket);
+end;
+
+destructor TTcpIpWebSocket.Destroy;
+begin
+  if Assigned(fListener) then
+    fListener.Terminate;
+  IntSocket.Free;
+  inherited Destroy;
 end;
 
 end.
