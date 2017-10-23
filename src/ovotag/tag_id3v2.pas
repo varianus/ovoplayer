@@ -475,10 +475,10 @@ begin
        Data[2+LanguageOffset] := #$FF;
        Data[3+LanguageOffset] := #$FE;
 
-      Move(pchar(wValue)^, pchar(@Data[4+LanguageOffset])^, Length(wValue) * SizeOf(WideChar));
+      Move(pbyte(wValue)^, pbyte(@Data[4+LanguageOffset])^, Length(wValue) * SizeOf(UnicodeChar));
 //       StrLCopy(@(Data[4+LanguageOffset]), pChar(wValue), Length(wValue) * SizeOf(WideChar));
        Data[fSize-1] := #00;
-       Data[fSize-2] := #00;
+       Data[fSize] := #00;
 
      end;
 
