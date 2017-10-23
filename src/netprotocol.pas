@@ -66,6 +66,7 @@ Const
     INFO_COVERURL = 'coverurl';
     INFO_COVERIMG = 'coverimg'; // Base64 encoding of cover image
     INFO_FULLPLAYLIST = 'playlist';
+    INFO_PLAYLISTCHANGE = 'plchange'; // change on current playlist
 
   CATEGORY_HEART = 'heart';
     COMMAND_BEAT = 'beat';

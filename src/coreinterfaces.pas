@@ -32,7 +32,8 @@ const
 type
 
   TChangedProperty = (cpStatus, cpVolume, cpPosition, cpMetadata,
-                      cpLooping, cpCurrentItem, cpClosing, cpPlayPos);
+                      cpLooping, cpCurrentItem, cpClosing, cpPlayPos,
+                      cpPlaylist);
 
   { IBackEnd }
 

@@ -232,6 +232,7 @@ begin
     cpPlayPos : tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.Position));
     cpMetadata: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata(),ConnectionCfg));
     cpClosing:  tmpstr:= BuildCommand(CATEGORY_APP, COMMAND_CLOSE);
+    cpPlayList: tmpstr:= BuildCommand(CATEGORY_APP, INFO_PLAYLISTCHANGE);
     end;
   sock.WriteString(EncodeString(tmpstr,ConnectionCfg));
 end;
