@@ -87,7 +87,6 @@ uses
 
 {$R *.res}
 begin
-  Application.Scaled:=True;
 
   {$IF lcl_fullversion>=1080001}
   Application.Scaled:=True;
