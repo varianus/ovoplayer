@@ -165,7 +165,6 @@ var
 begin
   size:= DecodeSize(Copy(StringTags,1,4));
 
-
   case ConnectionCfg.SizeMode of
     smByte:
       begin
@@ -176,7 +175,7 @@ begin
     smUTF8Char:
       begin
         Result := UTF8copy(StringTags, 5, size);
-       inc(size,4);
+        inc(size,4);
         UTF8Delete(StringTags, 1, size);
       end;
   end;
@@ -186,6 +185,7 @@ end;
 function EncodeMetaData(Tags: TCommonTags; ConnectionCfg: RConnectionCfg): String;
 begin
   result := EncodeString(   // is this encoding really needed ??? Maybe only for check
+                EncodeString(inttostr(Tags.Index),ConnectionCfg)+
                 EncodeString(inttostr(Tags.id),ConnectionCfg)+
                 EncodeString(Tags.FileName,ConnectionCfg)+
                 EncodeString(Tags.Album,ConnectionCfg)+
@@ -204,7 +204,7 @@ end;
 function DecodeMetaData(var StringTags: string; ConnectionCfg: RConnectionCfg): TCommonTags;
 begin
   Delete(StringTags, 1, 4);
-
+  Result.Index       := StrToInt64Def(ExtractField(StringTags, ConnectionCfg),-1);
   Result.ID          := StrToInt64Def(ExtractField(StringTags, ConnectionCfg),0);
   Result.FileName    := ExtractField(StringTags, ConnectionCfg);
   Result.Album       := ExtractField(StringTags, ConnectionCfg);

@@ -41,6 +41,7 @@ type
 
   { TCommonTags }
   TCommonTags = record
+    Index: integer;
     ID: integer;
     FileName: string;
     Album: string;

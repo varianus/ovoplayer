@@ -627,6 +627,7 @@ begin
   else
     if (Index <= PlayList.Count) and (PlayList.Count > 0) then
        Result:= TCustomSong(PlayList.Items[Index-1]).Tags;
+  result.Index := Index;
 end;
 
 procedure TBackEnd.Seek(AValue: int64);
