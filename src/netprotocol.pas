@@ -44,6 +44,7 @@ Const
     COMMAND_SETVOL = 'vol'; // param is new volume in range 1..256
     COMMAND_MUTE = 'mute';
     COMMAND_UNMUTE = 'unmute';
+    COMMAND_LOOPING = 'loop';
 
   CATEGORY_FILE = 'file';   // client --> server
     COMMAND_ENQUEUE = 'e';           //   \
@@ -67,6 +68,7 @@ Const
     INFO_COVERIMG = 'coverimg'; // Base64 encoding of cover image
     INFO_FULLPLAYLIST = 'playlist';
     INFO_PLAYLISTCHANGE = 'plchange'; // change on current playlist
+    INFO_LOOPING = 'loop'; // changed repeat mode
 
   CATEGORY_HEART = 'heart';
     COMMAND_BEAT = 'beat';
