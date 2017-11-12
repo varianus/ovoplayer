@@ -62,7 +62,9 @@ type
     IntTimer: TTimer;
 
     procedure AudioEngineSongEnd(Sender: TObject);
+    function GetMute: boolean;
     procedure PlaylistOnSongAdd(Sender: Tobject; Index: Integer; ASong: TCustomSong);
+    procedure SetMute(AValue: boolean);
     procedure SetOnEngineCommand(const AValue: TOnEngineCommand);
     procedure SetOnExternalCommand(const AValue: TOnExternalCommand);
     procedure SetOnPlayListChange(const AValue: TNotifyEvent);
@@ -101,8 +103,6 @@ type
     Procedure Next;
     Procedure Previous;
     Procedure Quit;
-    Procedure Mute;
-    Procedure UnMute;
     Function GetMetadata(Index:integer=-1): TCommonTags;
     Procedure OpenURI(URI: String);
     procedure Seek(AValue: int64);
@@ -130,6 +130,7 @@ type
     Property Position: int64 read GetPosition write SetPosition;
     property Looping: TplRepeat read  GetLooping write SetLooping;
     Property Volume : cardinal read GetVolume write SetVolume;
+    Property Muted : boolean read GetMute write SetMute;
 
   end;
 
@@ -590,19 +591,6 @@ begin
 
 end;
 
-procedure TBackEnd.Mute;
-begin
-  AudioEngine.Muted := true;
-  Backend.Notify(cpVoLume);
-end;
-
-procedure TBackEnd.UnMute;
-begin
-  AudioEngine.Muted := False;
-  Backend.Notify(cpVoLume);
-
-end;
-
 procedure TBackEnd.OpenURI(URI: String);
 var
   idx:Integer;
@@ -715,6 +703,11 @@ begin
   Next;
 end;
 
+function TBackEnd.GetMute: boolean;
+begin
+  Result := AudioEngine.Muted;
+end;
+
 procedure TBackEnd.PlaylistOnSongAdd(Sender: Tobject; Index: Integer;
   ASong: TCustomSong);
 var
@@ -731,6 +724,14 @@ begin
 //    exit;
 //  ExtendedInfo := mediaLibrary.InfoFromID(ID);
 
+end;
+
+procedure TBackEnd.SetMute(AValue: boolean);
+begin
+  if AValue = AudioEngine.Muted then
+    exit;
+  AudioEngine.Muted:= AValue;
+  Notify(cpMute);
 end;
 
 procedure TBackEnd.HandleCommand(Command: TEngineCommand; Param: integer);
@@ -769,8 +770,8 @@ begin
                           end;
        COMMAND_NEXT     : begin Next; Handled := true; end;
        COMMAND_PREVIOUS : begin Previous; Handled := true; end;
-       COMMAND_MUTE     : begin Mute; Handled := true; end;
-       COMMAND_UNMUTE   : begin UnMute; Handled := true; end;
+       COMMAND_MUTE     : begin Muted:= true; Handled := true; end;
+       COMMAND_UNMUTE   : begin Muted:= false; Handled := true; end;
        COMMAND_SETVOL   : begin
                               Volume :=StrToIntDef(Command.Param, Volume);
                               Handled := true;

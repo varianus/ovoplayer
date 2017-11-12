@@ -31,7 +31,7 @@ const
   SObserver ='{03E2942D-D961-4CF2-A339-69044C763EB4}';
 type
 
-  TChangedProperty = (cpStatus, cpVolume, cpPosition, cpMetadata,
+  TChangedProperty = (cpStatus, cpVolume, cpPosition, cpMetadata, cpMute,
                       cpLooping, cpCurrentItem, cpClosing, cpPlayPos,
                       cpPlaylist);
 
@@ -56,10 +56,12 @@ type
     [SBackEnd]
  // property Get-Set
     function GetLooping: TplRepeat;
+    function GetMute: boolean;
     function GetPosition: int64;
     function GetStatus: TEngineState;
     function GetVolume: cardinal;
     procedure SetLooping(AValue: TplRepeat);
+    procedure SetMute(AValue: boolean);
     procedure SetPosition(AValue: int64);
     procedure SetStatus(AValue: TEngineState);
     procedure SetVolume(AValue: cardinal);
@@ -71,8 +73,6 @@ type
     Procedure Next;
     Procedure Previous;
     Procedure Quit;
-    Procedure Mute;
-    Procedure UnMute;
     procedure HandleCommand(Command: TEngineCommand; Param: integer = 0);
     function HandleExternalCommand(Command: RExternalCommand):boolean;
     Procedure OpenURI(URI: String);
@@ -88,6 +88,7 @@ type
     Property Position: int64 read GetPosition write SetPosition;
     property Looping: TplRepeat read  GetLooping write SetLooping;
     Property Volume : cardinal read GetVolume write SetVolume;
+    Property Muted : boolean read GetMute write SetMute;
   end;
 
 

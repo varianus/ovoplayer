@@ -69,6 +69,7 @@ Const
     INFO_FULLPLAYLIST = 'playlist';
     INFO_PLAYLISTCHANGE = 'plchange'; // change on current playlist
     INFO_LOOPING = 'loop'; // changed repeat mode
+    INFO_MUTE = 'mute';
 
   CATEGORY_HEART = 'heart';
     COMMAND_BEAT = 'beat';
