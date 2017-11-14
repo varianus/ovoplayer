@@ -206,8 +206,8 @@ begin
                                  sock.WriteString(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_FULLPLAYLIST, fPlaylist),ConnectionCfg));
                                  DebugLn(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_FULLPLAYLIST, fPlaylist),ConnectionCfg));
                                 end;
-            INFO_LOOPING : sock.WriteString(EncodeString(BuildCommand(CATEGORY_APP, INFO_LOOPING, inttostr(ord(fnet.fBackEnd.GetLooping()))),ConnectionCfg));
-            INFO_MUTE : sock.WriteString(EncodeString(BuildCommand(CATEGORY_APP, INFO_MUTE, inttostr(ord(fnet.fBackEnd.GetMute()))),ConnectionCfg));
+            INFO_LOOPING : sock.WriteString(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_LOOPING, inttostr(ord(fnet.fBackEnd.GetLooping()))),ConnectionCfg));
+            INFO_MUTE : sock.WriteString(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_MUTE, inttostr(ord(fnet.fBackEnd.GetMute()))),ConnectionCfg));
           end;
         end;
     end;
@@ -235,8 +235,8 @@ begin
     cpMetadata: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata(),ConnectionCfg));
     cpClosing:  tmpstr:= BuildCommand(CATEGORY_APP, COMMAND_CLOSE);
     cpPlayList: tmpstr:= BuildCommand(CATEGORY_APP, INFO_PLAYLISTCHANGE);
-    cpLooping: tmpstr:= BuildCommand(CATEGORY_APP, INFO_LOOPING, inttostr(ord(fnet.fBackEnd.GetLooping())));
-    cpMute: tmpstr:= BuildCommand(CATEGORY_APP, INFO_MUTE, inttostr(ord(fnet.fBackEnd.GetMute())));
+    cpLooping: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_LOOPING, inttostr(ord(fnet.fBackEnd.GetLooping())));
+    cpMute: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_MUTE, inttostr(ord(fnet.fBackEnd.GetMute())));
     end;
   sock.WriteString(EncodeString(tmpstr,ConnectionCfg));
 end;
