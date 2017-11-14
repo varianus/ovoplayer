@@ -31,7 +31,7 @@ Const
                                //        1: length of messages is computed in UTF8 codepoints (for Android mode)
     COMMAND_WANTPOS = 'autopos'; // auto send current position events
 
-  CATEGORY_ACTION = 'action';  // client --> server
+  CATEGORY_ACTION = 'act';  // client --> server
     COMMAND_PLAY = 'play';
     COMMAND_STOP = 'stop';
     COMMAND_PAUSE = 'pause' ;
@@ -46,7 +46,7 @@ Const
     COMMAND_UNMUTE = 'unmute';
     COMMAND_LOOPING = 'loop';
 
-  CATEGORY_FILE = 'file';   // client --> server
+  CATEGORY_FILE = 'fil';   // client --> server
     COMMAND_ENQUEUE = 'e';           //   \
     COMMAND_CLEAR_AND_PLAY = 'p';    //    | --> required param = filename
     COMMAND_ENQUEUE_AND_PLAY = 'x';  //   /
@@ -56,7 +56,7 @@ Const
     COMMAND_QUIT = 'quit';
     COMMAND_CLOSE = 'close';
 
-  CATEGORY_INFORMATION = 'info'; // server --> client
+  CATEGORY_INFORMATION = 'inf'; // server --> client
   CATEGORY_REQUEST = 'req'; //  client --> server
     INFO_ENGINE_STATE = 'state';
     INFO_POSITION = 'pos';
@@ -71,7 +71,7 @@ Const
     INFO_LOOPING = 'loop'; // changed repeat mode
     INFO_MUTE = 'mute';
 
-  CATEGORY_HEART = 'heart';
+  CATEGORY_HEART = 'hrt';
     COMMAND_BEAT = 'beat';
 
   CATEGORY_COMMAND_SEPARATOR = ':';
