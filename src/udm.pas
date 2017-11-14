@@ -240,12 +240,12 @@ begin
   if actMute.Checked then
      begin
        actMute.ImageIndex := 18;
-       Backend.Mute;
+       Backend.Muted := true;
      end
   else
      begin
        actMute.ImageIndex := 19;
-       Backend.UnMute;
+       Backend.Muted := false;
      end;
 
 end;
