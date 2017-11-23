@@ -223,7 +223,7 @@ type
     btnCloseCollectionStat: TSpeedButton;
     sgStats: TStringGrid;
     btnFilterCancel: TSpeedButton;
-    ToolButton11: TToolButton;
+    bMute: TToolButton;
     ToolButton12: TToolButton;
     ToolButton13: TToolButton;
     TrackBar: TThemedSlider;
@@ -979,6 +979,14 @@ begin
     cpVolume: begin
                 slVolume.Position:= BackEnd.Volume;
               end;
+    cpMute: begin
+              dm.actmute.checked := backend.muted;
+              if backend.muted then
+                dm.actMute.ImageIndex := 18
+              else
+                dm.actMute.ImageIndex := 19;
+            end;
+
     cpClosing: begin
                 Quitting:= true;
                 LCLIntf.PostMessage(Self.Handle, LM_CLOSEQUERY, 0, 0);
@@ -1584,6 +1592,7 @@ begin
     end;
 
   OnLoaded(sgPlayList);
+  BackEnd.Notify(cpStatus);
 end;
 
 procedure TfMainForm.ScrollIntoView;
@@ -2830,6 +2839,7 @@ end;
 
 procedure TfMainForm.OnLoaded(Sender: TObject);
 begin
+  Backend.Notify(cpPlaylist);
   ReloadPlayList;
 end;
 
