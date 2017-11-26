@@ -44,26 +44,26 @@ object fMainForm: TfMainForm
       Options = [nboMultiLine, nboHidePageListPopup]
       object tsCollection: TTabSheet
         Caption = 'Collection'
-        ClientHeight = 405
-        ClientWidth = 238
+        ClientHeight = 398
+        ClientWidth = 240
         object pnlCollection: TPanel
           Left = 0
           Height = 71
           Top = 0
-          Width = 238
+          Width = 240
           Align = alTop
           BevelOuter = bvNone
           ClientHeight = 71
-          ClientWidth = 238
+          ClientWidth = 240
           TabOrder = 0
           object cbGroupBy: TComboBox
             Left = 4
-            Height = 23
+            Height = 25
             Hint = 'Group by'
             Top = 6
-            Width = 231
+            Width = 233
             Anchors = [akTop, akLeft, akRight]
-            ItemHeight = 15
+            ItemHeight = 0
             ItemIndex = 0
             Items.Strings = (
               'AlbumArtist / Album'
@@ -78,20 +78,20 @@ object fMainForm: TfMainForm
           end
           object edtFilter: TLabeledEdit
             Left = 47
-            Height = 23
+            Height = 27
             Hint = 'Filter'
             Top = 38
-            Width = 168
+            Width = 170
             Anchors = [akTop, akLeft, akRight]
             EditLabel.AnchorSideTop.Control = edtFilter
             EditLabel.AnchorSideTop.Side = asrCenter
             EditLabel.AnchorSideRight.Control = edtFilter
             EditLabel.AnchorSideBottom.Control = edtFilter
             EditLabel.AnchorSideBottom.Side = asrBottom
-            EditLabel.Left = 18
-            EditLabel.Height = 15
-            EditLabel.Top = 42
-            EditLabel.Width = 26
+            EditLabel.Left = 16
+            EditLabel.Height = 17
+            EditLabel.Top = 43
+            EditLabel.Width = 28
             EditLabel.Caption = 'Filter'
             EditLabel.ParentColor = False
             LabelPosition = lpLeft
@@ -99,7 +99,7 @@ object fMainForm: TfMainForm
             OnChange = edtFilterChange
           end
           object btnFilterCancel: TSpeedButton
-            Left = 214
+            Left = 216
             Height = 22
             Top = 39
             Width = 22
@@ -150,9 +150,9 @@ object fMainForm: TfMainForm
         end
         object tvCollection: TTreeView
           Left = 0
-          Height = 334
+          Height = 327
           Top = 71
-          Width = 238
+          Width = 240
           Align = alClient
           DragMode = dmAutomatic
           Images = DM.ilSmall
@@ -175,7 +175,7 @@ object fMainForm: TfMainForm
       end
       object tsDirectory: TTabSheet
         Caption = 'Directory'
-        ClientHeight = 410
+        ClientHeight = 398
         ClientWidth = 240
         OnShow = tsDirectoryShow
         object tbDirectory: TToolBar
@@ -253,7 +253,7 @@ object fMainForm: TfMainForm
       end
       object tsPlayList: TTabSheet
         Caption = 'PlayList'
-        ClientHeight = 410
+        ClientHeight = 398
         ClientWidth = 240
         OnShow = tsPlayListShow
         object PlaylistTree: TTreeView
@@ -286,7 +286,7 @@ object fMainForm: TfMainForm
       Width = 246
       Align = alBottom
       Caption = 'Stats'
-      ClientHeight = 90
+      ClientHeight = 91
       ClientWidth = 242
       ParentFont = False
       TabOrder = 1
@@ -342,7 +342,7 @@ object fMainForm: TfMainForm
       end
       object sgStats: TStringGrid
         Left = 0
-        Height = 90
+        Height = 91
         Top = 0
         Width = 220
         Align = alClient

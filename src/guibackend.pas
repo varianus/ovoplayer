@@ -777,7 +777,9 @@ begin
                               Handled := true;
                           end;
        COMMAND_SEEK     : position := (StrToIntDef(Command.Param, Position));
+
        COMMAND_LOOPING  : Looping := TplRepeat(StrToIntDef(Command.Param, ord(Looping)));
+
     end;
 
   if Command.Category = CATEGORY_APP then

@@ -104,7 +104,7 @@ type
   private
     procedure DebugLnHook(Sender: TObject; S: string; var Handled: Boolean);
   public
-
+    procedure ChangeRepeatMode(Mode: TplRepeat; Notify: boolean=true);
   end;
 
 var
@@ -275,36 +275,39 @@ begin
   Backend.mediaLibrary.RemoveMissing;
 end;
 
+
+procedure TDM.ChangeRepeatMode(Mode: TplRepeat; Notify:boolean=true);
+begin
+  Backend.PlayList.RepeatMode := Mode;
+  case Mode of
+    rptTrack : actRepeatTrack.Checked:=true;
+    rptAlbum : actRepeatAlbum.Checked:=true;
+    rptNone : actRepeatNone.Checked:=true;
+    rptPlayList : actRepeatAll.Checked:=true;
+  end;
+  Backend.Config.PlayListParam.RepeatMode := Ord(Backend.PlayList.RepeatMode);
+  if Notify then
+    Backend.Notify(cpLooping);
+end;
+
 procedure TDM.actRepeatTrackExecute(Sender: TObject);
 begin
-  Backend.PlayList.RepeatMode := rptTrack;
-  actRepeatTrack.Checked := true;
-  Backend.Config.PlayListParam.RepeatMode := Ord(Backend.PlayList.RepeatMode);
-  Backend.Notify(cpLooping);
+  ChangeRepeatMode(rptTrack);
 end;
 
 procedure TDM.actRepeatAlbumExecute(Sender: TObject);
 begin
-  Backend.PlayList.RepeatMode := rptAlbum;
-  actRepeatAlbum.Checked:=true;
-  Backend.Config.PlayListParam.RepeatMode := Ord(Backend.PlayList.RepeatMode);
-  Backend.Notify(cpLooping);
+  ChangeRepeatMode(rptAlbum);
 end;
 
 procedure TDM.actRepeatAllExecute(Sender: TObject);
 begin
-  Backend.PlayList.RepeatMode := rptPlayList;
-  actRepeatAll.Checked:=true;
-  Backend.Config.PlayListParam.RepeatMode := Ord(Backend.PlayList.RepeatMode);
-  Backend.Notify(cpLooping);
+  ChangeRepeatMode(rptPlayList);
 end;
 
 procedure TDM.actRepeatNoneExecute(Sender: TObject);
 begin
-  Backend.PlayList.RepeatMode := rptNone;
-  actRepeatNone.Checked:=true;
-  Backend.Config.PlayListParam.RepeatMode := Ord(Backend.PlayList.RepeatMode);
-  Backend.Notify(cpLooping);
+  ChangeRepeatMode(rptNone);
 end;
 
 procedure TDM.actRescanCollectionExecute(Sender: TObject);

@@ -996,6 +996,9 @@ begin
                    TrackBar.Position := BackEnd.Position;
                    lbTime.Caption := FormatTimeRange(BackEnd.Position);
                end;
+    cpLooping: begin
+                 dm.changeRepeatMode(BackEnd.Looping, false);
+               end;
   end;
 
 end;
