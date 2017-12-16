@@ -53,6 +53,7 @@ type
     procedure SetMuted(const AValue: boolean);  override;
     Function GetMuted: boolean; override;
     procedure EndSong;
+    function Initialize: boolean; override;
   public
     class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
@@ -148,9 +149,6 @@ begin
                        MPG123LIB,
                        SOUNDTOUCHLIB)=0;
 
-  fdecoupler := TDecoupler.Create;
-
-  fdecoupler.OnCommand := @ReceivedCommand;
   UOS_Player := nil;
 
 end;
@@ -184,7 +182,7 @@ begin
 
 end;
 
-Function TAudioEngineUOS.DoPlay(Song: TSong; offset:Integer):boolean;
+function TAudioEngineUOS.DoPlay(Song: TSong; offset: Integer): boolean;
 var
   hr: hresult;
 begin
@@ -260,6 +258,14 @@ begin
     fState := ENGINE_SONG_END ;
     if oldstate = ENGINE_PLAY then
    PostCommand(ecNext);
+end;
+
+function TAudioEngineUOS.Initialize: boolean;
+begin
+  fVolume:=100;
+  fdecoupler := TDecoupler.Create;
+  fdecoupler.OnCommand := @ReceivedCommand;
+  Result:= true;
 end;
 
 class function TAudioEngineUOS.IsAvalaible(ConfigParam: TStrings): boolean;
