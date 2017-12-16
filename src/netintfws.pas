@@ -204,7 +204,6 @@ begin
                                  for i := 1 to fnet.fBackEnd.PlayListCount  do
                                     fPlaylist:= fPlaylist+EncodeMetaData(fnet.fBackEnd.GetMetadata(i),ConnectionCfg);
                                  sock.WriteString(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_FULLPLAYLIST, fPlaylist),ConnectionCfg));
-                                 DebugLn(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_FULLPLAYLIST, fPlaylist),ConnectionCfg));
                                 end;
             INFO_LOOPING : sock.WriteString(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_LOOPING, inttostr(ord(fnet.fBackEnd.GetLooping()))),ConnectionCfg));
             INFO_MUTE : sock.WriteString(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_MUTE, inttostr(ord(fnet.fBackEnd.GetMute()))),ConnectionCfg));
