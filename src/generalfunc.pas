@@ -47,7 +47,7 @@ uses
 {$DEFINE USESMODE}
   {$i generalfuncimpl.inc}
 {$UNDEF USESMODE}
- SimpleIPC, AsyncProcess, netsupport;
+ SimpleIPC, Process, AsyncProcess, netsupport;
 
 const
   OneKB = 1024;
@@ -112,12 +112,19 @@ end;
 
 Function Restart(Application:TCustomApplication):Boolean;
 var
-  NewProc: TAsyncProcess;
+  NewProc: TProcess;
+  i: integer;
 begin
-  NewProc:= TAsyncProcess.Create(nil);
+  NewProc:= TProcess.Create(nil);
   try
+    Newproc.InheritHandles := False;
+    NewProc.CurrentDirectory:=GetCurrentDir;
+    Newproc.Options := [];
+    Newproc.ShowWindow := swoShow;
     Newproc.Executable:=Application.ExeName;
     NewProc.Parameters.Add(format('--restart=%d',[GetProcessID]));
+    for I := 1 to GetEnvironmentVariableCount do
+      NewProc.Environment.Add(GetEnvironmentString(I));
 
     NewProc.Execute;
   finally
