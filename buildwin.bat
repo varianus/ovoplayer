@@ -35,6 +35,8 @@ del /Q ovoplayer.exe
 del /Q ovoplayerctrl.exe
 ::
 copy /Y %BASE_SRC%\release.cfg  %BASE_SRC%\extrafpc.cfg
+%LAZARUS_DIR%\lazbuild -B -r %PCP% --build-mode=Release --lazarusdir=%LAZARUS_DIR% %DC_ARCH% %BASE_SRC%\src\components\mcaselli.lpk 
+if ERRORLEVEL 1 goto :close_bad
 %LAZARUS_DIR%\lazbuild -B -r %PCP% --build-mode=Release --lazarusdir=%LAZARUS_DIR% %DC_ARCH% %BASE_SRC%\src\ovoplayer.lpi 
 if ERRORLEVEL 1 goto :close_bad
 %LAZARUS_DIR%\lazbuild -B -r %PCP% --lazarusdir=%LAZARUS_DIR% %DC_ARCH% %BASE_SRC%\tools\ovoplayerctrl\ovoplayerctrl.lpi

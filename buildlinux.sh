@@ -33,6 +33,7 @@ rm -Rf $BASE/tools/ovoplayerctrl/lib/*.*
 rm -Rf $BASE/bin/linux
 #
 cp $BASE/release.cfg  $BASE/extrafpc.cfg
+$LAZARUS_DIR/lazbuild -B -r $PCP --build-mode=Release $BASE/src/components/mcaselli.lpk $DC_ARCH
 $LAZARUS_DIR/lazbuild -B -r $PCP --build-mode=Release $BASE/src/ovoplayer.lpi $DC_ARCH
 $LAZARUS_DIR/lazbuild -B -r $PCP --build-mode=Release $BASE/tools/ovoplayerctrl/ovoplayerctrl.lpi $DC_ARCH
 strip --strip-all $BASE/bin/linux/ovoplayer
