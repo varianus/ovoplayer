@@ -1296,8 +1296,13 @@ begin
     begin
        tmpIcon:=TIcon.Create;
        tmpIcon.LoadFromResourceName(HINSTANCE,'MAINICON');
-       tmpSize.cx:=TrayIcon.Canvas.Width;
-       tmpSize.cy:=TrayIcon.Canvas.Height;
+       try // on some linux DE/WS combination this could fail
+         tmpSize.cx:=TrayIcon.Canvas.Width;
+         tmpSize.cy:=TrayIcon.Canvas.Height;
+       except //fallback
+         tmpSize.cx:=32;
+         tmpSize.cy:=32;
+       end;
        tmpIcon.Current:=tmpIcon.GetBestIndexForSize(tmpsize);
        TrayIcon.Icon.Transparent:=true;
        TrayIcon.Icon.Assign(tmpIcon);
@@ -1959,8 +1964,8 @@ begin
           end;
 
           ASong := BackEnd.PlayList.Songs[i];
-          if ASong = nil then
-             DebugLn('nessuno');
+//        if ASong = nil then
+//          DebugLn('nessuno');
 
          TrueCol := sgPlayList.Columns[aCol].Tag;
 
