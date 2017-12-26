@@ -7267,12 +7267,14 @@ begin
   {$ENDIF}
 {$ENDIF}
 
-
+  if (libvlc_dynamic_dll_path <> '') then
+    begin
 {$IFDEF SUPPORTS_UNICODE}
-  libvlc_handle := LoadLibrary(PWideChar(dll_path));
+      libvlc_handle := LoadLibrary(PWideChar(dll_path));
 {$ELSE}
-  libvlc_handle := LoadLibrary(PAnsiChar(dll_path));
+      libvlc_handle := LoadLibrary(PAnsiChar(dll_path));
 {$ENDIF}
+    end;
 
   if (libvlc_dynamic_dll_path <> '') then
   begin
