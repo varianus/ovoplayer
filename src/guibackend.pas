@@ -184,6 +184,7 @@ var
   Engine : TAudioEngineClass;
   Function EngineCreation:boolean;
    begin
+     try
      AudioEngine := Engine.Create;
      if not AudioEngine.Initialize then
          begin
@@ -194,6 +195,12 @@ var
          end
      else
        Result:= true;
+     except
+       FreeAndNil(AudioEngine);
+       SetEngineFailed(Engine);
+       Engine:= nil;
+       result := False;
+     end;
    end;
 
 begin
