@@ -48,6 +48,8 @@ type
     Eq: IEqualizer;
     EQBandList: TEQBandList;
     procedure BandChanged(Sender: TObject; const BandNo:integer; const Value: single);
+    procedure InitBands(BandInfo: ARBandinfo);
+    procedure PresetToScreen(Preset: Integer);
   public
 
   end;
@@ -65,8 +67,6 @@ uses GUIBackEnd;
 procedure TfEqualizer.FormCreate(Sender: TObject);
 var
   i:integer;
-  EQBand: TfrEqualizer;
-  BandInfo: ARBandinfo;
 begin
 
   if (not BackEnd.AudioEngine.SupportEQ) or
@@ -84,9 +84,23 @@ begin
       cbPreset.Items.Add(ARPreset[i].Name);
     end;
 
-  BandInfo := eq.BandInfo;
   EQBandList:= TEQBandList.Create(false);
 
+  if Eq.ActiveEQ then
+    begin
+      InitBands(eq.BandInfo);
+    end;
+
+  cbEnableEq.Checked:= BackEnd.Config.EngineParam.ActiveEQ;
+  cbPreset.ItemIndex:= BackEnd.Config.EngineParam.EQPreset;
+
+end;
+
+Procedure TfEqualizer.InitBands( BandInfo: ARBandinfo);
+var
+  i: integer;
+  EQBand: TfrEqualizer;
+begin
   pnlContainer.DisableAlign;
   for i := 0 to length(BandInfo)-1 do
   begin
@@ -102,25 +116,38 @@ begin
   end;
   pnlContainer.EnableAlign;
 
-
 end;
 
 procedure TfEqualizer.cbEnableEqClick(Sender: TObject);
+var
+  BandInfo: ARBandinfo;
 begin
   Eq.ActiveEQ:=cbEnableEq.Checked;
 
+  BackEnd.Config.EngineParam.ActiveEQ := Eq.ActiveEQ;
+  if Eq.getActiveEQ and (EQBandList.Count = 0) then
+    begin
+      InitBands(eq.BandInfo);
+    end;
 end;
 
 procedure TfEqualizer.cbPresetChange(Sender: TObject);
-var
-  i: integer;
+
 begin
-  for i := 0 to pred(EQCounter) do
-    begin
-      eq.BandValue[i] := ARPreset[cbPreset.ItemIndex].Values[i];
-      EQBandList[i].Value:= ARPreset[cbPreset.ItemIndex].Values[i];
-    end;
-  Eq.EQApply;
+  PresetToScreen(cbPreset.ItemIndex);
+  ApplyPreset(eq, cbPreset.ItemIndex);
+  BackEnd.Config.EngineParam.EQPreset:= cbPreset.ItemIndex;
+
+end;
+
+Procedure TfEqualizer.PresetToScreen(Preset:Integer);
+var
+ i: integer;
+begin
+ for i := 0 to pred(EQCounter) do
+   begin
+     EQBandList[i].Value := ARPreset[Preset].Values[i];
+   end;
 end;
 
 procedure TfEqualizer.BandChanged(Sender: TObject; const BandNo: integer;

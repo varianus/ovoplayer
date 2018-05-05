@@ -39,7 +39,7 @@ uses
   extctrls,
 
   PlayList, PlayListManager, MediaLibrary, basetag, CustomSong,
-  Config, NullInterfacedObject,
+  Config, NullInterfacedObject, Equalizer,
   FpTimer;
 
 type
@@ -185,16 +185,16 @@ var
   Function EngineCreation:boolean;
    begin
      try
-     AudioEngine := Engine.Create;
-     if not AudioEngine.Initialize then
-         begin
-           FreeAndNil(AudioEngine);
-           SetEngineFailed(Engine);
-           Engine:= nil;
-           result := False;
-         end
-     else
-       Result:= true;
+       AudioEngine := Engine.Create;
+       if not AudioEngine.Initialize then
+           begin
+             FreeAndNil(AudioEngine);
+             SetEngineFailed(Engine);
+             Engine:= nil;
+             result := False;
+           end
+       else
+         Result:= true;
      except
        FreeAndNil(AudioEngine);
        SetEngineFailed(Engine);
@@ -238,7 +238,14 @@ begin
         EngineCreation;
     end;
 
-  AudioEngine.SetActiveEQ(Config.EngineParam.ActiveEQ);
+  if AudioEngine.SupportEQ then
+    begin
+      AudioEngine.SetActiveEQ(Config.EngineParam.ActiveEQ);
+     if Config.EngineParam.ActiveEQ then
+       ApplyPreset(AudioEngine, Config.EngineParam.EQPreset);
+
+    end;
+
   // if equalizer is active, try to load active preset
   AudioEngine.OnSongEnd := @AudioEngineSongEnd;
   AudioEngine.MainVolume:= Config.EngineParam.Volume;

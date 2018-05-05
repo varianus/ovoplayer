@@ -1,7 +1,7 @@
 object fEqualizer: TfEqualizer
-  Left = 0
+  Left = 49
   Height = 467
-  Top = 0
+  Top = 33
   Width = 736
   ActiveControl = ButtonPanel1.CloseButton
   Caption = 'Equalizer'

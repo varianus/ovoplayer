@@ -148,6 +148,7 @@ begin
   fIniFiles.WriteString('AudioEngine', 'Kind', EngineParam.EngineKind);
   fIniFiles.WriteInteger('AudioEngine', 'Volume', EngineParam.Volume);
   fIniFiles.WriteBool('AudioEngine', 'ActiveEQ', EngineParam.ActiveEQ);
+  fIniFiles.WriteInteger('AudioEngine', 'EQPreset', EngineParam.EQPreset);
 
   //GENERAL
   fIniFiles.WriteString('General', 'LastFolder', GeneralParam.LastImportFolder);
@@ -217,7 +218,8 @@ begin
   // ENGINE
   EngineParam.EngineKind := fIniFiles.ReadString('AudioEngine', 'Kind', '');
   EngineParam.Volume := fIniFiles.ReadInteger('AudioEngine', 'Volume', 50);
-  EngineParam.ActiveEQ := fIniFiles.ReadBool('AudioEngine', 'ActiveEQ', false);
+  EngineParam.ActiveEQ := fIniFiles.ReadBool('AudioEngine', 'ActiveEQ', False);
+  EngineParam.EQPreset := fIniFiles.ReadInteger('AudioEngine', 'EQPreset', 0);
   ReadSubParams;
 
   //GENERAL
