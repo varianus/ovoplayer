@@ -419,7 +419,7 @@ end;
 
 function TAudioEngineVLC.getActiveEQ: boolean;
 begin
-  Result := fEqualizer =nil;
+  Result := assigned(fEqualizer);
 end;
 
 procedure TAudioEngineVLC.SetActiveEQ(AValue: boolean);
