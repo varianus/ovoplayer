@@ -59,7 +59,7 @@ type
   end;
 
 const
-  PRESET_COUNT = 18;
+  PRESET_COUNT = 19;
 
 var
   ARPreset : array [0..PRESET_COUNT -1] of RPreset = (
@@ -80,10 +80,25 @@ var
       (Name: 'ska'; Values: (-1.4,-2.9,-2.4,0.0,2.4,3.3,5.3,5.7,6.7,5.8)),
       (Name: 'soft'; Values: (2.8,1.0,0.0,-1.4,0.0,2.4,4.8,5.7,6.7,7.2)),
       (Name: 'soft rock'; Values: (2.4,2.4,1.4,0.0,-2.4,-3.4,-2.0,0.0,1.4,5.3)),
-      (Name: 'techno'; Values: (4.8,3.3,0.0,-3.4,-2.9,0.0,4.8,5.7,5.8,5.3))
+      (Name: 'techno'; Values: (4.8,3.3,0.0,-3.4,-2.9,0.0,4.8,5.7,5.8,5.3)),
+      (Name: 'user'; Values: (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0))
     );
 
+Procedure ApplyPreset(eq : IEqualizer; Preset:Integer);
+
 implementation
+
+Procedure ApplyPreset(eq : IEqualizer; Preset:Integer);
+var
+  i: integer;
+begin
+  for i := 0 to pred(EQCounter) do
+    begin
+      eq.BandValue[i] := ARPreset[Preset].Values[i];
+    end;
+
+  Eq.EQApply;
+end;
 
 end.
 
