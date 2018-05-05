@@ -83,15 +83,11 @@ uses
   lazlogger, DefaultTranslator,  LCLVersion,
   ucustomplaylist, ufrfield, playlistbuilder, netprotocol,
   ImagesSupport, netsupport, guiconfig, SimpleSingleInstance, mcaselli, 
-  equalizerband, uequalizer, equalizer;
+  equalizerband, uequalizer, equalizer, catch_signal;
 
 {$R *.res}
 begin
   Application.Scaled:=True;
-
-  {$IF lcl_fullversion>=1080001}
-  Application.Scaled:=True;
-  {$ENDIF}
 
   CheckRestarting(Application);
   // needed to output exception to a file
@@ -108,6 +104,9 @@ begin
     begin
       Application.CreateForm(TDM, dm);
       Application.CreateForm(TfMainForm, fMainForm);
+      {$IFDEF CATCH_SIGNAL}
+      Init_SignalHandler;
+      {$ENDIF}
       Application.Run;
     end
   else

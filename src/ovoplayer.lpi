@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="10"/>
+    <Version Value="11"/>
     <PathDelim Value="\"/>
     <General>
       <SessionStorage Value="InProjectDir"/>
@@ -26,8 +26,11 @@
       <MajorVersionNr Value="1"/>
       <MinorVersionNr Value="4"/>
       <Attributes pvaDebug="True" pvaPrivateBuild="True"/>
-      <StringTable CompanyName="Marco Caselli" OriginalFilename="ovoplayer.lpr" ProductVersion="1.4.0.0"/>
+      <StringTable CompanyName="Marco Caselli" OriginalFilename="ovoplayer.lpr"/>
     </VersionInfo>
+    <MacroValues Count="1">
+      <Macro1 Name="LCLWidgetType" Value="gtk2"/>
+    </MacroValues>
     <BuildModes Count="2">
       <Item1 Name="Debug" Default="True"/>
       <Item2 Name="Release">
@@ -90,12 +93,14 @@ if TargetOS = 'linux' then
           </Other>
         </CompilerOptions>
       </Item2>
-      <SharedMatrixOptions Count="5">
-        <Item1 ID="066772129436" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
+      <SharedMatrixOptions Count="7">
+        <Item1 ID="066772129436" Modes="Debug" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
         <Item2 ID="410165404427" Type="IDEMacro" MacroName="LCLWidgetType" Value="qt"/>
         <Item3 ID="829386383577" Type="IDEMacro" MacroName="LCLWidgetType" Value="customdrawn"/>
         <Item4 ID="280527481958" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk3"/>
         <Item5 ID="185779540059" Value="-dEnableUTF8RTL"/>
+        <Item6 ID="299350138195" Type="IDEMacro" MacroName="LCLWidgetType" Value="fpgui"/>
+        <Item7 ID="473130511835" Type="IDEMacro" MacroName="LCLWidgetType" Value="qt5"/>
       </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
@@ -105,9 +110,16 @@ if TargetOS = 'linux' then
     </PublishOptions>
     <RunParams>
       <local>
-        <FormatVersion Value="1"/>
-        <CommandLineParams Value="--debug-log=c:\temp\dbg.log"/>
+        <CommandLineParams Value="--debug-log=\tmp\dbg.log"/>
       </local>
+      <FormatVersion Value="2"/>
+      <Modes Count="1">
+        <Mode0 Name="default">
+          <local>
+            <CommandLineParams Value="--debug-log=\tmp\dbg.log"/>
+          </local>
+        </Mode0>
+      </Modes>
     </RunParams>
     <RequiredPackages Count="5">
       <Item1>
@@ -128,7 +140,7 @@ if TargetOS = 'linux' then
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="87">
+    <Units Count="88">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -559,6 +571,10 @@ if TargetOS = 'linux' then
         <IsPartOfProject Value="True"/>
         <UnitName Value="NetIntfws"/>
       </Unit86>
+      <Unit87>
+        <Filename Value="platform\linux\catch_signal.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit87>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -610,16 +626,13 @@ if TargetOS = 'linux' then
         <ConfigFilePath Value="..\extrafpc.cfg"/>
       </ConfigFile>
       <CustomOptions Value="-Xm"/>
-      <OtherDefines Count="1">
-        <Define0 Value="aaa"/>
-      </OtherDefines>
       <ExecuteBefore>
         <Command Value="$(LazarusDir)\tools\svn2revisioninc$(ExeExt) .. ovorevision.inc --c=ovoRevision"/>
       </ExecuteBefore>
     </Other>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="8">
+    <Exceptions Count="9">
       <Item1>
         <Name Value="EAbort"/>
       </Item1>
@@ -645,6 +658,9 @@ if TargetOS = 'linux' then
       <Item8>
         <Name Value="EInOutError"/>
       </Item8>
+      <Item9>
+        <Name Value="EInvalidGraphic"/>
+      </Item9>
     </Exceptions>
   </Debugging>
 </CONFIG>
