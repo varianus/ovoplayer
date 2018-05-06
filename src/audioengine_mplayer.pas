@@ -130,7 +130,7 @@ var
         SetLength(Buffer, BytesAvailable);
         BytesRead  := fPlayerProcess.OutPut.Read(Buffer[1], BytesAvailable);
         ProcessStr := copy(Buffer, 1, BytesRead);
-        DebugLn(ProcessStr);
+       // DebugLn(ProcessStr);
         if AnsiStartsStr(TIMEPOSOUT,ProcessStr) then
           begin
             ProcessStr := trim(Copy(ProcessStr, 3, 7));
