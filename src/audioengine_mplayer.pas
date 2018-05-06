@@ -130,7 +130,7 @@ var
         SetLength(Buffer, BytesAvailable);
         BytesRead  := fPlayerProcess.OutPut.Read(Buffer[1], BytesAvailable);
         ProcessStr := copy(Buffer, 1, BytesRead);
-       // DebugLn(ProcessStr);
+        DebugLn(ProcessStr);
         if AnsiStartsStr(TIMEPOSOUT,ProcessStr) then
           begin
             ProcessStr := trim(Copy(ProcessStr, 3, 7));
@@ -264,6 +264,8 @@ begin
 
   if offset <> 0 then
     Seek(offset, true);
+  if fActiveEQ then
+    EQApply;
 
   fTimer.Enabled:=true;
 
@@ -313,8 +315,10 @@ begin
   fPlayerProcess.Parameters.add('-volume');  fPlayerProcess.Parameters.add(IntToStr(Self.MainVolume));
   fPlayerProcess.Parameters.add('-softvol');
   fPlayerProcess.Parameters.add('-softvol-max');  fPlayerProcess.Parameters.add('255');
-  fPlayerProcess.Parameters.add('-af');  fPlayerProcess.Parameters.add('equalizer');
+  fPlayerProcess.Parameters.add('-af-add');  fPlayerProcess.Parameters.add('equalizer=0:0:0:0:0:0:0:0:0:0');
   fPlayerProcess.Parameters.add('-nofontconfig');
+
+
   fPlayerProcess.Parameters.add(Filename);
   // -nofontconfig '; //  -priority abovenormal -really-quiet -identify
   fPlayerProcess.Options := fPlayerProcess.Options + [poUsePipes, poNoConsole{, poStderrToOutPut}];
@@ -453,11 +457,16 @@ procedure TAudioEngineMPlayer.SetActiveEQ(AValue: boolean);
 var
   i: integer;
 begin
+
   if AValue and not fActiveEQ then
+  begin
     EQApply;
+  end;
 
   if not AValue and fActiveEQ then
-    SendMPlayerCommand('af_eq_set_bands 0:0:0:0:0:0:0:0:0:0');
+    SendMPlayerCommand('af_cmdline equalizer 0:0:0:0:0:0:0:0:0:0');
+
+  fActiveEQ := AValue;
 
 end;
 
@@ -473,10 +482,10 @@ var
 begin
   tmp:='';
   for i := 0 to pred(EQUALIZER_BANDS) do
-    tmp:=tmp+ ':'+Format('%2.0f',[fBandInfo[i].Value]);
+    tmp:=tmp+ ':'+Format('%1.0f',[fBandInfo[i].Value]);
   Delete(tmp,1,1);
 
-  SendMPlayerCommand('af_eq_set_bands ' +tmp);
+  SendMPlayerCommand('af_cmdline equalizer ' +tmp);
 
 end;
 
