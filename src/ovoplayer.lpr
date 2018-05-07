@@ -68,6 +68,7 @@ uses
 
   {$IFDEF NETWORK_SS}NetIntf,{$ENDIF}
   {$IFDEF NETWORK_WS}NetIntfWS,{$ENDIF}
+  {$IFDEF CATCH_SIGNAL}catch_signal,{$ENDIF}
 
   // ovotag
   song, AudioTag, basetag,
@@ -83,7 +84,7 @@ uses
   lazlogger, DefaultTranslator,  LCLVersion,
   ucustomplaylist, ufrfield, playlistbuilder, netprotocol,
   ImagesSupport, netsupport, guiconfig, SimpleSingleInstance, mcaselli, 
-  equalizerband, uequalizer, equalizer, catch_signal;
+  equalizerband, uequalizer, equalizer;
 
 {$R *.res}
 begin

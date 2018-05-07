@@ -29,6 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   {$DEFINE ASKMMKEYSMODE} // Ask for multimedia keys capture mode
   {$DEFINE MPRIS2}        // MPRIS V2 Interface
   {$DEFINE NOTIFYDBUS}    // use DBus notification
+  {$DEFINE CATCH_SIGNAL}  // try to close gracefully on linux shutdown signal
 {$ENDIF LINUX}  
 
 {$IFDEF WINDOWS}
