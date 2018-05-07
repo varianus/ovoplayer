@@ -118,7 +118,7 @@ begin
    Buttons[2].iBitmap := 8;
    StrCopy(Buttons[2].szTip, PWideChar(utf8toUtf16(DM.actNext.Caption)));
 
-   res:=TaskbarList3.ThumbBarSetImageList(FApplication, DM.ilButtons.Reference.Handle);
+   res:=TaskbarList3.ThumbBarSetImageList(FApplication, DM.ilButtons.Reference[DM.ilButtons.Height].Handle);
    res:=TaskbarList3.ThumbBarAddButtons(FApplication, 3, @Buttons[0]);
 
 end;
