@@ -444,12 +444,18 @@ function CheckMF: boolean;
 var
   cdir: string;
   MustFree: boolean;
-  OsVer: TOSVERSIONINFO;
+  OsVer: TOSVersionInfo;
 
 begin
   // Media foundation is avalaible only for Vista and later Windows versions
+  OsVer.dwOSVersionInfoSize:= SizeOf(TOSVersionInfo);
+  Result := GetVersionEx(OsVer);
+
+  if not Result then
+    exit;
+
   Result := False;
-  GetVersionEx(OsVer);
+
   if OsVer.dwMajorVersion < 6 then
     exit;
 
