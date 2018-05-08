@@ -169,7 +169,7 @@ begin
 
   fdecoupler := TDecoupler.Create;
   fdecoupler.OnCommand := @ReceivedCommand;
-  res:=zplay_SetCallbackFunc(fhandle, @libzplayEvent, MsgStopAsync + MsgStop,  self);
+  res:=zplay_SetCallbackFunc(fhandle, @libzplayEvent, MsgAll,  self);
   Initialized := true;
 
   InitBands(fBandInfo);
@@ -203,18 +203,21 @@ var
 //  vol : Pchar;
 begin
 //  Stop;
+  zplay_Close(fhandle);
+//  res := zplay_AddFile(fhandle,PAnsiChar(song.FullName), sfAutodetect);
+//  res := zplay_OpenStream(fhandle,0,0,@res,1,sfAutodetect);
   res := zplay_OpenFile(fhandle,PAnsiChar(song.FullName), sfAutodetect);
   result := res = 1 ;
-
   if Result then
     begin
       fState:= ENGINE_PLAY;
       if offset <> 0 then
         Seek(offset, true);
+      res := zplay_Play(fhandle);
     end;
 // else
 //   vol := zplay_GetError(fhandle);
- res := zplay_Play(fhandle);
+
  result := res = 1 ;
 
 end;
@@ -305,10 +308,9 @@ procedure TAudioEnginelibzplay.ReceivedCommand(Sender: TObject;
   Command: TEngineCommand; Param: integer);
 begin
  if (Command = ecCustom) and
-    (((Param and MsgStopAsync) = MsgStopAsync) or
-     ((Param and MsgStop) = MsgStop)) then
+    ((Param and MsgStopAsync) = MsgStopAsync) then
     begin
-      if fState <> ENGINE_STOP then
+      if fState = ENGINE_PLAY then
          begin
            fState:= ENGINE_SONG_END;
            ReceivedCommand(self, ecNext, 0);
