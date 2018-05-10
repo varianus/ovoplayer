@@ -39,7 +39,7 @@ uses
   extctrls,
 
   PlayList, PlayListManager, MediaLibrary, basetag, CustomSong,
-  Config, NullInterfacedObject, Equalizer,
+  Config, NullInterfacedObject, Equalizer, backendconfig,
   FpTimer;
 
 type
@@ -60,6 +60,11 @@ type
     FOnSaveInterfaceState: TNotifyEvent;
     ObserverList : TInterfaceList;
     IntTimer: TTimer;
+
+    fEngineParam: TEngineParam;
+    fGeneralParam: TGeneralParam;
+    FMediaLibraryParam: TMediaLibraryParam;
+    fPlayListParam: TPlayListParam;
 
     procedure AudioEngineSongEnd(Sender: TObject);
     function GetMute: boolean;
@@ -131,6 +136,11 @@ type
     property Looping: TplRepeat read  GetLooping write SetLooping;
     Property Volume : cardinal read GetVolume write SetVolume;
     Property Muted : boolean read GetMute write SetMute;
+
+    property MediaLibraryParam: TMediaLibraryParam read FMediaLibraryParam;
+    property PlayListParam:     TPlayListParam read fPlayListParam;
+    property EngineParam:       TEngineParam read fEngineParam;
+    property GeneralParam:      TGeneralParam read fGeneralParam;
 
   end;
 
@@ -206,16 +216,21 @@ var
 begin
   IntTimer := nil;
   Config := TConfig.Create;
+  fMediaLibraryParam := TMediaLibraryParam.Create(Config);
+  fPlayListParam     := TPlayListParam.Create(Config);
+  fEngineParam       := TEngineParam.Create(Config);
+  fGeneralParam      := TGeneralParam.Create(Config);
+
   Manager  := TPlayListManager.Create;
   Playlist := TPlayList.Create;
-  PlayList.RepeatMode :=  TplRepeat(Config.PlayListParam.RepeatMode);
+  PlayList.RepeatMode :=  TplRepeat(PlayListParam.RepeatMode);
   mediaLibrary := TMediaLibrary.Create;
   engine := nil;
-  if Config.EngineParam.EngineKind <> '' then
+  if EngineParam.EngineKind <> '' then
      begin
-       Engine := GetEngineByName(Config.EngineParam.EngineKind);
+       Engine := GetEngineByName(EngineParam.EngineKind);
        if Assigned(Engine) then
-          if not Engine.IsAvalaible(Config.EngineSubParams) then
+          if not Engine.IsAvalaible(EngineParam.EngineSubParams) then
              engine := nil
           else
             EngineCreation;
@@ -227,9 +242,9 @@ begin
       if Engine = nil then  // no more engine to try ...
          engine:=TAudioEngineDummy
       else
-         Config.EngineParam.EngineKind := Engine.getEngineName;
+         EngineParam.EngineKind := Engine.getEngineName;
 
-      if not Engine.IsAvalaible(Config.EngineSubParams) then
+      if not Engine.IsAvalaible(EngineParam.EngineSubParams) then
          begin
            SetEngineFailed(Engine);
            Engine:= nil;
@@ -240,15 +255,15 @@ begin
 
   if AudioEngine.SupportEQ then
     begin
-      AudioEngine.SetActiveEQ(Config.EngineParam.ActiveEQ);
-     if Config.EngineParam.ActiveEQ then
-       ApplyPreset(AudioEngine, Config.EngineParam.EQPreset);
+      AudioEngine.SetActiveEQ(EngineParam.ActiveEQ);
+     if EngineParam.ActiveEQ then
+       ApplyPreset(AudioEngine, EngineParam.EQPreset);
 
     end;
 
   // if equalizer is active, try to load active preset
   AudioEngine.OnSongEnd := @AudioEngineSongEnd;
-  AudioEngine.MainVolume:= Config.EngineParam.Volume;
+  AudioEngine.MainVolume:= EngineParam.Volume;
   PlayList.OnSongAdd:=@PlaylistOnSongAdd;
 
 end;
@@ -256,8 +271,8 @@ end;
 procedure TBackEnd.SaveState;
 begin
   Manager.SaveToXSPF(Config.ConfigDir + 'lastplaylist.xspf', PlayList, AudioEngine.Position);
-  Config.EngineParam.Volume := AudioEngine.MainVolume;
-  Config.EngineParam.ActiveEQ := AudioEngine.getActiveEQ;
+  EngineParam.Volume := AudioEngine.MainVolume;
+  EngineParam.ActiveEQ := AudioEngine.getActiveEQ;
 
 end;
 
@@ -275,10 +290,17 @@ begin
        FOnSaveInterfaceState(Self);
   except
   end;
+
+
   Manager.Free;
   PlayList.Free;
   AudioEngine.Free;
   mediaLibrary.Free;
+
+  fMediaLibraryParam.Free;
+  fPlayListParam.Free;
+  fEngineParam.Free;
+  fGeneralParam.Free;
   Config.Free;
 
   Inherited Destroy;

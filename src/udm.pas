@@ -173,7 +173,7 @@ begin
       Backend.OnPlayListLoad(self);
 
     if (Backend.Manager.SavedTime <> 0) and
-        Backend.Config.PlayListParam.Restart and
+        Backend.PlayListParam.Restart and
        (Backend.PlayList.CurrentItem <> nil) then
       begin
          Backend.AudioEngine.Play(Backend.PlayList.CurrentItem, Backend.Manager.SavedTime);
@@ -192,11 +192,11 @@ end;
 
 procedure TDM.actImportDirectoryExecute(Sender: TObject);
 begin
- SelectDirectoryDialog.FileName := Backend.Config.GeneralParam.LastImportFolder;
+ SelectDirectoryDialog.FileName := Backend.GeneralParam.LastImportFolder;
  if SelectDirectoryDialog.Execute then
    begin
      Backend.Manager.ImportFromDirectory(SelectDirectoryDialog.FileName,true, Backend.PlayList);
-     Backend.Config.GeneralParam.LastImportFolder := SelectDirectoryDialog.FileName;
+     Backend.GeneralParam.LastImportFolder := SelectDirectoryDialog.FileName;
    end;
  Backend.SignalPlayListChange;
 end;
@@ -230,7 +230,7 @@ end;
 
 procedure TDM.actFastScanExecute(Sender: TObject);
 begin
-  Backend.MediaLibrary.Scan(Backend.Config.MediaLibraryParam.LibraryPaths, false);
+  Backend.MediaLibrary.Scan(Backend.MediaLibraryParam.LibraryPaths, false);
 end;
 
 procedure TDM.actMuteExecute(Sender: TObject);
@@ -285,7 +285,7 @@ begin
     rptNone : actRepeatNone.Checked:=true;
     rptPlayList : actRepeatAll.Checked:=true;
   end;
-  Backend.Config.PlayListParam.RepeatMode := Ord(Backend.PlayList.RepeatMode);
+  Backend.PlayListParam.RepeatMode := Ord(Backend.PlayList.RepeatMode);
   if Notify then
     Backend.Notify(cpLooping);
 end;
@@ -313,7 +313,7 @@ end;
 procedure TDM.actRescanCollectionExecute(Sender: TObject);
 
 begin
-  Backend.MediaLibrary.Scan(Backend.Config.MediaLibraryParam.LibraryPaths);
+  Backend.MediaLibrary.Scan(Backend.MediaLibraryParam.LibraryPaths);
 end;
 
 procedure TDM.actPlaylistSaveExecute(Sender: TObject);

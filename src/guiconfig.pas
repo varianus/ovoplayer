@@ -33,54 +33,105 @@ const
 
 type
 
-  TNotificationParam = record
-    Kind: integer;
-    X: integer;
-    Y: integer;
-    BackColor: TColor;
-    FontColor: TColor;
-    Transparency: integer;
-    TimeOut: integer;
+  { TNotificationParam }
+
+  TNotificationParam = Class(TConfigParam)
+  private
+    FBackColor: TColor;
+    FFontColor: TColor;
+    FKind: integer;
+    FTimeOut: integer;
+    FTransparency: integer;
+    FX: integer;
+    FY: integer;
+    procedure SetBackColor(AValue: TColor);
+    procedure SetFontColor(AValue: TColor);
+    procedure SetKind(AValue: integer);
+    procedure SetTimeOut(AValue: integer);
+    procedure SetTransparency(AValue: integer);
+    procedure SetX(AValue: integer);
+    procedure SetY(AValue: integer);
+  protected
+    Procedure InternalSave; override;
+  public
+    Property Kind: integer read FKind write SetKind;
+    Property X: integer read FX write SetX;
+    Property Y: integer read FY write SetY;
+    Property BackColor: TColor read FBackColor write SetBackColor;
+    Property FontColor: TColor read FFontColor write SetFontColor;
+    Property Transparency: integer read FTransparency write SetTransparency;
+    Property TimeOut: integer read FTimeOut write SetTimeOut;
+    Procedure Load; override;
   end;
 
-  TInterfaceParam = record
-    ShowTrayIcon: boolean;
-    MinimizeOnClose: boolean;
-    GroupBy: Integer;
-    CaptureMMKeys: boolean;
-    CaptureMMkeysMode: Integer;
-    EnableSoundMenu: boolean;
+  { TInterfaceParam }
+
+  TInterfaceParam = Class(TConfigParam)
+  private
+    FCaptureMMKeys: boolean;
+    FCaptureMMkeysMode: Integer;
+    FEnableSoundMenu: boolean;
+    FGroupBy: Integer;
+    FMinimizeOnClose: boolean;
+    FShowTrayIcon: boolean;
+    procedure SetCaptureMMKeys(AValue: boolean);
+    procedure SetCaptureMMkeysMode(AValue: Integer);
+    procedure SetEnableSoundMenu(AValue: boolean);
+    procedure SetGroupBy(AValue: Integer);
+    procedure SetMinimizeOnClose(AValue: boolean);
+    procedure SetShowTrayIcon(AValue: boolean);
+  protected
+    Procedure InternalSave; override;
+  public
+    Property ShowTrayIcon: boolean read FShowTrayIcon write SetShowTrayIcon;
+    Property MinimizeOnClose: boolean read FMinimizeOnClose write SetMinimizeOnClose;
+    Property GroupBy: Integer read FGroupBy write SetGroupBy;
+    Property CaptureMMKeys: boolean read FCaptureMMKeys write SetCaptureMMKeys;
+    Property CaptureMMkeysMode: Integer read FCaptureMMkeysMode write SetCaptureMMkeysMode;
+    Property EnableSoundMenu: boolean read FEnableSoundMenu write SetEnableSoundMenu;
+    Procedure Load; override;
+
   end;
 
 
  {$IFDEF NETWORK_INTF}
-  TNetRemoteParam = record
-    Enabled: boolean;
-    Port: integer;
+  { TNetRemoteParam }
+  TNetRemoteParam = Class(TConfigParam)
+  private
+    FEnabled: boolean;
+    FPort: integer;
+    procedure SetEnabled(AValue: boolean);
+    procedure SetPort(AValue: integer);
+  protected
+    Procedure InternalSave; override;
+  public
+    Property Enabled: boolean read FEnabled write SetEnabled;
+    Property Port: integer read FPort write SetPort;
+    Procedure Load; override;
   end;
  {$EndIf}
 
+ { TGuiConfig }
 
-  { TGuiConfig }
-
-  TGuiConfig = class
-  private
-    FConfig: TConfig;
-  public
-    NotificationParam: TNotificationParam;
-    InterfaceParam:    TInterfaceParam;
+ TGuiConfig = class
+ private
+   fNotificationParam: TNotificationParam;
+   FInterfaceParam: TInterfaceParam;
    {$IFDEF NETWORK_INTF}
-    NetRemoteParam: TNetRemoteParam;
+   fNetRemoteParam: TNetRemoteParam;
    {$ENDIF}
+ public
+   property NotificationParam: TNotificationParam read FNotificationParam;
+   property InterfaceParam: TInterfaceParam read FInterfaceParam;
+   {$IFDEF NETWORK_INTF}
+   property NetRemoteParam: TNetRemoteParam read FNetRemoteParam;
+   {$ENDIF}
+   constructor Create(Config: TConfig);
+   Destructor Destroy; override;
+ end;
 
-    constructor Create(Config: TConfig);
-    procedure ReadConfig;
-    procedure SaveConfig;
-
-  end;
 var
-
- GuiConfigObj : TGuiConfig;
+ GuiConfigObj :TGuiConfig;
 
 implementation
 
@@ -89,82 +140,207 @@ implementation
 
 constructor TGuiConfig.Create(Config: TConfig);
 begin
-  FConfig := Config;
-end;
-
-procedure TGuiConfig.ReadConfig;
-var
-  TmpSt: TStringList;
-begin
-
-  TmpSt := TStringList.Create;
-  FConfig.ReadCustomParams('Notification', TmpSt);
-  // NOTIFICATION
-  NotificationParam.Kind := StrToIntDef(TmpSt.Values['Kind'], 2);
-  NotificationParam.BackColor := StringToColorDef(TmpSt.Values['BackColor'], $00B66F18);
-  NotificationParam.FontColor := StringToColorDef(TmpSt.Values['FontColor'], $00000000);
-  NotificationParam.TimeOut := StrToIntDef(TmpSt.Values['TimeOut'], 3000);
-  NotificationParam.X := StrToIntDef(TmpSt.Values['X'], 100);
-  NotificationParam.Y := StrToIntDef(TmpSt.Values['Y'], 100);
-  NotificationParam.Transparency := StrToIntDef(TmpSt.Values['Transparency'], 230);
-
-  // INTERFACE
-  FConfig.ReadCustomParams('Interface', TmpSt);
-  InterfaceParam.MinimizeOnClose := StrToBoolDef(TmpSt.Values['MinimizeOnClose'], True);
-  InterfaceParam.ShowTrayIcon := StrToBoolDef(TmpSt.Values['ShowTrayIcon'], True);
-  InterfaceParam.GroupBy := StrToIntDef(TmpSt.Values['GroupBy'], 0);
-  InterfaceParam.CaptureMMKeys := StrToBoolDef(TmpSt.Values['CaptureMMKeys'], False);
-  InterfaceParam.CaptureMMkeysMode := StrToIntDef(TmpSt.Values['CaptureMMkeysMode'], 0);
-  InterfaceParam.EnableSoundMenu := StrToBoolDef(TmpSt.Values['EnableSoundMenu'], True);
-
-  // NETREMOTE
+  fNotificationParam:= TNotificationParam.Create(Config);
+  FInterfaceParam:= TInterfaceParam.Create(Config);
   {$IFDEF NETWORK_INTF}
-  FConfig.ReadCustomParams('NetRemote', TmpSt);
-
-  NetRemoteParam.Enabled := StrToBoolDef(TmpSt.Values['Enabled'], False);
-  NetRemoteParam.Port :=StrToIntDef(TmpSt.Values['Port'], 6860);
+  fNetRemoteParam:= TNetRemoteParam.Create(Config);
   {$ENDIF}
 
-  TmpSt.free;
+end;
+
+destructor TGuiConfig.Destroy;
+begin
+  inherited Destroy;
+  fNotificationParam.Free;
+  FInterfaceParam.Free;
+  {$IFDEF NETWORK_INTF}
+  fNetRemoteParam.Free;
+  {$ENDIF}
 
 end;
 
-procedure TGuiConfig.SaveConfig;
-var
-  TmpSt: TStringList;
+{ TGuiConfig }
+
+{$IFDEF NETWORK_INTF}
+
+{ TNetRemoteParam }
+
+procedure TNetRemoteParam.SetEnabled(AValue: boolean);
 begin
+  if FEnabled=AValue then Exit;
+  FEnabled:=AValue;
+  Dirty := True;
+end;
 
-  TmpSt := TStringList.Create;
-  // NOTIFICATION
-  TmpSt.Values['Kind'] := IntToStr(NotificationParam.Kind);
-  TmpSt.Values['BackColor'] := ColorToString(NotificationParam.BackColor);
-  TmpSt.Values['FontColor'] := ColorToString(NotificationParam.FontColor);
-  TmpSt.Values['TimeOut'] := IntToStr(NotificationParam.TimeOut);
-  TmpSt.Values['X'] := IntToStr(NotificationParam.X);
-  TmpSt.Values['Y'] := IntToStr(NotificationParam.Y);
-  TmpSt.Values['Transparency'] := IntToStr(NotificationParam.Transparency);
-  fConfig.SaveCustomParams('Notification', tmpSt);
+procedure TNetRemoteParam.SetPort(AValue: integer);
+begin
+  if FPort=AValue then Exit;
+  FPort:=AValue;
+  Dirty := True;
+end;
 
-  // INTERFACE
-  TmpSt.Clear;
-  TmpSt.Values['MinimizeOnClose'] := BoolToStr(InterfaceParam.MinimizeOnClose);
-  TmpSt.Values['ShowTrayIcon'] := BoolToStr(InterfaceParam.ShowTrayIcon);
-  TmpSt.Values['GroupBy'] := IntToStr(InterfaceParam.GroupBy);
-  TmpSt.Values['CaptureMMKeys'] := BoolToStr(InterfaceParam.CaptureMMKeys);
-  TmpSt.Values['CaptureMMKeysMode'] := IntToStr(InterfaceParam.CaptureMMkeysMode);
-  TmpSt.Values['EnableSoundMenu'] := BoolToStr(InterfaceParam.EnableSoundMenu);
-  fConfig.SaveCustomParams('Notification', tmpSt);
+procedure TNetRemoteParam.InternalSave;
+const
+  Base = 'NetRemote';
+begin
+  owner.IniFile.WriteBool(Base, 'Enabled', Enabled);
+  owner.IniFile.WriteInteger(Base, 'Port', Port);
+end;
 
-  {$IFDEF NETWORK_INTF}
-  // NETREMOTE
-  TmpSt.Clear;
-  TmpSt.Values['Enabled']:= BoolToStr(NetRemoteParam.Enabled);
-  TmpSt.Values['Port'] := IntToStr( NetRemoteParam.Port);
-  {$ENDIf}
+procedure TNetRemoteParam.Load;
+const
+  Base = 'NetRemote';
+begin
+  Enabled := owner.IniFile.ReadBool(Base , 'Enabled', False);
+  Port    := owner.IniFile.ReadInteger(Base , 'Port', 6860);
+end;
+{$EndIf}
 
-  fConfig.SaveCustomParams('NetRemote', tmpSt);
+{ TInterfaceParam }
 
-  TmpSt.Free;
+procedure TInterfaceParam.SetCaptureMMKeys(AValue: boolean);
+begin
+  if FCaptureMMKeys=AValue then Exit;
+  FCaptureMMKeys:=AValue;
+  Dirty := True;
+end;
+
+procedure TInterfaceParam.SetCaptureMMkeysMode(AValue: Integer);
+begin
+  if FCaptureMMkeysMode=AValue then Exit;
+  FCaptureMMkeysMode:=AValue;
+  Dirty := True;
+end;
+
+procedure TInterfaceParam.SetEnableSoundMenu(AValue: boolean);
+begin
+  if FEnableSoundMenu=AValue then Exit;
+  FEnableSoundMenu:=AValue;
+  Dirty := True;
+end;
+
+procedure TInterfaceParam.SetGroupBy(AValue: Integer);
+begin
+  if FGroupBy=AValue then Exit;
+  FGroupBy:=AValue;
+  Dirty := True;
+end;
+
+procedure TInterfaceParam.SetMinimizeOnClose(AValue: boolean);
+begin
+  if FMinimizeOnClose=AValue then Exit;
+  FMinimizeOnClose:=AValue;
+  Dirty := True;
+end;
+
+procedure TInterfaceParam.SetShowTrayIcon(AValue: boolean);
+begin
+  if FShowTrayIcon=AValue then Exit;
+  FShowTrayIcon:=AValue;
+  Dirty := True;
+end;
+
+procedure TInterfaceParam.InternalSave;
+const
+  Base = 'Interface';
+begin
+  owner.IniFile.WriteBool(Base, 'MinimizeOnClose', MinimizeOnClose);
+  owner.IniFile.WriteBool(Base, 'ShowTrayIcon', ShowTrayIcon);
+  owner.IniFile.WriteBool(Base, 'EnableSoundMenu', EnableSoundMenu);
+  owner.IniFile.WriteBool(Base, 'CaptureMMKeys', CaptureMMKeys);
+  owner.IniFile.WriteInteger(Base, 'CaptureMMKeysMode', CaptureMMkeysMode);
+  owner.IniFile.WriteInteger(Base, 'GroupBy', GroupBy);
+
+end;
+
+procedure TInterfaceParam.Load;
+const
+  Base = 'Interface';
+begin
+  fMinimizeOnClose   := owner.IniFile.ReadBool(Base , 'MinimizeOnClose', True);
+  fShowTrayIcon      := owner.IniFile.ReadBool(Base , 'ShowTrayIcon', True);
+  fEnableSoundMenu   := owner.IniFile.ReadBool(Base , 'EnableSoundMenu', True);
+  fCaptureMMKeys     := owner.IniFile.ReadBool(Base , 'CaptureMMKeys', False);
+  fCaptureMMkeysMode := owner.IniFile.ReadInteger(Base , 'CaptureMMkeysMode', 0);
+  fGroupBy           := owner.IniFile.ReadInteger(Base , 'GroupBy', 0);
+
+end;
+
+{ TNotificationParam }
+
+procedure TNotificationParam.SetBackColor(AValue: TColor);
+begin
+  if FBackColor=AValue then Exit;
+  FBackColor:=AValue;
+  Dirty := True;
+end;
+
+procedure TNotificationParam.SetFontColor(AValue: TColor);
+begin
+  if FFontColor=AValue then Exit;
+  FFontColor:=AValue;
+  Dirty := True;
+end;
+
+procedure TNotificationParam.SetKind(AValue: integer);
+begin
+  if FKind=AValue then Exit;
+  FKind:=AValue;
+  Dirty := True;
+end;
+
+procedure TNotificationParam.SetTimeOut(AValue: integer);
+begin
+  if FTimeOut=AValue then Exit;
+  FTimeOut:=AValue;
+  Dirty := True;
+end;
+
+procedure TNotificationParam.SetTransparency(AValue: integer);
+begin
+  if FTransparency=AValue then Exit;
+  FTransparency:=AValue;
+  Dirty := True;
+end;
+
+procedure TNotificationParam.SetX(AValue: integer);
+begin
+  if FX=AValue then Exit;
+  FX:=AValue;
+  Dirty := True;
+end;
+
+procedure TNotificationParam.SetY(AValue: integer);
+begin
+  if FY=AValue then Exit;
+  FY:=AValue;
+  Dirty := True;
+end;
+
+procedure TNotificationParam.InternalSave;
+const
+  Base = 'Notification';
+begin
+  owner.IniFile.WriteInteger(Base, 'Kind', Kind);
+  owner.IniFile.WriteString(Base, 'BackColor', ColorToString(BackColor));
+  owner.IniFile.WriteString(Base, 'FontColor', ColorToString(FontColor));
+  owner.IniFile.WriteInteger(Base, 'TimeOut', TimeOut);
+  owner.IniFile.WriteInteger(Base, 'X', X);
+  owner.IniFile.WriteInteger(Base, 'Y', Y);
+  owner.IniFile.WriteInteger(Base, 'Transparency', Transparency);
+end;
+
+procedure TNotificationParam.Load;
+const
+  Base = 'Notification';
+begin
+  fKind         := owner.IniFile.ReadInteger(Base , 'Kind', 2);
+  fBackColor    := StringToColorDef(owner.IniFile.ReadString(Base,'BackColor',''), $00B66F18);
+  fFontColor    := StringToColorDef(owner.IniFile.ReadString(Base,'FontColor',''), $00000000);
+  fTimeOut      := owner.IniFile.ReadInteger(Base , 'TimeOut', 3000);
+  fX            := owner.IniFile.ReadInteger(Base , 'X', 100);
+  fY            := owner.IniFile.ReadInteger(Base , 'Y', 100);
+  fTransparency := owner.IniFile.ReadInteger(Base , 'Transparency', 230);
 end;
 
 end.

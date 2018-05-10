@@ -91,8 +91,8 @@ begin
       InitBands(eq.BandInfo);
     end;
 
-  cbEnableEq.Checked:= BackEnd.Config.EngineParam.ActiveEQ;
-  cbPreset.ItemIndex:= BackEnd.Config.EngineParam.EQPreset;
+  cbEnableEq.Checked:= BackEnd.EngineParam.ActiveEQ;
+  cbPreset.ItemIndex:= BackEnd.EngineParam.EQPreset;
 
 end;
 
@@ -124,7 +124,7 @@ var
 begin
   Eq.ActiveEQ:=cbEnableEq.Checked;
 
-  BackEnd.Config.EngineParam.ActiveEQ := Eq.ActiveEQ;
+  BackEnd.EngineParam.ActiveEQ := Eq.ActiveEQ;
   if Eq.getActiveEQ and (EQBandList.Count = 0) then
     begin
       InitBands(eq.BandInfo);
@@ -136,7 +136,7 @@ procedure TfEqualizer.cbPresetChange(Sender: TObject);
 begin
   PresetToScreen(cbPreset.ItemIndex);
   ApplyPreset(eq, cbPreset.ItemIndex);
-  BackEnd.Config.EngineParam.EQPreset:= cbPreset.ItemIndex;
+  BackEnd.EngineParam.EQPreset:= cbPreset.ItemIndex;
 
 end;
 

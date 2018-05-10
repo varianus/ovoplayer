@@ -39,7 +39,7 @@ uses
   {$ENDIF}
   {$IFDEF MULTIMEDIA_KEYS}MultimediaKeys, {$ENDIF}
   ucover, ucustomplaylist, playlistbuilder, netprotocol,
-  GuiConfig, uequalizer, ThemedSlider;
+  GuiConfig, uequalizer, ThemedSlider, LCLType;
 
 type
   TSortFields = record
@@ -401,10 +401,12 @@ type
     {$ENDIF}
     {$IFDEF NETWORK_INTF}
     MyNetIntf : TNetIntf;
+    fNetRemoteParam: TNetRemoteParam;
     {$ENDIF}
     {$IFDEF MULTIMEDIA_KEYS}
     fMultimediaKeys:   TMultimediaKeys;
     {$ENDIF}
+
     function AdjustPos(pt: tpoint): Tpoint;
     Function ColumnSize(aCol: Integer):Integer;
     procedure ClearPanelInfo;
@@ -448,7 +450,7 @@ var
 implementation
 
 {$R *.lfm}
-uses AppConsts, lclType, AudioTag, LCLProc, FilesSupport,
+uses AppConsts, AudioTag, LCLProc, FilesSupport,
      uConfig, uMiniPlayer, uSongInfo, uAbout, baseTag,
      Math, udm, lazutf8, GeneralFunc;
 
@@ -849,7 +851,6 @@ begin
   else
     begin
       BackEnd.SaveState;
-      GuiConfigObj.SaveConfig;
       SaveConfig(nil);
       CloseAction:=caFree;
     end;
@@ -1244,6 +1245,8 @@ var
   tmpSize : TSize;
 
 begin
+  GuiConfigObj := TGuiConfig.Create(BackEnd.Config);
+
   TrayMenuActive:=False;
   Quitting := false;
   PlaylistSelected := TRowsSelection.Create;
@@ -1278,14 +1281,11 @@ begin
   BackEnd.mediaLibrary.OnScanStart:=@MediaLibraryScanBegin;
 
   slVolume.Max:= 255;//BackEnd.AudioEngine.MaxVolume;
-  slVolume.Position := BackEnd.Config.EngineParam.Volume;
-
-  GuiConfigObj := TGuiConfig.Create(BackEnd.Config);
-  GuiConfigObj.ReadConfig;
+  slVolume.Position := BackEnd.EngineParam.Volume;
 
   ReadConfig(Self);
 
-  case TplRepeat(BackEnd.Config.PlayListParam.RepeatMode) of
+  case TplRepeat(BackEnd.PlayListParam.RepeatMode) of
     rptNone : dm.actRepeatNone.Checked := true;
     rptTrack : dm.actRepeatTrack.Checked := true;
     rptAlbum : dm.actRepeatAlbum.Checked := true;
@@ -1383,7 +1383,7 @@ begin
     OnLoaded(Self);
 
     if (BackEnd.Manager.SavedTime <> 0) and
-       BackEnd.Config.PlayListParam.Restart and
+       BackEnd.PlayListParam.Restart and
        (BackEnd.PlayList.CurrentItem <> nil) then
       begin
          Application.ProcessMessages;

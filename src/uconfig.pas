@@ -189,7 +189,8 @@ begin
     begin
       if EngineArray[oldEngine].Engine.GetEngineParamsCount > 0 then
         begin
-          BackEnd.Config.SaveSubParams(EngineArray[OldEngine].Engine.GetEngineName);
+//mcmcmcmcmcmcmcmcmcm
+//          BackEnd.Config.SaveSubParams(EngineArray[OldEngine].Engine.GetEngineName);
           SetLength(engineParams,0);
         end;
 
@@ -202,10 +203,11 @@ begin
        EngineParams := Engine.GetEngineParams;
        EngineParamsEditor.Visible:=True;
        EngineParamsEditor.Clear;
-       BackEnd.Config.ReadSubParams(Engine.GetEngineName);
+   //mcmcmcmcmcmcmcmcmc
+   //  BackEnd.Config.ReadSubParams(Engine.GetEngineName);
        for i := 0 to Length(engineParams) -1 do
          begin
-           tmpValue :=BackEnd.Config.EngineSubParams.Values[engineParams[i].Key];
+           tmpValue :=BackEnd.EngineParam.EngineSubParams.Values[engineParams[i].Key];
            if tmpValue = '' then
              tmpValue:=engineParams[i].Value;
            EngineParamsEditor.Values[engineParams[i].Key]:=tmpValue;
@@ -276,7 +278,6 @@ begin
 
   MapToConfig;
   BackEnd.Config.SaveConfig;
-  GuiConfigObj.SaveConfig;
   BackEnd.Config.Flush;
   Restart(Application);
 end;
@@ -455,8 +456,8 @@ end;
 procedure TfConfig.MapToConfig;
 begin
   // MEDIA LIBRARY
-  BackEnd.Config.MediaLibraryParam.LibraryPaths.Assign(lbMLPath.Items);
-  BackEnd.Config.MediaLibraryParam.CheckOnStart   := cbScanOnStart.Checked;
+  BackEnd.MediaLibraryParam.LibraryPaths.Assign(lbMLPath.Items);
+  BackEnd.MediaLibraryParam.CheckOnStart   := cbScanOnStart.Checked;
 
   // NOTIFICATION
   GuiConfigObj.NotificationParam.Kind           := rgOSDKind.ItemIndex;
@@ -472,10 +473,10 @@ begin
   GuiConfigObj.InterfaceParam.EnableSoundMenu   := cbEnableSoundMenu.Checked;
 
   // PLAYLIST
-  BackEnd.Config.PlayListParam.Restart            := cbRestart.Checked;
+  BackEnd.PlayListParam.Restart            := cbRestart.Checked;
 
   // ENGINE
-  BackEnd.Config.EngineParam.EngineKind           := rgAudioEngine.Items[rgAudioEngine.ItemIndex];
+  BackEnd.EngineParam.EngineKind           := rgAudioEngine.Items[rgAudioEngine.ItemIndex];
 
   // NETREMOTE
   {$IFDEF NETWORK_INTF}
@@ -485,9 +486,9 @@ begin
 
   //GENERAL
   if EngineParamsEditor.Visible then
-    BackEnd.Config.EngineSubParams.Assign(EngineParamsEditor.Strings)
+    BackEnd.EngineParam.EngineSubParams.Assign(EngineParamsEditor.Strings)
   else
-    BackEnd.Config.EngineSubParams.Clear;
+    BackEnd.EngineParam.EngineSubParams.Clear;
 end;
 
 destructor TfConfig.Destroy;
@@ -499,8 +500,8 @@ end;
 procedure TfConfig.ConfigToMap;
 begin
   // MEDIA LIBRARY
-  lbMLPath.Items.Assign(BackEnd.Config.MediaLibraryParam.LibraryPaths);
-  cbScanOnStart.Checked      := BackEnd.Config.MediaLibraryParam.CheckOnStart;
+  lbMLPath.Items.Assign(BackEnd.MediaLibraryParam.LibraryPaths);
+  cbScanOnStart.Checked      := BackEnd.MediaLibraryParam.CheckOnStart;
 
   // NOTIFICATION
   rgOSDKind.ItemIndex        := GuiConfigObj.NotificationParam.Kind;
@@ -516,15 +517,15 @@ begin
   cbEnableSoundMenu.Checked  := GuiConfigObj.InterfaceParam.EnableSoundMenu;
 
   // PLAYLIST
-  cbRestart.Checked          := BackEnd.Config.PlayListParam.Restart;
+  cbRestart.Checked          := BackEnd.PlayListParam.Restart;
 
   // ENGINE
-  OldEngine:= rgAudioEngine.Items.IndexOf(Backend.Config.EngineParam.EngineKind);
+  OldEngine:= rgAudioEngine.Items.IndexOf(Backend.EngineParam.EngineKind);
   rgAudioEngine.ItemIndex    := OldEngine;
 
 
   if EngineParamsEditor.Visible then
-    EngineParamsEditor.Strings.Assign(BackEnd.Config.EngineSubParams);
+    EngineParamsEditor.Strings.Assign(BackEnd.EngineParam.EngineSubParams);
 
   {$IFDEF NETWORK_INTF}
   // NETREMOTE

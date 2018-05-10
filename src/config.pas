@@ -21,80 +21,65 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 unit Config;
 
 {$mode objfpc}{$H+}
-
 interface
 
 uses
-  Classes, SysUtils, Graphics, inifiles;
+  Classes, SysUtils, inifiles, fgl;
 
 type
-  TMediaLibraryParam = record
-    LibraryPaths: TStringList;
-    CheckOnStart: boolean;
+  TConfig = class;
+
+  { TConfigParam }
+  TConfigParam = class
+  private
+    FDirty: boolean;
+    fOwner: TConfig;
+    procedure SetDirty(AValue: boolean);
+  Protected
+    Procedure InternalSave; virtual; abstract;
+  public
+    property Dirty: boolean read FDirty write SetDirty;
+    property Owner: TConfig read fOwner;
+    Constructor Create(aOwner:TConfig); virtual;
+    Procedure Save;
+    Procedure Load; virtual; abstract;
   end;
 
- TPlayListParam = record
-    Restart: boolean;
-    RepeatMode:Integer;
-  end;
-
-  TEngineParam = record
-    EngineKind : string;
-    Volume : Integer;
-    ActiveEQ: boolean;
-    EQPreset: integer;
-  end;
-
-  TGeneralParam = record
-    LastImportFolder: String;
-  end;
   { TConfig }
 
+  TConfigList= specialize TFPGObjectList<TConfigParam>;
 
   TConfig = class
   private
+    fDirty:        boolean;
     ConfigFile:    string;
     fConfigDir:    string;
-    FNeedRestart: boolean;
-    ResourcesPath: string;
+    FNeedRestart:  boolean;
     fIniFiles:     TMemIniFile;
+    fConfigList:  TConfigList;
+    procedure Attach(cfgobject: TConfigParam);
+    procedure Remove(cfgobject: TConfigParam);
+    procedure SetDirty(AValue: boolean);
     procedure SetNeedRestart(AValue: boolean);
-    procedure WriteStringS(Section: string; BaseName: string; Values: TStrings);
-    function ReadStrings(Section: string; Name: string; Values: TStrings): integer;
   public
-    MediaLibraryParam: TMediaLibraryParam;
-    PlayListParam:     TPlayListParam;
-    EngineParam:       TEngineParam;
-    GeneralParam:      TGeneralParam;
-    EngineSubParams:   TStringList;
+    property Inifile: TMemIniFile read fIniFiles;
+    Property Dirty: boolean read FDirty write SetDirty;
     constructor Create;
     procedure ReadConfig;
     procedure SaveConfig;
-    Procedure ReadSubParams(EngineKind:String='');
-    procedure SaveSubParams(EngineKind:String='');
     Procedure ReadCustomParams(const Section:string; Params:TStrings);
     procedure SaveCustomParams(const Section:string; Params:TStrings);
     procedure RemoveSection(const Section:string);
-
     function GetResourcesPath: string;
     function GetPlaylistsPath: string;
+    procedure WriteStringS(Section: string; BaseName: string; Values: TStrings);
+    function ReadStrings(Section: string; Name: string; Values: TStrings): integer;
+
     Property ConfigDir: string read fConfigDir;
     Property NeedRestart:boolean read FNeedRestart write SetNeedRestart;
     procedure Flush;
     destructor Destroy; override;
   end;
-
-
-
-
-implementation
-
-{ TConfig }
-uses
-  AppConsts, FilesSupport
-{$ifdef Darwin}
-  , MacOSAll
-{$endif}  ;
 
 const
   SectionUnix    = 'UNIX';
@@ -111,13 +96,49 @@ const
 
   SectionGeneral = 'General';
 
+implementation
+
+{ TConfig }
+uses
+  AppConsts, FilesSupport
+{$ifdef Darwin}
+  , MacOSAll
+{$endif}  ;
+
+{ TConfigParam }
+
+procedure TConfigParam.SetDirty(AValue: boolean);
+begin
+  if FDirty=AValue then Exit;
+  FDirty:=AValue;
+  if FDirty then
+    fOwner.Dirty:=true;
+end;
+
+constructor TConfigParam.Create(aOwner: TConfig);
+begin
+  fOwner := AOwner;
+  fOwner.Attach(Self);
+  FDirty:=False;
+end;
+
+procedure TConfigParam.Save;
+begin
+  if FDirty then
+    InternalSave;
+  FDirty:=false;
+end;
+
+
 constructor TConfig.Create;
 begin
+  fDirty:= False;
+  fConfigList:= TConfigList.Create(True);
+
   ConfigFile := GetAppConfigFile(False {$ifdef NEEDCFGSUBDIR} , true{$ENDIF} );
   fConfigDir :=  GetConfigDir;
   fIniFiles  := TMemIniFile.Create(ConfigFile, False);
-  MediaLibraryParam.LibraryPaths := TStringList.Create;
-  EngineSubParams:= TStringList.Create;
+
   ForceDirectories(GetPlaylistsPath);
   ReadConfig;
 
@@ -126,61 +147,51 @@ end;
 destructor TConfig.Destroy;
 begin
   SaveConfig;
-  fIniFiles.UpdateFile;
-  MediaLibraryParam.LibraryPaths.Free;
-  EngineSubParams.Free;
+
+  fConfigList.Free;
+
   fIniFiles.Free;
   inherited Destroy;
 end;
 
 procedure TConfig.SaveConfig;
-begin
-  // MEDIA LIBRARY
-  WriteStringS('MediaLibraryPaths', 'Path', MediaLibraryParam.LibraryPaths);
-  fIniFiles.WriteBool('MediaLibrary', 'CheckOnStart', MediaLibraryParam.CheckOnStart);
-
-
-  // PLAYLIST
-  fIniFiles.WriteBool('PlayList', 'Restart', PlayListParam.Restart);
-  fIniFiles.WriteInteger('PlayList', 'RepeatMode', PlayListParam.RepeatMode);
-
-  // ENGINE
-  fIniFiles.WriteString('AudioEngine', 'Kind', EngineParam.EngineKind);
-  fIniFiles.WriteInteger('AudioEngine', 'Volume', EngineParam.Volume);
-  fIniFiles.WriteBool('AudioEngine', 'ActiveEQ', EngineParam.ActiveEQ);
-  fIniFiles.WriteInteger('AudioEngine', 'EQPreset', EngineParam.EQPreset);
-
-  //GENERAL
-  fIniFiles.WriteString('General', 'LastFolder', GeneralParam.LastImportFolder);
-  fIniFiles.WriteString(SectionUnix, IdentResourcesPath, ResourcesPath);
-  SaveSubParams;
-
-end;
-
-procedure TConfig.ReadSubParams(EngineKind:String='');
-begin
-  if EngineKind = '' then
-     EngineKind := EngineParam.EngineKind;
-
-  EngineSubParams.Clear;
-  fIniFiles.ReadSectionValues('AudioEngine.'+ EngineKind, EngineSubParams)
-end;
-
-procedure TConfig.SaveSubParams(EngineKind:String='');
 var
-  Section:string;
-  i :Integer;
+  i: integer;
 begin
-  if EngineKind = '' then
-     EngineKind := EngineParam.EngineKind;
+  for i := 0 to Pred(fConfigList.Count) do
+    if fConfigList[i].Dirty then
+       begin
+         fConfigList[i].Save;
+         FDirty:= true;
+       end;
+  if fDirty then
+    fIniFiles.UpdateFile;
 
-  Section:= 'AudioEngine.'+ EngineKind;
+  fDirty := false;
 
-  for i := 0 to EngineSubParams.Count -1 do
-    begin
-       fIniFiles.WriteString(Section, EngineSubParams.Names[i], EngineSubParams.ValueFromIndex[i]);
-    end;
+end;
 
+procedure TConfig.ReadConfig;
+var
+  i: integer;
+begin
+  for i := 0 to Pred(fConfigList.Count) do
+  begin
+     fConfigList[i].Load;
+  end;
+end;
+
+
+procedure TConfig.Attach(cfgobject: TConfigParam);
+begin
+  fConfigList.Add(cfgobject);
+  cfgobject.Load;
+end;
+
+procedure TConfig.Remove(cfgobject: TConfigParam);
+begin
+  cfgobject.Save;
+  fConfigList.Remove(cfgobject);
 end;
 
 procedure TConfig.ReadCustomParams(const Section:string; Params: TStrings);
@@ -202,37 +213,6 @@ end;
 procedure TConfig.RemoveSection(const Section: string);
 begin
   fIniFiles.EraseSection(Section);
-end;
-
-
-procedure TConfig.ReadConfig;
-begin
-  // MEDIA LIBRARY
-  ReadStrings('MediaLibraryPaths', 'Path', MediaLibraryParam.LibraryPaths);
-  MediaLibraryParam.CheckOnStart := fIniFiles.ReadBool('MediaLibrary', 'CheckOnStart', False);
-
-  // PLAYLIST
-  PlayListParam.Restart :=  fIniFiles.ReadBool('PlayList', 'Restart', true);
-  PlayListParam.RepeatMode :=  fIniFiles.ReadInteger('PlayList', 'RepeatMode', 0);
-
-  // ENGINE
-  EngineParam.EngineKind := fIniFiles.ReadString('AudioEngine', 'Kind', '');
-  EngineParam.Volume := fIniFiles.ReadInteger('AudioEngine', 'Volume', 50);
-  EngineParam.ActiveEQ := fIniFiles.ReadBool('AudioEngine', 'ActiveEQ', False);
-  EngineParam.EQPreset := fIniFiles.ReadInteger('AudioEngine', 'EQPreset', 0);
-  ReadSubParams;
-
-  //GENERAL
-  GeneralParam.LastImportFolder := fIniFiles.ReadString('General', 'LastFolder', GetUserDir);
-
-{$ifdef WINDOWS}
-  ResourcesPath := fIniFiles.ReadString(SectionUnix, IdentResourcesPath, ExtractFilePath(
-    ExtractFilePath(ParamStr(0))));
-{$else}
-  {$ifndef DARWIN}
-  ResourcesPath := fIniFiles.ReadString(SectionUnix, IdentResourcesPath, DefaultResourceDirectory);
-  {$endif}
-{$endif}
 end;
 
 procedure TConfig.WriteStringS(Section: string; BaseName: string;
@@ -266,6 +246,12 @@ procedure TConfig.SetNeedRestart(AValue: boolean);
 begin
   if FNeedRestart=AValue then Exit;
   FNeedRestart:=AValue;
+end;
+
+procedure TConfig.SetDirty(AValue: boolean);
+begin
+  if FDirty=AValue then Exit;
+  FDirty:=AValue;
 end;
 
 procedure TConfig.Flush;
