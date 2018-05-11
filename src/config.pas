@@ -30,7 +30,7 @@ type
   TConfig = class;
 
   { TConfigParam }
-  TConfigParam = class
+  TConfigParam = class(tobject)
   private
     FDirty: boolean;
     fOwner: TConfig;
@@ -41,6 +41,7 @@ type
     property Dirty: boolean read FDirty write SetDirty;
     property Owner: TConfig read fOwner;
     Constructor Create(aOwner:TConfig); virtual;
+    Destructor Destroy; override;
     Procedure Save;
     Procedure Load; virtual; abstract;
   end;
@@ -122,6 +123,13 @@ begin
   FDirty:=False;
 end;
 
+destructor TConfigParam.Destroy;
+begin
+  fOwner.Remove(Self);
+
+  inherited Destroy;
+end;
+
 procedure TConfigParam.Save;
 begin
   if FDirty then
@@ -133,7 +141,7 @@ end;
 constructor TConfig.Create;
 begin
   fDirty:= False;
-  fConfigList:= TConfigList.Create(True);
+  fConfigList:= TConfigList.Create(false);
 
   ConfigFile := GetAppConfigFile(False {$ifdef NEEDCFGSUBDIR} , true{$ENDIF} );
   fConfigDir :=  GetConfigDir;
