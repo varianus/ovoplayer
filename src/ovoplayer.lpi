@@ -104,17 +104,8 @@ if TargetOS = 'linux' then
       <ExcludeFileFilter Value="*.(bak|ppu|o|so);*~;backup"/>
     </PublishOptions>
     <RunParams>
-      <local>
-        <CommandLineParams Value="--debug-log=c:\temp\dbg.log"/>
-      </local>
       <FormatVersion Value="2"/>
-      <Modes Count="1">
-        <Mode0 Name="default">
-          <local>
-            <CommandLineParams Value="--debug-log=c:\temp\dbg.log"/>
-          </local>
-        </Mode0>
-      </Modes>
+      <Modes Count="0"/>
     </RunParams>
     <RequiredPackages Count="5">
       <Item1>
