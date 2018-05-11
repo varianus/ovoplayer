@@ -58,6 +58,7 @@ type
     FNeedRestart:  boolean;
     fIniFiles:     TMemIniFile;
     fConfigList:  TConfigList;
+    ResourcesPath: string;
     procedure Attach(cfgobject: TConfigParam);
     procedure Remove(cfgobject: TConfigParam);
     procedure SetDirty(AValue: boolean);
@@ -146,6 +147,13 @@ begin
   ConfigFile := GetAppConfigFile(False {$ifdef NEEDCFGSUBDIR} , true{$ENDIF} );
   fConfigDir :=  GetConfigDir;
   fIniFiles  := TMemIniFile.Create(ConfigFile, False);
+  {$ifdef WINDOWS}
+  ResourcesPath := ExtractFilePath(ParamStr(0));
+  {$else}
+   {$ifndef DARWIN}
+  ResourcesPath := DefaultResourceDirectory;
+   {$endif}
+ {$endif}
 
   ForceDirectories(GetPlaylistsPath);
   ReadConfig;
@@ -166,6 +174,7 @@ procedure TConfig.SaveConfig;
 var
   i: integer;
 begin
+
   for i := 0 to Pred(fConfigList.Count) do
     if fConfigList[i].Dirty then
        begin
@@ -173,7 +182,10 @@ begin
          FDirty:= true;
        end;
   if fDirty then
-    fIniFiles.UpdateFile;
+    begin
+      IniFile.WriteString(SectionUnix, IdentResourcesPath, ResourcesPath);
+      fIniFiles.UpdateFile;
+    end;
 
   fDirty := false;
 
@@ -183,6 +195,14 @@ procedure TConfig.ReadConfig;
 var
   i: integer;
 begin
+  {$ifdef WINDOWS}
+    ResourcesPath := IniFile.ReadString(SectionUnix, IdentResourcesPath, ExtractFilePath(ExtractFilePath(ParamStr(0))));
+    {$else}
+     {$ifndef DARWIN}
+    ResourcesPath := IniFile.ReadString(SectionUnix, IdentResourcesPath, DefaultResourceDirectory);
+     {$endif}
+  {$endif}
+
   for i := 0 to Pred(fConfigList.Count) do
   begin
      fConfigList[i].Load;

@@ -95,7 +95,6 @@ type
   TGeneralParam = Class(TConfigParam)
   private
     FLastImportFolder: String;
-    ResourcesPath: string;
     procedure SetLastImportFolder(AValue: String);
   protected
     Procedure InternalSave; override;
@@ -119,22 +118,12 @@ end;
 procedure TGeneralParam.InternalSave;
 begin
   owner.IniFile.WriteString('General', 'LastFolder', LastImportFolder);
-  owner.IniFile.WriteString(SectionUnix, IdentResourcesPath, ResourcesPath);
 
 end;
 
 procedure TGeneralParam.Load;
 begin
   fLastImportFolder := owner.IniFile.ReadString('General', 'LastFolder', GetUserDir);
-  {$ifdef WINDOWS}
-  ResourcesPath := owner.IniFile.ReadString(SectionUnix, IdentResourcesPath, ExtractFilePath(
-    ExtractFilePath(ParamStr(0))));
-  {$else}
-   {$ifndef DARWIN}
-  ResourcesPath := owner.IniFile.ReadString(SectionUnix, IdentResourcesPath, DefaultResourceDirectory);
-   {$endif}
- {$endif}
-
 end;
 
 
