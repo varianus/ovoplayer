@@ -79,12 +79,50 @@ type
       Automatic: boolean;
   end;
 
-  TDWordArray = array [0..$FFFFFF] of Dword;
-  PDWordArray = ^TDWordArray;
+  { TPlaylistParam }
 
-  TMovingSelection = (msNone, msUp, msDown);
+  TPlaylistParam = class(TConfigParam)
+  protected
+    Procedure InternalSave; override;
+  public
+    Procedure Load; override;
+  end;
+
+  { TMainFormParam }
+  TfMainForm = class;
+  TMainFormParam = class(TConfigParam)
+  private
+    FActivePage: integer;
+    FHeight: integer;
+    FLeft: integer;
+    FLeftPanelVisible: boolean;
+    FTop: integer;
+    FWidth: integer;
+    FForm: TfMainForm;
+    procedure SetActivePage(AValue: integer);
+    procedure SetHeight(AValue: integer);
+    procedure SetLeft(AValue: integer);
+    procedure SetLeftPanelVisible(AValue: boolean);
+    procedure SetTop(AValue: integer);
+    procedure SetWidth(AValue: integer);
+  protected
+    Procedure InternalSave; override;
+  public
+    property Height: integer read FHeight write SetHeight;
+    property Width: integer read FWidth write SetWidth;
+    property Top: integer read FTop write SetTop;
+    property Left: integer read FLeft write SetLeft;
+    property LeftPanelVisible: boolean read FLeftPanelVisible write SetLeftPanelVisible;
+    property ActivePage: integer read FActivePage write SetActivePage;
+    Procedure Load; override;
+    Constructor Create(aOwner:TConfig; Form:TfMainForm); reintroduce;
+  end;
+
 
   { TRowsSelection }
+  TDWordArray = array [0..$FFFFFF] of Dword;
+  PDWordArray = ^TDWordArray;
+  TMovingSelection = (msNone, msUp, msDown);
 
   TRowsSelection = class (TObject)
     Private
@@ -291,6 +329,7 @@ type
     procedure FilesTreeGetImageIndex(Sender: TObject; Node: TTreeNode);
     procedure FilesTreeGetSelectedIndex(Sender: TObject; Node: TTreeNode);
     procedure FormActivate(Sender: TObject);
+    procedure FormChangeBounds(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -407,6 +446,9 @@ type
     fMultimediaKeys:   TMultimediaKeys;
     {$ENDIF}
 
+    FPlaylistParam: TPlaylistParam;
+    FMainFormParam: TMainFormParam;
+
     function AdjustPos(pt: tpoint): Tpoint;
     Function ColumnSize(aCol: Integer):Integer;
     procedure ClearPanelInfo;
@@ -478,6 +520,93 @@ const
     (Kind: tkTracK; FieldName: '(case track when 0 then coalesce(trackstring,0) else track end)'; ImageIndex: -1)
 //    (Kind: tkRating; FieldName: 'Rating'; ImageIndex: 5)
     );
+
+{ TPlaylistParam }
+
+procedure TPlaylistParam.InternalSave;
+begin
+
+end;
+
+procedure TPlaylistParam.Load;
+begin
+
+end;
+
+{ TMainFormParam }
+
+procedure TMainFormParam.SetActivePage(AValue: integer);
+begin
+  if FActivePage=AValue then Exit;
+  FActivePage:=AValue;
+  Dirty := true;
+end;
+
+procedure TMainFormParam.SetHeight(AValue: integer);
+begin
+  if FHeight=AValue then Exit;
+  FHeight:=AValue;
+  Dirty := true;
+end;
+
+procedure TMainFormParam.SetLeft(AValue: integer);
+begin
+  if FLeft=AValue then Exit;
+  FLeft:=AValue;
+  Dirty := true;
+end;
+
+procedure TMainFormParam.SetLeftPanelVisible(AValue: boolean);
+begin
+  if FLeftPanelVisible=AValue then Exit;
+  FLeftPanelVisible:=AValue;
+  Dirty := true;
+end;
+
+procedure TMainFormParam.SetTop(AValue: integer);
+begin
+  if FTop=AValue then Exit;
+  FTop:=AValue;
+  Dirty := true;
+end;
+
+procedure TMainFormParam.SetWidth(AValue: integer);
+begin
+  if FWidth=AValue then Exit;
+  FWidth:=AValue;
+  Dirty := true;
+end;
+
+procedure TMainFormParam.InternalSave;
+const
+  Base = 'MainForm';
+begin
+   Owner.Inifile.WriteInteger(Base,'Height', fHeight);
+   Owner.Inifile.WriteInteger(Base,'Width', fWidth);
+   Owner.Inifile.WriteInteger(Base,'Top', fTop);
+   Owner.Inifile.WriteInteger(Base,'Left', fLeft);
+   Owner.Inifile.WriteInteger(Base,'ActivePage', FActivePage);
+   Owner.Inifile.WriteBool(Base,'LeftPanelVisible', FLeftPanelVisible);
+end;
+
+procedure TMainFormParam.Load;
+const
+  Base = 'MainForm';
+begin
+  fHeight           := Owner.Inifile.ReadInteger(Base,'Height', FForm.Height);
+  fWidth            := Owner.Inifile.ReadInteger(Base,'Width', FForm.Width);
+  fTop              := Owner.Inifile.ReadInteger(Base,'Top', FForm.Top);
+  fLeft             := Owner.Inifile.ReadInteger(Base,'Left', FForm.Left);
+  fActivePage       := Owner.Inifile.ReadInteger(Base,'ActivePage', 0);
+  fLeftPanelVisible := Owner.Inifile.ReadBool(Base,'LeftPanelVisible', true);
+
+end;
+
+constructor TMainFormParam.Create(aOwner: TConfig; Form: TfMainForm);
+begin
+  FForm := Form;
+  Inherited Create(aOwner);
+end;
 
 { TRowsSelection }
 
@@ -834,6 +963,11 @@ begin
    if not Mytaskbar_ext.Initialized then
       Mytaskbar_ext.Init;
   {$ENDIF}
+
+end;
+
+procedure TfMainForm.FormChangeBounds(Sender: TObject);
+begin
 
 end;
 
@@ -1465,6 +1599,8 @@ end;
 procedure TfMainForm.FormResize(Sender: TObject);
 begin
   //AdaptSize;
+  FMainFormParam.Width := Width;
+  FMainFormParam.Height := Height;
 end;
 
 procedure TfMainForm.FormShow(Sender: TObject);
@@ -1688,15 +1824,7 @@ begin
       end;
     BackEnd.Config.SaveCustomParams('PlayListGrid', tmpSt);
 
-    tmpSt.clear;
-    tmpSt.Values['Height']:= IntToStr(Height);
-    tmpSt.Values['Width']:= IntToStr(Width);
-    tmpSt.Values['Top']:= IntToStr(Top);
-    tmpSt.Values['Left']:= IntToStr(Left);
-    tmpSt.Values['LeftPanelVisible']:= BoolToStr(actShowLeft.checked, true);
-    tmpSt.Values['ActivePage']:= IntToStr(pcMain.ActivePageIndex);
-    BackEnd.Config.SaveCustomParams('MainForm', tmpSt);
-
+    FMainFormParam.Save;
   finally
     tmpSt.Free;
   end;
@@ -1716,11 +1844,25 @@ const
   SectionMainForm = 'MainForm';
 
 begin
+//  FPlaylistParam := TPlaylistParam.Create(BackEnd.Config);
+  fMainFormParam := TMainFormParam.Create(BackEnd.Config, self);
+
+
+  Height := fMainFormParam.Height;
+  Width := fMainFormParam.Width;
+  Top := fMainFormParam.Top;
+  Left := fMainFormParam.Left;
+  actShowLeft.checked := fMainFormParam.LeftPanelVisible;
+  actShowLeft.Execute;
+  pcMain.ActivePageIndex := fMainFormParam.ActivePage;
+
+
   tmpSt := TStringList.Create;
   info  := TStringList.Create;
   try
     Fase := 1;
-    BackEnd.Config.ReadCustomParams(SectionPlayListGrid, tmpSt);
+//mcmcmcmcmcmcmcmcmcmc
+  BackEnd.Config.ReadCustomParams(SectionPlayListGrid, tmpSt);
     for i := 0 to tmpSt.Count -1 do
       begin
         info.Clear;
@@ -1740,17 +1882,6 @@ begin
       end;
     Fase := 2;
     tmpSt.Clear;
-    BackEnd.Config.ReadCustomParams(SectionMainForm, tmpSt);
-
-    Height := StrToIntDef(tmpSt.Values['Height'], Height);
-    Width := StrToIntDef(tmpSt.Values['Width'], Width);
-    Top := StrToIntDef(tmpSt.Values['Top'], Top);
-    Left := StrToIntDef(tmpSt.Values['Left'], Left);
-
-    actShowLeft.checked := not (StrToBoolDef(tmpSt.Values['LeftPanelVisible'], true));
-    actShowLeft.Execute;
-    pcMain.ActivePageIndex := StrToIntDef(tmpSt.Values['ActivePage'], 0);
-
 
   Except
     // if problem loading columns size, remove that info from config
