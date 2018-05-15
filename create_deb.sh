@@ -47,7 +47,7 @@ $MKDIR $DEBSRCDIR/DEBIAN
 
 $INSTALLEXE  -s $BIN_DIR/ovoplayer $DEBSRCDIR/usr/bin
 $INSTALLEXE  -s $BIN_DIR/ovoplayerctrl $DEBSRCDIR/usr/bin
-$INSTALLFILE  $BASE/images/logo.png $DEBSRCDIR/usr/share/pixmaps/ovoplayer.png
+$INSTALLFILE  $BASE/images/ovoplayer.xpm $DEBSRCDIR/usr/share/pixmaps/ovoplayer.xpm
 $INSTALLFILE  $BASE/images/logo.png $DEBSRCDIR/usr/share/ovoplayer
 $INSTALLFILE  $BASE/images/nocover.png $DEBSRCDIR/usr/share/ovoplayer
 $INSTALLFILE  $BASE/images/volume-slider.png $DEBSRCDIR/usr/share/ovoplayer
