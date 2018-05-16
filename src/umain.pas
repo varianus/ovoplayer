@@ -79,17 +79,20 @@ type
       Automatic: boolean;
   end;
 
+  TfMainForm = class;
   { TPlaylistParam }
 
   TPlaylistParam = class(TConfigParam)
+  private
+    FForm: TfMainForm;
   protected
     Procedure InternalSave; override;
   public
     Procedure Load; override;
+    Constructor Create(aOwner:TConfig; Form:TfMainForm); reintroduce;
   end;
 
   { TMainFormParam }
-  TfMainForm = class;
   TMainFormParam = class(TConfigParam)
   private
     FActivePage: integer;
@@ -352,6 +355,7 @@ type
     procedure mnuInfoClick(Sender: TObject);
     procedure mnuPlayItemsClick(Sender: TObject);
     procedure mnuRemovePlaylistClick(Sender: TObject);
+    procedure pcMainChange(Sender: TObject);
     procedure PlaylistTreeCreateNodeClass(Sender: TCustomTreeView;
       var NodeClass: TTreeNodeClass);
 //    procedure PlaylistMenuPopup(Sender: TObject);
@@ -524,13 +528,74 @@ const
 { TPlaylistParam }
 
 procedure TPlaylistParam.InternalSave;
+var
+  tmpSt: TStringList;
+  i: integer;
 begin
+  tmpSt := TStringList.Create;
+  try
+    for i := 0 to fform.sgPlayList.Columns.Count -1 do
+      begin
+        tmpst.Add(inttostr(fform.sgPlayList.Columns[i].Index) +'='+
+                  fform.sgPlayList.Columns[i].Title.Caption+';'+
+                  IntToStr(fform.sgPlayList.Columns[i].Tag)+';'+
+                  BoolToStr(fform.sgPlayList.Columns[i].Visible,'Y','N')+';'+
+                  IntToStr(fform.sgPlayList.Columns[i].Width)+';'
+                  );
+      end;
+    Owner.SaveCustomParams('PlayListGrid', tmpSt);
 
+  finally
+    tmpSt.Free;
+  end;
+  Owner.Dirty:= true;
 end;
 
 procedure TPlaylistParam.Load;
+const
+  Base = 'PlayListGrid';
+var
+  tmpSt: TStringList;
+  info: TStringList;
+  i, j: integer;
+  Col: integer;
+  Fase :Integer;
 begin
+  tmpSt := TStringList.Create;
+  info  := TStringList.Create;
+  try
+   Owner.ReadCustomParams(Base, tmpSt);
+   for i := 0 to tmpSt.Count -1 do
+     begin
+       info.Clear;
+       info.StrictDelimiter := true;
+       info.Delimiter := ';';
+       info.DelimitedText := tmpSt[i];
+       Col := StrToint(info[1]);
+       for j := 0 to fform.sgPlayList.Columns.Count -1   do
+         if fform.sgPlayList.Columns[j].Tag = col then
+           begin
+             Col := j;
+             break;
+           end;
+       FForm.sgPlayList.Columns[Col].Index:= StrToint(tmpSt.Names[i]);
+       FForm.sgPlayList.Columns[col].visible := Info[2] = 'Y';
+       FForm.sgPlayList.Columns[Col].Width:= StrToint(info[3]);
+     end;
+  Except
+    // if problem loading columns size, remove that info from config
+    // needed on 0.5 -> 1.0 upgrade
+    if Fase = 1 then Owner.RemoveSection(Base);
+  end;
+  tmpSt.free;
+  info.free;
 
+end;
+
+constructor TPlaylistParam.Create(aOwner: TConfig; Form: TfMainForm);
+begin
+  FForm := Form;
+  Inherited Create(aOwner);
 end;
 
 { TMainFormParam }
@@ -1193,6 +1258,7 @@ end;
 procedure TfMainForm.actShowLeftExecute(Sender: TObject);
 begin
   pnlLeft.Visible:= actShowLeft.checked;
+  FMainFormParam.LeftPanelVisible:= actShowLeft.checked;
 end;
 
 procedure TfMainForm.actShowPLMediainfoExecute(Sender: TObject);
@@ -1807,90 +1873,25 @@ begin
 end;
 
 procedure TfMainForm.SaveConfig(Sender: TObject);
-var
-  tmpSt: TStringList;
-  i: integer;
 begin
-  tmpSt := TStringList.Create;
-  try
-    for i := 0 to sgPlayList.Columns.Count -1 do
-      begin
-        tmpst.Add(inttostr(sgPlayList.Columns[i].Index) +'='+
-                  sgPlayList.Columns[i].Title.Caption+';'+
-                  IntToStr(sgPlayList.Columns[i].Tag)+';'+
-                  BoolToStr(sgPlayList.Columns[i].Visible,'Y','N')+';'+
-                  IntToStr(sgPlayList.Columns[i].Width)+';'
-                  );
-      end;
-    BackEnd.Config.SaveCustomParams('PlayListGrid', tmpSt);
-
-    FMainFormParam.Save;
-  finally
-    tmpSt.Free;
-  end;
-
+  FMainFormParam.Save;
+  FPlaylistParam.Save;
 
 end;
 
 procedure TfMainForm.ReadConfig(Sender: TObject);
-var
-  tmpSt: TStringList;
-  info: TStringList;
-  i, j: integer;
-  Col: integer;
-  Fase :Integer;
-const
-  SectionPlayListGrid = 'PlayListGrid';
-  SectionMainForm = 'MainForm';
-
 begin
-//  FPlaylistParam := TPlaylistParam.Create(BackEnd.Config);
   fMainFormParam := TMainFormParam.Create(BackEnd.Config, self);
-
 
   Height := fMainFormParam.Height;
   Width := fMainFormParam.Width;
   Top := fMainFormParam.Top;
   Left := fMainFormParam.Left;
-  actShowLeft.checked := fMainFormParam.LeftPanelVisible;
+  actShowLeft.checked := not fMainFormParam.LeftPanelVisible;
   actShowLeft.Execute;
   pcMain.ActivePageIndex := fMainFormParam.ActivePage;
 
-
-  tmpSt := TStringList.Create;
-  info  := TStringList.Create;
-  try
-    Fase := 1;
-//mcmcmcmcmcmcmcmcmcmc
-  BackEnd.Config.ReadCustomParams(SectionPlayListGrid, tmpSt);
-    for i := 0 to tmpSt.Count -1 do
-      begin
-        info.Clear;
-        info.StrictDelimiter := true;
-        info.Delimiter := ';';
-        info.DelimitedText := tmpSt[i];
-        Col := StrToint(info[1]);
-        for j := 0 to sgPlayList.Columns.Count -1   do
-          if sgPlayList.Columns[j].Tag = col then
-            begin
-              Col := j;
-              break;
-            end;
-        sgPlayList.Columns[Col].Index:= StrToint(tmpSt.Names[i]);
-        sgPlayList.Columns[col].visible := Info[2] = 'Y';
-        sgPlayList.Columns[Col].Width:= StrToint(info[3]);
-      end;
-    Fase := 2;
-    tmpSt.Clear;
-
-  Except
-    // if problem loading columns size, remove that info from config
-    // needed on 0.5 -> 1.0 upgrade
-    if Fase = 1 then BackEnd.Config.RemoveSection(SectionPlayListGrid);
-    if Fase = 2 then BackEnd.Config.RemoveSection(SectionMainForm);
-  end;
-  tmpSt.free;
-  info.free;
+  FPlaylistParam := TPlaylistParam.Create(BackEnd.Config, Self);
 
 end;
 
@@ -1992,6 +1993,11 @@ end;
 procedure TfMainForm.mnuRemovePlaylistClick(Sender: TObject);
 begin
   RemoveSelectionFromPlaylist;
+end;
+
+procedure TfMainForm.pcMainChange(Sender: TObject);
+begin
+  FMainFormParam.ActivePage:= pcMain.ActivePageIndex;
 end;
 
 procedure TfMainForm.PlaylistTreeCreateNodeClass(Sender: TCustomTreeView;
