@@ -256,10 +256,10 @@ end;
 
 procedure TEngineParam.Load;
 begin
-  EngineKind := owner.IniFile.ReadString('AudioEngine', 'Kind', '');
-  Volume := owner.IniFile.ReadInteger('AudioEngine', 'Volume', 50);
-  ActiveEQ := owner.IniFile.ReadBool('AudioEngine', 'ActiveEQ', False);
-  EQPreset := owner.IniFile.ReadInteger('AudioEngine', 'EQPreset', 0);
+  fEngineKind := owner.IniFile.ReadString('AudioEngine', 'Kind', '');
+  fVolume := owner.IniFile.ReadInteger('AudioEngine', 'Volume', 50);
+  fActiveEQ := owner.IniFile.ReadBool('AudioEngine', 'ActiveEQ', False);
+  fEQPreset := owner.IniFile.ReadInteger('AudioEngine', 'EQPreset', 0);
   ReadSubParams;
 end;
 

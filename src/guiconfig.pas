@@ -191,8 +191,8 @@ procedure TNetRemoteParam.Load;
 const
   Base = 'NetRemote';
 begin
-  Enabled := owner.IniFile.ReadBool(Base , 'Enabled', False);
-  Port    := owner.IniFile.ReadInteger(Base , 'Port', 6860);
+  FEnabled := owner.IniFile.ReadBool(Base , 'Enabled', False);
+  FPort    := owner.IniFile.ReadInteger(Base , 'Port', 6860);
 end;
 {$EndIf}
 
