@@ -113,7 +113,7 @@ procedure TAudioEngineVLC.SetMainVolume(const AValue: integer);
 begin
   if (p_mi = nil) then
     exit;
-  libvlc_audio_set_volume(p_mi, trunc(AValue * (VLCMAXVOLUME / 255)));
+  libvlc_audio_set_volume(p_mi, round(AValue * (VLCMAXVOLUME / 255)));
 end;
 
 function TAudioEngineVLC.GetMaxVolume: integer;
