@@ -176,7 +176,7 @@ procedure TAudioEngineMPlayer.SetMainVolume(const AValue: integer);
 begin
   if AValue = fMainVolume then
     exit;
-  fMainVolume := roud(AValue * MPLAYERMAXVOLUME /255);
+  fMainVolume := round(AValue * MPLAYERMAXVOLUME /255);
   SendMPlayerCommand('volume ' + IntToStr(fMainVolume) + ' 1');
 end;
 
