@@ -332,7 +332,6 @@ type
     procedure FilesTreeGetImageIndex(Sender: TObject; Node: TTreeNode);
     procedure FilesTreeGetSelectedIndex(Sender: TObject; Node: TTreeNode);
     procedure FormActivate(Sender: TObject);
-    procedure FormChangeBounds(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -1031,11 +1030,6 @@ begin
 
 end;
 
-procedure TfMainForm.FormChangeBounds(Sender: TObject);
-begin
-
-end;
-
 procedure TfMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   if (GuiConfigObj.InterfaceParam.MinimizeOnClose) and not Quitting then
@@ -1144,7 +1138,8 @@ begin
     begin
      {$IFDEF NOTIFYDBUS}
       MyNotification.Summary:=ASong.tags.Title;
-      MyNotification.IconName:='audio-x-generic';
+    //  MyNotification.IconName:='audio-x-generic';
+      MyNotification.IconName:=BackEnd.GetCoverURL;
       MyNotification.Body:=ASong.Tags.Album + LineEnding + ASong.Tags.Artist + LineEnding +  ASong.Tags.TrackString;
       MyNotification.TimeOut:= NOTIFY_EXPIRES_DEFAULT;
       MyNotification.Urgency:= NOTIFY_URGENCY_NORMAL;
