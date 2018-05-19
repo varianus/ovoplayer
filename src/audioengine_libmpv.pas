@@ -450,6 +450,9 @@ begin
       Delete(bandstr,1,1)
     end;
 
+  if not AValue and fActiveEQ then
+    bandstr:='''';
+
   str:= str+bandstr+''']';
   SetStringProperty('af', str);
   fActiveEq:=AValue;
