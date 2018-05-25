@@ -1,9 +1,8 @@
 
 # [OvoPlayer](http://ovoplayer.altervista.org) 
-[![Stable 1.2.1](https://img.shields.io/badge/stable-1.2.1-green.svg?style=flat)](https://sourceforge.net/projects/ovoplayer/files/1.2.1/)
-[![Release Candidate 1.3.0](https://img.shields.io/badge/release_candidate-1.3.0-yellow.svg?style=flat)](https://sourceforge.net/projects/ovoplayer/files/1.3.0/)
+[![Stable 1.3.0](https://img.shields.io/badge/stable-1.2.1-green.svg?style=flat)](https://sourceforge.net/projects/ovoplayer/files/1.2.1/)
+[![Release Candidate 1.3.1](https://img.shields.io/badge/release_candidate-1.3.0-yellow.svg?style=flat)](https://sourceforge.net/projects/ovoplayer/files/1.3.0/)
 [![Development 1.4.0](https://img.shields.io/badge/development-1.4.0-red.svg?style=flat)](https://sourceforge.net/projects/ovoplayer/files/1.4.0/)
-[![Analytics](https://ga-beacon.appspot.com/UA-72189324-1/ovoplayer/readme?flat)](https://github.com/varianus/ovoplayer/)
 
 Ovoplayer is a free multi-platform music manager and player.
 
