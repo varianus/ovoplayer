@@ -90,7 +90,6 @@ type
     seYear: TSpinEdit;
     tbConn1: TToggleBox;
     Timer1: TTimer;
-    TrackBar1: TTrackBar;
     procedure Button1Click(Sender: TObject);
     procedure Button8Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -228,7 +227,7 @@ var
   s:string;
 begin
   if not Seeking then exit;
-  s:=EncodeString(BuildCommand(CATEGORY_ACTION, COMMAND_SEEK, inttostr(TrackBar1.Position)), OutCfg);
+//  s:=EncodeString(BuildCommand(CATEGORY_ACTION, COMMAND_SEEK, inttostr(TrackBar1.Position)), OutCfg);
   memoSent.lines.Add(s);
   fClient.WriteString(s);
 end;
@@ -264,8 +263,8 @@ begin
                        TagsToMap(tags);
                     end;
      INFO_POSITION : begin
-                       if not seeking then
-                          TrackBar1.Position:=StrToInt(r.Param);
+                       //if not seeking then
+                        //  TrackBar1.Position:=StrToInt(r.Param);
                     end;
 
      INFO_COVERURL : begin
@@ -352,7 +351,7 @@ begin
 
   seTrack.Value := i;
 
-  TrackBar1.Max:= Tags.Duration;
+  //TrackBar1.Max:= Tags.Duration;
 end;
 
 procedure TForm1.DecodePlaylist(s: string);
