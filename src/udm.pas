@@ -26,10 +26,10 @@ interface
 
 uses
   Classes, SysUtils, LazFileUtils, ActnList, Controls, Dialogs, Forms, LResources,
-  singleinstance,
+  singleinstance, strutils,
   BaseTypes, CoreInterfaces,
   AudioEngine, LazUTF8,  LazLogger,
-  PlayListManager, MediaLibrary, FilesSupport;
+  PlayListManager, MediaLibrary, FilesSupport, netprotocol;
 
 type
 
@@ -113,7 +113,7 @@ var
 implementation
 
 {$R *.lfm}
-uses lclproc, AudioTag, AppConsts, GeneralFunc, GUIBackEnd,
+uses  AudioTag, AppConsts, GeneralFunc, GUIBackEnd,
   netsupport;
 
 { TDM }
@@ -127,16 +127,41 @@ var
   I: Integer;
   Command: RExternalCommand;
 begin
-  for I := 0 to aParams.Count-1 do
+  for I := 1 to aParams.Count-1 do
     begin
       Command := SplitCommand(aParams[i]);
-      BackEnd.HandleExternalCommand(Command);
+      if  (Command.Category = CATEGORY_NONE) then
+        begin
+          if not AnsiStartsText(Command.command,'--') and FileExists(Command.Command) then
+           begin
+             Command.Category:=CATEGORY_FILE;
+             Command.Param:= Command.Command;
+             Command.Command:=COMMAND_ENQUEUE;
+           end;
+        end;
+
+       BackEnd.HandleExternalCommand(Command);
     end;
 end;
 
 procedure TDM.DataModuleCreate(Sender: TObject);
+var
+  ParamList: TStringList;
+  i: Integer;
 begin
   Application.SingleInstance.OnServerReceivedParams := @ServerReceivedParams;
+  IF ParamCount > 0  then
+   try
+     ParamList := TStringList.Create;
+     for i := 0 to ParamCount do
+       ParamList.Add(ParamStr(I));
+     ServerReceivedParams(Application.SingleInstance, ParamList);
+   finally
+     FreeAndNil(ParamList);
+   end;
+
+
+
 end;
 
 procedure TDM.DataModuleDestroy(Sender: TObject);

@@ -159,16 +159,16 @@ begin
       FClient.Active:=true;
     end
   else
-  begin
-    FreeAndNil(FClient);
-    FServer := TSimpleIPCServer.Create(Self);
-    FServer.OnMessage:= @ProcessMessage;
-    FServer.Global:=FGlobal;
-    FServer.ThreadTimeOut:=500;
-    FServer.ServerID:=FID;
-    FServer.StartServer(false);
-    Result := siServer;
-  end;
+    begin
+      FreeAndNil(FClient);
+      FServer := TSimpleIPCServer.Create(Self);
+      FServer.OnMessage:= @ProcessMessage;
+      FServer.Global:=FGlobal;
+      FServer.ThreadTimeOut:=500;
+      FServer.ServerID:=FID;
+      FServer.StartServer(false);
+      Result := siServer;
+    end;
   SetStartResult(Result);
 end;
 
@@ -195,7 +195,7 @@ begin
   try
     if ParamCount > 0 then
       begin
-        for I := 0 to ParamCount do
+        for I := 1 to ParamCount do
           xSL.Add(ParamStr(I));
         FClient.SendStringMessage(xSL.DelimitedText);
       end
