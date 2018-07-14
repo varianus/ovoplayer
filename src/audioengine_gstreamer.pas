@@ -78,7 +78,7 @@ type
 
 
 implementation
-uses  glib2,lclproc, GeneralFunc;
+uses  glib2,LazLoggerBase, GeneralFunc;
 
 var
   DoubleZero: double=0.0;

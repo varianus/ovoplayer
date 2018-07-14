@@ -24,7 +24,7 @@ unit GeneralFunc;
 interface
 
 uses
-  Classes, SysUtils, AppConsts, CustApp, lclProc,
+  Classes, SysUtils, AppConsts, CustApp, LazLoggerBase,
   netprotocol;
 
 function TimeToMSec(Time: double): int64;

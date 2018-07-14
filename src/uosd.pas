@@ -89,7 +89,7 @@ procedure ShowOSDConfig;
 
 implementation
 
-uses AppConsts, lclproc, Math, graphutil, GuiConfig;
+uses AppConsts, LazLoggerBase, Math, graphutil, GuiConfig;
 
 procedure ShowOSD(Song: TSong; Image: TPicture);
 var

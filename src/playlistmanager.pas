@@ -91,7 +91,7 @@ implementation
 
 uses
   laz2_DOM, laz2_XMLRead, laz2_XMLWrite, URIParser, IniFiles, LazFileUtils,
-  filesSupport, CustomSong, LCLProc, Lazutf8,  basetag, fpjson, jsonparser, fpjsonrtti;
+  filesSupport, CustomSong, LazLoggerBase, Lazutf8,  basetag, fpjson, jsonparser, fpjsonrtti;
 
 const
   //  GenDelims  = [':', '/', '?', '#', '[', ']', '@'];

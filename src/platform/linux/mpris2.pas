@@ -59,7 +59,7 @@ type
 
 implementation
 
-uses LCLProc, AppConsts, BaseTag, uMain, URIParser, DbusExtension;
+uses LazLoggerBase, AppConsts, BaseTag, uMain, URIParser, DbusExtension;
 
 const
   MyTrue: dword = 1;
@@ -1003,7 +1003,7 @@ begin
   dbus_connection_setup_with_g_main(mpris_connection, nil);
   if (mpris_connection = nil) then
     begin
-      DebugLn(format('Failed to open connection to %s message bus: %s', ['session', error.message]));
+      DebugLn('Failed to open connection to %s message bus: %s', ['session', error.message]);
       dbus_error_free(@error);
       Result := False;
       exit;

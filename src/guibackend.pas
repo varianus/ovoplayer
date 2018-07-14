@@ -150,7 +150,7 @@ Procedure FreeBackend;
 
 implementation
 
-uses Graphics, LCLProc, FilesSupport, AudioTag, AppConsts, ExtendedInfo, uriparser,
+uses Graphics, LazLoggerBase, FilesSupport, AudioTag, AppConsts, ExtendedInfo, uriparser,
      NetProtocol, NetSupport, ImagesSupport;
 
 var

@@ -25,7 +25,7 @@ unit file_wma;
 interface
 
 uses
-  Classes, lazutf8classes, SysUtils, AudioTag, basetag, tag_wma, LCLProc;
+  Classes, lazutf8classes, SysUtils, AudioTag, basetag, tag_wma, LazLoggerBase;
 
 const
   WMAFileMask: string = '*.wma;';
@@ -286,7 +286,6 @@ begin
   Result := inherited SaveToFile(AFileName);
 
   try
-    DebugLn(FileName,'-->',AFileName);
     SourceStream := TFileStreamUTF8.Create(fileName, fmOpenRead or fmShareDenyNone);
     DestStream := TFileStreamUTF8.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
 

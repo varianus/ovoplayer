@@ -26,7 +26,7 @@ interface
 
 uses
   Classes, SysUtils, BaseTypes, coreinterfaces, TcpIpServer, TcpIpClient, sockets,
-  NullInterfacedObject, netprotocol,netsupport, lclproc;
+  NullInterfacedObject, netprotocol,netsupport, LazLoggerBase;
 
 type
 

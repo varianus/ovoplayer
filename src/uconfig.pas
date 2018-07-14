@@ -27,7 +27,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls,
   ExtCtrls, StdCtrls, Buttons, ButtonPanel, ColorBox, Menus, Spin, EditBtn,
-  GUIBackEnd, uOSD, AudioEngine, LCLProc, ValEdit, BaseTypes, AppConsts, Grids;
+  GUIBackEnd, uOSD, AudioEngine, LazLoggerBase, ValEdit, BaseTypes, AppConsts, Grids;
 
 type
     { TfConfig }

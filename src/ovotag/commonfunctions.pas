@@ -25,7 +25,7 @@ unit CommonFunctions;
 interface
 
 uses
-  Classes, SysUtils, LCLProc;
+  Classes, SysUtils, LazLoggerBase;
 
 const
   { Unicode ID }

@@ -25,7 +25,7 @@ unit tag_wma;
 interface
 
 uses
-  Classes, SysUtils, baseTag, LCLProc;
+  Classes, SysUtils, baseTag, LazLoggerBase;
 
 type
 

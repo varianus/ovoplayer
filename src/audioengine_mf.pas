@@ -25,7 +25,7 @@ unit audioengine_mf;
 interface
 
 uses
-  Classes, SysUtils, AudioEngine, Mediafoundation, Basetypes, Song, decoupler, lclproc;
+  Classes, SysUtils, AudioEngine, Mediafoundation, Basetypes, Song, decoupler, LazLoggerBase;
 
 type
 

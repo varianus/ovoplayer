@@ -495,7 +495,7 @@ var
 implementation
 
 {$R *.lfm}
-uses AppConsts, AudioTag, LCLProc, FilesSupport,
+uses AppConsts, AudioTag, LazLoggerBase, FilesSupport,
      uConfig, uMiniPlayer, uSongInfo, uAbout, baseTag,
      Math, udm, lazutf8, GeneralFunc;
 
@@ -558,7 +558,6 @@ var
   info: TStringList;
   i, j: integer;
   Col: integer;
-  Fase :Integer;
 begin
   tmpSt := TStringList.Create;
   info  := TStringList.Create;
@@ -584,7 +583,7 @@ begin
   Except
     // if problem loading columns size, remove that info from config
     // needed on 0.5 -> 1.0 upgrade
-    if Fase = 1 then Owner.RemoveSection(Base);
+    Owner.RemoveSection(Base);
   end;
   tmpSt.free;
   info.free;

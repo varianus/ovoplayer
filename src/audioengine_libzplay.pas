@@ -25,7 +25,7 @@ unit audioengine_libzplay;
 interface
 
 uses
-  Classes, SysUtils, BaseTypes, AudioEngine, Equalizer, Song, decoupler, libzplay, LCLProc;
+  Classes, SysUtils, BaseTypes, AudioEngine, Equalizer, Song, decoupler, libzplay, LazLoggerBase;
 
 type
   { TAudioEnginelibzplay }

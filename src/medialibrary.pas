@@ -25,7 +25,7 @@ unit MediaLibrary;
 interface
 
 uses
-  Classes, SysUtils, DB,  sqlite3dyn, sqlite3conn, sqldb, lclproc, basetag,
+  Classes, SysUtils, DB,  sqlite3dyn, sqlite3conn, sqldb, LazLoggerBase, basetag,
   Customsong, extendedinfo, FilesSupport;
 
 type

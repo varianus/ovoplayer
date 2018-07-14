@@ -25,7 +25,7 @@ unit audioengine_DShow;
 interface
 
 uses
-  Classes, SysUtils, BaseTypes, AudioEngine, ActiveX, mediadshow, Song, lclproc;
+  Classes, SysUtils, BaseTypes, AudioEngine, ActiveX, mediadshow, Song, LazLoggerBase;
 
 type
 

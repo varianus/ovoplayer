@@ -74,6 +74,9 @@ Const
   CATEGORY_HEART = 'hrt';
     COMMAND_BEAT = 'beat';
 
+  CATEGORY_NONE = '';
+    COMMAND_NONE = '';
+
   CATEGORY_COMMAND_SEPARATOR = ':';
   CATEGORY_PARAM_SEPARATOR = '=';
   IPC_SEPARATOR = '|'; // used by communication based on SimpleIPC

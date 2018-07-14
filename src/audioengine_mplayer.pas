@@ -90,7 +90,7 @@ type
 
 implementation
 
-uses strutils, FileUtil, LazFileUtils, lclproc;
+uses strutils, FileUtil, LazFileUtils, LazLoggerBase;
 Const
   MPLAYERMAXVOLUME = 100;
 

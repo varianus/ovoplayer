@@ -45,7 +45,7 @@ type
 Function CheckDbusError(Error: DBusError; RaiseException:boolean): boolean;
 
 implementation
-uses LCLProc;
+uses LazLoggerBase;
 
 function CheckDbusError(Error: DBusError; RaiseException: boolean): boolean;
 begin
