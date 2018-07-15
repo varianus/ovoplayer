@@ -86,23 +86,23 @@ uses
   ImagesSupport, netsupport, guiconfig, SimpleSingleInstance, mcaselli, 
   equalizerband, uequalizer, equalizer, backendconfig;
 
+
 {$R *.res}
 begin
+  Application.SingleInstanceClass:= DefaultSingleInstanceClass;
+  Application.SingleInstanceEnabled:= True;
+  TSimpleSingleInstance(Application.SingleInstance).DefaultMessage := BuildCommand(CATEGORY_APP, COMMAND_ACTIVATE);
+  Application.Initialize;
+
   Application.Scaled:=True;
 
   CheckRestarting(Application);
   // needed to output exception to a file
   Application.Flags := Application.Flags + [appNoExceptionMessages];
 
-  Application.SingleInstanceClass:= DefaultSingleInstanceClass;
-  Application.SingleInstanceEnabled:= True;
-  TSimpleSingleInstance(Application.SingleInstance).DefaultMessage := BuildCommand(CATEGORY_APP, COMMAND_ACTIVATE);
-  Application.Title:='OvoPlayer';
-
-  Application.Initialize;
-
   if Application.SingleInstance.StartResult <> siClient then
     begin
+      Application.Title:='OvoPlayer';
       Application.CreateForm(TDM, dm);
       Application.CreateForm(TfMainForm, fMainForm);
       {$IFDEF CATCH_SIGNAL}
