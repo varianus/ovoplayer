@@ -127,7 +127,7 @@ var
   I: Integer;
   Command: RExternalCommand;
 begin
-  for I := 1 to aParams.Count-1 do
+  for I := 0 to aParams.Count -1 do
     begin
       Command := SplitCommand(aParams[i]);
       if  (Command.Category = CATEGORY_NONE) then
@@ -153,7 +153,7 @@ begin
   IF ParamCount > 0  then
    try
      ParamList := TStringList.Create;
-     for i := 0 to ParamCount do
+     for i := 1 to ParamCount do
        ParamList.Add(ParamStr(I));
      ServerReceivedParams(Application.SingleInstance, ParamList);
    finally
