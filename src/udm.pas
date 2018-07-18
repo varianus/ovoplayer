@@ -220,6 +220,7 @@ begin
  SelectDirectoryDialog.FileName := Backend.GeneralParam.LastImportFolder;
  if SelectDirectoryDialog.Execute then
    begin
+     BackEnd.PlayList.Clear;
      Backend.Manager.ImportFromDirectory(SelectDirectoryDialog.FileName,true, Backend.PlayList);
      Backend.GeneralParam.LastImportFolder := SelectDirectoryDialog.FileName;
    end;

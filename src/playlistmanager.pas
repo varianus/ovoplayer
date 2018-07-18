@@ -629,7 +629,6 @@ function TPlayListManager.ImportFromDirectory(const Directory: string;
 var
   list: TStringList;
 begin
-  PlayList.Clear;
   List := TStringList.Create;
   BuildFileList(IncludeTrailingPathDelimiter(Directory) + AudioTag.SupportedExtension,
     faAnyFile, List, Recursive);
@@ -642,12 +641,20 @@ function TPlayListManager.ImportFromStrings(const Strings: TStrings;
   var Playlist: TPlaylist): integer;
 var
   i: integer;
+  cnt: integer;
 begin
+  cnt := 0;
   PlayList.BeginUpdate;
   for I := 0 to Strings.Count - 1 do
-    PlayList.EnqueueFile(Strings[i]);
+    if DirectoryExists(Strings[i]) then
+      cnt := cnt + ImportFromDirectory(Strings[i], true, Playlist)
+    else
+      begin
+        PlayList.EnqueueFile(Strings[i]);
+        inc(cnt);
+      end;
   PlayList.EndUpdate;
-  Result := Strings.Count;
+  Result := cnt;
 end;
 
 function TPlayListManager.ImportFromStringArray(const Strings: array of string;
@@ -659,10 +666,13 @@ begin
   cnt := 0;
   PlayList.BeginUpdate;
   for I := 0 to high(Strings) do
-     begin
-      PlayList.EnqueueFile(Strings[i]);
-      inc(cnt);
-     end;
+    if DirectoryExists(Strings[i]) then
+      cnt := cnt + ImportFromDirectory(Strings[i], true, Playlist)
+    else
+      begin
+        PlayList.EnqueueFile(Strings[i]);
+        inc(cnt);
+      end;
   PlayList.EndUpdate;
   Result := cnt;
 end;
