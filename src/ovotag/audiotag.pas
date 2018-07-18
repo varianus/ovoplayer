@@ -97,16 +97,14 @@ var
   ext: string;
   i : Integer;
 begin
-  Result := Nil;
+  Result := TDummyReader;
   if AnsiStartsStr('HTTP:\\', UpperCase(FileName)) or
      AnsiStartsStr('MMS:\\', UpperCase(FileName)) then
      begin
-       Result := TDummyReader;
        exit;
      end;
 
-  ext    := lowercase(ExtractFileExt(Filename));
-  result := TTagReader;
+  ext := lowercase(ExtractFileExt(Filename));
 
   for i := Low(AReaderList) to High(AReaderList) do
      if Pos(ext, AReaderList[i].Extensions) > 0 then
