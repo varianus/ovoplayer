@@ -87,86 +87,6 @@ msgstr ""
 msgid "Version: %0:s (SVN Rev.: %1:s Date %2:s)"
 msgstr ""
 
-#: medialibrary.rs_added
-msgctxt "medialibrary.rs_added"
-msgid "Date Added"
-msgstr ""
-
-#: medialibrary.rs_album
-msgctxt "medialibrary.rs_album"
-msgid "Album"
-msgstr ""
-
-#: medialibrary.rs_albumartist
-msgctxt "medialibrary.rs_albumartist"
-msgid "Album Artist"
-msgstr ""
-
-#: medialibrary.rs_artist
-msgctxt "medialibrary.rs_artist"
-msgid "Artist"
-msgstr ""
-
-#: medialibrary.rs_duration
-msgctxt "medialibrary.rs_duration"
-msgid "Duration"
-msgstr ""
-
-#: medialibrary.rs_filedate
-msgctxt "medialibrary.rs_filedate"
-msgid "File Date"
-msgstr ""
-
-#: medialibrary.rs_filename
-msgctxt "medialibrary.rs_filename"
-msgid "File Name"
-msgstr ""
-
-#: medialibrary.rs_filesize
-msgctxt "medialibrary.rs_filesize"
-msgid "File Size"
-msgstr ""
-
-#: medialibrary.rs_genre
-msgctxt "medialibrary.rs_genre"
-msgid "Genre"
-msgstr ""
-
-#: medialibrary.rs_lastplay
-msgctxt "medialibrary.rs_lastplay"
-msgid "Date Last Played"
-msgstr ""
-
-#: medialibrary.rs_playcount
-msgctxt "medialibrary.rs_playcount"
-msgid "Play count"
-msgstr ""
-
-#: medialibrary.rs_rating
-msgctxt "medialibrary.rs_rating"
-msgid "Rating"
-msgstr ""
-
-#: medialibrary.rs_title
-msgctxt "medialibrary.rs_title"
-msgid "Title"
-msgstr ""
-
-#: medialibrary.rs_track
-msgctxt "medialibrary.rs_track"
-msgid "Track"
-msgstr ""
-
-#: medialibrary.rs_trackstring
-msgctxt "medialibrary.rs_trackstring"
-msgid "Track String"
-msgstr ""
-
-#: medialibrary.rs_year
-msgctxt "medialibrary.rs_year"
-msgid "Year"
-msgstr ""
-
 #: playlistbuilder.rs_added
 msgctxt "playlistbuilder.rs_added"
 msgid "Date Added"
@@ -368,161 +288,6 @@ msgstr ""
 
 #: simplesingleinstance.serrstartsingleinstancestarted
 msgid "You cannot start single instance when it's been already started."
-msgstr ""
-
-#: tbackend.actexit.caption
-msgctxt "tbackend.actexit.caption"
-msgid "Quit"
-msgstr ""
-
-#: tbackend.actimportdirectory.caption
-msgctxt "tbackend.actimportdirectory.caption"
-msgid "Import Directory …"
-msgstr ""
-
-#: tbackend.actmute.caption
-msgctxt "tbackend.actmute.caption"
-msgid "Mute"
-msgstr ""
-
-#: tbackend.actnext.caption
-msgctxt "TBACKEND.ACTNEXT.CAPTION"
-msgid "Next"
-msgstr ""
-
-#: tbackend.actnext.hint
-msgctxt "TBACKEND.ACTNEXT.HINT"
-msgid "Next"
-msgstr ""
-
-#: tbackend.actpause.caption
-msgctxt "TBACKEND.ACTPAUSE.CAPTION"
-msgid "Pause"
-msgstr ""
-
-#: tbackend.actpause.hint
-msgctxt "TBACKEND.ACTPAUSE.HINT"
-msgid "Pause"
-msgstr ""
-
-#: tbackend.actplay.caption
-msgctxt "TBACKEND.ACTPLAY.CAPTION"
-msgid "Play"
-msgstr ""
-
-#: tbackend.actplay.hint
-msgctxt "TBACKEND.ACTPLAY.HINT"
-msgid "Play"
-msgstr ""
-
-#: tbackend.actplaylistaddfiles.caption
-msgctxt "TBACKEND.ACTPLAYLISTADDFILES.CAPTION"
-msgid "Add Files …"
-msgstr ""
-
-#: tbackend.actplaylistclear.caption
-msgctxt "tbackend.actplaylistclear.caption"
-msgid "Clear"
-msgstr ""
-
-#: tbackend.actplaylistload.caption
-msgctxt "tbackend.actplaylistload.caption"
-msgid "Load Playlist …"
-msgstr ""
-
-#: tbackend.actplaylistload.hint
-msgctxt "tbackend.actplaylistload.hint"
-msgid "Load a Playlist"
-msgstr ""
-
-#: tbackend.actplaylistsave.caption
-msgctxt "tbackend.actplaylistsave.caption"
-msgid "Save PlayList …"
-msgstr ""
-
-#: tbackend.actplaylistsave.hint
-msgctxt "tbackend.actplaylistsave.hint"
-msgid "Save current playlist"
-msgstr ""
-
-#: tbackend.actplaylistshuffle.caption
-msgctxt "TBACKEND.ACTPLAYLISTSHUFFLE.CAPTION"
-msgid "Shuffle"
-msgstr ""
-
-#: tbackend.actprevious.caption
-msgctxt "TBACKEND.ACTPREVIOUS.CAPTION"
-msgid "Previous"
-msgstr ""
-
-#: tbackend.actprevious.hint
-msgctxt "TBACKEND.ACTPREVIOUS.HINT"
-msgid "Previous"
-msgstr ""
-
-#: tbackend.actremovemissing.caption
-msgctxt "tbackend.actremovemissing.caption"
-msgid "Remove Missing"
-msgstr ""
-
-#: tbackend.actrepeatalbum.caption
-msgctxt "tbackend.actrepeatalbum.caption"
-msgid "Repeat Album"
-msgstr ""
-
-#: tbackend.actrepeatall.caption
-msgctxt "tbackend.actrepeatall.caption"
-msgid "Repeat Playlist"
-msgstr ""
-
-#: tbackend.actrepeatnone.caption
-msgctxt "tbackend.actrepeatnone.caption"
-msgid "Not Repeat"
-msgstr ""
-
-#: tbackend.actrepeattrack.caption
-msgctxt "TBACKEND.ACTREPEATTRACK.CAPTION"
-msgid "Repeat track"
-msgstr ""
-
-#: tbackend.actrescancollection.caption
-msgctxt "tbackend.actrescancollection.caption"
-msgid "Update Collection"
-msgstr ""
-
-#: tbackend.actrestart.caption
-msgctxt "tbackend.actrestart.caption"
-msgid "Restart"
-msgstr ""
-
-#: tbackend.actskipbackward.caption
-msgctxt "tbackend.actskipbackward.caption"
-msgid "Skip Backward"
-msgstr ""
-
-#: tbackend.actskipforward.caption
-msgctxt "tbackend.actskipforward.caption"
-msgid "Skip Forward"
-msgstr ""
-
-#: tbackend.actstop.caption
-msgctxt "TBACKEND.ACTSTOP.CAPTION"
-msgid "Stop"
-msgstr ""
-
-#: tbackend.actstop.hint
-msgctxt "TBACKEND.ACTSTOP.HINT"
-msgid "Stop"
-msgstr ""
-
-#: tbackend.opendialogfiles.title
-msgctxt "TBACKEND.OPENDIALOGFILES.TITLE"
-msgid "Open Playlist"
-msgstr ""
-
-#: tbackend.opendialogplaylist.title
-msgctxt "TBACKEND.OPENDIALOGPLAYLIST.TITLE"
-msgid "Open Playlist"
 msgstr ""
 
 #: tdm.actexit.caption
@@ -736,6 +501,10 @@ msgstr ""
 msgid "Restart Now"
 msgstr ""
 
+#: tfconfig.caption
+msgid "Config"
+msgstr ""
+
 #: tfconfig.cbcapturemmkeys.caption
 msgid "Use multimedia Keys"
 msgstr ""
@@ -909,10 +678,6 @@ msgstr ""
 
 #: tfequalizer.statictext1.caption
 msgid "Preset"
-msgstr ""
-
-#: tflicense.caption
-msgid "License"
 msgstr ""
 
 #: tfmainform.actshowabout.caption
@@ -1250,30 +1015,6 @@ msgstr ""
 #: tfmainform.tsplaylist.caption
 msgctxt "tfmainform.tsplaylist.caption"
 msgid "PlayList"
-msgstr ""
-
-#: tfminiplayer.caption
-msgctxt "TFMINIPLAYER.CAPTION"
-msgid "MiniPlayer"
-msgstr ""
-
-#: tfosd.album.caption
-msgctxt "TFOSD.ALBUM.CAPTION"
-msgid "Album"
-msgstr ""
-
-#: tfosd.artist.caption
-msgctxt "TFOSD.ARTIST.CAPTION"
-msgid "Artist"
-msgstr ""
-
-#: tfosd.title.caption
-msgctxt "TFOSD.TITLE.CAPTION"
-msgid "Title"
-msgstr ""
-
-#: tfosd.track.caption
-msgid "0"
 msgstr ""
 
 #: tfrequalizer.lbband.caption

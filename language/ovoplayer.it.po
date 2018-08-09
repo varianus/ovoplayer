@@ -101,86 +101,6 @@ msgstr "Aggiornate:"
 msgid "Version: %0:s (SVN Rev.: %1:s Date %2:s)"
 msgstr "Versione: %0:s (Rev. SVN: %1:s Data %2:s)"
 
-#: medialibrary.rs_added
-msgctxt "medialibrary.rs_added"
-msgid "Date Added"
-msgstr "Data aggiunta"
-
-#: medialibrary.rs_album
-msgctxt "medialibrary.rs_album"
-msgid "Album"
-msgstr "Album"
-
-#: medialibrary.rs_albumartist
-msgctxt "medialibrary.rs_albumartist"
-msgid "Album Artist"
-msgstr "Artista Album"
-
-#: medialibrary.rs_artist
-msgctxt "medialibrary.rs_artist"
-msgid "Artist"
-msgstr "Artista"
-
-#: medialibrary.rs_duration
-msgctxt "medialibrary.rs_duration"
-msgid "Duration"
-msgstr "Durata"
-
-#: medialibrary.rs_filedate
-msgctxt "medialibrary.rs_filedate"
-msgid "File Date"
-msgstr "Data file"
-
-#: medialibrary.rs_filename
-msgctxt "medialibrary.rs_filename"
-msgid "File Name"
-msgstr "Nome File"
-
-#: medialibrary.rs_filesize
-msgctxt "medialibrary.rs_filesize"
-msgid "File Size"
-msgstr "Dimensione File"
-
-#: medialibrary.rs_genre
-msgctxt "medialibrary.rs_genre"
-msgid "Genre"
-msgstr "Genere"
-
-#: medialibrary.rs_lastplay
-msgctxt "medialibrary.rs_lastplay"
-msgid "Date Last Played"
-msgstr "Data Ultima Riproduzione"
-
-#: medialibrary.rs_playcount
-msgctxt "medialibrary.rs_playcount"
-msgid "Play count"
-msgstr "Conteggio esecuzioni"
-
-#: medialibrary.rs_rating
-msgctxt "medialibrary.rs_rating"
-msgid "Rating"
-msgstr "Valutazione"
-
-#: medialibrary.rs_title
-msgctxt "medialibrary.rs_title"
-msgid "Title"
-msgstr "Titolo"
-
-#: medialibrary.rs_track
-msgctxt "medialibrary.rs_track"
-msgid "Track"
-msgstr "Traccia"
-
-#: medialibrary.rs_trackstring
-msgctxt "medialibrary.rs_trackstring"
-msgid "Track String"
-msgstr "Traccia testo"
-
-#: medialibrary.rs_year
-msgctxt "medialibrary.rs_year"
-msgid "Year"
-msgstr "Anno"
-
 #: playlistbuilder.rs_added
 msgctxt "playlistbuilder.rs_added"
 msgid "Date Added"
@@ -383,161 +303,6 @@ msgstr "L'istanza corrente non è un client."
 #: simplesingleinstance.serrstartsingleinstancestarted
 msgid "You cannot start single instance when it's been already started."
 msgstr "Non puoi avviare istanza singola se è già avviata."
-
-#: tbackend.actexit.caption
-msgctxt "tbackend.actexit.caption"
-msgid "Quit"
-msgstr "Esci"
-
-#: tbackend.actimportdirectory.caption
-msgctxt "tbackend.actimportdirectory.caption"
-msgid "Import Directory …"
-msgstr "Importa Directory …"
-
-#: tbackend.actmute.caption
-msgctxt "tbackend.actmute.caption"
-msgid "Mute"
-msgstr "Silenzia"
-
-#: tbackend.actnext.caption
-msgctxt "TBACKEND.ACTNEXT.CAPTION"
-msgid "Next"
-msgstr "Prossimo"
-
-#: tbackend.actnext.hint
-msgctxt "TBACKEND.ACTNEXT.HINT"
-msgid "Next"
-msgstr "Prossimo"
-
-#: tbackend.actpause.caption
-msgctxt "TBACKEND.ACTPAUSE.CAPTION"
-msgid "Pause"
-msgstr "Pausa"
-
-#: tbackend.actpause.hint
-msgctxt "TBACKEND.ACTPAUSE.HINT"
-msgid "Pause"
-msgstr "Pausa"
-
-#: tbackend.actplay.caption
-msgctxt "TBACKEND.ACTPLAY.CAPTION"
-msgid "Play"
-msgstr "Riproduci"
-
-#: tbackend.actplay.hint
-msgctxt "TBACKEND.ACTPLAY.HINT"
-msgid "Play"
-msgstr "Riproduci"
-
-#: tbackend.actplaylistaddfiles.caption
-msgctxt "TBACKEND.ACTPLAYLISTADDFILES.CAPTION"
-msgid "Add Files …"
-msgstr "Aggiungi files …"
-
-#: tbackend.actplaylistclear.caption
-msgctxt "tbackend.actplaylistclear.caption"
-msgid "Clear"
-msgstr "Pulisci"
-
-#: tbackend.actplaylistload.caption
-msgctxt "tbackend.actplaylistload.caption"
-msgid "Load Playlist …"
-msgstr "Carica Scaletta …"
-
-#: tbackend.actplaylistload.hint
-msgctxt "tbackend.actplaylistload.hint"
-msgid "Load a Playlist"
-msgstr "Carica una scaletta"
-
-#: tbackend.actplaylistsave.caption
-msgctxt "tbackend.actplaylistsave.caption"
-msgid "Save PlayList …"
-msgstr "Salva Scaletta …"
-
-#: tbackend.actplaylistsave.hint
-msgctxt "tbackend.actplaylistsave.hint"
-msgid "Save current playlist"
-msgstr "Salva Scaletta corrente"
-
-#: tbackend.actplaylistshuffle.caption
-msgctxt "TBACKEND.ACTPLAYLISTSHUFFLE.CAPTION"
-msgid "Shuffle"
-msgstr "Mescola"
-
-#: tbackend.actprevious.caption
-msgctxt "TBACKEND.ACTPREVIOUS.CAPTION"
-msgid "Previous"
-msgstr "Precedente"
-
-#: tbackend.actprevious.hint
-msgctxt "TBACKEND.ACTPREVIOUS.HINT"
-msgid "Previous"
-msgstr "Precedente"
-
-#: tbackend.actremovemissing.caption
-msgctxt "tbackend.actremovemissing.caption"
-msgid "Remove Missing"
-msgstr "Rimuovi Mancanti"
-
-#: tbackend.actrepeatalbum.caption
-msgctxt "tbackend.actrepeatalbum.caption"
-msgid "Repeat Album"
-msgstr "Ripeti Album"
-
-#: tbackend.actrepeatall.caption
-msgctxt "tbackend.actrepeatall.caption"
-msgid "Repeat Playlist"
-msgstr "Ripeti playlist"
-
-#: tbackend.actrepeatnone.caption
-msgctxt "tbackend.actrepeatnone.caption"
-msgid "Not Repeat"
-msgstr "Non ripetere"
-
-#: tbackend.actrepeattrack.caption
-msgctxt "TBACKEND.ACTREPEATTRACK.CAPTION"
-msgid "Repeat track"
-msgstr "Ripeti traccia"
-
-#: tbackend.actrescancollection.caption
-msgctxt "tbackend.actrescancollection.caption"
-msgid "Update Collection"
-msgstr "Aggiorna collezione"
-
-#: tbackend.actrestart.caption
-msgctxt "tbackend.actrestart.caption"
-msgid "Restart"
-msgstr "Riavvia"
-
-#: tbackend.actskipbackward.caption
-msgctxt "tbackend.actskipbackward.caption"
-msgid "Skip Backward"
-msgstr "Salta Avanti"
-
-#: tbackend.actskipforward.caption
-msgctxt "tbackend.actskipforward.caption"
-msgid "Skip Forward"
-msgstr "Slata indietro"
-
-#: tbackend.actstop.caption
-msgctxt "TBACKEND.ACTSTOP.CAPTION"
-msgid "Stop"
-msgstr "Stop"
-
-#: tbackend.actstop.hint
-msgctxt "TBACKEND.ACTSTOP.HINT"
-msgid "Stop"
-msgstr "Stop"
-
-#: tbackend.opendialogfiles.title
-msgctxt "TBACKEND.OPENDIALOGFILES.TITLE"
-msgid "Open Playlist"
-msgstr "Apri Scaletta"
-
-#: tbackend.opendialogplaylist.title
-msgctxt "TBACKEND.OPENDIALOGPLAYLIST.TITLE"
-msgid "Open Playlist"
-msgstr "Apri Scaletta"
 
 #: tdm.actexit.caption
 msgctxt "tdm.actexit.caption"
@@ -750,6 +515,10 @@ msgstr "Cerca Adesso"
 msgid "Restart Now"
 msgstr "Riavvia ora"
 
+#: tfconfig.caption
+msgid "Config"
+msgstr "Configurazione"
+
 #: tfconfig.cbcapturemmkeys.caption
 msgid "Use multimedia Keys"
 msgstr "Usa tasti Multimediali"
@@ -924,10 +693,6 @@ msgstr "Attiva Equalizzatore"
 #: tfequalizer.statictext1.caption
 msgid "Preset"
 msgstr "Preimpostazione"
-
-#: tflicense.caption
-msgid "License"
-msgstr "Licenza"
 
 #: tfmainform.actshowabout.caption
 msgctxt "TFMAINFORM.ACTSHOWABOUT.CAPTION"
@@ -1265,30 +1030,6 @@ msgstr "Cartella"
 msgctxt "tfmainform.tsplaylist.caption"
 msgid "PlayList"
 msgstr "Scaletta"
-
-#: tfminiplayer.caption
-msgctxt "TFMINIPLAYER.CAPTION"
-msgid "MiniPlayer"
-msgstr "MiniPlayer"
-
-#: tfosd.album.caption
-msgctxt "TFOSD.ALBUM.CAPTION"
-msgid "Album"
-msgstr "Album"
-
-#: tfosd.artist.caption
-msgctxt "TFOSD.ARTIST.CAPTION"
-msgid "Artist"
-msgstr "Artista"
-
-#: tfosd.title.caption
-msgctxt "TFOSD.TITLE.CAPTION"
-msgid "Title"
-msgstr "Titolo"
-
-#: tfosd.track.caption
-msgid "0"
-msgstr "0"
 
 #: tfrequalizer.lbband.caption
 msgid "Band"
