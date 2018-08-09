@@ -1878,9 +1878,10 @@ begin
   fMainFormParam := TMainFormParam.Create(BackEnd.Config, self);
 
   Height := fMainFormParam.Height;
-  Width := fMainFormParam.Width;
-  Top := fMainFormParam.Top;
-  Left := fMainFormParam.Left;
+  Width  := fMainFormParam.Width;
+  Top    := fMainFormParam.Top;
+  Left   := fMainFormParam.Left;
+
   actShowLeft.checked := not fMainFormParam.LeftPanelVisible;
   actShowLeft.Execute;
   pcMain.ActivePageIndex := fMainFormParam.ActivePage;
@@ -3114,7 +3115,7 @@ begin
   Diffs := h.gcache.ClientWidth - h.gcache.FixedWidth  - TotalSize -1;
 
   Steps := diffs div HighP;// VisibleCount;
-  remains := diffs mod LowP;// VisibleCount;
+  remains := abs(diffs mod HighP);// VisibleCount;
 
   for I := 0 to sgPlayList.Columns.Count - 1 do
      if sgPlayList.Columns[i].Visible and (sgPlayList.Columns[i].SizePriority > 0) then
@@ -3122,14 +3123,19 @@ begin
          ColWidths[i] := ColWidths[i] + Steps;
        end;
 
-   for I := 0 to sgPlayList.Columns.Count - 1 do      // for I := 0 to Remains - 2 do
-     if sgPlayList.Columns[i].Visible and not (sgPlayList.Columns[i].SizePriority > 0)  then
-       begin
-         if diffs > 0 then
-            ColWidths[i] := ColWidths[i] + 1
-         else
-            ColWidths[i] := ColWidths[i] - 1
-       end;
+  i:=0;
+  while (i < sgPlayList.Columns.Count) and (remains > 0) do
+    begin
+       if sgPlayList.Columns[i].Visible and not (sgPlayList.Columns[i].SizePriority > 0)  then
+         begin
+           if diffs > 0 then
+              ColWidths[i] := ColWidths[i] + 1
+           else
+              ColWidths[i] := ColWidths[i] - 1;
+           Dec(Remains);
+         end;
+       inc(i);
+    end;
 
   for I := 0 to sgPlayList.Columns.Count - 1 do
      if sgPlayList.Columns[i].Visible then
