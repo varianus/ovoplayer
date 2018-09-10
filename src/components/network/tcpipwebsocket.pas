@@ -441,7 +441,7 @@ function DecodeStringBase64(const s:string;strict:boolean=false):rawbytestring;
 
 var
   SD : String;
-  Instream,
+  Instream  : TStringStream;
   Outstream : TmemoryStream;
   Decoder   : TBase64DecodingStream;
 begin
@@ -450,7 +450,7 @@ begin
     SD := SD + '=';
   Instream:=TStringStream.Create(SD);
   try
-    Outstream:=TStringStream.Create('');
+    Outstream:=TmemoryStream.Create();
     try
       if strict then
         Decoder:=TBase64DecodingStream.Create(Instream,bdmStrict)
