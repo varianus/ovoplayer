@@ -113,7 +113,7 @@ const
   wsCloseErrorTLS = 1015;
 
 
-function EncodeBufferBase64(const s: string): string;
+function EncodeHashToBase64(const s: string): string;
 
 implementation
 
@@ -139,7 +139,7 @@ const
 
 { TTcpIpWebSocket }
 
-function EncodeBufferBase64(const s: string): string;
+function EncodeHashToBase64(const s: string): string;
 
 var
   Digest: TSHA1Digest;
@@ -379,7 +379,7 @@ begin
     HttpResponse.Add('HTTP/1.1 101 Switching Protocols');
     HttpResponse.Values['Upgrade'] := ' websocket';
     HttpResponse.Values['Connection'] := ' upgrade';
-    wrkstr := EncodeBufferBase64(key + WS_SALT_V13);
+    wrkstr := EncodeHashToBase64(key + WS_SALT_V13);
 
     HttpResponse.Values['Sec-WebSocket-Accept'] := wrkstr;
     HttpResponse.Add('');
@@ -437,12 +437,48 @@ begin
   end;
 end;
 
+function DecodeStringBase64(const s:string;strict:boolean=false):rawbytestring;
+
+var
+  SD : String;
+  Instream,
+  Outstream : TmemoryStream;
+  Decoder   : TBase64DecodingStream;
+begin
+  SD:=S;
+  while Length(Sd) mod 4 > 0 do
+    SD := SD + '=';
+  Instream:=TStringStream.Create(SD);
+  try
+    Outstream:=TStringStream.Create('');
+    try
+      if strict then
+        Decoder:=TBase64DecodingStream.Create(Instream,bdmStrict)
+      else
+        Decoder:=TBase64DecodingStream.Create(Instream,bdmMIME);
+      try
+         Outstream.CopyFrom(Decoder,Decoder.Size);
+         Setlength(result, outstream.size);
+         Outstream.Position := 0;
+         Move(Outstream.Memory,Result[1], Outstream.Size);
+      finally
+        Decoder.Free;
+        end;
+    finally
+     Outstream.Free;
+     end;
+  finally
+    Instream.Free;
+    end;
+end;
+
 function TTcpIpWebSocket.ReadHandShake: boolean;
 var
   Buf: array [0..8192 - 1] of char;
   cnt: integer;
   HttpRequest: TStringList;
   wrkstr: string;
+  wrkbuf: rawbytestring;
 
 begin
   Result := False;
@@ -467,8 +503,9 @@ begin
     wrkstr := trim(HttpRequest.Values['sec-websocket-key']);
     if wrkstr = '' then
       exit;
-    cnt:= Length(DecodeStringBase64(wrkstr));
-    if (Length(DecodeStringBase64(wrkstr)) = 16) then
+    wrkbuf := DecodeStringBase64(wrkstr);
+    cnt:= length(wrkbuf);
+    if (cnt = 16) then
       key := trim(wrkstr)
     else
       exit;
@@ -511,7 +548,7 @@ begin
     if wrkstr = '' then
       exit;
 
-    if EncodeBufferBase64(key + WS_SALT_V13) <> trim(wrkstr) then
+    if EncodeHashToBase64(key + WS_SALT_V13) <> trim(wrkstr) then
       exit;
 
     if (LowerCase(trim(HttpRequest.Values['Upgrade'])) <> LowerCase('websocket')) or
