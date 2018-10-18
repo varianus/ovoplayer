@@ -506,11 +506,11 @@ msgid "Config"
 msgstr ""
 
 #: tfconfig.cbcapturemmkeys.caption
-msgid "Use multimedia Keys"
+msgid "Use multimedia keys"
 msgstr ""
 
 #: tfconfig.cbenablesoundmenu.caption
-msgid "Show in Sound Menu"
+msgid "Show in sound menu"
 msgstr ""
 
 #: tfconfig.cbminimizeonclose.caption
@@ -526,11 +526,11 @@ msgid "Restart from last position"
 msgstr ""
 
 #: tfconfig.cbscanonstart.caption
-msgid "Scan On program start"
+msgid "Scan on program start"
 msgstr ""
 
 #: tfconfig.cbtrayvisible.caption
-msgid "Show Tray Icon"
+msgid "Show tray icon"
 msgstr ""
 
 #: tfconfig.groupbox1.caption
@@ -542,11 +542,11 @@ msgid "Directories"
 msgstr ""
 
 #: tfconfig.label2.caption
-msgid "BackGround Color"
+msgid "BackGround color"
 msgstr ""
 
 #: tfconfig.label3.caption
-msgid "Font Color"
+msgid "Font color"
 msgstr ""
 
 #: tfconfig.label4.caption
@@ -669,6 +669,7 @@ msgid "Sort by"
 msgstr ""
 
 #: tfequalizer.caption
+msgctxt "tfequalizer.caption"
 msgid "Equalizer"
 msgstr ""
 
@@ -859,8 +860,21 @@ msgctxt "TFMAINFORM.MENUITEM60.CAPTION"
 msgid "Play"
 msgstr ""
 
+#: tfmainform.menuitem61.caption
+msgid "Collection Preferences"
+msgstr ""
+
+#: tfmainform.menuitem62.caption
+msgctxt "tfmainform.menuitem62.caption"
+msgid "Equalizer"
+msgstr ""
+
 #: tfmainform.menuitem66.caption
 msgid "Edit"
+msgstr ""
+
+#: tfmainform.menuitem67.caption
+msgid "Preferences"
 msgstr ""
 
 #: tfmainform.mnucollection.caption
@@ -1061,6 +1075,10 @@ msgstr ""
 
 #: tfsonginfo.buttonpanel1.okbutton.caption
 msgid "Save"
+msgstr ""
+
+#: tfsonginfo.caption
+msgid "Song Information"
 msgstr ""
 
 #: tfsonginfo.groupbox1.caption
