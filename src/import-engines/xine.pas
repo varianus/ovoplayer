@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {$mode objfpc}
 unit xine;
 interface
-uses types, classes, ctypes;
+uses types, classes;
 
   const
     {$IFDEF WINDOWS}

@@ -505,7 +505,7 @@ var
   wrkSong : TSQLQuery;
   ID:Integer;
   tmpTags: TCommonTags;
-  info: TfileInfo;
+//  info: TfileInfo;
 
 begin
   ID := IDFromFullName(Tags.FileName);
@@ -515,7 +515,7 @@ begin
       Tags.ID := ID;
       if Tags = tmpTags then
          begin
-           info := FileInfoFromID(ID);
+       //    info := FileInfoFromID(ID);
        //    if info.size < 1 then
          //     begin
                 SetFileInfo(Id, FileInfo);

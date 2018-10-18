@@ -97,7 +97,6 @@ Const
 
 const
   TIMEPOSOUT = 'A: ';
-  EXITING = 'Exiting...';
 
   fMPlayerCommand = 'mplayer';
 
@@ -454,8 +453,6 @@ begin
 end;
 
 procedure TAudioEngineMPlayer.SetActiveEQ(AValue: boolean);
-var
-  i: integer;
 begin
 
   if AValue and not fActiveEQ then

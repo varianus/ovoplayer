@@ -59,13 +59,12 @@ type
     Function DoPlay(Song: TSong; offset:Integer):boolean; override;
     procedure SetMuted(const AValue: boolean);  override;
     Function GetMuted: boolean; override;
-    function Initialize: boolean; override;
   public
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
     class Function GetEngineName: String; override;
     Class Function GetEngineInfo(IsCurrent:boolean): AREngineParams; override;
     Class Function SupportEQ: boolean; override;
-
+    function Initialize: boolean; override;
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
     destructor Destroy; override;
@@ -156,9 +155,8 @@ begin
 end;
 
 procedure TAudioEngineBASS.LoadPlugin(FileName: string; Index: integer; Flags: integer);
-
-var
-  Info: BASS_PLUGININFO;
+//var
+//  Info: BASS_PLUGININFO;
 begin
 
   Plugins[Index] := BASS_PluginLoad(PChar(FileName), Flags);
@@ -167,10 +165,9 @@ begin
         DebugLn('Bass plugin error: ',GetLoadErrorStr);
         exit;
      end;
-  Info := BASS_PluginGetInfo(Plugins[Index])^;
-
-//  for I := 0 to info.formatc - 1 do
-//    AddInfo(Info.formats[i].Name, Info.formats[i].Exts);
+  //Info := BASS_PluginGetInfo(Plugins[Index])^;
+  //for I := 0 to info.formatc - 1 do
+  //  AddInfo(Info.formats[i].Name, Info.formats[i].Exts);
 end;
 
 function TAudioEngineBASS.Initialize:boolean;
@@ -210,8 +207,6 @@ begin
 end;
 
 constructor TAudioEngineBASS.Create;
-var
-  I: integer;
 begin
   inherited Create;
 
@@ -327,7 +322,7 @@ end;
 
 class function TAudioEngineBASS.GetEngineInfo(IsCurrent:boolean): AREngineParams;
 var
-  isAlreadyActive, isactivated: boolean;
+
   ver: LongWord;
   ByteArray: array [1..4] of byte absolute ver;
   BaseAddr:pointer;

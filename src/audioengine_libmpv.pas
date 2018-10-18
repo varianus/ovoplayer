@@ -79,7 +79,7 @@ type
 
 
 implementation
-uses math, ctypes, generalfunc;
+uses ctypes, generalfunc;
 {$ifdef LINUX}
 function setlocale(category: cint; locale: pchar): pchar; cdecl; external 'c' name 'setlocale';
 {$endif}
@@ -223,7 +223,6 @@ function TAudioEngineLibMPV.DoPlay(Song: TSong; offset: Integer): boolean;
 var
   Args: array of pchar;
   res: longint;
-  vol : Pchar;
 begin
  setlength(args,4);
  args[0] := 'loadfile';
@@ -297,7 +296,6 @@ end;
 
 class function TAudioEngineLibMPV.GetEngineInfo(IsCurrent:boolean): AREngineParams;
  var
-   isAlreadyActive, isactivated: boolean;
    ver: LongWord;
    ByteArray: array [1..4] of byte absolute ver;
    BaseAddr:pointer;
@@ -437,7 +435,6 @@ var
   i: integer;
   str: string;
   bandstr: string;
-  res: longint;
 begin
   bandstr := '';
   str :='lavfi=''[';
@@ -474,7 +471,6 @@ var
   i: integer;
   str: string;
   bandstr: string;
-  res: longint;
 begin
   str :='lavfi=[';
   bandstr := '';

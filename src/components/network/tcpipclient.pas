@@ -22,7 +22,7 @@ uses
 {$ELSE}
   WinSock2,
 {$ENDIF}
-  TcpIpBase, TcpIpUtils, SSockets, Sockets, sysutils,fpopenssl, sslsockets;
+  TcpIpBase, TcpIpUtils, SSockets, Sockets, sysutils;
 
 type
 
@@ -101,14 +101,17 @@ end;
 
 constructor TTcpIpClientSocket.Create(const ASocket: LongInt);
 begin
-{  if ssl then
-    begin
-      fHandler := TSSLSocketHandler.Create;
-      fHandler.SSLType:=stTLSv1_2;
-      fHandler.RemoteHostName:='localhost';
-      fHandler.Certificate.FileName:='C:\source\ovoplayer\trunk\bin\win32\cert\localhost.crt';
-      fHandler.PrivateKey.FileName:='C:\source\ovoplayer\trunk\bin\win32\cert\localhost.key';
-    end}
+  //if ssl then
+  //  begin
+      //fHandler := TSSLSocketHandler.Create;
+      //with TSSLSocketHandler(FHandler) do
+      //  begin
+      //   SSLType:=stTLSv1_2;
+      //   RemoteHostName:='localhost';
+      //   Certificate.FileName:='C:\source\ovoplayer\trunk\bin\win32\cert\ovoplayer.cer';
+      //   PrivateKey.FileName:='C:\source\ovoplayer\trunk\bin\win32\cert\ovoplayer.key';
+      //  end;
+  //  end;
   fHandler := nil;
 
   if Assigned (FOnGetSocketHandler)  then

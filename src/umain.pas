@@ -421,7 +421,6 @@ type
     CurrentPath : string;
     PathHistory : TstringList;
     PathIndex : Integer;
-    sortColumn : integer;
     PlaylistSelected: TRowsSelection;
     MovingSelection : TMovingSelection;
     FAnchor: integer;
@@ -443,7 +442,6 @@ type
     {$ENDIF}
     {$IFDEF NETWORK_INTF}
     MyNetIntf : TNetIntf;
-    fNetRemoteParam: TNetRemoteParam;
     {$ENDIF}
     {$IFDEF MULTIMEDIA_KEYS}
     fMultimediaKeys:   TMultimediaKeys;

@@ -91,7 +91,7 @@ implementation
 
 uses
   laz2_DOM, laz2_XMLRead, laz2_XMLWrite, URIParser, IniFiles, LazFileUtils,
-  filesSupport, CustomSong, LazLoggerBase, Lazutf8,  basetag, fpjson, jsonparser, fpjsonrtti;
+  filesSupport, CustomSong, LazLoggerBase, Lazutf8,  basetag, fpjson, jsonparser;
 
 const
   //  GenDelims  = [':', '/', '?', '#', '[', ']', '@'];
@@ -99,7 +99,6 @@ const
   ALPHA = ['A'..'Z', 'a'..'z'];
   DIGIT = ['0'..'9'];
   Unreserved = ALPHA + DIGIT + ['-', '.', '_', '~'];
-  ValidPathChars = Unreserved + SubDelims + ['@', ':', '/'];
 
 function Escape(const s: string; const Allowed: TSysCharSet): string;
 var
@@ -552,7 +551,6 @@ procedure TPlayListManager.SaveToM3U(const FileName: TFileName;
   var Playlist: TPlaylist; CurrentTime: integer);
 var
   f: textfile;
-  s: string;
   i:integer;
 begin
   assignfile(f, FileName);

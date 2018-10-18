@@ -47,7 +47,7 @@ uses
 {$DEFINE USESMODE}
   {$i generalfuncimpl.inc}
 {$UNDEF USESMODE}
- SimpleIPC, Process, AsyncProcess, netsupport;
+ SimpleIPC, Process, netsupport;
 
 const
   OneKB = 1024;

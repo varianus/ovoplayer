@@ -86,9 +86,6 @@ end;
 
 procedure TTaskBarExtender.AddButtons;
 var
- FormHandle: THandle;
- res : HRESULT;
- h: THandle;
  i:Integer;
 begin
    for i := 0 to 2 do
@@ -118,8 +115,8 @@ begin
    Buttons[2].iBitmap := 8;
    StrCopy(Buttons[2].szTip, PWideChar(utf8toUtf16(DM.actNext.Caption)));
 
-   res:=TaskbarList3.ThumbBarSetImageList(FApplication, DM.ilButtons.Reference[DM.ilButtons.Height].Handle);
-   res:=TaskbarList3.ThumbBarAddButtons(FApplication, 3, @Buttons[0]);
+   TaskbarList3.ThumbBarSetImageList(FApplication, DM.ilButtons.Reference[DM.ilButtons.Height].Handle);
+   TaskbarList3.ThumbBarAddButtons(FApplication, 3, @Buttons[0]);
 
 end;
 
@@ -182,13 +179,10 @@ begin
 end;
 
 procedure TTaskBarExtender.UpdateProperty(Kind: TChangedProperty);
-var
- j:tenginestate;
 begin
   case kind of
   cpStatus:
     begin
-      j := fBackEnd.Status;
       if fBackEnd.Status = ENGINE_PLAY then
         begin
              Buttons[1].iBitmap := 1;

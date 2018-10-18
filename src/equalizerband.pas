@@ -33,7 +33,6 @@ type
   { TfrEqualizer }
   TBandChanged= procedure (Sender: TObject; const BandNo:integer; const Value: single) of object;
 
-
   TfrEqualizer = class(TFrame)
     lbBand: TLabel;
     lbValue: TLabel;

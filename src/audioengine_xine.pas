@@ -298,7 +298,6 @@ end;
 
 class function TAudioEngineXINE.GetEngineInfo(IsCurrent:boolean): AREngineParams;
  var
-   isAlreadyActive, isactivated: boolean;
    Major, minor, sub :longint;
    BaseAddr:pointer;
    ModuleName:string;

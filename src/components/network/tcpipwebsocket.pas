@@ -18,7 +18,7 @@ unit tcpipwebsocket;
 interface
 
 uses
-  Classes, TcpIpBase, TcpIpUtils, TcpIpClient, SysUtils, URIParser, DynQueue, sslsockets;
+  Classes, TcpIpBase, TcpIpClient, SysUtils, URIParser, DynQueue;
 
 type
 
@@ -437,7 +437,7 @@ begin
   end;
 end;
 
-function DecodeStringBase64(const s:string;strict:boolean=false):rawbytestring;
+function DecodeBase64ToString(const s:string;strict:boolean=false):rawbytestring;
 
 var
   SD : String;
@@ -503,7 +503,7 @@ begin
     wrkstr := trim(HttpRequest.Values['sec-websocket-key']);
     if wrkstr = '' then
       exit;
-    wrkbuf := DecodeStringBase64(wrkstr);
+    wrkbuf := DecodeBase64ToString(wrkstr);
     cnt:= length(wrkbuf);
     if (cnt = 16) then
       key := trim(wrkstr)

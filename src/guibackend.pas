@@ -748,7 +748,7 @@ procedure TBackEnd.PlaylistOnSongAdd(Sender: Tobject; Index: Integer;
   ASong: TCustomSong);
 var
   ID: Integer;
-  ExtendedInfo: TExtendedInfo;
+//  ExtendedInfo: TExtendedInfo;
 begin
   ID := mediaLibrary.IDFromFullName(ASong.FullName);
   if ID = -1 then

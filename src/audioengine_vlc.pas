@@ -254,8 +254,6 @@ function TAudioEngineVLC.DoPlay(Song: TSong; offset: Integer): boolean;
 Var
   savedVolume: Integer;
   hr: hResult;
-  ExceptionMask : TFPUExceptionMask;
-
 begin
   // create new media
   Result := false;
@@ -328,7 +326,6 @@ end;
 
 class function TAudioEngineVLC.GetEngineInfo(IsCurrent:boolean): AREngineParams;
  var
-   isAlreadyActive, isactivated: boolean;
    BaseAddr:pointer;
    ModuleName:string;
  begin
