@@ -26,13 +26,18 @@ program ovoplayer;
 
 uses
  {$IFDEF UNIX}
-    {$IFDEF UseCThreads}
+   {$IFDEF UseCThreads}
   cthreads,
-    {$ENDIF}
+   {$ENDIF}
   clocale,
-  {$ENDIF}
+{$ENDIF}
 
   Interfaces, // this includes the LCL widgetset
+{$IFDEF STACKTRACEDUMP}
+  LCLExceptionStackTrace,
+  LazLogger,
+{$ENDIF}
+
   Forms, singleinstance,
   // general functions
   AppConsts, GeneralFunc, decoupler, FilesSupport,
@@ -81,7 +86,7 @@ uses
 
     // Application forms and related
   Udm, uMain, uAbout, ulicense, uConfig, uOSD, uMiniPlayer, uSongInfo, uCover,
-  lazlogger, DefaultTranslator,  LCLVersion,
+  DefaultTranslator,  LCLVersion,
   ucustomplaylist, ufrfield, playlistbuilder, netprotocol,
   ImagesSupport, netsupport, guiconfig, SimpleSingleInstance, mcaselli, 
   equalizerband, uequalizer, equalizer, backendconfig;
@@ -102,7 +107,7 @@ begin
 
   if Application.SingleInstance.StartResult <> siClient then
     begin
-      Application.Title:='OvoPlayer';
+  Application.Title := 'OvoPlayer';
       Application.CreateForm(TDM, dm);
       Application.CreateForm(TfMainForm, fMainForm);
       {$IFDEF CATCH_SIGNAL}
