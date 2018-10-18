@@ -12,17 +12,16 @@ object fCover: TfCover
   OnClose = FormClose
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '1.9.0.0'
   object ScrollBox1: TScrollBox
     Left = 0
-    Height = 383
+    Height = 381
     Top = 44
     Width = 483
     HorzScrollBar.Page = 284
     VertScrollBar.Page = 244
     Align = alClient
-    ClientHeight = 381
-    ClientWidth = 481
+    ClientHeight = 377
+    ClientWidth = 479
     TabOrder = 0
     OnResize = ScrollBox1Resize
     object ImageCover: TImage
@@ -54,7 +53,7 @@ object fCover: TfCover
       Height = 42
       Hint = 'Zoom +'
       Top = 1
-      Width = 42
+      Width = 62
       AutoSize = True
       Glyph.Data = {
         36100000424D3610000000000000360000002800000020000000200000000100
@@ -196,7 +195,7 @@ object fCover: TfCover
       Height = 42
       Hint = 'Zoom -'
       Top = 1
-      Width = 42
+      Width = 62
       AutoSize = True
       Glyph.Data = {
         36100000424D3610000000000000360000002800000020000000200000000100
@@ -338,7 +337,7 @@ object fCover: TfCover
       Height = 42
       Hint = 'Original size'
       Top = 1
-      Width = 42
+      Width = 62
       AutoSize = True
       Glyph.Data = {
         36100000424D3610000000000000360000002800000020000000200000000100
@@ -480,7 +479,7 @@ object fCover: TfCover
       Height = 42
       Hint = 'Save as…'
       Top = 1
-      Width = 42
+      Width = 62
       AutoSize = True
       Glyph.Data = {
         36100000424D3610000000000000360000002800000020000000200000000100
@@ -615,14 +614,14 @@ object fCover: TfCover
         0000000000000000000000000000000000000000000000000000
       }
       OnClick = btnSaveAsClick
-      TabOrder = 3
+      TabOrder = 4
     end
     object btnFitToScreen: TBitBtn
       Left = 208
       Height = 42
       Hint = 'Fit To Screen'
       Top = 1
-      Width = 42
+      Width = 62
       AutoSize = True
       Glyph.Data = {
         36100000424D3610000000000000360000002800000020000000200000000100
@@ -757,18 +756,18 @@ object fCover: TfCover
         0000000000000000000000000000000000000000000000000000
       }
       OnClick = btnFitToScreenClick
-      TabOrder = 4
+      TabOrder = 3
     end
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 21
-    Top = 427
+    Height = 23
+    Top = 425
     Width = 483
     Panels = <>
   end
   object SavePictureDialog1: TSavePictureDialog
-    left = 312
-    top = 99
+    Left = 312
+    Top = 99
   end
 end

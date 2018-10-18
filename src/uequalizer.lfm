@@ -8,11 +8,10 @@ object fEqualizer: TfEqualizer
   ClientHeight = 467
   ClientWidth = 736
   OnCreate = FormCreate
-  LCLVersion = '1.9.0.0'
   object ButtonPanel1: TButtonPanel
     Left = 6
-    Height = 33
-    Top = 428
+    Height = 34
+    Top = 427
     Width = 724
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
@@ -41,7 +40,7 @@ object fEqualizer: TfEqualizer
       Width = 105
       Caption = 'Enable equalizer'
       OnClick = cbEnableEqClick
-      TabOrder = 0
+      TabOrder = 1
     end
     object StaticText1: TStaticText
       Left = 8
@@ -50,7 +49,7 @@ object fEqualizer: TfEqualizer
       Width = 106
       Alignment = taRightJustify
       Caption = 'Preset'
-      TabOrder = 1
+      TabOrder = 2
     end
     object cbPreset: TComboBox
       Left = 122
@@ -59,16 +58,16 @@ object fEqualizer: TfEqualizer
       Width = 600
       ItemHeight = 15
       OnChange = cbPresetChange
-      TabOrder = 2
+      TabOrder = 0
     end
   end
   object pnlContainer: TPanel
     Left = 0
-    Height = 356
+    Height = 355
     Top = 66
     Width = 736
     Align = alClient
-    ClientHeight = 356
+    ClientHeight = 355
     ClientWidth = 736
     TabOrder = 2
     object lbMessage: TLabel
