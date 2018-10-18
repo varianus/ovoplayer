@@ -2,8 +2,10 @@
 Version=1.0
 Encoding=UTF-8
 Name=OvoPlayer
+GenericName=Audio player
+Comment=Play audio files
 Categories=Application;AudioVideo;Audio
-Exec=env LIBOVERLAY_SCROLLBAR=0 /usr/bin/ovoplayer
+Exec=/usr/bin/ovoplayer %F
 Hidden=false
 Icon=/usr/share/pixmaps/ovoplayer.xpm
 Terminal=false
