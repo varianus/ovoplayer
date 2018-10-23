@@ -37,6 +37,7 @@ type
   TPlayList = class(TFPList)
   private
     FItemIndex: integer;
+    FOnChange: TNotifyEvent;
     FOnSongAdd: TOnSongAdd;
     FRepeatMode: TplRepeat;
     FSortField: TplSortField;
@@ -50,10 +51,12 @@ type
     function MyCompare(p1, p2: Pointer): integer;
     procedure SetItem(Index: integer; const AValue: TCustomSong);
     procedure SetItemIndex(const AValue: integer);
+    procedure SetOnChange(AValue: TNotifyEvent);
     procedure SetOnSongAdd(AValue: TOnSongAdd);
     procedure SetRepeatMode(const AValue: TplRepeat);
     procedure SetSortDirection(const AValue: TplSortDirection);
     procedure SetSortField(const AValue: TplSortField);
+    procedure SignalChange;
   public
     Constructor Create;
     Destructor Destroy; override;
@@ -81,6 +84,7 @@ type
     property Songs[Index: integer]: TCustomSong read GetItem write SetItem; default;
     property TotalTime: double read GetTotalTime;
     property OnSongAdd: TOnSongAdd read FOnSongAdd write SetOnSongAdd;
+    property OnChange: TNotifyEvent read FOnChange write SetOnChange;
   end;
 
 
@@ -229,6 +233,12 @@ begin
 
 end;
 
+procedure TPlayList.SetOnChange(AValue: TNotifyEvent);
+begin
+  if FOnChange=AValue then Exit;
+  FOnChange:=AValue;
+end;
+
 procedure TPlayList.SetOnSongAdd(AValue: TOnSongAdd);
 begin
   if FOnSongAdd=AValue then Exit;
@@ -252,6 +262,12 @@ begin
   if FSortField=AValue then exit;
      FSortField:=AValue;
 
+end;
+
+procedure TPlayList.SignalChange;
+begin
+  if Assigned(FOnChange) then
+    FOnChange(self);
 end;
 
 constructor TPlayList.Create;
