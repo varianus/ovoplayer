@@ -18,11 +18,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 }
 // Master include File for OVOPlayer application
+{$IF FPC_FULLVERSION >= 30005}
+  {$DEFINE STACKTRACEDUMP} //  Dump stack trace on exception
+{$ENDIF FPC_FULLVERSION}
 
 {$DEFINE MULTIMEDIA_KEYS} //  Handle Multimedia Keys
-
-{$DEFINE STACKTRACEDUMP} //  Dump stack trace on exception
-
 
 // Platform-dependent features
 {$IFDEF LINUX}
