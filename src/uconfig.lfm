@@ -10,6 +10,7 @@ object fConfig: TfConfig
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
+  LCLVersion = '2.1.0.0'
   object GroupBox1: TGroupBox
     Left = 0
     Height = 442
@@ -291,7 +292,7 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          425
+          429
         )
       end
       object EngineInfoView: TValueListEditor
@@ -318,7 +319,7 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          205
+          209
         )
       end
     end

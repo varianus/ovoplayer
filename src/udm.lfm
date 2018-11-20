@@ -2,17 +2,16 @@ object DM: TDM
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
   OldCreateOrder = False
-  left = 474
-  top = 218
+  Left = 474
+  Top = 218
   Height = 376
   HorizontalOffset = 749
   VerticalOffset = 295
   Width = 481
-  PPI = 96
   object ActionList: TActionList
     Images = ilButtons
-    left = 67
-    top = 21
+    Left = 67
+    Top = 21
     object actPlaylistLoad: TAction
       Category = 'PlayList'
       Caption = 'Open Playlist …'
@@ -186,8 +185,8 @@ object DM: TDM
     end
   end
   object ilSmall: TImageList
-    left = 210
-    top = 24
+    Left = 210
+    Top = 24
     Bitmap = {
       4C690E0000001000000010000000FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00007272FF017575FF008181FF018080FF008080FF8FC7C7FFFFFFFF00FFFF
@@ -644,27 +643,27 @@ object DM: TDM
     Title = 'Open Playlist'
     Filter = 'All Known Playlist|*.xspf;*.m3u;*.m3u8;*.bsp;*.wpl;*.asx;*.wax;*.pls|XSPF (XML Shareable Playlist Format) Playlist|*.xspf|M3U Playlist|*.m3u;*.m3u8|BSPlayer Playlist|*.bsp|Windows Media Player Playlist|*.wpl|Windows Media ASX Playlist|*.asx;*.wax|PLS Playlist|*.pls|All Files|*.*'
     Options = [ofExtensionDifferent, ofEnableSizing, ofViewDetail, ofAutoPreview]
-    left = 67
-    top = 80
+    Left = 67
+    Top = 80
   end
   object SaveDialogPlaylist: TSaveDialog
     Filter = 'XSPF (XML Shareable Playlist Format) Playlist|*.xspf|M3U8 Playlist|*.m3u8|M3U Playlist|*.m3u'
     FilterIndex = 0
     OnTypeChange = SaveDialogPlaylistTypeChange
     Options = [ofOverwritePrompt, ofExtensionDifferent, ofPathMustExist, ofEnableSizing, ofViewDetail]
-    left = 210
-    top = 80
+    Left = 210
+    Top = 80
   end
   object SelectDirectoryDialog: TSelectDirectoryDialog
     Options = [ofPathMustExist, ofEnableIncludeNotify, ofEnableSizing, ofViewDetail, ofAutoPreview]
-    left = 67
-    top = 144
+    Left = 67
+    Top = 144
   end
   object ilButtons: TImageList
     Height = 22
     Width = 22
-    left = 359
-    top = 21
+    Left = 359
+    Top = 21
     Bitmap = {
       4C69140000001600000016000000FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -1880,24 +1879,22 @@ object DM: TDM
     }
   end
   object OpenDialogFiles: TOpenDialog
-    Width = 840
-    Height = 630
     Title = 'Open Playlist'
     Filter = 'All Known Files|*.xspf;*,m3u;*.bsp;*.mpc;*.asx;*.pls'
     FilterIndex = 0
     Options = [ofAllowMultiSelect, ofExtensionDifferent, ofPathMustExist, ofEnableSizing, ofViewDetail, ofAutoPreview]
-    left = 359
-    top = 80
+    Left = 359
+    Top = 80
   end
   object ApplicationProperties: TApplicationProperties
     OnException = ApplicationPropertiesException
     OnIdle = ApplicationPropertiesIdle
     OnDropFiles = ApplicationPropertiesDropFiles
-    left = 359
-    top = 144
+    Left = 359
+    Top = 144
   end
   object ilNone: TImageList
-    left = 64
-    top = 224
+    Left = 64
+    Top = 224
   end
 end

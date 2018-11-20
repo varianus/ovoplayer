@@ -6,7 +6,7 @@ object fMainForm: TfMainForm
   ActiveControl = pcMain
   AllowDropFiles = True
   Caption = 'OvoPlayer'
-  ClientHeight = 448
+  ClientHeight = 468
   ClientWidth = 875
   Constraints.MinHeight = 202
   Constraints.MinWidth = 505
@@ -20,7 +20,6 @@ object fMainForm: TfMainForm
   OnResize = FormResize
   OnShow = FormShow
   ShowHint = True
-  LCLVersion = '2.1.0.0'
   object pnlleft: TPanel
     Left = 0
     Height = 468
@@ -85,14 +84,7 @@ object fMainForm: TfMainForm
             Top = 38
             Width = 162
             Anchors = [akTop, akLeft, akRight]
-            EditLabel.AnchorSideTop.Control = edtFilter
-            EditLabel.AnchorSideTop.Side = asrCenter
-            EditLabel.AnchorSideRight.Control = edtFilter
-            EditLabel.AnchorSideBottom.Control = edtFilter
-            EditLabel.AnchorSideBottom.Side = asrBottom
-            EditLabel.Left = 17
             EditLabel.Height = 15
-            EditLabel.Top = 42
             EditLabel.Width = 26
             EditLabel.Caption = 'Filter'
             EditLabel.ParentColor = False
@@ -451,13 +443,13 @@ object fMainForm: TfMainForm
         end
         object ToolButton8: TToolButton
           Left = 87
-          Height = 8
+          Height = 23
           Top = 0
           Style = tbsSeparator
         end
         object ToolButton9: TToolButton
           Left = 53
-          Height = 8
+          Height = 23
           Top = 0
           Style = tbsSeparator
         end
@@ -488,7 +480,7 @@ object fMainForm: TfMainForm
         end
         object ToolButton18: TToolButton
           Left = 199
-          Height = 8
+          Height = 23
           Top = 0
           AutoSize = True
           Enabled = False
@@ -496,7 +488,7 @@ object fMainForm: TfMainForm
         end
         object ToolButton12: TToolButton
           Left = 271
-          Height = 8
+          Height = 23
           Top = 0
           Style = tbsSeparator
         end
@@ -864,11 +856,9 @@ object fMainForm: TfMainForm
       end
       object MenuItem62: TMenuItem
         Action = actShowEqualizer
-        Caption = 'Equalizer'
       end
       object MenuItem67: TMenuItem
         Action = ActShowPreferences
-        Caption = 'Preferences'
       end
     end
     object MenuItem14: TMenuItem
@@ -900,7 +890,6 @@ object fMainForm: TfMainForm
       end
       object MenuItem61: TMenuItem
         Action = ActShowPreferencesMediaLibrary
-        Caption = 'Collection Preferences'
       end
     end
     object MenuItem25: TMenuItem
@@ -1251,7 +1240,7 @@ object fMainForm: TfMainForm
     Top = 184
     object ActShowPreferences: TAction
       Category = 'Preferences'
-      Caption = 'Preferences …'
+      Caption = 'Preferences'
       DisableIfNoHandler = False
       OnExecute = ActShowPreferencesExecute
     end
@@ -1284,12 +1273,12 @@ object fMainForm: TfMainForm
     end
     object ActShowPreferencesMediaLibrary: TAction
       Category = 'Preferences'
-      Caption = 'Collection Preferences …'
+      Caption = 'Collection Preferences'
       DisableIfNoHandler = False
       OnExecute = ActShowPreferencesMediaLibraryExecute
     end
     object actShowEqualizer: TAction
-      Caption = 'Equalizer …'
+      Caption = 'Equalizer'
       OnExecute = actShowEqualizerExecute
     end
   end
@@ -1297,7 +1286,7 @@ object fMainForm: TfMainForm
     Height = 15
     Scaled = True
     Width = 80
-    Left = 560
+    Left = 584
     Top = 360
     Bitmap = {
       4C6902000000500000000F000000FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF

@@ -13,6 +13,7 @@ object fSongInfo: TfSongInfo
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
+  LCLVersion = '2.1.0.0'
   object pcSongInfo: TPageControl
     Left = 168
     Height = 353

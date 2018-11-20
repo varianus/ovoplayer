@@ -8,6 +8,7 @@ object fEqualizer: TfEqualizer
   ClientHeight = 467
   ClientWidth = 736
   OnCreate = FormCreate
+  LCLVersion = '2.1.0.0'
   object ButtonPanel1: TButtonPanel
     Left = 6
     Height = 34

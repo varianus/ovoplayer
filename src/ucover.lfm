@@ -12,6 +12,7 @@ object fCover: TfCover
   OnClose = FormClose
   OnShow = FormShow
   Position = poScreenCenter
+  LCLVersion = '2.1.0.0'
   object ScrollBox1: TScrollBox
     Left = 0
     Height = 381

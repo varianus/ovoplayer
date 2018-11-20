@@ -9,6 +9,7 @@ object fCustomPlayList: TfCustomPlayList
   ClientWidth = 633
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  LCLVersion = '2.1.0.0'
   object Panel1: TPanel
     Left = 0
     Height = 72
@@ -23,14 +24,7 @@ object fCustomPlayList: TfCustomPlayList
       Height = 23
       Top = 16
       Width = 456
-      EditLabel.AnchorSideTop.Control = edtPlayListName
-      EditLabel.AnchorSideTop.Side = asrCenter
-      EditLabel.AnchorSideRight.Control = edtPlayListName
-      EditLabel.AnchorSideBottom.Control = edtPlayListName
-      EditLabel.AnchorSideBottom.Side = asrBottom
-      EditLabel.Left = 45
       EditLabel.Height = 15
-      EditLabel.Top = 20
       EditLabel.Width = 32
       EditLabel.Caption = 'Name'
       EditLabel.ParentColor = False

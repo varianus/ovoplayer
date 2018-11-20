@@ -8,8 +8,7 @@ object fAbout: TfAbout
   ClientHeight = 253
   ClientWidth = 422
   OnShow = FormShow
-  LCLVersion = '1.8.0.1'
-  Visible = False
+  LCLVersion = '2.1.0.0'
   object Image1: TImage
     Left = 0
     Height = 81
