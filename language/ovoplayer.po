@@ -453,6 +453,11 @@ msgstr ""
 msgid "&License"
 msgstr ""
 
+#: tfabout.caption
+msgctxt "tfabout.caption"
+msgid "About"
+msgstr ""
+
 #: tfabout.label1.caption
 msgctxt "tfabout.label1.caption"
 msgid "OvoPlayer"
@@ -687,7 +692,8 @@ msgid "About"
 msgstr ""
 
 #: tfmainform.actshowequalizer.caption
-msgid "Equalizer …"
+msgctxt "tfmainform.actshowequalizer.caption"
+msgid "Equalizer"
 msgstr ""
 
 #: tfmainform.actshowleft.caption
@@ -701,7 +707,7 @@ msgstr ""
 
 #: tfmainform.actshowpreferences.caption
 msgctxt "tfmainform.actshowpreferences.caption"
-msgid "Preferences …"
+msgid "Preferences"
 msgstr ""
 
 #: tfmainform.actshowpreferencesengine.caption
@@ -715,7 +721,7 @@ msgstr ""
 
 #: tfmainform.actshowpreferencesmedialibrary.caption
 msgctxt "TFMAINFORM.ACTSHOWPREFERENCESMEDIALIBRARY.CAPTION"
-msgid "Collection Preferences …"
+msgid "Collection Preferences"
 msgstr ""
 
 #: tfmainform.album.caption
@@ -860,21 +866,8 @@ msgctxt "TFMAINFORM.MENUITEM60.CAPTION"
 msgid "Play"
 msgstr ""
 
-#: tfmainform.menuitem61.caption
-msgid "Collection Preferences"
-msgstr ""
-
-#: tfmainform.menuitem62.caption
-msgctxt "tfmainform.menuitem62.caption"
-msgid "Equalizer"
-msgstr ""
-
 #: tfmainform.menuitem66.caption
 msgid "Edit"
-msgstr ""
-
-#: tfmainform.menuitem67.caption
-msgid "Preferences"
 msgstr ""
 
 #: tfmainform.mnucollection.caption
@@ -1029,6 +1022,10 @@ msgstr ""
 #: tfmainform.tsplaylist.caption
 msgctxt "tfmainform.tsplaylist.caption"
 msgid "PlayList"
+msgstr ""
+
+#: tfminiplayer.caption
+msgid "MiniPlayer"
 msgstr ""
 
 #: tfrequalizer.lbband.caption

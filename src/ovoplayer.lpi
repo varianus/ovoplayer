@@ -76,7 +76,6 @@ if TargetOS = 'linux' then
             <Verbosity>
               <ShowNotes Value="False"/>
               <ShowHints Value="False"/>
-              <ShowGenInfo Value="False"/>
             </Verbosity>
             <WriteFPCLogo Value="False"/>
             <ConfigFile>
@@ -611,9 +610,6 @@ if TargetOS = 'linux' then
         <ConfigFilePath Value="..\extrafpc.cfg"/>
       </ConfigFile>
       <CustomOptions Value="-Xm"/>
-      <OtherDefines Count="1">
-        <Define0 Value="aaa"/>
-      </OtherDefines>
       <ExecuteBefore>
         <Command Value="$(LazarusDir)\tools\svn2revisioninc$(ExeExt) .. ovorevision.inc --c=ovoRevision"/>
       </ExecuteBefore>

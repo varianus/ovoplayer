@@ -467,6 +467,12 @@ msgstr "Apri Scaletta"
 msgid "&License"
 msgstr "&Licenza"
 
+#: tfabout.caption
+#, fuzzy
+msgctxt "tfabout.caption"
+msgid "About"
+msgstr "Informazioni su"
+
 #: tfabout.label1.caption
 msgctxt "tfabout.label1.caption"
 msgid "OvoPlayer"
@@ -701,8 +707,11 @@ msgid "About"
 msgstr "Informazioni su"
 
 #: tfmainform.actshowequalizer.caption
-msgid "Equalizer …"
-msgstr "Equalizzatore …"
+#, fuzzy
+#| msgid "Equalizer …"
+msgctxt "tfmainform.actshowequalizer.caption"
+msgid "Equalizer"
+msgstr "Equalizzatore"
 
 #: tfmainform.actshowleft.caption
 msgid "Show Left Panel"
@@ -714,9 +723,11 @@ msgid "Media Info"
 msgstr "Informazione media"
 
 #: tfmainform.actshowpreferences.caption
+#, fuzzy
+#| msgid "Preferences …"
 msgctxt "tfmainform.actshowpreferences.caption"
-msgid "Preferences …"
-msgstr "Preferenze …"
+msgid "Preferences"
+msgstr "Preferenze"
 
 #: tfmainform.actshowpreferencesengine.caption
 msgctxt "tfmainform.actshowpreferencesengine.caption"
@@ -728,9 +739,11 @@ msgid "Aspect"
 msgstr "Aspetto"
 
 #: tfmainform.actshowpreferencesmedialibrary.caption
+#, fuzzy
+#| msgid "Collection Preferences …"
 msgctxt "tfmainform.actshowpreferencesmedialibrary.caption"
-msgid "Collection Preferences …"
-msgstr "Preferenze Collezione …"
+msgid "Collection Preferences"
+msgstr "Preferenze Collezione"
 
 #: tfmainform.album.caption
 msgctxt "TFMAINFORM.ALBUM.CAPTION"
@@ -874,22 +887,9 @@ msgctxt "tfmainform.menuitem60.caption"
 msgid "Play"
 msgstr "Riproduci"
 
-#: tfmainform.menuitem61.caption
-msgid "Collection Preferences"
-msgstr "Preferenze collezione"
-
-#: tfmainform.menuitem62.caption
-msgctxt "tfmainform.menuitem62.caption"
-msgid "Equalizer"
-msgstr "Equalizzatore"
-
 #: tfmainform.menuitem66.caption
 msgid "Edit"
 msgstr "Modifica"
-
-#: tfmainform.menuitem67.caption
-msgid "Preferences"
-msgstr "Preferenze"
 
 #: tfmainform.mnucollection.caption
 msgctxt "TFMAINFORM.MNUCOLLECTION.CAPTION"
@@ -1044,6 +1044,10 @@ msgstr "Cartella"
 msgctxt "tfmainform.tsplaylist.caption"
 msgid "PlayList"
 msgstr "Scaletta"
+
+#: tfminiplayer.caption
+msgid "MiniPlayer"
+msgstr ""
 
 #: tfrequalizer.lbband.caption
 msgid "Band"
