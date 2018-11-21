@@ -22,7 +22,6 @@ program ovoplayer;
 
 {$I ovoplayer.inc}
 {$I backend.inc}  // needed here to add units to project
-{$mode objfpc}{$H+}
 
 uses
  {$IFDEF UNIX}
@@ -94,6 +93,8 @@ uses
 
 {$R *.res}
 begin
+  CheckRestarting(Application);
+
   Application.SingleInstanceClass:= DefaultSingleInstanceClass;
   Application.SingleInstanceEnabled:= True;
   TSimpleSingleInstance(Application.SingleInstance).DefaultMessage := BuildCommand(CATEGORY_APP, COMMAND_ACTIVATE);
@@ -101,13 +102,12 @@ begin
 
   Application.Scaled:=True;
 
-  CheckRestarting(Application);
   // needed to output exception to a file
   Application.Flags := Application.Flags + [appNoExceptionMessages];
 
   if Application.SingleInstance.StartResult <> siClient then
     begin
-  Application.Title := 'OvoPlayer';
+      Application.Title := 'OvoPlayer';
       Application.CreateForm(TDM, dm);
       Application.CreateForm(TfMainForm, fMainForm);
       {$IFDEF CATCH_SIGNAL}
