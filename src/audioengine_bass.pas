@@ -20,8 +20,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {$I ovoplayer.inc}
 unit audioengine_bass;
 
-{$mode delphi}{$H+}
-
 interface
 
 uses
@@ -202,7 +200,7 @@ begin
   SetLength(fBassBands, 10);
 
   fdecoupler := TDecoupler.Create;
-  fdecoupler.OnCommand := ReceivedCommand;
+  fdecoupler.OnCommand := @ReceivedCommand;
 
 end;
 

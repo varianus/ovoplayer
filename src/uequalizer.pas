@@ -17,10 +17,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 }
-
+{$I ovoplayer.inc}
 unit uequalizer;
-
-{$mode objfpc}{$H+}
 
 interface
 
@@ -58,7 +56,7 @@ var
   fEqualizer: TfEqualizer;
 
 implementation
-uses GUIBackEnd;
+uses GUIBackEnd, AppConsts;
 
 {$R *.lfm}
 
@@ -72,7 +70,7 @@ begin
   if (not BackEnd.AudioEngine.SupportEQ) or
     not Supports(BackEnd.AudioEngine, IEqualizer, Eq) then
     begin
-      lbMessage.Caption:='UNSUPPORTED ENGINE';
+      lbMessage.Caption := rUnsupportedEngine;
       lbMessage.Visible:=True;
       pnlContainer.Enabled:=false;
       pnlHeader.Enabled:=false;

@@ -39,7 +39,7 @@ uses
   extctrls,
 
   PlayList, PlayListManager, MediaLibrary, basetag, CustomSong,
-  Config, NullInterfacedObject, Equalizer, backendconfig,
+  Config, Equalizer, backendconfig, fgl,
   FpTimer;
 
 type
@@ -48,8 +48,9 @@ type
   TOnExternalCommand = procedure(Sender: Tobject; Command : RExternalCommand; var Handled:boolean) of object;
 
   { TBackEnd }
+  TObserverlist = specialize TFPGList<IObserver>;
 
-  TBackEnd = class(TNullInterfacedObject, IBackEnd)
+  TBackEnd = class(TObject, IBackEnd)
   private
     { private declarations }
     FOnEngineCommand: TOnEngineCommand;
@@ -58,7 +59,7 @@ type
     FOnPlayListLoad:   TNotifyEvent;
 
     FOnSaveInterfaceState: TNotifyEvent;
-    ObserverList : TInterfaceList;
+    ObserverList : TObserverlist;
     IntTimer: TTimer;
 
     fEngineParam: TEngineParam;
@@ -673,7 +674,7 @@ end;
 procedure TBackEnd.Attach(observer: iObserver);
 begin
   if not Assigned(ObserverList) then
-     ObserverList := TInterfaceList.create;
+     ObserverList := TObserverlist.create;
   ObserverList.Add(observer);
 
 end;

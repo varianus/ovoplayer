@@ -93,6 +93,10 @@ msgstr "Non in Esecuzione"
 msgid "Removed:"
 msgstr "Rimossi:"
 
+#: appconsts.runsupportedengine
+msgid "UNSUPPORTED ENGINE"
+msgstr ""
+
 #: appconsts.rupdatedtrack
 msgid "Updated:"
 msgstr "Aggiornate:"

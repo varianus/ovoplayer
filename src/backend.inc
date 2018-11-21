@@ -35,6 +35,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 // FFMPEG          - FFMpeg           - Working, but FFMPEG changes data structures so often that I've disabled it
 // OPENSOURCELIB   - Various          - Working with major issues, lighter alternative to UOS
 
+
+{$interfaces corba}
+
 {$IFDEF LINUX}
 //
   {$DEFINE GSTREAMER} // GStreamer need glib

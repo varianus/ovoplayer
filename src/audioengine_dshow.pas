@@ -20,8 +20,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {$I ovoplayer.inc}
 unit audioengine_DShow;
 
-{$mode delphi}{$H+}
-
 interface
 
 uses
@@ -253,13 +251,13 @@ end;
 
 function TAudioEngineDShow.GetState: TEngineState;
 var
-  State: TFilter_State;
+  aState: TFilter_State;
 begin
 
   Result := ENGINE_ON_LINE;
-  MediaControl.GetState(200,State);
+  MediaControl.GetState(200,aState);
 
-  case State of
+  case aState of
     State_Running: Result   := ENGINE_PLAY;
     State_Paused: Result    := ENGINE_PAUSE;
     State_Stopped: Result   := ENGINE_STOP;
@@ -287,6 +285,7 @@ begin
     exit;
 
   Seek(offset, True);
+  result:= true;
 end;
 
 procedure TAudioEngineDShow.SetMuted(const AValue: boolean);

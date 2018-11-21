@@ -26,7 +26,7 @@ interface
 
 uses
   Classes, SysUtils, BaseTypes, coreinterfaces, TcpIpServer, TcpIpWebSocket, sockets,
-  NullInterfacedObject, netprotocol,netsupport, LazLoggerBase;
+  netprotocol,netsupport, LazLoggerBase;
 
 type
 
@@ -35,7 +35,7 @@ type
 
   { TNetIntf }
 
-  TNetIntf = class(TNullInterfacedobject)
+  TNetIntf = class
   private
     FActivated: boolean;
     fBackEnd: IBackEnd;
@@ -68,7 +68,7 @@ type
 
   { TRemoteHandler }
 
-  TRemoteHandler = class(TNullInterfacedObject, IObserver)
+  TRemoteHandler = class(IObserver)
   private
     FKeepOpen: boolean;
     Sock: TTcpIpWebSocket;

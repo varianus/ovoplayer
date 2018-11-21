@@ -20,7 +20,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {$I ovoplayer.inc}
 unit AppConsts;
 
-{$mode objfpc}{$H+}
 
 interface
 
@@ -89,10 +88,13 @@ Resourcestring
   rBuildEnv = 'Build environment: Lazarus %0:s  FPC %1:s';
   rCurrentEngine = 'Current audio engine: %s';
 
-  rMatchingItems = '%0:d tracks matching current filter (total time %1:s, total size %2:s)';
 
+
+  rMatchingItems = '%0:d tracks matching current filter (total time %1:s, total size %2:s)';
   rLowPortWarning = 'ATTENTION! Setting a port number lower than 1024 may require'+sLineBreak+
                     'administrative rights on some OSes (e.g. Linux).';
+
+  rUnsupportedEngine = 'UNSUPPORTED ENGINE';
 
 
 implementation

@@ -22,12 +22,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {$I ovoplayer.inc}
 unit taskbar_ext;
 
-{$mode objfpc}{$H+}
-
 interface
 
 uses
-  Windows, Classes, SysUtils, shlobj, comobj, coreinterfaces, uDM, NullInterfacedObject,
+  Windows, Classes, SysUtils, shlobj, comobj, coreinterfaces, uDM,
   guibackend, LazUTF8;
 
 const
@@ -36,7 +34,7 @@ type
 
     { TTaskBarExtender }
 
-    TTaskBarExtender = class (TNullInterfacedObject, IObserver)
+    TTaskBarExtender = class (TObject, IObserver)
     private
       FInitialized: boolean;
       TaskbarList : ITaskBarList;

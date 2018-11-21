@@ -41,8 +41,6 @@ uses
   // general functions
   AppConsts, GeneralFunc, decoupler, FilesSupport,
   CommonFunctions,
-  // Core player objects
-  NullInterfacedObject,
   CustomSong,
   PlayList, PlayListManager,
   ExtendedInfo, MediaLibrary,

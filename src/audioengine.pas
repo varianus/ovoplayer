@@ -17,15 +17,14 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 }
-{$I backend.inc}
 unit AudioEngine;
 
 {$MODE objfpc}{$H+}
-
+{$I backend.inc}
 interface
 
 uses
-  Classes, SysUtils, Song, BaseTypes, NullInterfacedObject, equalizer;
+  Classes, SysUtils, Song, BaseTypes, equalizer;
 
 const
   EQUALIZER_BANDS = 10;
@@ -44,7 +43,7 @@ type
 
 
   { TAudioEngine }
-  TAudioEngine = class (TNullInterfacedObject, IEqualizer)
+  TAudioEngine = class (TObject, IEqualizer)
   private
     FInitialized: boolean;
     FOnSongEnd:   TNotifyEvent;

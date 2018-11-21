@@ -19,9 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 }
 {$I ovoplayer.inc}
 unit uMain;
-
-{$mode objfpc}{$H+}
-
 interface
 
 uses
