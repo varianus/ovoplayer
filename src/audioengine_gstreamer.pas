@@ -17,10 +17,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 }
-{$I ovoplayer.inc}
-unit audioengine_gstreamer;
+{$I codegen.inc}
+{$I backend.inc}
 
-{$mode objfpc}{$H+}
+unit audioengine_gstreamer;
 
 interface
 

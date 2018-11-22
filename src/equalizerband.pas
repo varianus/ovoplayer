@@ -18,9 +18,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 }
 
+{$I codegen.inc}
+{$I ovoplayer.inc}
 unit equalizerband;
-
-{$mode objfpc}{$H+}
 
 interface
 

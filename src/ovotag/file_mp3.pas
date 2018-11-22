@@ -24,8 +24,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {$I ovotag.inc}
 unit file_mp3;
 
-{$mode objfpc}
-
 interface
 
 uses

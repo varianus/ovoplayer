@@ -23,15 +23,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   Converting all the header into pascal would have taken a lot of time, even
   with the help of H2Pas tools.
   So I've decided to port only used functions, and most parameters are handled
-  as generic pointer.
+  as opaque pointer.
   This unit (and related audioengine_gstreamer) depends on glib2.
 }
-
+{$I codegen.inc}
 {$I ovoplayer.inc}
 unit gstreamer;
-
-{$mode objfpc}{$H+}
-
 
 interface
 uses glib2;

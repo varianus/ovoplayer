@@ -82,7 +82,10 @@ if TargetOS = 'linux' then
               <CustomConfigFile Value="True"/>
               <ConfigFilePath Value="..\extrafpc.cfg"/>
             </ConfigFile>
-            <CustomOptions Value="-vm5024"/>
+            <CustomOptions Value="-dRELEASE"/>
+            <OtherDefines Count="1">
+              <Define0 Value="RELEASE"/>
+            </OtherDefines>
             <ExecuteBefore>
               <Command Value="$(LazarusDir)\tools\svn2revisioninc$(ExeExt) .. ovorevision.inc --c=ovoRevision"/>
             </ExecuteBefore>
@@ -424,140 +427,139 @@ if TargetOS = 'linux' then
         <IsPartOfProject Value="True"/>
       </Unit59>
       <Unit60>
-        <Filename Value="nullinterfacedobject.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="NullInterfacedObject"/>
-      </Unit60>
-      <Unit61>
         <Filename Value="ovotag\audiotag.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AudioTag"/>
+      </Unit60>
+      <Unit61>
+        <Filename Value="import-engines\lazdynamic_bass.pas"/>
+        <IsPartOfProject Value="True"/>
       </Unit61>
       <Unit62>
-        <Filename Value="import-engines\lazdynamic_bass.pas"/>
+        <Filename Value="audioengine_gstreamer.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit62>
       <Unit63>
-        <Filename Value="audioengine_gstreamer.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit63>
-      <Unit64>
         <Filename Value="audioengine_xine.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="audioengine_Xine"/>
+      </Unit63>
+      <Unit64>
+        <Filename Value="import-engines\ctypes.inc"/>
+        <IsPartOfProject Value="True"/>
       </Unit64>
       <Unit65>
-        <Filename Value="import-engines\ctypes.inc"/>
+        <Filename Value="import-engines\gstreamer.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit65>
       <Unit66>
-        <Filename Value="import-engines\gstreamer.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit66>
-      <Unit67>
         <Filename Value="ovotag\file_mp4.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="file_Mp4"/>
-      </Unit67>
-      <Unit68>
+      </Unit66>
+      <Unit67>
         <Filename Value="ovotag\tag_mp4.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="tag_MP4"/>
-      </Unit68>
-      <Unit69>
+      </Unit67>
+      <Unit68>
         <Filename Value="platform\win32\taskbar_ext.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit69>
-      <Unit70>
+      </Unit68>
+      <Unit69>
         <Filename Value="ucustomplaylist.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fCustomPlayList"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit70>
-      <Unit71>
+      </Unit69>
+      <Unit70>
         <Filename Value="ufrfield.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frField"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
+      </Unit70>
+      <Unit71>
+        <Filename Value="playlistbuilder.pas"/>
+        <IsPartOfProject Value="True"/>
       </Unit71>
       <Unit72>
-        <Filename Value="playlistbuilder.pas"/>
+        <Filename Value="audioengine_libmpv.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit72>
       <Unit73>
-        <Filename Value="audioengine_libmpv.pas"/>
+        <Filename Value="import-engines\libmpv.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit73>
       <Unit74>
-        <Filename Value="import-engines\libmpv.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit74>
-      <Unit75>
         <Filename Value="netintf.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="NetIntf"/>
-      </Unit75>
-      <Unit76>
+      </Unit74>
+      <Unit75>
         <Filename Value="netprotocol.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit76>
-      <Unit77>
+      </Unit75>
+      <Unit76>
         <Filename Value="imagessupport.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ImagesSupport"/>
-      </Unit77>
-      <Unit78>
+      </Unit76>
+      <Unit77>
         <Filename Value="netsupport.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit78>
-      <Unit79>
+      </Unit77>
+      <Unit78>
         <Filename Value="guiconfig.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="GuiConfig"/>
-      </Unit79>
-      <Unit80>
+      </Unit78>
+      <Unit79>
         <Filename Value="simplesingleinstance.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SimpleSingleInstance"/>
-      </Unit80>
-      <Unit81>
+      </Unit79>
+      <Unit80>
         <Filename Value="equalizerband.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frEqualizer"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
-      </Unit81>
-      <Unit82>
+      </Unit80>
+      <Unit81>
         <Filename Value="uequalizer.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="fEqualizer"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit82>
-      <Unit83>
+      </Unit81>
+      <Unit82>
         <Filename Value="equalizer.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Equalizer"/>
+      </Unit82>
+      <Unit83>
+        <Filename Value="import-engines\libZPlay.pas"/>
+        <IsPartOfProject Value="True"/>
       </Unit83>
       <Unit84>
-        <Filename Value="import-engines\libZPlay.pas"/>
+        <Filename Value="audioengine_libzplay.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit84>
       <Unit85>
-        <Filename Value="audioengine_libzplay.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit85>
-      <Unit86>
         <Filename Value="netintfws.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="NetIntfws"/>
-      </Unit86>
-      <Unit87>
+      </Unit85>
+      <Unit86>
         <Filename Value="backendconfig.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="BackendConfig"/>
+      </Unit86>
+      <Unit87>
+        <Filename Value="codegen.inc"/>
+        <IsPartOfProject Value="True"/>
       </Unit87>
     </Units>
   </ProjectOptions>

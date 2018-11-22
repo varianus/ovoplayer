@@ -18,8 +18,6 @@
 
 unit lazdynamic_bass;
 
-{$mode objfpc}{$H+}
-
 interface
 
 uses
@@ -1173,4 +1171,4 @@ end;
 
 initialization
   BASS_Handle := DynLibs.NilHandle;
-end.
+end.

@@ -21,10 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
   This is only a very small extract of FFMPEG API.
 }
-
+{$I codegen.inc}
 unit ffmpeg;
-
-{$mode objfpc}{$H+}
 
 interface
 

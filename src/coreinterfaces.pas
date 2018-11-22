@@ -17,9 +17,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 }
-unit coreinterfaces;
-{$mode objfpc}{$H+}
+
+{$I codegen.inc}
 {$I backend.inc}
+unit coreinterfaces;
 
 interface
 uses

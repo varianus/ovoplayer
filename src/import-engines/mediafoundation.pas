@@ -22,10 +22,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   Many thanks to the developers.
 
 }
-
+{$I codegen.inc}
 unit mediafoundation;
-
-{$mode objfpc}{$H+}
 
 interface
 

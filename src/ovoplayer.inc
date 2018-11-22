@@ -19,11 +19,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 }
 
 // Master include File for OVOPlayer application
-
-// code generation options
-{$mode objfpc}{$H+}
-{$interfaces corba}
-
 // General features
 {$IF FPC_FULLVERSION >= 30005}
   {$DEFINE STACKTRACEDUMP} //  Dump stack trace on exception
@@ -55,14 +50,3 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     {.$DEFINE NETWORK_SS} // Activate network interface for remote control (simple socket)
     {$DEFINE NETWORK_WS} // Activate network interface for remote control (web socket)
 {$ENDIF NETWORK_INTF}
-
-//if release is defined, try to be quiet and efficient...
-{$IFDEF RELEASE}
-  {$HINTS OFF}
-  {$INLINE ON}
-{$ENDIF RELEASE}
-
-
-
-
-

@@ -7,7 +7,7 @@ object fLicense: TfLicense
   ClientHeight = 343
   ClientWidth = 480
   OnClose = FormClose
-  LCLVersion = '1.1'
+  LCLVersion = '2.1.0.0'
   object Memo1: TMemo
     Left = 0
     Height = 293

@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {
  based on code from http://www.drbob42.com/examine/examinC5.htm
 }
+{$I codegen.inc}
 {$I ovoplayer.inc}
 unit taskbar_ext;
 

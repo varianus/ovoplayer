@@ -6,7 +6,7 @@ object fMainForm: TfMainForm
   ActiveControl = pcMain
   AllowDropFiles = True
   Caption = 'OvoPlayer'
-  ClientHeight = 468
+  ClientHeight = 448
   ClientWidth = 875
   Constraints.MinHeight = 202
   Constraints.MinWidth = 505
@@ -20,6 +20,7 @@ object fMainForm: TfMainForm
   OnResize = FormResize
   OnShow = FormShow
   ShowHint = True
+  LCLVersion = '2.1.0.0'
   object pnlleft: TPanel
     Left = 0
     Height = 468
@@ -443,13 +444,13 @@ object fMainForm: TfMainForm
         end
         object ToolButton8: TToolButton
           Left = 87
-          Height = 23
+          Height = 8
           Top = 0
           Style = tbsSeparator
         end
         object ToolButton9: TToolButton
           Left = 53
-          Height = 23
+          Height = 8
           Top = 0
           Style = tbsSeparator
         end
@@ -480,7 +481,7 @@ object fMainForm: TfMainForm
         end
         object ToolButton18: TToolButton
           Left = 199
-          Height = 23
+          Height = 8
           Top = 0
           AutoSize = True
           Enabled = False
@@ -488,7 +489,7 @@ object fMainForm: TfMainForm
         end
         object ToolButton12: TToolButton
           Left = 271
-          Height = 23
+          Height = 8
           Top = 0
           Style = tbsSeparator
         end

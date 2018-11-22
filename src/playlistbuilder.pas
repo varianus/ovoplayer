@@ -17,10 +17,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 }
+{$I codegen.inc}
 
 unit playlistbuilder;
-
-{$mode DELPHI}{$H+}
 
 interface
 
@@ -75,7 +74,7 @@ type
   end;
 
 
-  TPlayListBuilder = class (TFPGObjectList<TFieldFilter>)
+  TPlayListBuilder = class (specialize TFPGObjectList<TFieldFilter>)
   private
     FName: string;
     FSongLimit: integer;
@@ -260,7 +259,7 @@ begin
   List.Clear;
   for i := 0 to JSONArray.Count -1 do
      begin
-       List.AddObject(JSONArray[i].GetPath('Name').AsString, Pointer(PtrUInt(i)));
+       List.AddObject(JSONArray[i].GetPath('Name').AsString, TObject(PtrUInt(i)));
      end;
   Result := List.Count;
 end;
