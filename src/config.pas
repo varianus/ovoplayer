@@ -126,6 +126,7 @@ end;
 
 destructor TConfigParam.Destroy;
 begin
+  Save;
   fOwner.Remove(Self);
 
   inherited Destroy;

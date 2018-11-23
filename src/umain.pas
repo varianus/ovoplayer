@@ -1616,9 +1616,14 @@ begin
 
   {$IFDEF MULTIMEDIA_KEYS}
   if Assigned(fMultimediaKeys) then
-    fMultimediaKeys.Free;
+    FreeAndNil(fMultimediaKeys);
   {$ENDIF}
 
+  if Assigned(FPlaylistParam) then
+    FreeAndNil(FPlaylistParam);
+
+  if Assigned(FMainFormParam) then
+    FreeAndNil(FMainFormParam);
 
   if Assigned(fMiniPlayer) then
     FreeAndNil(fMiniPlayer);
@@ -1864,8 +1869,11 @@ end;
 
 procedure TfMainForm.SaveConfig(Sender: TObject);
 begin
-  FMainFormParam.Save;
-  FPlaylistParam.Save;
+  if Assigned(FMainFormParam) then
+    FMainFormParam.Save;
+
+  if Assigned(FPlaylistParam) then
+    FPlaylistParam.Save;
 
 end;
 
