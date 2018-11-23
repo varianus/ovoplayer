@@ -94,7 +94,7 @@ Const
   BASSMAXVOLUME = 1.0;
 { TAudioEngineBASS }
 
-procedure PlayEndSync(SyncHandle: HSYNC; Channel, Data: DWORD;user:pointer); stdcall;
+procedure PlayEndSync(SyncHandle: HSYNC; Channel, Data: DWORD;user:pointer); {$IFDEF windows}stdcall{$ELSE}cdecl{$ENDIF};
 begin
   TAudioEngineBASS(User).PostCommand(ecNext);
 end;
