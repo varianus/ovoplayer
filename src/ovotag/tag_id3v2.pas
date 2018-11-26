@@ -455,7 +455,7 @@ begin
          end;
        StrPCopy(@(Data[2+LanguageOffset]), xValue);
        Data[fSize-1] := #00;
-       Data[fSize-2] := #00;
+       Data[fSize] := #00;
      end
   else
      begin
