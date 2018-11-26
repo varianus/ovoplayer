@@ -150,7 +150,9 @@ begin
     begin
       fTags.Free;
       fTags := tempTags;
-    end;
+    end
+    else
+        tempTags.free;
     if HaveID3V2 then
       fStream.Seek(TID3Tags(tempTags).Size, soFromBeginning)
     else
@@ -210,6 +212,7 @@ begin
       end;
 
     end;
+
   finally
     fstream.Free;
   end;
