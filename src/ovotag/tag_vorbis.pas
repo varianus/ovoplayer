@@ -145,6 +145,8 @@ begin
   Result.AlbumArtist := GetFrameValue('ALBUMARTIST');
   Result.Artist := GetFrameValue('ARTIST');
   Result.Comment := GetFrameValue('COMMENT');
+  if Result.Comment = '' then
+     Result.Comment := GetFrameValue('DESCRIPTION');
   Result.Genre := GetFrameValue('GENRE');
   Result.Title := GetFrameValue('TITLE');
   Result.Track := ExtractTrack(GetFrameValue('TRACKNUMBER'));
