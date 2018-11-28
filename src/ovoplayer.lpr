@@ -80,7 +80,7 @@ uses
   tag_wma,file_wma,
   file_monkey, tag_ape,
   tag_MP4, file_Mp4,
-  tag_Dummy, file_Wave, file_Dummy,
+  tag_Dummy, file_Wave, file_Dummy, file_opus,
 
     // Application forms and related
   Udm, uMain, uAbout, ulicense, uConfig, uOSD, uMiniPlayer, uSongInfo, uCover,
