@@ -396,9 +396,10 @@ begin
   result := SaveToFile(SaveFile);
 
   if Result then
-     result := DeleteFile(FileName);
-
-  result := RenameFile( SaveFile, FileName);
+    begin
+      result := DeleteFile(FileName);
+      result := RenameFile( SaveFile, FileName);
+    end;
 
 end;
 
