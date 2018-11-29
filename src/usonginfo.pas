@@ -286,6 +286,7 @@ begin
 
        fTagList[i].TagReader.SetCommonTags(fTagList[i].Tags);
        fTagList[i].TagReader.UpdateFile;
+       fTagList[i].FileInfo:= GetFileInfo(fTagList[i].TagReader.FileName);
         if MustRestart then
            begin
              BackEnd.AudioEngine.Play(BackEnd.PlayList.Songs[idx], currpos);
