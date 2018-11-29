@@ -27,7 +27,7 @@ uses Classes;
 type
  TFileInfo = record
    Size: int64;
-   CreationDate: TDatetime;
+//   CreationDate: TDatetime;
    ModifyDate: TDateTime;
  end;
 
@@ -300,9 +300,16 @@ begin
 end;
 
 function GetFileInfo(FileName: String): TFileInfo;
+var
+  sr: TSearchRec;
 begin
-  Result.Size:= FileSizeUtf8(FileName);
-  result.CreationDate:= FileDateToDateTime(FileAgeUTF8(FileName));
+
+  if FindFirstUTF8(FileName, faanyfile, sr) = 0 then
+     begin
+       Result.Size:= sr.Size;
+       result.ModifyDate:= FileDateToDateTime(sr.Time);
+       FindCloseUTF8(sr);
+     end;
 end;
 
 function BuildFileList(const Path: string; const Attr: integer; const List: TStrings; Recurring: boolean): boolean;
