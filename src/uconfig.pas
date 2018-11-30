@@ -63,6 +63,7 @@ type
     FontDialog1: TFontDialog;
     GroupBox1:  TGroupBox;
     OpenDialog1: TOpenDialog;
+    pnlOSDParams: TPanel;
     pnlNetwork: TPanel;
     pcConfig: TPageControl;
     pnlRestart: TPanel;
@@ -72,9 +73,9 @@ type
     sbEngine:   TSpeedButton;
     sbInterface: TSpeedButton;
     sbNetRemote: TSpeedButton;
-    SelectDirectoryDialog1: TSelectDirectoryDialog;
     sbNotification: TSpeedButton;
     sbLibrary:  TSpeedButton;
+    SelectDirectoryDialog1: TSelectDirectoryDialog;
     sePort: TSpinEdit;
     tbTransparency: TTrackBar;
     tsEngine: TTabSheet;
@@ -241,11 +242,15 @@ procedure TfConfig.rgOSDKindClick(Sender: TObject);
 begin
   if rgOSDKind.ItemIndex = 2 then
      begin
-        if Assigned(fOSD) then
+   //     if Assigned(fOSD) then
           ShowOSDConfig;
+          pnlOSDParams.Enabled := true;
      end
   else
-     FreeAndNil(fOSD);
+    begin
+      FreeAndNil(fOSD);
+      pnlOSDParams.Enabled := False;
+    end;
 end;
 
 procedure TfConfig.bAddDirClick(Sender: TObject);

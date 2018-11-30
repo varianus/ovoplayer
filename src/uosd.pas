@@ -297,6 +297,7 @@ begin
   BackGroundColor := GuiConfigObj.NotificationParam.BackColor;
   AlphaBlendValue := GuiConfigObj.NotificationParam.Transparency;
   FontColor := GuiConfigObj.NotificationParam.FontColor;
+  InternalPaint;
 
 end;
 
@@ -307,10 +308,10 @@ var
 begin
   fBitmap.SetSize(Width, Height);
   fBitmap.Canvas.Brush.Style := bsSolid;
-  fBitmap.Canvas.Brush.Color := Color;
+  fBitmap.Canvas.Brush.Color := BackGroundColor;
   ARect := Rect(0,0,fBitmap.width,fBitmap.height);
-  fBitmap.Canvas.Frame3D(ARect, GetShadowColor(Color), GetHighLightColor(Color), 2);
-  DrawGradientWindow(fBitmap.Canvas, ARect, height, Color);
+  fBitmap.Canvas.Frame3D(ARect, GetShadowColor(BackGroundColor), GetHighLightColor(BackGroundColor), 2);
+  DrawGradientWindow(fBitmap.Canvas, ARect, height, BackGroundColor);
 
   if Assigned(imgCover) then
      fBitmap.Canvas.StretchDraw(Rect(11,8,113, 97), imgCover.Graphic);
