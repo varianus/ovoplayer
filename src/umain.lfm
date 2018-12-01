@@ -6,7 +6,7 @@ object fMainForm: TfMainForm
   ActiveControl = pcMain
   AllowDropFiles = True
   Caption = 'OvoPlayer'
-  ClientHeight = 448
+  ClientHeight = 468
   ClientWidth = 875
   Constraints.MinHeight = 202
   Constraints.MinWidth = 505
@@ -20,7 +20,6 @@ object fMainForm: TfMainForm
   OnResize = FormResize
   OnShow = FormShow
   ShowHint = True
-  LCLVersion = '2.1.0.0'
   object pnlleft: TPanel
     Left = 0
     Height = 468
@@ -46,26 +45,26 @@ object fMainForm: TfMainForm
       Options = [nboMultiLine, nboHidePageListPopup]
       object tsCollection: TTabSheet
         Caption = 'Collection'
-        ClientHeight = 330
-        ClientWidth = 238
+        ClientHeight = 314
+        ClientWidth = 240
         object pnlCollection: TPanel
           Left = 0
           Height = 71
           Top = 0
-          Width = 238
+          Width = 240
           Align = alTop
           BevelOuter = bvNone
           ClientHeight = 71
-          ClientWidth = 238
+          ClientWidth = 240
           TabOrder = 0
           object cbGroupBy: TComboBox
             Left = 12
-            Height = 23
+            Height = 34
             Hint = 'Group by'
             Top = 6
-            Width = 218
+            Width = 220
             Anchors = [akTop, akLeft, akRight]
-            ItemHeight = 15
+            ItemHeight = 0
             ItemIndex = 0
             Items.Strings = (
               'AlbumArtist / Album'
@@ -80,13 +79,13 @@ object fMainForm: TfMainForm
           end
           object edtFilter: TLabeledEdit
             Left = 46
-            Height = 23
+            Height = 36
             Hint = 'Filter'
             Top = 38
-            Width = 162
+            Width = 164
             Anchors = [akTop, akLeft, akRight]
-            EditLabel.Height = 15
-            EditLabel.Width = 26
+            EditLabel.Height = 17
+            EditLabel.Width = 28
             EditLabel.Caption = 'Filter'
             EditLabel.ParentColor = False
             LabelPosition = lpLeft
@@ -94,7 +93,7 @@ object fMainForm: TfMainForm
             OnChange = edtFilterChange
           end
           object btnFilterCancel: TSpeedButton
-            Left = 214
+            Left = 216
             Height = 22
             Top = 39
             Width = 19
@@ -145,9 +144,9 @@ object fMainForm: TfMainForm
         end
         object tvCollection: TTreeView
           Left = 0
-          Height = 259
+          Height = 243
           Top = 71
-          Width = 238
+          Width = 240
           Align = alClient
           DragMode = dmAutomatic
           Images = DM.ilSmall
@@ -170,7 +169,7 @@ object fMainForm: TfMainForm
       end
       object tsDirectory: TTabSheet
         Caption = 'Directory'
-        ClientHeight = 323
+        ClientHeight = 314
         ClientWidth = 240
         OnShow = tsDirectoryShow
         object tbDirectory: TToolBar
@@ -248,8 +247,8 @@ object fMainForm: TfMainForm
       end
       object tsPlayList: TTabSheet
         Caption = 'PlayList'
-        ClientHeight = 330
-        ClientWidth = 238
+        ClientHeight = 314
+        ClientWidth = 240
         OnShow = tsPlayListShow
         object PlaylistTree: TTreeView
           Left = 0
@@ -281,7 +280,7 @@ object fMainForm: TfMainForm
       Width = 246
       Align = alBottom
       Caption = 'Stats'
-      ClientHeight = 90
+      ClientHeight = 82
       ClientWidth = 242
       ParentFont = False
       TabOrder = 1
@@ -337,7 +336,7 @@ object fMainForm: TfMainForm
       end
       object sgStats: TStringGrid
         Left = 0
-        Height = 90
+        Height = 82
         Top = 0
         Width = 220
         Align = alClient
@@ -444,13 +443,13 @@ object fMainForm: TfMainForm
         end
         object ToolButton8: TToolButton
           Left = 87
-          Height = 8
+          Height = 23
           Top = 0
           Style = tbsSeparator
         end
         object ToolButton9: TToolButton
           Left = 53
-          Height = 8
+          Height = 23
           Top = 0
           Style = tbsSeparator
         end
@@ -481,7 +480,7 @@ object fMainForm: TfMainForm
         end
         object ToolButton18: TToolButton
           Left = 199
-          Height = 8
+          Height = 23
           Top = 0
           AutoSize = True
           Enabled = False
@@ -489,7 +488,7 @@ object fMainForm: TfMainForm
         end
         object ToolButton12: TToolButton
           Left = 271
-          Height = 8
+          Height = 23
           Top = 0
           Style = tbsSeparator
         end
@@ -1285,7 +1284,6 @@ object fMainForm: TfMainForm
   end
   object RateStars: TImageList
     Height = 15
-    Scaled = True
     Width = 80
     Left = 584
     Top = 360
