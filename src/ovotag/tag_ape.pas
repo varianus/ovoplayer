@@ -96,7 +96,7 @@ end;
 function TAPEFrame.ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean;
 var
   fSize:Cardinal;
-  Data: array of char;
+  Data: array of ansichar;
   NextChar: ansiChar;
   fFlags: DWORD;
   tmpName:string;
@@ -117,7 +117,7 @@ begin
   SetLength(Data, fSize+1);
 
   AStream.Read(Data[0], fSize);
-  fValue:=string(Data) ;
+  fValue:= copy(pchar(@Data[0]),1,fSize) ;
   result:=true;
 end;
 
