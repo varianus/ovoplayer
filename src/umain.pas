@@ -1066,7 +1066,7 @@ begin
   Album.Caption     := Song.Tags.Album;
   Artist.Caption    := Song.Tags.Artist;
   TrackBar.Max      := Song.Tags.Duration;
-  TrackBar.Position := BackEnd.Position;
+  TrackBar.Position := Lo(BackEnd.Position);
   TrayIcon.Hint     := Song.tags.Title + LineEnding + Song.Tags.Artist;
   Caption           := Song.tags.Title + ' - ' + Song.Tags.Artist;;
 
@@ -3115,6 +3115,7 @@ begin
     end;
 
   h:= THackGrid(sgPlayList);
+
 
   Diffs := h.gcache.ClientWidth - h.gcache.FixedWidth  - TotalSize -1;
 
