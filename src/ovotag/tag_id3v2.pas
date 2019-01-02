@@ -285,7 +285,7 @@ var
   Encoding: byte;
 begin
   image.FrameRef := Frame;
-  wData := PChar(@(Frame.Data));
+  wData := PChar((Frame.Data));
   wDatasize := Frame.fSize;
   Encoding := pByte(wData)^;
   Inc(wData);
