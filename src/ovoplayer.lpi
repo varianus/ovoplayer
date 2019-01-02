@@ -12,7 +12,7 @@
       <UseXPManifest Value="True"/>
       <XPManifest>
         <DpiAware Value="True"/>
-        <TextName Value="Varianus.OvoPlayer.Ovoplayer"/>
+        <TextName Value="Varianus.OvoPlayer"/>
         <TextDesc Value="A free multiplatform media player"/>
       </XPManifest>
       <Icon Value="0"/>
@@ -28,7 +28,7 @@
       <Attributes pvaDebug="True" pvaPrivateBuild="True"/>
       <StringTable CompanyName="Marco Caselli" OriginalFilename="ovoplayer.lpr" ProductVersion="1.4.0.0"/>
     </VersionInfo>
-    <BuildModes Count="2">
+    <BuildModes Count="4">
       <Item1 Name="Debug" Default="True"/>
       <Item2 Name="Release">
         <CompilerOptions>
@@ -92,6 +92,129 @@ if TargetOS = 'linux' then
           </Other>
         </CompilerOptions>
       </Item2>
+      <Item3 Name="ReleaseHIGH">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="..\bin\$(TargetOS)\ovoplayer"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir);platform\$(TargetOS);import-engines"/>
+            <OtherUnitFiles Value="import-engines;ovotag;components\network;platform\$(TargetOS)"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <Conditionals Value="if TargetOS = 'darwin' then
+   CustomOptions := '-dUseCThreads';
+
+if TargetOS = 'linux' then
+   CustomOptions := '-dUseCThreads -dUseStatusIcon';"/>
+          <BuildMacros>
+            <Count Value="1"/>
+            <Item1>
+              <Identifier Value="Macro"/>
+            </Item1>
+          </BuildMacros>
+          <CodeGeneration>
+            <SmartLinkUnit Value="True"/>
+            <RelocatableUnit Value="True"/>
+            <Optimizations>
+              <OptimizationLevel Value="3"/>
+            </Optimizations>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+              <DebugInfoType Value="dsDwarf2Set"/>
+            </Debugging>
+            <LinkSmart Value="True"/>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+          <Other>
+            <Verbosity>
+              <ShowNotes Value="False"/>
+              <ShowHints Value="False"/>
+            </Verbosity>
+            <WriteFPCLogo Value="False"/>
+            <ConfigFile>
+              <CustomConfigFile Value="True"/>
+              <ConfigFilePath Value="..\extrafpc.cfg"/>
+            </ConfigFile>
+            <CustomOptions Value="-CfSSE42
+-CpCOREAVX2
+-O3
+-OpCOREAVX2
+-B
+-dRELEASE"/>
+            <ExecuteBefore>
+              <Command Value="$(LazarusDir)\tools\svn2revisioninc$(ExeExt) .. ovorevision.inc --c=ovoRevision"/>
+            </ExecuteBefore>
+          </Other>
+        </CompilerOptions>
+      </Item3>
+      <Item4 Name="DebugPedantic">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="..\bin\$(TargetOS)\ovoplayer"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir);platform\$(TargetOS);import-engines"/>
+            <OtherUnitFiles Value="import-engines;ovotag;components\network;platform\$(TargetOS)"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <Conditionals Value="if TargetOS = 'darwin' then
+   CustomOptions := '-dUseCThreads';
+
+if TargetOS = 'linux' then
+   CustomOptions := '-dUseCThreads -dUseStatusIcon';"/>
+          <BuildMacros>
+            <Count Value="1"/>
+            <Item1>
+              <Identifier Value="Macro"/>
+            </Item1>
+          </BuildMacros>
+          <Parsing>
+            <SyntaxOptions>
+              <IncludeAssertionCode Value="True"/>
+            </SyntaxOptions>
+          </Parsing>
+          <CodeGeneration>
+            <Checks>
+              <IOChecks Value="True"/>
+              <RangeChecks Value="True"/>
+              <OverflowChecks Value="True"/>
+              <StackChecks Value="True"/>
+            </Checks>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <DebugInfoType Value="dsDwarf2"/>
+              <UseHeaptrc Value="True"/>
+              <TrashVariables Value="True"/>
+            </Debugging>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+          <Other>
+            <ConfigFile>
+              <ConfigFilePath Value="..\extrafpc.cfg"/>
+            </ConfigFile>
+            <CustomOptions Value="-Xm"/>
+            <ExecuteBefore>
+              <Command Value="$(LazarusDir)\tools\svn2revisioninc$(ExeExt) .. ovorevision.inc --c=ovoRevision"/>
+            </ExecuteBefore>
+          </Other>
+        </CompilerOptions>
+      </Item4>
       <SharedMatrixOptions Count="5">
         <Item1 ID="066772129436" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
         <Item2 ID="410165404427" Type="IDEMacro" MacroName="LCLWidgetType" Value="qt"/>
