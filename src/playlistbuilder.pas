@@ -133,6 +133,11 @@ type
 
   end;
 
+// Workaround for old compiler versione
+{$if FPC_fullVersion < 30200}
+type
+  TFPJSStream = TMemoryStream;
+{$endif}
 
 ResourceString
   // Diplay label for fields
@@ -246,9 +251,17 @@ end;
 { TPlaylistContainer }
 
 procedure TPlaylistContainer.Save;
+var
+  Mems: TFPJSStream;  //Workaround for new type on fpjson
 begin
  Stream.position := 0;
- JSONArray.DumpJSON(Stream);
+ Mems:= TMemoryStream.Create;
+ try
+   JSONArray.DumpJSON(Mems);
+   Stream.CopyFrom(Mems, Mems.Size);
+ finally
+   Mems.Free;
+ end;
 end;
 
 function TPlaylistContainer.GetPlaylists(List: TStrings): integer;
