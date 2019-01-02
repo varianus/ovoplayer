@@ -524,7 +524,7 @@ begin
        edArtist.ReadOnly := false;
        meComment.ReadOnly := false;
        edTitle.ReadOnly := false;
-       edGenre.ReadOnly := false;
+       edGenre.Enabled := true;
        edTrack.ReadOnly := false;
        edYear.ReadOnly := false;
     end
@@ -535,7 +535,7 @@ begin
        edArtist.ReadOnly := true;
        meComment.ReadOnly := true;
        edTitle.ReadOnly := true;
-       edGenre.ReadOnly := true;
+       edGenre.enabled := false;
        edTrack.ReadOnly := true;
        edYear.ReadOnly := true;
     end;
@@ -572,7 +572,7 @@ begin
        edAlbumArtist.ReadOnly := False;
        edArtist.ReadOnly := False;
        meComment.ReadOnly := False;
-       edGenre.ReadOnly := False;
+       edGenre.enabled := true;
        edTitle.ReadOnly := False;
        edTrack.ReadOnly := False;
        edYear.ReadOnly := False;
@@ -583,7 +583,7 @@ begin
        edAlbumArtist.ReadOnly := true;
        edArtist.ReadOnly := true;
        meComment.ReadOnly := true;
-       edGenre.ReadOnly := true;
+       edGenre.enabled := false;
        edTitle.ReadOnly := true;
        edTrack.ReadOnly := true;
        edYear.ReadOnly := true;
