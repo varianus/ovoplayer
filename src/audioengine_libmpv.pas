@@ -176,13 +176,16 @@ end;
 function TAudioEngineLibMPV.Initialize: boolean;
 var
    res: integer;
-   flg:integer=1;
+   flg:integer;
 begin
   fhandle := mpv_create();
   result := assigned(fhandle);
   if not result then exit;
 
+  flg:=1;
   res := mpv_set_option(fhandle^,'no-video', MPV_FORMAT_FLAG,@flg);
+  flg := 0;
+  res := mpv_set_option(fhandle^,'audio-display', MPV_FORMAT_FLAG,@flg);
 
   mpv_initialize(fhandle^);
 
