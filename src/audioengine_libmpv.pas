@@ -133,8 +133,10 @@ var
    pos : double;
 begin
   result := mpv_get_property(fhandle^,'time-pos',MPV_FORMAT_DOUBLE,@pos);
-  Result := trunc(pos) *1000;
-
+  if result = MPV_ERROR_SUCCESS then
+     Result := trunc(pos) *1000
+  else
+     result := 0;
 end;
 
 procedure TAudioEngineLibMPV.SetSongPos(const AValue: integer);
