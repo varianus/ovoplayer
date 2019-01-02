@@ -545,7 +545,7 @@ MsgStreamBufferDone = 4194304;
 MsgStreamNeedMoreData = 8388608;
 MsgNextSong = 16777216;
 MsgWaveBuffer = 33554432;
-MsgAll = -1;
+MsgAll = cardinal(-1);
 MsgAllAsync = 65535;
 MsgAllSync = -65536;
 
