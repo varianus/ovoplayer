@@ -116,21 +116,21 @@ const
 
   { Names of supported tag frames (ID3v2.3.x & ID3v2.4.x) }
   ID3V2_KNOWNFRAME: array [1..ID3V2_FRAME_COUNT, boolean] of ansistring = (
-    ('TIT2', 'TT2'),
+    ('TIT2', 'TT2'),    // 1
     ('TPE1', 'TP1'),
     ('TALB', 'TAL'),
     ('TRCK', 'TRK'),
-    ('TYER', 'TYE'),
+    ('TYER', 'TYE'),    // 5
     ('TCON', 'TCO'),
     ('COMM', 'COM'),
     ('TCOM', 'TCM'),
     ('TENC', 'TEN'),
-    ('TCOP', 'TCR'),
+    ('TCOP', 'TCR'),    //10
     ('TLAN', 'TLA'),
     ('WXXX', 'WXX'),
     ('TDRC', 'TOR'),
     ('TOPE', 'TOA'),
-    ('TIT1', 'TT1'),
+    ('TIT1', 'TT1'),    //15
     ('TOAL', 'TOT'),
     ('TSIZ', 'TSI'),
     ('TPE2', 'TP2')
@@ -188,7 +188,7 @@ begin
 
   if trim(V1Rec.Year) <> '' then
   begin
-    Frame := TID3Frame.Create('TYER');
+    Frame := TID3Frame.Create('TDRC');
     Frame.Tagger := Self;
     frame.fFlags := 0;
     Frame.AsString := trim(V1Rec.Year);
@@ -245,11 +245,10 @@ begin
   UseOldTag := (Version <= TAG_VERSION_2_2) and not FromV1;
 
   Result.Artist := GetBestMatch(2, 14, UseOldTag);
-  Result.Title := GetBestMatch(1, 15, UseOldTag);
-  Result.Album := GetBestMatch(3, 16, UseOldTag);
-  Result.Year := GetBestMatch(5, 13, UseOldTag);
-  Result.AlbumArtist := GetContent(GetFrameValue(ID3V2_KNOWNFRAME[18, UseOldTag]),
-    Result.Artist);
+  Result.Title  := GetBestMatch(1, 15, UseOldTag);
+  Result.Album  := GetBestMatch(3, 16, UseOldTag);
+  Result.Year   := GetBestMatch(13, 5, UseOldTag);
+  Result.AlbumArtist := GetContent(GetFrameValue(ID3V2_KNOWNFRAME[18, UseOldTag]), Result.Artist);
   Result.Track := ExtractTrack(GetFrameValue(ID3V2_KNOWNFRAME[4, UseOldTag]));
   Result.TrackString := GetFrameValue(ID3V2_KNOWNFRAME[4, UseOldTag]);
   Result.Comment := GetFrameValue(ID3V2_KNOWNFRAME[7, UseOldTag]);
@@ -270,7 +269,7 @@ begin
   SetFrameValue(ID3V2_KNOWNFRAME[2, UseOldTag], CommonTags.Artist, TID3Frame);
   SetFrameValue(ID3V2_KNOWNFRAME[1, UseOldTag], CommonTags.Title, TID3Frame);
   SetFrameValue(ID3V2_KNOWNFRAME[3, UseOldTag], CommonTags.Album, TID3Frame);
-  SetFrameValue(ID3V2_KNOWNFRAME[5, UseOldTag], CommonTags.Year, TID3Frame);
+  SetFrameValue(ID3V2_KNOWNFRAME[13, UseOldTag], CommonTags.Year, TID3Frame);
   SetFrameValue(ID3V2_KNOWNFRAME[18, UseOldTag], CommonTags.AlbumArtist, TID3Frame);
   SetFrameValue(ID3V2_KNOWNFRAME[4, UseOldTag], CommonTags.TrackString, TID3Frame);
   SetFrameValue(ID3V2_KNOWNFRAME[7, UseOldTag], CommonTags.Comment, TID3Frame);
