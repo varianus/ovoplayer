@@ -324,7 +324,6 @@ end;
 
 procedure TThemedSlider.Click;
 var
-  X: integer;
   p: Tpoint;
 begin
   p := Mouse.CursorPos;

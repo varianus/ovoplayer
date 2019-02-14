@@ -137,8 +137,6 @@ begin
 end;
 
 procedure TImageTrack.Paint;
-var
-  r1: TRect;
 begin
   Canvas.StretchDraw(rect(0,0,Width, Height), fInternalBMP);
 end;
