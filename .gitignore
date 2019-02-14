@@ -1,0 +1,15 @@
+*.exe
+*.dll
+*.so
+*.map
+*.lib
+*.lps
+*.a
+*.o
+*.ppu
+*.compiled
+
+backup/
+lib/
+bin/
+
