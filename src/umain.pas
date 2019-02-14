@@ -2951,7 +2951,7 @@ begin
   CurrentPath:=IncludeTrailingPathDelimiter(Path);
   try
     FilesTree.Items.Clear;
-    BuildFolderList(CurrentPath, DirList, False);
+    BuildFolderList(CurrentPath, DirList);
     DirList.Sort;
     BuildFileList(IncludeTrailingPathDelimiter(CurrentPath) + AudioTag.SupportedExtension,
                    faAnyFile, FileList, False);
@@ -3065,7 +3065,7 @@ end;
 procedure TfMainForm.AdaptSize(Recalculate: boolean =true);
 var
   i:integer;
-  ColWidths : array of integer;
+  ColWidths : array of integer = nil;
   TotalSize : Integer;
   diffs     : integer;
   VisibleCount : integer;

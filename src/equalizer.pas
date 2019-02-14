@@ -133,7 +133,6 @@ end;
 procedure TEqualizerParam.SetPreset(Index: integer; AValue: RPreset);
 begin
   fPresets[index] := AValue;
-
 end;
 
 procedure TEqualizerParam.InternalSave;
@@ -175,7 +174,6 @@ var
   tmpSt: TStringList;
   info: TStringList;
   i, j: integer;
-  Col: integer;
   tmp : double;
   r : RPreset;
   setting: TFormatSettings;

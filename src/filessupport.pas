@@ -38,7 +38,7 @@ type
 
 Function GetFileInfo(FileName: String): TFileInfo;
 function BuildFileList(const Path: string; const Attr: integer; const List: TStrings; Recurring: boolean): boolean;
-function BuildFolderList(const Path: string; const List: TStrings; Recurring: boolean): boolean;
+function BuildFolderList(const Path: string; const List: TStrings): boolean;
 Function UpperDirectory(const dir:string):string;
 function GetConfigDir: string;
 function strByteSize(Value: Int64): String;
@@ -381,7 +381,7 @@ begin
     end;
 end;
 
-function BuildFolderList(const Path: string; const List: TStrings; Recurring: boolean): boolean;
+function BuildFolderList(const Path: string; const List: TStrings): boolean;
 var
   SearchRec: TSearchRec;
   Directory: string;

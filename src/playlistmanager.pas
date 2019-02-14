@@ -94,10 +94,10 @@ uses
 
 const
   //  GenDelims  = [':', '/', '?', '#', '[', ']', '@'];
-  SubDelims = ['!', '$', '&', '''', '(', ')', '*', '+', ',', ';', '='];
+  //  SubDelims = ['!', '$', '&', '''', '(', ')', '*', '+', ',', ';', '='];
   ALPHA = ['A'..'Z', 'a'..'z'];
   DIGIT = ['0'..'9'];
-  Unreserved = ALPHA + DIGIT + ['-', '.', '_', '~'];
+  //Unreserved = ALPHA + DIGIT + ['-', '.', '_', '~'];
 
 function Escape(const s: string; const Allowed: TSysCharSet): string;
 var

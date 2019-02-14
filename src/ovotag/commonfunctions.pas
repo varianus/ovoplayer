@@ -257,7 +257,7 @@ var
   OldP: pbyte;
   oldL: Cardinal;
   be: boolean;
-  ws: WideString;
+  ws: WideString = '';
 begin
   size := size and $fffffffe;
   l:= size;

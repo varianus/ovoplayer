@@ -57,7 +57,7 @@ uses strutils, LazUTF8;
 
 function EncodeSize(Size:Integer):string;
 var
-  s : RawByteString;
+  s : RawByteString = '';
 begin
   SetLength(s,3);
   s[1] := AnsiChar((Size and $ff0000 ) shr 16);
