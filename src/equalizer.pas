@@ -132,6 +132,7 @@ end;
 
 procedure TEqualizerParam.SetPreset(Index: integer; AValue: RPreset);
 begin
+  fPresets[index] := AValue;
 
 end;
 
