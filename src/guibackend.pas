@@ -66,6 +66,7 @@ type
     fGeneralParam: TGeneralParam;
     FMediaLibraryParam: TMediaLibraryParam;
     fPlayListParam: TPlayListParam;
+    fEqualizerParam :TEqualizerParam;
 
     procedure AudioEngineSongEnd(Sender: TObject);
     function GetMute: boolean;
@@ -142,6 +143,7 @@ type
     property PlayListParam:     TPlayListParam read fPlayListParam;
     property EngineParam:       TEngineParam read fEngineParam;
     property GeneralParam:      TGeneralParam read fGeneralParam;
+    property EqualizerParam:    TEqualizerParam read fEqualizerParam;
 
   end;
 
@@ -221,6 +223,7 @@ begin
   fPlayListParam     := TPlayListParam.Create(Config);
   fEngineParam       := TEngineParam.Create(Config);
   fGeneralParam      := TGeneralParam.Create(Config);
+  fEqualizerParam    := TEqualizerParam.Create(Config);
 
   Manager  := TPlayListManager.Create;
   Playlist := TPlayList.Create;
@@ -257,12 +260,13 @@ begin
   if AudioEngine.SupportEQ then
     begin
       AudioEngine.SetActiveEQ(EngineParam.ActiveEQ);
-     if EngineParam.ActiveEQ then
-       ApplyPreset(AudioEngine, EngineParam.EQPreset);
+      // if equalizer is active, try to load active preset
+      if EngineParam.ActiveEQ then
+         EqualizerParam.ApplyPreset(AudioEngine, EngineParam.EQPreset);
 
     end;
 
-  // if equalizer is active, try to load active preset
+
   AudioEngine.OnSongEnd := @AudioEngineSongEnd;
   AudioEngine.MainVolume:= EngineParam.Volume;
   PlayList.OnSongAdd:=@PlaylistOnSongAdd;
@@ -292,6 +296,7 @@ begin
   except
   end;
 
+  EqualizerParam.Dirty := true;
 
   Manager.Free;
   PlayList.Free;
@@ -302,6 +307,7 @@ begin
   fPlayListParam.Free;
   fEngineParam.Free;
   fGeneralParam.Free;
+  fEqualizerParam.Free;
   Config.Free;
 
   Inherited Destroy;

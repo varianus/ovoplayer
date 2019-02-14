@@ -24,7 +24,7 @@ unit Equalizer;
 interface
 
 uses
-  Classes, SysUtils;
+  Classes, SysUtils, config;
 
 Const
   EQCounter = 10;
@@ -57,12 +57,36 @@ type
     Values : array [0..EQCounter -1] of double;
   end;
 
-const
-  PRESET_COUNT = 19;
+type
+  ARPreset = array of RPreset;
 
+  { TEqualizerParam }
+
+  TEqualizerParam = Class(TConfigParam)
+  private
+    const Base = 'EqualizerPreset';
+    procedure InitWithDefault;
+  private
+    fPresets: ARPreset;
+    function GetCount: integer;
+    function GetPreset(Index: integer): RPreset;
+    procedure SetPreset(Index: integer; AValue: RPreset);
+  protected
+    Procedure InternalSave; override;
+  public
+    Property Preset[Index:integer]: RPreset read GetPreset write SetPreset; default;
+    property Count: integer read GetCount;
+    Procedure Load; override;
+    Procedure ApplyPreset(eq : IEqualizer; Idx:Integer);
+  end;
+
+implementation
+
+const
+  PRESET_COUNT = 18;
 var
-  ARPreset : array [0..PRESET_COUNT -1] of RPreset = (
-      (Name: 'default'; Values: (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)),
+  DefaultPreset : array [0..PRESET_COUNT -1] of RPreset = (
+      (Name: 'flat'; Values: (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)),
       (Name: 'classical'; Values: (0.0,0.0,0.0,0.0,0.0,-4.4,-4.4,-4.4,-5.8,-6)),
       (Name: 'club'; Values: (0.0,0.0,4.8,3.3,3.3,3.3,1.9,0.0,0.0,0.0)),
       (Name: 'dance'; Values: (5.7,4.3,1.4,0.0,0.0,-3.4,-4.4,-4.3,0.0,0.0)),
@@ -79,24 +103,129 @@ var
       (Name: 'ska'; Values: (-1.4,-2.9,-2.4,0.0,2.4,3.3,5.3,5.7,6.7,5.8)),
       (Name: 'soft'; Values: (2.8,1.0,0.0,-1.4,0.0,2.4,4.8,5.7,6.7,7.2)),
       (Name: 'soft rock'; Values: (2.4,2.4,1.4,0.0,-2.4,-3.4,-2.0,0.0,1.4,5.3)),
-      (Name: 'techno'; Values: (4.8,3.3,0.0,-3.4,-2.9,0.0,4.8,5.7,5.8,5.3)),
-      (Name: 'user'; Values: (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0))
+      (Name: 'techno'; Values: (4.8,3.3,0.0,-3.4,-2.9,0.0,4.8,5.7,5.8,5.3))
     );
 
-Procedure ApplyPreset(eq : IEqualizer; Preset:Integer);
-
-implementation
-
-Procedure ApplyPreset(eq : IEqualizer; Preset:Integer);
+procedure TEqualizerParam.ApplyPreset(eq: IEqualizer; Idx: Integer);
 var
   i: integer;
 begin
   for i := 0 to pred(EQCounter) do
     begin
-      eq.BandValue[i] := ARPreset[Preset].Values[i];
+      eq.BandValue[i] := fPresets[Idx].Values[i];
     end;
 
   Eq.EQApply;
+end;
+
+{ TEqualizerParam }
+
+function TEqualizerParam.GetPreset(Index: integer): RPreset;
+begin
+  Result := fPresets[index];
+end;
+
+function TEqualizerParam.GetCount: integer;
+begin
+  Result := Length(fPresets);
+end;
+
+procedure TEqualizerParam.SetPreset(Index: integer; AValue: RPreset);
+begin
+
+end;
+
+procedure TEqualizerParam.InternalSave;
+var
+  tmpSt: TStringList;
+  i: integer;
+  setting: TFormatSettings;
+  Function DumpPreset(idx:integer):string;
+   var
+     j: Integer;
+   begin
+     result:='';
+     for j := 0 to EQCounter -1 do
+       Result:= Result + FloatToStrF(fPresets[idx].Values[j],fffixed, 99, 2, setting) +';';
+   end;
+
+begin
+  tmpSt := TStringList.Create;
+  Setting.DecimalSeparator := '.';
+  try
+    for i := 0 to pred(Length(fPresets)) do
+      begin
+        tmpst.Add(inttostr(i) +'='+
+                  fPresets[i].Name +';'+
+                  DumpPreset(i)
+                  );
+      end;
+    Owner.SaveCustomParams(base, tmpSt);
+
+  finally
+    tmpSt.Free;
+  end;
+  Owner.Dirty:= true;
+end;
+
+
+procedure TEqualizerParam.Load;
+var
+  tmpSt: TStringList;
+  info: TStringList;
+  i, j: integer;
+  Col: integer;
+  tmp : double;
+  r : RPreset;
+  setting: TFormatSettings;
+begin
+  Setting.DecimalSeparator := '.';
+  tmpSt := TStringList.Create;
+  info  := TStringList.Create;
+  try
+   Owner.ReadCustomParams(Base, tmpSt);
+   SetLength(fPresets,tmpSt.Count);
+
+   if tmpSt.Count = 0 then
+     begin
+       InitWithDefault;
+       Dirty := true;
+       exit;
+     end;
+
+   for i := 0 to tmpSt.Count -1 do
+     begin
+       info.Clear;
+       info.StrictDelimiter := true;
+       info.Delimiter := ';';
+       info.DelimitedText := tmpSt.ValueFromIndex[i];
+       initialize(r);
+       r.Name := info[0];
+       for j := 1 to EQCounter do
+         begin
+           TryStrToFloat(info[j], tmp, setting);
+           r.Values[j] := tmp;
+         end;
+       fPresets[i] := r;
+     end;
+  Except
+    Owner.RemoveSection(Base);
+  end;
+
+  tmpSt.free;
+  info.free;
+
+end;
+
+procedure TEqualizerParam.InitWithDefault;
+var
+  i: Integer;
+begin
+  SetLength(fPresets,PRESET_COUNT);
+  for i := 0 to pred(PRESET_COUNT) do
+    begin
+      fPresets[i]:=DefaultPreset[i];
+    end;
 end;
 
 end.

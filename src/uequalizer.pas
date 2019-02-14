@@ -78,9 +78,9 @@ begin
       exit;
     end;
 
-  for i := 0 to pred(PRESET_COUNT) do
+  for i := 0 to pred(BackEnd.EqualizerParam.Count) do
     begin
-      cbPreset.Items.Add(ARPreset[i].Name);
+      cbPreset.Items.Add(BackEnd.EqualizerParam[i].Name);
     end;
 
   EQBandList:= TEQBandList.Create(false);
@@ -134,7 +134,7 @@ procedure TfEqualizer.cbPresetChange(Sender: TObject);
 
 begin
   PresetToScreen(cbPreset.ItemIndex);
-  ApplyPreset(eq, cbPreset.ItemIndex);
+  BackEnd.EqualizerParam.ApplyPreset(eq, cbPreset.ItemIndex);
   BackEnd.EngineParam.EQPreset:= cbPreset.ItemIndex;
 
 end;
@@ -145,7 +145,7 @@ var
 begin
  for i := 0 to pred(EQCounter) do
    begin
-     EQBandList[i].Value := ARPreset[Preset].Values[i];
+     EQBandList[i].Value := BackEnd.EqualizerParam[Preset].Values[i];
    end;
 end;
 
