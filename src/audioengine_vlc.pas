@@ -141,7 +141,7 @@ begin
 end;
 
 function TAudioEngineVLC.Initialize: boolean;
-const ArgsNumber = 6;
+const ArgsNumber = 8;
 const
   args: array[0..ArgsNumber - 1] of PAnsiChar =
     ('-I',// 'dummy',
@@ -149,6 +149,8 @@ const
      '--no-xlib',
      '--no-video-title-show',
      '--file-caching=500',
+     '--no-plugins-scan',
+     '--plugins-cache',
      '--ignore-config');
 begin
   SetExceptionMask([exInvalidOp, exDenormalized, exZeroDivide,exOverflow, exUnderflow, exPrecision]);
