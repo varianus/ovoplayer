@@ -1,8 +1,8 @@
 
 # [OvoPlayer](http://ovoplayer.altervista.org) 
-[![Stable 1.3.0](https://img.shields.io/badge/stable-1.2.1-green.svg?style=flat)](https://sourceforge.net/projects/ovoplayer/files/1.2.1/)
-[![Release Candidate 1.3.1](https://img.shields.io/badge/release_candidate-1.3.0-yellow.svg?style=flat)](https://sourceforge.net/projects/ovoplayer/files/1.3.0/)
-[![Development 1.4.0](https://img.shields.io/badge/development-1.4.0-red.svg?style=flat)](https://sourceforge.net/projects/ovoplayer/files/1.4.0/)
+[![Stable 1.3.0](https://img.shields.io/badge/stable-1.3.0-green.svg?style=flat)](https://sourceforge.net/projects/ovoplayer/files/1.3.0/)
+[![Release Candidate 1.4.0](https://img.shields.io/badge/release_candidate-1.4.0-yellow.svg?style=flat)](https://sourceforge.net/projects/ovoplayer/files/1.4.0/)
+[![Development 1.5.0](https://img.shields.io/badge/development-1.4.0-red.svg?style=flat)](https://sourceforge.net/projects/ovoplayer/files/1.5.0/)
 
 Ovoplayer is a free multi-platform music manager and player.
 
@@ -24,13 +24,13 @@ Ovoplayer can use DirectShow, MediaFoundation VLC, XINE, BASS, Mplayer, GStreame
   * [Android remote control](https://github.com/varianus/ovoplayer-remote) - *Almost working*
   * Mac OSX port - ~~working on~~ *Delayed, no Mac to work on …*
   * Streaming - *Delayed*
-  * Equalizer - *Working on*
+  * Equalizer - *DONE*
 
 ### Build environment
 To build Ovoplayer from sources you will need:
 
-*  [Free Pascal 3.0.3 ](http://www.freepascal.org)(last stable fixes branch) or above
-*  [Lazarus 1.8RC3](http://www.lazarus.freepascal.org) (current release candidate) or above
+*  [Free Pascal 3.0.4 ](http://www.freepascal.org)(last stable fixes branch) or above
+*  [Lazarus 2.0](http://www.lazarus.freepascal.org) (current release candidate) or above
 
 ### Screenshot
 ![Screenshot](http://ovoplayer.altervista.org/images/OVOPlayer_scrn1.png)
