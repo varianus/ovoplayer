@@ -691,6 +691,10 @@ begin
      begin
        exit;
      end;
+
+  if (Index > size-1) or (Index < 0) then
+   exit;
+
   DivMod(Index, 32, DWordIndex, BitIndex);
   if AValue  then
      fArray^[DWordIndex] := fArray^[DWordIndex] or DWORD(1 shl (BitIndex))
