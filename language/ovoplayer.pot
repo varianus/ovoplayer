@@ -1,0 +1,1120 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: appconsts.raddedtrack
+msgid "Added:"
+msgstr ""
+
+#: appconsts.rallfiles
+msgid "All Files(%0:s)|%0:s"
+msgstr ""
+
+#: appconsts.rautomaticplaylist
+msgid "Automatic Playlist"
+msgstr ""
+
+#: appconsts.rbegincollectionscan
+msgid "Scanning Collection"
+msgstr ""
+
+#: appconsts.rbuildenv
+msgid "Build environment: Lazarus %0:s  FPC %1:s"
+msgstr ""
+
+#: appconsts.rcurrentengine
+msgid "Current audio engine: %s"
+msgstr ""
+
+#: appconsts.rdeleteplaylistconfirmation
+msgid "Are you sure to delete this playlist?"
+msgstr ""
+
+#: appconsts.rdragtochangeposition
+msgid "Drag to change position"
+msgstr ""
+
+#: appconsts.rembedded
+msgid "Embedded in file"
+msgstr ""
+
+#: appconsts.remptytag
+msgid "<none>"
+msgstr ""
+
+#: appconsts.rfailedtrack
+msgid "Failed:"
+msgstr ""
+
+#: appconsts.rlowportwarning
+msgid ""
+"ATTENTION! Setting a port number lower than 1024 may require\n"
+"administrative rights on some OSes (e.g. Linux)."
+msgstr ""
+
+#: appconsts.rmatchingitems
+msgid "%0:d tracks matching current filter (total time %1:s, total size %2:s)"
+msgstr ""
+
+#: appconsts.rmissing
+msgid "<missing>"
+msgstr ""
+
+#: appconsts.rmissingconfig
+msgid "Can't activate Audio Engine. Please review configuration"
+msgstr ""
+
+#: appconsts.rmultiplevalue
+msgid "<Multiple Value>"
+msgstr ""
+
+#: appconsts.rnever
+msgid "Never"
+msgstr ""
+
+#: appconsts.rnotplaying
+msgid "Not Playing"
+msgstr ""
+
+#: appconsts.rremovedtrack
+msgid "Removed:"
+msgstr ""
+
+#: appconsts.runsupportedengine
+msgid "UNSUPPORTED ENGINE"
+msgstr ""
+
+#: appconsts.rupdatedtrack
+msgid "Updated:"
+msgstr ""
+
+#: appconsts.rversionstring
+msgid "Version: %0:s (SVN Rev.: %1:s Date %2:s)"
+msgstr ""
+
+#: playlistbuilder.rs_added
+msgid "Date Added"
+msgstr ""
+
+#: playlistbuilder.rs_after
+msgid "after"
+msgstr ""
+
+#: playlistbuilder.rs_album
+msgctxt "playlistbuilder.rs_album"
+msgid "Album"
+msgstr ""
+
+#: playlistbuilder.rs_albumartist
+msgctxt "playlistbuilder.rs_albumartist"
+msgid "Album Artist"
+msgstr ""
+
+#: playlistbuilder.rs_artist
+msgctxt "playlistbuilder.rs_artist"
+msgid "Artist"
+msgstr ""
+
+#: playlistbuilder.rs_before
+msgid "before"
+msgstr ""
+
+#: playlistbuilder.rs_between
+msgid "between"
+msgstr ""
+
+#: playlistbuilder.rs_biggerthan
+msgid "bigger than"
+msgstr ""
+
+#: playlistbuilder.rs_contains
+msgid "contains"
+msgstr ""
+
+#: playlistbuilder.rs_duration
+msgctxt "playlistbuilder.rs_duration"
+msgid "Duration"
+msgstr ""
+
+#: playlistbuilder.rs_equalto
+msgctxt "playlistbuilder.rs_equalto"
+msgid "equal to"
+msgstr ""
+
+#: playlistbuilder.rs_filedate
+msgid "File Date"
+msgstr ""
+
+#: playlistbuilder.rs_filename
+msgctxt "playlistbuilder.rs_filename"
+msgid "File Name"
+msgstr ""
+
+#: playlistbuilder.rs_filesize
+msgid "File Size"
+msgstr ""
+
+#: playlistbuilder.rs_genre
+msgctxt "playlistbuilder.rs_genre"
+msgid "Genre"
+msgstr ""
+
+#: playlistbuilder.rs_inthelast
+msgid "in the last"
+msgstr ""
+
+#: playlistbuilder.rs_is
+msgctxt "playlistbuilder.rs_is"
+msgid "is"
+msgstr ""
+
+#: playlistbuilder.rs_isempty
+msgid "is empty"
+msgstr ""
+
+#: playlistbuilder.rs_isnot
+msgid "is not"
+msgstr ""
+
+#: playlistbuilder.rs_isnotempty
+msgid "is not empty"
+msgstr ""
+
+#: playlistbuilder.rs_lastplay
+msgid "Date Last Played"
+msgstr ""
+
+#: playlistbuilder.rs_lessthan
+msgid "less than"
+msgstr ""
+
+#: playlistbuilder.rs_name25_random_songs
+msgid "25 Random tracks"
+msgstr ""
+
+#: playlistbuilder.rs_nameallsongs
+msgid "All tracks"
+msgstr ""
+
+#: playlistbuilder.rs_namelongesttimefromlastplay
+msgid "Longest time from last play"
+msgstr ""
+
+#: playlistbuilder.rs_namemostplayed
+msgid "Most played"
+msgstr ""
+
+#: playlistbuilder.rs_nameneverplayed
+msgid "Never played"
+msgstr ""
+
+#: playlistbuilder.rs_namenewersongs
+msgid "Newer tracks"
+msgstr ""
+
+#: playlistbuilder.rs_notcontains
+msgid "not contains"
+msgstr ""
+
+#: playlistbuilder.rs_notequalto
+msgid "not equal to"
+msgstr ""
+
+#: playlistbuilder.rs_notinthelast
+msgid "not in the last"
+msgstr ""
+
+#: playlistbuilder.rs_noton
+msgid "not on"
+msgstr ""
+
+#: playlistbuilder.rs_notrated
+msgid "not rated"
+msgstr ""
+
+#: playlistbuilder.rs_on
+msgid "on"
+msgstr ""
+
+#: playlistbuilder.rs_playcount
+msgid "Play count"
+msgstr ""
+
+#: playlistbuilder.rs_random
+msgid "Random"
+msgstr ""
+
+#: playlistbuilder.rs_rating
+msgctxt "playlistbuilder.rs_rating"
+msgid "Rating"
+msgstr ""
+
+#: playlistbuilder.rs_title
+msgctxt "playlistbuilder.rs_title"
+msgid "Title"
+msgstr ""
+
+#: playlistbuilder.rs_track
+msgctxt "playlistbuilder.rs_track"
+msgid "Track"
+msgstr ""
+
+#: playlistbuilder.rs_trackstring
+msgid "Track String"
+msgstr ""
+
+#: playlistbuilder.rs_year
+msgctxt "playlistbuilder.rs_year"
+msgid "Year"
+msgstr ""
+
+#: simplesingleinstance.serrsetsingleinstanceglobalstarted
+msgid "You cannot change the single instance global property when it's been started."
+msgstr ""
+
+#: simplesingleinstance.serrsetsingleinstanceidstarted
+msgid "You cannot change the single instance ID when it's been started."
+msgstr ""
+
+#: simplesingleinstance.serrsingleinstancenotclient
+msgid "Current instance is not a client."
+msgstr ""
+
+#: simplesingleinstance.serrstartsingleinstancestarted
+msgid "You cannot start single instance when it's been already started."
+msgstr ""
+
+#: tdm.actexit.caption
+msgid "Quit"
+msgstr ""
+
+#: tdm.actfastscan.caption
+msgid "Fast Scan"
+msgstr ""
+
+#: tdm.actimportdirectory.caption
+msgid "Import Directory …"
+msgstr ""
+
+#: tdm.actmute.caption
+msgid "Mute"
+msgstr ""
+
+#: tdm.actnext.caption
+msgctxt "tdm.actnext.caption"
+msgid "Next"
+msgstr ""
+
+#: tdm.actnext.hint
+msgctxt "tdm.actnext.hint"
+msgid "Next"
+msgstr ""
+
+#: tdm.actpause.caption
+msgctxt "tdm.actpause.caption"
+msgid "Pause"
+msgstr ""
+
+#: tdm.actpause.hint
+msgctxt "tdm.actpause.hint"
+msgid "Pause"
+msgstr ""
+
+#: tdm.actplay.caption
+msgctxt "tdm.actplay.caption"
+msgid "Play"
+msgstr ""
+
+#: tdm.actplay.hint
+msgctxt "tdm.actplay.hint"
+msgid "Play"
+msgstr ""
+
+#: tdm.actplaylistaddfiles.caption
+msgid "Add Files …"
+msgstr ""
+
+#: tdm.actplaylistclear.caption
+msgid "Clear"
+msgstr ""
+
+#: tdm.actplaylistload.caption
+msgid "Open Playlist …"
+msgstr ""
+
+#: tdm.actplaylistload.hint
+msgid "Load a Playlist"
+msgstr ""
+
+#: tdm.actplaylistsave.caption
+msgid "Save PlayList …"
+msgstr ""
+
+#: tdm.actplaylistsave.hint
+msgid "Save current playlist"
+msgstr ""
+
+#: tdm.actplaylistshuffle.caption
+msgid "Shuffle"
+msgstr ""
+
+#: tdm.actprevious.caption
+msgctxt "tdm.actprevious.caption"
+msgid "Previous"
+msgstr ""
+
+#: tdm.actprevious.hint
+msgctxt "tdm.actprevious.hint"
+msgid "Previous"
+msgstr ""
+
+#: tdm.actremovemissing.caption
+msgid "Remove Missing"
+msgstr ""
+
+#: tdm.actrepeatalbum.caption
+msgid "Repeat Album"
+msgstr ""
+
+#: tdm.actrepeatall.caption
+msgid "Repeat Playlist"
+msgstr ""
+
+#: tdm.actrepeatnone.caption
+msgid "Not Repeat"
+msgstr ""
+
+#: tdm.actrepeattrack.caption
+msgid "Repeat track"
+msgstr ""
+
+#: tdm.actrescancollection.caption
+msgid "Update Collection"
+msgstr ""
+
+#: tdm.actrestart.caption
+msgid "Restart"
+msgstr ""
+
+#: tdm.actskipbackward.caption
+msgid "Skip Backward"
+msgstr ""
+
+#: tdm.actskipforward.caption
+msgid "Skip Forward"
+msgstr ""
+
+#: tdm.actstop.caption
+msgctxt "tdm.actstop.caption"
+msgid "Stop"
+msgstr ""
+
+#: tdm.actstop.hint
+msgctxt "tdm.actstop.hint"
+msgid "Stop"
+msgstr ""
+
+#: tdm.opendialogfiles.title
+msgctxt "tdm.opendialogfiles.title"
+msgid "Open Playlist"
+msgstr ""
+
+#: tdm.opendialogplaylist.title
+msgctxt "tdm.opendialogplaylist.title"
+msgid "Open Playlist"
+msgstr ""
+
+#: tfabout.blicense.caption
+msgid "&License"
+msgstr ""
+
+#: tfabout.caption
+msgctxt "tfabout.caption"
+msgid "About"
+msgstr ""
+
+#: tfabout.label1.caption
+msgctxt "tfabout.label1.caption"
+msgid "OvoPlayer"
+msgstr ""
+
+#: tfabout.label3.caption
+msgid "(C) 2011, Marco Caselli <marcocas@gmail.com>"
+msgstr ""
+
+#: tfabout.label4.caption
+msgid "Another free music player"
+msgstr ""
+
+#: tfabout.lbbuildenv.caption
+msgid "Lazarus"
+msgstr ""
+
+#: tfabout.lbengine.caption
+msgctxt "tfabout.lbengine.caption"
+msgid "Engine"
+msgstr ""
+
+#: tfabout.lhomepage.caption
+msgid "http://ovoplayer.altervista.org/"
+msgstr ""
+
+#: tfabout.lversion.caption
+msgid "Version"
+msgstr ""
+
+#: tfconfig.badddir.caption
+msgid "Add …"
+msgstr ""
+
+#: tfconfig.bremovedir.caption
+msgid "Remove"
+msgstr ""
+
+#: tfconfig.brescanlibrary.caption
+msgid "Scan Now"
+msgstr ""
+
+#: tfconfig.brestart.caption
+msgid "Restart Now"
+msgstr ""
+
+#: tfconfig.caption
+msgid "Config"
+msgstr ""
+
+#: tfconfig.cbcapturemmkeys.caption
+msgid "Use multimedia keys"
+msgstr ""
+
+#: tfconfig.cbenablesoundmenu.caption
+msgid "Show in sound menu"
+msgstr ""
+
+#: tfconfig.cbminimizeonclose.caption
+msgid "Minimize on Close"
+msgstr ""
+
+#: tfconfig.cbnetremote.caption
+msgid "Enable network remote"
+msgstr ""
+
+#: tfconfig.cbrestart.caption
+msgid "Restart from last position"
+msgstr ""
+
+#: tfconfig.cbscanonstart.caption
+msgid "Scan on program start"
+msgstr ""
+
+#: tfconfig.cbtrayvisible.caption
+msgid "Show tray icon"
+msgstr ""
+
+#: tfconfig.groupbox1.caption
+msgid "Categories"
+msgstr ""
+
+#: tfconfig.label1.caption
+msgid "Directories"
+msgstr ""
+
+#: tfconfig.label2.caption
+msgid "BackGround color"
+msgstr ""
+
+#: tfconfig.label3.caption
+msgid "Font color"
+msgstr ""
+
+#: tfconfig.label4.caption
+msgid "Tranparency"
+msgstr ""
+
+#: tfconfig.label5.caption
+msgid "Port"
+msgstr ""
+
+#: tfconfig.lbrestart.caption
+msgid "A restart is required for this change to take effect."
+msgstr ""
+
+#: tfconfig.rgaudioengine.caption
+msgctxt "tfconfig.rgaudioengine.caption"
+msgid "Audio Engine"
+msgstr ""
+
+#: tfconfig.rgkeycapturemode.caption
+msgid "Keys Capture Mode"
+msgstr ""
+
+#: tfconfig.rgosdkind.caption
+msgid "Notification Kind"
+msgstr ""
+
+#: tfconfig.sbengine.caption
+msgid "Playback"
+msgstr ""
+
+#: tfconfig.sbinterface.caption
+msgid "Behavior"
+msgstr ""
+
+#: tfconfig.sblibrary.caption
+msgctxt "tfconfig.sblibrary.caption"
+msgid "Media Library"
+msgstr ""
+
+#: tfconfig.sbnetremote.caption
+msgid "Network Remote"
+msgstr ""
+
+#: tfconfig.sbnotification.caption
+msgid "Notification"
+msgstr ""
+
+#: tfconfig.tsengine.caption
+msgctxt "tfconfig.tsengine.caption"
+msgid "Engine"
+msgstr ""
+
+#: tfconfig.tsinterface.caption
+msgid "Interfaces"
+msgstr ""
+
+#: tfconfig.tsmedialibrary.caption
+msgctxt "tfconfig.tsmedialibrary.caption"
+msgid "Media Library"
+msgstr ""
+
+#: tfconfig.tsnetremote.caption
+msgid "NetRemote"
+msgstr ""
+
+#: tfconfig.tsosd.caption
+msgid "OSD"
+msgstr ""
+
+#: tfcover.btnfittoscreen.hint
+msgid "Fit To Screen"
+msgstr ""
+
+#: tfcover.btnsaveas.hint
+msgid "Save as…"
+msgstr ""
+
+#: tfcover.btnzoomin.hint
+msgid "Zoom +"
+msgstr ""
+
+#: tfcover.btnzoomout.hint
+msgid "Zoom -"
+msgstr ""
+
+#: tfcover.btnzoomreset.hint
+msgid "Original size"
+msgstr ""
+
+#: tfcover.caption
+msgid "Cover Viewer"
+msgstr ""
+
+#: tfcustomplaylist.caption
+msgid "Custom Playlist "
+msgstr ""
+
+#: tfcustomplaylist.cbsortdirection.caption
+msgid "in ascending order"
+msgstr ""
+
+#: tfcustomplaylist.cklimit.caption
+msgid "Limit to "
+msgstr ""
+
+#: tfcustomplaylist.edtplaylistname.editlabel.caption
+msgid "Name"
+msgstr ""
+
+#: tfcustomplaylist.lbsort.caption
+msgid "Sort by"
+msgstr ""
+
+#: tfequalizer.caption
+msgctxt "tfequalizer.caption"
+msgid "Equalizer"
+msgstr ""
+
+#: tfequalizer.cbenableeq.caption
+msgid "Enable equalizer"
+msgstr ""
+
+#: tfequalizer.statictext1.caption
+msgid "Preset"
+msgstr ""
+
+#: tfmainform.actshowabout.caption
+msgctxt "tfmainform.actshowabout.caption"
+msgid "About"
+msgstr ""
+
+#: tfmainform.actshowequalizer.caption
+msgctxt "tfmainform.actshowequalizer.caption"
+msgid "Equalizer"
+msgstr ""
+
+#: tfmainform.actshowleft.caption
+msgid "Show Left Panel"
+msgstr ""
+
+#: tfmainform.actshowplmediainfo.caption
+msgctxt "tfmainform.actshowplmediainfo.caption"
+msgid "Media Info"
+msgstr ""
+
+#: tfmainform.actshowpreferences.caption
+msgid "Preferences"
+msgstr ""
+
+#: tfmainform.actshowpreferencesengine.caption
+msgctxt "tfmainform.actshowpreferencesengine.caption"
+msgid "Audio Engine"
+msgstr ""
+
+#: tfmainform.actshowpreferencesinterface.caption
+msgid "Aspect"
+msgstr ""
+
+#: tfmainform.actshowpreferencesmedialibrary.caption
+msgid "Collection Preferences"
+msgstr ""
+
+#: tfmainform.album.caption
+msgctxt "tfmainform.album.caption"
+msgid "Album"
+msgstr ""
+
+#: tfmainform.artist.caption
+msgctxt "tfmainform.artist.caption"
+msgid "Artist"
+msgstr ""
+
+#: tfmainform.btnbackdir.caption
+msgid "Back"
+msgstr ""
+
+#: tfmainform.btnclosecollectionstat.caption
+msgctxt "tfmainform.btnclosecollectionstat.caption"
+msgid "Close"
+msgstr ""
+
+#: tfmainform.btnfiltercancel.caption
+msgctxt "tfmainform.btnfiltercancel.caption"
+msgid "Close"
+msgstr ""
+
+#: tfmainform.btnforwarddir.caption
+msgid "Forward"
+msgstr ""
+
+#: tfmainform.btnhomedir.caption
+msgid "Home"
+msgstr ""
+
+#: tfmainform.btnupdir.caption
+msgid "Up"
+msgstr ""
+
+#: tfmainform.caption
+msgctxt "tfmainform.caption"
+msgid "OvoPlayer"
+msgstr ""
+
+#: tfmainform.cbgroupby.hint
+msgid "Group by"
+msgstr ""
+
+#: tfmainform.cbgroupby.text
+msgid "AlbumArtist / Album"
+msgstr ""
+
+#: tfmainform.edtfilter.editlabel.caption
+msgctxt "tfmainform.edtfilter.editlabel.caption"
+msgid "Filter"
+msgstr ""
+
+#: tfmainform.edtfilter.hint
+msgctxt "tfmainform.edtfilter.hint"
+msgid "Filter"
+msgstr ""
+
+#: tfmainform.gbstats.caption
+msgid "Stats"
+msgstr ""
+
+#: tfmainform.lbtime.caption
+msgid "00:00:00"
+msgstr ""
+
+#: tfmainform.menuitem14.caption
+msgid "View"
+msgstr ""
+
+#: tfmainform.menuitem25.caption
+msgid "Help"
+msgstr ""
+
+#: tfmainform.menuitem26.caption
+msgid "Sort"
+msgstr ""
+
+#: tfmainform.menuitem27.caption
+msgctxt "tfmainform.menuitem27.caption"
+msgid "Title"
+msgstr ""
+
+#: tfmainform.menuitem28.caption
+msgctxt "tfmainform.menuitem28.caption"
+msgid "Track"
+msgstr ""
+
+#: tfmainform.menuitem29.caption
+msgctxt "tfmainform.menuitem29.caption"
+msgid "Duration"
+msgstr ""
+
+#: tfmainform.menuitem42.caption
+msgid "Repeat Mode"
+msgstr ""
+
+#: tfmainform.menuitem49.caption
+msgctxt "tfmainform.menuitem49.caption"
+msgid "Rating"
+msgstr ""
+
+#: tfmainform.menuitem50.caption
+msgid "*"
+msgstr ""
+
+#: tfmainform.menuitem52.caption
+msgid "*****"
+msgstr ""
+
+#: tfmainform.menuitem53.caption
+msgid "****"
+msgstr ""
+
+#: tfmainform.menuitem54.caption
+msgid "***"
+msgstr ""
+
+#: tfmainform.menuitem55.caption
+msgid "**"
+msgstr ""
+
+#: tfmainform.menuitem56.caption
+msgid "None"
+msgstr ""
+
+#: tfmainform.menuitem59.caption
+msgctxt "tfmainform.menuitem59.caption"
+msgid "Enqueue"
+msgstr ""
+
+#: tfmainform.menuitem60.caption
+msgctxt "tfmainform.menuitem60.caption"
+msgid "Play"
+msgstr ""
+
+#: tfmainform.menuitem66.caption
+msgid "Edit"
+msgstr ""
+
+#: tfmainform.mnucollection.caption
+msgctxt "tfmainform.mnucollection.caption"
+msgid "Collection"
+msgstr ""
+
+#: tfmainform.mnucolumns.caption
+msgid "Columns"
+msgstr ""
+
+#: tfmainform.mnudeleteplaylist.caption
+msgid "Delete"
+msgstr ""
+
+#: tfmainform.mnueditplaylist.caption
+msgid "Edit …"
+msgstr ""
+
+#: tfmainform.mnuenqueueitems.caption
+msgctxt "tfmainform.mnuenqueueitems.caption"
+msgid "Enqueue"
+msgstr ""
+
+#: tfmainform.mnuenqueueplaylist.caption
+msgctxt "tfmainform.mnuenqueueplaylist.caption"
+msgid "Enqueue"
+msgstr ""
+
+#: tfmainform.mnufile.caption
+msgid "&File"
+msgstr ""
+
+#: tfmainform.mnufileinfo.caption
+msgctxt "tfmainform.mnufileinfo.caption"
+msgid "Media Info"
+msgstr ""
+
+#: tfmainform.mnuinfo.caption
+msgctxt "tfmainform.mnuinfo.caption"
+msgid "Media Info"
+msgstr ""
+
+#: tfmainform.mnunewplaylist.caption
+msgid "New playlist"
+msgstr ""
+
+#: tfmainform.mnuplayitems.caption
+msgctxt "tfmainform.mnuplayitems.caption"
+msgid "Play"
+msgstr ""
+
+#: tfmainform.mnuplayplaylist.caption
+msgctxt "tfmainform.mnuplayplaylist.caption"
+msgid "Play"
+msgstr ""
+
+#: tfmainform.mnurefreshitems.caption
+msgid "Refresh"
+msgstr ""
+
+#: tfmainform.mnuremoveplaylist.caption
+msgid "Remove from Playlist"
+msgstr ""
+
+#: tfmainform.mnurestore.caption
+msgid "Restore"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[0].title.caption
+msgid "#"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[10].title.caption
+msgctxt "tfmainform.sgplaylist.columns[10].title.caption"
+msgid "Rating"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[1].title.caption
+msgctxt "tfmainform.sgplaylist.columns[1].title.caption"
+msgid "Title"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[2].title.caption
+msgctxt "tfmainform.sgplaylist.columns[2].title.caption"
+msgid "Album"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[3].title.caption
+msgctxt "tfmainform.sgplaylist.columns[3].title.caption"
+msgid "Artist"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[4].title.caption
+msgid "Time"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[5].title.caption
+msgctxt "tfmainform.sgplaylist.columns[5].title.caption"
+msgid "Track"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[6].title.caption
+msgctxt "tfmainform.sgplaylist.columns[6].title.caption"
+msgid "Genre"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[7].title.caption
+msgctxt "tfmainform.sgplaylist.columns[7].title.caption"
+msgid "Year"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[8].title.caption
+msgctxt "tfmainform.sgplaylist.columns[8].title.caption"
+msgid "Album Artist"
+msgstr ""
+
+#: tfmainform.sgplaylist.columns[9].title.caption
+msgid "FileName"
+msgstr ""
+
+#: tfmainform.sgstats.columns[0].title.caption
+msgctxt "tfmainform.sgstats.columns[0].title.caption"
+msgid "Title"
+msgstr ""
+
+#: tfmainform.sgstats.columns[1].title.caption
+msgctxt "tfmainform.sgstats.columns[1].title.caption"
+msgid "Title"
+msgstr ""
+
+#: tfmainform.tbrepeat.caption
+msgid "     "
+msgstr ""
+
+#: tfmainform.title.caption
+msgctxt "tfmainform.title.caption"
+msgid "Title"
+msgstr ""
+
+#: tfmainform.tscollection.caption
+msgctxt "tfmainform.tscollection.caption"
+msgid "Collection"
+msgstr ""
+
+#: tfmainform.tsdirectory.caption
+msgid "Directory"
+msgstr ""
+
+#: tfmainform.tsplaylist.caption
+msgid "PlayList"
+msgstr ""
+
+#: tfrequalizer.lbband.caption
+msgid "Band"
+msgstr ""
+
+#: tfrequalizer.lbvalue.caption
+msgid "Value"
+msgstr ""
+
+#: tfrfield.testdate.text
+msgctxt "tfrfield.testdate.text"
+msgid "equal to"
+msgstr ""
+
+#: tfrfield.testnumber.text
+msgctxt "tfrfield.testnumber.text"
+msgid "equal to"
+msgstr ""
+
+#: tfrfield.testrating.text
+msgctxt "tfrfield.testrating.text"
+msgid "equal to"
+msgstr ""
+
+#: tfrfield.testtext.text
+msgctxt "tfrfield.testtext.text"
+msgid "is"
+msgstr ""
+
+#: tfsonginfo.bnext.caption
+msgctxt "tfsonginfo.bnext.caption"
+msgid "Next"
+msgstr ""
+
+#: tfsonginfo.bprevious.caption
+msgctxt "tfsonginfo.bprevious.caption"
+msgid "Previous"
+msgstr ""
+
+#: tfsonginfo.buttonpanel1.cancelbutton.caption
+msgid "Discard"
+msgstr ""
+
+#: tfsonginfo.buttonpanel1.okbutton.caption
+msgid "Save"
+msgstr ""
+
+#: tfsonginfo.caption
+msgid "Song Information"
+msgstr ""
+
+#: tfsonginfo.groupbox1.caption
+msgid "Library"
+msgstr ""
+
+#: tfsonginfo.laalbum.caption
+msgctxt "tfsonginfo.laalbum.caption"
+msgid "Album"
+msgstr ""
+
+#: tfsonginfo.laalbumartist.caption
+msgctxt "tfsonginfo.laalbumartist.caption"
+msgid "Album Artist"
+msgstr ""
+
+#: tfsonginfo.laartist.caption
+msgctxt "tfsonginfo.laartist.caption"
+msgid "Artist"
+msgstr ""
+
+#: tfsonginfo.label11.caption
+msgid "BitRate"
+msgstr ""
+
+#: tfsonginfo.label12.caption
+msgid "Sampling"
+msgstr ""
+
+#: tfsonginfo.label13.caption
+msgid "Channels"
+msgstr ""
+
+#: tfsonginfo.label14.caption
+msgctxt "tfsonginfo.label14.caption"
+msgid "File Name"
+msgstr ""
+
+#: tfsonginfo.label15.caption
+msgid "Size"
+msgstr ""
+
+#: tfsonginfo.label16.caption
+msgid "Play Count"
+msgstr ""
+
+#: tfsonginfo.label17.caption
+msgid "Added to collection"
+msgstr ""
+
+#: tfsonginfo.label18.caption
+msgid "Last Played"
+msgstr ""
+
+#: tfsonginfo.label9.caption
+msgctxt "tfsonginfo.label9.caption"
+msgid "Duration"
+msgstr ""
+
+#: tfsonginfo.lacomment.caption
+msgid "Comment"
+msgstr ""
+
+#: tfsonginfo.lagenre.caption
+msgctxt "tfsonginfo.lagenre.caption"
+msgid "Genre"
+msgstr ""
+
+#: tfsonginfo.latitle.caption
+msgctxt "tfsonginfo.latitle.caption"
+msgid "Title"
+msgstr ""
+
+#: tfsonginfo.latrack.caption
+msgctxt "tfsonginfo.latrack.caption"
+msgid "Track"
+msgstr ""
+
+#: tfsonginfo.layear.caption
+msgctxt "tfsonginfo.layear.caption"
+msgid "Year"
+msgstr ""
+
+#: tfsonginfo.tsmediaproperty.caption
+msgid "Media Property"
+msgstr ""
+
+#: tfsonginfo.tstags.caption
+msgid "Tags"
+msgstr ""
+
