@@ -168,7 +168,7 @@ type
     MenuItem62: TMenuItem;
     mnuColumns: TMenuItem;
     MenuItem51: TMenuItem;
-    MenuItem56: TMenuItem;
+    mnuRating0: TMenuItem;
     MenuItem57: TMenuItem;
     MenuItem61: TMenuItem;
     MenuItem66: TMenuItem;
@@ -196,12 +196,12 @@ type
     MenuItem46: TMenuItem;
     MenuItem47: TMenuItem;
     MenuItem48: TMenuItem;
-    MenuItem49: TMenuItem;
-    MenuItem50: TMenuItem;
-    MenuItem52: TMenuItem;
-    MenuItem53: TMenuItem;
-    MenuItem54: TMenuItem;
-    MenuItem55: TMenuItem;
+    mnuRating: TMenuItem;
+    mnuRating1: TMenuItem;
+    mnuRating5: TMenuItem;
+    mnuRating4: TMenuItem;
+    mnuRating3: TMenuItem;
+    mnuRating2: TMenuItem;
     sgPlayList: TStringGrid;
     slVolume: TThemedSlider;
     edtFilter: TLabeledEdit;
@@ -338,6 +338,8 @@ type
     procedure FormResize(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure imgCoverDblClick(Sender: TObject);
+    procedure mnuRating0Click(Sender: TObject);
+    procedure mnuRatingClick(Sender: TObject);
     procedure MenuItem59Click(Sender: TObject);
     procedure MenuItem60Click(Sender: TObject);
     procedure mnuColumnsClick(Sender: TObject);
@@ -1698,6 +1700,26 @@ begin
 
 end;
 
+procedure TfMainForm.mnuRating0Click(Sender: TObject);
+begin
+ BackEnd.PlayList.CurrentItem.Rating := TMenuItem(Sender).tag * 2;
+end;
+
+procedure TfMainForm.mnuRatingClick(Sender: TObject);
+begin
+  if not assigned (BackEnd.PlayList.CurrentItem) then exit;
+  case (BackEnd.PlayList.CurrentItem.Rating div 2) of
+    1: mnuRating1.Checked := true;
+    2: mnuRating2.Checked := true;
+    3: mnuRating3.Checked := true;
+    4: mnuRating4.Checked := true;
+    5: mnuRating5.Checked := true;
+   else
+     mnuRating0.Checked := true;
+
+  end;
+end;
+
 procedure TfMainForm.MenuItem59Click(Sender: TObject);
 begin
   FileSystemHandler(True);
@@ -2120,7 +2142,7 @@ begin
              7: Txt := ASong.Tags.Year;
              8: Txt := ASong.Tags.AlbumArtist;
              9: Txt := ASong.FileName;
-            10: Txt := 'WWWWW';
+            10: Txt := 'WWWWWW';
           end;
           if txt = '' then
             txt:='.';

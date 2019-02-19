@@ -45,26 +45,26 @@ object fMainForm: TfMainForm
       Options = [nboMultiLine, nboHidePageListPopup]
       object tsCollection: TTabSheet
         Caption = 'Collection'
-        ClientHeight = 314
-        ClientWidth = 240
+        ClientHeight = 330
+        ClientWidth = 238
         object pnlCollection: TPanel
           Left = 0
           Height = 71
           Top = 0
-          Width = 240
+          Width = 238
           Align = alTop
           BevelOuter = bvNone
           ClientHeight = 71
-          ClientWidth = 240
+          ClientWidth = 238
           TabOrder = 0
           object cbGroupBy: TComboBox
             Left = 12
-            Height = 34
+            Height = 23
             Hint = 'Group by'
             Top = 6
-            Width = 220
+            Width = 218
             Anchors = [akTop, akLeft, akRight]
-            ItemHeight = 0
+            ItemHeight = 15
             ItemIndex = 0
             Items.Strings = (
               'AlbumArtist / Album'
@@ -79,13 +79,13 @@ object fMainForm: TfMainForm
           end
           object edtFilter: TLabeledEdit
             Left = 46
-            Height = 36
+            Height = 23
             Hint = 'Filter'
             Top = 38
-            Width = 164
+            Width = 162
             Anchors = [akTop, akLeft, akRight]
-            EditLabel.Height = 17
-            EditLabel.Width = 28
+            EditLabel.Height = 15
+            EditLabel.Width = 26
             EditLabel.Caption = 'Filter'
             EditLabel.ParentColor = False
             LabelPosition = lpLeft
@@ -93,7 +93,7 @@ object fMainForm: TfMainForm
             OnChange = edtFilterChange
           end
           object btnFilterCancel: TSpeedButton
-            Left = 216
+            Left = 214
             Height = 22
             Top = 39
             Width = 19
@@ -144,9 +144,9 @@ object fMainForm: TfMainForm
         end
         object tvCollection: TTreeView
           Left = 0
-          Height = 243
+          Height = 259
           Top = 71
-          Width = 240
+          Width = 238
           Align = alClient
           DragMode = dmAutomatic
           Images = DM.ilSmall
@@ -280,7 +280,7 @@ object fMainForm: TfMainForm
       Width = 246
       Align = alBottom
       Caption = 'Stats'
-      ClientHeight = 82
+      ClientHeight = 90
       ClientWidth = 242
       ParentFont = False
       TabOrder = 1
@@ -336,7 +336,7 @@ object fMainForm: TfMainForm
       end
       object sgStats: TStringGrid
         Left = 0
-        Height = 82
+        Height = 90
         Top = 0
         Width = 220
         Align = alClient
@@ -1075,27 +1075,52 @@ object fMainForm: TfMainForm
     object MenuItem9: TMenuItem
       Caption = '-'
     end
-    object MenuItem49: TMenuItem
+    object mnuRating: TMenuItem
       Caption = 'Rating'
-      object MenuItem56: TMenuItem
+      Visible = False
+      OnClick = mnuRatingClick
+      object mnuRating0: TMenuItem
+        AutoCheck = True
         Caption = 'None'
+        GroupIndex = 1
+        RadioItem = True
+        OnClick = mnuRating0Click
       end
-      object MenuItem50: TMenuItem
+      object mnuRating1: TMenuItem
         AutoCheck = True
         Caption = '*'
-        Checked = True
+        GroupIndex = 1
+        RadioItem = True
+        OnClick = mnuRating0Click
       end
-      object MenuItem55: TMenuItem
+      object mnuRating2: TMenuItem
+        AutoCheck = True
         Caption = '**'
+        GroupIndex = 1
+        RadioItem = True
+        OnClick = mnuRating0Click
       end
-      object MenuItem54: TMenuItem
+      object mnuRating3: TMenuItem
+        AutoCheck = True
         Caption = '***'
+        GroupIndex = 1
+        RadioItem = True
+        OnClick = mnuRating0Click
       end
-      object MenuItem53: TMenuItem
+      object mnuRating4: TMenuItem
+        AutoCheck = True
         Caption = '****'
+        GroupIndex = 1
+        RadioItem = True
+        OnClick = mnuRating0Click
       end
-      object MenuItem52: TMenuItem
+      object mnuRating5: TMenuItem
+        Tag = 4
+        AutoCheck = True
         Caption = '*****'
+        GroupIndex = 1
+        RadioItem = True
+        OnClick = mnuRating0Click
       end
     end
     object mnuRestore: TMenuItem
