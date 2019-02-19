@@ -32,8 +32,9 @@ uses
   {$IFDEF BASS} lazdynamic_bass, audioengine_bass,{$ENDIF}
   {$IFDEF DSHOW} mediadshow, audioengine_dshow,{$ENDIF}
   {$IFDEF MEDIAFOUNDATION} mediafoundation, audioengine_mf,{$ENDIF}
-  {$IFDEF OPENSOURCELIB} uos_libsndfile, uos_mpg123, uos_portaudio, audioengine_OpenLib,{$ENDIF}
-  {$IFDEF UOS} UOS, uos_libsndfile, uos_mpg123, uos_portaudio, audioengine_UOS,{$ENDIF}
+  {$IF defined(OPENSOURCELIB) OR defined(UOS)}  uos_libsndfile, uos_mpg123, uos_portaudio,{$ENDIF}
+  {$IFDEF OPENSOURCELIB}audioengine_OpenLib,{$ENDIF}
+  {$IFDEF UOS} UOS,audioengine_UOS,{$ENDIF}
   {$IFDEF FFMPEG} ffmpeg, audioengine_FFMPEG,{$ENDIF}
   {$IFDEF LIBMPV} libmpv, audioengine_libmpv,{$ENDIF}
   extctrls,
