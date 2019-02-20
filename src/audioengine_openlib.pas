@@ -60,13 +60,13 @@ type
     function GetSongPos: integer; override;
     procedure SetSongPos(const AValue: integer); override;
     function GetState: TEngineState; override;
-    procedure DoPlay(Song: TSong; offset:Integer); override;
+    Function DoPlay(Song: TSong; offset:Integer):boolean; override;
     procedure SetMuted(const AValue: boolean);  override;
     Function GetMuted: boolean; override;
   public
     class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
-
+    Function Initialize: boolean; override;
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
     destructor Destroy; override;
@@ -194,7 +194,6 @@ end;
 
 function TAudioEngineOpenLib.GetSongPos: integer;
 begin
-  exit;
   case CurrentSoundDecoder of
     csdMPG123 : Result := trunc(mpg123_tell(StreamHandle) / (fRate / 1000));
     csdSndFile : Result := trunc(sf_seek(StreamHandle, 0, SEEK_CUR) / (fRate / 1000));
@@ -226,9 +225,9 @@ begin
   Mp_Load('libmpg123.so.0');
   {$ENDIF LINUX}
   {$IFDEF WINDOWS}
-  Pa_Load('libportaudio.dll');
-  sf_Load('libsndfile.dll');
-  Mp_Load('libmpg123.dll');
+  Pa_Load('libportaudio-32.dll');
+  sf_Load('libsndfile-32.dll');
+  Mp_Load('libmpg123-32.dll');
   {$ENDIF LINUX}
 
   {$IFDEF DARWIN}
@@ -279,14 +278,14 @@ begin
 
 end;
 
-procedure TAudioEngineOpenLib.DoPlay(Song: TSong; offset:Integer);
+function TAudioEngineOpenLib.DoPlay(Song: TSong; offset:Integer):boolean;
 Var
   savedVolume: Integer;
   err : integer;
   Fchannels, Fencoding:Integer;
 begin
   // create new media
-  if Not FileExistsUTF8(Song.FullName) then
+  if Not FileExists(Song.FullName) then
      exit;
 
   if Assigned(DecodingThread) then
@@ -382,9 +381,9 @@ begin
                 Mp_Load('LibMpg123-32.dylib');
     {$ENDIF DARWIN}
     {$IFDEF WINDOWS}
-    Result :=   Pa_Load('LibPortaudio.dll') and
-                sf_Load('LibSndFile.dll') and
-                Mp_Load('LibMpg123.dll');
+    Result :=   Pa_Load('LibPortaudio-32.dll') and
+                sf_Load('LibSndFile-32.dll') and
+                Mp_Load('LibMpg123-32.dll');
     {$ENDIF DARWIN}
 
   except
@@ -396,6 +395,11 @@ begin
      Mp_Unload();
   except
   end;
+end;
+
+function TAudioEngineOpenLib.Initialize: boolean;
+begin
+  result := true;
 end;
 
 procedure TAudioEngineOpenLib.PostCommand(Command: TEngineCommand; Param: integer);
@@ -443,7 +447,7 @@ begin
 end;
 
 initialization
-  RegisterEngineClass(TAudioEngineOpenLib, 1, false, true);
+  RegisterEngineClass(TAudioEngineOpenLib, 999, false, true);
 
 
 end.
