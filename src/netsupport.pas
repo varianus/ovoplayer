@@ -141,7 +141,8 @@ begin
      dec(cmdlength);
 
   pColon:= pos(CATEGORY_COMMAND_SEPARATOR,ACommand);
-  if pColon < 1 then
+  //Size of category is 3 char
+  if pColon < 4 then
     Result.Command:=ACommand
   else
     begin
