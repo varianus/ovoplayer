@@ -61,6 +61,7 @@ type
     public
       ID:      integer;
       Kind:    TTagKind;
+      EmptyTag: Boolean;
   end;
 
   TFileTreeNode = class ( TTreeNode)
@@ -1356,14 +1357,19 @@ end;
 function TfMainForm.PrepareImportFilter(Node: TMusicTreeNode): string;
 var
   wrkNode:  TMusicTreeNode;
+  wrkValue: string;
 begin
   Result  := '0=0';
   wrkNode := Node;
   repeat
+    if wrkNode.EmptyTag then
+      wrkValue := EmptyStr
+    else
+      wrkValue := wrkNode.Text;
     Result   := Result + format(' and %s = %s ', [SortArray[wrkNode.Kind].FieldName,
-      QuotedStr(wrkNode.Text)]);
+      QuotedStr(wrkValue)]);
     wrkNode  := TMusicTreeNode(wrkNode.Parent);
-  until (wrkNode = nil) or (wrkNode.Index = 0);
+  until (wrkNode = nil) ;
 
 end;
 
@@ -1392,7 +1398,8 @@ begin
            begin
              L1Item   := TMusicTreeNode(TVCollection.Items.Add(nil, TagValue(Tags, SortFields.F1)));
              L1Key    := UpperCase(TagValue(Tags, SortFields.F1));
-             if L1Item.Text = EmptyStr then L1Item.Text := rEmptyTag;
+             L1Item.EmptyTag := L1Item.Text = EmptyStr;
+             if L1Item.EmptyTag then L1Item.Text := rEmptyTag;
              L1Item.Kind := SortFields.F1;
              L2Key    := FakeValue;
            end;
@@ -1401,7 +1408,8 @@ begin
            begin
              L2Item   := TMusicTreeNode(TVCollection.Items.AddChild(L1Item, TagValue(Tags, SortFields.F2)));
              L2Key    := UpperCase(TagValue(Tags, SortFields.F2));
-             if L2Item.Text = EmptyStr then L2Item.Text := rEmptyTag;
+             L2Item.EmptyTag := L2Item.Text = EmptyStr;
+             if L2Item.EmptyTag then L2Item.Text := rEmptyTag;
              L2Item.Kind := SortFields.F2;
            end;
 
