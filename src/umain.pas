@@ -1995,6 +1995,26 @@ begin
         info.InitFromFile(BackEnd.mediaLibrary.FullNameFromID(Node.ID));
         Info.show;
       end;
+      if (Node.Kind = tkAlbum) then
+      begin
+       fileList := TStringList.Create;
+       try
+          Node:= TMusicTreeNode(Node.GetFirstChild);
+          while node <> nil do
+            begin
+              if (node.Kind = tkSong) then
+                 fileList.Add(BackEnd.mediaLibrary.FullNameFromID(Node.ID));
+              Node:=TMusicTreeNode(Node.GetNextSibling);
+            end;
+         info := TfSongInfo.Create(Application);
+         info.InitFromList(FileList);
+         Info.show;
+
+       finally
+         FreeAndNil(FileList);
+       end;
+      end;
+
      end
   else
      begin
@@ -2077,7 +2097,7 @@ begin
   if node = nil then
      exit;
   case Node.Kind of
-       tkSong : mnuInfo.Visible := true;
+       tkSong, tkAlbum : mnuInfo.Visible := true;
   else
        mnuInfo.Visible := False;
    end;
