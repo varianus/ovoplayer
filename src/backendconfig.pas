@@ -33,6 +33,7 @@ type
   private
     FCheckOnStart: boolean;
     FLibraryPaths: TStringList;
+    procedure Changed(Sender: TObject);
     procedure SetCheckOnStart(AValue: boolean);
     procedure SetLibraryPaths(AValue: TStringList);
   protected
@@ -160,6 +161,11 @@ end;
 
 { TMediaLibraryParam }
 
+procedure TMediaLibraryParam.Changed(Sender: TObject);
+begin
+  Dirty:= true;
+end;
+
 procedure TMediaLibraryParam.SetCheckOnStart(AValue: boolean);
 begin
   if FCheckOnStart=AValue then Exit;
@@ -178,6 +184,7 @@ end;
 constructor TMediaLibraryParam.Create(aOwner: TConfig);
 begin
   FLibraryPaths := TStringList.Create;
+  FLibraryPaths.OnChange := @Changed;
   inherited Create(aOwner);
 end;
 
