@@ -158,9 +158,9 @@ object fConfig: TfConfig
     Height = 442
     Top = 0
     Width = 547
-    ActivePage = tsOSD
+    ActivePage = tsInterface
     Align = alClient
-    TabIndex = 3
+    TabIndex = 0
     TabOrder = 1
     object tsInterface: TTabSheet
       Caption = 'Interfaces'
@@ -180,7 +180,7 @@ object fConfig: TfConfig
       object cbTrayVisible: TCheckBox
         Left = 12
         Height = 19
-        Top = 71
+        Top = 72
         Width = 98
         Caption = 'Show tray icon'
         Checked = True
@@ -190,7 +190,7 @@ object fConfig: TfConfig
       object cbCaptureMMKeys: TCheckBox
         Left = 12
         Height = 19
-        Top = 135
+        Top = 168
         Width = 129
         Caption = 'Use multimedia keys'
         Checked = True
@@ -199,9 +199,9 @@ object fConfig: TfConfig
         TabOrder = 4
       end
       object rgKeyCaptureMode: TRadioGroup
-        Left = 12
+        Left = 8
         Height = 82
-        Top = 176
+        Top = 216
         Width = 203
         AutoFill = True
         Caption = 'Keys Capture Mode'
@@ -225,7 +225,7 @@ object fConfig: TfConfig
       object cbEnableSoundMenu: TCheckBox
         Left = 12
         Height = 19
-        Top = 103
+        Top = 136
         Width = 132
         Caption = 'Show in sound menu'
         Checked = True
@@ -235,10 +235,20 @@ object fConfig: TfConfig
       object cbRestart: TCheckBox
         Left = 12
         Height = 19
-        Top = 39
+        Top = 40
         Width = 152
         Caption = 'Restart from last position'
         TabOrder = 1
+      end
+      object cbPauseWhenLocked: TCheckBox
+        Left = 12
+        Height = 19
+        Top = 104
+        Width = 204
+        Caption = 'Pause player when screen is locked'
+        Checked = True
+        State = cbChecked
+        TabOrder = 6
       end
     end
     object tsEngine: TTabSheet
@@ -291,7 +301,7 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          425
+          408
         )
       end
       object EngineInfoView: TValueListEditor
@@ -318,7 +328,7 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          205
+          188
         )
       end
     end

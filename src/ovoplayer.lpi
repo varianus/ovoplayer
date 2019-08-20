@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="11"/>
+    <Version Value="12"/>
     <PathDelim Value="\"/>
     <General>
+      <Flags>
+        <CompatibilityMode Value="True"/>
+      </Flags>
       <SessionStorage Value="InProjectDir"/>
-      <MainUnit Value="0"/>
       <Title Value="OvoPlayer"/>
       <Scaled Value="True"/>
       <ResourceType Value="res"/>
@@ -42,11 +44,11 @@
             <OtherUnitFiles Value="import-engines;ovotag;components\network;platform\$(TargetOS)"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
-          <Conditionals Value="if TargetOS = 'darwin' then
-   CustomOptions := '-dUseCThreads';
+          <Conditionals Value="if TargetOS = &apos;darwin&apos; then
+   CustomOptions := &apos;-dUseCThreads&apos;;
 
-if TargetOS = 'linux' then
-   CustomOptions := '-dUseCThreads -dUseStatusIcon';"/>
+if TargetOS = &apos;linux&apos; then
+   CustomOptions := &apos;-dUseCThreads -dUseStatusIcon&apos;;"/>
           <BuildMacros>
             <Count Value="1"/>
             <Item1>
@@ -104,11 +106,11 @@ if TargetOS = 'linux' then
             <OtherUnitFiles Value="import-engines;ovotag;components\network;platform\$(TargetOS)"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
-          <Conditionals Value="if TargetOS = 'darwin' then
-   CustomOptions := '-dUseCThreads';
+          <Conditionals Value="if TargetOS = &apos;darwin&apos; then
+   CustomOptions := &apos;-dUseCThreads&apos;;
 
-if TargetOS = 'linux' then
-   CustomOptions := '-dUseCThreads -dUseStatusIcon';"/>
+if TargetOS = &apos;linux&apos; then
+   CustomOptions := &apos;-dUseCThreads -dUseStatusIcon&apos;;"/>
           <BuildMacros>
             <Count Value="1"/>
             <Item1>
@@ -168,11 +170,11 @@ if TargetOS = 'linux' then
             <OtherUnitFiles Value="import-engines;ovotag;components\network;platform\$(TargetOS)"/>
             <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
-          <Conditionals Value="if TargetOS = 'darwin' then
-   CustomOptions := '-dUseCThreads';
+          <Conditionals Value="if TargetOS = &apos;darwin&apos; then
+   CustomOptions := &apos;-dUseCThreads&apos;;
 
-if TargetOS = 'linux' then
-   CustomOptions := '-dUseCThreads -dUseStatusIcon';"/>
+if TargetOS = &apos;linux&apos; then
+   CustomOptions := &apos;-dUseCThreads -dUseStatusIcon&apos;;"/>
           <BuildMacros>
             <Count Value="1"/>
             <Item1>
@@ -249,7 +251,7 @@ if TargetOS = 'linux' then
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="89">
+    <Units Count="91">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -688,6 +690,15 @@ if TargetOS = 'linux' then
         <Filename Value="ovotag\file_opus.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit88>
+      <Unit89>
+        <Filename Value="screenlock.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ScreenLock"/>
+      </Unit89>
+      <Unit90>
+        <Filename Value="platform\win32\screenlockimpl.inc"/>
+        <IsPartOfProject Value="True"/>
+      </Unit90>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -701,11 +712,11 @@ if TargetOS = 'linux' then
       <OtherUnitFiles Value="import-engines;ovotag;components\network;platform\$(TargetOS)"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
-    <Conditionals Value="if TargetOS = 'darwin' then
-   CustomOptions := '-dUseCThreads';
+    <Conditionals Value="if TargetOS = &apos;darwin&apos; then
+   CustomOptions := &apos;-dUseCThreads&apos;;
 
-if TargetOS = 'linux' then
-   CustomOptions := '-dUseCThreads -dUseStatusIcon';"/>
+if TargetOS = &apos;linux&apos; then
+   CustomOptions := &apos;-dUseCThreads -dUseStatusIcon&apos;;"/>
     <BuildMacros>
       <Count Value="1"/>
       <Item1>

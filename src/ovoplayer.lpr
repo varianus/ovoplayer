@@ -73,6 +73,7 @@ uses
   {$IFDEF NETWORK_SS}NetIntf,{$ENDIF}
   {$IFDEF NETWORK_WS}NetIntfWS,{$ENDIF}
   {$IFDEF CATCH_SIGNAL}catch_signal,{$ENDIF}
+  {$IFDEF SCREEN_LOCK}screenlock,{$ENDIF}
 
   // ovotag
   song, AudioTag, basetag,

@@ -36,6 +36,7 @@ uses
       {$ifdef Network_Ws} netintfws,{$ENDIF}
   {$ENDIF}
   {$IFDEF MULTIMEDIA_KEYS}MultimediaKeys, {$ENDIF}
+  {$IFDEF SCREEN_LOCK}screenlock,{$ENDIF}
   ucover, ucustomplaylist, playlistbuilder, netprotocol,
   GuiConfig, uequalizer, ThemedSlider, LCLType;
 
@@ -446,6 +447,9 @@ type
     {$ENDIF}
     {$IFDEF MULTIMEDIA_KEYS}
     fMultimediaKeys:   TMultimediaKeys;
+    {$ENDIF}
+    {$IFDEF SCREEN_LOCK}
+    fscreenlock: TScreenLockHandler;
     {$ENDIF}
 
     FPlaylistParam: TPlaylistParam;
@@ -1558,6 +1562,14 @@ begin
     end;
   {$ENDIF}
 
+  {$IFDEF SCREEN_LOCK}
+  if GuiConfigObj.InterfaceParam.PauseWhenLocked then
+    begin
+      fscreenlock := TScreenLockHandler.Create(BackEnd);
+      fscreenlock.Init;
+    end;
+  {$ENDIF}
+
   try
     if Not FileExists(BackEnd.Config.GetPlaylistsPath+'playlist.opl') then
       begin
@@ -1632,6 +1644,12 @@ begin
   if Assigned(fMultimediaKeys) then
     FreeAndNil(fMultimediaKeys);
   {$ENDIF}
+
+  {$IFDEF SCREEN_LOCK}
+  if Assigned(fscreenlock) then
+    FreeAndNil(fscreenlock);
+  {$ENDIF}
+
 
   if Assigned(FPlaylistParam) then
     FreeAndNil(FPlaylistParam);

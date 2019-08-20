@@ -15,6 +15,7 @@
 {"hash":213823029,"name":"tfconfig.rgkeycapturemode.caption","sourcebytes":[75,101,121,115,32,67,97,112,116,117,114,101,32,77,111,100,101],"value":"Keys Capture Mode"},
 {"hash":13733,"name":"tfconfig.cbenablesoundmenu.caption","sourcebytes":[83,104,111,119,32,105,110,32,115,111,117,110,100,32,109,101,110,117],"value":"Show in sound menu"},
 {"hash":242817886,"name":"tfconfig.cbrestart.caption","sourcebytes":[82,101,115,116,97,114,116,32,102,114,111,109,32,108,97,115,116,32,112,111,115,105,116,105,111,110],"value":"Restart from last position"},
+{"hash":71584964,"name":"tfconfig.cbpausewhenlocked.caption","sourcebytes":[80,97,117,115,101,32,112,108,97,121,101,114,32,119,104,101,110,32,115,99,114,101,101,110,32,105,115,32,108,111,99,107,101,100],"value":"Pause player when screen is locked"},
 {"hash":80011333,"name":"tfconfig.tsengine.caption","sourcebytes":[69,110,103,105,110,101],"value":"Engine"},
 {"hash":5206101,"name":"tfconfig.rgaudioengine.caption","sourcebytes":[65,117,100,105,111,32,69,110,103,105,110,101],"value":"Audio Engine"},
 {"hash":21199801,"name":"tfconfig.tsmedialibrary.caption","sourcebytes":[77,101,100,105,97,32,76,105,98,114,97,114,121],"value":"Media Library"},

@@ -72,12 +72,14 @@ type
     FEnableSoundMenu: boolean;
     FGroupBy: Integer;
     FMinimizeOnClose: boolean;
+    FPauseWhenLocked: boolean;
     FShowTrayIcon: boolean;
     procedure SetCaptureMMKeys(AValue: boolean);
     procedure SetCaptureMMkeysMode(AValue: Integer);
     procedure SetEnableSoundMenu(AValue: boolean);
     procedure SetGroupBy(AValue: Integer);
     procedure SetMinimizeOnClose(AValue: boolean);
+    procedure SetPauseWhenLocked(AValue: boolean);
     procedure SetShowTrayIcon(AValue: boolean);
   protected
     Procedure InternalSave; override;
@@ -88,6 +90,7 @@ type
     Property CaptureMMKeys: boolean read FCaptureMMKeys write SetCaptureMMKeys;
     Property CaptureMMkeysMode: Integer read FCaptureMMkeysMode write SetCaptureMMkeysMode;
     Property EnableSoundMenu: boolean read FEnableSoundMenu write SetEnableSoundMenu;
+    Property PauseWhenLocked: boolean read FPauseWhenLocked write SetPauseWhenLocked;
     Procedure Load; override;
 
   end;
@@ -232,6 +235,13 @@ begin
   Dirty := True;
 end;
 
+procedure TInterfaceParam.SetPauseWhenLocked(AValue: boolean);
+begin
+  if FPauseWhenLocked = AValue then Exit;
+  FPauseWhenLocked := AValue;
+  Dirty := True;
+end;
+
 procedure TInterfaceParam.SetShowTrayIcon(AValue: boolean);
 begin
   if FShowTrayIcon=AValue then Exit;
@@ -249,6 +259,7 @@ begin
   owner.IniFile.WriteBool(Base, 'CaptureMMKeys', CaptureMMKeys);
   owner.IniFile.WriteInteger(Base, 'CaptureMMKeysMode', CaptureMMkeysMode);
   owner.IniFile.WriteInteger(Base, 'GroupBy', GroupBy);
+  owner.IniFile.WriteBool(Base, 'PauseWhenLocked', PauseWhenLocked);
 
 end;
 
@@ -262,6 +273,7 @@ begin
   fCaptureMMKeys     := owner.IniFile.ReadBool(Base , 'CaptureMMKeys', False);
   fCaptureMMkeysMode := owner.IniFile.ReadInteger(Base , 'CaptureMMkeysMode', 0);
   fGroupBy           := owner.IniFile.ReadInteger(Base , 'GroupBy', 0);
+  FPauseWhenLocked   := owner.IniFile.ReadBool(Base , 'PauseWhenLocked', False);
 
 end;
 

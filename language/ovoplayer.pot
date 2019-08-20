@@ -6,6 +6,7 @@ msgid "Added:"
 msgstr ""
 
 #: appconsts.rallfiles
+#, object-pascal-format
 msgid "All Files(%0:s)|%0:s"
 msgstr ""
 
@@ -18,10 +19,12 @@ msgid "Scanning Collection"
 msgstr ""
 
 #: appconsts.rbuildenv
+#, object-pascal-format
 msgid "Build environment: Lazarus %0:s  FPC %1:s"
 msgstr ""
 
 #: appconsts.rcurrentengine
+#, object-pascal-format
 msgid "Current audio engine: %s"
 msgstr ""
 
@@ -52,6 +55,7 @@ msgid ""
 msgstr ""
 
 #: appconsts.rmatchingitems
+#, object-pascal-format
 msgid "%0:d tracks matching current filter (total time %1:s, total size %2:s)"
 msgstr ""
 
@@ -88,6 +92,7 @@ msgid "Updated:"
 msgstr ""
 
 #: appconsts.rversionstring
+#, object-pascal-format
 msgid "Version: %0:s (SVN Rev.: %1:s Date %2:s)"
 msgstr ""
 
@@ -498,6 +503,10 @@ msgstr ""
 msgid "Enable network remote"
 msgstr ""
 
+#: tfconfig.cbpausewhenlocked.caption
+msgid "Pause player when screen is locked"
+msgstr ""
+
 #: tfconfig.cbrestart.caption
 msgid "Restart from last position"
 msgstr ""
@@ -785,35 +794,6 @@ msgstr ""
 msgid "Repeat Mode"
 msgstr ""
 
-#: tfmainform.menuitem49.caption
-msgctxt "tfmainform.menuitem49.caption"
-msgid "Rating"
-msgstr ""
-
-#: tfmainform.menuitem50.caption
-msgid "*"
-msgstr ""
-
-#: tfmainform.menuitem52.caption
-msgid "*****"
-msgstr ""
-
-#: tfmainform.menuitem53.caption
-msgid "****"
-msgstr ""
-
-#: tfmainform.menuitem54.caption
-msgid "***"
-msgstr ""
-
-#: tfmainform.menuitem55.caption
-msgid "**"
-msgstr ""
-
-#: tfmainform.menuitem56.caption
-msgid "None"
-msgstr ""
-
 #: tfmainform.menuitem59.caption
 msgctxt "tfmainform.menuitem59.caption"
 msgid "Enqueue"
@@ -881,6 +861,41 @@ msgstr ""
 #: tfmainform.mnuplayplaylist.caption
 msgctxt "tfmainform.mnuplayplaylist.caption"
 msgid "Play"
+msgstr ""
+
+#: tfmainform.mnurating.caption
+msgctxt "tfmainform.mnurating.caption"
+msgid "Rating"
+msgstr ""
+
+#: tfmainform.mnurating0.caption
+msgctxt "tfmainform.mnurating0.caption"
+msgid "None"
+msgstr ""
+
+#: tfmainform.mnurating1.caption
+msgctxt "tfmainform.mnurating1.caption"
+msgid "*"
+msgstr ""
+
+#: tfmainform.mnurating2.caption
+msgctxt "tfmainform.mnurating2.caption"
+msgid "**"
+msgstr ""
+
+#: tfmainform.mnurating3.caption
+msgctxt "tfmainform.mnurating3.caption"
+msgid "***"
+msgstr ""
+
+#: tfmainform.mnurating4.caption
+msgctxt "tfmainform.mnurating4.caption"
+msgid "****"
+msgstr ""
+
+#: tfmainform.mnurating5.caption
+msgctxt "tfmainform.mnurating5.caption"
+msgid "*****"
 msgstr ""
 
 #: tfmainform.mnurefreshitems.caption

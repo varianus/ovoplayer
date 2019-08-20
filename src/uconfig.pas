@@ -48,6 +48,7 @@ type
     cbScanOnStart: TCheckBox;
     cbTrayVisible: TCheckBox;
     cbNetRemote: TCheckBox;
+    cbPauseWhenLocked: TCheckBox;
     colorBackground: TColorBox;
     ColorFont: TColorBox;
     EngineInfoView: TValueListEditor;
@@ -387,6 +388,11 @@ begin
   {$IFNDEF NETWORK_INTF}
   sbNetRemote.Visible:=False;
   {$ENDIF}
+
+  {$IFNDEF SCREEN_LOCK}
+  cbPauseWhenLocked.Visible:=False;
+  {$ENDIF}
+
 end;
 
 procedure TfConfig.sbLibraryClick(Sender: TObject);
@@ -475,6 +481,8 @@ begin
   GuiConfigObj.InterfaceParam.CaptureMMKeys     := cbCaptureMMKeys.checked;
   GuiConfigObj.InterfaceParam.CaptureMMkeysMode := rgKeyCaptureMode.ItemIndex;
   GuiConfigObj.InterfaceParam.EnableSoundMenu   := cbEnableSoundMenu.Checked;
+  GuiConfigObj.InterfaceParam.EnableSoundMenu   := cbPauseWhenLocked.Checked;
+
 
   // PLAYLIST
   BackEnd.PlayListParam.Restart            := cbRestart.Checked;

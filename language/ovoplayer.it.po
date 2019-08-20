@@ -18,6 +18,7 @@ msgid "Added:"
 msgstr "Aggiunte:"
 
 #: appconsts.rallfiles
+#, object-pascal-format
 msgid "All Files(%0:s)|%0:s"
 msgstr "Tutti i files (%0:s)|%0:s"
 
@@ -30,10 +31,12 @@ msgid "Scanning Collection"
 msgstr "Scansione Collezione"
 
 #: appconsts.rbuildenv
+#, object-pascal-format
 msgid "Build environment: Lazarus %0:s  FPC %1:s"
 msgstr "Ambiente di sviluppo: Lazarus %0:s  FPC %1:s"
 
 #: appconsts.rcurrentengine
+#, object-pascal-format
 msgid "Current audio engine: %s"
 msgstr "Motore di riproduzione attuale: %s"
 
@@ -58,14 +61,19 @@ msgid "Failed:"
 msgstr "Fallite:"
 
 #: appconsts.rlowportwarning
+#, fuzzy
+#| msgid ""
+#| "ATTENTION! Setting a port number lower than 1024 may require\n"
+#| "administrative rights on some OSes (e.g. Linux).\n"
 msgid ""
 "ATTENTION! Setting a port number lower than 1024 may require\n"
-"administrative rights on some OSes (e.g. Linux).\n"
+"administrative rights on some OSes (e.g. Linux)."
 msgstr ""
 "ATTENZIONE! Impostare una porta minore di 1024 può\n"
 "richiedere i diritti di amministratore in alcuni S.O. (ad es. Linux).\n"
 
 #: appconsts.rmatchingitems
+#, object-pascal-format
 msgid "%0:d tracks matching current filter (total time %1:s, total size %2:s)"
 msgstr "Il filtro corrente estrae %0:d tracce (Tempo totale %1:s, Dim. Totale%2:s)"
 
@@ -102,6 +110,7 @@ msgid "Updated:"
 msgstr "Aggiornate:"
 
 #: appconsts.rversionstring
+#, object-pascal-format
 msgid "Version: %0:s (SVN Rev.: %1:s Date %2:s)"
 msgstr "Versione: %0:s (Rev. SVN: %1:s Data %2:s)"
 
@@ -545,6 +554,10 @@ msgstr "Riduci su chiusura"
 msgid "Enable network remote"
 msgstr "Abilita telecomando di rete"
 
+#: tfconfig.cbpausewhenlocked.caption
+msgid "Pause player when screen is locked"
+msgstr "Metti in pausa se lo schermo viene bloccato"
+
 #: tfconfig.cbrestart.caption
 msgid "Restart from last position"
 msgstr "Ricomincia dall'ultima posizione"
@@ -852,35 +865,6 @@ msgstr "Durata"
 msgid "Repeat Mode"
 msgstr "Ripetizione"
 
-#: tfmainform.menuitem49.caption
-msgctxt "TFMAINFORM.MENUITEM49.CAPTION"
-msgid "Rating"
-msgstr "Valutazione"
-
-#: tfmainform.menuitem50.caption
-msgid "*"
-msgstr "*"
-
-#: tfmainform.menuitem52.caption
-msgid "*****"
-msgstr "*****"
-
-#: tfmainform.menuitem53.caption
-msgid "****"
-msgstr "****"
-
-#: tfmainform.menuitem54.caption
-msgid "***"
-msgstr "***"
-
-#: tfmainform.menuitem55.caption
-msgid "**"
-msgstr "**"
-
-#: tfmainform.menuitem56.caption
-msgid "None"
-msgstr "Nessuna"
-
 #: tfmainform.menuitem59.caption
 msgctxt "tfmainform.menuitem59.caption"
 msgid "Enqueue"
@@ -951,6 +935,48 @@ msgstr "Esegui"
 msgctxt "tfmainform.mnuplayplaylist.caption"
 msgid "Play"
 msgstr "Riproduci"
+
+#: tfmainform.mnurating.caption
+#, fuzzy
+msgctxt "tfmainform.mnurating.caption"
+msgid "Rating"
+msgstr "Valutazione"
+
+#: tfmainform.mnurating0.caption
+#, fuzzy
+msgctxt "tfmainform.mnurating0.caption"
+msgid "None"
+msgstr "Nessuna"
+
+#: tfmainform.mnurating1.caption
+#, fuzzy
+msgctxt "tfmainform.mnurating1.caption"
+msgid "*"
+msgstr "*"
+
+#: tfmainform.mnurating2.caption
+#, fuzzy
+msgctxt "tfmainform.mnurating2.caption"
+msgid "**"
+msgstr "**"
+
+#: tfmainform.mnurating3.caption
+#, fuzzy
+msgctxt "tfmainform.mnurating3.caption"
+msgid "***"
+msgstr "***"
+
+#: tfmainform.mnurating4.caption
+#, fuzzy
+msgctxt "tfmainform.mnurating4.caption"
+msgid "****"
+msgstr "****"
+
+#: tfmainform.mnurating5.caption
+#, fuzzy
+msgctxt "tfmainform.mnurating5.caption"
+msgid "*****"
+msgstr "*****"
 
 #: tfmainform.mnurefreshitems.caption
 msgid "Refresh"
@@ -1048,10 +1074,6 @@ msgstr "Cartella"
 msgctxt "tfmainform.tsplaylist.caption"
 msgid "PlayList"
 msgstr "Scaletta"
-
-#: tfminiplayer.caption
-msgid "MiniPlayer"
-msgstr ""
 
 #: tfrequalizer.lbband.caption
 msgid "Band"
