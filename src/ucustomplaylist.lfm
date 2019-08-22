@@ -9,7 +9,6 @@ object fCustomPlayList: TfCustomPlayList
   ClientWidth = 633
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  LCLVersion = '2.1.0.0'
   object Panel1: TPanel
     Left = 0
     Height = 72
@@ -159,7 +158,7 @@ object fCustomPlayList: TfCustomPlayList
     object lbSort: TLabel
       Left = 0
       Height = 17
-      Top = 14
+      Top = 13
       Width = 80
       Alignment = taRightJustify
       AutoSize = False

@@ -6,10 +6,11 @@ object fMainForm: TfMainForm
   ActiveControl = pcMain
   AllowDropFiles = True
   Caption = 'OvoPlayer'
-  ClientHeight = 448
+  ClientHeight = 468
   ClientWidth = 875
   Constraints.MinHeight = 202
   Constraints.MinWidth = 505
+  Font.Height = -12
   Menu = MainMenu
   OnActivate = FormActivate
   OnClose = FormClose
@@ -20,7 +21,6 @@ object fMainForm: TfMainForm
   OnResize = FormResize
   OnShow = FormShow
   ShowHint = True
-  LCLVersion = '2.1.0.0'
   object pnlleft: TPanel
     Left = 0
     Height = 468
@@ -283,7 +283,6 @@ object fMainForm: TfMainForm
       Caption = 'Stats'
       ClientHeight = 90
       ClientWidth = 242
-      ParentFont = False
       TabOrder = 1
       Visible = False
       object btnCloseCollectionStat: TSpeedButton
@@ -364,6 +363,7 @@ object fMainForm: TfMainForm
         RowCount = 1
         ScrollBars = ssAutoVertical
         TabOrder = 0
+        TitleFont.Height = -12
         TitleStyle = tsNative
       end
     end
@@ -444,13 +444,13 @@ object fMainForm: TfMainForm
         end
         object ToolButton8: TToolButton
           Left = 87
-          Height = 8
+          Height = 23
           Top = 0
           Style = tbsSeparator
         end
         object ToolButton9: TToolButton
           Left = 53
-          Height = 8
+          Height = 23
           Top = 0
           Style = tbsSeparator
         end
@@ -481,7 +481,7 @@ object fMainForm: TfMainForm
         end
         object ToolButton18: TToolButton
           Left = 199
-          Height = 8
+          Height = 23
           Top = 0
           AutoSize = True
           Enabled = False
@@ -489,7 +489,7 @@ object fMainForm: TfMainForm
         end
         object ToolButton12: TToolButton
           Left = 271
-          Height = 8
+          Height = 23
           Top = 0
           Style = tbsSeparator
         end
@@ -689,6 +689,7 @@ object fMainForm: TfMainForm
         ScrollBars = ssAutoVertical
         ShowHint = True
         TabOrder = 0
+        TitleFont.Height = -12
         TitleImageList = DM.ilSmall
         TitleStyle = tsNative
         UseXORFeatures = True
@@ -767,9 +768,6 @@ object fMainForm: TfMainForm
         Anchors = [akTop, akLeft, akRight]
         AutoSize = False
         Caption = 'Album'
-        Font.Height = 16
-        ParentColor = False
-        ParentFont = False
         OnDblClick = TrackDblClick
       end
       object Artist: TLabel
@@ -780,9 +778,6 @@ object fMainForm: TfMainForm
         Anchors = [akTop, akLeft, akRight]
         AutoSize = False
         Caption = 'Artist'
-        Font.Height = 16
-        ParentColor = False
-        ParentFont = False
         OnDblClick = TrackDblClick
       end
     end

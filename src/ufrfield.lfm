@@ -5,8 +5,11 @@ object frField: TfrField
   Width = 579
   ClientHeight = 32
   ClientWidth = 579
+  Font.Height = -12
   ParentFont = False
   TabOrder = 0
+  DesignLeft = -1
+  DesignTop = -1
   object bMinus: TBitBtn
     Left = 548
     Height = 32

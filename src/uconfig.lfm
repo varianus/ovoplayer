@@ -7,6 +7,7 @@ object fConfig: TfConfig
   Caption = 'Config'
   ClientHeight = 498
   ClientWidth = 702
+  Font.Height = -12
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
@@ -103,6 +104,7 @@ object fConfig: TfConfig
         BorderSpacing.Around = 3
         Caption = 'A restart is required for this change to take effect.'
         Font.Color = clCaptionText
+        Font.Height = -12
         ParentColor = False
         ParentFont = False
         WordWrap = True
@@ -158,9 +160,9 @@ object fConfig: TfConfig
     Height = 442
     Top = 0
     Width = 547
-    ActivePage = tsInterface
+    ActivePage = tsNetRemote
     Align = alClient
-    TabIndex = 0
+    TabIndex = 4
     TabOrder = 1
     object tsInterface: TTabSheet
       Caption = 'Interfaces'
@@ -290,6 +292,7 @@ object fConfig: TfConfig
         FixedCols = 0
         RowCount = 2
         TabOrder = 1
+        TitleFont.Height = -12
         TitleStyle = tsNative
         OnButtonClick = EngineParamsEditorButtonClick
         Strings.Strings = (
@@ -301,7 +304,7 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          408
+          425
         )
       end
       object EngineInfoView: TValueListEditor
@@ -316,6 +319,7 @@ object fConfig: TfConfig
         FixedCols = 0
         RowCount = 2
         TabOrder = 2
+        TitleFont.Height = -12
         TitleStyle = tsNative
         OnButtonClick = EngineParamsEditorButtonClick
         Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goAlwaysShowEditor, goThumbTracking]
@@ -328,7 +332,7 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          188
+          205
         )
       end
     end

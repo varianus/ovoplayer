@@ -8,6 +8,7 @@ object fMiniPlayer: TfMiniPlayer
   ClientHeight = 57
   ClientWidth = 201
   Color = 11955992
+  Font.Height = -12
   FormStyle = fsSystemStayOnTop
   KeyPreview = True
   OnClose = FormClose
@@ -15,7 +16,6 @@ object fMiniPlayer: TfMiniPlayer
   OnHide = FormHide
   OnMouseLeave = FormMouseLeave
   OnShow = FormShow
-  LCLVersion = '2.1.0.0'
   object Panel1: TPanel
     Left = 0
     Height = 57
@@ -25,8 +25,8 @@ object fMiniPlayer: TfMiniPlayer
     BevelInner = bvLowered
     BorderWidth = 2
     BorderStyle = bsSingle
-    ClientHeight = 57
-    ClientWidth = 201
+    ClientHeight = 53
+    ClientWidth = 197
     ParentColor = False
     TabOrder = 0
     object tbPlayControls: TToolBar
@@ -47,32 +47,32 @@ object fMiniPlayer: TfMiniPlayer
         Action = DM.actPrevious
       end
       object ToolButton2: TToolButton
-        Left = 47
+        Left = 53
         Top = 0
         Action = DM.actPlay
       end
       object ToolButton3: TToolButton
-        Left = 93
+        Left = 105
         Top = 0
         Action = DM.actStop
       end
       object ToolButton4: TToolButton
-        Left = 139
+        Left = 157
         Top = 0
         Action = DM.actNext
       end
       object ToolButton5: TToolButton
-        Left = 70
+        Left = 79
         Top = 0
         Action = DM.actPause
       end
       object ToolButton6: TToolButton
-        Left = 24
+        Left = 27
         Top = 0
         Action = DM.actSkipBackward
       end
       object ToolButton7: TToolButton
-        Left = 116
+        Left = 131
         Top = 0
         Action = DM.actSkipForward
       end

@@ -12,7 +12,6 @@ object fCover: TfCover
   OnClose = FormClose
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '2.1.0.0'
   object ScrollBox1: TScrollBox
     Left = 0
     Height = 381
@@ -23,6 +22,8 @@ object fCover: TfCover
     Align = alClient
     ClientHeight = 377
     ClientWidth = 479
+    Font.Height = -12
+    ParentFont = False
     TabOrder = 0
     OnResize = ScrollBox1Resize
     object ImageCover: TImage

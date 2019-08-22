@@ -7,8 +7,8 @@ object fAbout: TfAbout
   Caption = 'About'
   ClientHeight = 253
   ClientWidth = 422
+  Font.Height = -12
   OnShow = FormShow
-  LCLVersion = '2.1.0.0'
   object Image1: TImage
     Left = 0
     Height = 81
@@ -409,6 +409,7 @@ object fAbout: TfAbout
     Anchors = [akTop, akLeft, akRight]
     AutoSize = False
     Caption = 'Version'
+    Font.Height = -12
     Font.Style = [fsBold]
     ParentColor = False
     ParentFont = False
@@ -416,13 +417,12 @@ object fAbout: TfAbout
   object Label3: TLabel
     Left = 101
     Height = 17
-    Top = 157
+    Top = 159
     Width = 316
     Alignment = taCenter
     AutoSize = False
     Caption = '(C) 2011, Marco Caselli <marcocas@gmail.com>'
     ParentColor = False
-    ParentFont = False
   end
   object Label4: TLabel
     Left = 101
@@ -434,17 +434,17 @@ object fAbout: TfAbout
     AutoSize = False
     Caption = 'Another free music player'
     ParentColor = False
-    ParentFont = False
   end
   object lHomePage: TLabel
     Left = 101
     Height = 17
-    Top = 184
+    Top = 186
     Width = 316
     Alignment = taCenter
     AutoSize = False
     Caption = 'http://ovoplayer.altervista.org/'
-    Font.Color = clBlue
+    Font.Color = clHotLight
+    Font.Height = -12
     ParentColor = False
     ParentFont = False
     OnMouseDown = lHomePageMouseDown
@@ -477,23 +477,21 @@ object fAbout: TfAbout
   object lbBuildEnv: TLabel
     Left = 101
     Height = 17
-    Top = 110
+    Top = 112
     Width = 316
     Alignment = taCenter
     AutoSize = False
     Caption = 'Lazarus'
     ParentColor = False
-    ParentFont = False
   end
   object lbEngine: TLabel
     Left = 102
     Height = 17
-    Top = 132
+    Top = 134
     Width = 316
     Alignment = taCenter
     AutoSize = False
     Caption = 'Engine'
     ParentColor = False
-    ParentFont = False
   end
 end

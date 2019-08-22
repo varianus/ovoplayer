@@ -13,20 +13,20 @@ object fSongInfo: TfSongInfo
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  LCLVersion = '2.1.0.0'
   object pcSongInfo: TPageControl
     Left = 168
     Height = 353
     Top = 0
     Width = 595
-    ActivePage = tsTags
+    ActivePage = tsMediaProperty
     Align = alClient
-    TabIndex = 0
+    Font.Height = -12
+    TabIndex = 1
     TabOrder = 1
     object tsTags: TTabSheet
       Caption = 'Tags'
-      ClientHeight = 318
-      ClientWidth = 589
+      ClientHeight = 325
+      ClientWidth = 587
       object laArtist: TLabel
         Left = 0
         Height = 15
@@ -36,7 +36,6 @@ object fSongInfo: TfSongInfo
         AutoSize = False
         Caption = 'Artist'
         ParentColor = False
-        ParentFont = False
       end
       object edArtist: TEdit
         Left = 98
@@ -55,7 +54,6 @@ object fSongInfo: TfSongInfo
         AutoSize = False
         Caption = 'Album'
         ParentColor = False
-        ParentFont = False
       end
       object edAlbum: TEdit
         Left = 98
@@ -74,7 +72,6 @@ object fSongInfo: TfSongInfo
         AutoSize = False
         Caption = 'Title'
         ParentColor = False
-        ParentFont = False
       end
       object edTitle: TEdit
         Left = 98
@@ -93,7 +90,6 @@ object fSongInfo: TfSongInfo
         AutoSize = False
         Caption = 'Album Artist'
         ParentColor = False
-        ParentFont = False
       end
       object edAlbumArtist: TEdit
         Left = 98
@@ -112,7 +108,6 @@ object fSongInfo: TfSongInfo
         AutoSize = False
         Caption = 'Genre'
         ParentColor = False
-        ParentFont = False
       end
       object meComment: TMemo
         Left = 100
@@ -131,7 +126,6 @@ object fSongInfo: TfSongInfo
         AutoSize = False
         Caption = 'Comment'
         ParentColor = False
-        ParentFont = False
       end
       object laYear: TLabel
         Left = 0
@@ -142,7 +136,6 @@ object fSongInfo: TfSongInfo
         AutoSize = False
         Caption = 'Year'
         ParentColor = False
-        ParentFont = False
       end
       object laTrack: TLabel
         Left = 282
@@ -153,7 +146,6 @@ object fSongInfo: TfSongInfo
         AutoSize = False
         Caption = 'Track'
         ParentColor = False
-        ParentFont = False
       end
       object edTrack: TEdit
         Left = 381
@@ -195,8 +187,8 @@ object fSongInfo: TfSongInfo
     end
     object tsMediaProperty: TTabSheet
       Caption = 'Media Property'
-      ClientHeight = 318
-      ClientWidth = 589
+      ClientHeight = 325
+      ClientWidth = 587
       object Label9: TLabel
         Left = 6
         Height = 16
@@ -206,7 +198,6 @@ object fSongInfo: TfSongInfo
         AutoSize = False
         Caption = 'Duration'
         ParentColor = False
-        ParentFont = False
       end
       object leDuration: TLabel
         Left = 123
@@ -233,7 +224,6 @@ object fSongInfo: TfSongInfo
         AutoSize = False
         Caption = 'BitRate'
         ParentColor = False
-        ParentFont = False
       end
       object Label12: TLabel
         Left = 6
@@ -244,7 +234,6 @@ object fSongInfo: TfSongInfo
         AutoSize = False
         Caption = 'Sampling'
         ParentColor = False
-        ParentFont = False
       end
       object leSampling: TLabel
         Left = 123
@@ -263,7 +252,6 @@ object fSongInfo: TfSongInfo
         AutoSize = False
         Caption = 'Channels'
         ParentColor = False
-        ParentFont = False
       end
       object leChannels: TLabel
         Left = 123
@@ -282,7 +270,6 @@ object fSongInfo: TfSongInfo
         AutoSize = False
         Caption = 'File Name'
         ParentColor = False
-        ParentFont = False
       end
       object Label15: TLabel
         Left = 6
@@ -293,7 +280,6 @@ object fSongInfo: TfSongInfo
         AutoSize = False
         Caption = 'Size'
         ParentColor = False
-        ParentFont = False
       end
       object leSize: TLabel
         Left = 123
@@ -309,7 +295,7 @@ object fSongInfo: TfSongInfo
         Top = 33
         Width = 280
         Caption = 'Library'
-        ClientHeight = 141
+        ClientHeight = 140
         ClientWidth = 276
         TabOrder = 0
         object Label16: TLabel
@@ -321,7 +307,6 @@ object fSongInfo: TfSongInfo
           AutoSize = False
           Caption = 'Play Count'
           ParentColor = False
-          ParentFont = False
         end
         object lePlayCount: TLabel
           Left = 140
@@ -340,7 +325,6 @@ object fSongInfo: TfSongInfo
           AutoSize = False
           Caption = 'Added to collection'
           ParentColor = False
-          ParentFont = False
         end
         object leAdded: TLabel
           Left = 140
@@ -359,7 +343,6 @@ object fSongInfo: TfSongInfo
           AutoSize = False
           Caption = 'Last Played'
           ParentColor = False
-          ParentFont = False
         end
         object leLastPlayed: TLabel
           Left = 140
