@@ -85,7 +85,7 @@ Resourcestring
 
 
   // About Dialog
-  rVersionString = 'Version: %0:s (SVN Rev.: %1:s Date %2:s)';
+  rVersionString = 'Version: %0:s (Date %2:s)';
   rBuildEnv = 'Build environment: Lazarus %0:s  FPC %1:s';
   rCurrentEngine = 'Current audio engine: %s';
 
