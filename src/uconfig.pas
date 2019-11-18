@@ -559,7 +559,7 @@ begin
   if not Assigned(fConfig) then
     fConfig := TfConfig.Create(Application);
   case page of
-       cpNone: ;
+       cpNone: fConfig.pcConfig.ActivePage := fConfig.tsInterface;
        cpEngine: fConfig.pcConfig.ActivePage := fConfig.tsEngine;
        cpMediaLibrary: fConfig.pcConfig.ActivePage := fConfig.tsMediaLibrary;
        cpOSD: fConfig.pcConfig.ActivePage := fConfig.tsOSD;
