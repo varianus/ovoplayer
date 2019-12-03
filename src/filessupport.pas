@@ -361,7 +361,7 @@ begin
               info.info.Size:= SearchRec.Size;
               info.info.ModifyDate:= FileDateToDateTime(SearchRec.Time);
               List.AddObject(SysToUTF8(Directory + SearchRec.Name), info);
-            Break;
+              Break;
             end;
 
         case FindNextUTF8(SearchRec) of

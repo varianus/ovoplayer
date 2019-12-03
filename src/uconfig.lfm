@@ -160,9 +160,9 @@ object fConfig: TfConfig
     Height = 442
     Top = 0
     Width = 547
-    ActivePage = tsNetRemote
+    ActivePage = tsInterface
     Align = alClient
-    TabIndex = 4
+    TabIndex = 0
     TabOrder = 1
     object tsInterface: TTabSheet
       Caption = 'Interfaces'
@@ -304,7 +304,7 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          425
+          408
         )
       end
       object EngineInfoView: TValueListEditor
@@ -332,7 +332,7 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          205
+          188
         )
       end
     end

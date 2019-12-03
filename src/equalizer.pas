@@ -180,7 +180,6 @@ var
 begin
   Setting.DecimalSeparator := '.';
   tmpSt := TStringList.Create;
-  info  := TStringList.Create;
   try
    Owner.ReadCustomParams(Base, tmpSt);
    SetLength(fPresets,tmpSt.Count);
@@ -194,25 +193,29 @@ begin
 
    for i := 0 to tmpSt.Count -1 do
      begin
-       info.Clear;
-       info.StrictDelimiter := true;
-       info.Delimiter := ';';
-       info.DelimitedText := tmpSt.ValueFromIndex[i];
-       initialize(r);
-       r.Name := info[0];
-       for j := 1 to EQCounter do
-         begin
-           TryStrToFloat(info[j], tmp, setting);
-           r.Values[j] := tmp;
-         end;
-       fPresets[i] := r;
+       try
+         info  := TStringList.Create;
+         info.StrictDelimiter := true;
+         info.Delimiter := ';';
+         info.DelimitedText := tmpSt.ValueFromIndex[i];
+         initialize(r);
+         r.Name := info[0];
+         for j := 1 to EQCounter do
+           begin
+             TryStrToFloat(info[j], tmp, setting);
+             r.Values[j] := tmp;
+           end;
+         fPresets[i] := r;
+       finally
+         info.free;
+       end;
+
      end;
   Except
     Owner.RemoveSection(Base);
   end;
 
   tmpSt.free;
-  info.free;
 
 end;
 

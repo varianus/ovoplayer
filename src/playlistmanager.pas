@@ -627,6 +627,7 @@ var
   list: TStringList;
 begin
   List := TStringList.Create;
+  List.OwnsObjects := true;
   BuildFileList(IncludeTrailingPathDelimiter(Directory) + AudioTag.SupportedExtension,
     faAnyFile, List, Recursive);
 

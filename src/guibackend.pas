@@ -348,6 +348,7 @@ begin
   if Result = '' then
      begin
        FileList := TStringList.Create;
+       FileList.OwnsObjects := true;
        AllExt:='';
        for E := 0 to CountExt -1 do
          AllExt:= AllExt + '*.' + CoverExt[E]+';';

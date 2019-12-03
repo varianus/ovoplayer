@@ -3020,6 +3020,7 @@ var
 begin
   DirList:=TStringList.Create;
   FileList:=TStringList.Create;
+  FileList.OwnsObjects := true;
   CurrentPath:=IncludeTrailingPathDelimiter(Path);
   try
     FilesTree.Items.Clear;
