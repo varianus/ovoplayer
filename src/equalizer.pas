@@ -203,7 +203,7 @@ begin
          for j := 1 to EQCounter do
            begin
              TryStrToFloat(info[j], tmp, setting);
-             r.Values[j] := tmp;
+             r.Values[j-1] := tmp;
            end;
          fPresets[i] := r;
        finally
