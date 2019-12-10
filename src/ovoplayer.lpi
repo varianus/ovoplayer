@@ -230,7 +230,6 @@ if TargetOS = &apos;linux&apos; then
     </PublishOptions>
     <RunParams>
       <FormatVersion Value="2"/>
-      <Modes Count="0"/>
     </RunParams>
     <RequiredPackages Count="5">
       <Item1>
@@ -251,7 +250,7 @@ if TargetOS = &apos;linux&apos; then
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="91">
+    <Units Count="94">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -699,6 +698,18 @@ if TargetOS = &apos;linux&apos; then
         <Filename Value="platform\win32\screenlockimpl.inc"/>
         <IsPartOfProject Value="True"/>
       </Unit90>
+      <Unit91>
+        <Filename Value="platform\win32\bufferedfilereader.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit91>
+      <Unit92>
+        <Filename Value="iconloader.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit92>
+      <Unit93>
+        <Filename Value="ovoplayerfont.rc"/>
+        <IsPartOfProject Value="True"/>
+      </Unit93>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -734,10 +745,14 @@ if TargetOS = &apos;linux&apos; then
         <OverflowChecks Value="True"/>
         <StackChecks Value="True"/>
       </Checks>
+      <Optimizations>
+        <OptimizationLevel Value="2"/>
+      </Optimizations>
     </CodeGeneration>
     <Linking>
       <Debugging>
-        <DebugInfoType Value="dsDwarf2"/>
+        <DebugInfoType Value="dsDwarf3"/>
+        <UseHeaptrc Value="True"/>
       </Debugging>
       <Options>
         <Win32>

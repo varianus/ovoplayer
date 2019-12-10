@@ -28,7 +28,8 @@ uses
   singleinstance, strutils,
   BaseTypes, CoreInterfaces,
   AudioEngine, LazUTF8,  LazLogger,
-  PlayListManager, MediaLibrary, FilesSupport, netprotocol;
+  PlayListManager, MediaLibrary, FilesSupport, netprotocol,
+  IconLoader;
 
 type
 
@@ -159,7 +160,8 @@ begin
      FreeAndNil(ParamList);
    end;
 
-
+  LoadFont;
+  LoadMainIcon;
 
 end;
 
