@@ -8,7 +8,6 @@ uses
   Classes, SysUtils,Graphics, fpimage, LCLType, IntfGraphics, GraphType, EasyLazFreeType,
   LazFreeTypeIntfDrawer;
 
-type
 
 procedure LoadMainIcon;
 procedure LoadFont;
