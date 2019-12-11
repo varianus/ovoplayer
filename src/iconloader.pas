@@ -6,22 +6,38 @@ interface
 
 uses
   Classes, SysUtils,Graphics, fpimage, LCLType, IntfGraphics, GraphType, EasyLazFreeType,
-  LazFreeTypeIntfDrawer;
+  LazFreeTypeIntfDrawer, imglist;
 
 
-procedure LoadMainIcon;
-procedure LoadFont;
+Type
+
+  { TIconRenderer }
+
+  TIconRenderer = class
+  private
+    FColor: TColor;
+    FFontData:TFreeTypeFont;
+    FSize: Integer;
+    function getIcon(iconCode: Cardinal): TBitmap;
+    procedure SetColor(AValue: TColor);
+    procedure SetDefaults;
+    procedure SetSize(AValue: Integer);
+
+  public
+    Constructor Create(AStream: TStream);
+    destructor Destroy; override;
+    function AddToImageList(imageList: TCustomImageList; Code:Cardinal): integer;
+    property Size:Integer read FSize write SetSize;
+    property Color:TColor read FColor write SetColor;
+
+  end;
 
 
 implementation
-uses lazutf8, udm, LCLIntf;
-{$R ovoplayerfont.rc}
+uses lazutf8, LCLIntf;
 
-var
-  ovofont: TFreeTypeFont;
-
-procedure LoadMainIcon;
-function getIcon(iconCode: Cardinal; size: integer; aColor: TColor): TBitmap;
+{ TIconRenderer }
+function TIconRenderer.getIcon(iconCode: Cardinal): TBitmap;
 var
   image: TLazIntfImage;
   freeTypePainter: TIntfFreeTypeDrawer;
@@ -33,16 +49,11 @@ begin
     image := TLazIntfImage.Create(0, 0, [riqfRGB, riqfAlpha]);
     freeTypePainter := TIntfFreeTypeDrawer.Create(image);
     utf8Value := UnicodetoUTF8(iconCode);
-    fontColor := TColorToFPColor(aColor);
+    fontColor := TColorToFPColor(FColor);
     try
-      ovofont.SizeInPixels := size-1;
-      ovofont.Hinted := false;
-      ovofont.ClearType := True;
-      ovofont.Quality := grqHighQuality;
-      ovofont.SmallLinePadding := False;
-      image.SetSize(size, size);
+      image.SetSize(FSize, FSize);
       freeTypePainter.FillPixels(colTransparent);
-      freeTypePainter.DrawText(utf8Value, ovofont, size, size, fontColor, [ftaRight, ftaBottom]);
+      freeTypePainter.DrawText(utf8Value, FFontData, FSize, FSize, fontColor, [ftaRight, ftaBottom]);
       Result.LoadFromIntfImage(image);
     finally
       freeTypePainter.Free;
@@ -52,58 +63,54 @@ begin
     Result := nil;
   end;
 end;
+
+
+procedure TIconRenderer.SetSize(AValue: Integer);
 begin
- DM.ilButtons.Clear;
- dm.ilButtons.Add(getIcon($e801,22,ColorToRGB (cldefault)),nil);   //0
- dm.ilButtons.Add(getIcon($e802,22,ColorToRGB (cldefault)),nil);
- dm.ilButtons.Add(getIcon($e803,22,ColorToRGB (cldefault)),nil);
- dm.ilButtons.Add(getIcon($e804,22,clBlack),nil);
- dm.ilButtons.Add(getIcon($f111,22,clBlack),nil);
- dm.ilButtons.Add(getIcon($e809,22,clBlack),nil);
- dm.ilButtons.Add(getIcon($e808,22,clBlack),nil);
- dm.ilButtons.Add(getIcon($e807,22,clBlack),nil);
- dm.ilButtons.Add(getIcon($e805,22,clBlack),nil);
- dm.ilButtons.Add(getIcon($e80a,22,clBlack),nil);
- dm.ilButtons.Add(getIcon($e818,22,clBlack),nil);  //10
- dm.ilButtons.Add(getIcon($f114,22,clBlack),nil);
- dm.ilButtons.Add(getIcon($f115,22,clBlack),nil);
- dm.ilButtons.Add(getIcon($e811,22,clBlack),nil);
- dm.ilButtons.Add(getIcon($e810,22,clBlack),nil);
- dm.ilButtons.Add(getIcon($e80d,22,clBlack),nil);
- dm.ilButtons.Add(getIcon($e80e,22,clBlack),nil);
- dm.ilButtons.Add(getIcon($e80f,22,clBlack),nil);
- dm.ilButtons.Add(getIcon($e80b,22,clBlack),nil);
- dm.ilButtons.Add(getIcon($e80c,22,clBlack),nil);
+  if FSize = AValue then Exit;
+  FSize := AValue;
+  FFontData.SizeInPixels := FSize -1;
+  SetDefaults;
+end;
 
- DM.ilSmall.clear;
- dm.ilSmall.Add(getIcon($e814,16,clBlack),nil);
- dm.ilSmall.Add(getIcon($e815,16,clBlack),nil);
- dm.ilSmall.Add(getIcon($e816,16,clBlack),nil);
- dm.ilSmall.Add(getIcon($e817,16,clBlack),nil);
- dm.ilSmall.Add(getIcon($e819,16,clBlack),nil);
- dm.ilSmall.Add(getIcon($e81d,16,clBlack),nil);
- dm.ilSmall.Add(getIcon($e803,16,clBlack),nil);
- dm.ilSmall.Add(getIcon($f114,16,clBlack),nil);
- dm.ilSmall.Add(getIcon($e801,16,clBlack),nil);
- dm.ilSmall.Add(getIcon($e80f,16,clBlack),nil);
- dm.ilSmall.Add(getIcon($e802,16,clBlack),nil);
- dm.ilSmall.Add(getIcon($e804,16,clBlack),nil);
- dm.ilSmall.Add(getIcon($f192,16,clBlack),nil);
- dm.ilSmall.Add(getIcon($e81a,16,clBlack),nil);
+procedure TIconRenderer.SetDefaults;
+begin
+  FFontData.Hinted := false;
+  FFontData.ClearType := True;
+  FFontData.Quality := grqHighQuality;
+  FFontData.SmallLinePadding := False;
+end;
 
+procedure TIconRenderer.SetColor(AValue: TColor);
+begin
+  if FColor = AValue then Exit;
+  FColor := AValue;
 
 end;
 
-procedure LoadFont;
+constructor TIconRenderer.Create(AStream: TStream);
+begin
+  FFontData := TFreeTypeFont.Create;
+  FFontData.AccessFromStream(AStream, True);
+end;
+
+destructor TIconRenderer.Destroy;
+begin
+  FFontData.Free;
+  inherited Destroy;
+end;
+
+function TIconRenderer.AddToImageList(imageList: TCustomImageList; Code: Cardinal): integer;
 var
-  s: TResourceStream;
+  abmp:TBitmap;
 begin
-  ovofont := TFreeTypeFont.Create;
-  S := TResourceStream.Create(HInstance, 'OVOFONT', RT_RCDATA);
-  ovofont.AccessFromStream(S, True);
+  abmp := getIcon(Code);
+  try
+    Result := imageList.Add(abmp, nil);
+  finally
+    abmp.Free;
+  end;
 end;
-
-
 
 end.
 
