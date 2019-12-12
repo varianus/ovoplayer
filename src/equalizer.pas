@@ -24,7 +24,7 @@ unit Equalizer;
 interface
 
 uses
-  Classes, SysUtils, config;
+  Classes, SysUtils, config, StrUtils;
 
 Const
   EQCounter = 10;
@@ -81,6 +81,7 @@ type
   end;
 
 implementation
+uses types;
 
 const
   PRESET_COUNT = 18;
@@ -172,7 +173,7 @@ end;
 procedure TEqualizerParam.Load;
 var
   tmpSt: TStringList;
-  info: TStringList;
+  info: TStringDynArray;
   i, j: integer;
   tmp : double;
   r : RPreset;
@@ -193,22 +194,15 @@ begin
 
    for i := 0 to tmpSt.Count -1 do
      begin
-       try
-         info  := TStringList.Create;
-         info.StrictDelimiter := true;
-         info.Delimiter := ';';
-         info.DelimitedText := tmpSt.ValueFromIndex[i];
-         initialize(r);
-         r.Name := info[0];
-         for j := 1 to EQCounter do
-           begin
-             TryStrToFloat(info[j], tmp, setting);
-             r.Values[j-1] := tmp;
-           end;
-         fPresets[i] := r;
-       finally
-         info.free;
-       end;
+       Info := SplitString(tmpSt.ValueFromIndex[i], ';');
+       r:= Default(RPreset);
+       r.Name := info[0];
+       for j := 1 to EQCounter do
+         begin
+           TryStrToFloat(info[j], tmp, setting);
+           r.Values[j-1] := tmp;
+         end;
+       fPresets[i] := r;
 
      end;
   Except

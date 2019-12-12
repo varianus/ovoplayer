@@ -43,6 +43,7 @@ type
     procedure cbEnableEqClick(Sender: TObject);
     procedure cbPresetChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     Eq: IEqualizer;
     EQBandList: TEQBandList;
@@ -83,7 +84,7 @@ begin
       cbPreset.Items.Add(BackEnd.EqualizerParam[i].Name);
     end;
 
-  EQBandList:= TEQBandList.Create(false);
+  EQBandList:= TEQBandList.Create(true);
 
   if Eq.ActiveEQ then
     begin
@@ -93,6 +94,11 @@ begin
   cbEnableEq.Checked:= BackEnd.EngineParam.ActiveEQ;
   cbPreset.ItemIndex:= BackEnd.EngineParam.EQPreset;
 
+end;
+
+procedure TfEqualizer.FormDestroy(Sender: TObject);
+begin
+  EQBandList.Free;
 end;
 
 Procedure TfEqualizer.InitBands( BandInfo: ARBandinfo);

@@ -1253,7 +1253,11 @@ var
   theForm : TfEqualizer;
 begin
   theForm:= TfEqualizer.create(application);
-  theForm.ShowModal;
+  try
+    theForm.ShowModal;
+  finally
+    theForm.free;
+  end;
 end;
 
 procedure TfMainForm.actShowLeftExecute(Sender: TObject);
