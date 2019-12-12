@@ -53,7 +53,7 @@ begin
     try
       image.SetSize(FSize, FSize);
       freeTypePainter.FillPixels(colTransparent);
-      freeTypePainter.DrawText(utf8Value, FFontData, FSize, FSize, fontColor, [ftaRight, ftaBottom]);
+      freeTypePainter.DrawText(utf8Value, FFontData, FSize div 2, FSize div 2, fontColor, [ftaCenter, ftaVerticalCenter]);
       Result.LoadFromIntfImage(image);
     finally
       freeTypePainter.Free;
@@ -69,16 +69,16 @@ procedure TIconRenderer.SetSize(AValue: Integer);
 begin
   if FSize = AValue then Exit;
   FSize := AValue;
-  FFontData.SizeInPixels := FSize -1;
+  FFontData.SizeInPixels := FSize -2;
   SetDefaults;
 end;
 
 procedure TIconRenderer.SetDefaults;
 begin
-  FFontData.Hinted := false;
+  FFontData.Hinted := False; // setting to true create strange artifact...
   FFontData.ClearType := True;
   FFontData.Quality := grqHighQuality;
-  FFontData.SmallLinePadding := False;
+  FFontData.SmallLinePadding := true;
 end;
 
 procedure TIconRenderer.SetColor(AValue: TColor);
