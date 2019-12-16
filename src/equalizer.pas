@@ -173,7 +173,7 @@ end;
 procedure TEqualizerParam.Load;
 var
   tmpSt: TStringList;
-  info: TStringDynArray;
+  info: TStringArray;
   i, j: integer;
   tmp : double;
   r : RPreset;
@@ -194,7 +194,8 @@ begin
 
    for i := 0 to tmpSt.Count -1 do
      begin
-       Info := SplitString(tmpSt.ValueFromIndex[i], ';');
+//       Info := SplitString(tmpSt.ValueFromIndex[i], ';');
+       Info := tmpSt.ValueFromIndex[i].Split(';');
        r:= Default(RPreset);
        r.Name := info[0];
        for j := 1 to EQCounter do
