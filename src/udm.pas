@@ -28,8 +28,7 @@ uses
   singleinstance, strutils, Graphics,
   BaseTypes, CoreInterfaces,
   AudioEngine, LazUTF8,  LazLogger,
-  PlayListManager, MediaLibrary, FilesSupport, netprotocol,
-  IconLoader;
+  PlayListManager, MediaLibrary, FilesSupport, netprotocol,   IconLoader;
 
 type
 
@@ -167,7 +166,7 @@ begin
    S := TResourceStream.Create(HInstance, 'OVOFONT', RT_RCDATA);
   iconRender:= TIconRenderer.Create(S);
   iconRender.Color := GetSysColor(COLOR_BTNTEXT);
-  iconRender.Size := 22;
+  iconRender.Size := MulDiv(22, Screen.PixelsPerInch, 96);
   iconRender.AddToImageList(ilButtons, $e801);
   iconRender.AddToImageList(ilButtons, $e802);
   iconRender.AddToImageList(ilButtons, $e803);
@@ -189,7 +188,7 @@ begin
   iconRender.AddToImageList(ilButtons, $e80b);
   iconRender.AddToImageList(ilButtons, $e80c);
 
-  iconRender.Size := 16;
+  iconRender.Size := MulDiv(16, Screen.PixelsPerInch, 96);
   iconRender.AddToImageList(ilSmall, $e814);
   iconRender.AddToImageList(ilSmall, $e815);
   iconRender.AddToImageList(ilSmall, $e816);
