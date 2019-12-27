@@ -12,8 +12,8 @@ object fEqualizer: TfEqualizer
   OnDestroy = FormDestroy
   object ButtonPanel1: TButtonPanel
     Left = 6
-    Height = 34
-    Top = 427
+    Height = 39
+    Top = 422
     Width = 724
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
@@ -37,9 +37,9 @@ object fEqualizer: TfEqualizer
     TabOrder = 1
     object cbEnableEq: TCheckBox
       Left = 9
-      Height = 19
+      Height = 21
       Top = 40
-      Width = 105
+      Width = 117
       Caption = 'Enable equalizer'
       OnClick = cbEnableEqClick
       TabOrder = 1
@@ -48,28 +48,42 @@ object fEqualizer: TfEqualizer
       Left = 8
       Height = 17
       Top = 11
-      Width = 106
+      Width = 79
       Alignment = taRightJustify
       Caption = 'Preset'
       TabOrder = 2
     end
     object cbPreset: TComboBox
-      Left = 122
-      Height = 23
+      Left = 97
+      Height = 29
       Top = 8
-      Width = 600
-      ItemHeight = 15
+      Width = 554
+      ItemHeight = 0
       OnChange = cbPresetChange
       TabOrder = 0
+    end
+    object bSavePreset: TSpeedButton
+      Left = 662
+      Height = 26
+      Top = 11
+      Width = 26
+      Caption = '+'
+    end
+    object bRemovePreset: TSpeedButton
+      Left = 696
+      Height = 26
+      Top = 11
+      Width = 26
+      Caption = '-'
     end
   end
   object pnlContainer: TPanel
     Left = 0
-    Height = 355
+    Height = 350
     Top = 66
     Width = 736
     Align = alClient
-    ClientHeight = 355
+    ClientHeight = 350
     ClientWidth = 736
     TabOrder = 2
     object lbMessage: TLabel

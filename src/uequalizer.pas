@@ -25,7 +25,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ButtonPanel,
-  ExtCtrls, StdCtrls, equalizerband, fgl, AudioEngine, Equalizer;
+  ExtCtrls, StdCtrls, Buttons, equalizerband, fgl, AudioEngine, Equalizer;
 
 type
 
@@ -39,6 +39,8 @@ type
     lbMessage: TLabel;
     pnlHeader: TPanel;
     pnlContainer: TPanel;
+    bSavePreset: TSpeedButton;
+    bRemovePreset: TSpeedButton;
     StaticText1: TStaticText;
     procedure cbEnableEqClick(Sender: TObject);
     procedure cbPresetChange(Sender: TObject);
@@ -47,9 +49,11 @@ type
   private
     Eq: IEqualizer;
     EQBandList: TEQBandList;
+    CurrentSettings: RPreset;
     procedure BandChanged(Sender: TObject; const BandNo:integer; const Value: single);
     procedure InitBands(BandInfo: ARBandinfo);
-    procedure PresetToScreen(Preset: Integer);
+    procedure PresetToScreen(Preset: Integer); overload;
+    procedure PresetToScreen(Preset: RPreset); overload;
   public
 
   end;
@@ -139,10 +143,22 @@ end;
 procedure TfEqualizer.cbPresetChange(Sender: TObject);
 
 begin
-  PresetToScreen(cbPreset.ItemIndex);
-  BackEnd.EqualizerParam.ApplyPreset(eq, cbPreset.ItemIndex);
+  CurrentSettings := BackEnd.EqualizerParam[cbPreset.ItemIndex];
+  PresetToScreen(CurrentSettings);
+  ApplyPreset(eq, CurrentSettings);
   BackEnd.EngineParam.EQPreset:= cbPreset.ItemIndex;
 
+end;
+
+
+Procedure TfEqualizer.PresetToScreen(Preset:RPreset);
+var
+ i: integer;
+begin
+ for i := 0 to pred(EQCounter) do
+   begin
+     EQBandList[i].Value := Preset.Values[i];
+   end;
 end;
 
 Procedure TfEqualizer.PresetToScreen(Preset:Integer);
@@ -158,8 +174,16 @@ end;
 procedure TfEqualizer.BandChanged(Sender: TObject; const BandNo: integer;
   const Value: single);
 begin
-  eq.BandValue[BandNo]:= Value;
-  eq.EQApply;
+  if not CurrentSettings.Modified then
+    begin
+      CurrentSettings.Modified:=true;
+    end;
+  CurrentSettings.Values[BandNo]:= Value;
+  if Eq.ActiveEQ then
+    begin
+      eq.BandValue[BandNo]:= Value;
+      eq.EQApply;
+    end;
 end;
 
 end.
