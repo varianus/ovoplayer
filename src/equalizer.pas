@@ -55,6 +55,7 @@ type
   RPreset = record
     Name: string;
     Values : array [0..EQCounter -1] of double;
+    Modified: boolean;
   end;
 
 type
@@ -77,8 +78,9 @@ type
     Property Preset[Index:integer]: RPreset read GetPreset write SetPreset; default;
     property Count: integer read GetCount;
     Procedure Load; override;
-    Procedure ApplyPreset(eq : IEqualizer; Idx:Integer);
   end;
+
+Procedure ApplyPreset(eq : IEqualizer; Preset: RPreset);
 
 implementation
 uses types;
@@ -107,16 +109,17 @@ var
       (Name: 'techno'; Values: (4.8,3.3,0.0,-3.4,-2.9,0.0,4.8,5.7,5.8,5.3))
     );
 
-procedure TEqualizerParam.ApplyPreset(eq: IEqualizer; Idx: Integer);
+procedure ApplyPreset(eq: IEqualizer; Preset: RPreset);
 var
   i: integer;
 begin
   for i := 0 to pred(EQCounter) do
     begin
-      eq.BandValue[i] := fPresets[Idx].Values[i];
+      eq.BandValue[i] := Preset.Values[i];
     end;
 
   Eq.EQApply;
+
 end;
 
 { TEqualizerParam }
@@ -194,7 +197,6 @@ begin
 
    for i := 0 to tmpSt.Count -1 do
      begin
-//       Info := SplitString(tmpSt.ValueFromIndex[i], ';');
        Info := tmpSt.ValueFromIndex[i].Split(';');
        r:= Default(RPreset);
        r.Name := info[0];
@@ -203,6 +205,7 @@ begin
            TryStrToFloat(info[j], tmp, setting);
            r.Values[j-1] := tmp;
          end;
+       r.Modified := False;
        fPresets[i] := r;
 
      end;

@@ -245,9 +245,9 @@ begin
     begin
       Engine := GetBestEngine;
       if Engine = nil then  // no more engine to try ...
-         engine:=TAudioEngineDummy
+        engine:=TAudioEngineDummy
       else
-         EngineParam.EngineKind := Engine.getEngineName;
+        EngineParam.EngineKind := Engine.getEngineName;
 
       if not Engine.IsAvalaible(EngineParam.EngineSubParams) then
          begin
@@ -263,10 +263,19 @@ begin
       AudioEngine.SetActiveEQ(EngineParam.ActiveEQ);
       // if equalizer is active, try to load active preset
       if EngineParam.ActiveEQ then
-         EqualizerParam.ApplyPreset(AudioEngine, EngineParam.EQPreset);
-
+        begin
+          if (EngineParam.EQPreset > 0) and (EngineParam.EQPreset < EqualizerParam.Count) then
+            ApplyPreset(AudioEngine, EqualizerParam.Preset[EngineParam.EQPreset])
+          else
+            begin
+              // If something wrong happened loading presets disable equalizer,
+              // better than access violation or playing crap...
+              EngineParam.EQPreset :=0;
+              EngineParam.ActiveEQ := false;
+              AudioEngine.SetActiveEQ(EngineParam.ActiveEQ);
+            end;
+        end;
     end;
-
 
   AudioEngine.OnSongEnd := @AudioEngineSongEnd;
   AudioEngine.MainVolume:= EngineParam.Volume;
@@ -339,7 +348,7 @@ begin
      while (N <= CountName - 1) and (result = EmptyStr) do
        begin
          if FileExists(Path + CoverName[N] + '.' + CoverExt[E]) then
-            Result:=path + CoverName[N] + '.' + CoverExt[E];
+           Result:=path + CoverName[N] + '.' + CoverExt[E];
          inc(N);
        end;
      inc(E);
