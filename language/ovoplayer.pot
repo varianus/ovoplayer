@@ -5,6 +5,11 @@ msgstr "Content-Type: text/plain; charset=UTF-8"
 msgid "Added:"
 msgstr ""
 
+#: appconsts.raddequalizerpreset
+msgctxt "appconsts.raddequalizerpreset"
+msgid "Save equalizer preset"
+msgstr ""
+
 #: appconsts.rallfiles
 #, object-pascal-format
 msgid "All Files(%0:s)|%0:s"
@@ -26,6 +31,10 @@ msgstr ""
 #: appconsts.rcurrentengine
 #, object-pascal-format
 msgid "Current audio engine: %s"
+msgstr ""
+
+#: appconsts.rdefaultpresetname
+msgid "Custom"
 msgstr ""
 
 #: appconsts.rdeleteplaylistconfirmation
@@ -75,6 +84,10 @@ msgstr ""
 msgid "Never"
 msgstr ""
 
+#: appconsts.rnewequalizername
+msgid "Name:"
+msgstr ""
+
 #: appconsts.rnotplaying
 msgid "Not Playing"
 msgstr ""
@@ -93,7 +106,7 @@ msgstr ""
 
 #: appconsts.rversionstring
 #, object-pascal-format
-msgid "Version: %0:s (SVN Rev.: %1:s Date %2:s)"
+msgid "Version: %0:s (Date %2:s)"
 msgstr ""
 
 #: playlistbuilder.rs_added
@@ -645,6 +658,14 @@ msgstr ""
 
 #: tfcustomplaylist.lbsort.caption
 msgid "Sort by"
+msgstr ""
+
+#: tfequalizer.bremovepreset.caption
+msgid "-"
+msgstr ""
+
+#: tfequalizer.bsavepreset.caption
+msgid "+"
 msgstr ""
 
 #: tfequalizer.caption

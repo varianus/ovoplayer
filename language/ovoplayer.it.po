@@ -17,6 +17,11 @@ msgstr ""
 msgid "Added:"
 msgstr "Aggiunte:"
 
+#: appconsts.raddequalizerpreset
+msgctxt "appconsts.raddequalizerpreset"
+msgid "Save equalizer preset"
+msgstr ""
+
 #: appconsts.rallfiles
 #, object-pascal-format
 msgid "All Files(%0:s)|%0:s"
@@ -39,6 +44,10 @@ msgstr "Ambiente di sviluppo: Lazarus %0:s  FPC %1:s"
 #, object-pascal-format
 msgid "Current audio engine: %s"
 msgstr "Motore di riproduzione attuale: %s"
+
+#: appconsts.rdefaultpresetname
+msgid "Custom"
+msgstr ""
 
 #: appconsts.rdeleteplaylistconfirmation
 msgid "Are you sure to delete this playlist?"
@@ -93,6 +102,10 @@ msgstr "<Valori Multipli>"
 msgid "Never"
 msgstr "Mai"
 
+#: appconsts.rnewequalizername
+msgid "Name:"
+msgstr ""
+
 #: appconsts.rnotplaying
 msgid "Not Playing"
 msgstr "Non in Esecuzione"
@@ -110,8 +123,9 @@ msgid "Updated:"
 msgstr "Aggiornate:"
 
 #: appconsts.rversionstring
-#, object-pascal-format
-msgid "Version: %0:s (SVN Rev.: %1:s Date %2:s)"
+#, object-pascal-format, fuzzy, badformat
+#| msgid "Version: %0:s (SVN Rev.: %1:s Date %2:s)"
+msgid "Version: %0:s (Date %2:s)"
 msgstr "Versione: %0:s (Rev. SVN: %1:s Data %2:s)"
 
 #: playlistbuilder.rs_added
@@ -704,6 +718,14 @@ msgstr "Nome"
 #: tfcustomplaylist.lbsort.caption
 msgid "Sort by"
 msgstr "Ordine per"
+
+#: tfequalizer.bremovepreset.caption
+msgid "-"
+msgstr ""
+
+#: tfequalizer.bsavepreset.caption
+msgid "+"
+msgstr ""
 
 #: tfequalizer.caption
 msgctxt "tfequalizer.caption"
