@@ -55,11 +55,12 @@ object fEqualizer: TfEqualizer
     end
     object cbPreset: TComboBox
       Left = 97
-      Height = 29
+      Height = 33
       Top = 8
       Width = 554
       ItemHeight = 0
       OnChange = cbPresetChange
+      OnKeyPress = cbPresetKeyPress
       TabOrder = 0
     end
     object bSavePreset: TSpeedButton
@@ -68,6 +69,9 @@ object fEqualizer: TfEqualizer
       Top = 11
       Width = 26
       Caption = '+'
+      Font.Height = -21
+      OnClick = bSavePresetClick
+      ParentFont = False
     end
     object bRemovePreset: TSpeedButton
       Left = 696
@@ -75,6 +79,8 @@ object fEqualizer: TfEqualizer
       Top = 11
       Width = 26
       Caption = '-'
+      Font.Height = -21
+      ParentFont = False
     end
   end
   object pnlContainer: TPanel

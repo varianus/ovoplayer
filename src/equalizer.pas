@@ -76,6 +76,7 @@ type
     Procedure InternalSave; override;
   public
     Property Preset[Index:integer]: RPreset read GetPreset write SetPreset; default;
+    function AddPreset(APreset:RPreset): integer;
     property Count: integer read GetCount;
     Procedure Load; override;
   end;
@@ -170,6 +171,12 @@ begin
     tmpSt.Free;
   end;
   Owner.Dirty:= true;
+end;
+
+function TEqualizerParam.AddPreset(APreset: RPreset): integer;
+begin
+  Insert([APreset], fPresets, High(fPresets)+1);
+  Result := High(fPresets);
 end;
 
 

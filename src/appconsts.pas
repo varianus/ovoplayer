@@ -97,6 +97,10 @@ Resourcestring
 
   rUnsupportedEngine = 'UNSUPPORTED ENGINE';
 
+  rAddEQualizerPreset = 'Save equalizer preset';
+  rNewEqualizerName = 'Name:';
+  rDefaultPresetName = 'Custom';
+
 
 implementation
 

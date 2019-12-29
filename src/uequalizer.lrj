@@ -1,5 +1,7 @@
 {"version":1,"strings":[
 {"hash":193158210,"name":"tfequalizer.caption","sourcebytes":[69,113,117,97,108,105,122,101,114],"value":"Equalizer"},
 {"hash":40024114,"name":"tfequalizer.cbenableeq.caption","sourcebytes":[69,110,97,98,108,101,32,101,113,117,97,108,105,122,101,114],"value":"Enable equalizer"},
-{"hash":91802052,"name":"tfequalizer.statictext1.caption","sourcebytes":[80,114,101,115,101,116],"value":"Preset"}
+{"hash":91802052,"name":"tfequalizer.statictext1.caption","sourcebytes":[80,114,101,115,101,116],"value":"Preset"},
+{"hash":43,"name":"tfequalizer.bsavepreset.caption","sourcebytes":[43],"value":"+"},
+{"hash":45,"name":"tfequalizer.bremovepreset.caption","sourcebytes":[45],"value":"-"}
 ]}

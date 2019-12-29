@@ -25,7 +25,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ButtonPanel,
-  ExtCtrls, StdCtrls, Buttons, equalizerband, fgl, AudioEngine, Equalizer;
+  ExtCtrls, StdCtrls, Buttons, equalizerband, fgl, AudioEngine, Equalizer, UITypes;
 
 type
 
@@ -42,8 +42,10 @@ type
     bSavePreset: TSpeedButton;
     bRemovePreset: TSpeedButton;
     StaticText1: TStaticText;
+    procedure bSavePresetClick(Sender: TObject);
     procedure cbEnableEqClick(Sender: TObject);
     procedure cbPresetChange(Sender: TObject);
+    procedure cbPresetKeyPress(Sender: TObject; var Key: char);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
@@ -140,6 +142,27 @@ begin
     end;
 end;
 
+procedure TfEqualizer.bSavePresetClick(Sender: TObject);
+var
+  NewName: string;
+  idx: integer;
+  i: integer;
+begin
+  NewName := rDefaultPresetName;
+  if InputQuery(rAddEQualizerPreset, rNewEqualizerName,newName) then
+    begin
+      CurrentSettings.Name:=NewName;
+      BackEnd.EqualizerParam.AddPreset(CurrentSettings);
+      cbPreset.Clear;
+      for i := 0 to pred(BackEnd.EqualizerParam.Count) do
+        begin
+          cbPreset.Items.Add(BackEnd.EqualizerParam[i].Name);
+        end;
+      PresetToScreen(CurrentSettings);
+      BackEnd.EngineParam.EQPreset:=idx;
+    end;
+end;
+
 procedure TfEqualizer.cbPresetChange(Sender: TObject);
 
 begin
@@ -150,11 +173,17 @@ begin
 
 end;
 
+procedure TfEqualizer.cbPresetKeyPress(Sender: TObject; var Key: char);
+begin
+  key:=#00;
+end;
+
 
 Procedure TfEqualizer.PresetToScreen(Preset:RPreset);
 var
  i: integer;
 begin
+ cbPreset.Caption:= Preset.Name;
  for i := 0 to pred(EQCounter) do
    begin
      EQBandList[i].Value := Preset.Values[i];
@@ -165,6 +194,7 @@ Procedure TfEqualizer.PresetToScreen(Preset:Integer);
 var
  i: integer;
 begin
+ cbPreset.Caption:= BackEnd.EqualizerParam[Preset].Name;
  for i := 0 to pred(EQCounter) do
    begin
      EQBandList[i].Value := BackEnd.EqualizerParam[Preset].Values[i];
@@ -177,6 +207,8 @@ begin
   if not CurrentSettings.Modified then
     begin
       CurrentSettings.Modified:=true;
+      CurrentSettings.Name:=rDefaultPresetName;
+      cbPreset.Caption:=CurrentSettings.Name;
     end;
   CurrentSettings.Values[BandNo]:= Value;
   if Eq.ActiveEQ then
