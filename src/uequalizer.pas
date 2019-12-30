@@ -152,7 +152,7 @@ begin
   if InputQuery(rAddEQualizerPreset, rNewEqualizerName,newName) then
     begin
       CurrentSettings.Name:=NewName;
-      BackEnd.EqualizerParam.AddPreset(CurrentSettings);
+      idx := BackEnd.EqualizerParam.AddPreset(CurrentSettings);
       cbPreset.Clear;
       for i := 0 to pred(BackEnd.EqualizerParam.Count) do
         begin
