@@ -175,10 +175,10 @@ end;
 
 function TEqualizerParam.AddPreset(APreset: RPreset): integer;
 begin
-  Insert([APreset], fPresets, High(fPresets)+1);
+  SetLength(fPresets, High(fPresets)+1);
   Result := High(fPresets);
+  fPresets[result] :=APreset;
 end;
-
 
 procedure TEqualizerParam.Load;
 var
@@ -236,4 +236,3 @@ begin
 end;
 
 end.
-
