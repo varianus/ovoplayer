@@ -4,7 +4,7 @@ setlocal
 :: Set path where Lazarus is installed
 set LAZARUS_DIR=c:\ex-d\lazarus
 :: Set path where FPC binaries are installed
-set FPC_BIN=C:\Ex-D\lazarus\fpc\3.1.1\bin\i386-Win32
+set FPC_BIN=C:\Ex-D\fpc\fpc\bin\i386-Win32
 ::  Primary config path - needed if you have installed lazarus with fpcup or have multiple installation
 set CONFIG_PATH=
 
