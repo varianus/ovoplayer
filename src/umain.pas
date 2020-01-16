@@ -485,6 +485,7 @@ type
     procedure LoadAutomaticPlaylist;
     procedure ShowNotification;
     procedure UpdateProperty(Kind: TChangedProperty);
+    procedure UpdateTree(Sender: TObject);
 
   public
     { public declarations }
@@ -1289,7 +1290,7 @@ begin
        info.InitFromList(FileList)
     else
        info.InitFromFile(FileList[0]);
-
+    info.OnUpdate := @UpdateTree;
     Info.show;
 
   finally
@@ -1956,6 +1957,12 @@ begin
   Show;
 end;
 
+procedure TfMainForm.UpdateTree(Sender: TObject);
+begin
+  LoadTree;
+end;
+
+
 procedure TfMainForm.mnuEnqueueItemsClick(Sender: TObject);
 begin
     CollectionHandler(true);
@@ -1975,26 +1982,28 @@ begin
     begin
       info := TfSongInfo.Create(Application);
       info.InitFromFile(Node.FullPath);
+      info.OnUpdate := @UpdateTree;
       Info.show;
+    end
+  else
+    begin
+      fileList := TStringList.Create;
+      try
+         Node:= TFileTreeNode(FilesTree.GetFirstMultiSelected);
+         while node <> nil do
+           begin
+             if not Node.isDir then
+                fileList.Add(Node.FullPath);
+             Node:=TFileTreeNode(Node.GetNextMultiSelected);
+           end;
+        info := TfSongInfo.Create(Application);
+        info.InitFromList(FileList);
+        info.OnUpdate := @UpdateTree;
+        Info.show;
+      finally
+        FreeAndNil(FileList);
+      end;
     end;
-
-  fileList := TStringList.Create;
-  try
-     Node:= TFileTreeNode(FilesTree.GetFirstMultiSelected);
-     while node <> nil do
-       begin
-         if not Node.isDir then
-            fileList.Add(Node.FullPath);
-         Node:=TFileTreeNode(Node.GetNextMultiSelected);
-       end;
-    info := TfSongInfo.Create(Application);
-    info.InitFromList(FileList);
-    Info.show;
-
-  finally
-    FreeAndNil(FileList);
-  end;
-
 end;
 
 
@@ -2015,6 +2024,7 @@ begin
       begin
         info := TfSongInfo.Create(Application);
         info.InitFromFile(BackEnd.mediaLibrary.FullNameFromID(Node.ID));
+        info.OnUpdate := @UpdateTree;
         Info.show;
       end;
       if (Node.Kind = tkAlbum) then
@@ -2031,6 +2041,7 @@ begin
          info := TfSongInfo.Create(Application);
          info.InitFromList(FileList);
          Info.show;
+         info.OnUpdate := @UpdateTree;
 
        finally
          FreeAndNil(FileList);

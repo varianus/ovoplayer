@@ -89,7 +89,7 @@ uses
   DefaultTranslator,  LCLVersion,
   ucustomplaylist, ufrfield, playlistbuilder, netprotocol,
   ImagesSupport, netsupport, guiconfig, SimpleSingleInstance, mcaselli, 
-  equalizerband, uequalizer, equalizer, backendconfig;
+  equalizerband, uequalizer, equalizer, backendconfig, iconloader;
 
 
 {$R *.res}

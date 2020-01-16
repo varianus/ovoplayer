@@ -25,10 +25,10 @@ interface
 
 uses
   Classes, SysUtils, LazFileUtils, ActnList, Controls, Dialogs, Forms, LResources,
-  singleinstance, strutils,
+  singleinstance, strutils, Graphics,
   BaseTypes, CoreInterfaces,
   AudioEngine, LazUTF8,  LazLogger,
-  PlayListManager, MediaLibrary, FilesSupport, netprotocol;
+  PlayListManager, MediaLibrary, FilesSupport, netprotocol,   IconLoader;
 
 type
 
@@ -113,7 +113,7 @@ implementation
 
 {$R *.lfm}
 uses  AudioTag, AppConsts, GeneralFunc, GUIBackEnd,
-  netsupport;
+  netsupport, LCLIntf, lclType;
 
 { TDM }
 // for traceback porpouse
@@ -143,10 +143,14 @@ begin
     end;
 end;
 
+{$R ovoplayerfont.res}
+
 procedure TDM.DataModuleCreate(Sender: TObject);
 var
   ParamList: TStringList;
   i: Integer;
+  s: TStream;
+  iconRender: TIconRenderer;
 begin
   Application.SingleInstance.OnServerReceivedParams := @ServerReceivedParams;
   IF ParamCount > 0  then
@@ -159,7 +163,48 @@ begin
      FreeAndNil(ParamList);
    end;
 
+   S := TResourceStream.Create(HInstance, 'OVOFONT', RT_RCDATA);
+  iconRender:= TIconRenderer.Create(S);
+  iconRender.Color := GetSysColor(COLOR_BTNTEXT);
+  iconRender.Size := MulDiv(22, Screen.PixelsPerInch, 96);
+  iconRender.AddToImageList(ilButtons, $e801);
+  iconRender.AddToImageList(ilButtons, $e802);
+  iconRender.AddToImageList(ilButtons, $e803);
+  iconRender.AddToImageList(ilButtons, $e804);
+  iconRender.AddToImageList(ilButtons, $f111);
+  iconRender.AddToImageList(ilButtons, $e809);
+  iconRender.AddToImageList(ilButtons, $e808);
+  iconRender.AddToImageList(ilButtons, $e807);
+  iconRender.AddToImageList(ilButtons, $e805);
+  iconRender.AddToImageList(ilButtons, $e80a);
+  iconRender.AddToImageList(ilButtons, $e818);
+  iconRender.AddToImageList(ilButtons, $f114);
+  iconRender.AddToImageList(ilButtons, $f115);
+  iconRender.AddToImageList(ilButtons, $e811);
+  iconRender.AddToImageList(ilButtons, $e810);
+  iconRender.AddToImageList(ilButtons, $e80d);
+  iconRender.AddToImageList(ilButtons, $e80e);
+  iconRender.AddToImageList(ilButtons, $e80f);
+  iconRender.AddToImageList(ilButtons, $e80b);
+  iconRender.AddToImageList(ilButtons, $e80c);
 
+  iconRender.Size := MulDiv(16, Screen.PixelsPerInch, 96);
+  iconRender.AddToImageList(ilSmall, $e814);
+  iconRender.AddToImageList(ilSmall, $e815);
+  iconRender.AddToImageList(ilSmall, $e816);
+  iconRender.AddToImageList(ilSmall, $e817);
+  iconRender.AddToImageList(ilSmall, $e819);
+  iconRender.AddToImageList(ilSmall, $e81d);
+  iconRender.AddToImageList(ilSmall, $e803);
+  iconRender.AddToImageList(ilSmall, $f114);
+  iconRender.AddToImageList(ilSmall, $e801);
+  iconRender.AddToImageList(ilSmall, $e80f);
+  iconRender.AddToImageList(ilSmall, $e802);
+  iconRender.AddToImageList(ilSmall, $e804);
+  iconRender.AddToImageList(ilSmall, $e192);
+  iconRender.AddToImageList(ilSmall, $e81a);
+
+  iconRender.free;
 
 end;
 

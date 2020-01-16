@@ -116,6 +116,7 @@ type
     procedure meCommentChange(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
   private
+    FOnUpdate: TNotifyEvent;
     fUpdating: boolean;
     {$IFDEF SUPPORT_LISTBOX_HINT}
     fHint: THintWindow;
@@ -131,6 +132,7 @@ type
     procedure CheckModified(Field: TIDFields; AText: string);
     procedure CombineTags;
     procedure LoadFromFile(FileName: TFileName; var Info: RSongInfo);
+    procedure SetOnUpdate(AValue: TNotifyEvent);
     procedure ShowFileInfo(Info: TFileInfo);
     procedure ShowLibraryInfo(Info: TExtendedInfo);
     procedure ShowMediaProperty(MediaProperty: TMediaProperty);
@@ -142,6 +144,7 @@ type
     destructor Destroy; override;
     procedure InitFromList(FileNameS: TStrings);
     procedure InitFromFile(FileName: TFileName);
+    property OnUpdate: TNotifyEvent read FOnUpdate write SetOnUpdate;
   end;
 
 var
@@ -304,6 +307,8 @@ begin
              BackEnd.mediaLibrary.Update(fTagList[i].ID, fTagList[i].Tags, fTagList[i].FileInfo);
           end;
     end;
+  if Assigned(FOnUpdate) then
+    FOnUpdate(Self);
   Close;
 end;
 
@@ -486,6 +491,12 @@ begin
   if info.ID <> -1 then
     info.ExtendedInfo := BackEnd.mediaLibrary.InfoFromID(info.ID);
 
+end;
+
+procedure TfSongInfo.SetOnUpdate(AValue: TNotifyEvent);
+begin
+  if FOnUpdate = AValue then Exit;
+  FOnUpdate := AValue;
 end;
 
 procedure TfSongInfo.ShowMediaProperty(MediaProperty: TMediaProperty);

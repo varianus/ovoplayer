@@ -334,6 +334,7 @@ begin
       end;
     end
   else
+    if l > 1 then
     move(p^, ws[1], l);
 
   Result := UTF16ToUTF8(ws);
