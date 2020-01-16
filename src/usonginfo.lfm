@@ -21,6 +21,7 @@ object fSongInfo: TfSongInfo
     ActivePage = tsMediaProperty
     Align = alClient
     Font.Height = -12
+    ParentFont = False
     TabIndex = 1
     TabOrder = 1
     object tsTags: TTabSheet

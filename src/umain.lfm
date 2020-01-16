@@ -768,6 +768,7 @@ object fMainForm: TfMainForm
         Anchors = [akTop, akLeft, akRight]
         AutoSize = False
         Caption = 'Album'
+        ParentColor = False
         OnDblClick = TrackDblClick
       end
       object Artist: TLabel
@@ -778,6 +779,7 @@ object fMainForm: TfMainForm
         Anchors = [akTop, akLeft, akRight]
         AutoSize = False
         Caption = 'Artist'
+        ParentColor = False
         OnDblClick = TrackDblClick
       end
     end
