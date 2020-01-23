@@ -24,8 +24,8 @@ unit iconloader;
 interface
 
 uses
-  Classes, SysUtils,Graphics, fpimage, LCLType, IntfGraphics, GraphType, EasyLazFreeType,
-  LazFreeTypeIntfDrawer, imglist;
+  Classes, SysUtils,Graphics, fpimage, LCLType, IntfGraphics, GraphType, EasyLazFreeType, LazFreeTypeFPImageDrawer,
+{  LazFreeTypeIntfDrawer,} imglist, Forms;
 
 
 Type
@@ -37,16 +37,17 @@ Type
     FColor: TColor;
     FFontData:TFreeTypeFont;
     FSize: Integer;
+    fImageSize: integer;
     function getIcon(iconCode: Cardinal): TBitmap;
     procedure SetColor(AValue: TColor);
     procedure SetDefaults;
-    procedure SetSize(AValue: Integer);
-
   public
     Constructor Create(AStream: TStream);
     destructor Destroy; override;
     function AddToImageList(imageList: TCustomImageList; Code:Cardinal): integer;
-    property Size:Integer read FSize write SetSize;
+    Procedure SetSize(const AImageSize: integer; const FontSize:Integer; AutoScale: boolean=true);
+    property FontSize:Integer read FSize;
+    property ImageSize:Integer read FimageSize;
     property Color:TColor read FColor write SetColor;
 
   end;
@@ -59,20 +60,22 @@ uses lazutf8, LCLIntf;
 function TIconRenderer.getIcon(iconCode: Cardinal): TBitmap;
 var
   image: TLazIntfImage;
-  freeTypePainter: TIntfFreeTypeDrawer;
+//  freeTypePainter: TIntfFreeTypeDrawer;
+  freeTypePainter: TFPImageFreeTypeDrawer;
   fontColor: TFPColor;
   utf8Value: string;
 begin
   try
     Result := TBitmap.Create;
     image := TLazIntfImage.Create(0, 0, [riqfRGB, riqfAlpha]);
-    freeTypePainter := TIntfFreeTypeDrawer.Create(image);
+//    freeTypePainter := TIntfFreeTypeDrawer.Create(image);
+    freeTypePainter := TFPImageFreeTypeDrawer.Create(image);
     utf8Value := UnicodetoUTF8(iconCode);
     fontColor := TColorToFPColor(FColor);
     try
-      image.SetSize(FSize, FSize);
+      image.SetSize(FImageSize, FImageSize);
       freeTypePainter.FillPixels(colTransparent);
-      freeTypePainter.DrawText(utf8Value, FFontData, FSize div 2, FSize div 2, fontColor, [ftaCenter, ftaVerticalCenter]);
+      freeTypePainter.DrawText(utf8Value, FFontData, FImageSize div 2, FImageSize div 2, fontColor, [ftaCenter, ftaVerticalCenter]);
       Result.LoadFromIntfImage(image);
     finally
       freeTypePainter.Free;
@@ -84,11 +87,23 @@ begin
 end;
 
 
-procedure TIconRenderer.SetSize(AValue: Integer);
+procedure TIconRenderer.SetSize(const AImageSize: integer; const FontSize:Integer; AutoScale: boolean=true);
+
 begin
-  if FSize = AValue then Exit;
-  FSize := AValue;
-  FFontData.SizeInPixels := FSize -2;
+  FFontData.DPI := Screen.PixelsPerInch;
+  if AutoScale then
+    begin
+      FImageSize := MulDiv(AImageSize, Screen.PixelsPerInch, 96);
+      FSize := MulDiv(FontSize, Screen.PixelsPerInch, 96);
+    end
+  else
+    begin
+      FImageSize := AImageSize;
+      FSize := FontSize;
+    end;
+
+  FFontData.SizeInPixels := FSize;
+
   SetDefaults;
 end;
 

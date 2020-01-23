@@ -163,10 +163,15 @@ begin
      FreeAndNil(ParamList);
    end;
 
-   S := TResourceStream.Create(HInstance, 'OVOFONT', RT_RCDATA);
+  S := TResourceStream.Create(HInstance, 'OVOFONT', RT_RCDATA);
+  ilButtons.Clear;
+  ilButtons.Height := MulDiv(23, Screen.PixelsPerInch, 96);
+  ilButtons.Width := ilButtons.Height;
+
   iconRender:= TIconRenderer.Create(S);
   iconRender.Color := GetSysColor(COLOR_BTNTEXT);
-  iconRender.Size := MulDiv(22, Screen.PixelsPerInch, 96);
+  iconRender.SetSize(23, 21);
+
   iconRender.AddToImageList(ilButtons, $e801);
   iconRender.AddToImageList(ilButtons, $e802);
   iconRender.AddToImageList(ilButtons, $e803);
@@ -188,7 +193,11 @@ begin
   iconRender.AddToImageList(ilButtons, $e80b);
   iconRender.AddToImageList(ilButtons, $e80c);
 
-  iconRender.Size := MulDiv(16, Screen.PixelsPerInch, 96);
+  ilSmall.Clear;
+  ilSmall.Height := MulDiv(16, Screen.PixelsPerInch, 96);
+  ilSmall.Width := ilSmall.Height;
+
+  iconRender.SetSize(16,15);
   iconRender.AddToImageList(ilSmall, $e814);
   iconRender.AddToImageList(ilSmall, $e815);
   iconRender.AddToImageList(ilSmall, $e816);
