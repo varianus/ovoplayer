@@ -42,7 +42,7 @@ jobs:
         git submodule update
     - name: Install Dependencies
       if: env.OS == 'ubuntu-latest'
-      run: sudo apt-get install libdbus-glib-1-dev
+      run: sudo apt-get update && sudo apt-get install libxml2-utils libdbus-glib-1-dev
 
     - name: Install Lazarus
       shell: python
