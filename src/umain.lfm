@@ -1,13 +1,13 @@
 object fMainForm: TfMainForm
-  Left = 389
-  Height = 468
-  Top = 156
-  Width = 875
+  Left = 661
+  Height = 547
+  Top = 216
+  Width = 765
   ActiveControl = pcMain
   AllowDropFiles = True
   Caption = 'OvoPlayer'
-  ClientHeight = 468
-  ClientWidth = 875
+  ClientHeight = 527
+  ClientWidth = 765
   Constraints.MinHeight = 202
   Constraints.MinWidth = 505
   Font.Height = -12
@@ -21,32 +21,33 @@ object fMainForm: TfMainForm
   OnResize = FormResize
   OnShow = FormShow
   ShowHint = True
+  LCLVersion = '2.1.0.0'
   object pnlleft: TPanel
     Left = 0
-    Height = 468
+    Height = 527
     Top = 0
     Width = 246
     Align = alLeft
     BevelOuter = bvNone
-    ClientHeight = 468
+    ClientHeight = 527
     ClientWidth = 246
     TabOrder = 0
     object pcMain: TPageControl
       Left = 0
-      Height = 358
+      Height = 417
       Top = 0
       Width = 246
-      ActivePage = tsCollection
+      ActivePage = tsDirectory
       Align = alClient
       MultiLine = True
-      TabIndex = 0
+      TabIndex = 1
       TabOrder = 0
       TabPosition = tpBottom
       OnChange = pcMainChange
       Options = [nboMultiLine, nboHidePageListPopup]
       object tsCollection: TTabSheet
         Caption = 'Collection'
-        ClientHeight = 330
+        ClientHeight = 310
         ClientWidth = 238
         object pnlCollection: TPanel
           Left = 0
@@ -145,7 +146,7 @@ object fMainForm: TfMainForm
         end
         object tvCollection: TTreeView
           Left = 0
-          Height = 259
+          Height = 239
           Top = 71
           Width = 238
           Align = alClient
@@ -170,8 +171,8 @@ object fMainForm: TfMainForm
       end
       object tsDirectory: TTabSheet
         Caption = 'Directory'
-        ClientHeight = 314
-        ClientWidth = 240
+        ClientHeight = 389
+        ClientWidth = 238
         OnShow = tsDirectoryShow
         object tbDirectory: TToolBar
           Left = 0
@@ -225,7 +226,7 @@ object fMainForm: TfMainForm
         end
         object FilesTree: TTreeView
           Left = 0
-          Height = 388
+          Height = 339
           Top = 50
           Width = 238
           Align = alClient
@@ -277,7 +278,7 @@ object fMainForm: TfMainForm
     object gbStats: TGroupBox
       Left = 0
       Height = 110
-      Top = 358
+      Top = 417
       Width = 246
       Align = alBottom
       Caption = 'Stats'
@@ -370,430 +371,563 @@ object fMainForm: TfMainForm
   end
   object pnlMain: TPanel
     Left = 250
-    Height = 468
+    Height = 527
     Top = 0
-    Width = 625
+    Width = 515
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 468
-    ClientWidth = 625
+    ClientHeight = 527
+    ClientWidth = 515
     Constraints.MinWidth = 444
     TabOrder = 1
-    object pnlControl: TPanel
+    object pcCenter: TPageControl
       Left = 0
-      Height = 54
-      Top = 414
-      Width = 625
-      Align = alBottom
-      Anchors = [akLeft, akRight]
-      BevelOuter = bvNone
-      ClientHeight = 54
-      ClientWidth = 625
-      TabOrder = 0
-      object tbMediaControl: TToolBar
-        Left = 0
-        Height = 25
-        Top = 1
-        Width = 625
-        Align = alClient
-        BorderSpacing.Top = 1
-        ButtonHeight = 23
-        ButtonWidth = 23
-        Constraints.MaxHeight = 25
-        EdgeBorders = []
-        EdgeInner = esNone
-        EdgeOuter = esNone
-        Images = DM.ilButtons
-        TabOrder = 0
-        Transparent = True
-        Wrapable = False
-        object ToolButton1: TToolButton
-          Left = 1
-          Top = 0
-          Action = DM.actPrevious
-        end
-        object ToolButton2: TToolButton
-          Left = 61
-          Top = 0
-          Action = DM.actPlay
-        end
-        object ToolButton3: TToolButton
-          Left = 121
-          Top = 0
-          Action = DM.actStop
-        end
-        object ToolButton4: TToolButton
-          Left = 173
-          Top = 0
-          Action = DM.actNext
-        end
-        object ToolButton5: TToolButton
-          Left = 95
-          Top = 0
-          Action = DM.actPause
-        end
-        object ToolButton6: TToolButton
-          Left = 27
-          Top = 0
-          Action = DM.actSkipBackward
-        end
-        object ToolButton7: TToolButton
-          Left = 147
-          Top = 0
-          Action = DM.actSkipForward
-        end
-        object ToolButton8: TToolButton
-          Left = 87
-          Height = 23
-          Top = 0
-          Style = tbsSeparator
-        end
-        object ToolButton9: TToolButton
-          Left = 53
-          Height = 23
-          Top = 0
-          Style = tbsSeparator
-        end
-        object ToolButton10: TToolButton
-          Left = 245
-          Top = 0
-          Action = DM.actPlayListShuffle
-        end
-        object tbRepeat: TToolButton
-          Left = 207
-          Top = 0
-          Caption = '     '
-          DropdownMenu = RepeatMenu
-          Grouped = True
-          ImageIndex = 10
-          OnClick = tbRepeatClick
-          Style = tbsDropDown
-        end
-        object ToolButton16: TToolButton
-          Left = 305
-          Top = 0
-          Action = DM.actPlaylistLoad
-        end
-        object ToolButton17: TToolButton
-          Left = 279
-          Top = 0
-          Action = DM.actPlaylistSave
-        end
-        object ToolButton18: TToolButton
-          Left = 199
-          Height = 23
-          Top = 0
-          AutoSize = True
-          Enabled = False
-          Style = tbsSeparator
-        end
-        object ToolButton12: TToolButton
-          Left = 271
-          Height = 23
-          Top = 0
-          Style = tbsSeparator
-        end
-        object ToolButton13: TToolButton
-          Left = 331
-          Top = 0
-          Enabled = False
-          ShowCaption = False
-        end
-        object bMute: TToolButton
-          Left = 354
-          Top = 0
-          Action = DM.actMute
-        end
-        object slVolume: TThemedSlider
-          Left = 380
-          Height = 23
-          Top = 0
-          Width = 101
-          BorderWidth = 6
-          Step = 0
-          Max = 255
-          Min = 0
-          Position = 255
-          Sliderwidth = 12
-          OnChange = slVolumeChange
-          Orientation = ttsHorizontal
-        end
-      end
-      object pnlTimePos: TPanel
-        Left = 0
-        Height = 25
-        Top = 29
-        Width = 625
-        Align = alBottom
-        BevelOuter = bvNone
-        ClientHeight = 25
-        ClientWidth = 625
-        TabOrder = 1
-        object lbTime: TLabel
-          Left = 528
-          Height = 25
-          Top = 0
-          Width = 97
-          Align = alRight
-          Alignment = taCenter
-          Anchors = [akRight, akBottom]
-          AutoSize = False
-          Caption = '00:00:00'
-          Font.Height = -19
-          ParentColor = False
-          ParentFont = False
-        end
-        object TrackBar: TThemedSlider
-          Left = 0
-          Height = 25
-          Top = 0
-          Width = 528
-          Align = alClient
-          BorderWidth = 6
-          Step = 0
-          Max = 10
-          Min = 0
-          Position = 0
-          Sliderwidth = 12
-          OnChange = TrackBarChange
-          Orientation = ttsHorizontal
-          OnClick = TrackBarChange
-        end
-      end
-    end
-    object pnlPlaylist: TPanel
-      Left = 0
-      Height = 308
-      Top = 106
-      Width = 625
-      Align = alClient
-      ClientHeight = 308
-      ClientWidth = 625
-      Constraints.MinWidth = 499
-      TabOrder = 1
-      object sgPlayList: TStringGrid
-        Left = 1
-        Height = 306
-        Top = 1
-        Width = 623
-        Align = alClient
-        AlternateColor = 15921906
-        AutoEdit = False
-        ColCount = 12
-        Columns = <        
-          item
-            Alignment = taRightJustify
-            MaxSize = 202
-            ReadOnly = True
-            SizePriority = 0
-            Title.PrefixOption = poHeaderClick
-            Title.Caption = '#'
-            Width = 89
-          end        
-          item
-            MaxSize = 202
-            ReadOnly = True
-            Tag = 1
-            Title.Caption = 'Title'
-            Width = 89
-          end        
-          item
-            MaxSize = 202
-            ReadOnly = True
-            Tag = 2
-            Title.Caption = 'Album'
-            Width = 89
-          end        
-          item
-            MaxSize = 202
-            ReadOnly = True
-            Tag = 3
-            Title.Caption = 'Artist'
-            Width = 89
-          end        
-          item
-            Alignment = taRightJustify
-            MaxSize = 202
-            ReadOnly = True
-            SizePriority = 0
-            Tag = 4
-            Title.Caption = 'Time'
-            Width = 89
-          end        
-          item
-            Alignment = taRightJustify
-            MaxSize = 202
-            ReadOnly = True
-            SizePriority = 0
-            Tag = 5
-            Title.Caption = 'Track'
-            Width = 89
-          end        
-          item
-            MaxSize = 202
-            ReadOnly = True
-            SizePriority = 0
-            Tag = 6
-            Title.Caption = 'Genre'
-            Visible = False
-          end        
-          item
-            Alignment = taRightJustify
-            MaxSize = 202
-            ReadOnly = True
-            SizePriority = 0
-            Tag = 7
-            Title.Caption = 'Year'
-            Visible = False
-          end        
-          item
-            MaxSize = 202
-            ReadOnly = True
-            SizePriority = 0
-            Tag = 8
-            Title.Caption = 'Album Artist'
-            Visible = False
-          end        
-          item
-            MaxSize = 202
-            ReadOnly = True
-            SizePriority = 0
-            Tag = 9
-            Title.Caption = 'FileName'
-            Visible = False
-          end        
-          item
-            ButtonStyle = cbsPickList
-            DropDownRows = 5
-            MaxSize = 202
-            PickList.Strings = (
-              '*'
-              '**'
-              '***'
-              '****'
-              '*****'
-            )
-            SizePriority = 0
-            Tag = 10
-            Title.Caption = 'Rating'
-            Visible = False
-          end>
-        DefaultColWidth = 18
-        DefaultRowHeight = 18
-        Flat = True
-        HeaderHotZones = [gzFixedRows]
-        MouseWheelOption = mwGrid
-        Options = [goColSizing, goColMoving, goRowSelect, goSmoothScroll, goHeaderHotTracking, goHeaderPushedLook, goDontScrollPartCell, goTruncCellHints]
-        ParentShowHint = False
-        RowCount = 2
-        ScrollBars = ssAutoVertical
-        ShowHint = True
-        TabOrder = 0
-        TitleFont.Height = -12
-        TitleImageList = DM.ilSmall
-        TitleStyle = tsNative
-        UseXORFeatures = True
-        OnClick = sgPlayListClick
-        OnColRowMoved = sgPlayListColRowMoved
-        OnContextPopup = sgPlayListContextPopup
-        OnDragDrop = sgPlayListDragDrop
-        OnDragOver = sgPlayListDragOver
-        OnDblClick = sgPlayListDblClick
-        OnDrawCell = sgPlayListDrawCell
-        OnHeaderClick = sgPlayListHeaderClick
-        OnHeaderSized = sgPlayListHeaderSized
-        OnHeaderSizing = sgPlayListHeaderSizing
-        OnKeyDown = sgPlayListKeyDown
-        OnMouseDown = sgPlayListMouseDown
-        OnMouseLeave = sgPlayListMouseLeave
-        OnMouseMove = sgPlayListMouseMove
-        OnMouseUp = sgPlayListMouseUp
-        OnPrepareCanvas = sgPlayListPrepareCanvas
-        OnResize = sgPlayListResize
-        ColWidths = (
-          88
-          89
-          89
-          89
-          89
-          89
-          89
-          0
-          0
-          0
-          0
-          0
-        )
-      end
-    end
-    object pnlPlayInfo: TPanel
-      Left = 0
-      Height = 106
+      Height = 527
       Top = 0
-      Width = 625
-      Align = alTop
-      ClientHeight = 106
-      ClientWidth = 625
-      TabOrder = 2
-      object imgCover: TImage
-        Cursor = crHandPoint
-        Left = 0
-        Height = 101
-        Top = 4
-        Width = 101
-        OnDblClick = imgCoverDblClick
-        ParentShowHint = False
-        ShowHint = True
-        Stretch = True
+      Width = 515
+      ActivePage = tsWelcome
+      Align = alClient
+      ShowTabs = False
+      Style = tsFlatButtons
+      TabIndex = 1
+      TabOrder = 0
+      object tsPlayer: TTabSheet
+        ClientHeight = 607
+        ClientWidth = 921
+        object pnlPlayInfo: TPanel
+          Left = 0
+          Height = 106
+          Top = 0
+          Width = 921
+          Align = alTop
+          ClientHeight = 106
+          ClientWidth = 921
+          TabOrder = 0
+          object imgCover: TImage
+            Cursor = crHandPoint
+            Left = 0
+            Height = 101
+            Top = 4
+            Width = 101
+            OnDblClick = imgCoverDblClick
+            ParentShowHint = False
+            ShowHint = True
+            Stretch = True
+          end
+          object Title: TLabel
+            Left = 110
+            Height = 24
+            Top = 4
+            Width = 803
+            Anchors = [akTop, akLeft, akRight]
+            AutoSize = False
+            Caption = 'Title'
+            Font.Height = 18
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+            OnDblClick = TrackDblClick
+          end
+          object Album: TLabel
+            Left = 109
+            Height = 21
+            Top = 36
+            Width = 804
+            Anchors = [akTop, akLeft, akRight]
+            AutoSize = False
+            Caption = 'Album'
+            ParentColor = False
+            OnDblClick = TrackDblClick
+          end
+          object Artist: TLabel
+            Left = 110
+            Height = 21
+            Top = 66
+            Width = 803
+            Anchors = [akTop, akLeft, akRight]
+            AutoSize = False
+            Caption = 'Artist'
+            ParentColor = False
+            OnDblClick = TrackDblClick
+          end
+        end
+        object pnlPlaylist: TPanel
+          Left = 0
+          Height = 424
+          Top = 106
+          Width = 921
+          Align = alClient
+          ClientHeight = 424
+          ClientWidth = 921
+          Constraints.MinWidth = 499
+          TabOrder = 1
+          object sgPlayList: TStringGrid
+            Left = 1
+            Height = 422
+            Top = 1
+            Width = 919
+            Align = alClient
+            AlternateColor = 15921906
+            AutoEdit = False
+            ColCount = 12
+            Columns = <            
+              item
+                Alignment = taRightJustify
+                MaxSize = 202
+                ReadOnly = True
+                SizePriority = 0
+                Title.PrefixOption = poHeaderClick
+                Title.Caption = '#'
+                Width = 89
+              end            
+              item
+                MaxSize = 202
+                ReadOnly = True
+                Tag = 1
+                Title.Caption = 'Title'
+                Width = 89
+              end            
+              item
+                MaxSize = 202
+                ReadOnly = True
+                Tag = 2
+                Title.Caption = 'Album'
+                Width = 89
+              end            
+              item
+                MaxSize = 202
+                ReadOnly = True
+                Tag = 3
+                Title.Caption = 'Artist'
+                Width = 89
+              end            
+              item
+                Alignment = taRightJustify
+                MaxSize = 202
+                ReadOnly = True
+                SizePriority = 0
+                Tag = 4
+                Title.Caption = 'Time'
+                Width = 89
+              end            
+              item
+                Alignment = taRightJustify
+                MaxSize = 202
+                ReadOnly = True
+                SizePriority = 0
+                Tag = 5
+                Title.Caption = 'Track'
+                Width = 89
+              end            
+              item
+                MaxSize = 202
+                ReadOnly = True
+                SizePriority = 0
+                Tag = 6
+                Title.Caption = 'Genre'
+                Visible = False
+              end            
+              item
+                Alignment = taRightJustify
+                MaxSize = 202
+                ReadOnly = True
+                SizePriority = 0
+                Tag = 7
+                Title.Caption = 'Year'
+                Visible = False
+              end            
+              item
+                MaxSize = 202
+                ReadOnly = True
+                SizePriority = 0
+                Tag = 8
+                Title.Caption = 'Album Artist'
+                Visible = False
+              end            
+              item
+                MaxSize = 202
+                ReadOnly = True
+                SizePriority = 0
+                Tag = 9
+                Title.Caption = 'FileName'
+                Visible = False
+              end            
+              item
+                ButtonStyle = cbsPickList
+                DropDownRows = 5
+                MaxSize = 202
+                PickList.Strings = (
+                  '*'
+                  '**'
+                  '***'
+                  '****'
+                  '*****'
+                )
+                SizePriority = 0
+                Tag = 10
+                Title.Caption = 'Rating'
+                Visible = False
+              end>
+            DefaultColWidth = 18
+            DefaultRowHeight = 18
+            Flat = True
+            HeaderHotZones = [gzFixedRows]
+            MouseWheelOption = mwGrid
+            Options = [goColSizing, goColMoving, goRowSelect, goSmoothScroll, goHeaderHotTracking, goHeaderPushedLook, goDontScrollPartCell, goTruncCellHints]
+            ParentShowHint = False
+            RowCount = 2
+            ScrollBars = ssAutoVertical
+            ShowHint = True
+            TabOrder = 0
+            TitleFont.Height = -12
+            TitleImageList = DM.ilSmall
+            TitleStyle = tsNative
+            UseXORFeatures = True
+            OnClick = sgPlayListClick
+            OnColRowMoved = sgPlayListColRowMoved
+            OnContextPopup = sgPlayListContextPopup
+            OnDragDrop = sgPlayListDragDrop
+            OnDragOver = sgPlayListDragOver
+            OnDblClick = sgPlayListDblClick
+            OnDrawCell = sgPlayListDrawCell
+            OnHeaderClick = sgPlayListHeaderClick
+            OnHeaderSized = sgPlayListHeaderSized
+            OnHeaderSizing = sgPlayListHeaderSizing
+            OnKeyDown = sgPlayListKeyDown
+            OnMouseDown = sgPlayListMouseDown
+            OnMouseLeave = sgPlayListMouseLeave
+            OnMouseMove = sgPlayListMouseMove
+            OnMouseUp = sgPlayListMouseUp
+            OnPrepareCanvas = sgPlayListPrepareCanvas
+            OnResize = sgPlayListResize
+            ColWidths = (
+              88
+              89
+              89
+              89
+              89
+              89
+              89
+              0
+              0
+              0
+              0
+              0
+            )
+          end
+        end
+        object pnlControl: TPanel
+          Left = 0
+          Height = 54
+          Top = 530
+          Width = 921
+          Align = alBottom
+          Anchors = [akLeft, akRight]
+          BevelOuter = bvNone
+          ClientHeight = 54
+          ClientWidth = 921
+          TabOrder = 2
+          object tbMediaControl: TToolBar
+            Left = 0
+            Height = 25
+            Top = 1
+            Width = 921
+            Align = alClient
+            BorderSpacing.Top = 1
+            ButtonHeight = 23
+            ButtonWidth = 23
+            Constraints.MaxHeight = 25
+            EdgeBorders = []
+            EdgeInner = esNone
+            EdgeOuter = esNone
+            Images = DM.ilButtons
+            TabOrder = 0
+            Transparent = True
+            Wrapable = False
+            object ToolButton1: TToolButton
+              Left = 1
+              Top = 0
+              Action = DM.actPrevious
+            end
+            object ToolButton2: TToolButton
+              Left = 55
+              Top = 0
+              Action = DM.actPlay
+            end
+            object ToolButton3: TToolButton
+              Left = 109
+              Top = 0
+              Action = DM.actStop
+            end
+            object ToolButton4: TToolButton
+              Left = 155
+              Top = 0
+              Action = DM.actNext
+            end
+            object ToolButton5: TToolButton
+              Left = 86
+              Top = 0
+              Action = DM.actPause
+            end
+            object ToolButton6: TToolButton
+              Left = 24
+              Top = 0
+              Action = DM.actSkipBackward
+            end
+            object ToolButton7: TToolButton
+              Left = 132
+              Top = 0
+              Action = DM.actSkipForward
+            end
+            object ToolButton8: TToolButton
+              Left = 78
+              Height = 8
+              Top = 0
+              Style = tbsSeparator
+            end
+            object ToolButton9: TToolButton
+              Left = 47
+              Height = 8
+              Top = 0
+              Style = tbsSeparator
+            end
+            object ToolButton10: TToolButton
+              Left = 224
+              Top = 0
+              Action = DM.actPlayListShuffle
+            end
+            object tbRepeat: TToolButton
+              Left = 186
+              Top = 0
+              Caption = '     '
+              DropdownMenu = RepeatMenu
+              Grouped = True
+              ImageIndex = 10
+              OnClick = tbRepeatClick
+              Style = tbsDropDown
+            end
+            object ToolButton16: TToolButton
+              Left = 278
+              Top = 0
+              Action = DM.actPlaylistLoad
+            end
+            object ToolButton17: TToolButton
+              Left = 255
+              Top = 0
+              Action = DM.actPlaylistSave
+            end
+            object ToolButton18: TToolButton
+              Left = 178
+              Height = 8
+              Top = 0
+              AutoSize = True
+              Enabled = False
+              Style = tbsSeparator
+            end
+            object ToolButton12: TToolButton
+              Left = 247
+              Height = 8
+              Top = 0
+              Style = tbsSeparator
+            end
+            object ToolButton13: TToolButton
+              Left = 301
+              Top = 0
+              Enabled = False
+              ShowCaption = False
+            end
+            object bMute: TToolButton
+              Left = 324
+              Top = 0
+              Action = DM.actMute
+            end
+            object slVolume: TThemedSlider
+              Left = 347
+              Height = 23
+              Top = 0
+              Width = 101
+              BorderWidth = 6
+              Step = 0
+              Max = 255
+              Min = 0
+              Position = 255
+              Sliderwidth = 12
+              OnChange = slVolumeChange
+              Orientation = ttsHorizontal
+            end
+          end
+          object pnlTimePos: TPanel
+            Left = 0
+            Height = 25
+            Top = 29
+            Width = 921
+            Align = alBottom
+            BevelOuter = bvNone
+            ClientHeight = 25
+            ClientWidth = 921
+            TabOrder = 1
+            object lbTime: TLabel
+              Left = 824
+              Height = 25
+              Top = 0
+              Width = 97
+              Align = alRight
+              Alignment = taCenter
+              Anchors = [akRight, akBottom]
+              AutoSize = False
+              Caption = '00:00:00'
+              Font.Height = -19
+              ParentColor = False
+              ParentFont = False
+            end
+            object TrackBar: TThemedSlider
+              Left = 0
+              Height = 25
+              Top = 0
+              Width = 824
+              Align = alClient
+              BorderWidth = 6
+              Step = 0
+              Max = 10
+              Min = 0
+              Position = 0
+              Sliderwidth = 12
+              OnChange = TrackBarChange
+              Orientation = ttsHorizontal
+              OnClick = TrackBarChange
+            end
+          end
+        end
       end
-      object Title: TLabel
-        Left = 110
-        Height = 24
-        Top = 4
-        Width = 507
-        Anchors = [akTop, akLeft, akRight]
-        AutoSize = False
-        Caption = 'Title'
-        Font.Height = 18
-        Font.Style = [fsBold]
-        ParentColor = False
-        ParentFont = False
-        OnDblClick = TrackDblClick
-      end
-      object Album: TLabel
-        Left = 109
-        Height = 21
-        Top = 36
-        Width = 508
-        Anchors = [akTop, akLeft, akRight]
-        AutoSize = False
-        Caption = 'Album'
-        ParentColor = False
-        OnDblClick = TrackDblClick
-      end
-      object Artist: TLabel
-        Left = 110
-        Height = 21
-        Top = 66
-        Width = 507
-        Anchors = [akTop, akLeft, akRight]
-        AutoSize = False
-        Caption = 'Artist'
-        ParentColor = False
-        OnDblClick = TrackDblClick
+      object tsWelcome: TTabSheet
+        ClientHeight = 519
+        ClientWidth = 507
+        object StaticText1: TStaticText
+          Left = 0
+          Height = 49
+          Top = 0
+          Width = 507
+          Align = alTop
+          Alignment = taCenter
+          AutoSize = True
+          Caption = 'Welcome to OvoPlayer'
+          Font.Height = -36
+          ParentFont = False
+          TabOrder = 0
+        end
+        object StaticText4: TStaticText
+          Left = 0
+          Height = 33
+          Top = 49
+          Width = 507
+          Align = alTop
+          Alignment = taCenter
+          AutoSize = True
+          Caption = 'Find some music to play'
+          Font.Height = -24
+          ParentFont = False
+          TabOrder = 1
+        end
+        object Panel1: TPanel
+          Left = 0
+          Height = 238
+          Top = 82
+          Width = 507
+          Align = alTop
+          BevelOuter = bvNone
+          ClientHeight = 238
+          ClientWidth = 507
+          TabOrder = 2
+          object SpeedButton1: TSpeedButton
+            Left = 43
+            Height = 40
+            Top = 130
+            Width = 206
+            Action = DM.actImportDirectory
+            Images = DM.ilButtons
+          end
+          object SpeedButton2: TSpeedButton
+            Left = 43
+            Height = 40
+            Top = 24
+            Width = 206
+            Action = DM.actPlayListAddFiles
+            Images = DM.ilButtons
+          end
+          object SpeedButton3: TSpeedButton
+            Left = 43
+            Height = 40
+            Top = 183
+            Width = 206
+            Action = ActShowPreferencesMediaLibrary
+            Images = DM.ilButtons
+          end
+          object StaticText2: TStaticText
+            AnchorSideTop.Control = SpeedButton2
+            AnchorSideTop.Side = asrCenter
+            Left = 264
+            Height = 16
+            Top = 36
+            Width = 124
+            AutoSize = True
+            Caption = 'Add one or more songs'
+            TabOrder = 0
+          end
+          object StaticText3: TStaticText
+            AnchorSideTop.Control = SpeedButton1
+            AnchorSideTop.Side = asrCenter
+            Left = 264
+            Height = 16
+            Top = 142
+            Width = 127
+            AutoSize = True
+            Caption = 'Add all songs in a folder'
+            TabOrder = 1
+          end
+          object StaticText5: TStaticText
+            AnchorSideTop.Control = SpeedButton3
+            AnchorSideTop.Side = asrCenter
+            Left = 264
+            Height = 16
+            Top = 195
+            Width = 187
+            AutoSize = True
+            Caption = 'Add songs to your music collection'
+            TabOrder = 2
+          end
+          object StaticText6: TStaticText
+            AnchorSideTop.Control = SpeedButton4
+            AnchorSideTop.Side = asrCenter
+            Left = 264
+            Height = 16
+            Top = 89
+            Width = 135
+            AutoSize = True
+            Caption = 'Import an existing playlist'
+            TabOrder = 3
+          end
+          object SpeedButton4: TSpeedButton
+            Left = 43
+            Height = 40
+            Top = 77
+            Width = 206
+            Action = DM.actPlaylistLoad
+            Images = DM.ilButtons
+          end
+        end
       end
     end
   end
   object Splitter1: TSplitter
     Left = 246
-    Height = 468
+    Height = 527
     Top = 0
     Width = 4
   end
   object MainMenu: TMainMenu
     Images = DM.ilButtons
     Left = 425
-    Top = 184
+    Top = 220
     object mnuFile: TMenuItem
       Caption = '&File'
       object mnuSavePlaylist: TMenuItem
@@ -1048,12 +1182,12 @@ object fMainForm: TfMainForm
     OnClick = TrayIconClick
     OnDblClick = TrayIconDblClick
     OnMouseDown = TrayIconMouseDown
-    Left = 616
+    Left = 836
     Top = 256
   end
   object TrayMenu: TPopupMenu
     Images = DM.ilButtons
-    Left = 680
+    Left = 776
     Top = 256
     object MenuItem6: TMenuItem
       Action = DM.actPlay
@@ -1135,7 +1269,7 @@ object fMainForm: TfMainForm
   object PlaylistMenu: TPopupMenu
     Images = DM.ilButtons
     Left = 424
-    Top = 264
+    Top = 300
     object MenuItem17: TMenuItem
       Action = DM.actPlayListAddFiles
     end
@@ -1227,8 +1361,8 @@ object fMainForm: TfMainForm
   end
   object pnHeaderPlaylist: TPopupMenu
     OnPopup = pnHeaderPlaylistPopup
-    Left = 536
-    Top = 184
+    Left = 800
+    Top = 128
     object MenuItem32: TMenuItem
     end
   end
@@ -1260,7 +1394,7 @@ object fMainForm: TfMainForm
   object ActionList: TActionList
     Images = DM.ilButtons
     Left = 272
-    Top = 184
+    Top = 220
     object ActShowPreferences: TAction
       Category = 'Preferences'
       Caption = 'Preferences'
@@ -1311,307 +1445,28 @@ object fMainForm: TfMainForm
     Left = 584
     Top = 360
     Bitmap = {
-      4C6902000000500000000F000000FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00969696EF969696E7FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00969696C0969696B0FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00969696C0969696B0FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00969696EF969696E7FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00969696C0969696B0FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF0096969668969696FF969696FF96969657FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF009696963B969696FF969696FE96969630FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF009696963B969696FF969696FE96969630FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF0096969668969696FF969696FF96969657FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF009696963B969696FF969696FE96969630FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00969696EB969696FF969696FF969696E5FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00969696B8969696FD969696FD969696ADFFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00969696B8969696FD969696FD969696ADFFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00969696EB969696FF969696FF969696E5FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00969696B8969696FD969696FD969696ADFFFFFF00FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF009696965D969696FF969696FF969696FF969696FF96969654FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF0096969634969696FF969696FF969696FF969696FE9696962EFFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF0096969634969696FF969696FF969696FF969696FE9696962EFFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF009696965D969696FF969696FF969696FF969696FF96969654FFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
-      FF0096969634969696FF969696FF969696FF969696FE9696962EFFFFFF00FFFF
-      FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696259696965F9696
-      968F969696F0969696FF969696FF969696FF969696FF969696F0969696999696
-      966E9696963C96969608FFFFFF00FFFFFF00FFFFFF0096969613969696359696
-      9656969696C2969696FD969696FF969696FF969696FD969696C29696965E9696
-      963F9696962096969604FFFFFF00FFFFFF00FFFFFF0096969613969696359696
-      9656969696C2969696FD969696FF969696FF969696FD969696C29696965E9696
-      963F9696962096969604FFFFFF00FFFFFF00FFFFFF00969696259696965F9696
-      968F969696F0969696FF969696FF969696FF969696FF969696F0969696999696
-      966E9696963C96969608FFFFFF00FFFFFF00FFFFFF0096969613969696359696
-      9656969696C2969696FD969696FF969696FF969696FD969696C29696965E9696
-      963F9696962096969604FFFFFF00969696F7969696FF969696FF969696FF9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96FF969696FF969696FF969696FC969696D1969696F4969696FF969696FF9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96FF969696FF969696FD969696E3969696D1969696F4969696FF969696FF9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96FF969696FF969696FD969696E3969696F7969696FF969696FF969696FF9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96FF969696FF969696FF969696FC969696D1969696F4969696FF969696FF9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96FF969696FF969696FD969696E3969696EB969696FF969696FF969696FF9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96FF969696FF969696FF969696E2969696B7969696FF969696FF969696FF9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96FF969696FF969696FF969696A9969696B7969696FF969696FF969696FF9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96FF969696FF969696FF969696A9969696EB969696FF969696FF969696FF9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96FF969696FF969696FF969696E2969696B7969696FF969696FF969696FF9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96FF969696FF969696FF969696A99696960A969696E0969696FF969696FF9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96FF969696FF969696D99696960496969605969696A6969696FF969696FF9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96FF969696FF9696969C9696960296969605969696A6969696FF969696FF9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96FF969696FF9696969C969696029696960A969696E0969696FF969696FF9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96FF969696FF969696D99696960496969605969696A6969696FF969696FF9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96FF969696FF9696969C96969602FFFFFF0096969604969696D3969696FF9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96FF969696CE96969602FFFFFF00FFFFFF009696960296969695969696FF9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96FF9696968F96969601FFFFFF00FFFFFF009696960296969695969696FF9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96FF9696968F96969601FFFFFF00FFFFFF0096969604969696D3969696FF9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96FF969696CE96969602FFFFFF00FFFFFF009696960296969695969696FF9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96FF9696968F96969601FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696D59696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96D8FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696989696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      969BFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696989696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      969BFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696D59696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96D8FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696989696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      969BFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696C79696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96D3FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696889696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FE9696
-      9695FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696889696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FE9696
-      9695FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696C79696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96D3FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696889696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FE9696
-      9695FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696EB9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96F4FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696B79696
-      96FC969696FF969696FF969696FE969696FE969696FF969696FF969696FD9696
-      96C9FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696B79696
-      96FC969696FF969696FF969696FE969696FE969696FF969696FF969696FD9696
-      96C9FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696EB9696
-      96FF969696FF969696FF969696FF969696FF969696FF969696FF969696FF9696
-      96F4FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696B79696
-      96FC969696FF969696FF969696FE969696FE969696FF969696FF969696FD9696
-      96C9FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696FD9696
-      96FF969696FF969696FF969696FE969696FE969696FF969696FF969696FF9696
-      96FF96969606FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696E89696
-      96FF969696FF969696FF969696F1969696EC969696FF969696FE969696FF9696
-      96F896969603FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696E89696
-      96FF969696FF969696FF969696F1969696EC969696FF969696FE969696FF9696
-      96F896969603FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696FD9696
-      96FF969696FF969696FF969696FE969696FE969696FF969696FF969696FF9696
-      96FF96969606FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00969696E89696
-      96FF969696FF969696FF969696F1969696EC969696FF969696FE969696FF9696
-      96F896969603FFFFFF00FFFFFF00FFFFFF00FFFFFF0096969626969696FF9696
-      96FF969696FF969696CA9696962196969617969696BC969696FE969696FF9696
-      96FF96969652FFFFFF00FFFFFF00FFFFFF00FFFFFF0096969614969696FF9696
-      96FF969696F99696968B969696119696960C9696967C969696F2969696FF9696
-      96FF9696962DFFFFFF00FFFFFF00FFFFFF00FFFFFF0096969614969696FF9696
-      96FF969696F99696968B969696119696960C9696967C969696F2969696FF9696
-      96FF9696962DFFFFFF00FFFFFF00FFFFFF00FFFFFF0096969626969696FF9696
-      96FF969696FF969696CA9696962196969617969696BC969696FE969696FF9696
-      96FF96969652FFFFFF00FFFFFF00FFFFFF00FFFFFF0096969614969696FF9696
-      96FF969696F99696968B969696119696960C9696967C969696F2969696FF9696
-      96FF9696962DFFFFFF00FFFFFF00FFFFFF00FFFFFF0096969673969696FF9696
-      96DA96969637FFFFFF00FFFFFF00FFFFFF00FFFFFF0096969621969696C79696
-      96FF9696969BFFFFFF00FFFFFF00FFFFFF00FFFFFF0096969642969696FD9696
-      969E9696961DFFFFFF00FFFFFF00FFFFFF00FFFFFF0096969611969696889696
-      96F59696965FFFFFFF00FFFFFF00FFFFFF00FFFFFF0096969642969696FD9696
-      969E9696961DFFFFFF00FFFFFF00FFFFFF00FFFFFF0096969611969696889696
-      96F59696965FFFFFFF00FFFFFF00FFFFFF00FFFFFF0096969673969696FF9696
-      96DA96969637FFFFFF00FFFFFF00FFFFFF00FFFFFF0096969621969696C79696
-      96FF9696969BFFFFFF00FFFFFF00FFFFFF00FFFFFF0096969642969696FD9696
-      969E9696961DFFFFFF00FFFFFF00FFFFFF00FFFFFF0096969611969696889696
-      96F59696965FFFFFFF00FFFFFF00000000000000000000000000000000000000
-      00000000000000000000DCDCDCBFDCDCDCB00000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000DCDCDCBFDCDCDCB00000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000DCDCDCBFDCDCDCB00000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000DCDCDCBFDCDCDCB00000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000DCDCDCBFDCDCDCB00000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000DCDCDC3BDCDCDCFFDCDCDCFEDCDCDC3000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000DCDCDC3BDCDCDCFFDCDCDCFEDCDCDC3000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000DCDCDC3BDCDCDCFFDCDCDCFEDCDCDC3000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000DCDCDC3BDCDCDCFFDCDCDCFEDCDCDC3000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000DCDCDC3BDCDCDCFFDCDCDCFEDCDCDC3000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000DCDCDCB7DCDCDCF3DCDCDCF4DCDCDCAD00000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000DCDCDCB7DCDCDCF3DCDCDCF4DCDCDCAD00000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000DCDCDCB7DCDCDCF3DCDCDCF4DCDCDCAD00000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000DCDCDCB7DCDCDCF3DCDCDCF4DCDCDCAD00000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      000000000000DCDCDCB7DCDCDCF3DCDCDCF4DCDCDCAD00000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000DCDCDC34DCDCDCFFDCDCDC89DCDCDC8BDCDCDCFEDCDCDC2E000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000DCDCDC34DCDCDCFFDCDCDC89DCDCDC8BDCDCDCFEDCDCDC2E000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000DCDCDC34DCDCDCFFDCDCDC89DCDCDC8BDCDCDCFEDCDCDC2E000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000DCDCDC34DCDCDCFFDCDCDC89DCDCDC8BDCDCDCFEDCDCDC2E000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000DCDCDC34DCDCDCFFDCDCDC89DCDCDC8BDCDCDCFEDCDCDC2E000000000000
-      00000000000000000000000000000000000000000000DCDCDC13DCDCDC35DCDC
-      DC56DCDCDCC2DCDCDCF5DCDCDC15DCDCDC18DCDCDCF7DCDCDCC2DCDCDC5EDCDC
-      DC3FDCDCDC20DCDCDC04000000000000000000000000DCDCDC13DCDCDC35DCDC
-      DC56DCDCDCC2DCDCDCF5DCDCDC15DCDCDC18DCDCDCF7DCDCDCC2DCDCDC5EDCDC
-      DC3FDCDCDC20DCDCDC04000000000000000000000000DCDCDC13DCDCDC35DCDC
-      DC56DCDCDCC2DCDCDCF5DCDCDC15DCDCDC18DCDCDCF7DCDCDCC2DCDCDC5EDCDC
-      DC3FDCDCDC20DCDCDC04000000000000000000000000DCDCDC13DCDCDC35DCDC
-      DC56DCDCDCC2DCDCDCF5DCDCDC15DCDCDC18DCDCDCF7DCDCDCC2DCDCDC5EDCDC
-      DC3FDCDCDC20DCDCDC04000000000000000000000000DCDCDC13DCDCDC35DCDC
-      DC56DCDCDCC2DCDCDCF5DCDCDC15DCDCDC18DCDCDCF7DCDCDCC2DCDCDC5EDCDC
-      DC3FDCDCDC20DCDCDC0400000000DCDCDCD0DCDCDCF2DCDCDCFFDCDCDCFFDCDC
-      DCFFDCDCDCFFDCDCDC8C0000000000000000DCDCDC91DCDCDCFFDCDCDCFFDCDC
-      DCFFDCDCDCFFDCDCDCFCDCDCDCE2DCDCDCD0DCDCDCF2DCDCDCFFDCDCDCFFDCDC
-      DCFFDCDCDCFFDCDCDC8C0000000000000000DCDCDC91DCDCDCFFDCDCDCFFDCDC
-      DCFFDCDCDCFFDCDCDCFCDCDCDCE2DCDCDCD0DCDCDCF2DCDCDCFFDCDCDCFFDCDC
-      DCFFDCDCDCFFDCDCDC8C0000000000000000DCDCDC91DCDCDCFFDCDCDCFFDCDC
-      DCFFDCDCDCFFDCDCDCFCDCDCDCE2DCDCDCD0DCDCDCF2DCDCDCFFDCDCDCFFDCDC
-      DCFFDCDCDCFFDCDCDC8C0000000000000000DCDCDC91DCDCDCFFDCDCDCFFDCDC
-      DCFFDCDCDCFFDCDCDCFCDCDCDCE2DCDCDCD0DCDCDCF2DCDCDCFFDCDCDCFFDCDC
-      DCFFDCDCDCFFDCDCDC8C0000000000000000DCDCDC91DCDCDCFFDCDCDCFFDCDC
-      DCFFDCDCDCFFDCDCDCFCDCDCDCE2DCDCDCB6DCDCDCFFDCDCDCE2DCDCDC5EDCDC
-      DC39DCDCDC1600000000000000000000000000000000DCDCDC0CDCDCDC2ADCDC
-      DC4BDCDCDCDDDCDCDCFFDCDCDCA9DCDCDCB6DCDCDCFFDCDCDCE2DCDCDC5EDCDC
-      DC39DCDCDC1600000000000000000000000000000000DCDCDC0CDCDCDC2ADCDC
-      DC4BDCDCDCDDDCDCDCFFDCDCDCA9DCDCDCB6DCDCDCFFDCDCDCE2DCDCDC5EDCDC
-      DC39DCDCDC1600000000000000000000000000000000DCDCDC0CDCDCDC2ADCDC
-      DC4BDCDCDCDDDCDCDCFFDCDCDCA9DCDCDCB6DCDCDCFFDCDCDCE2DCDCDC5EDCDC
-      DC39DCDCDC1600000000000000000000000000000000DCDCDC0CDCDCDC2ADCDC
-      DC4BDCDCDCDDDCDCDCFFDCDCDCA9DCDCDCB6DCDCDCFFDCDCDCE2DCDCDC5EDCDC
-      DC39DCDCDC1600000000000000000000000000000000DCDCDC0CDCDCDC2ADCDC
-      DC4BDCDCDCDDDCDCDCFFDCDCDCA9DCDCDC05DCDCDCA6DCDCDCFFDCDCDC9ADCDC
-      DC02000000000000000000000000000000000000000000000000DCDCDC03DCDC
-      DCA3DCDCDCFFDCDCDC9CDCDCDC02DCDCDC05DCDCDCA6DCDCDCFFDCDCDC9ADCDC
-      DC02000000000000000000000000000000000000000000000000DCDCDC03DCDC
-      DCA3DCDCDCFFDCDCDC9CDCDCDC02DCDCDC05DCDCDCA6DCDCDCFFDCDCDC9ADCDC
-      DC02000000000000000000000000000000000000000000000000DCDCDC03DCDC
-      DCA3DCDCDCFFDCDCDC9CDCDCDC02DCDCDC05DCDCDCA6DCDCDCFFDCDCDC9ADCDC
-      DC02000000000000000000000000000000000000000000000000DCDCDC03DCDC
-      DCA3DCDCDCFFDCDCDC9CDCDCDC02DCDCDC05DCDCDCA6DCDCDCFFDCDCDC9ADCDC
-      DC02000000000000000000000000000000000000000000000000DCDCDC03DCDC
-      DCA3DCDCDCFFDCDCDC9CDCDCDC0200000000DCDCDC02DCDCDC95DCDCDCFFDCDC
-      DCABDCDCDC0600000000000000000000000000000000DCDCDC07DCDCDCAEDCDC
-      DCFFDCDCDC8FDCDCDC010000000000000000DCDCDC02DCDCDC95DCDCDCFFDCDC
-      DCABDCDCDC0600000000000000000000000000000000DCDCDC07DCDCDCAEDCDC
-      DCFFDCDCDC8FDCDCDC010000000000000000DCDCDC02DCDCDC95DCDCDCFFDCDC
-      DCABDCDCDC0600000000000000000000000000000000DCDCDC07DCDCDCAEDCDC
-      DCFFDCDCDC8FDCDCDC010000000000000000DCDCDC02DCDCDC95DCDCDCFFDCDC
-      DCABDCDCDC0600000000000000000000000000000000DCDCDC07DCDCDCAEDCDC
-      DCFFDCDCDC8FDCDCDC010000000000000000DCDCDC02DCDCDC95DCDCDCFFDCDC
-      DCABDCDCDC0600000000000000000000000000000000DCDCDC07DCDCDCAEDCDC
-      DCFFDCDCDC8FDCDCDC0100000000000000000000000000000000DCDCDC98DCDC
-      DCFFDCDCDC3C00000000000000000000000000000000DCDCDC33DCDCDCFFDCDC
-      DC9B000000000000000000000000000000000000000000000000DCDCDC98DCDC
-      DCFFDCDCDC3C00000000000000000000000000000000DCDCDC33DCDCDCFFDCDC
-      DC9B000000000000000000000000000000000000000000000000DCDCDC98DCDC
-      DCFFDCDCDC3C00000000000000000000000000000000DCDCDC33DCDCDCFFDCDC
-      DC9B000000000000000000000000000000000000000000000000DCDCDC98DCDC
-      DCFFDCDCDC3C00000000000000000000000000000000DCDCDC33DCDCDCFFDCDC
-      DC9B000000000000000000000000000000000000000000000000DCDCDC98DCDC
-      DCFFDCDCDC3C00000000000000000000000000000000DCDCDC33DCDCDCFFDCDC
-      DC9B000000000000000000000000000000000000000000000000DCDCDC88DCDC
-      DCFEDCDCDC0F00000000000000000000000000000000DCDCDC07DCDCDCFADCDC
-      DC95000000000000000000000000000000000000000000000000DCDCDC88DCDC
-      DCFEDCDCDC0F00000000000000000000000000000000DCDCDC07DCDCDCFADCDC
-      DC95000000000000000000000000000000000000000000000000DCDCDC88DCDC
-      DCFEDCDCDC0F00000000000000000000000000000000DCDCDC07DCDCDCFADCDC
-      DC95000000000000000000000000000000000000000000000000DCDCDC88DCDC
-      DCFEDCDCDC0F00000000000000000000000000000000DCDCDC07DCDCDCFADCDC
-      DC95000000000000000000000000000000000000000000000000DCDCDC88DCDC
-      DCFEDCDCDC0F00000000000000000000000000000000DCDCDC07DCDCDCFADCDC
-      DC95000000000000000000000000000000000000000000000000DCDCDCB7DCDC
-      DCDD00000000DCDCDC39DCDCDCC1DCDCDCCADCDCDC4400000000DCDCDCCFDCDC
-      DCC8000000000000000000000000000000000000000000000000DCDCDCB7DCDC
-      DCDD00000000DCDCDC39DCDCDCC1DCDCDCCADCDCDC4400000000DCDCDCCFDCDC
-      DCC8000000000000000000000000000000000000000000000000DCDCDCB7DCDC
-      DCDD00000000DCDCDC39DCDCDCC1DCDCDCCADCDCDC4400000000DCDCDCCFDCDC
-      DCC8000000000000000000000000000000000000000000000000DCDCDCB7DCDC
-      DCDD00000000DCDCDC39DCDCDCC1DCDCDCCADCDCDC4400000000DCDCDCCFDCDC
-      DCC8000000000000000000000000000000000000000000000000DCDCDCB7DCDC
-      DCDD00000000DCDCDC39DCDCDCC1DCDCDCCADCDCDC4400000000DCDCDCCFDCDC
-      DCC8000000000000000000000000000000000000000000000000DCDCDCE5DCDC
-      DCCDDCDCDCB0DCDCDCFFDCDCDCEFDCDCDCEADCDCDCFFDCDCDCBEDCDCDCC7DCDC
-      DCF6DCDCDC030000000000000000000000000000000000000000DCDCDCE5DCDC
-      DCCDDCDCDCB0DCDCDCFFDCDCDCEFDCDCDCEADCDCDCFFDCDCDCBEDCDCDCC7DCDC
-      DCF6DCDCDC030000000000000000000000000000000000000000DCDCDCE5DCDC
-      DCCDDCDCDCB0DCDCDCFFDCDCDCEFDCDCDCEADCDCDCFFDCDCDCBEDCDCDCC7DCDC
-      DCF6DCDCDC030000000000000000000000000000000000000000DCDCDCE5DCDC
-      DCCDDCDCDCB0DCDCDCFFDCDCDCEFDCDCDCEADCDCDCFFDCDCDCBEDCDCDCC7DCDC
-      DCF6DCDCDC030000000000000000000000000000000000000000DCDCDCE5DCDC
-      DCCDDCDCDCB0DCDCDCFFDCDCDCEFDCDCDCEADCDCDCFFDCDCDCBEDCDCDCC7DCDC
-      DCF6DCDCDC0300000000000000000000000000000000DCDCDC14DCDCDCFFDCDC
-      DCFFDCDCDCF7DCDCDC8BDCDCDC11DCDCDC0CDCDCDC7CDCDCDCF0DCDCDCFFDCDC
-      DCFFDCDCDC2D00000000000000000000000000000000DCDCDC14DCDCDCFFDCDC
-      DCFFDCDCDCF7DCDCDC8BDCDCDC11DCDCDC0CDCDCDC7CDCDCDCF0DCDCDCFFDCDC
-      DCFFDCDCDC2D00000000000000000000000000000000DCDCDC14DCDCDCFFDCDC
-      DCFFDCDCDCF7DCDCDC8BDCDCDC11DCDCDC0CDCDCDC7CDCDCDCF0DCDCDCFFDCDC
-      DCFFDCDCDC2D00000000000000000000000000000000DCDCDC14DCDCDCFFDCDC
-      DCFFDCDCDCF7DCDCDC8BDCDCDC11DCDCDC0CDCDCDC7CDCDCDCF0DCDCDCFFDCDC
-      DCFFDCDCDC2D00000000000000000000000000000000DCDCDC14DCDCDCFFDCDC
-      DCFFDCDCDCF7DCDCDC8BDCDCDC11DCDCDC0CDCDCDC7CDCDCDCF0DCDCDCFFDCDC
-      DCFFDCDCDC2D00000000000000000000000000000000DCDCDC42DCDCDCFDDCDC
-      DC9EDCDCDC1D00000000000000000000000000000000DCDCDC11DCDCDC88DCDC
-      DCF5DCDCDC5F00000000000000000000000000000000DCDCDC42DCDCDCFDDCDC
-      DC9EDCDCDC1D00000000000000000000000000000000DCDCDC11DCDCDC88DCDC
-      DCF5DCDCDC5F00000000000000000000000000000000DCDCDC42DCDCDCFDDCDC
-      DC9EDCDCDC1D00000000000000000000000000000000DCDCDC11DCDCDC88DCDC
-      DCF5DCDCDC5F00000000000000000000000000000000DCDCDC42DCDCDCFDDCDC
-      DC9EDCDCDC1D00000000000000000000000000000000DCDCDC11DCDCDC88DCDC
-      DCF5DCDCDC5F00000000000000000000000000000000DCDCDC42DCDCDCFDDCDC
-      DC9EDCDCDC1D00000000000000000000000000000000DCDCDC11DCDCDC88DCDC
-      DCF5DCDCDC5F0000000000000000
+      4C7A02000000500000000F000000AA0200000000000078DAED97CF4B54411CC0
+      FD5D84108BF6E322E8A10E8122A4442808D2AD5B849DD26BA72E5DFD030C03E9
+      B08BB5E24510240C4F6D87E887174BE81712543C2136A4C840B3B5AD70F7F599
+      FA2E0CCFD9D7EE739F73D8F7E0C3EE9BEF7C66BE3BF376669EEBBA356E111289
+      C4067C727DEAB8FEFE6358B0E85BCB1FEF0AB8C2A5007E9FB879E8B6E0DBCE7F
+      5DEB7F2D807F1F72C2BC05DF5AFED4BFACF55DE062197E8FC75573D8B58FFEBE
+      E74FFC048CC0046C1AFA5765B7E02AF4C3418FDF02BD30048B326F05372765C3
+      3000EDD05061DF4AFE7C660D7D95CA0EBC864C0057E5F4B102BEEDFCD7F7D07F
+      1A527BF0E72AE0DBCEFF107C08E0BE53CF3034C26C007F0AEA2AE05BCD5FFEC3
+      AA9D9532DC1705577CF53BE265F86A8DAAADA06F357FAD9D3725B86F7DF6A0C9
+      12FC6488BEEDFC974AF0577CFCB1FFB8EA1C100FD1B79D7F296B71C6C74FC99E
+      A6F797F7EC59CF42F46DE79F338C77DE90435311FFB3A7DE37F8AAB5A53E7F42
+      7D48BEB5FC293BE97197A1038EC1034F1E170C7EAB16FF05E310836618852D2D
+      DE19826F3BFF6B127B0F670CF10E6D7D491AE28332FFD3D06688C7647DD956EF
+      0921F856F2F7BB1CC779040B3501AF6AF6F1FAC0853C74477ED97E0ABE4306E6
+      23BF2CB747C6FE3A8CCB1C7445BEAFD302BD30048BB00D47E03864A56C1806A0
+      1D1A22FFAFF70AB664BC756E686DDF34C477201DF9CE3DB94FCBF89E85A386E7
+      B3194EC1795815672EF29D469895FBDB50E7F31FAF8719A93BA5EA56BB2FE5AA
+      9DB894DF8126837B00EE4A9D09A8D56255ED6B752625DE6F889D9658D2677EAA
+      DD1F93BDFA7091F1FFADE629F27DCF8CABF25DADA34F6019CE49D94B781AF945
+      FD3578AEDEF9E459DD802FF2FD212CC10FB58E46FE2EB7553BDB64E5DC1D937D
+      7B1436B57867E4EFF2072107D3D06688C7647D50E7F291C8FF77FD015F37A1C1
     }
   end
   object pmPlaylists: TPopupMenu
@@ -1647,5 +1502,25 @@ object fMainForm: TfMainForm
       Caption = 'Delete'
       OnClick = mnuDeletePlaylistClick
     end
+  end
+  object TaskDialog1: TTaskDialog
+    Buttons = <    
+      item
+        Caption = 'Add a folder'
+        ModalResult = 100
+      end    
+      item
+        Caption = 'Add a song'
+        ModalResult = 101
+      end    
+      item
+        Caption = 'Add music to collection'
+        ModalResult = 102
+      end>
+    Caption = 'Welcome to Ovoplayer'
+    CommonButtons = []
+    RadioButtons = <>
+    Left = 836
+    Top = 205
   end
 end

@@ -38,7 +38,7 @@ uses
   {$IFDEF MULTIMEDIA_KEYS}MultimediaKeys, {$ENDIF}
   {$IFDEF SCREEN_LOCK}screenlock,{$ENDIF}
   ucover, ucustomplaylist, playlistbuilder, netprotocol,
-  GuiConfig, uequalizer, ThemedSlider, LCLType;
+  GuiConfig, uequalizer, ThemedSlider, LCLType, UITypes;
 
 type
   TSortFields = record
@@ -186,6 +186,8 @@ type
     mnuSeparator: TMenuItem;
     MenuItem59: TMenuItem;
     MenuItem60: TMenuItem;
+    pcCenter: TPageControl;
+    Panel1: TPanel;
     pmPlaylists: TPopupMenu;
     RateStars: TImageList;
     MenuItem21: TMenuItem;
@@ -265,6 +267,19 @@ type
     sgStats: TStringGrid;
     btnFilterCancel: TSpeedButton;
     bMute: TToolButton;
+    SpeedButton1: TSpeedButton;
+    SpeedButton2: TSpeedButton;
+    SpeedButton3: TSpeedButton;
+    SpeedButton4: TSpeedButton;
+    StaticText1: TStaticText;
+    StaticText2: TStaticText;
+    StaticText3: TStaticText;
+    StaticText4: TStaticText;
+    StaticText5: TStaticText;
+    StaticText6: TStaticText;
+    TaskDialog1: TTaskDialog;
+    tsPlayer: TTabSheet;
+    tsWelcome: TTabSheet;
     ToolButton12: TToolButton;
     ToolButton13: TToolButton;
     TrackBar: TThemedSlider;
@@ -490,6 +505,7 @@ type
   public
     { public declarations }
     procedure LoadLastPlaylist;
+    procedure CheckWelcomeMode;
 
   end;
 
@@ -1452,6 +1468,15 @@ begin
 
 end;
 
+procedure TfMainForm.CheckWelcomeMode;
+begin
+  if (BackEnd.PlayListCount = 0) and
+     (BackEnd.mediaLibrary.IsEmpty) then
+    pcCenter.ActivePage := tsWelcome
+  else
+    pcCenter.ActivePage := tsPlayer;
+end;
+
 procedure TfMainForm.FormCreate(Sender: TObject);
 var
   tmpIcon : TIcon;
@@ -1493,10 +1518,12 @@ begin
   BackEnd.mediaLibrary.OnScanComplete := @MediaLibraryScanComplete;
   BackEnd.mediaLibrary.OnScanStart:=@MediaLibraryScanBegin;
 
+  ReadConfig(Self);
+
+  CheckWelcomeMode;
+
   slVolume.Max:= 255;//BackEnd.AudioEngine.MaxVolume;
   slVolume.Position := BackEnd.EngineParam.Volume;
-
-  ReadConfig(Self);
 
   case TplRepeat(BackEnd.PlayListParam.RepeatMode) of
     rptNone : dm.actRepeatNone.Checked := true;
@@ -1827,6 +1854,7 @@ end;
 procedure TfMainForm.PlayListChange(Sender: TObject);
 begin
   ReloadPlayList;
+  CheckWelcomeMode;
   Invalidate;
 end;
 
@@ -3073,6 +3101,8 @@ procedure TfMainForm.OnLoaded(Sender: TObject);
 begin
   Backend.Notify(cpPlaylist);
   ReloadPlayList;
+  CheckWelcomeMode;
+
 end;
 
 procedure TfMainForm.ReloadPlayList;
