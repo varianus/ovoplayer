@@ -91,6 +91,7 @@ type
     Procedure RemoveMissing;
 
     procedure ReadBegin(Filter: string; Order: string);
+    function IsEmpty: boolean;
     function ReadItem: TCommonTags;
     function NextItem: boolean;
     function ReadComplete: boolean;
@@ -690,6 +691,16 @@ begin
 
   fLoadTable.Open;
   fLoadTable.First;
+
+end;
+
+function TMediaLibrary.IsEmpty: boolean;
+begin
+  fWorkQuery.Close;
+  fWorkQuery.SQL.Text := 'SELECT 1 FROM songs limit 1';
+  fWorkQuery.Open;
+  Result := fWorkQuery.EOF;
+  fWorkQuery.Close;
 
 end;
 
