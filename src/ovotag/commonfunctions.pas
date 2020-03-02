@@ -381,7 +381,8 @@ begin
     Val(Track, Value, Code)
   else
     Val(Copy(Track, 1, Index - 1), Value, Code);
-  if Code = 0 then
+
+  if (Code = 0) and (Value > 0) then
     Result := Value
   else
     Result := 0;
