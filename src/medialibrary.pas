@@ -25,7 +25,7 @@ interface
 
 uses
   Classes, SysUtils, DB,  sqlite3dyn, sqlite3conn, sqldb, LazLoggerBase, basetag,
-  Customsong, extendedinfo, FilesSupport;
+  Customsong, extendedinfo, FilesSupport, Generics.Collections;
 
 type
 
@@ -57,6 +57,15 @@ type
     TotalTime : int64;
   end;
 
+  TScannedStatus = (ssAdded, ssUpdated, ssRemoved, ssFailed, ssUnModified);
+
+  RScannedItem = record
+    Status: TScannedStatus;
+    FileName: TFileName;
+  end;
+
+  TScanResult = specialize TList<RScannedItem>;
+
   TScanComplete = procedure(Sender: TObject; Added, Updated, Removed, Failed : integer) of object;
 
   TMediaLibrary = class
@@ -84,6 +93,8 @@ type
     procedure UpgradeDBStructure(LoadedDBVersion: Integer);
   public
     fAdded, fUpdated, fRemoved, fFailed: integer;
+    ScanResult: TScanResult;
+
     constructor Create;
     destructor Destroy; override;
     procedure Add(Tags: TCommonTags;FileInfo:TFileInfo);
@@ -200,6 +211,12 @@ const
 
 { TDirectoryScanner }
 
+function Make(const AStatus: TScannedStatus; Const AFileName: string): RScannedItem; inline;
+begin
+  Result.Status := AStatus;
+  Result.FileName := AFileName;
+end;
+
 constructor TDirectoryScanner.CreateScanner(Paths: TStrings; Owner: TmediaLibrary);
 begin
   inherited Create(True);
@@ -235,6 +252,7 @@ begin
     end;
 
   tags := AudioTag.ExtractTags(CurrSong);
+
   if trim(tags.Title) = '' then
      tags.Title := ChangeFileExt(ExtractFileName(CurrSong), '');
 
@@ -458,12 +476,13 @@ begin
   fLoadTable := nil;
 
   fScanning := False;
-  ;
+  ScanResult := nil;
 
 end;
 
 destructor TMediaLibrary.Destroy;
 begin
+  FreeAndNil(ScanResult);
   FreeAndNil(fSong);
   FreeAndNil(fInsertSong);
   FreeAndNil(fUpdateSong);
@@ -527,6 +546,7 @@ begin
       wrkSong := fUpdateSong;
       wrkSong.Params.ParamByName('ID').AsInteger := Id;
       DebugLn('UP ', Tags.FileName);
+      ScanResult.Add(Make(ssUpdated, Tags.FileName));
       inc(fUpdated)
     end
   else
@@ -534,6 +554,7 @@ begin
        wrkSong := fInsertSong;
        wrkSong.Params.ParamByName('PlayCount').AsInteger:= 0;
        wrkSong.Params.ParamByName('added').AsFloat := Now;
+       ScanResult.Add(Make(ssAdded, Tags.FileName));
        inc(fAdded)
     end;
 
@@ -589,8 +610,10 @@ end;
 
 procedure TMediaLibrary.BeforeScan;
 begin
-
   fDB.ExecuteDirect('update songs set elabflag = ''S''');
+  If not Assigned(ScanResult) then
+    ScanResult := TScanResult.Create;
+  ScanResult.Clear;
 end;
 
 procedure TMediaLibrary.AfterScan;

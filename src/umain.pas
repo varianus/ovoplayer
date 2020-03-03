@@ -38,7 +38,7 @@ uses
   {$IFDEF MULTIMEDIA_KEYS}MultimediaKeys, {$ENDIF}
   {$IFDEF SCREEN_LOCK}screenlock,{$ENDIF}
   ucover, ucustomplaylist, playlistbuilder, netprotocol,
-  GuiConfig, uequalizer, ThemedSlider, LCLType, UITypes;
+  GuiConfig, uequalizer, uscanresult, ThemedSlider, LCLType, UITypes;
 
 type
   TSortFields = record
@@ -408,6 +408,8 @@ type
     procedure sgPlayListPrepareCanvas(sender: TObject; aCol, aRow: Integer;
       aState: TGridDrawState);
     procedure sgPlayListResize(Sender: TObject);
+    procedure sgStatsClick(Sender: TObject);
+    procedure sgStatsPrepareCanvas(sender: TObject; aCol, aRow: Integer; aState: TGridDrawState);
     procedure slVolumeChange(Sender: TObject);
     procedure btnCloseCollectionStatClick(Sender: TObject);
     procedure TimerTimer(Sender: TObject);
@@ -1616,6 +1618,7 @@ begin
   LoadedPlaylist:= False;
   BackEnd.AutoSendPosEvents(True);
   OnLoaded(self);
+
 
 end;
 
@@ -2837,6 +2840,35 @@ end;
 procedure TfMainForm.sgPlayListResize(Sender: TObject);
 begin
   AdaptSize(False);
+end;
+
+procedure TfMainForm.sgStatsClick(Sender: TObject);
+var
+  ACol,ARow: integer;
+  p: Tpoint;
+  theform: TfScanResult;
+begin
+  p:= sgStats.ScreenToControl(Mouse.CursorPos);
+  sgStats.MouseToCell(p.x, p.y, ACol, ARow);
+
+  if (aCol = 1) and (sgStats.Cells[aCol, aRow] <> '0') then
+    begin
+      theform := TfScanResult.Create(self);
+      Theform.Load(TScannedStatus(arow));
+      theform.Show;
+    end;
+
+end;
+
+procedure TfMainForm.sgStatsPrepareCanvas(sender: TObject; aCol, aRow: Integer; aState: TGridDrawState);
+begin
+  if (aCol = 1) and (sgStats.Cells[aCol, aRow] <> '0') then
+    begin
+     if gdHot in aState then
+       sgStats.Canvas.Font.Style := [fsUnderline,fsBold]
+     else
+       sgStats.Canvas.Font.Style := [fsUnderline]
+    end;
 end;
 
 procedure TfMainForm.slVolumeChange(Sender: TObject);

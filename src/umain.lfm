@@ -1,7 +1,7 @@
 object fMainForm: TfMainForm
-  Left = 661
+  Left = 2602
   Height = 547
-  Top = 216
+  Top = 158
   Width = 765
   ActiveControl = pcMain
   AllowDropFiles = True
@@ -360,12 +360,14 @@ object fMainForm: TfMainForm
         DefaultRowHeight = 18
         FixedCols = 0
         FixedRows = 0
-        Options = [goRangeSelect, goSmoothScroll]
+        Options = [goRangeSelect, goSmoothScroll, goHeaderHotTracking]
         RowCount = 1
         ScrollBars = ssAutoVertical
         TabOrder = 0
         TitleFont.Height = -12
         TitleStyle = tsNative
+        OnClick = sgStatsClick
+        OnPrepareCanvas = sgStatsPrepareCanvas
       end
     end
   end
@@ -385,23 +387,23 @@ object fMainForm: TfMainForm
       Height = 527
       Top = 0
       Width = 515
-      ActivePage = tsWelcome
+      ActivePage = tsPlayer
       Align = alClient
       ShowTabs = False
       Style = tsFlatButtons
-      TabIndex = 1
+      TabIndex = 0
       TabOrder = 0
       object tsPlayer: TTabSheet
-        ClientHeight = 607
-        ClientWidth = 921
+        ClientHeight = 519
+        ClientWidth = 507
         object pnlPlayInfo: TPanel
           Left = 0
           Height = 106
           Top = 0
-          Width = 921
+          Width = 507
           Align = alTop
           ClientHeight = 106
-          ClientWidth = 921
+          ClientWidth = 507
           TabOrder = 0
           object imgCover: TImage
             Cursor = crHandPoint
@@ -418,7 +420,7 @@ object fMainForm: TfMainForm
             Left = 110
             Height = 24
             Top = 4
-            Width = 803
+            Width = 389
             Anchors = [akTop, akLeft, akRight]
             AutoSize = False
             Caption = 'Title'
@@ -432,7 +434,7 @@ object fMainForm: TfMainForm
             Left = 109
             Height = 21
             Top = 36
-            Width = 804
+            Width = 390
             Anchors = [akTop, akLeft, akRight]
             AutoSize = False
             Caption = 'Album'
@@ -443,7 +445,7 @@ object fMainForm: TfMainForm
             Left = 110
             Height = 21
             Top = 66
-            Width = 803
+            Width = 389
             Anchors = [akTop, akLeft, akRight]
             AutoSize = False
             Caption = 'Artist'
@@ -453,19 +455,19 @@ object fMainForm: TfMainForm
         end
         object pnlPlaylist: TPanel
           Left = 0
-          Height = 424
+          Height = 359
           Top = 106
-          Width = 921
+          Width = 507
           Align = alClient
-          ClientHeight = 424
-          ClientWidth = 921
+          ClientHeight = 359
+          ClientWidth = 507
           Constraints.MinWidth = 499
           TabOrder = 1
           object sgPlayList: TStringGrid
             Left = 1
-            Height = 422
+            Height = 357
             Top = 1
-            Width = 919
+            Width = 505
             Align = alClient
             AlternateColor = 15921906
             AutoEdit = False
@@ -619,19 +621,19 @@ object fMainForm: TfMainForm
         object pnlControl: TPanel
           Left = 0
           Height = 54
-          Top = 530
-          Width = 921
+          Top = 465
+          Width = 507
           Align = alBottom
           Anchors = [akLeft, akRight]
           BevelOuter = bvNone
           ClientHeight = 54
-          ClientWidth = 921
+          ClientWidth = 507
           TabOrder = 2
           object tbMediaControl: TToolBar
             Left = 0
             Height = 25
             Top = 1
-            Width = 921
+            Width = 507
             Align = alClient
             BorderSpacing.Top = 1
             ButtonHeight = 23
@@ -650,54 +652,54 @@ object fMainForm: TfMainForm
               Action = DM.actPrevious
             end
             object ToolButton2: TToolButton
-              Left = 55
+              Left = 61
               Top = 0
               Action = DM.actPlay
             end
             object ToolButton3: TToolButton
-              Left = 109
+              Left = 121
               Top = 0
               Action = DM.actStop
             end
             object ToolButton4: TToolButton
-              Left = 155
+              Left = 173
               Top = 0
               Action = DM.actNext
             end
             object ToolButton5: TToolButton
-              Left = 86
+              Left = 95
               Top = 0
               Action = DM.actPause
             end
             object ToolButton6: TToolButton
-              Left = 24
+              Left = 27
               Top = 0
               Action = DM.actSkipBackward
             end
             object ToolButton7: TToolButton
-              Left = 132
+              Left = 147
               Top = 0
               Action = DM.actSkipForward
             end
             object ToolButton8: TToolButton
-              Left = 78
-              Height = 8
+              Left = 87
+              Height = 23
               Top = 0
               Style = tbsSeparator
             end
             object ToolButton9: TToolButton
-              Left = 47
-              Height = 8
+              Left = 53
+              Height = 23
               Top = 0
               Style = tbsSeparator
             end
             object ToolButton10: TToolButton
-              Left = 224
+              Left = 245
               Top = 0
               Action = DM.actPlayListShuffle
             end
             object tbRepeat: TToolButton
-              Left = 186
+              Left = 207
               Top = 0
               Caption = '     '
               DropdownMenu = RepeatMenu
@@ -707,42 +709,42 @@ object fMainForm: TfMainForm
               Style = tbsDropDown
             end
             object ToolButton16: TToolButton
-              Left = 278
+              Left = 305
               Top = 0
               Action = DM.actPlaylistLoad
             end
             object ToolButton17: TToolButton
-              Left = 255
+              Left = 279
               Top = 0
               Action = DM.actPlaylistSave
             end
             object ToolButton18: TToolButton
-              Left = 178
-              Height = 8
+              Left = 199
+              Height = 23
               Top = 0
               AutoSize = True
               Enabled = False
               Style = tbsSeparator
             end
             object ToolButton12: TToolButton
-              Left = 247
-              Height = 8
+              Left = 271
+              Height = 23
               Top = 0
               Style = tbsSeparator
             end
             object ToolButton13: TToolButton
-              Left = 301
+              Left = 331
               Top = 0
               Enabled = False
               ShowCaption = False
             end
             object bMute: TToolButton
-              Left = 324
+              Left = 354
               Top = 0
               Action = DM.actMute
             end
             object slVolume: TThemedSlider
-              Left = 347
+              Left = 380
               Height = 23
               Top = 0
               Width = 101
@@ -760,14 +762,14 @@ object fMainForm: TfMainForm
             Left = 0
             Height = 25
             Top = 29
-            Width = 921
+            Width = 507
             Align = alBottom
             BevelOuter = bvNone
             ClientHeight = 25
-            ClientWidth = 921
+            ClientWidth = 507
             TabOrder = 1
             object lbTime: TLabel
-              Left = 824
+              Left = 410
               Height = 25
               Top = 0
               Width = 97
@@ -784,7 +786,7 @@ object fMainForm: TfMainForm
               Left = 0
               Height = 25
               Top = 0
-              Width = 824
+              Width = 410
               Align = alClient
               BorderWidth = 6
               Step = 0

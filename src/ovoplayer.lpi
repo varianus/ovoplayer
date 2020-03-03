@@ -249,7 +249,7 @@ if TargetOS = &apos;linux&apos; then
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="94">
+    <Units Count="95">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -709,6 +709,13 @@ if TargetOS = &apos;linux&apos; then
         <Filename Value="ovoplayerfont.rc"/>
         <IsPartOfProject Value="True"/>
       </Unit93>
+      <Unit94>
+        <Filename Value="uscanresult.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="fScanResult"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit94>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

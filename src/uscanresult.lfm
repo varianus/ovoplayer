@@ -1,0 +1,45 @@
+object fScanResult: TfScanResult
+  Left = 2311
+  Height = 368
+  Top = 169
+  Width = 771
+  Caption = 'Scan Result'
+  ClientHeight = 368
+  ClientWidth = 771
+  LCLVersion = '2.1.0.0'
+  object StringGrid1: TStringGrid
+    Left = 0
+    Height = 322
+    Top = 0
+    Width = 771
+    Align = alClient
+    AutoFillColumns = True
+    ColCount = 1
+    Columns = <    
+      item
+        Title.Caption = 'File name'
+        Width = 767
+      end>
+    FixedCols = 0
+    TabOrder = 0
+    ColWidths = (
+      767
+    )
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 328
+    Width = 759
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 1
+    ShowButtons = [pbClose]
+  end
+end

@@ -89,7 +89,7 @@ uses
   DefaultTranslator,  LCLVersion,
   ucustomplaylist, ufrfield, playlistbuilder, netprotocol,
   ImagesSupport, netsupport, guiconfig, SimpleSingleInstance, mcaselli, 
-  equalizerband, uequalizer, equalizer, backendconfig, iconloader;
+  equalizerband, uequalizer, equalizer, backendconfig, iconloader, uscanresult;
 
 
 {$R *.res}
@@ -114,6 +114,7 @@ begin
       {$IFDEF CATCH_SIGNAL}
       Init_SignalHandler;
       {$ENDIF}
+  Application.CreateForm(TfScanResult, fScanResult);
       Application.Run;
     end
   else

@@ -1,0 +1,4 @@
+{"version":1,"strings":[
+{"hash":97858612,"name":"tfscanresult.caption","sourcebytes":[83,99,97,110,32,82,101,115,117,108,116],"value":"Scan Result"},
+{"hash":41356085,"name":"tfscanresult.stringgrid1.columns[0].title.caption","sourcebytes":[70,105,108,101,32,110,97,109,101],"value":"File name"}
+]}
