@@ -24,7 +24,7 @@ unit playlistbuilder;
 interface
 
 uses
- Classes, LazUTF8Classes, SysUtils, fgl, FPJSON, jsonparser, fpjsonrtti;
+ Classes, LazUTF8Classes, SysUtils, FPJSON, jsonparser, fpjsonrtti, Generics.Collections;
 
 type
 
@@ -74,7 +74,7 @@ type
   end;
 
 
-  TPlayListBuilder = class (specialize TFPGObjectList<TFieldFilter>)
+  TPlayListBuilder = class (specialize TObjectList<TFieldFilter>)
   private
     FName: string;
     FSongLimit: integer;

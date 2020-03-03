@@ -24,7 +24,7 @@ unit Config;
 interface
 
 uses
-  Classes, SysUtils, inifiles, fgl;
+  Classes, SysUtils, inifiles, Generics.Collections;
 
 type
   TConfig = class;
@@ -48,7 +48,7 @@ type
 
   { TConfig }
 
-  TConfigList= specialize TFPGObjectList<TConfigParam>;
+  TConfigList= specialize TObjectList<TConfigParam>;
 
   TConfig = class
   private

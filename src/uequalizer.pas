@@ -25,12 +25,12 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ButtonPanel,
-  ExtCtrls, StdCtrls, Buttons, equalizerband, fgl, AudioEngine, Equalizer, UITypes;
+  ExtCtrls, StdCtrls, Buttons, equalizerband, AudioEngine, Equalizer, UITypes, Generics.Collections;
 
 type
 
   { TfEqualizer }
-  TEQBandList = class(specialize TFPGObjectList<TfrEqualizer>);
+  TEQBandList = class(specialize TObjectList<TfrEqualizer>);
 
   TfEqualizer = class(TForm)
     ButtonPanel1: TButtonPanel;

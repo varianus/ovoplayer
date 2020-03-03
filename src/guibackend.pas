@@ -40,7 +40,7 @@ uses
   extctrls,
 
   PlayList, PlayListManager, MediaLibrary, basetag, CustomSong,
-  Config, Equalizer, backendconfig, fgl,
+  Config, Equalizer, backendconfig, Generics.Collections,
   FpTimer;
 
 type
@@ -49,7 +49,7 @@ type
   TOnExternalCommand = procedure(Sender: Tobject; Command : RExternalCommand; var Handled:boolean) of object;
 
   { TBackEnd }
-  TObserverlist = specialize TFPGList<IObserver>;
+  TObserverlist = specialize TList<IObserver>;
 
   TBackEnd = class(TObject, IBackEnd)
   private

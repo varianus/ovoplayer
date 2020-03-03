@@ -24,13 +24,13 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  ButtonPanel, Buttons, StdCtrls, Spin, ufrfield, fgl, PlaylistBuilder,
-  GUIBackEnd, MediaLibrary, AppConsts, GeneralFunc, fpjson;
+  ButtonPanel, Buttons, StdCtrls, Spin, ufrfield, PlaylistBuilder,
+  GUIBackEnd, MediaLibrary, AppConsts, GeneralFunc, fpjson, Generics.Collections;
 
 type
 
   { TfCustomPlayList }
-   TEditorsContainer = specialize TFPGObjectList<TfrField>;
+   TEditorsContainer = specialize TObjectList<TfrField>;
 
   TfCustomPlayList = class(TForm)
     ApplicationProperties1: TApplicationProperties;

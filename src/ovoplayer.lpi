@@ -230,24 +230,27 @@ if TargetOS = &apos;linux&apos; then
     <RunParams>
       <FormatVersion Value="2"/>
     </RunParams>
-    <RequiredPackages Count="5">
+    <RequiredPackages Count="6">
       <Item1>
-        <PackageName Value="mcaselli"/>
+        <PackageName Value="sparta_generics"/>
       </Item1>
       <Item2>
-        <PackageName Value="FCL"/>
+        <PackageName Value="mcaselli"/>
       </Item2>
       <Item3>
-        <PackageName Value="SQLDBLaz"/>
-        <MinVersion Major="1" Release="1" Valid="True"/>
+        <PackageName Value="FCL"/>
       </Item3>
       <Item4>
-        <PackageName Value="LCLBase"/>
+        <PackageName Value="SQLDBLaz"/>
         <MinVersion Major="1" Release="1" Valid="True"/>
       </Item4>
       <Item5>
-        <PackageName Value="LCL"/>
+        <PackageName Value="LCLBase"/>
+        <MinVersion Major="1" Release="1" Valid="True"/>
       </Item5>
+      <Item6>
+        <PackageName Value="LCL"/>
+      </Item6>
     </RequiredPackages>
     <Units Count="95">
       <Unit0>
