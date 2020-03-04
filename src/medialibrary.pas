@@ -211,7 +211,7 @@ const
 
 { TDirectoryScanner }
 
-function Make(const AStatus: TScannedStatus; Const AFileName: string): RScannedItem; inline;
+function MakeScanResult(const AStatus: TScannedStatus; Const AFileName: string): RScannedItem; inline;
 begin
   Result.Status := AStatus;
   Result.FileName := AFileName;
@@ -250,13 +250,15 @@ begin
 //     DebugLn('Skipping ',CurrSong);
      exit;
     end;
+  try
+    tags := AudioTag.ExtractTags(CurrSong);
+    if trim(tags.Title) = '' then
+      tags.Title := ChangeFileExt(ExtractFileName(CurrSong), '');
 
-  tags := AudioTag.ExtractTags(CurrSong);
-
-  if trim(tags.Title) = '' then
-     tags.Title := ChangeFileExt(ExtractFileName(CurrSong), '');
-
-  Medialibrary.Add(Tags, CurrInfo.info);
+     Medialibrary.Add(Tags, CurrInfo.info);
+  except
+     Medialibrary.ScanResult.Add(MakeScanResult(ssFailed, CurrSong));
+  end;
 end;
 
 procedure TDirectoryScanner.Execute;
@@ -546,7 +548,7 @@ begin
       wrkSong := fUpdateSong;
       wrkSong.Params.ParamByName('ID').AsInteger := Id;
       DebugLn('UP ', Tags.FileName);
-      ScanResult.Add(Make(ssUpdated, Tags.FileName));
+      ScanResult.Add(MakeScanResult(ssUpdated, Tags.FileName));
       inc(fUpdated)
     end
   else
@@ -554,7 +556,7 @@ begin
        wrkSong := fInsertSong;
        wrkSong.Params.ParamByName('PlayCount').AsInteger:= 0;
        wrkSong.Params.ParamByName('added').AsFloat := Now;
-       ScanResult.Add(Make(ssAdded, Tags.FileName));
+       ScanResult.Add(MakeScanResult(ssAdded, Tags.FileName));
        inc(fAdded)
     end;
 
@@ -623,9 +625,19 @@ begin
   fRemoved:=0;
   qtmp:=TSQLQuery.Create(fDB);
   try
-    qtmp.DataBase:=fDB;
-    qtmp.SQL.Add('DELETE from songs where elabflag = ''S''');
+    qtmp.DataBase := fDB;
+    qtmp.SQL.Text := 'SELECT FILENAME from songs where elabflag = ''S''';
+    qtmp.open;
+    while not qtmp.eof do
+      begin
+        ScanResult.Add(MakeScanResult(ssRemoved, qtmp.Fields[0].AsString));
+        qtmp.next;
+      end;
+
+    qtmp.close;
+    qtmp.SQL.Text := 'DELETE from songs where elabflag = ''S''';
     qtmp.ExecSQL;
+
     fRemoved:=qtmp.RowsAffected;
   finally
     qtmp.Free;
