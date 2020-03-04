@@ -277,7 +277,6 @@ type
     StaticText4: TStaticText;
     StaticText5: TStaticText;
     StaticText6: TStaticText;
-    TaskDialog1: TTaskDialog;
     tsPlayer: TTabSheet;
     tsWelcome: TTabSheet;
     ToolButton12: TToolButton;

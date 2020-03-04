@@ -37,17 +37,17 @@ object fMainForm: TfMainForm
       Height = 417
       Top = 0
       Width = 246
-      ActivePage = tsDirectory
+      ActivePage = tsCollection
       Align = alClient
       MultiLine = True
-      TabIndex = 1
+      TabIndex = 0
       TabOrder = 0
       TabPosition = tpBottom
       OnChange = pcMainChange
       Options = [nboMultiLine, nboHidePageListPopup]
       object tsCollection: TTabSheet
         Caption = 'Collection'
-        ClientHeight = 310
+        ClientHeight = 389
         ClientWidth = 238
         object pnlCollection: TPanel
           Left = 0
@@ -146,7 +146,7 @@ object fMainForm: TfMainForm
         end
         object tvCollection: TTreeView
           Left = 0
-          Height = 239
+          Height = 318
           Top = 71
           Width = 238
           Align = alClient
@@ -387,11 +387,11 @@ object fMainForm: TfMainForm
       Height = 527
       Top = 0
       Width = 515
-      ActivePage = tsPlayer
+      ActivePage = tsWelcome
       Align = alClient
       ShowTabs = False
       Style = tsFlatButtons
-      TabIndex = 0
+      TabIndex = 1
       TabOrder = 0
       object tsPlayer: TTabSheet
         ClientHeight = 519
@@ -652,54 +652,54 @@ object fMainForm: TfMainForm
               Action = DM.actPrevious
             end
             object ToolButton2: TToolButton
-              Left = 61
+              Left = 55
               Top = 0
               Action = DM.actPlay
             end
             object ToolButton3: TToolButton
-              Left = 121
+              Left = 109
               Top = 0
               Action = DM.actStop
             end
             object ToolButton4: TToolButton
-              Left = 173
+              Left = 155
               Top = 0
               Action = DM.actNext
             end
             object ToolButton5: TToolButton
-              Left = 95
+              Left = 86
               Top = 0
               Action = DM.actPause
             end
             object ToolButton6: TToolButton
-              Left = 27
+              Left = 24
               Top = 0
               Action = DM.actSkipBackward
             end
             object ToolButton7: TToolButton
-              Left = 147
+              Left = 132
               Top = 0
               Action = DM.actSkipForward
             end
             object ToolButton8: TToolButton
-              Left = 87
+              Left = 78
               Height = 23
               Top = 0
               Style = tbsSeparator
             end
             object ToolButton9: TToolButton
-              Left = 53
+              Left = 47
               Height = 23
               Top = 0
               Style = tbsSeparator
             end
             object ToolButton10: TToolButton
-              Left = 245
+              Left = 224
               Top = 0
               Action = DM.actPlayListShuffle
             end
             object tbRepeat: TToolButton
-              Left = 207
+              Left = 186
               Top = 0
               Caption = '     '
               DropdownMenu = RepeatMenu
@@ -709,17 +709,17 @@ object fMainForm: TfMainForm
               Style = tbsDropDown
             end
             object ToolButton16: TToolButton
-              Left = 305
+              Left = 278
               Top = 0
               Action = DM.actPlaylistLoad
             end
             object ToolButton17: TToolButton
-              Left = 279
+              Left = 255
               Top = 0
               Action = DM.actPlaylistSave
             end
             object ToolButton18: TToolButton
-              Left = 199
+              Left = 178
               Height = 23
               Top = 0
               AutoSize = True
@@ -727,24 +727,24 @@ object fMainForm: TfMainForm
               Style = tbsSeparator
             end
             object ToolButton12: TToolButton
-              Left = 271
+              Left = 247
               Height = 23
               Top = 0
               Style = tbsSeparator
             end
             object ToolButton13: TToolButton
-              Left = 331
+              Left = 301
               Top = 0
               Enabled = False
               ShowCaption = False
             end
             object bMute: TToolButton
-              Left = 354
+              Left = 324
               Top = 0
               Action = DM.actMute
             end
             object slVolume: TThemedSlider
-              Left = 380
+              Left = 347
               Height = 23
               Top = 0
               Width = 101
@@ -1504,25 +1504,5 @@ object fMainForm: TfMainForm
       Caption = 'Delete'
       OnClick = mnuDeletePlaylistClick
     end
-  end
-  object TaskDialog1: TTaskDialog
-    Buttons = <    
-      item
-        Caption = 'Add a folder'
-        ModalResult = 100
-      end    
-      item
-        Caption = 'Add a song'
-        ModalResult = 101
-      end    
-      item
-        Caption = 'Add music to collection'
-        ModalResult = 102
-      end>
-    Caption = 'Welcome to Ovoplayer'
-    CommonButtons = []
-    RadioButtons = <>
-    Left = 836
-    Top = 205
   end
 end
