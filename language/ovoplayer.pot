@@ -97,7 +97,7 @@ msgid "Removed:"
 msgstr ""
 
 #: appconsts.runsupportedengine
-msgid "UNSUPPORTED ENGINE"
+msgid "UNSUPPORTED AUDIO ENGINE"
 msgstr ""
 
 #: appconsts.rupdatedtrack
@@ -993,6 +993,30 @@ msgctxt "tfmainform.sgstats.columns[1].title.caption"
 msgid "Title"
 msgstr ""
 
+#: tfmainform.statictext1.caption
+msgid "Welcome to OvoPlayer"
+msgstr ""
+
+#: tfmainform.statictext2.caption
+msgid "Add one or more songs"
+msgstr ""
+
+#: tfmainform.statictext3.caption
+msgid "Add all songs in a folder"
+msgstr ""
+
+#: tfmainform.statictext4.caption
+msgid "Find some music to play"
+msgstr ""
+
+#: tfmainform.statictext5.caption
+msgid "Add songs to your music collection"
+msgstr ""
+
+#: tfmainform.statictext6.caption
+msgid "Import an existing playlist"
+msgstr ""
+
 #: tfmainform.tbrepeat.caption
 msgid "     "
 msgstr ""
@@ -1013,6 +1037,10 @@ msgstr ""
 
 #: tfmainform.tsplaylist.caption
 msgid "PlayList"
+msgstr ""
+
+#: tfminiplayer.caption
+msgid "MiniPlayer"
 msgstr ""
 
 #: tfrequalizer.lbband.caption
@@ -1041,6 +1069,14 @@ msgstr ""
 #: tfrfield.testtext.text
 msgctxt "tfrfield.testtext.text"
 msgid "is"
+msgstr ""
+
+#: tfscanresult.caption
+msgid "Scan Result"
+msgstr ""
+
+#: tfscanresult.stringgrid1.columns[0].title.caption
+msgid "File name"
 msgstr ""
 
 #: tfsonginfo.bnext.caption

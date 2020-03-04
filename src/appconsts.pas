@@ -95,7 +95,7 @@ Resourcestring
   rLowPortWarning = 'ATTENTION! Setting a port number lower than 1024 may require'+sLineBreak+
                     'administrative rights on some OSes (e.g. Linux).';
 
-  rUnsupportedEngine = 'UNSUPPORTED ENGINE';
+  rUnsupportedEngine = 'UNSUPPORTED AUDIO ENGINE';
 
   rAddEQualizerPreset = 'Save equalizer preset';
   rNewEqualizerName = 'Name:';
