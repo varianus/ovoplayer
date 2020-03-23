@@ -24,52 +24,50 @@ unit iconloader;
 interface
 
 uses
-  Classes, SysUtils,Graphics, fpimage, LCLType, IntfGraphics, GraphType, EasyLazFreeType, LazFreeTypeFPImageDrawer,
-{  LazFreeTypeIntfDrawer,} imglist, Forms;
+  Classes, SysUtils, Graphics, fpimage, LCLType, IntfGraphics, GraphType, EasyLazFreeType, LazFreeTypeIntfDrawer, // LazFreeTypeFPImageDrawer,
+  ImgList, Forms;
 
-
-Type
+type
 
   { TIconRenderer }
 
   TIconRenderer = class
   private
     FColor: TColor;
-    FFontData:TFreeTypeFont;
-    FSize: Integer;
+    FFontData: TFreeTypeFont;
+    FSize: integer;
     fImageSize: integer;
-    function getIcon(iconCode: Cardinal): TBitmap;
     procedure SetColor(AValue: TColor);
     procedure SetDefaults;
   public
-    Constructor Create(AStream: TStream);
+    constructor Create(AStream: TStream);
     destructor Destroy; override;
-    function AddToImageList(imageList: TCustomImageList; Code:Cardinal): integer;
-    Procedure SetSize(const AImageSize: integer; const FontSize:Integer; AutoScale: boolean=true);
-    property FontSize:Integer read FSize;
-    property ImageSize:Integer read FimageSize;
-    property Color:TColor read FColor write SetColor;
-
+    function AddToImageList(imageList: TCustomImageList; Code: cardinal): integer; overload;
+    function AddToImageList(imageList: TCustomImageList; const CodeList: array of cardinal): integer; overload;
+    procedure SetSize(const AImageSize: integer; const FontSize: integer; AutoScale: boolean = True);
+    property FontSize: integer read FSize;
+    property ImageSize: integer read FimageSize;
+    property Color: TColor read FColor write SetColor;
+    function getIcon(iconCode: cardinal): TBitmap;
   end;
 
 
 implementation
+
 uses lazutf8, LCLIntf;
 
 { TIconRenderer }
-function TIconRenderer.getIcon(iconCode: Cardinal): TBitmap;
+function TIconRenderer.getIcon(iconCode: cardinal): TBitmap;
 var
   image: TLazIntfImage;
-//  freeTypePainter: TIntfFreeTypeDrawer;
-  freeTypePainter: TFPImageFreeTypeDrawer;
+  freeTypePainter: TIntfFreeTypeDrawer; //TFPImageFreeTypeDrawer;
   fontColor: TFPColor;
   utf8Value: string;
 begin
   try
     Result := TBitmap.Create;
     image := TLazIntfImage.Create(0, 0, [riqfRGB, riqfAlpha]);
-//    freeTypePainter := TIntfFreeTypeDrawer.Create(image);
-    freeTypePainter := TFPImageFreeTypeDrawer.Create(image);
+    freeTypePainter := TIntfFreeTypeDrawer.Create(image);
     utf8Value := UnicodetoUTF8(iconCode);
     fontColor := TColorToFPColor(FColor);
     try
@@ -87,20 +85,20 @@ begin
 end;
 
 
-procedure TIconRenderer.SetSize(const AImageSize: integer; const FontSize:Integer; AutoScale: boolean=true);
+procedure TIconRenderer.SetSize(const AImageSize: integer; const FontSize: integer; AutoScale: boolean = True);
 
 begin
   FFontData.DPI := Screen.PixelsPerInch;
   if AutoScale then
-    begin
-      FImageSize := MulDiv(AImageSize, Screen.PixelsPerInch, 96);
-      FSize := MulDiv(FontSize, Screen.PixelsPerInch, 96);
-    end
+  begin
+    FImageSize := MulDiv(AImageSize, Screen.PixelsPerInch, 96);
+    FSize := MulDiv(FontSize, Screen.PixelsPerInch, 96);
+  end
   else
-    begin
-      FImageSize := AImageSize;
-      FSize := FontSize;
-    end;
+  begin
+    FImageSize := AImageSize;
+    FSize := FontSize;
+  end;
 
   FFontData.SizeInPixels := FSize;
 
@@ -112,12 +110,13 @@ begin
   FFontData.Hinted := False; // setting to true create strange artifact...
   FFontData.ClearType := True;
   FFontData.Quality := grqHighQuality;
-  FFontData.SmallLinePadding := true;
+  FFontData.SmallLinePadding := True;
 end;
 
 procedure TIconRenderer.SetColor(AValue: TColor);
 begin
-  if FColor = AValue then Exit;
+  if FColor = AValue then
+    Exit;
   FColor := AValue;
 
 end;
@@ -134,9 +133,9 @@ begin
   inherited Destroy;
 end;
 
-function TIconRenderer.AddToImageList(imageList: TCustomImageList; Code: Cardinal): integer;
+function TIconRenderer.AddToImageList(imageList: TCustomImageList; Code: cardinal): integer;
 var
-  abmp:TBitmap;
+  abmp: TBitmap;
 begin
   abmp := getIcon(Code);
   try
@@ -146,5 +145,41 @@ begin
   end;
 end;
 
-end.
+function TIconRenderer.AddToImageList(imageList: TCustomImageList; const CodeList: array of cardinal): integer;
+var
+  bmp: TBitmap;
+  image: TLazIntfImage;
+  freeTypePainter: TIntfFreeTypeDrawer;
+  fontColor: TFPColor;
+  utf8Value: string;
+  i: integer;
+begin
+  Result := 0;
+  try
+    bmp := TBitmap.Create;
+    image := TLazIntfImage.Create(0, 0, [riqfRGB, riqfAlpha]);
+    freeTypePainter := TIntfFreeTypeDrawer.Create(image);
+    fontColor := TColorToFPColor(FColor);
+    try
+      image.SetSize(FImageSize, FImageSize);
+      for i := low(CodeList) to high(codeList) do
+      begin
+        utf8Value := UnicodetoUTF8(codelist[i]);
+        freeTypePainter.FillPixels(colTransparent);
+        freeTypePainter.DrawText(utf8Value, FFontData, FImageSize div 2, FImageSize div 2, fontColor, [ftaCenter, ftaVerticalCenter]);
+        bmp.LoadFromIntfImage(image);
+        imageList.Add(bmp, nil);
+        Inc(Result);
+      end;
+    finally
+      freeTypePainter.Free;
+      image.Free;
+      bmp.Free;
+    end;
+  except
+    Result := -1;
+  end;
+end;
 
+
+end.

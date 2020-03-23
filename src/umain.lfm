@@ -1,7 +1,7 @@
 object fMainForm: TfMainForm
-  Left = 2602
+  Left = 520
   Height = 547
-  Top = 158
+  Top = 191
   Width = 765
   ActiveControl = pcMain
   AllowDropFiles = True
@@ -20,6 +20,7 @@ object fMainForm: TfMainForm
   OnHide = FormHide
   OnResize = FormResize
   OnShow = FormShow
+  Position = poMainFormCenter
   ShowHint = True
   LCLVersion = '2.1.0.0'
   object pnlleft: TPanel
@@ -165,7 +166,6 @@ object fMainForm: TfMainForm
           OnCreateNodeClass = tvCollectionCreateNodeClass
           OnDblClick = tvCollectionDblClick
           OnGetImageIndex = tvCollectionGetImageIndex
-          OnStartDrag = tvCollectionStartDrag
           Options = [tvoAllowMultiselect, tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
         end
       end
@@ -387,11 +387,11 @@ object fMainForm: TfMainForm
       Height = 527
       Top = 0
       Width = 515
-      ActivePage = tsWelcome
+      ActivePage = tsPlayer
       Align = alClient
       ShowTabs = False
       Style = tsFlatButtons
-      TabIndex = 1
+      TabIndex = 0
       TabOrder = 0
       object tsPlayer: TTabSheet
         ClientHeight = 519

@@ -25,7 +25,7 @@ interface
 
 uses
   Classes, SysUtils, LazFileUtils, ActnList, Controls, Dialogs, Forms, LResources,
-  singleinstance, strutils, Graphics,
+  singleinstance, strutils, Graphics, types,
   BaseTypes, CoreInterfaces,
   AudioEngine, LazUTF8,  LazLogger,
   PlayListManager, MediaLibrary, FilesSupport, netprotocol,   IconLoader;
@@ -103,6 +103,7 @@ type
   private
     procedure DebugLnHook(Sender: TObject; S: string; var Handled: Boolean);
   public
+    procedure CustomRender(Imgl: TIMageList; const Size: Tsize; const CodeList: array of cardinal);
     procedure ChangeRepeatMode(Mode: TplRepeat; Notify: boolean=true);
   end;
 
@@ -214,12 +215,28 @@ begin
   iconRender.AddToImageList(ilSmall, $e81a);
 
   iconRender.free;
+  //S.Free;
 
 end;
 
 procedure TDM.DataModuleDestroy(Sender: TObject);
 begin
   Application.SingleInstance.OnServerReceivedParams:= nil;
+end;
+
+Procedure TDM.CustomRender(Imgl: TIMageList; Const Size: Tsize; const CodeList: array of cardinal);
+var
+    s: TStream;
+  iconRender: TIconRenderer ;
+begin
+  S := TResourceStream.Create(HInstance, 'OVOFONT', RT_RCDATA);
+  iconRender:= TIconRenderer.Create(S);
+  iconRender.Color := GetSysColor(COLOR_BTNTEXT);
+  iconRender.SetSize(size.cx, Size.cy);
+  iconRender.AddToImageList(Imgl, CodeList);
+  iconRender.Free;
+//  S.Free;
+
 end;
 
 procedure TDM.SaveDialogPlaylistTypeChange(Sender: TObject);

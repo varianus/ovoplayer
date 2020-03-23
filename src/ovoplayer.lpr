@@ -114,7 +114,6 @@ begin
       {$IFDEF CATCH_SIGNAL}
       Init_SignalHandler;
       {$ENDIF}
-  Application.CreateForm(TfScanResult, fScanResult);
       Application.Run;
     end
   else

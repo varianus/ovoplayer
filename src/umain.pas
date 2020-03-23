@@ -335,6 +335,7 @@ type
     procedure btnFilterCancelClick(Sender: TObject);
     procedure btnForwardDirClick(Sender: TObject);
     procedure btnHomeDirClick(Sender: TObject);
+    procedure AfterFullStart(Data: PtrInt);
     procedure cbGroupByChange(Sender: TObject);
     procedure CollectionTreeDblClick(Sender: TObject);
     procedure edtFilterChange(Sender: TObject);
@@ -429,8 +430,6 @@ type
       var NodeClass: TTreeNodeClass);
     procedure tvCollectionDblClick(Sender: TObject);
     procedure tvCollectionGetImageIndex(Sender: TObject; Node: TTreeNode);
-    procedure tvCollectionStartDrag(Sender: TObject; var DragObject: TDragObject
-      );
   private
     SeekIng:      boolean;
     fSourceIndex, fTargetIndex: Integer;
@@ -1047,10 +1046,7 @@ end;
 
 procedure TfMainForm.FormActivate(Sender: TObject);
 begin
-  {$IFDEF TASKBAR_EXTENSION}
-   if not Mytaskbar_ext.Initialized then
-      Mytaskbar_ext.Init;
-  {$ENDIF}
+//
 
 end;
 
@@ -1097,7 +1093,7 @@ begin
   TrackBar.Max      := Song.Tags.Duration;
   TrackBar.Position := Lo(BackEnd.Position);
   TrayIcon.Hint     := Song.tags.Title + LineEnding + Song.Tags.Artist;
-  Caption           := Song.tags.Title + ' - ' + Song.Tags.Artist;;
+  Caption           := UnicodeString(Song.tags.Title + ' - ' + Song.Tags.Artist);
 
   if TrayIcon.Hint = LineEnding then
      begin
@@ -1143,6 +1139,7 @@ begin
 
   ScrollIntoView;
   Application.ProcessMessages;
+
 end;
 
 procedure TfMainForm.ShowNotification;
@@ -1342,6 +1339,14 @@ end;
 procedure TfMainForm.btnHomeDirClick(Sender: TObject);
 begin
   LoadDir(GetUserDir);
+end;
+
+procedure TfMainForm.AfterFullStart(Data: PtrInt);
+begin
+      {$IFDEF TASKBAR_EXTENSION}
+   if not Mytaskbar_ext.Initialized then
+      Mytaskbar_ext.Init;
+  {$ENDIF}
 end;
 
 procedure TfMainForm.cbGroupByChange(Sender: TObject);
@@ -1745,7 +1750,7 @@ begin
       LoadedPlaylist:= true;
       LoadLastPlaylist;
     end;
-
+  Application.QueueAsyncCall(@AfterFullStart,0);
 end;
 
 procedure TfMainForm.imgCoverDblClick(Sender: TObject);
@@ -3029,10 +3034,7 @@ begin
 
   {$ENDIF}
 
-
 end;
-
-
 
 procedure TfMainForm.PlaylistTreeDblClick(Sender: TObject);
 var
@@ -3077,12 +3079,6 @@ begin
   node.ImageIndex := SortArray[TMusicTreeNode(Node).Kind].ImageIndex;
   node.SelectedIndex:= node.ImageIndex;
 
-end;
-
-procedure TfMainForm.tvCollectionStartDrag(Sender: TObject;
-  var DragObject: TDragObject);
-begin
-  //
 end;
 
 procedure TfMainForm.LoadDir(Path:string);

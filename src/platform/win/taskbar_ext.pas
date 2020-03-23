@@ -26,7 +26,7 @@ unit taskbar_ext;
 interface
 
 uses
-  Windows, Classes, SysUtils, shlobj, comobj, coreinterfaces, uDM,
+  Windows, Classes, SysUtils, shlobj, comobj, coreinterfaces, controls, Forms, udm,
   guibackend, LazUTF8;
 
 const
@@ -43,7 +43,9 @@ type
       FBackEnd: IBackEnd;
       FApplication: THandle;
       Buttons: array [0..2] of THUMBBUTTON;
+      ImgL: TimageList;
       Procedure AddButtons;
+
     public
       constructor Create;
       destructor Destroy; override;
@@ -72,12 +74,12 @@ begin
   begin
     if HIWORD(wParam) = THBN_CLICKED then
       case LOWORD(wParam) of
-        1: Handler.FBackEnd.Previous;
-        2: if Handler.FBackEnd.Status = ENGINE_PLAY then
+        41: Handler.FBackEnd.Previous;
+        42: if Handler.FBackEnd.Status = ENGINE_PLAY then
              Handler.FBackEnd.Pause
            else
              Handler.FBackEnd.Play;
-        3: Handler.FBackEnd.Next;
+        43: Handler.FBackEnd.Next;
       end;
   end;
   result:=CallWindowProc(WNDPROC(PrevWndProc), Ahwnd, uMsg, WParam, LParam);
@@ -86,43 +88,46 @@ end;
 procedure TTaskBarExtender.AddButtons;
 var
  i:Integer;
+ res: HRESULT;
 begin
    for i := 0 to 2 do
      begin
-       Buttons[i].dwMask := THB_FLAGS or THB_BITMAP or THB_TOOLTIP;;
-       Buttons[i].hIcon:=0;
-       Buttons[i]. dwFlags :=  THBF_ENABLED;
+       Buttons[i].dwMask := THB_FLAGS or THB_BITMAP or THB_TOOLTIP;
+       Buttons[i]. dwFlags := THBF_ENABLED  or THBF_NOBACKGROUND;
      end;
 
-   Buttons[0].iId := 1;
-   Buttons[0].iBitmap := 7;
+   Buttons[0].iId := 41;
+   Buttons[0].iBitmap := 0;
    StrCopy(Buttons[0].szTip, PWideChar(utf8toUtf16(DM.actPrevious.Caption)));
 
-   Buttons[1].iId := 2;
+   Buttons[1].iId := 42;
    if fBackEnd.Status = ENGINE_PLAY then
      begin
-         Buttons[1].iBitmap := 1;
+         Buttons[1].iBitmap := 2;
          StrCopy(Buttons[1].szTip, PWideChar(utf8toUtf16(DM.actPlay.Caption)));
      end
    else
      begin
-         Buttons[1].iBitmap := 2;
+         Buttons[1].iBitmap := 1;
          StrCopy(Buttons[1].szTip, PWideChar(utf8toUtf16(DM.actPause.Caption)));
      end;
 
-   Buttons[2].iId := 3;
-   Buttons[2].iBitmap := 8;
+   Buttons[2].iId := 43;
+   Buttons[2].iBitmap := 3;
    StrCopy(Buttons[2].szTip, PWideChar(utf8toUtf16(DM.actNext.Caption)));
 
-   TaskbarList3.ThumbBarSetImageList(FApplication, DM.ilButtons.Reference[DM.ilButtons.Height].Handle);
-   TaskbarList3.ThumbBarAddButtons(FApplication, 3, @Buttons[0]);
-
+   res:=TaskbarList3.ThumbBarSetImageList(FApplication, imgl.Reference[imgl.Height].Handle);
+   res:=TaskbarList3.ThumbBarAddButtons(FApplication, 3, @Buttons[0]);
+   res:= res;
+   Update;
 end;
 
 constructor TTaskBarExtender.Create;
 var
  res:HRESULT;
+ x, y: integer;
 begin
+  imgl:= nil;
   FInitialized:=false;
   if not CheckWin32Version(6,1) then
     begin
@@ -131,6 +136,10 @@ begin
   TaskbarList := CreateComObject(CLSID_TaskbarList) as ITaskbarList;
   res:=TaskbarList.HrInit;
   TaskbarList._AddRef;
+  x:= GetSystemMetrics(SM_CXICON);
+  y:=GetSystemMetrics(SM_CyICON) ;
+  Imgl:= TImageList.CreateSize(x,y);
+  Dm.CustomRender(ImgL, TSize.Create(x,y), [$e807,$e803, $e802, $e805]);
   res:=ord(Supports(TaskbarList, IID_ITaskbarList3, TaskbarList3));
   Handler:=self;
 
@@ -140,21 +149,26 @@ destructor TTaskBarExtender.Destroy;
 begin
   if FInitialized then
     UnInit;
+  FreeAndNil(imgl);
   inherited Destroy;
 end;
 
 function TTaskBarExtender.Init:boolean;
 begin
   FBackEnd:=BackEnd;
-  FApplication:= FindWindow(NIL, 'OvoPlayer');
+  if Application.MainFormOnTaskBar then
+    FApplication := Application.MainFormHandle
+  else
+    FApplication := Application.Handle;
+
   if FApplication <> 0 then
     begin
-     FInitialized:=true;
-     fBackEnd.Attach(Self);
-     Result := True;
-     PrevWndProc := Ptrint(GetWindowLongPtr(fApplication,GWL_WNDPROC));
-     SetWindowLongPtr(fApplication,GWL_WNDPROC,PtrInt(@WndCallback));
-     AddButtons;
+      FInitialized:=true;
+      fBackEnd.Attach(Self);
+      Result := True;
+      PrevWndProc := Ptrint(GetWindowLongPtr(fApplication,GWL_WNDPROC));
+      SetWindowLongPtr(fApplication,GWL_WNDPROC,PtrInt(@WndCallback));
+      AddButtons;
     end
   else
     Result := False;
@@ -184,12 +198,12 @@ begin
     begin
       if fBackEnd.Status = ENGINE_PLAY then
         begin
-             Buttons[1].iBitmap := 1;
+             Buttons[1].iBitmap := 2;
              StrCopy(Buttons[1].szTip, PWideChar(utf8toUtf16(DM.actPause.Caption)));
         end
       else
         begin
-             Buttons[1].iBitmap := 2;
+             Buttons[1].iBitmap := 1;
              StrCopy(Buttons[1].szTip, PWideChar(utf8toUtf16(DM.actPlay.Caption)));
         end;
       Update;
