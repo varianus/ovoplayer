@@ -103,7 +103,7 @@ function TAudioEngineBASS.GetMainVolume: integer;
 var
   tmpVol: single;
 begin
-  Result := -1;
+  Result := 0;
   if Channel = 0 then exit;
   BASS_ChannelGetAttribute(Channel,BASS_ATTRIB_VOL, tmpVol);
   Result := trunc(tmpVol  * (255 / BASSMAXVOLUME));
@@ -174,7 +174,7 @@ function TAudioEngineBASS.Initialize:boolean;
   var
   I: integer;
 begin
-  result := BASS_Init(1, 44100, 0, 0, nil);
+  result := BASS_Init(-1, 44100, 0, 0, nil);
 
   if not Result then exit;
 
@@ -188,8 +188,8 @@ begin
   LoadPlugin('BASSFLAC.DLL', 1, 0);
   LoadPlugin('BASS_AAC.DLL', 2, 0);
   LoadPlugin('BASS_APE.DLL', 3, 0);
-  //LoadPlugin('BASSCD.DLL', 4, 0);
-  //LoadPlugin('BASSMIDI.DLL', 5, 0);
+  LoadPlugin('BASSOPUS.DLL', 4, 0);
+  LoadPlugin('BASS_ac3.DLL', 5, 0);
   //LoadPlugin('BASSWV.DLL', 6, 0);
   {$ENDIF WINDOWS}
   {$IFDEF LINUX}
@@ -337,7 +337,7 @@ begin
     ver:=0;
   end;
 
-  GetModuleByAddr(@BASS_GetVersion,BaseAddr,ModuleName);
+  GetModuleByAddr(BASS_GetVersion, BaseAddr, ModuleName);
 
   SetLength(Result,2);
   result[0].Key:= 'Library';
