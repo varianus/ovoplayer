@@ -102,6 +102,7 @@ type
     // -- --
   private
     procedure DebugLnHook(Sender: TObject; S: string; var Handled: Boolean);
+    procedure LoadImageList(Sender: TObject);
   public
     procedure CustomRender(Imgl: TIMageList; const Size: Tsize; const CodeList: array of cardinal);
     procedure ChangeRepeatMode(Mode: TplRepeat; Notify: boolean=true);
@@ -114,7 +115,7 @@ implementation
 
 {$R *.lfm}
 uses  AudioTag, AppConsts, GeneralFunc, GUIBackEnd,
-  netsupport, LCLIntf, lclType;
+  netsupport, LCLIntf, lclType, Themes ;
 
 { TDM }
 // for traceback porpouse
@@ -146,13 +147,78 @@ end;
 
 {$R ovoplayerfont.res}
 
+Procedure TDM.LoadImageList(Sender: TObject);
+var
+  s: TStream;
+  iconRender: TIconRenderer;
+begin
+
+    S := TResourceStream.Create(HInstance, 'OVOFONT', RT_RCDATA);
+    ilButtons.BeginUpdate;
+    ilButtons.Clear;
+    ilButtons.Height := MulDiv(23, Screen.PixelsPerInch, 96);
+    ilButtons.Width := ilButtons.Height;
+
+    iconRender:= TIconRenderer.Create(S);
+    iconRender.Color := GetSysColor(COLOR_BTNTEXT);
+    iconRender.SetSize(23, 21);
+
+    iconRender.AddToImageList(ilButtons, $e801);
+    iconRender.AddToImageList(ilButtons, $e802);
+    iconRender.AddToImageList(ilButtons, $e803);
+    iconRender.AddToImageList(ilButtons, $e804);
+    iconRender.AddToImageList(ilButtons, $f111);
+    iconRender.AddToImageList(ilButtons, $e809);
+    iconRender.AddToImageList(ilButtons, $e808);
+    iconRender.AddToImageList(ilButtons, $e807);
+    iconRender.AddToImageList(ilButtons, $e805);
+    iconRender.AddToImageList(ilButtons, $e80a);
+    iconRender.AddToImageList(ilButtons, $e818);
+    iconRender.AddToImageList(ilButtons, $f114);
+    iconRender.AddToImageList(ilButtons, $f115);
+    iconRender.AddToImageList(ilButtons, $e811);
+    iconRender.AddToImageList(ilButtons, $e810);
+    iconRender.AddToImageList(ilButtons, $e80d);
+    iconRender.AddToImageList(ilButtons, $e80e);
+    iconRender.AddToImageList(ilButtons, $e80f);
+    iconRender.AddToImageList(ilButtons, $e80b);
+    iconRender.AddToImageList(ilButtons, $e80c);
+    ilButtons.EndUpdate;
+
+    ilSmall.BeginUpdate;
+    ilSmall.Clear;
+    ilSmall.Height := MulDiv(16, Screen.PixelsPerInch, 96);
+    ilSmall.Width := ilSmall.Height;
+
+    iconRender.SetSize(16,15);
+    iconRender.AddToImageList(ilSmall, $e814);
+    iconRender.AddToImageList(ilSmall, $e815);
+    iconRender.AddToImageList(ilSmall, $e816);
+    iconRender.AddToImageList(ilSmall, $e817);
+    iconRender.AddToImageList(ilSmall, $e819);
+    iconRender.AddToImageList(ilSmall, $e81d);
+    iconRender.AddToImageList(ilSmall, $e803);
+    iconRender.AddToImageList(ilSmall, $f114);
+    iconRender.AddToImageList(ilSmall, $e801);
+    iconRender.AddToImageList(ilSmall, $e80f);
+    iconRender.AddToImageList(ilSmall, $e802);
+    iconRender.AddToImageList(ilSmall, $e804);
+    iconRender.AddToImageList(ilSmall, $e192);
+    iconRender.AddToImageList(ilSmall, $e81a);
+    ilSmall.EndUpdate;
+
+    iconRender.free;
+    //S.Free;
+end;
+
 procedure TDM.DataModuleCreate(Sender: TObject);
 var
   ParamList: TStringList;
   i: Integer;
-  s: TStream;
-  iconRender: TIconRenderer;
+
 begin
+
+  ThemeServices.OnThemeChange := @LoadImageList ;
   Application.SingleInstance.OnServerReceivedParams := @ServerReceivedParams;
   IF ParamCount > 0  then
    try
@@ -163,59 +229,7 @@ begin
    finally
      FreeAndNil(ParamList);
    end;
-
-  S := TResourceStream.Create(HInstance, 'OVOFONT', RT_RCDATA);
-  ilButtons.Clear;
-  ilButtons.Height := MulDiv(23, Screen.PixelsPerInch, 96);
-  ilButtons.Width := ilButtons.Height;
-
-  iconRender:= TIconRenderer.Create(S);
-  iconRender.Color := GetSysColor(COLOR_BTNTEXT);
-  iconRender.SetSize(23, 21);
-
-  iconRender.AddToImageList(ilButtons, $e801);
-  iconRender.AddToImageList(ilButtons, $e802);
-  iconRender.AddToImageList(ilButtons, $e803);
-  iconRender.AddToImageList(ilButtons, $e804);
-  iconRender.AddToImageList(ilButtons, $f111);
-  iconRender.AddToImageList(ilButtons, $e809);
-  iconRender.AddToImageList(ilButtons, $e808);
-  iconRender.AddToImageList(ilButtons, $e807);
-  iconRender.AddToImageList(ilButtons, $e805);
-  iconRender.AddToImageList(ilButtons, $e80a);
-  iconRender.AddToImageList(ilButtons, $e818);
-  iconRender.AddToImageList(ilButtons, $f114);
-  iconRender.AddToImageList(ilButtons, $f115);
-  iconRender.AddToImageList(ilButtons, $e811);
-  iconRender.AddToImageList(ilButtons, $e810);
-  iconRender.AddToImageList(ilButtons, $e80d);
-  iconRender.AddToImageList(ilButtons, $e80e);
-  iconRender.AddToImageList(ilButtons, $e80f);
-  iconRender.AddToImageList(ilButtons, $e80b);
-  iconRender.AddToImageList(ilButtons, $e80c);
-
-  ilSmall.Clear;
-  ilSmall.Height := MulDiv(16, Screen.PixelsPerInch, 96);
-  ilSmall.Width := ilSmall.Height;
-
-  iconRender.SetSize(16,15);
-  iconRender.AddToImageList(ilSmall, $e814);
-  iconRender.AddToImageList(ilSmall, $e815);
-  iconRender.AddToImageList(ilSmall, $e816);
-  iconRender.AddToImageList(ilSmall, $e817);
-  iconRender.AddToImageList(ilSmall, $e819);
-  iconRender.AddToImageList(ilSmall, $e81d);
-  iconRender.AddToImageList(ilSmall, $e803);
-  iconRender.AddToImageList(ilSmall, $f114);
-  iconRender.AddToImageList(ilSmall, $e801);
-  iconRender.AddToImageList(ilSmall, $e80f);
-  iconRender.AddToImageList(ilSmall, $e802);
-  iconRender.AddToImageList(ilSmall, $e804);
-  iconRender.AddToImageList(ilSmall, $e192);
-  iconRender.AddToImageList(ilSmall, $e81a);
-
-  iconRender.free;
-  //S.Free;
+   LoadImageList(self);
 
 end;
 
