@@ -118,7 +118,6 @@ type
   private
     FFileName:TFileName;
     JSONArray: TJSONArray;
-    Stream: TFileStreamUTF8;
   public
     procedure Save;
     function GetPlaylists(List: TStrings): integer;
@@ -253,15 +252,20 @@ end;
 procedure TPlaylistContainer.Save;
 var
   Mems: TFPJSStream;  //Workaround for new type on fpjson
+  Stream: TFileStreamUTF8;
 begin
+ Stream:= TFileStreamUTF8.Create(FFileName, fmOpenWrite);
  Stream.position := 0;
- Mems:= TMemoryStream.Create;
+ Stream.Size := 0;
+ Mems:= TFPJSStream.Create;
  try
    JSONArray.DumpJSON(Mems);
+   Mems.Position := 0;
    Stream.CopyFrom(Mems, Mems.Size);
  finally
    Mems.Free;
  end;
+ Stream.Free;
 end;
 
 function TPlaylistContainer.GetPlaylists(List: TStrings): integer;
@@ -336,18 +340,19 @@ end;
 
 
 constructor TPlaylistContainer.Create(FileName:TFileName);
+var
+  Stream: TFileStreamUTF8;
 begin
   FFileName:= FileName;
-  Stream:= TFileStreamUTF8.Create(FFileNAme, fmOpenReadWrite);
+  Stream:= TFileStreamUTF8.Create(FFileNAme, fmOpenRead);
   JSONArray := TJSONArray(GetJSON(Stream, True));
-
+  Stream.Free;
 end;
 
 destructor TPlaylistContainer.Destroy;
 begin
   inherited Destroy;
   JSONArray.Free;
-  Stream.Free;
 end;
 
 
