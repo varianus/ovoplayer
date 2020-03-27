@@ -100,7 +100,7 @@ type
     procedure SetPosition(AValue: int64);
     procedure SetStatus(AValue: TEngineState);
     procedure SetVolume(AValue: cardinal);
-    Function GetCoverURL: String;
+    Function GetCoverURL(EncodeToURI:Boolean=True): String;
     Function GetCover(Width: integer=-1; Height:Integer=-1): String;
 
 
@@ -461,7 +461,7 @@ begin
   Notify(cpVolume);
 end;
 
-function TBackEnd.GetCoverURL: String;
+function TBackEnd.GetCoverURL(EncodeToURI:boolean=True): String;
 var
   Picture: TPicture;
   imgLoaded : boolean;
@@ -494,7 +494,7 @@ begin
       result := BackEnd.GetImageFromfolder(IncludeTrailingPathDelimiter(Song.FilePath));
      end;
 
-  if Result <> '' then
+  if (Result <> '') and EncodeToURI then
      result := FilenameToURI(result);
 
 end;

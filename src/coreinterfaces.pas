@@ -79,7 +79,7 @@ type
     Procedure OpenURI(URI: String);
     procedure Seek(AValue: int64);
     Function GetMetadata(Index:integer=-1): TCommonTags;
-    Function GetCoverURL: String;
+    Function GetCoverURL(EncodeToURI:boolean=True): String;
     Function GetCover(Width: integer=-1; Height:Integer=-1): String;
     Function PlayListCount : integer;
     Function GetCurrentSongIndex : integer;
