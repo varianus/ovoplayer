@@ -22,35 +22,44 @@ unit ImagesSupport;
 
 interface
 uses graphics,
-    Classes, SysUtils;
+    Classes, SysUtils, LCLType;
 
-procedure ResizeBitmap(Bitmap: TBitmap; Width, Height: Integer);
+procedure ResizeBitmap(Bitmap: TBitmap; Width, Height: Integer; ForcePF32:boolean=false);
 
 implementation
 
-procedure ResizeBitmap(Bitmap: TBitmap; Width, Height: Integer);
+procedure ResizeBitmap(Bitmap: TBitmap; Width, Height: Integer; ForcePF32:boolean=false );
 var
   R: TRect;
   B: TBitmap;
+
+  WNew, HNew: integer;
 begin
   if assigned(Bitmap) then begin
     B:= TBitmap.Create;
     try
-      if Bitmap.Width > Bitmap.Height then begin
-        R.Right:= Width;
-        R.Bottom:= ((Width * Bitmap.Height) div Bitmap.Width);
-      end else begin
-        R.Right:= ((Height * Bitmap.Width) div Bitmap.Height);
-        R.Bottom:= Height;
+      WNew := (Bitmap.Width * Height) div Bitmap.Height;
+      HNew := (Width * Bitmap.Height) div Bitmap.Width;
+      if (Width < WNew) then
+      begin
+        R.Right := Width;
+        R.Bottom := HNew;
+      end else
+      begin
+        R.Right := WNew;
+        R.Bottom := Height;
       end;
+  //    Writeln(format('Desired x:%d Y:%d  Source x:%d Y:%d  Result x:%d Y:%d',[Width, Height, Bitmap.Width, Bitmap.Height, R.Right, R.Bottom]));
       R.Left:= 0;
       R.Top:= 0;
       B.PixelFormat:= Bitmap.PixelFormat;
-      B.Width:= r.Right;
+      B.Width:= R.Right;
       B.Height:= R.Bottom;
       B.Canvas.StretchDraw(R, Bitmap);
-      Bitmap.Width:= r.Right;
-      Bitmap.Height:= r.BOTTOM;
+      Bitmap.Width:= R.Right;
+      Bitmap.Height:= R.Bottom;
+      if ForcePF32 then
+        Bitmap.PixelFormat:= pf32bit;
       Bitmap.Canvas.Draw(0, 0, B);
     finally
       B.Free;
