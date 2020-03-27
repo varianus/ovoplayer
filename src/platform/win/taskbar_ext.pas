@@ -26,8 +26,8 @@ unit taskbar_ext;
 interface
 
 uses
-  Windows, Classes, SysUtils, shlobj, comobj, coreinterfaces, controls, Forms, udm,
-  guibackend, LazUTF8;
+  Windows, Classes, SysUtils, shlobj, comobj, DwmApi, coreinterfaces, controls, Forms, udm,
+  guibackend, LazUTF8, Graphics;
 
 const
       IID_ITaskbarList3: TGUID = '{ea1afb91-9e28-4b86-90e9-9e9f8a5eefaf}';
@@ -44,6 +44,7 @@ type
       FApplication: THandle;
       Buttons: array [0..2] of THUMBBUTTON;
       ImgL: TimageList;
+      bm: TPicture;
       Procedure AddButtons;
 
     public
@@ -61,7 +62,7 @@ type
 
 implementation
 uses
-  BaseTypes;
+  BaseTypes, ImagesSupport;
 var
   PrevWndProc: Ptrint;
   Handler: TTaskBarExtender;
@@ -82,6 +83,18 @@ begin
         43: Handler.FBackEnd.Next;
       end;
   end;
+  if uMsg = WM_DWMSENDICONICTHUMBNAIL  then
+    begin
+      if not Assigned(handler.BM) then
+        begin
+          handler.BM := TPicture.create;
+          handler.bm.LoadFromFile(Handler.FBackEnd.GetCoverURL(true));
+          ResizeBitmap(Handler.bm.Bitmap, HIWORD(lParam), LOWORD(lParam), true);
+          Handler.bm.SaveToFile('c:\temp\yyyy.bmp');
+        end;
+      Result := DwmSetIconicThumbnail(handler.FApplication, Handler.bm.Bitmap.Handle,0);
+    end;
+
   result:=CallWindowProc(WNDPROC(PrevWndProc), Ahwnd, uMsg, WParam, LParam);
 end;
 
@@ -89,6 +102,7 @@ procedure TTaskBarExtender.AddButtons;
 var
  i:Integer;
  res: HRESULT;
+ tmpBool: LONGBOOL;
 begin
    for i := 0 to 2 do
      begin
@@ -119,6 +133,9 @@ begin
    res:=TaskbarList3.ThumbBarSetImageList(FApplication, imgl.Reference[imgl.Height].Handle);
    res:=TaskbarList3.ThumbBarAddButtons(FApplication, 3, @Buttons[0]);
    res:= res;
+   tmpBool := true;
+   DwmSetWindowAttribute(FApplication, DWMWA_FORCE_ICONIC_REPRESENTATION, @tmpBool, SizeOf(tmpBool));
+   DwmSetWindowAttribute(FApplication, DWMWA_HAS_ICONIC_BITMAP, @tmpBool, SizeOf(tmpBool));
    Update;
 end;
 
@@ -128,6 +145,8 @@ var
  x, y: integer;
 begin
   imgl:= nil;
+  bm:= nil;
+  InitDwmLibrary;
   FInitialized:=false;
   if not CheckWin32Version(6,1) then
     begin
@@ -156,6 +175,7 @@ end;
 function TTaskBarExtender.Init:boolean;
 begin
   FBackEnd:=BackEnd;
+  bm:= nil;
   if Application.MainFormOnTaskBar then
     FApplication := Application.MainFormHandle
   else
@@ -186,6 +206,7 @@ procedure TTaskBarExtender.UnInit;
 begin
   SetWindowLongptr(fApplication,GWL_WNDPROC, PrevWndProc);
   FApplication:=0;
+  FreeAndNil(bm);
 
   fBackEnd.Remove(Self);
   FInitialized:=false;
@@ -198,17 +219,23 @@ begin
     begin
       if fBackEnd.Status = ENGINE_PLAY then
         begin
-             Buttons[1].iBitmap := 2;
-             StrCopy(Buttons[1].szTip, PWideChar(utf8toUtf16(DM.actPause.Caption)));
+          Buttons[1].iBitmap := 2;
+          StrCopy(Buttons[1].szTip, PWideChar(utf8toUtf16(DM.actPause.Caption)));
+          FreeAndNil(bm);
+          DwmInvalidateIconicBitmaps(FApplication);
         end
       else
         begin
-             Buttons[1].iBitmap := 1;
-             StrCopy(Buttons[1].szTip, PWideChar(utf8toUtf16(DM.actPlay.Caption)));
+         Buttons[1].iBitmap := 1;
+         StrCopy(Buttons[1].szTip, PWideChar(utf8toUtf16(DM.actPlay.Caption)));
         end;
       Update;
     end;
-
+  cpCurrentItem :
+    begin
+      FreeAndNil(bm);
+      DwmInvalidateIconicBitmaps(FApplication);
+    end;
   end;
 
 end;
