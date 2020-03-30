@@ -158,7 +158,7 @@ begin
   x:= GetSystemMetrics(SM_CXICON);
   y:=GetSystemMetrics(SM_CyICON) ;
   Imgl:= TImageList.CreateSize(x,y);
-  Dm.CustomRender(ImgL, TSize.Create(x,y), [$e807,$e803, $e802, $e805]);
+  Dm.CustomRender(ImgL, TSize.Create(x,y), [$48, $43, $42, $45]);
   res:=ord(Supports(TaskbarList, IID_ITaskbarList3, TaskbarList3));
   Handler:=self;
 

@@ -107,7 +107,7 @@ end;
 
 procedure TIconRenderer.SetDefaults;
 begin
-  FFontData.Hinted := False; // setting to true create strange artifact...
+  FFontData.Hinted := true; // setting to true create strange artifact...
   FFontData.ClearType := True;
   FFontData.Quality := grqHighQuality;
   FFontData.SmallLinePadding := True;

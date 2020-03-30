@@ -163,26 +163,11 @@ begin
     iconRender.Color := GetSysColor(COLOR_BTNTEXT);
     iconRender.SetSize(23, 21);
 
-    iconRender.AddToImageList(ilButtons, $e801);
-    iconRender.AddToImageList(ilButtons, $e802);
-    iconRender.AddToImageList(ilButtons, $e803);
-    iconRender.AddToImageList(ilButtons, $e804);
-    iconRender.AddToImageList(ilButtons, $f111);
-    iconRender.AddToImageList(ilButtons, $e809);
-    iconRender.AddToImageList(ilButtons, $e808);
-    iconRender.AddToImageList(ilButtons, $e807);
-    iconRender.AddToImageList(ilButtons, $e805);
-    iconRender.AddToImageList(ilButtons, $e80a);
-    iconRender.AddToImageList(ilButtons, $e818);
-    iconRender.AddToImageList(ilButtons, $f114);
-    iconRender.AddToImageList(ilButtons, $f115);
-    iconRender.AddToImageList(ilButtons, $e811);
-    iconRender.AddToImageList(ilButtons, $e810);
-    iconRender.AddToImageList(ilButtons, $e80d);
-    iconRender.AddToImageList(ilButtons, $e80e);
-    iconRender.AddToImageList(ilButtons, $e80f);
-    iconRender.AddToImageList(ilButtons, $e80b);
-    iconRender.AddToImageList(ilButtons, $e80c);
+    iconRender.AddToImageList (ilButtons, [$41,$42,$43,$44,$40,
+                                           $49,$47,$48,$45,$4b,
+                                           $4c,$65,$64,$55,$53,
+                                           $52,$51,$4f,$4d,$4e]);
+
     ilButtons.EndUpdate;
 
     ilSmall.BeginUpdate;
@@ -191,20 +176,10 @@ begin
     ilSmall.Width := ilSmall.Height;
 
     iconRender.SetSize(16,15);
-    iconRender.AddToImageList(ilSmall, $e814);
-    iconRender.AddToImageList(ilSmall, $e815);
-    iconRender.AddToImageList(ilSmall, $e816);
-    iconRender.AddToImageList(ilSmall, $e817);
-    iconRender.AddToImageList(ilSmall, $e819);
-    iconRender.AddToImageList(ilSmall, $e81d);
-    iconRender.AddToImageList(ilSmall, $e803);
-    iconRender.AddToImageList(ilSmall, $f114);
-    iconRender.AddToImageList(ilSmall, $e801);
-    iconRender.AddToImageList(ilSmall, $e80f);
-    iconRender.AddToImageList(ilSmall, $e802);
-    iconRender.AddToImageList(ilSmall, $e804);
-    iconRender.AddToImageList(ilSmall, $e192);
-    iconRender.AddToImageList(ilSmall, $e81a);
+    iconRender.AddToImageList(ilSmall, [$54,$68,$5a,$57,$56,
+                                        $6c,$43,$65,$41,$4f,
+                                        $42,$44,$6e,$62]);
+
     ilSmall.EndUpdate;
 
     iconRender.free;
