@@ -88,7 +88,7 @@ begin
       if not Assigned(handler.BM) then
         begin
           handler.BM := TPicture.create;
-          handler.bm.LoadFromFile(Handler.FBackEnd.GetCoverURL(true));
+          handler.bm.LoadFromFile(Handler.FBackEnd.GetCoverURL(false));
           ResizeBitmap(Handler.bm.Bitmap, HIWORD(lParam), LOWORD(lParam), true);
           Handler.bm.SaveToFile('c:\temp\yyyy.bmp');
         end;
