@@ -83,14 +83,14 @@ begin
         43: Handler.FBackEnd.Next;
       end;
   end;
-  if uMsg = WM_DWMSENDICONICTHUMBNAIL  then
+  if (uMsg = WM_DWMSENDICONICTHUMBNAIL) or (uMsg = WM_DWMSENDICONICLIVEPREVIEWBITMAP) then
     begin
       if not Assigned(handler.BM) then
         begin
           handler.BM := TPicture.create;
           handler.bm.LoadFromFile(Handler.FBackEnd.GetCoverURL(false));
           ResizeBitmap(Handler.bm.Bitmap, HIWORD(lParam), LOWORD(lParam), true);
-          Handler.bm.SaveToFile('c:\temp\yyyy.bmp');
+   //       Handler.bm.SaveToFile('c:\temp\yyyy.bmp');
         end;
       Result := DwmSetIconicThumbnail(handler.FApplication, Handler.bm.Bitmap.Handle,0);
     end;
