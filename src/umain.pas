@@ -2503,9 +2503,9 @@ begin
     if i = (Index -1) then
        begin
          if Direction = sdplDiscending then
-           sgPlayList.Columns[i].Title.ImageIndex:= 8
+           sgPlayList.Columns[i].Title.ImageIndex:= 14
          else
-           sgPlayList.Columns[i].Title.ImageIndex:= 9;
+           sgPlayList.Columns[i].Title.ImageIndex:= 15;
        end
     else
        sgPlayList.Columns[i].Title.ImageIndex:= -1;

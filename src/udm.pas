@@ -164,7 +164,7 @@ begin
     iconRender.SetSize(23, 21);
 
     iconRender.AddToImageList (ilButtons, [$41,$42,$43,$44,$40,
-                                           $49,$47,$48,$45,$4b,
+                                           $4A,$47,$48,$45,$4b,
                                            $4c,$65,$64,$55,$53,
                                            $52,$51,$4f,$4d,$4e]);
 
@@ -178,7 +178,8 @@ begin
     iconRender.SetSize(16,15);
     iconRender.AddToImageList(ilSmall, [$54,$68,$5a,$57,$56,
                                         $6c,$43,$65,$41,$4f,
-                                        $42,$44,$6e,$62]);
+                                        $42,$44,$6e,$62,$58,
+                                        $59]);
 
     ilSmall.EndUpdate;
 
