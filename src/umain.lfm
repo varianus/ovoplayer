@@ -1,7 +1,7 @@
 object fMainForm: TfMainForm
-  Left = 520
+  Left = 521
   Height = 547
-  Top = 191
+  Top = 149
   Width = 765
   ActiveControl = pcMain
   AllowDropFiles = True
@@ -81,7 +81,7 @@ object fMainForm: TfMainForm
             Text = 'AlbumArtist / Album'
           end
           object edtFilter: TLabeledEdit
-            Left = 46
+            Left = 40
             Height = 23
             Hint = 'Filter'
             Top = 38
@@ -99,7 +99,7 @@ object fMainForm: TfMainForm
             Left = 214
             Height = 22
             Top = 39
-            Width = 19
+            Width = 22
             Anchors = [akRight, akBottom]
             Constraints.MaxHeight = 22
             Constraints.MaxWidth = 22
@@ -141,6 +141,8 @@ object fMainForm: TfMainForm
               FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF0000000000000000000000001E0000
               0000FFFFFF00FFFFFF0000000000000000000000003200000000
             }
+            Images = DM.ilButtons
+            ImageIndex = 20
             OnClick = btnFilterCancelClick
             ShowCaption = False
           end
@@ -332,6 +334,8 @@ object fMainForm: TfMainForm
           9B5CA0A0A0CCA0A0A0DFA0A0A0DFA0A0A0DFA0A0A0DFA0A0A0DFA0A0A0DFA0A0
           A0DFA0A0A0DFA0A0A0DFA0A0A0DFA0A0A0D79D9D9D779B9B9B0E
         }
+        Images = DM.ilSmall
+        ImageIndex = 16
         OnClick = btnCloseCollectionStatClick
         ShowCaption = False
       end
