@@ -103,10 +103,10 @@ function TAudioEngineBASS.GetMainVolume: integer;
 var
   tmpVol: single;
 begin
-  Result := 0;
-  if Channel = 0 then exit;
-  BASS_ChannelGetAttribute(Channel,BASS_ATTRIB_VOL, tmpVol);
-  Result := trunc(tmpVol  * (255 / BASSMAXVOLUME));
+ Result := fSavedVolume;
+ if Channel = 0 then exit;
+ BASS_ChannelGetAttribute(Channel,BASS_ATTRIB_VOL, tmpVol);
+ Result := trunc(tmpVol  * (255 / BASSMAXVOLUME));
 
 end;
 
@@ -114,7 +114,7 @@ procedure TAudioEngineBASS.SetMainVolume(const AValue: integer);
 begin
 //  BASS_SetVolume(AValue * (BASSMAXVOLUME / 255));
     BASS_ChannelSetAttribute(Channel,BASS_ATTRIB_VOL, AValue * (BASSMAXVOLUME / 255));
-
+  fSavedVolume := AValue;
 end;
 
 function TAudioEngineBASS.GetMaxVolume: integer;
@@ -280,7 +280,7 @@ procedure TAudioEngineBASS.SetMuted(const AValue: boolean);
 begin
   if AValue = fMuted then
      exit;
-  if fMuted then
+  if AValue then
      begin
         fSavedVolume := Trunc(BASS_GetVolume() * 10000);
         BASS_SetVolume(0);
