@@ -2,11 +2,11 @@ object fMiniPlayer: TfMiniPlayer
   Left = 737
   Height = 57
   Top = 333
-  Width = 201
+  Width = 218
   BorderStyle = bsNone
   Caption = 'MiniPlayer'
   ClientHeight = 57
-  ClientWidth = 201
+  ClientWidth = 218
   Color = 11955992
   Font.Height = -12
   FormStyle = fsSystemStayOnTop
@@ -16,25 +16,28 @@ object fMiniPlayer: TfMiniPlayer
   OnHide = FormHide
   OnMouseLeave = FormMouseLeave
   OnShow = FormShow
+  LCLVersion = '2.1.0.0'
   object Panel1: TPanel
     Left = 0
     Height = 57
     Top = 0
-    Width = 201
+    Width = 218
     Align = alClient
     BevelInner = bvLowered
     BorderWidth = 2
     BorderStyle = bsSingle
     ClientHeight = 53
-    ClientWidth = 197
+    ClientWidth = 214
     ParentColor = False
     TabOrder = 0
     object tbPlayControls: TToolBar
       Left = 4
-      Height = 22
+      Height = 23
       Top = 4
-      Width = 189
+      Width = 206
       AutoSize = True
+      ButtonHeight = 23
+      ButtonWidth = 23
       EdgeInner = esNone
       EdgeOuter = esNone
       Flat = False
@@ -79,9 +82,9 @@ object fMiniPlayer: TfMiniPlayer
     end
     object TrackBar: TThemedSlider
       Left = 4
-      Height = 23
-      Top = 26
-      Width = 189
+      Height = 22
+      Top = 27
+      Width = 206
       Align = alClient
       BorderWidth = 6
       Step = 0
