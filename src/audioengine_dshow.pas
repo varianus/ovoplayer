@@ -167,7 +167,7 @@ function TAudioEngineDShow.CreateAppWindow: boolean;
 function TAudioEngineDShow.GetMainVolume: integer;
 begin
 
-  Result := -1;
+  Result := 0;
   if not Assigned(AudioControl) then
     exit;
 
@@ -228,6 +228,8 @@ begin
 
   Result := CreateAppWindow;
   Initialized := Result;
+  if Initialized then
+    Activate;
 end;
 
 
@@ -257,6 +259,8 @@ var
 begin
 
   Result := ENGINE_ON_LINE;
+  if not Assigned(MediaControl) then
+    exit;
   MediaControl.GetState(200,aState);
 
   case aState of
