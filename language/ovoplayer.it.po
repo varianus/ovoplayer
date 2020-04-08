@@ -74,7 +74,7 @@ msgid ""
 "ATTENTION! Setting a port number lower than 1024 may require\n"
 "administrative rights on some OSes (e.g. Linux)."
 msgstr ""
-"ATTENZIONE! Impostare una porta minore di 1024 può\n"
+"ATTENZIONE! Impostare una porta minore di 1024 puÃ²\n"
 "richiedere i diritti di amministratore in alcuni S.O. (ad es. Linux).\n"
 
 #: appconsts.rmatchingitems
@@ -200,19 +200,19 @@ msgstr "negli ultimi"
 #: playlistbuilder.rs_is
 msgctxt "playlistbuilder.rs_is"
 msgid "is"
-msgstr "è"
+msgstr "Ã¨"
 
 #: playlistbuilder.rs_isempty
 msgid "is empty"
-msgstr "è vuoto"
+msgstr "Ã¨ vuoto"
 
 #: playlistbuilder.rs_isnot
 msgid "is not"
-msgstr "non è"
+msgstr "non Ã¨"
 
 #: playlistbuilder.rs_isnotempty
 msgid "is not empty"
-msgstr "non è vuoto"
+msgstr "non Ã¨ vuoto"
 
 #: playlistbuilder.rs_lastplay
 msgctxt "playlistbuilder.rs_lastplay"
@@ -235,12 +235,12 @@ msgstr "Tutti i brani"
 #: playlistbuilder.rs_namelongesttimefromlastplay
 msgctxt "playlistbuilder.rs_namelongesttimefromlastplay"
 msgid "Longest time from last play"
-msgstr "Non riprodotti da più tempo"
+msgstr "Non riprodotti da piÃ¹ tempo"
 
 #: playlistbuilder.rs_namemostplayed
 msgctxt "playlistbuilder.rs_namemostplayed"
 msgid "Most played"
-msgstr "Più riprodotti"
+msgstr "PiÃ¹ riprodotti"
 
 #: playlistbuilder.rs_nameneverplayed
 msgctxt "playlistbuilder.rs_nameneverplayed"
@@ -258,7 +258,7 @@ msgstr "non contiene"
 
 #: playlistbuilder.rs_notequalto
 msgid "not equal to"
-msgstr "è diverso da"
+msgstr "Ã¨ diverso da"
 
 #: playlistbuilder.rs_notinthelast
 msgid "not in the last"
@@ -312,19 +312,19 @@ msgstr "Anno"
 
 #: simplesingleinstance.serrsetsingleinstanceglobalstarted
 msgid "You cannot change the single instance global property when it's been started."
-msgstr "Non puoi cambiare la proprietà globale dell'istanza singola quando è avviata"
+msgstr "Non puoi cambiare la proprietÃ  globale dell'istanza singola quando Ã¨ avviata"
 
 #: simplesingleinstance.serrsetsingleinstanceidstarted
 msgid "You cannot change the single instance ID when it's been started."
-msgstr "Non puoi cambiare l'ID dell'istanza singola quando è avviata"
+msgstr "Non puoi cambiare l'ID dell'istanza singola quando Ã¨ avviata"
 
 #: simplesingleinstance.serrsingleinstancenotclient
 msgid "Current instance is not a client."
-msgstr "L'istanza corrente non è un client."
+msgstr "L'istanza corrente non Ã¨ un client."
 
 #: simplesingleinstance.serrstartsingleinstancestarted
 msgid "You cannot start single instance when it's been already started."
-msgstr "Non puoi avviare istanza singola se è già avviata."
+msgstr "Non puoi avviare istanza singola se Ã¨ giÃ  avviata."
 
 #: tdm.actexit.caption
 msgctxt "tdm.actexit.caption"
@@ -337,8 +337,8 @@ msgstr "Scansione Rapida"
 
 #: tdm.actimportdirectory.caption
 msgctxt "tdm.actimportdirectory.caption"
-msgid "Import Directory …"
-msgstr "Importa Directory …"
+msgid "Import Directory â€¦"
+msgstr "Importa Directory â€¦"
 
 #: tdm.actmute.caption
 msgctxt "tdm.actmute.caption"
@@ -377,8 +377,8 @@ msgstr "Riproduci"
 
 #: tdm.actplaylistaddfiles.caption
 msgctxt "tdm.actplaylistaddfiles.caption"
-msgid "Add Files …"
-msgstr "Aggiungi files …"
+msgid "Add Files â€¦"
+msgstr "Aggiungi files â€¦"
 
 #: tdm.actplaylistclear.caption
 msgctxt "tdm.actplaylistclear.caption"
@@ -387,8 +387,8 @@ msgstr "Pulisci"
 
 #: tdm.actplaylistload.caption
 msgctxt "tdm.actplaylistload.caption"
-msgid "Open Playlist …"
-msgstr "Apri Scaletta …"
+msgid "Open Playlist â€¦"
+msgstr "Apri Scaletta â€¦"
 
 #: tdm.actplaylistload.hint
 msgctxt "tdm.actplaylistload.hint"
@@ -397,8 +397,8 @@ msgstr "Carica una scaletta"
 
 #: tdm.actplaylistsave.caption
 msgctxt "tdm.actplaylistsave.caption"
-msgid "Save PlayList …"
-msgstr "Salva Scaletta …"
+msgid "Save PlayList â€¦"
+msgstr "Salva Scaletta â€¦"
 
 #: tdm.actplaylistsave.hint
 msgctxt "tdm.actplaylistsave.hint"
@@ -527,8 +527,8 @@ msgid "Version"
 msgstr "Versione"
 
 #: tfconfig.badddir.caption
-msgid "Add …"
-msgstr "Aggiungi …"
+msgid "Add â€¦"
+msgstr "Aggiungi â€¦"
 
 #: tfconfig.bremovedir.caption
 msgid "Remove"
@@ -552,7 +552,7 @@ msgstr "Usa tasti Multimediali"
 
 #: tfconfig.cbenablesoundmenu.caption
 msgid "Show in sound menu"
-msgstr "Mostra nel Menù Audio"
+msgstr "Mostra nel MenÃ¹ Audio"
 
 #: tfconfig.cbminimizeonclose.caption
 msgid "Minimize on Close"
@@ -604,7 +604,7 @@ msgstr "Porta"
 
 #: tfconfig.lbrestart.caption
 msgid "A restart is required for this change to take effect."
-msgstr "Ãˆ richiesto un riavvio affinchÃ© questa modifica abbia effetto."
+msgstr "ÃƒË† richiesto un riavvio affinchÃƒÂ© questa modifica abbia effetto."
 
 #: tfconfig.rgaudioengine.caption
 msgctxt "tfconfig.rgaudioengine.caption"
@@ -671,8 +671,8 @@ msgid "Fit To Screen"
 msgstr "Adatta allo schermo"
 
 #: tfcover.btnsaveas.hint
-msgid "Save as…"
-msgstr "Salva come…"
+msgid "Save asâ€¦"
+msgstr "Salva comeâ€¦"
 
 #: tfcover.btnzoomin.hint
 msgctxt "tfcover.btnzoomin.hint"
@@ -904,8 +904,8 @@ msgid "Delete"
 msgstr "Cancella"
 
 #: tfmainform.mnueditplaylist.caption
-msgid "Edit …"
-msgstr "Modifica …"
+msgid "Edit â€¦"
+msgstr "Modifica â€¦"
 
 #: tfmainform.mnuenqueueitems.caption
 msgctxt "tfmainform.mnuenqueueitems.caption"
@@ -1061,7 +1061,7 @@ msgstr "Benvenuto in OvoPlayer"
 
 #: tfmainform.statictext2.caption
 msgid "Add one or more songs"
-msgstr "Aggiungi una o piÃ¹ canzoni"
+msgstr "Aggiungi una o piÃƒÂ¹ canzoni"
 
 #: tfmainform.statictext3.caption
 msgid "Add all songs in a folder"
@@ -1132,7 +1132,7 @@ msgstr "uguale a"
 #: tfrfield.testtext.text
 msgctxt "tfrfield.testtext.text"
 msgid "is"
-msgstr "è"
+msgstr "Ã¨"
 
 #: tfscanresult.caption
 msgid "Scan Result"
@@ -1249,7 +1249,7 @@ msgstr "Anno"
 #: tfsonginfo.tsmediaproperty.caption
 msgctxt "TFSONGINFO.TSMEDIAPROPERTY.CAPTION"
 msgid "Media Property"
-msgstr "Proprietà Media"
+msgstr "ProprietÃ  Media"
 
 #: tfsonginfo.tstags.caption
 msgid "Tags"
