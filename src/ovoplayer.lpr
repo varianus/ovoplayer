@@ -102,7 +102,9 @@ begin
   Application.Initialize;
 
   Application.Scaled := True;
-
+  {$IFDEF WINDOWS}
+  Application.MainFormOnTaskBar := True;
+  {$ENDIF WINDOWS}
   // needed to output exception to a file
   Application.Flags := Application.Flags + [appNoExceptionMessages];
 
