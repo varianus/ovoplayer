@@ -24,8 +24,9 @@ unit AudioEngine_OpenLib;
 interface
 
 uses
-  Classes, SysUtils,  decoupler, Process, Song,
+  Classes, SysUtils, decoupler, Process, Song,
   AudioEngine, basetypes, OL_Classes;
+
 type
 
   { TAudioEngineOpenLib }
@@ -33,14 +34,15 @@ type
 
   TAudioEngineOpenLib = class(TAudioEngine)
   private
-    StreamName: String;
+    StreamName: string;
     fdecoupler: TDecoupler;
-    fState : TEngineState;
-    DecodingThread : TDecodingThread;
+    fState: TEngineState;
+    DecodingThread: TDecodingThread;
     fMuted: boolean;
     fSavedVolume: integer;
     fVolume: single;
-   protected
+    procedure Cleanup;
+  protected
     Decoder: IOL_Decoder;
     Renderer: IOL_Renderer;
     Filter: IOL_Filter;
@@ -50,14 +52,14 @@ type
     function GetSongPos: integer; override;
     procedure SetSongPos(const AValue: integer); override;
     function GetState: TEngineState; override;
-    Function DoPlay(Song: TSong; offset:Integer):boolean; override;
-    procedure SetMuted(const AValue: boolean);  override;
-    Function GetMuted: boolean; override;
+    function DoPlay(Song: TSong; offset: integer): boolean; override;
+    procedure SetMuted(const AValue: boolean); override;
+    function GetMuted: boolean; override;
   public
     StreamFormat: TOLStreamFormat;
-    class Function GetEngineName: String; override;
-    Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
-    Function Initialize: boolean; override;
+    class function GetEngineName: string; override;
+    class function IsAvalaible(ConfigParam: TStrings): boolean; override;
+    function Initialize: boolean; override;
     procedure PostCommand(Command: TEngineCommand; Param: integer = 0); override;
     constructor Create; override;
     destructor Destroy; override;
@@ -74,33 +76,34 @@ type
   end;
 
 
- { TDecodingThread }
+  { TDecodingThread }
 
- TDecodingThread = class(TThread)
- Private
-   evPause: PRTLEvent;
-   fPlayer : TAudioEngineOpenLib;
- protected
-   procedure Execute; override;
-   procedure DoTerminate; override;
+  TDecodingThread = class(TThread)
+  private
+    evPause: PRTLEvent;
+    fPlayer: TAudioEngineOpenLib;
+  protected
+    procedure Execute; override;
+    procedure DoTerminate; override;
 
- public
-   constructor Create(CreateSuspended: boolean; Player:TAudioEngineOpenLib);
-   destructor Destroy; override;
- end;
+  public
+    constructor Create(CreateSuspended: boolean; Player: TAudioEngineOpenLib);
+    destructor Destroy; override;
+  end;
 
 
 implementation
-uses math,OL_RendererPortAudio;
+
+uses Math, OL_RendererPortAudio;
 
 { TDecodingThread }
 
 procedure TDecodingThread.Execute;
 var
-  buffer : TOLBuffer;
-  OutFrames :Integer;
+  buffer: TOLBuffer;
+  OutFrames: integer;
   err: hresult;
-  wantframes :Integer;
+  wantframes: integer;
   i: integer;
 
 begin
@@ -121,11 +124,14 @@ begin
       fPlayer.fState := ENGINE_SONG_END;
 
 
-  until Terminated or (fPlayer.fState in [ENGINE_STOP,ENGINE_SONG_END]);
+  until Terminated or (fPlayer.fState in [ENGINE_STOP, ENGINE_SONG_END]);
 
-  fPlayer.Renderer.Stop ;
-  if  fPlayer.fState = ENGINE_SONG_END then
-      fPlayer.PostCommand(ecNext);
+  fPlayer.Renderer.Stop;
+  if fPlayer.fState = ENGINE_SONG_END then
+  begin
+    fPlayer.Cleanup;
+    fPlayer.PostCommand(ecNext);
+  end;
 
 end;
 
@@ -135,7 +141,7 @@ begin
   fPlayer.DecodingThread := nil;
 end;
 
-constructor TDecodingThread.Create(CreateSuspended: boolean; Player:TAudioEngineOpenLib);
+constructor TDecodingThread.Create(CreateSuspended: boolean; Player: TAudioEngineOpenLib);
 begin
   inherited Create(CreateSuspended);
   fPlayer := Player;
@@ -158,7 +164,7 @@ end;
 
 procedure TAudioEngineOpenLib.SetMainVolume(const AValue: integer);
 begin
- fVolume:= AValue / 100;
+  fVolume := AValue / 100;
   //case CurrentSoundDecoder of
   //  csdMPG123 : mpg123_volume(StreamHandle, fVolume);
   //end;
@@ -167,15 +173,15 @@ end;
 
 function TAudioEngineOpenLib.GetMaxVolume: integer;
 begin
-  Result:= 255;
+  Result := 255;
 end;
 
 function TAudioEngineOpenLib.GetSongPos: integer;
 begin
- if Assigned(Decoder) then
-   Result := Decoder.GetSongPos
- else
-   Result:= 0;
+  if Assigned(Decoder) then
+    Result := Decoder.GetSongPos
+  else
+    Result := 0;
 end;
 
 procedure TAudioEngineOpenLib.SetSongPos(const AValue: integer);
@@ -186,17 +192,16 @@ end;
 procedure TAudioEngineOpenLib.Activate;
 begin
 
-
 end;
 
 constructor TAudioEngineOpenLib.Create;
 begin
   inherited Create;
-  StreamFormat.BitRate:=44100;
-  StreamFormat.Channels:=2;
-  StreamFormat.Format:=ffInt16;
+  StreamFormat.BitRate := 44100;
+  StreamFormat.Channels := 2;
+  StreamFormat.Format := ffInt16;
 
-  fVolume:=100;
+  fVolume := 100;
   fdecoupler := TDecoupler.Create;
 
   fdecoupler.OnCommand := @ReceivedCommand;
@@ -218,29 +223,27 @@ end;
 procedure TAudioEngineOpenLib.Pause;
 begin
   if (GetState = ENGINE_PLAY) then
-    begin
-       RTLeventResetEvent(DecodingThread.evPause);
-       fState:=ENGINE_PAUSE;
-    end
+  begin
+    RTLeventResetEvent(DecodingThread.evPause);
+    fState := ENGINE_PAUSE;
+  end
   else
-    if (GetState = ENGINE_PAUSE) then
-      begin
-         RTLeventSetEvent(DecodingThread.evPause);
-         fState:=ENGINE_Play;
-      end;
+  if (GetState = ENGINE_PAUSE) then
+  begin
+    RTLeventSetEvent(DecodingThread.evPause);
+    fState := ENGINE_Play;
+  end;
 
 end;
 
-function TAudioEngineOpenLib.DoPlay(Song: TSong; offset:Integer):boolean;
+function TAudioEngineOpenLib.DoPlay(Song: TSong; offset: integer): boolean;
 begin
   // create new media
-  if Not FileExists(Song.FullName) then
-     exit;
+  if not FileExists(Song.FullName) then
+    exit;
 
   if Assigned(DecodingThread) then
-     begin
-       Stop;
-     end;
+    Stop;
 
   Decoder := IdentifyDecoder(Song.FullName).Create as IOL_Decoder;
   Decoder.Load();
@@ -253,54 +256,53 @@ begin
   Renderer.StreamFormat := StreamFormat;
   Renderer.Initialize;
 
-  DecodingThread := TDecodingThread.Create(true, self);
+  DecodingThread := TDecodingThread.Create(True, self);
 
-//  WriteLn('LOAD Song:',Song.FullName);
-  fState:= ENGINE_PLAY;
+  //  WriteLn('LOAD Song:',Song.FullName);
+  fState := ENGINE_PLAY;
   RTLeventSetEvent(DecodingThread.evPause);
 
   FsavedVolume := 100;
   if offset <> 0 then
-    Seek(offset, true);
+    Seek(offset, True);
   DecodingThread.Start;
-
 
 end;
 
 procedure TAudioEngineOpenLib.SetMuted(const AValue: boolean);
 begin
   if AValue = fMuted then
-     exit;
+    exit;
   if fMuted then
-     begin
-        fSavedVolume := GetMainVolume;
-        setMainVolume(0);
-        fMuted:=true;
-     end
- else
-     begin
-        setMainVolume(fSavedVolume);
-        fMuted:=False;
-     end;
+  begin
+    fSavedVolume := GetMainVolume;
+    setMainVolume(0);
+    fMuted := True;
+  end
+  else
+  begin
+    setMainVolume(fSavedVolume);
+    fMuted := False;
+  end;
 
 end;
 
 function TAudioEngineOpenLib.GetMuted: boolean;
 begin
- result:=fMuted;
+  Result := fMuted;
 end;
 
-class function TAudioEngineOpenLib.GetEngineName: String;
+class function TAudioEngineOpenLib.GetEngineName: string;
 begin
-  Result:='OpenSourceLibs';
+  Result := 'OpenSourceLibs';
 end;
 
 class function TAudioEngineOpenLib.IsAvalaible(ConfigParam: TStrings): boolean;
 begin
-  Result := false;
+  Result := False;
   try
 
-    Result :=   True;
+    Result := True;
   except
   end;
 
@@ -311,7 +313,7 @@ end;
 
 function TAudioEngineOpenLib.Initialize: boolean;
 begin
-  result := true;
+  Result := True;
 end;
 
 procedure TAudioEngineOpenLib.PostCommand(Command: TEngineCommand; Param: integer);
@@ -343,38 +345,46 @@ end;
 
 procedure TAudioEngineOpenLib.Stop;
 begin
-  fState:=ENGINE_STOP;
-  DecodingThread.WaitFor;
+  fState := ENGINE_STOP;
+  if Assigned(DecodingThread) then
+    DecodingThread.WaitFor;
+  Cleanup;
+end;
+
+procedure TAudioEngineOpenLib.Cleanup;
+begin
   if Assigned(Decoder) then
-    begin
-       Decoder.Close;
-       Decoder.Free;
-       Decoder:= nil;
-    end;
+  begin
+    Decoder.Close;
+    Decoder.Free;
+    Decoder := nil;
+  end;
   if Assigned(Filter) then
-    begin
-       Filter.Free;
-       Filter:= nil;
-    end;
+  begin
+    Filter.Free;
+    Filter := nil;
+  end;
   if Assigned(Renderer) then
-    begin
-       Renderer.Free;
-       Renderer:= nil;
-    end;
+  begin
+    Renderer.Free;
+    Renderer := nil;
+  end;
 end;
 
 procedure TAudioEngineOpenLib.UnPause;
 begin
 
   if (GetState() = ENGINE_PAUSE) then
-    begin
-        RTLeventSetEvent(DecodingThread.evPause);
-        fState:=ENGINE_PLAY;
-    end;
+  begin
+    RTLeventSetEvent(DecodingThread.evPause);
+    fState := ENGINE_PLAY;
+  end;
 end;
 
 initialization
-  RegisterEngineClass(TAudioEngineOpenLib, 999, false, true);
+  RegisterEngineClass(TAudioEngineOpenLib, 999, False, True);
+
+
 
 
 end.
