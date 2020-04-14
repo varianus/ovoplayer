@@ -206,6 +206,7 @@ if TargetOS = &apos;linux&apos; then
             </Options>
           </Linking>
           <Other>
+            <WriteFPCLogo Value="False"/>
             <ConfigFile>
               <ConfigFilePath Value="..\extrafpc.cfg"/>
             </ConfigFile>
@@ -505,7 +506,7 @@ if TargetOS = &apos;linux&apos; then
         <IsPartOfProject Value="True"/>
       </Unit49>
       <Unit50>
-        <Filename Value="platform\linux\mpris2.pas"/>
+        <Filename Value="platform\unix\mpris2.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit50>
       <Unit51>
@@ -518,12 +519,12 @@ if TargetOS = &apos;linux&apos; then
         <UnitName Value="BaseTypes"/>
       </Unit52>
       <Unit53>
-        <Filename Value="platform\linux\dbusextension.pas"/>
+        <Filename Value="platform\unix\dbusextension.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="DbusExtension"/>
       </Unit53>
       <Unit54>
-        <Filename Value="platform\linux\notification.pas"/>
+        <Filename Value="platform\unix\notification.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit54>
       <Unit55>
@@ -589,7 +590,7 @@ if TargetOS = &apos;linux&apos; then
         <UnitName Value="tag_MP4"/>
       </Unit67>
       <Unit68>
-        <Filename Value="platform\win32\taskbar_ext.pas"/>
+        <Filename Value="platform\win\taskbar_ext.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit68>
       <Unit69>
@@ -697,11 +698,11 @@ if TargetOS = &apos;linux&apos; then
         <UnitName Value="ScreenLock"/>
       </Unit89>
       <Unit90>
-        <Filename Value="platform\win32\screenlockimpl.inc"/>
+        <Filename Value="platform\win\screenlockimpl.inc"/>
         <IsPartOfProject Value="True"/>
       </Unit90>
       <Unit91>
-        <Filename Value="platform\win32\bufferedfilereader.pas"/>
+        <Filename Value="platform\win\bufferedfilereader.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit91>
       <Unit92>
@@ -761,7 +762,6 @@ if TargetOS = &apos;linux&apos; then
     <Linking>
       <Debugging>
         <DebugInfoType Value="dsDwarf3"/>
-        <UseHeaptrc Value="True"/>
       </Debugging>
       <Options>
         <Win32>
