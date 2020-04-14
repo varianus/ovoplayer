@@ -64,7 +64,7 @@ function IdentifyDecoder(FileName: string): TClass;
 
 implementation
 
-uses StrUtils, OL_Dec_Dummy;
+uses StrUtils, OL_DecoderDummy;
 
 { TOL_Player }
 
