@@ -253,7 +253,7 @@ if TargetOS = &apos;linux&apos; then
         <PackageName Value="LCL"/>
       </Item6>
     </RequiredPackages>
-    <Units Count="95">
+    <Units Count="99">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -720,6 +720,25 @@ if TargetOS = &apos;linux&apos; then
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit94>
+      <Unit95>
+        <Filename Value="import-engines\ol_decodermpg123.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="OL_DecoderMPG123"/>
+      </Unit95>
+      <Unit96>
+        <Filename Value="import-engines\ol_classes.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="OL_Classes"/>
+      </Unit96>
+      <Unit97>
+        <Filename Value="import-engines\ol_decodersndfile.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="OL_DecoderSndFile"/>
+      </Unit97>
+      <Unit98>
+        <Filename Value="import-engines\ol_decoderdummy.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit98>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

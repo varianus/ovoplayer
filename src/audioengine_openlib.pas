@@ -25,15 +25,10 @@ interface
 
 uses
   Classes, SysUtils,  decoupler, Process, Song,
-  AudioEngine, basetypes,
-  UOS_libsndfile, UOS_mpg123, UOS_portaudio;
-
+  AudioEngine, basetypes, OL_Classes;
 type
 
   { TAudioEngineOpenLib }
-
-  TCurrentSoundDecoder = (csdMPG123, csdSndFile);
-
   TDecodingThread = class;
 
   TAudioEngineOpenLib = class(TAudioEngine)
@@ -41,19 +36,14 @@ type
     StreamName: String;
     fdecoupler: TDecoupler;
     fState : TEngineState;
-    fdevice : PaDeviceIndex;
-    CurrentSoundDecoder : TCurrentSoundDecoder;
-    sfInfo : TSF_INFO;
-    mpInfo : Tmpg123_frameinfo;
-    pa_OutInfo : PaStreamParameters;
-    StreamHandle: pointer;
-    Stream_out: PaStream;
     DecodingThread : TDecodingThread;
-    fRate: Cardinal;
     fMuted: boolean;
     fSavedVolume: integer;
     fVolume: single;
-  protected
+   protected
+    Decoder: IOL_Decoder;
+    Renderer: IOL_Renderer;
+    Filter: IOL_Filter;
     function GetMainVolume: integer; override;
     procedure SetMainVolume(const AValue: integer); override;
     function GetMaxVolume: integer; override;
@@ -64,6 +54,7 @@ type
     procedure SetMuted(const AValue: boolean);  override;
     Function GetMuted: boolean; override;
   public
+    StreamFormat: TOLStreamFormat;
     class Function GetEngineName: String; override;
     Class Function IsAvalaible(ConfigParam: TStrings): boolean; override;
     Function Initialize: boolean; override;
@@ -79,6 +70,7 @@ type
     procedure Stop; override;
     procedure UnPause; override;
 
+
   end;
 
 
@@ -87,81 +79,67 @@ type
  TDecodingThread = class(TThread)
  Private
    evPause: PRTLEvent;
-   fOwner : TAudioEngineOpenLib;
+   fPlayer : TAudioEngineOpenLib;
  protected
    procedure Execute; override;
+   procedure DoTerminate; override;
 
  public
-   constructor Create(CreateSuspended: boolean; OWner:TAudioEngineOpenLib);
+   constructor Create(CreateSuspended: boolean; Player:TAudioEngineOpenLib);
    destructor Destroy; override;
  end;
 
 
 implementation
-uses math;
+uses math,OL_RendererPortAudio;
 
 { TDecodingThread }
 
 procedure TDecodingThread.Execute;
 var
-  OutBuf : array [0..$ffff] of Word;
-  OutFrames :Size_t;
+  buffer : TOLBuffer;
+  OutFrames :Integer;
   err: hresult;
-  wantframes :Size_t;
-  Divider: integer;
+  wantframes :Integer;
   i: integer;
-type
-  TShortIntArray = array[0..$ffff] of Word;
-  PShortIntArray = ^TShortIntArray;
-var
-  pp: PShortIntArray;
 
 begin
-  Pa_StartStream(fOwner.Stream_out);
+  fplayer.Renderer.Start;
   repeat
-     RTLeventWaitFor(evPause);
-     if Terminated then
-        Break;
+    RTLeventWaitFor(evPause);
+    if Terminated then
+      Break;
 
-     RTLeventSetEvent(evPause);
-     wantframes := Length(OutBuf) div 2;
-     case  fOwner.CurrentSoundDecoder of
-      csdSndFile: begin
-                    OutFrames := sf_readf_short(fOwner.StreamHandle, @outbuf[0], wantframes);
-                    if fOwner.fvolume <> 1 then
-                     begin
-                       pp := @outbuf[0];
-                       for i := 0 to (Outframes * 2) - 1 do
-                         pp^[i] := NtoLE(round(LEtoN(pp^[i]) * fOwner.fvolume));
-                     end;
-                    Divider := 1;
-                  end;
-      csdMPG123 : begin
-                     Err := mpg123_read(fOwner.StreamHandle, @outbuf[0], wantframes, outframes);
-                     Divider:= 4;
-                  end;
-    end;
+    RTLeventSetEvent(evPause);
+    wantframes := Length(buffer) div (SizeOf(TFrame) * fPlayer.StreamFormat.Channels);
+
+    OutFrames := fPlayer.Decoder.GetBuffer(wantframes, @buffer);
+    if Assigned(fPlayer.Filter) then
+      fPlayer.Filter.Apply(@Buffer);
+    fPlayer.Renderer.Write(OutFrames, @buffer);
     if OutFrames < wantframes then
-       begin
-         fOwner.fState := ENGINE_SONG_END;
-       end;
+      fPlayer.fState := ENGINE_SONG_END;
 
-   if OutFrames > 0 then
-      Pa_WriteStream(fowner.Stream_out, @outbuf[0], outframes div Divider);
 
-  until Terminated or (fOwner.fState in [ENGINE_STOP,ENGINE_SONG_END]);
+  until Terminated or (fPlayer.fState in [ENGINE_STOP,ENGINE_SONG_END]);
 
-  Pa_StopStream(fOwner.Stream_out);
-  Pa_CloseStream(fOwner.Stream_out);
-  if  fOwner.fState = ENGINE_SONG_END then
-      fOwner.PostCommand(ecNext);
+  fPlayer.Renderer.Stop ;
+  if  fPlayer.fState = ENGINE_SONG_END then
+      fPlayer.PostCommand(ecNext);
 
 end;
 
-constructor TDecodingThread.Create(CreateSuspended: boolean; OWner:TAudioEngineOpenLib);
+procedure TDecodingThread.DoTerminate;
+begin
+  inherited DoTerminate;
+  fPlayer.DecodingThread := nil;
+end;
+
+constructor TDecodingThread.Create(CreateSuspended: boolean; Player:TAudioEngineOpenLib);
 begin
   inherited Create(CreateSuspended);
-  fOwner := OWner;
+  fPlayer := Player;
+  FreeOnTerminate := True;
   evPause := RTLEventCreate;
 end;
 
@@ -181,9 +159,9 @@ end;
 procedure TAudioEngineOpenLib.SetMainVolume(const AValue: integer);
 begin
  fVolume:= AValue / 100;
-  case CurrentSoundDecoder of
-    csdMPG123 : mpg123_volume(StreamHandle, fVolume);
-  end;
+  //case CurrentSoundDecoder of
+  //  csdMPG123 : mpg123_volume(StreamHandle, fVolume);
+  //end;
 
 end;
 
@@ -194,19 +172,15 @@ end;
 
 function TAudioEngineOpenLib.GetSongPos: integer;
 begin
-  case CurrentSoundDecoder of
-    csdMPG123 : Result := trunc(mpg123_tell(StreamHandle) / (fRate / 1000));
-    csdSndFile : Result := trunc(sf_seek(StreamHandle, 0, SEEK_CUR) / (fRate / 1000));
-  end;
+ if Assigned(Decoder) then
+   Result := Decoder.GetSongPos
+ else
+   Result:= 0;
 end;
 
 procedure TAudioEngineOpenLib.SetSongPos(const AValue: integer);
 begin
-  case CurrentSoundDecoder of
-    csdMPG123 : mpg123_seek(StreamHandle,trunc( AValue * (fRate / 1000)), SEEK_SET);
-    csdSndFile : sf_seek(StreamHandle, trunc(AValue * (fRate / 1000)), SEEK_SET);
-  end;
-
+  Decoder.SetSongPos(AValue);
 end;
 
 procedure TAudioEngineOpenLib.Activate;
@@ -218,27 +192,10 @@ end;
 constructor TAudioEngineOpenLib.Create;
 begin
   inherited Create;
-  {  }
-  {$IFDEF LINUX}
-  Pa_Load('libportaudio.so.2');
-  sf_Load('libsndfile.so.1');
-  Mp_Load('libmpg123.so.0');
-  {$ENDIF LINUX}
-  {$IFDEF WINDOWS}
-  Pa_Load('libportaudio-32.dll');
-  sf_Load('libsndfile-32.dll');
-  Mp_Load('libmpg123-32.dll');
-  {$ENDIF LINUX}
+  StreamFormat.BitRate:=44100;
+  StreamFormat.Channels:=2;
+  StreamFormat.Format:=ffInt16;
 
-  {$IFDEF DARWIN}
-  Pa_Load('LibPortaudio-32.dylib');
-  sf_Load('LibSndFile-32.dylib');
-  Mp_Load('LibMpg123-32.dylib');
-  {$ENDIF DARWIN}
-
-  Pa_Initialize();
-  fdevice := Pa_GetDefaultOutputDevice();
-  mpg123_init;
   fVolume:=100;
   fdecoupler := TDecoupler.Create;
 
@@ -249,10 +206,6 @@ end;
 destructor TAudioEngineOpenLib.Destroy;
 begin
   Stop;
-  Pa_Unload();
-  sf_Unload();
-  Mp_Unload();
-
   fdecoupler.Free;
   inherited Destroy;
 end;
@@ -279,10 +232,6 @@ begin
 end;
 
 function TAudioEngineOpenLib.DoPlay(Song: TSong; offset:Integer):boolean;
-Var
-  savedVolume: Integer;
-  err : integer;
-  Fchannels, Fencoding:Integer;
 begin
   // create new media
   if Not FileExists(Song.FullName) then
@@ -290,52 +239,33 @@ begin
 
   if Assigned(DecodingThread) then
      begin
-       DecodingThread.Terminate;
-       FreeAndNil(DecodingThread);
+       fState:=ENGINE_STOP;
+       DecodingThread.WaitFor;
      end;
-  pa_OutInfo.device:= fdevice;
-  StreamHandle := sf_open(Song.FullName, SFM_READ, sfInfo);
-  if StreamHandle = nil then
-    begin
-      CurrentSoundDecoder:= csdMPG123;
-      err :=0;
-      StreamHandle:= mpg123_new(nil,err);
-      mpg123_open(StreamHandle, pChar(Song.FullName));
-      mpg123_getformat(StreamHandle, Frate, Fchannels, Fencoding);
-      mpg123_format_none(StreamHandle);
-      mpg123_format(StreamHandle, Frate, Fchannels, Fencoding);
-      mpg123_seek_frame(StreamHandle, 0, SEEK_SET);
-      pa_OutInfo.channelCount:=Fchannels;
-    end
-  else
-    begin
-      CurrentSoundDecoder:= csdSndFile;
-      frate:= sfInfo.samplerate;
-      pa_OutInfo.channelCount:= sfInfo.channels;
-      sf_seek(StreamHandle, 0, SEEK_SET);
-    end;
 
-  pa_OutInfo.channelCount:=2;
-  pa_OutInfo.sampleFormat:=paInt16;
-  pa_OutInfo.hostApiSpecificStreamInfo:=nil;
-  pa_OutInfo.suggestedLatency:=Pa_GetDeviceInfo(fdevice)^.defaultHighOutputLatency * 1;
+  Decoder := IdentifyDecoder(Song.FullName).Create as IOL_Decoder;
+  Decoder.Load();
+  Decoder.StreamFormat := StreamFormat;
+  Decoder.Initialize;
+  Decoder.OpenFile(Song.FullName);
+  Filter := nil;
+  Renderer := TOL_RendererPortaudio.Create;
+  Renderer.Load();
+  Renderer.StreamFormat := StreamFormat;
+  Renderer.Initialize;
 
-  Pa_OpenStream(@Stream_out,
-                nil,
-                @pa_OutInfo,
-                fRate,
-                0,
-                paClipOff, nil,self);
+  DecodingThread := TDecodingThread.Create(true, self);
 
-  DecodingThread := TDecodingThread.Create(False, self);
-
+//  WriteLn('LOAD Song:',Song.FullName);
   fState:= ENGINE_PLAY;
-  DecodingThread.Start;
   RTLeventSetEvent(DecodingThread.evPause);
 
-  savedVolume := 100;
+  FsavedVolume := 100;
   if offset <> 0 then
     Seek(offset, true);
+  DecodingThread.Start;
+
+
 end;
 
 procedure TAudioEngineOpenLib.SetMuted(const AValue: boolean);
@@ -370,29 +300,12 @@ class function TAudioEngineOpenLib.IsAvalaible(ConfigParam: TStrings): boolean;
 begin
   Result := false;
   try
-    {$IFDEF LINUX}
-    Result :=   Pa_Load('libportaudio.so.2') and
-                sf_Load('libsndfile.so.1')  and
-                Mp_Load('libmpg123.so.0');
-    {$ENDIF LINUX}
-    {$IFDEF DARWIN}
-    Result :=   Pa_Load('LibPortaudio-32.dylib') and
-                sf_Load('LibSndFile-32.dylib') and
-                Mp_Load('LibMpg123-32.dylib');
-    {$ENDIF DARWIN}
-    {$IFDEF WINDOWS}
-    Result :=   Pa_Load('LibPortaudio-32.dll') and
-                sf_Load('LibSndFile-32.dll') and
-                Mp_Load('LibMpg123-32.dll');
-    {$ENDIF DARWIN}
 
+    Result :=   True;
   except
   end;
 
   try
-     Pa_Unload();
-     sf_Unload();
-     Mp_Unload();
   except
   end;
 end;
@@ -431,9 +344,10 @@ end;
 
 procedure TAudioEngineOpenLib.Stop;
 begin
-  DecodingThread.Terminate;
-  DecodingThread.WaitFor;
-  FreeAndNil(DecodingThread);
+  fState:=ENGINE_STOP;
+//  DecodingThread.Terminate;
+//  DecodingThread.WaitFor;
+// FreeAndNil(DecodingThread);
 end;
 
 procedure TAudioEngineOpenLib.UnPause;
