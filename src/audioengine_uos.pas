@@ -76,16 +76,21 @@ implementation
 uses Math, lazutf8, lazfileutils;
 Const
    UOSMAXVOLUME = 1;
-   SOUNDTOUCHLIB= '';
 {$IFDEF LINUX}
-   PORTAUDIOLIB = 'libportaudio.so.2';
-   SNDFILELIB   = 'libsndfile.so.1';
-   MPG123LIB    = 'libmpg123.so.0';
+   PORTAUDIOLIB = 'system';
+   SNDFILELIB   = 'system';
+   MPG123LIB    = 'system';
+   MP4FFLIB     = 'system';
+   FAADLIB      = 'system';
+   OPUSFILELIB  = 'system';
 {$ENDIF LINUX}
 {$IFDEF WINDOWS}
    PORTAUDIOLIB = 'libportaudio-32.dll';
    SNDFILELIB   = 'libsndfile-32.dll';
    MPG123LIB    = 'libmpg123-32.dll';
+   MP4FFLIB     = 'LibMp4ff-32.dll';
+   FAADLIB      = 'LibFaad2-32.dll';
+   OPUSFILELIB  = 'LibOpusFile-32.dll';
 {$ENDIF LINUX}
 {$IFDEF DARWIN}
    PORTAUDIOLIB = 'LibPortaudio.dylib';
@@ -105,7 +110,7 @@ begin
 
  fVolume := AValue * (UOSMAXVOLUME / 255);
  if (fState in [ENGINE_PLAY,ENGINE_PAUSE]) then
-    UOS_Player.SetDSPVolumeIn(fStreamIndex,fDSPVol,fVolume,fVolume, true);
+    UOS_Player.InputSetDSPVolume(fStreamIndex,fDSPVol,fVolume,fVolume, true);
 
 end;
 
@@ -124,7 +129,7 @@ end;
 
 procedure TAudioEngineUOS.SetSongPos(const AValue: integer);
 begin
-  UOS_Player.SeekSeconds(fStreamIndex, AValue /1000);
+  UOS_Player.InputSeekSeconds(fStreamIndex, AValue /1000);
 end;
 
 procedure TAudioEngineUOS.Activate;
@@ -146,7 +151,9 @@ begin
   Result := uos_loadlib(PORTAUDIOLIB,
                        SNDFILELIB,
                        MPG123LIB,
-                       SOUNDTOUCHLIB)=0;
+                       MP4FFLIB,
+                       FAADLIB,
+                       OPUSFILELIB)=0;
 
   UOS_Player := nil;
 
@@ -194,22 +201,27 @@ begin
   if Assigned(UOS_Player) then
      begin
        if fState = ENGINE_PLAY then
-       Stop;
+          begin
+            Stop;
+            UOS_Player.FreePlayer();
+          end;
+
      end;
 
-  UOS_Player := TUOS_Player.Create(True);
-  UOS_Player.Priority := tpHighest;
-  UOS_Player.AddIntoDevOut(-1, -1, -1, -1, -1, -1);
-
+  UOS_Player := TUOS_Player.Create();
+//  UOS_Player.Priority := tpHighest;
 
   fStreamIndex:= UOS_Player.AddFromFile(pchar(UTF8ToSys(Song.FullName)), -1, -1, -1);
   if fStreamIndex < 0 then
      exit;
+  UOS_Player.AddIntoDevOut(-1, -1, UOS_Player.StreamIn[fStreamIndex].Data.SampleRate,
+                                   UOS_Player.StreamIn[fStreamIndex].Data.Channels,
+                                   2, -1, -1);
   UOS_Player.InputSetPositionEnable(fStreamIndex, 1);
   UOS_Player.EndProc:=@EndSong;
 
-  fDSPVol := UOS_Player.AddDSPVolumeIn(fStreamIndex, 1, 1);
-  UOS_Player.SetDSPVolumeIn(fStreamIndex,fDSPVol,fVolume,fVolume, true);
+  fDSPVol := UOS_Player.InputAddDSPVolume(fStreamIndex, 1, 1);
+  UOS_Player.InputSetDSPVolume(fStreamIndex,fDSPVol,fVolume,fVolume, true);
 
   UOS_Player.Play;
 
@@ -274,7 +286,9 @@ begin
      Result := uos_loadlib(PORTAUDIOLIB,
                           SNDFILELIB,
                           MPG123LIB,
-                          SOUNDTOUCHLIB)=0;
+                          MP4FFLIB,
+                          FAADLIB,
+                          OPUSFILELIB)=0;
   except
   end;
   try
@@ -316,7 +330,7 @@ begin
   if Assigned(UOS_Player) then
     begin
       UOS_Player.Stop;
-      UOS_Player.WaitFor;
+    //  UOS_Player.WaitFor;
       UOS_Player := nil;
 
     end;
