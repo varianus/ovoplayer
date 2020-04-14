@@ -97,6 +97,8 @@ Resourcestring
 
   rUnsupportedEngine = 'UNSUPPORTED AUDIO ENGINE';
 
+  rLibraryTotals = 'Library contains %0:d tracks (total time %1:s, total size %2:s)';
+
   rAddEQualizerPreset = 'Save equalizer preset';
   rNewEqualizerName = 'Name:';
   rDefaultPresetName = 'Custom';

@@ -26,7 +26,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls,
   ExtCtrls, StdCtrls, Buttons, ButtonPanel, ColorBox, Menus, Spin, EditBtn,
-  GUIBackEnd, uOSD, AudioEngine, LazLoggerBase, ValEdit, BaseTypes, AppConsts, Grids;
+  GUIBackEnd, uOSD, AudioEngine, LazLoggerBase, ValEdit, BaseTypes, AppConsts, MediaLibrary, Grids;
 
 type
     { TfConfig }
@@ -58,6 +58,7 @@ type
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
+    lbTotals: TLabel;
     lbWarning: TLabel;
     lbMLPath: TListBox;
     lbRestart: TLabel;
@@ -437,8 +438,14 @@ begin
 end;
 
 procedure TfConfig.tsMediaLibraryShow(Sender: TObject);
+var
+  LibraryInfo: RFilterInfo;
 begin
   sbLibrary.Down:=true;
+  LibraryInfo := BackEnd.mediaLibrary.FilterInfo(EmptyStr);
+  lbTotals.Caption := Format(rLibraryTotals,[LibraryInfo.Count,
+                                             FormatDateTime('[hh]:mm:ss', LibraryInfo.TotalTime / MSecsPerDay,[fdoInterval]),
+                                             FormatByteString(LibraryInfo.TotalSize)]);
 end;
 
 procedure TfConfig.tsNetRemoteShow(Sender: TObject);
