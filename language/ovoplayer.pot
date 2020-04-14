@@ -57,6 +57,11 @@ msgstr ""
 msgid "Failed:"
 msgstr ""
 
+#: appconsts.rlibrarytotals
+#, object-pascal-format
+msgid "Library contains %0:d tracks (total time %1:s, total size %2:s)"
+msgstr ""
+
 #: appconsts.rlowportwarning
 msgid ""
 "ATTENTION! Setting a port number lower than 1024 may require\n"
