@@ -69,6 +69,11 @@ msgstr "<nessuno>"
 msgid "Failed:"
 msgstr "Fallite:"
 
+#: appconsts.rlibrarytotals
+#, object-pascal-format
+msgid "Library contains %0:d tracks (total time %1:s, total size %2:s)"
+msgstr "La Libreria contiene %0:d tracce (tempo toale %1:s, dimensione totale %2:s)"
+
 #: appconsts.rlowportwarning
 msgid ""
 "ATTENTION! Setting a port number lower than 1024 may require\n"
@@ -604,7 +609,7 @@ msgstr "Porta"
 
 #: tfconfig.lbrestart.caption
 msgid "A restart is required for this change to take effect."
-msgstr "Ãˆ richiesto un riavvio affinchÃ© questa modifica abbia effetto."
+msgstr "È richiesto un riavvio affinché questa modifica abbia effetto."
 
 #: tfconfig.rgaudioengine.caption
 msgctxt "tfconfig.rgaudioengine.caption"
@@ -1061,7 +1066,7 @@ msgstr "Benvenuto in OvoPlayer"
 
 #: tfmainform.statictext2.caption
 msgid "Add one or more songs"
-msgstr "Aggiungi una o piÃ¹ canzoni"
+msgstr "Aggiungi una o più canzoni"
 
 #: tfmainform.statictext3.caption
 msgid "Add all songs in a folder"
