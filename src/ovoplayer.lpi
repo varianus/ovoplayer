@@ -738,6 +738,7 @@ if TargetOS = &apos;linux&apos; then
       <Unit98>
         <Filename Value="import-engines\ol_decoderdummy.pas"/>
         <IsPartOfProject Value="True"/>
+        <UnitName Value="OL_DecoderDummy"/>
       </Unit98>
     </Units>
   </ProjectOptions>

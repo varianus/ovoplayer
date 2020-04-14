@@ -35,6 +35,8 @@ type
     function GetBuffer(const Frames: integer; Buffer: POLBuffer): NativeUInt;
     Property SongPos: int64 read GetSongPos write SetSongPos;
     Property StreamFormat: TOLStreamFormat read GetStreamFormat write SetStreamFormat;
+    Procedure Free;
+    procedure Close;
   end;
 
   { IOL_Renderer }
@@ -50,10 +52,12 @@ type
     procedure Stop;
     procedure Write(const Frames: integer; Buffer: POLBuffer);
     Property StreamFormat: TOLStreamFormat read GetStreamFormat write SetStreamFormat;
+    Procedure Free;
   end;
 
   IOL_Filter = interface
     procedure Apply(buffer: POLBuffer);
+    Procedure Free;
   end;
 
 

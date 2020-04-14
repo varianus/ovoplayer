@@ -29,6 +29,7 @@ type
     function Initialize: boolean;
     procedure Finalize;
     function OpenFile(FileName: TfileName): boolean;
+    procedure Close;
     function GetBuffer(const Frames: integer; Buffer: POLBuffer): NativeUInt;
   end;
 
@@ -95,6 +96,11 @@ begin
   if not Check(sf_seek(StreamHandle, 0, SEEK_SET)) then
     exit;
   Result := True;
+end;
+
+procedure TOL_DecoderSndFile.Close;
+begin
+  sf_close(StreamHandle);
 end;
 
 function TOL_DecoderSndFile.GetBuffer(const Frames: integer; Buffer: POLBuffer): NativeUInt;

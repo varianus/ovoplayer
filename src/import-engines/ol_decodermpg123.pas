@@ -43,10 +43,12 @@ type
     procedure SetStreamFormat(AValue: TOLStreamFormat);
   public
     function Load(LibraryName: string = ''): boolean;
+
     procedure UnLoad;
     function Initialize: boolean;
     procedure Finalize;
     function OpenFile(FileName: TfileName): boolean;
+    procedure Close;
     function GetBuffer(const Frames: integer; Buffer: POLBuffer): NativeUInt;
   end;
 
@@ -132,6 +134,12 @@ begin
     exit;
 
   Result := True;
+end;
+
+procedure TOL_DecoderMP123.Close;
+begin
+  mpg123_close(StreamHandle);
+  mpg123_delete(StreamHandle);
 end;
 
 function TOL_DecoderMP123.GetBuffer(const Frames: integer; Buffer: POLBuffer): NativeUInt;

@@ -239,8 +239,7 @@ begin
 
   if Assigned(DecodingThread) then
      begin
-       fState:=ENGINE_STOP;
-       DecodingThread.WaitFor;
+       Stop;
      end;
 
   Decoder := IdentifyDecoder(Song.FullName).Create as IOL_Decoder;
@@ -345,9 +344,23 @@ end;
 procedure TAudioEngineOpenLib.Stop;
 begin
   fState:=ENGINE_STOP;
-//  DecodingThread.Terminate;
-//  DecodingThread.WaitFor;
-// FreeAndNil(DecodingThread);
+  DecodingThread.WaitFor;
+  if Assigned(Decoder) then
+    begin
+       Decoder.Close;
+       Decoder.Free;
+       Decoder:= nil;
+    end;
+  if Assigned(Filter) then
+    begin
+       Filter.Free;
+       Filter:= nil;
+    end;
+  if Assigned(Renderer) then
+    begin
+       Renderer.Free;
+       Renderer:= nil;
+    end;
 end;
 
 procedure TAudioEngineOpenLib.UnPause;

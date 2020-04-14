@@ -23,6 +23,7 @@ type
     function Initialize: boolean;
     procedure Finalize;
     function OpenFile(FileName: TfileName): boolean;
+    procedure Close;
     function GetBuffer(const Frames: integer; Buffer: POLBuffer): NativeUInt;
   end;
 
@@ -74,6 +75,11 @@ function TOL_DecoderDummy.OpenFile(FileName: TfileName): boolean;
 begin
 
   Result := False;
+
+end;
+
+procedure TOL_DecoderDummy.Close;
+begin
 
 end;
 
