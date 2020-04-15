@@ -25,7 +25,7 @@ interface
 
 uses
   Classes, SysUtils, decoupler, Process, Song,
-  AudioEngine, basetypes, OL_Classes;
+  AudioEngine, basetypes, OL_Classes, OL_FilterVolume;
 
 type
 
@@ -40,12 +40,12 @@ type
     DecodingThread: TDecodingThread;
     fMuted: boolean;
     fSavedVolume: integer;
-    fVolume: single;
+    fVolume: Integer;
     procedure Cleanup;
   protected
     Decoder: IOL_Decoder;
     Renderer: IOL_Renderer;
-    Filter: IOL_Filter;
+    FilterVolume: IOL_FilterVolume;
     function GetMainVolume: integer; override;
     procedure SetMainVolume(const AValue: integer); override;
     function GetMaxVolume: integer; override;
@@ -117,8 +117,8 @@ begin
     wantframes := Length(buffer) div (SizeOf(TFrame) * fPlayer.StreamFormat.Channels);
 
     OutFrames := fPlayer.Decoder.GetBuffer(wantframes, @buffer);
-    if Assigned(fPlayer.Filter) then
-      fPlayer.Filter.Apply(@Buffer);
+    if Assigned(fPlayer.FilterVolume) then
+      fPlayer.FilterVolume.Apply(OutFrames, @Buffer);
     fPlayer.Renderer.Write(OutFrames, @buffer);
     if OutFrames < wantframes then
       fPlayer.fState := ENGINE_SONG_END;
@@ -159,16 +159,14 @@ end;
 
 function TAudioEngineOpenLib.GetMainVolume: integer;
 begin
-  Result := trunc(fVolume * 100);
+  Result := trunc(fVolume);
 end;
 
 procedure TAudioEngineOpenLib.SetMainVolume(const AValue: integer);
 begin
-  fVolume := AValue / 100;
-  //case CurrentSoundDecoder of
-  //  csdMPG123 : mpg123_volume(StreamHandle, fVolume);
-  //end;
-
+  fVolume := AValue;
+  if Assigned(FilterVolume) then
+    FilterVolume.Volume := fVolume;
 end;
 
 function TAudioEngineOpenLib.GetMaxVolume: integer;
@@ -250,7 +248,9 @@ begin
   Decoder.StreamFormat := StreamFormat;
   Decoder.Initialize;
   Decoder.OpenFile(Song.FullName);
-  Filter := nil;
+  FilterVolume := TOL_FilterVolume.Create;
+  FilterVolume.Volume := fVolume;
+  FilterVolume.StreamFormat := StreamFormat;
   Renderer := TOL_RendererPortaudio.Create;
   Renderer.Load();
   Renderer.StreamFormat := StreamFormat;
@@ -359,10 +359,10 @@ begin
     Decoder.Free;
     Decoder := nil;
   end;
-  if Assigned(Filter) then
+  if Assigned(FilterVolume) then
   begin
-    Filter.Free;
-    Filter := nil;
+    FilterVolume.Free;
+    FilterVolume := nil;
   end;
   if Assigned(Renderer) then
   begin

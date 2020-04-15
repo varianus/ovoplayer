@@ -57,7 +57,7 @@ uses
   {$IFDEF DSHOW} mediadshow, audioengine_dshow,{$ENDIF}
   {$IFDEF MEDIAFOUNDATION} mediafoundation, audioengine_mf,{$ENDIF}
   {$IF defined(OPENSOURCELIB) OR defined(UOS)}  uos_libsndfile, uos_mpg123, uos_portaudio,{$ENDIF}
-  {$IFDEF OPENSOURCELIB}audioengine_OpenLib, OL_Classes,OL_RendererPortAudio,OL_DecoderDummy,OL_DecoderMPG123,OL_DecoderSndFile,{$ENDIF}
+  {$IFDEF OPENSOURCELIB}audioengine_OpenLib, OL_Classes,OL_RendererPortAudio,OL_DecoderDummy,OL_DecoderMPG123,OL_DecoderSndFile,OL_FilterVolume,{$ENDIF}
   {$IFDEF UOS} UOS,audioengine_UOS,{$ENDIF}
   {$IFDEF FFMPEG} ffmpeg, audioengine_FFMPEG,{$ENDIF}
   {$IFDEF LIBMPV} libmpv, audioengine_libmpv,{$ENDIF}

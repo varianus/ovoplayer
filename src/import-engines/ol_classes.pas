@@ -8,7 +8,7 @@ uses
   Classes, SysUtils;
 
 type
-  TFrame = word;
+  TFrame = smallint;
   TOLBuffer = array[0..$ffff] of TFrame;
   POLBuffer = ^TOLBuffer;
 
@@ -56,8 +56,19 @@ type
   end;
 
   IOL_Filter = interface
-    procedure Apply(buffer: POLBuffer);
+    procedure Apply(const Frames: integer; buffer: POLBuffer );
     Procedure Free;
+  end;
+
+  { IOL_FilterVolume }
+
+  IOL_FilterVolume = interface(IOL_Filter)
+    function GetStreamFormat: TOLStreamFormat;
+    function GetVolume: Integer;
+    procedure SetStreamFormat(AValue: TOLStreamFormat);
+    procedure SetVolume(AValue: Integer);
+    Property Volume: Integer read GetVolume write SetVolume;
+    Property StreamFormat: TOLStreamFormat read GetStreamFormat write SetStreamFormat;
   end;
 
 

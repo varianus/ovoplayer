@@ -253,7 +253,7 @@ if TargetOS = &apos;linux&apos; then
         <PackageName Value="LCL"/>
       </Item6>
     </RequiredPackages>
-    <Units Count="99">
+    <Units Count="100">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -740,6 +740,11 @@ if TargetOS = &apos;linux&apos; then
         <IsPartOfProject Value="True"/>
         <UnitName Value="OL_DecoderDummy"/>
       </Unit98>
+      <Unit99>
+        <Filename Value="import-engines\ol_filtervolume.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="OL_FilterVolume"/>
+      </Unit99>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
