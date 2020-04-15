@@ -110,10 +110,11 @@ begin
   fplayer.Renderer.Start;
   repeat
     RTLeventWaitFor(evPause);
-    if Terminated then
+    if Terminated or (fPlayer.fState in [ENGINE_STOP, ENGINE_SONG_END]) then
       Break;
 
     RTLeventSetEvent(evPause);
+
     wantframes := Length(buffer) div (SizeOf(TFrame) * fPlayer.StreamFormat.Channels);
 
     OutFrames := fPlayer.Decoder.GetBuffer(wantframes, @buffer);
@@ -241,7 +242,9 @@ begin
     exit;
 
   if Assigned(DecodingThread) then
-    Stop;
+    begin
+      Stop;
+    end;
 
   Decoder := IdentifyDecoder(Song.FullName).Create as IOL_Decoder;
   Decoder.Load();
@@ -347,7 +350,10 @@ procedure TAudioEngineOpenLib.Stop;
 begin
   fState := ENGINE_STOP;
   if Assigned(DecodingThread) then
-    DecodingThread.WaitFor;
+    begin
+      RTLeventSetEvent(DecodingThread.evPause); // unlock engine if paused
+      DecodingThread.WaitFor;
+    end;
   Cleanup;
 end;
 
