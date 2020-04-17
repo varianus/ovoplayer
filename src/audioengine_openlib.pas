@@ -139,6 +139,7 @@ end;
 procedure TDecodingThread.DoTerminate;
 begin
   inherited DoTerminate;
+  if fPlayer.DecodingThread = self then   //safety check
   fPlayer.DecodingThread := nil;
 end;
 
