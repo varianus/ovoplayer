@@ -236,9 +236,12 @@ begin
 
 end;
 
+
+
 function TAudioEngineOpenLib.DoPlay(Song: TSong; offset: integer): boolean;
 begin
   // create new media
+  Result := false;
   if not FileExists(Song.FullName) then
     exit;
 
@@ -270,7 +273,7 @@ begin
   if offset <> 0 then
     Seek(offset, True);
   DecodingThread.Start;
-
+  Result:= true;
 end;
 
 procedure TAudioEngineOpenLib.SetMuted(const AValue: boolean);
