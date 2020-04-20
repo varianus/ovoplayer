@@ -1,5 +1,5 @@
 object fConfig: TfConfig
-  Left = 562
+  Left = 563
   Height = 498
   Top = 191
   Width = 702
@@ -161,9 +161,9 @@ object fConfig: TfConfig
     Height = 442
     Top = 0
     Width = 547
-    ActivePage = tsMediaLibrary
+    ActivePage = tsEngine
     Align = alClient
-    TabIndex = 2
+    TabIndex = 1
     TabOrder = 1
     object tsInterface: TTabSheet
       Caption = 'Interfaces'
@@ -305,7 +305,7 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          408
+          425
         )
       end
       object EngineInfoView: TValueListEditor
@@ -318,12 +318,13 @@ object fConfig: TfConfig
         DefaultColWidth = 101
         DefaultRowHeight = 22
         FixedCols = 0
-        RowCount = 2
+        RowCount = 1
         TabOrder = 2
         TitleFont.Height = -12
         TitleStyle = tsNative
-        OnButtonClick = EngineParamsEditorButtonClick
-        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goAlwaysShowEditor, goThumbTracking]
+        OnPrepareCanvas = EngineInfoViewPrepareCanvas
+        DisplayOptions = [doAutoColResize, doKeyColFixed]
+        Options = [goColSizing, goAlwaysShowEditor, goThumbTracking, goCellEllipsis]
         Strings.Strings = (
           ''
         )
@@ -333,7 +334,7 @@ object fConfig: TfConfig
         )
         ColWidths = (
           100
-          188
+          205
         )
       end
     end

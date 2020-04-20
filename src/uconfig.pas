@@ -94,6 +94,7 @@ type
     procedure cbNetRemoteChange(Sender: TObject);
     procedure colorBackgroundChange(Sender: TObject);
     procedure ColorFontChange(Sender: TObject);
+    procedure EngineInfoViewPrepareCanvas(sender: TObject; aCol, aRow: Integer; aState: TGridDrawState);
     procedure EngineParamsEditorButtonClick(Sender: TObject; aCol, aRow: Integer
       );
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -231,7 +232,10 @@ begin
        EngineInfoView.Clear;
        for i := 0 to Length(EngineInfo) -1 do
          begin
-           EngineInfoView.Values[EngineInfo[i].Key]:=EngineInfo[i].Value;
+       //  EngineInfoView.Values[EngineInfo[i].Key]:=EngineInfo[i].Value;
+           EngineInfoView.InsertRow(EngineInfo[i].Key,EngineInfo[i].Value, true);
+           EngineInfoView.Strings.Objects[i]:=TObject(IntPtr(ord(EngineInfo[i].Kind)));
+
          end;
      end
   else
@@ -321,6 +325,15 @@ begin
   if Assigned(Fosd) and fOSD.Visible then
     fosd.UpdateAspect;
 
+end;
+
+procedure TfConfig.EngineInfoViewPrepareCanvas(sender: TObject; aCol, aRow: Integer; aState: TGridDrawState);
+begin
+ // if ARow > 0 then
+    begin
+      if EngineParamKind(PtrInt(EngineInfoView.Strings.Objects[Arow])) = epkGroup then
+         EngineInfoView.Canvas.Font.Style := [fsBold];
+    end;
 end;
 
 procedure TfConfig.EngineParamsEditorButtonClick(Sender: TObject; aCol,

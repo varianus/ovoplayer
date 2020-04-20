@@ -6,7 +6,7 @@ interface
 
 
 uses
-  Classes, SysUtils, ctypes, OL_Classes, UOS_libsndfile;
+  Classes, SysUtils, ctypes, OL_Classes, UOS_libsndfile, GeneralFunc;
 
 type
   { TOL_DecoderSndFile }
@@ -18,11 +18,13 @@ type
     fLastError: integer;
     sfInfo: TSF_INFO;
     function Check(HR: integer): boolean; inline;
+    function GetVersion: TOLVersion;
   protected
     function GetStreamFormat: TOLStreamFormat;
     procedure SetStreamFormat(AValue: TOLStreamFormat);
     function GetSongPos: int64;
     procedure SetSongPos(AValue: int64);
+    Function Name: string;
   public
     function Load(LibraryName: string = ''): boolean;
     procedure UnLoad;
@@ -62,6 +64,11 @@ end;
 procedure TOL_DecoderSndFile.SetSongPos(AValue: int64);
 begin
   sf_seek(StreamHandle, trunc(AValue * (fStreamFormat.BitRate / 1000)), SEEK_SET);
+end;
+
+function TOL_DecoderSndFile.Name: string;
+begin
+  Result := 'LibSndFile';
 end;
 
 function TOL_DecoderSndFile.Load(LibraryName: string): boolean;
@@ -108,6 +115,20 @@ begin
   Result := sf_readf_short(StreamHandle, pcshort(Buffer), Frames);
 end;
 
+
+function TOL_DecoderSndFile.GetVersion: TOLVersion;
+var
+  BaseAddr:pointer;
+  ModuleName:string;
+begin
+  If sf_IsLoaded then
+    begin
+      GetModuleByAddr(sf_version_string, BaseAddr, ModuleName);
+      Result.LibraryName := ModuleName;
+      Result.LibraryVersion := sf_version_string();
+    end;
+end;
+
 initialization
-  RegisterDecoder('*.flac;', TOL_DecoderSndFile);
+  RegisterDecoder('*.flac;*.ogg;*.wav;*.vorbis', TOL_DecoderSndFile);
 end.

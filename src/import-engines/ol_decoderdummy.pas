@@ -12,6 +12,9 @@ type
   { TOL_DecoderDummy }
 
   TOL_DecoderDummy = class(iOL_Decoder)
+  private
+    function GetVersion: TOLVersion;
+    function Name: string;
   protected
     function GetSongPos: int64;
     procedure SetSongPos(AValue: int64);
@@ -69,6 +72,17 @@ end;
 procedure TOL_DecoderDummy.Finalize;
 begin
 
+end;
+
+function TOL_DecoderDummy.GetVersion: TOLVersion;
+begin
+  Result.LibraryName := 'Dummy Decoder';
+  Result.LibraryVersion := '';
+end;
+
+function TOL_DecoderDummy.Name: string;
+begin
+  Result := 'Dummy';
 end;
 
 function TOL_DecoderDummy.OpenFile(FileName: TfileName): boolean;

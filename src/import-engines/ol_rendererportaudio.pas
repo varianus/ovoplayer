@@ -5,7 +5,7 @@ unit OL_RendererPortAudio;
 interface
 
 uses
-  Classes, SysUtils, OL_Classes, UOS_portaudio;
+  Classes, SysUtils, OL_Classes, UOS_portaudio, GeneralFunc;
 
 type
 
@@ -22,6 +22,8 @@ type
   Protected
     function GetStreamFormat: TOLStreamFormat;
     procedure SetStreamFormat(AValue: TOLStreamFormat);
+    Function GetVersion: TOLVersion;
+    Function Name: string;
   public
     function Load(LibraryName: string = ''): boolean;
     procedure UnLoad;
@@ -52,6 +54,25 @@ end;
 procedure TOL_RendererPortaudio.SetStreamFormat(AValue: TOLStreamFormat);
 begin
   fStreamFormat := AValue;
+end;
+
+function TOL_RendererPortaudio.GetVersion: TOLVersion;
+var
+  BaseAddr:pointer;
+  ModuleName:string;
+begin
+  If pa_IsLoaded then
+    begin
+      GetModuleByAddr(Pa_Initialize, BaseAddr, ModuleName);
+      Result.LibraryName := ModuleName;
+      Result.LibraryVersion := Pa_GetVersionText();
+    end;
+
+end;
+
+function TOL_RendererPortaudio.Name: string;
+begin
+  Result := 'PortAuadio';
 end;
 
 function TOL_RendererPortaudio.Load(LibraryName: string): boolean;

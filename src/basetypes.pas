@@ -39,7 +39,7 @@ type
   TplSortDirection = (sdplAscending, sdplDiscending);
   TplRepeat = (rptNone, rptTrack, rptAlbum, rptPlayList);
 
-  EngineParamKind = (epkString, epkInteger, epkFloat, epkPath, epkFileName);
+  EngineParamKind = (epkString, epkInteger, epkFloat, epkPath, epkFileName, epkGroup);
 
   REngineParams = record
     Key : string;

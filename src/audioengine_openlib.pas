@@ -55,6 +55,7 @@ type
     function DoPlay(Song: TSong; offset: integer): boolean; override;
     procedure SetMuted(const AValue: boolean); override;
     function GetMuted: boolean; override;
+    class function GetEngineInfo(IsCurrent: boolean): AREngineParams; override;
   public
     StreamFormat: TOLStreamFormat;
     class function GetEngineName: string; override;
@@ -140,7 +141,7 @@ procedure TDecodingThread.DoTerminate;
 begin
   inherited DoTerminate;
   if fPlayer.DecodingThread = self then   //safety check
-  fPlayer.DecodingThread := nil;
+    fPlayer.DecodingThread := nil;
 end;
 
 constructor TDecodingThread.Create(CreateSuspended: boolean; Player: TAudioEngineOpenLib);
@@ -305,17 +306,65 @@ begin
 end;
 
 class function TAudioEngineOpenLib.IsAvalaible(ConfigParam: TStrings): boolean;
+var
+  Rec : RDecoder;
+  wDecoder: IOL_Decoder;
 begin
   Result := False;
   try
-
-    Result := True;
+    for rec in DecoderList do
+      begin
+        wDecoder := rec.Decoder.Create as IOL_Decoder;
+        if wDecoder.Load() then
+          begin
+           Result := true;
+           wDecoder.UnLoad;
+          end;
+        wDecoder.Free;
+      end;
   except
   end;
 
+end;
+
+class function TAudioEngineOpenLib.GetEngineInfo(IsCurrent:boolean): AREngineParams;
+var
+  BaseAddr:pointer;
+  ModuleName:string;
+  idx: integer;
+  Rec : RDecoder;
+  wDecoder: IOL_Decoder;
+  Version: TOLVersion;
+begin
+  result := inherited GetEngineInfo(IsCurrent);
+  SetLength(Result,Length(DecoderList)*3);
+  idx:=0;
   try
+    for rec in DecoderList do
+      begin
+        wDecoder := rec.Decoder.Create as IOL_Decoder;
+        if (rec.Extensions <> '') and wDecoder.Load() then
+          begin
+            inc(idx);
+            result[idx-1].Key:= wDecoder.Name;
+            result[idx-1].Kind:=epkGroup;
+            inc(idx);
+            Version := wDecoder.GetVersion;
+            result[idx-1].Key:= 'Library';
+            Result[idx-1].Value:=Version.LibraryName;
+            result[idx-1].Kind:=epkString;
+            inc(idx);
+            result[idx-1].Key:= 'Extensions';
+            Result[idx-1].Value:=rec.Extensions;
+            result[idx-1].Kind:=epkString;
+            wDecoder.UnLoad;
+          end;
+      end;
   except
   end;
+
+  SetLength(Result, idx);
+
 end;
 
 function TAudioEngineOpenLib.Initialize: boolean;

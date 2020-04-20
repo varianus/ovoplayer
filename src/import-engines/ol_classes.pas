@@ -20,44 +20,51 @@ type
     Format: TFrameFormat;
   end;
 
-  { IOL_Decoder }
+  TOLVersion = record
+    LibraryName: string;
+    LibraryVersion: string;
+  end;
 
-  IOL_Decoder = interface
-    function GetSongPos: int64;
-    procedure SetSongPos(AValue: int64);
+  { IOL_Decoder }
+  IOL_Module = interface
     function Load(LibraryName: string = ''): boolean;
-    function GetStreamFormat: TOLStreamFormat;
-    procedure SetStreamFormat(AValue: TOLStreamFormat);
-    procedure UnLoad;
     function Initialize: boolean;
     procedure Finalize;
+    procedure UnLoad;
+    Procedure Free;
+    Function GetVersion: TOLVersion;
+    Function Name: string;
+  end;
+
+  IOL_Decoder = interface(IOL_Module)
+  //property get/set
+    function GetSongPos: int64;
+    procedure SetSongPos(AValue: int64);
+    function GetStreamFormat: TOLStreamFormat;
+    procedure SetStreamFormat(AValue: TOLStreamFormat);
+  //methods
+    procedure Close;
     function OpenFile(FileName: TfileName): boolean;
     function GetBuffer(const Frames: integer; Buffer: POLBuffer): NativeUInt;
+  //property
     Property SongPos: int64 read GetSongPos write SetSongPos;
     Property StreamFormat: TOLStreamFormat read GetStreamFormat write SetStreamFormat;
-    Procedure Free;
-    procedure Close;
+
   end;
 
   { IOL_Renderer }
 
-  IOL_Renderer = interface
+  IOL_Renderer = interface(IOL_Module)
     function GetStreamFormat: TOLStreamFormat;
-    function Load(LibraryName: string = ''): boolean;
     procedure SetStreamFormat(AValue: TOLStreamFormat);
-    procedure UnLoad;
-    function Initialize: boolean;
-    procedure Finalize;
     procedure Start;
     procedure Stop;
     procedure Write(const Frames: integer; Buffer: POLBuffer);
     Property StreamFormat: TOLStreamFormat read GetStreamFormat write SetStreamFormat;
-    Procedure Free;
   end;
 
-  IOL_Filter = interface
+  IOL_Filter = interface(IOL_Module)
     procedure Apply(const Frames: integer; buffer: POLBuffer );
-    Procedure Free;
   end;
 
   { IOL_FilterVolume }
@@ -71,9 +78,16 @@ type
     Property StreamFormat: TOLStreamFormat read GetStreamFormat write SetStreamFormat;
   end;
 
+  type
+  RDecoder = record
+    Extensions: string;
+    Decoder: TClass;
+  end;
 
+ADecoderList = array of RDecoder;
 
 function SupportedExtension: string;
+function DecoderList: ADecoderList; inline;
 procedure RegisterDecoder(const Extensions: string; const Decoder: TClass);
 function IdentifyDecoder(FileName: string): TClass;
 
@@ -83,24 +97,22 @@ uses StrUtils, OL_DecoderDummy;
 
 { TOL_Player }
 
-
-type
-  RDecoder = record
-    Extensions: string;
-    Decoder: TClass;
-  end;
-
 var
-  ADecoderList: array of RDecoder;
+  fDecoderList: ADecoderList;
 
 function SupportedExtension: string;
 var
   i: integer;
 begin
   Result := '';
-  for i := Low(ADecoderList) to High(ADecoderList) do
-    Result := Result + ADecoderList[i].Extensions;
+  for i := Low(fDecoderList) to High(fDecoderList) do
+    Result := Result + fDecoderList[i].Extensions;
 
+end;
+
+function DecoderList: ADecoderList;
+begin
+  Result := fDecoderList;
 end;
 
 procedure RegisterDecoder(const Extensions: string; const Decoder: TClass);
@@ -109,8 +121,8 @@ var
 begin
   tr.Extensions := Extensions;
   tr.Decoder := Decoder;
-  SetLength(ADecoderList, Length(ADecoderList) + 1);
-  ADecoderList[High(ADecoderList)] := tr;
+  SetLength(fDecoderList, Length(fDecoderList) + 1);
+  fDecoderList[High(fDecoderList)] := tr;
 end;
 
 function IdentifyDecoder(FileName: string): TClass;
@@ -125,10 +137,10 @@ begin
 
   ext := lowercase(ExtractFileExt(Filename));
 
-  for i := Low(ADecoderList) to High(ADecoderList) do
-    if Pos(ext, ADecoderList[i].Extensions) > 0 then
+  for i := Low(fDecoderList) to High(fDecoderList) do
+    if Pos(ext, fDecoderList[i].Extensions) > 0 then
     begin
-      Result := ADecoderList[i].Decoder;
+      Result := fDecoderList[i].Decoder;
       exit;
     end;
 end;

@@ -25,7 +25,7 @@ interface
 
 
 uses
-  Classes, SysUtils, OL_Classes;
+  Classes, SysUtils, dynlibs, OL_Classes, GeneralFunc;
 
 type
   { TOL_DecoderMP123 }
@@ -41,9 +41,10 @@ type
     procedure SetSongPos(AValue: int64);
     function GetStreamFormat: TOLStreamFormat;
     procedure SetStreamFormat(AValue: TOLStreamFormat);
+    Function Name: string;
   public
     function Load(LibraryName: string = ''): boolean;
-
+    Function GetVersion: TOLVersion;
     procedure UnLoad;
     function Initialize: boolean;
     procedure Finalize;
@@ -88,10 +89,28 @@ begin
   fStreamFormat := AValue;
 end;
 
+function TOL_DecoderMP123.Name: string;
+begin
+  Result := 'MPG123';
+end;
+
 
 function TOL_DecoderMP123.Load(LibraryName: string): boolean;
 begin
   UOS_mpg123.mp_load(LibraryName);
+end;
+
+function TOL_DecoderMP123.GetVersion: TOLVersion;
+var
+  BaseAddr:pointer;
+  ModuleName:string;
+begin
+  If mp_IsLoaded then
+    begin
+      GetModuleByAddr(mpg123_new, BaseAddr, ModuleName);
+      Result.LibraryName := ModuleName;
+      Result.LibraryVersion := '';
+    end;
 end;
 
 procedure TOL_DecoderMP123.UnLoad;

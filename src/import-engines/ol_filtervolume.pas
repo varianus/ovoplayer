@@ -20,7 +20,13 @@ Type
     procedure SetVolume(AValue: Integer);
     function GetStreamFormat: TOLStreamFormat;
     procedure SetStreamFormat(AValue: TOLStreamFormat);
+    Function GetVersion: TOLVersion;
+    Function Name: string;
   Public
+    function Load(LibraryName: string = ''): boolean;
+    function Initialize: boolean;
+    procedure Finalize;
+    procedure UnLoad;
     procedure Apply(const Frames: integer; buffer: POLBuffer );
 
   end;
@@ -49,6 +55,37 @@ end;
 procedure TOL_FilterVolume.SetStreamFormat(AValue: TOLStreamFormat);
 begin
   fStreamFormat := AValue;
+end;
+
+function TOL_FilterVolume.GetVersion: TOLVersion;
+begin
+  Result.LibraryName := '';
+  Result.LibraryVersion := '';
+end;
+
+function TOL_FilterVolume.Name: string;
+begin
+  Result := 'Volume Control';
+end;
+
+function TOL_FilterVolume.Load(LibraryName: string): boolean;
+begin
+  Result := true;
+end;
+
+function TOL_FilterVolume.Initialize: boolean;
+begin
+ Result:= true;
+end;
+
+procedure TOL_FilterVolume.Finalize;
+begin
+
+end;
+
+procedure TOL_FilterVolume.UnLoad;
+begin
+
 end;
 
 procedure TOL_FilterVolume.Apply(const Frames: integer; buffer: POLBuffer );
