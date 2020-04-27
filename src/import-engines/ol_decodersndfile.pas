@@ -32,7 +32,7 @@ type
     procedure Finalize;
     function OpenFile(FileName: TfileName): boolean;
     procedure Close;
-    function GetBuffer(const Frames: integer; Buffer: POLBuffer): NativeUInt;
+    function GetBuffer(const Frames: integer; const Buffer: POLBuffer): NativeUInt;
   end;
 
 implementation
@@ -110,7 +110,7 @@ begin
   sf_close(StreamHandle);
 end;
 
-function TOL_DecoderSndFile.GetBuffer(const Frames: integer; Buffer: POLBuffer): NativeUInt;
+function TOL_DecoderSndFile.GetBuffer(const Frames: integer; const Buffer: POLBuffer): NativeUInt;
 begin
   Result := sf_readf_short(StreamHandle, pcshort(Buffer), Frames);
 end;

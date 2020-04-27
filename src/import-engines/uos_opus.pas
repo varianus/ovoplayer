@@ -282,7 +282,7 @@ begin
  result:=true {is it already there ?}
 end  else 
 begin {go & load the library}
-    if Length(libfilename) = 0 then exit;
+    if Length(libfilename) = 0 then
     op_Handle:=DynLibs.SafeLoadLibrary(libfilename); // obtain the handle we want
   	if op_Handle <> DynLibs.NilHandle then
 begin {now we tie the functions to the VARs from above}

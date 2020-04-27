@@ -27,7 +27,7 @@ type
     procedure Finalize;
     function OpenFile(FileName: TfileName): boolean;
     procedure Close;
-    function GetBuffer(const Frames: integer; Buffer: POLBuffer): NativeUInt;
+    function GetBuffer(const Frames: integer; const Buffer: POLBuffer): NativeUInt;
   end;
 
 implementation
@@ -97,7 +97,7 @@ begin
 
 end;
 
-function TOL_DecoderDummy.GetBuffer(const Frames: integer; Buffer: POLBuffer): NativeUInt;
+function TOL_DecoderDummy.GetBuffer(const Frames: integer; const Buffer: POLBuffer): NativeUInt;
 begin
   Result := 0;
 end;

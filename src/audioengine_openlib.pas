@@ -24,7 +24,7 @@ unit AudioEngine_OpenLib;
 interface
 
 uses
-  Classes, SysUtils, decoupler, Process, Song,
+  Classes, SysUtils, decoupler, Song,
   AudioEngine, basetypes, OL_Classes, OL_FilterVolume;
 
 type
@@ -103,10 +103,9 @@ procedure TDecodingThread.Execute;
 var
   buffer: TOLBuffer;
   OutFrames: integer;
-  err: hresult;
   wantframes: integer;
-  i: integer;
-
+Const
+   NUMFRAMES = 16384;
 begin
   fplayer.Renderer.Start;
   repeat
@@ -115,14 +114,17 @@ begin
       Break;
 
     RTLeventSetEvent(evPause);
+    Buffer := nil;
+    SetLength(buffer, NUMFRAMES * SizeOf(TFrame) * fPlayer.StreamFormat.Channels);
 
-    wantframes := Length(buffer) div (SizeOf(TFrame) * fPlayer.StreamFormat.Channels);
+    wantframes := NUMFRAMES;
 
-    OutFrames := fPlayer.Decoder.GetBuffer(wantframes, @buffer);
+    OutFrames := fPlayer.Decoder.GetBuffer(wantframes, @buffer[0]);
     if Assigned(fPlayer.FilterVolume) then
-      fPlayer.FilterVolume.Apply(OutFrames, @Buffer);
-    fPlayer.Renderer.Write(OutFrames, @buffer);
-    if OutFrames < wantframes then
+       fPlayer.FilterVolume.Apply(OutFrames, @Buffer);
+
+    fPlayer.Renderer.Write(OutFrames, @buffer[0]);
+    if OutFrames < 1 then
       fPlayer.fState := ENGINE_SONG_END;
 
 
@@ -256,12 +258,13 @@ begin
   Decoder.StreamFormat := StreamFormat;
   Decoder.Initialize;
   Decoder.OpenFile(Song.FullName);
+  FilterVolume := nil;
   FilterVolume := TOL_FilterVolume.Create;
   FilterVolume.Volume := fVolume;
-  FilterVolume.StreamFormat := StreamFormat;
+  FilterVolume.StreamFormat := Decoder.StreamFormat;
   Renderer := TOL_RendererPortaudio.Create;
   Renderer.Load();
-  Renderer.StreamFormat := StreamFormat;
+  Renderer.StreamFormat :=Decoder.StreamFormat;
   Renderer.Initialize;
 
   DecodingThread := TDecodingThread.Create(True, self);

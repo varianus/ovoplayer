@@ -29,7 +29,7 @@ libop=
 'libopusfile.so.0';
   {$ENDIF}    
    {$ELSE}
- 'opusfile.dll';
+ 'LibOpusFile-32.dll';
   {$ENDIF}  
 
 // Error Codes
@@ -248,7 +248,7 @@ var
  op_set_gain_offset: function(OpusFile: TOpusFile; gain_type: cint; gain_offset_q8: cint): cint;cdecl;
  op_set_dither_enabled: procedure(OpusFile: TOpusFile; enabled: cint);cdecl;
  
- op_read: function(OpusFile: TOpusFile; pcm : pcint; SampleCount: cint; li: pcint): cint;cdecl;
+ op_read: function(OpusFile: TOpusFile; pcm : pointer; SampleCount: cint; li: pcint): cint;cdecl;
  op_read_float: function(OpusFile: TOpusFile; pcm : pcfloat; SampleCount: cint; li: pcint): cint;cdecl;
  op_read_stereo: function(OpusFile: TOpusFile; pcm : pcint; SampleCount: cint): cint;cdecl;
  op_read_float_stereo: function(OpusFile: TOpusFile; pcm : pcfloat; SampleCount: cint): cint;cdecl;
@@ -305,6 +305,8 @@ begin
 end;
 
 Function of_Load (const libfilename:string) :boolean;
+var
+ TheLib: string;
 begin
   Result := False;
   if of_Handle<>0 then 
@@ -385,6 +387,7 @@ Pointer(op_current_link):=DynLibs.GetProcedureAddress(OF_Handle,PChar('op_curren
 Pointer(op_bitrate):=DynLibs.GetProcedureAddress(OF_Handle,PChar('op_bitrate'));
 Pointer(op_bitrate_instant):=DynLibs.GetProcedureAddress(OF_Handle,PChar('op_bitrate_instant'));
 Pointer(op_raw_tell):=DynLibs.GetProcedureAddress(OF_Handle,PChar('op_raw_tell'));
+Pointer(op_pcm_tell):=DynLibs.GetProcedureAddress(OF_Handle,PChar('op_pcm_tell'));
 Pointer(op_raw_seek):=DynLibs.GetProcedureAddress(OF_Handle,PChar('op_raw_seek'));
 Pointer(op_pcm_seek):=DynLibs.GetProcedureAddress(OF_Handle,PChar('op_pcm_seek'));
 Pointer(op_set_gain_offset):=DynLibs.GetProcedureAddress(OF_Handle,PChar('op_set_gain_offset'));

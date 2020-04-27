@@ -9,7 +9,7 @@ uses
 
 type
   TFrame = smallint;
-  TOLBuffer = array[0..$ffff] of TFrame;
+  TOLBuffer = array of TFrame;
   POLBuffer = ^TOLBuffer;
 
   TFrameFormat = (ffNone, ffInt16, ffInt32, ffFloat32);
@@ -45,7 +45,7 @@ type
   //methods
     procedure Close;
     function OpenFile(FileName: TfileName): boolean;
-    function GetBuffer(const Frames: integer; Buffer: POLBuffer): NativeUInt;
+    function GetBuffer(const Frames: integer; const Buffer: POLBuffer): NativeUInt;
   //property
     Property SongPos: int64 read GetSongPos write SetSongPos;
     Property StreamFormat: TOLStreamFormat read GetStreamFormat write SetStreamFormat;

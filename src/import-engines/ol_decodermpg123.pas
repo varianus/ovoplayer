@@ -50,7 +50,7 @@ type
     procedure Finalize;
     function OpenFile(FileName: TfileName): boolean;
     procedure Close;
-    function GetBuffer(const Frames: integer; Buffer: POLBuffer): NativeUInt;
+    function GetBuffer(const Frames: integer; const Buffer: POLBuffer): NativeUInt;
   end;
 
 implementation
@@ -130,6 +130,8 @@ begin
 end;
 
 function TOL_DecoderMP123.OpenFile(FileName: TfileName): boolean;
+var
+  Sf: longint;
 begin
 
   Result := False;
@@ -140,13 +142,23 @@ begin
   if not Check(mpg123_open(StreamHandle, PChar(FileName))) then
     exit;
 
-  if not Check(mpg123_getformat(StreamHandle, fStreamFormat.BitRate, fStreamFormat.Channels, Longint(fStreamFormat.Format))) then
+  if not Check(mpg123_getformat(StreamHandle, fStreamFormat.BitRate, fStreamFormat.Channels, sf)) then
     exit;
 
   if not Check(mpg123_format_none(StreamHandle)) then
     exit;
 
-  if not Check(mpg123_format(StreamHandle, fStreamFormat.BitRate, fStreamFormat.Channels, Longint(fStreamFormat.Format))) then
+  case sf of
+    MPG123_ENC_SIGNED_16: fStreamFormat.Format := ffInt16;
+    MPG123_ENC_SIGNED_32: fStreamFormat.Format := ffInt32;
+    MPG123_ENC_FLOAT_32: fStreamFormat.Format := ffFloat32;
+  else
+    begin
+      fStreamFormat.Format := ffInt16;
+      Sf := MPG123_ENC_SIGNED_16;
+    end;
+  end;
+  if not Check(mpg123_format(StreamHandle, fStreamFormat.BitRate, fStreamFormat.Channels, sf)) then
     exit;
 
   if not Check(mpg123_seek_frame(StreamHandle, 0, 0{SEEK_SET})) then
@@ -161,13 +173,12 @@ begin
   mpg123_delete(StreamHandle);
 end;
 
-function TOL_DecoderMP123.GetBuffer(const Frames: integer; Buffer: POLBuffer): NativeUInt;
+function TOL_DecoderMP123.GetBuffer(const Frames: integer; const Buffer: POLBuffer): NativeUInt;
 begin
   if Check(mpg123_read(StreamHandle, Buffer, Frames * SizeOf(TFrame) * fStreamFormat.Channels, Result)) then
     Result := Result div (SizeOf(TFrame) * fStreamFormat.Channels)
   else
     Result := 0;
-//  WriteLn('Read want:',Frames,'  result:',result, 'Last Error:', fLastError);
 end;
 
 initialization
