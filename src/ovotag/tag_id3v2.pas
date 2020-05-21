@@ -306,13 +306,13 @@ begin
     Dec(wDatasize, 2);
   end;
 
-  if encoding = 0 then
-    begin
+  if (encoding = 0) or (encoding = 3) then  //ISO-8859-1 or UTF-8
+  begin
       image.Description := pAnsiChar(wData);
       Inc(wData, Length(image.Description) + 1 );
       Dec(wDataSize, Length(image.Description) + 1 );
     end
-  else
+  else  // UTF-16
     begin
       image.Description := pWideChar(wData);
       Inc(wData, Length(image.Description) *2  + 2);
