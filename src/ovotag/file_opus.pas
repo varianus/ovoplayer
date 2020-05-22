@@ -162,7 +162,7 @@ function TOpusReader.GetDuration: int64;
 begin
   if  (FSampleRate > 0) and  (FSamples > 0)  then
   begin
-    Result := trunc((FSamples / FSampleRate) * 1000);
+    Result := trunc((FSamples / 48 {FSampleRate}) {* 1000});
   end
   else
   if (FBitRate > 0) and (FChannelModeID > 0) then
