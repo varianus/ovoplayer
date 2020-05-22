@@ -76,7 +76,7 @@ begin
     Result := trunc((FFileSize - SizeOf(header)) / header.BytesPerSecond) * 1000;
 
   if (header.SampleNumber > 0) and (header.SampleRate > 0) then
-    Result := trunc(header.SampleNumber / header.SampleRate) *1000;
+    Result := trunc(header.SampleNumber / (header.SampleRate * header.ChannelNumber)) *1000;
 
 end;
 
