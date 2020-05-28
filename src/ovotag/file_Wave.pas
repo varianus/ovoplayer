@@ -26,25 +26,28 @@ uses
   Classes, SysUtils, AudioTag, baseTag, tag_Dummy;
 
 const
-  WaveFileMask: string    = '*.wav;';
+  WaveFileMask: string = '*.wav;';
 
 type
   WAVHeader = record
     { RIFF file header }
-    RIFFHeader:    array [1..4] of char;   { Must be "RIFF" }
-    FileSize:      integer;                { Must be "RealFileSize - 8" }
-    WAVEHeader:    array [1..4] of char;   { Must be "WAVE" }
-    { Format information }
-    FormatHeader:  array [1..4] of char;   { Must be "fmt " }
-    FormatSize:    cardinal;               { Format size }
-    FormatID:      word;                   { Format type code }
+    RIFFHeader: array [1..4] of char;   { Must be "RIFF" }
+    FileSize: integer;                { Must be "RealFileSize - 8" }
+    WAVEHeader: array [1..4] of char;   { Must be "WAVE" }
+  end;
+
+  ChunkHeader = record  { Format information }
+    ChunkName: array [1..4] of char;
+    ChunkSize: cardinal;               { Format size }
+  end;
+
+  FmtHeader = record
+    FormatID: word;                   { Format type code }
     ChannelNumber: word;                   { Number of channels }
-    SampleRate:    integer;                { Sample rate (hz) }
+    SampleRate: integer;                { Sample rate (hz) }
     BytesPerSecond: integer;               { Bytes/second }
-    BlockAlign:    word;                   { Block alignment }
+    BlockAlign: word;                   { Block alignment }
     BitsPerSample: word;                   { Bits/sample }
-    DataHeader:    array [1..4] of char;   { Can be "data" }
-    SampleNumber:  cardinal;               { Number of samples (optional) }
   end;
 
   { TWaveReader }
@@ -53,30 +56,34 @@ type
   private
     fTags: TDummyTags;
     fMediaProperty: TMediaProperty;
-    header: WAVHeader;
     fFileSize: int64;
+    fmt: FmtHeader;
+    DataPos: int64;
+    SampleNumber: cardinal;
   protected
     function GetDuration: int64; override;
     function GetTags: TTags; override;
-    Function DumpInfo: TMediaProperty; override;
+    function DumpInfo: TMediaProperty; override;
   public
     function LoadFromFile(AFileName: Tfilename): boolean; override;
     function SaveToFile(AFileName: Tfilename): boolean; override;
   end;
 
 implementation
+
 uses
   CommonFunctions;
+
 { TWaveReader }
 
 function TWaveReader.GetDuration: int64;
 begin
-  result := 0;
-  if (header.SampleNumber = 0) and (header.BytesPerSecond > 0) then
-    Result := trunc((FFileSize - SizeOf(header)) / header.BytesPerSecond) * 1000;
+  Result := 0;
+  if (SampleNumber = 0) and (fmt.BytesPerSecond > 0) then
+    Result := trunc((ffilesize - DataPos) / fmt.BytesPerSecond) * 1000;
 
-  if (header.SampleNumber > 0) and (header.SampleRate > 0) then
-    Result := trunc(header.SampleNumber / (header.SampleRate * header.ChannelNumber)) *1000;
+  if (SampleNumber > 0) and (fmt.SampleRate > 0) then
+    Result := trunc(SampleNumber / (fmt.SampleRate * fmt.ChannelNumber * (fmt.BitsPerSample / 8))) * 1000;
 
 end;
 
@@ -98,48 +105,74 @@ begin
     Result := False;
   if WAVData.WAVEHeader <> 'WAVE' then
     Result := False;
-  if WAVData.FormatHeader <> 'fmt ' then
-    Result := False;
-  if WAVData.ChannelNumber = 0 then
-    Result := False;
 end;
 
 
 function TWaveReader.LoadFromFile(AFileName: Tfilename): boolean;
 var
   fStream: TFileStream;
+  WaveH: WAVHeader;
+  Found: boolean;
+  Chunk: ChunkHeader;
+
+  function FindChunk(aChunk: string): boolean;
+  begin
+    Result := False;
+    repeat
+      // read next chunk
+      fStream.Read(Chunk.ChunkName, SizeOf(Chunk.ChunkName));
+
+      if Chunk.ChunkName <> aChunk then
+        begin
+          fStream.Read(Chunk.ChunkSize, SizeOf(Chunk.ChunkSize));
+          fStream.Seek(Chunk.ChunkSize, soCurrent);
+        end
+      else
+        Result := True;
+
+    until (Result) or (fStream.Position >= fFileSize);
+  end;
+
 begin
   Result := inherited LoadFromFile(AFileName);
   fTags := TDummyTags.Create;
   try
     fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
-    fFileSize:= fStream.Size;
-    fStream.Read(Header, SizeOf(Header));
-    if fFileSize > (Header.FormatSize + 24) then
-      begin
-        fStream.Seek(Header.FormatSize + 24, soFromBeginning);
-        Header.SampleNumber := fStream.ReadDWord;
-      end;
+    fFileSize := fStream.Size;
+    fStream.Read(WaveH, SizeOf(WaveH));
 
-    if HeaderIsValid(Header) then
-      begin
-        fMediaProperty.ChannelMode:=DecodeChannelNumber(header.ChannelNumber);
-        fMediaProperty.BitRate:= Header.BytesPerSecond * 8 div 1000;
-        fMediaProperty.Sampling:= Header.SampleRate;
-      end;
+    if HeaderIsValid(WaveH) then
+    begin
+
+      if FindChunk('fmt ') then
+        begin
+          fStream.Read(Chunk.ChunkSize, SizeOf(Chunk.ChunkSize));
+          fStream.Read(fmt, SizeOf(fmt));
+        end
+      else
+        Initialize(fmt);
+
+      if FindChunk('data') then
+        begin
+          fStream.Read(Chunk.ChunkSize, SizeOf(Chunk.ChunkSize));
+          DataPos := fStream.Position;
+          SampleNumber := Chunk.ChunkSize;
+        end;
+      fMediaProperty.ChannelMode := DecodeChannelNumber(fmt.ChannelNumber);
+      fMediaProperty.BitRate := fmt.BytesPerSecond * 8 div 1000;
+      fMediaProperty.Sampling := fmt.SampleRate;
+    end;
 
 
   finally
     fStream.Free;
   end;
 
-
-
 end;
 
 function TWaveReader.SaveToFile(AFileName: Tfilename): boolean;
 begin
-  Result:=False;
+  Result := False;
 end;
 
 initialization
