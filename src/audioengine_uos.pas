@@ -80,8 +80,8 @@ Const
    PORTAUDIOLIB = 'system';
    SNDFILELIB   = 'system';
    MPG123LIB    = 'system';
-   MP4FFLIB     = 'system';
-   FAADLIB      = 'system';
+   MP4FFLIB     = '';
+   FAADLIB      = '';
    OPUSFILELIB  = 'system';
 {$ENDIF LINUX}
 {$IFDEF WINDOWS}
