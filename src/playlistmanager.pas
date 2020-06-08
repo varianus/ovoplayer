@@ -49,7 +49,7 @@ type
   TPlayListManager = class
   private
     fSavedTime: integer;
-    function ProcessPath(FileName: string; CurPlayList: string): string;
+    function ProcessPath(const FileName: string; CurPlayList: string): string;
   public
     function GetPlayListType(FileName: string): TPlayListType;
     function ImportFromDirectory(const Directory: string; Recursive: boolean;
@@ -334,18 +334,17 @@ begin
 end;
 
 
-function TPlayListManager.ProcessPath(FileName: string; CurPlayList: string): string;
+function TPlayListManager.ProcessPath(const FileName: string; CurPlayList: string): string;
 begin
-  FileName := Trim(FileName);
-  if not ((Copy(UpperCase(FileName), 1, 7) = 'HTTP://') or
-    (Copy(UpperCase(FileName), 1, 6) = 'FTP://')) then
+  Result := Trim(unescape(FileName));
+  if not ((Copy(UpperCase(Result), 1, 7) = 'HTTP://') or
+    (Copy(UpperCase(Result), 1, 6) = 'FTP://')) then
   begin
     if CurPlaylist[Length(CurPlaylist)] <> PathDelim then
       CurPlaylist := CurPlaylist + PathDelim;
-    if not FilenameIsAbsolute(FileName) then
-      FileName := ExpandFileNameUTF8(FileName,CurPlayList);
+    if not FilenameIsAbsolute(Result) then
+      Result := ExpandFileNameUTF8(Result,CurPlayList);
   end;
-  Result := FileName;
 end;
 
 function TPlayListManager.ImportFromM3U(const FileName: TFileName;
