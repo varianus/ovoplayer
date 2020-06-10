@@ -5823,11 +5823,12 @@ end;
   // LD_LIBRARY_PATH, then in /lib, then /usr/lib and finally the paths of
   // /etc/ld.so.conf.
 const
-  pathLst : array[0..3] of string = (
+  pathLst : array[0..4] of string = (
     '/usr/lib',
     '/lib',
     '/usr/local/lib',
-    '/usr/lib/x86_64-linux-gnu'
+    '/usr/lib/x86_64-linux-gnu',
+    '/usr/lib/arm-linux-gnueabihf'
   );
 var
   pathIdx : Integer;
