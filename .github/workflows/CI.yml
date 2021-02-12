@@ -20,18 +20,21 @@ jobs:
             LAZ_VER: 2.0.10
             LAZ_OPT: "--os=win32 --cpu=i386"
             ARTIFACT: "ovoplayer.exe"
+            lazbuild: "c:/lazarus/lazbuild.exe"
 
           - os: windows-latest
             name: Windows 64
             LAZ_VER: 2.0.10
             LAZ_OPT: "--os=win64 --cpu=x86_64"
             ARTIFACT: "ovoplayer.exe"
+            lazbuild: "c:/lazarus/lazbuild.exe" 
 
           - os: ubuntu-latest
             name: Linux 64
             LAZ_VER: 2.0.10
             LAZ_OPT: "--os=linux --cpu=x86_64"
             ARTIFACT: "ovoplayer"
+            lazbuild: "lazbuild"
 
     steps:
     - uses: actions/checkout@v1
@@ -99,6 +102,6 @@ jobs:
         sys.exit(int(not main()))
     - name: Build OvoPlayer
       run: |
-         lazbuild ${{ env.LAZ_OPT }} --build-mode=Release "src/components/mcaselli.lpk"
-         lazbuild ${{ env.LAZ_OPT }} --build-mode=Release "src/ovoplayer.lpi"
+         ${{ matrix.config.lazbuild }}  ${{ env.LAZ_OPT }} --build-mode=Release "src/components/mcaselli.lpk"
+         ${{ matrix.config.lazbuild }}  ${{ env.LAZ_OPT }} --build-mode=Release "src/ovoplayer.lpi"
      
