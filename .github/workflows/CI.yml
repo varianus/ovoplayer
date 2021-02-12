@@ -74,8 +74,7 @@ jobs:
                 os.system('wget --progress=dot:mega -P "%s" %s' % (LAZ_DOWNLOAD_DIR, asset))
             if OS_NAME == 'Windows':
                  # Add Lazarus directory to PATH
-                 if os.system('echo "C:\\Lazarus\\" >> $GITHUB_PATH') != 0:
-                     return False
+                 os.environ['PATH'] += os.pathsep + 'C:/lazarus/;'
                  # Install all .exe files
                  process_file = lambda f: (not f.endswith('.exe')) or os.system('%s /VERYSILENT /DIR="C:\Lazarus"' % (f)) == 0
             elif OS_NAME == 'Linux':
