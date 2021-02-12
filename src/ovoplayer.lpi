@@ -14,6 +14,7 @@
       <UseXPManifest Value="True"/>
       <XPManifest>
         <DpiAware Value="True"/>
+        <AnsiUTF8 Value="True"/>
         <TextName Value="Varianus.OvoPlayer"/>
         <TextDesc Value="A free multiplatform media player"/>
       </XPManifest>
@@ -231,29 +232,26 @@ if TargetOS = &apos;linux&apos; then
     <RunParams>
       <FormatVersion Value="2"/>
     </RunParams>
-    <RequiredPackages Count="6">
+    <RequiredPackages Count="5">
       <Item1>
-        <PackageName Value="sparta_generics"/>
+        <PackageName Value="mcaselli"/>
       </Item1>
       <Item2>
-        <PackageName Value="mcaselli"/>
+        <PackageName Value="FCL"/>
       </Item2>
       <Item3>
-        <PackageName Value="FCL"/>
+        <PackageName Value="SQLDBLaz"/>
+        <MinVersion Major="1" Release="1" Valid="True"/>
       </Item3>
       <Item4>
-        <PackageName Value="SQLDBLaz"/>
+        <PackageName Value="LCLBase"/>
         <MinVersion Major="1" Release="1" Valid="True"/>
       </Item4>
       <Item5>
-        <PackageName Value="LCLBase"/>
-        <MinVersion Major="1" Release="1" Valid="True"/>
-      </Item5>
-      <Item6>
         <PackageName Value="LCL"/>
-      </Item6>
+      </Item5>
     </RequiredPackages>
-    <Units Count="100">
+    <Units Count="103">
       <Unit0>
         <Filename Value="ovoplayer.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -745,6 +743,21 @@ if TargetOS = &apos;linux&apos; then
         <IsPartOfProject Value="True"/>
         <UnitName Value="OL_FilterVolume"/>
       </Unit99>
+      <Unit100>
+        <Filename Value="import-engines\ol_decoderopus.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="OL_DecoderOpus"/>
+      </Unit100>
+      <Unit101>
+        <Filename Value="import-engines\ol_rendererportaudio.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="OL_RendererPortAudio"/>
+      </Unit101>
+      <Unit102>
+        <Filename Value="import-engines\ol_decoderaac.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="OL_DecoderAAC"/>
+      </Unit102>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -786,7 +799,7 @@ if TargetOS = &apos;linux&apos; then
     </CodeGeneration>
     <Linking>
       <Debugging>
-        <DebugInfoType Value="dsDwarf3"/>
+        <DebugInfoType Value="dsDwarf2"/>
       </Debugging>
       <Options>
         <Win32>
