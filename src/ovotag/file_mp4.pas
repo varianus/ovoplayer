@@ -311,7 +311,7 @@ begin
       exit;
     end;
 
-  HaveID3 := (ID1[0] = 'I') and (ID1[0] = 'D') and (ID1[0] = '3');
+  HaveID3 := (ID1[1] = 'I') and (ID1[2] = 'D') and (ID1[3] = '3');
   if HaveID3 then  // ID3V2 tags present, skip it
     begin
       HaveID3 := True;
