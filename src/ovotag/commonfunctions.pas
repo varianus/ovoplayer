@@ -122,15 +122,47 @@ end;
 function ExtractGenre(const GenreString: string; offset: integer = 0): string;
 var
   GenreNumber: integer;
+  TmpString, tt:string;
+  DelimPos: SizeInt;
 begin
   { Extract genre from string }
-  Result := (GenreString);
-  GenreNumber := 255;
-  if TryStrToInt(Result, GenreNumber) and (GenreNumber <= ID3_MaxGenreExtended) then
-    Result := v1Genres[GenreNumber + offset];
-
-  if Pos(')', Result) > 0 then
-    Delete(Result, 1, LastDelimiter(')', Result));
+  Result := '';
+  TmpString := GenreString;
+  while TmpString.StartsWith('(') do
+    begin
+      if (Length(TmpString) > 1) and (TmpString[2] = '(') then
+        begin
+          Delete(TmpString,1,1);
+          Result := Result + ' ' + TmpString;
+          TmpString:='';
+          break;
+        end
+      else
+        begin
+          DelimPos:=Pos(')',TmpString);
+          if DelimPos = 0 then //Safety check
+            Break;
+          GenreNumber := 255;
+          tt:=  Copy(TmpString,2,DelimPos-2);
+          if TryStrToInt(Copy(TmpString,2,DelimPos-2), GenreNumber) and (GenreNumber <= ID3_MaxGenreExtended) then
+            Result:=Result +' '+ v1Genres[GenreNumber + offset]
+          else
+            begin  //Safety check
+              Result := Result + TmpString;
+              TmpString:='';
+              break;
+            end;
+          Delete(tmpString,1, DelimPos);
+        end;
+    end;
+  if Result = '' then
+    if TryStrToInt(TmpString, GenreNumber) and (GenreNumber <= ID3_MaxGenreExtended) then
+      Result:=Result +' '+ v1Genres[GenreNumber + offset]
+    else
+      Result := (Result + ' '+TmpString)
+  else
+    Result := (Result + ' '+TmpString);
+  Result := trim(Result);
 end;
 
 { --------------------------------------------------------------------------- }
