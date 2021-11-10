@@ -191,8 +191,8 @@ begin
 
   mpv_initialize(fhandle^);
 
-  mpv_request_log_messages(fhandle^, 'v'); //Verbose Mode
- // mpv_request_log_messages(fhandle^, 'no');
+//  mpv_request_log_messages(fhandle^, 'v'); //Verbose Mode
+  mpv_request_log_messages(fhandle^, 'no');
 
   fdecoupler := TDecoupler.Create;
   fdecoupler.OnCommand := @ReceivedCommand;
@@ -350,8 +350,7 @@ begin
       Event := mpv_wait_event(fhandle^, 0);
       while Event^.event_id <> MPV_EVENT_NONE do
         begin
-          if (Event^.event_id =  MPV_EVENT_END_FILE)  then
-        //  and (_mpv_event_end_file(Event^.data^).reason = 0) then
+          if (Event^.event_id =  MPV_EVENT_END_FILE)  and not (_mpv_event_end_file(Event^.data^).reason in  [2,3,5]) then
             begin
              fState:= ENGINE_SONG_END;
              ReceivedCommand(self, ecNext, 0);
