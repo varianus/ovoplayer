@@ -2115,6 +2115,8 @@ implementation
            end;
       end;
 
+  end;
+
 initialization
     hlib := 0;
 finalization
