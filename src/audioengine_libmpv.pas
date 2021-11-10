@@ -351,7 +351,7 @@ begin
       while Event^.event_id <> MPV_EVENT_NONE do
         begin
           if (Event^.event_id =  MPV_EVENT_END_FILE) and
-             (Pmpv_event_end_file(Event^.data)^.reason = 0) then
+             (_mpv_event_end_file(Event^.data^).reason = 0) then
             begin
              fState:= ENGINE_SONG_END;
              ReceivedCommand(self, ecNext, 0);
