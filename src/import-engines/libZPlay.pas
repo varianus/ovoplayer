@@ -1085,14 +1085,16 @@ var
 begin
   // no error
   MustFree := hlib = 0;
-
-  Load_libzplay(External_library);
   Result:=false;
+
+  try
+    Load_libzplay(External_library);
+  Except
+    hlib := 0;
+  end;
+
   // exit, report error
-  if (hlib = 0) then
-    begin
-    end
-  else
+  if (hlib <> 0) then
     begin
       Result:=true;
       if MustFree then
