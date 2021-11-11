@@ -427,35 +427,24 @@ end;
 function TAudioEngineLibMPV.GetBandStr(Index:Integer):string;
 begin
 
- Result:= 'f='+IntToStr(trunc(fBandInfo[Index].Freq))
-        + ':width_type=o'
-        + ':w=1'
-        + ':g='+IntToStr(trunc(fBandInfo[Index].Value))
+ Result:= 'f='+IntToStr(trunc(fBandInfo[Index].Freq))    // frequencies
+        + ':t=o'  // width_type octave
+        + ':w=1'  // width 1
+        + ':g='+IntToStr(trunc(fBandInfo[Index].Value))  // gain
 
 end;
 
 procedure TAudioEngineLibMPV.SetActiveEQ(AValue: boolean);
 var
   i: integer;
-  str: string;
-  bandstr: string;
 begin
-  bandstr := '';
-  str :='lavfi=''[';
   if AValue and not fActiveEQ then
-    begin
-      for i := 0 to pred(EQUALIZER_BANDS) do
-        begin
-          bandstr:= bandstr + ',equalizer='+GetBandStr(i);
-        end;
-      Delete(bandstr,1,1)
-    end;
+      EqApply;
 
   if not AValue and fActiveEQ then
-    bandstr:='''';
-
-  str:= str+bandstr+''']';
-  SetStringProperty('af', str);
+    begin
+      SetStringProperty('af', '');
+    end;
   fActiveEq:=AValue;
 end;
 
