@@ -23,7 +23,7 @@ unit file_Mp4;
 interface
 
 uses
-  Classes, lazutf8classes, SysUtils, AudioTag, baseTag, tag_Mp4, tag_id3v2, CommonFunctions;
+  Classes,  SysUtils, AudioTag, baseTag, tag_Mp4, tag_id3v2, CommonFunctions;
 
 const
   Mp4FileMask: string = '*.aac;*.m4a;';
@@ -85,11 +85,13 @@ type
     FSampleRate: integer;
     FSamples: int64;
     fDuration: int64;
-    function DetectKind(AStream: TStream; Out HaveID3: boolean): StreamKind;
-    //function FindAtom(Stream: TFileStreamUTF8; AtomName: string; var Atom: RAtomHeader): boolean;
+    fMediaProperty: TMediaProperty;
+    function DetectKind(AStream: TStream; Out HaveID3: boolean; out Offset:integer): StreamKind;
+    //function FindAtom(Stream: TFileStream; AtomName: string; var Atom: RAtomHeader): boolean;
   protected
     function GetDuration: int64; override;
     function GetTags: TTags; override;
+    Function DumpInfo: TMediaProperty; override;
   public
     function LoadFromFile(AFileName: Tfilename): boolean; override;
     function SaveToFile(AFileName: Tfilename): boolean; override;
@@ -294,12 +296,20 @@ begin
     Result := fTags;
 end;
 
-function TMp4Reader.DetectKind(AStream: TStream; Out HaveID3: boolean): StreamKind;
+function TMp4Reader.DumpInfo: TMediaProperty;
+begin
+  Result := fMediaProperty;
+end;
+
+function TMp4Reader.DetectKind(AStream: TStream; out HaveID3: boolean; out
+  Offset: integer): StreamKind;
 var
   ID1, ID2: AtomName;
   IDB: array [0..3] of byte absolute ID1;
+  Resync : array [0..14] of byte;
   vsize: dword;
   b: byte;
+  i: Integer;
 begin
   AStream.Seek(0, soFromBeginning);
   AStream.Read(ID1, SizeOf(AtomName));
@@ -315,26 +325,36 @@ begin
   if HaveID3 then  // ID3V2 tags present, skip it
     begin
       HaveID3 := True;
-      AStream.Seek(5, soFromBeginning);
+      AStream.Seek(6, soFromBeginning);
       AStream.Read(vsize, SizeOf(DWORD));
       vsize := SyncSafe_Decode(VSize);
-      AStream.Seek(VSize, soFromBeginning);
+      AStream.Seek(VSize + 10, soFromBeginning);
     end
   else
     AStream.seek(0, soFromBeginning);
 
-  AStream.Read(ID1, SizeOf(AtomName));
+  AStream.Read(Resync, SizeOf(Resync));
 
-  if  (IDb[0] = $ff) and  ((idb[1] and $f6) = $f0) then
+  // I've found  AAC files with some garbage byte between ID3 and first audio frame
+  // Parse some bytes to find first frame...
+  i:= 0;
+  Offset := 0;
+  while i < 10 do
     begin
-      Result := skADTS;
-      exit;
-    end;
-
-  if ID1 = 'adif' then  // quite obvious..
-    begin
-      Result := skADIF;
-      exit;
+      if  (Resync[i] = $ff) and  ((Resync[i+1] and $f6) = $f0) then
+        begin
+          Result := skADTS;
+          Offset := i;
+          exit;
+        end;
+      move(Resync[i], ID1,4);
+      if (ID1 = 'adif') or (ID1 = 'ADIF') then  // quite obvious..
+        begin
+          Result := skADIF;
+          Offset := i;
+          exit;
+        end;
+      inc(i);
     end;
 
   Result := skRaw;
@@ -343,8 +363,9 @@ end;
 
 function TMp4Reader.LoadFromFile(AFileName: Tfilename): boolean;
 var
-  fStream: TFileStreamUTF8;
+  fStream: TFileStream;
   HaveID3: boolean;
+  Offset:integer;
   Header: TADTSHeader;
   AtomList: TMP4AtomList;
   moov, trak, mdhd, ilst, CurrAtom: TMp4Atom;
@@ -366,9 +387,9 @@ begin
   Result := inherited LoadFromFile(AFileName);
   fTags := nil;
   fDuration := 0;
-  fStream := TFileStreamUTF8.Create(fileName, fmOpenRead or fmShareDenyNone);
+  fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
   try
-    case DetectKind(fStream, HaveID3) of
+    case DetectKind(fStream, HaveID3, offset) of
       skMp4:
       begin
         AtomList := TMP4AtomList.Create(fStream);
@@ -380,7 +401,7 @@ begin
             begin
               trak := moov.Find('trak', EmptyAtom, EmptyAtom, EmptyAtom);
               if Assigned(trak) then
-                begin
+                begin              
                   mdhd := trak.find('mdia', 'mdhd', EmptyAtom, EmptyAtom);
                   if Assigned(mdhd) then
                     FoundAtoms := True;
@@ -398,12 +419,14 @@ begin
                   unit_ := BEtoN(pInt64(@Data[28])^);
                   length_ := BEtoN(pInt64(@Data[36])^);
                   fDuration := (length_ div unit_) * 1000;
+                  fMediaProperty.Sampling:=unit_;
                 end
               else
                 begin
                   unit_ := BEtoN(PInteger(@Data[20])^);
                   length_ := BEtoN(PInteger(@Data[24])^);
                   fDuration := (length_ div unit_) * 1000;
+                  fMediaProperty.Sampling:=unit_;
                 end;
 
               ilst := AtomList.find('moov', 'udta', 'meta', 'ilst');
@@ -450,12 +473,14 @@ begin
           StreamPos := 0;
 
         FrameCount := 0;
-        fStream.Seek(StreamPos, soFromBeginning);
+        fStream.Seek(StreamPos+ offset, soFromBeginning);
         SSize := fStream.Size;
         fStream.Read(Header, SizeOf(Header));
         if (Header.b[1] = $ff) and ((header.b[2] and $f0) = $f0) then // found ADTS Header
           begin
             unit_ := AACFreq[(Header.b[3] and $3c) shr 2];
+            fMediaProperty.Sampling:=unit_;
+            fMediaProperty.ChannelMode := inttostr( ((Header.b[3] and $01) shl 2) or (Header.b[4] and $c0) shr 6);
             SkipToNextFrame;
 
             while not (StreamPos >= SSize - SizeOf(Header)) do // loop all ADTS frames to get accurate duration

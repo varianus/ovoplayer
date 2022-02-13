@@ -38,7 +38,7 @@ function GetFileTagsObject(FileName: string): TTagReader;
 function IdentifyKind(FileName: string): TTagReaderClass;
 
 implementation
-uses strutils, LazFileUtils, file_Dummy;
+uses strutils, file_Dummy;
 
 type
   RTagReader = record
@@ -72,7 +72,7 @@ end;
 
 function LoadTags(Song: Tsong): boolean;
 begin
-  Result := FileExistsUTF8(Song.FullName);
+  Result := FileExists(Song.FullName);
   if result and not (song.TagLoaded) then
      begin
        Song.SetTags(ExtractTags(Song.FullName));

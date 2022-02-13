@@ -414,7 +414,7 @@ begin
      'T', 'W' : Result := ExtractString(pbyte(@Data[1]), size);
      'C' : Result :=      ExtractString(pbyte(@Data[1]), size, True);
   else
-    Result := '?';
+    Result := '<unknown>';
   end;
 end;
 

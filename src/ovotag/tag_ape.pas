@@ -80,7 +80,7 @@ begin
     0: Result := fValue;
     1: Result := '<bytes>';
   else
-    result := 'unsupported';
+    result := '<unsupported>';
   end;
 end;
 
@@ -89,7 +89,7 @@ begin
   case DataType of
     0: fValue := (AValue);
   else
-    raise Exception.Create('Unsupported');
+    raise Exception.Create('<unsupported>');
   end;
 end;
 

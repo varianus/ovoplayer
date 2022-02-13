@@ -23,7 +23,7 @@ unit file_Monkey;
 interface
 
 uses
-  Classes, lazutf8classes, SysUtils, AudioTag, baseTag, tag_APE;
+  Classes, SysUtils, AudioTag, baseTag, tag_APE;
 
 const
   MonkeyFileMask: string = '*.ape;';
@@ -127,7 +127,7 @@ end;
 
 function TMonkeyReader.LoadFromFile(AFileName: Tfilename): boolean;
 var
-  fStream: TFileStreamUTF8;
+  fStream: TFileStream;
   tempTags: TTags;
   HaveID3V2: boolean;
   BlocksPerFrame: Integer;
@@ -139,7 +139,7 @@ var
 
 begin
   Result := inherited LoadFromFile(AFileName);
-  fStream := TFileStreamUTF8.Create(fileName, fmOpenRead or fmShareDenyNone);
+  fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
   try
     tempTags := TID3Tags.Create;
     HaveID3V2 := tempTags.ReadFromStream(fStream);
@@ -221,16 +221,16 @@ end;
 
 function TMonkeyReader.SaveToFile(AFileName: Tfilename): boolean;
 var
-  SourceStream: TFileStreamUTF8;
-  DestStream: TFileStreamUTF8;
+  SourceStream: TFileStream;
+  DestStream: TFileStream;
   v1rec: TID3V1Record;
   offset: cardinal;
   header: TAPEHeader;
 begin
   Result := inherited SaveToFile(AFileName);
 
-  SourceStream := TFileStreamUTF8.Create(FileName, fmOpenRead or fmShareDenyNone);
-  DestStream := TFileStreamUTF8.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
+  SourceStream := TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
+  DestStream := TFileStream.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
 
   try
     SourceStream.Seek(SourceStream.Size - SizeOf(TID3V1Record), soFromBeginning);

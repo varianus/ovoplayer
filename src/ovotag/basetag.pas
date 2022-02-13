@@ -182,7 +182,7 @@ Function ExportToJson(const Tags: TcommonTags):string;
 
 
 implementation
-uses LazFileUtils, fpjson;
+uses fpjson;
 
 operator = (t1 : TCommonTags; t2 : TCommonTags) b : boolean;
 begin

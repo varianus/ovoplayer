@@ -23,7 +23,7 @@ unit file_wma;
 interface
 
 uses
-  Classes, lazutf8classes, SysUtils, AudioTag, basetag, tag_wma, LazLoggerBase;
+  Classes,  SysUtils, AudioTag, basetag, tag_wma, LazLoggerBase;
 
 const
   WMAFileMask: string = '*.wma;';
@@ -196,7 +196,7 @@ end;
 
 function TWMAReader.LoadFromFile(AFileName: Tfilename): boolean;
 var
-  fStream: TFileStreamUTF8;
+  fStream: TFileStream;
   Header: TWMaHeader;
   SubObjHeader: TObjectHeader;
   FileProperty: TWMAFileProperty;
@@ -209,7 +209,7 @@ begin
   Result := inherited LoadFromFile(AFileName);
 
   try
-    fStream := TFileStreamUTF8.Create(fileName, fmOpenRead or fmShareDenyNone);
+    fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
 
     fStream.ReadBuffer(Header, SizeOf(Header));
     fTags := TWMATags.Create;
@@ -268,8 +268,8 @@ end;
 
 function TWMAReader.SaveToFile(AFileName: Tfilename): boolean;
 var
-  SourceStream: TFileStreamUTF8;
-  DestStream: TFileStreamUTF8;
+  SourceStream: TFileStream;
+  DestStream: TFileStream;
   MemoryStream : TmemoryStream;
 
   Header: TWMaHeader;
@@ -284,8 +284,8 @@ begin
   Result := inherited SaveToFile(AFileName);
 
   try
-    SourceStream := TFileStreamUTF8.Create(fileName, fmOpenRead or fmShareDenyNone);
-    DestStream := TFileStreamUTF8.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
+    SourceStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
+    DestStream := TFileStream.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
 
     SourceStream.ReadBuffer(Header, SizeOf(Header));
     fOrigCount := Header.ObjectCount;

@@ -23,7 +23,7 @@ unit file_flac;
 interface
 
 uses
-  Classes,  lazutf8classes,SysUtils, AudioTag, baseTag, tag_Vorbis;
+  Classes,  SysUtils, AudioTag, baseTag, tag_Vorbis;
 
 const
   FlacFileMask: string   = '*.flac;';
@@ -103,7 +103,7 @@ end;
 
 function TFlacReader.LoadFromFile(AFileName: Tfilename): boolean;
 var
-  fStream: TFileStreamUTF8;
+  fStream: TFileStream;
   Header: TFlacHeader;
   BlockHeader: TMetaDataBlockHeader;
   BlockLength: integer;
@@ -112,7 +112,7 @@ var
 begin
   Result := inherited LoadFromFile(AFileName);
   try
-    fStream := TFileStreamUTF8.Create(FileName, fmOpenRead or fmShareDenyNone);
+    fStream := TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
     fStream.Read(Header, sizeof(Header));
     if Header.Marker <> FLAC_IDENTIFIER then
       exit;
@@ -162,8 +162,8 @@ end;
 
 function TFlacReader.SaveToFile(AFileName: Tfilename): boolean;
 var
-  SourceStream: TFileStreamUTF8;
-  DestStream: TFileStreamUTF8;
+  SourceStream: TFileStream;
+  DestStream: TFileStream;
   Header: TFlacHeader;
   BlockHeader: TMetaDataBlockHeader;
   BlockLength: integer;
@@ -173,8 +173,8 @@ var
 
 begin
   inherited SaveToFile(AFilename);
-  SourceStream := TFileStreamUTF8.Create(FileName, fmOpenRead or fmShareDenyNone);
-  DestStream := TFileStreamUTF8.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
+  SourceStream := TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
+  DestStream := TFileStream.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
   Result :=false;
   SourceStream.Read(Header, sizeof(Header));
   if Header.Marker <> FLAC_IDENTIFIER then

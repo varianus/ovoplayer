@@ -27,7 +27,7 @@ unit file_mp3;
 interface
 
 uses
-  Classes, lazutf8classes, SysUtils, audiotag, basetag, tag_id3v2;
+  Classes, SysUtils, audiotag, basetag, tag_id3v2;
 
 const
   Mp3FileMask: string    = '*.mpa;*.mp1;*.mp2;*.mp3;';
@@ -418,13 +418,13 @@ function TMP3Reader.LoadFromFile(AFileName: Tfilename): boolean;
 const
   SizeOfData = MAX_MPEG_FRAME_LENGTH * 2;
 var
-  fStream: TFileStreamUTF8;
+  fStream: TFileStream;
   Data: array [1..SizeOfData] of byte;
   Transferred: DWord;
 
 begin
   Result := inherited LoadFromFile(AFileName);
-  fStream := TFileStreamUTF8.Create(fileName, fmOpenRead or fmShareDenyNone);
+  fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
   try
     ftags := TID3Tags.Create;
     fTags.ReadFromStream(fStream);
@@ -456,13 +456,13 @@ end;
 
 function TMP3Reader.SaveToFile(AFileName: Tfilename): boolean;
 var
-  SourceStream: TFileStreamUTF8;
-  DestStream: TFileStreamUTF8;
+  SourceStream: TFileStream;
+  DestStream: TFileStream;
 begin
   result:= true;
   inherited SaveToFile(AFilename);
-  SourceStream := TFileStreamUTF8.Create(FileName, fmOpenRead or fmShareDenyNone);
-  DestStream := TFileStreamUTF8.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
+  SourceStream := TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
+  DestStream := TFileStream.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
 
   Try
     SourceStream.Seek(fTags.Size, soFromBeginning);

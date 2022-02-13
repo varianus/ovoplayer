@@ -23,7 +23,7 @@ unit file_opus;
 interface
 
 uses
-  Classes,  lazutf8classes, SysUtils, AudioTag, baseTag, tag_Vorbis;
+  Classes,  SysUtils, AudioTag, baseTag, tag_Vorbis;
 
 const
   OPUSFileMask: string = '*.opus';
@@ -40,7 +40,7 @@ type
     fBitRate: integer;
     FSamples: int64;
     function FGetChannelMode: string;
-    function GetSamples(const Source: TFileStreamUTF8): integer;
+    function GetSamples(const Source: TFileStream): integer;
   protected
     function GetDuration: int64; override;
     function GetTags: TTags; override;
@@ -201,8 +201,8 @@ end;
 
 function TOpusReader.SaveToFile(AFileName: Tfilename): boolean;
 var
-  SourceStream: TFileStreamUTF8;
-  DestStream: TFileStreamUTF8;
+  SourceStream: TFileStream;
+  DestStream: TFileStream;
   MemoryStream: TmemoryStream;
   Header: TOggHeader;
   Start: byte;
@@ -247,8 +247,8 @@ var
 
 begin
   Result := inherited SaveToFile(AFileName);
-  SourceStream := TFileStreamUTF8.Create(fileName, fmOpenRead or fmShareDenyNone);
-  DestStream := TFileStreamUTF8.Create(AFileName, fmCreate or fmOpenReadWrite or
+  SourceStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
+  DestStream := TFileStream.Create(AFileName, fmCreate or fmOpenReadWrite or
     fmShareDenyNone);
   try
     SourceStream.Read(Header, sizeof(Header));
@@ -340,7 +340,7 @@ begin
 
 end;
 
-function TOpusReader.GetSamples(const Source: TFileStreamUTF8): integer;
+function TOpusReader.GetSamples(const Source: TFileStream): integer;
 var
   Index, DataIndex, Iterator: integer;
   Data:   array [0..250] of char;
@@ -366,7 +366,7 @@ begin
 end;
 function TOpusReader.LoadFromFile(AFileName: Tfilename): boolean;
 var
-  fStream: TFileStreamUTF8;
+  fStream: TFileStream;
   Header: TOggHeader;
   BlockHeader: OpusHeader;
   TagHeader: OpusTag;
@@ -374,7 +374,7 @@ var
 
 begin
   Result := inherited LoadFromFile(AFileName);
-  fStream := TFileStreamUTF8.Create(fileName, fmOpenRead or fmShareDenyNone);
+  fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
   try
     fStream.Read(Header, sizeof(Header));
     if string(Header.Marker) <> OPUS_IDENTIFIER then
