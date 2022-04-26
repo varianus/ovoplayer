@@ -40,8 +40,8 @@ begin
     if r.Status = Status then
       inc(c);
 
-  StringGrid1.RowCount := c;
-  c:=0;
+  StringGrid1.RowCount := c+1;
+  c:=1;
   for r in BackEnd.mediaLibrary.ScanResult do
     if r.Status = Status then
       begin
