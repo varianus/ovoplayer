@@ -367,10 +367,12 @@ begin
     begin
       APath:= ConfigParam.Values['Path'];
       if trim(APath) = '' then
-         APath := fMPlayerCommand;
+        begin
+         APath :=FileUtil.FindDefaultExecutablePath(fMPlayerCommand, ProgramDirectory);
+        end;
     end
   else
-    APath := fMPlayerCommand;;
+    APath :=FileUtil.FindDefaultExecutablePath(fMPlayerCommand, ProgramDirectory);
 
   AProcess := TProcessUTF8.Create(nil);
   AProcess.Options := AProcess.Options + [poUsePipes, poNoConsole];
