@@ -412,6 +412,7 @@ type
     procedure sgStatsPrepareCanvas(sender: TObject; aCol, aRow: Integer; aState: TGridDrawState);
     procedure slVolumeChange(Sender: TObject);
     procedure btnCloseCollectionStatClick(Sender: TObject);
+    procedure slVolumeClick(Sender: TObject);
     procedure TimerTimer(Sender: TObject);
     procedure btnUpDirClick(Sender: TObject);
     procedure tbRepeatClick(Sender: TObject);
@@ -2887,6 +2888,11 @@ begin
   sgStats.Clean;
   sgStats.RowCount := 1;
   gbStats.Visible := false;
+end;
+
+procedure TfMainForm.slVolumeClick(Sender: TObject);
+begin
+    BackEnd.SetVolume(slVolume.Position);
 end;
 
 procedure TfMainForm.TimerTimer(Sender: TObject);
