@@ -85,14 +85,19 @@ var
 { TAudioEngineDShow }
 
 
-function GetBasicAudioVolume(Value : integer) : integer;
+function LogarithmicToLinear(Value : integer) : integer;
 begin
-  Result := Round(Power(10,((Value * 255) / DSHOWMAXVOLUME) / 2500) * (DSHOWMAXVOLUME +1) - 1);
+  Result := Round(Power(10, Value / 2500) * 255);
 end;
 
-function SetBasicAudioVolume(Value : integer) : integer;
+function LinearToLogarithmic(Value : integer) : integer;
 begin
-  Result := Round(Log10((((Value / 255) * DSHOWMAXVOLUME )+1) / DSHOWMAXVOLUME) * 2500);
+  if Value <= 0 then
+     Result := -10000
+  else
+     Result := Round(Log10(Value / 255) * 4000);
+  if Result < -10000 then
+    Result := -10000;
 end;
 
 function TAudioEngineDShow.GetMaxVolume: integer;
@@ -167,20 +172,22 @@ function TAudioEngineDShow.CreateAppWindow: boolean;
 function TAudioEngineDShow.GetMainVolume: integer;
 begin
 
-  Result := 0;
+  Result := fSavedVolume;
   if not Assigned(AudioControl) then
     exit;
 
-  AudioControl.get_Volume( Result) ;
-  result := GetBasicAudioVolume(Result);
+  if Succeeded(AudioControl.get_Volume( Result)) then
+    result := LogarithmicToLinear(Result);
+  fSavedVolume := Result;
 end;
 
 procedure TAudioEngineDShow.SetMainVolume(const AValue: integer);
 begin
+  fSavedVolume := AValue;
   if not Assigned(AudioControl) then
     exit;
 
-  AudioControl.put_Volume( SetBasicAudioVolume(Avalue));
+  AudioControl.put_Volume( LinearToLogarithmic(Avalue));
 end;
 
 function TAudioEngineDShow.GetSongPos: integer;
@@ -221,6 +228,7 @@ end;
 constructor TAudioEngineDShow.Create;
 begin
   fMuted := false;
+  fSavedVolume := 0;
 end;
 
 function TAudioEngineDShow.Initialize: boolean;
