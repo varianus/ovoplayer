@@ -121,6 +121,7 @@ begin
       begin
         theEngine.pVolume := nil;
         hr := MFGetService(theEngine.pSession, MR_POLICY_VOLUME_SERVICE, IID_IMFSimpleAudioVolume, theEngine.pVolume);
+        TheEngine.SetMainVolume(TheEngine.fSavedVolume);
       end;
 
     end;
@@ -135,20 +136,26 @@ function TAudioEngineMediaFoundation.GetMainVolume: integer;
 var
   v: single;
 begin
-  Result := -1;
   if not Assigned(pVolume) then
-    exit;
+    begin
+      Result := fSavedVolume;
+      exit;
+    end;
+
   pVolume.GetMasterVolume(v);
   Result := trunc(V * (255 / MFMAXVOLUME));
+  fSavedVolume := Result;
 
 end;
 
 procedure TAudioEngineMediaFoundation.SetMainVolume(const AValue: integer);
 begin
+  fSavedVolume := AValue;
   if not Assigned(pVolume) then
     exit;
 
   pVolume.SetMasterVolume(AValue * (MFMAXVOLUME / 255));
+
 end;
 
 function TAudioEngineMediaFoundation.GetMaxVolume: integer;
@@ -201,6 +208,7 @@ end;
 constructor TAudioEngineMediaFoundation.Create;
 begin
   inherited Create;
+  fSavedVolume := 0;
   libMF_dynamic_dll_init;
 end;
 
