@@ -585,6 +585,7 @@ begin
 
       PlayList.CurrentItem.Tags;
       AudioEngine.Play(PlayList.CurrentItem);
+      AudioEngine.MainVolume:= EngineParam.Volume;
     end;
 
  if Assigned(FOnEngineCommand) then

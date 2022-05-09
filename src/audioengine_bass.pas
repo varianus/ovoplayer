@@ -113,7 +113,7 @@ end;
 procedure TAudioEngineBASS.SetMainVolume(const AValue: integer);
 begin
 //  BASS_SetVolume(AValue * (BASSMAXVOLUME / 255));
-    BASS_ChannelSetAttribute(Channel,BASS_ATTRIB_VOL, AValue * (BASSMAXVOLUME / 255));
+  BASS_ChannelSetAttribute(Channel,BASS_ATTRIB_VOL, AValue * (BASSMAXVOLUME / 255));
   fSavedVolume := AValue;
 end;
 
@@ -273,6 +273,7 @@ begin
       if offset <> 0 then
         Seek(offset, true);
     end;
+  SetMainVolume(fSavedVolume);
   result:= true;
 end;
 
