@@ -13,7 +13,7 @@ type
 
   TfScanResult = class(TForm)
     ButtonPanel1: TButtonPanel;
-    StringGrid1: TStringGrid;
+    ResultGrid: TStringGrid;
   private
 
   public
@@ -40,12 +40,12 @@ begin
     if r.Status = Status then
       inc(c);
 
-  StringGrid1.RowCount := c+1;
+  ResultGrid.RowCount := c+1;
   c:=1;
   for r in BackEnd.mediaLibrary.ScanResult do
     if r.Status = Status then
       begin
-       StringGrid1.Cells[0,c]:=r.FileName;
+       ResultGrid.Cells[0,c]:=r.FileName;
        inc(c)
       end;
 

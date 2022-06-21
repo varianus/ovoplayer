@@ -7,7 +7,7 @@ object fScanResult: TfScanResult
   ClientHeight = 368
   ClientWidth = 771
   Position = poMainFormCenter
-  object StringGrid1: TStringGrid
+  object ResultGrid: TStringGrid
     Left = 0
     Height = 322
     Top = 0
