@@ -145,7 +145,7 @@ begin
     end;
 end;
 
-{$R ovoplayerfont.res}
+{$R ovoplayerfont.rc}
 
 Procedure TDM.LoadImageList(Sender: TObject);
 var
@@ -161,7 +161,7 @@ begin
 
     iconRender:= TIconRenderer.Create(S);
     iconRender.Color := GetSysColor(COLOR_BTNTEXT);
-    iconRender.SetSize(23, 21);
+    iconRender.SetSize(23, 21, true); // Scaling occurs inside object, no need to do it here
 
     iconRender.AddToImageList (ilButtons, [$41,$42,$43,$44,$40,
                                            $4A,$47,$48,$45,$4b,
@@ -176,7 +176,7 @@ begin
     ilSmall.Height := MulDiv(16, Screen.PixelsPerInch, 96);
     ilSmall.Width := ilSmall.Height;
 
-    iconRender.SetSize(16,15);
+    iconRender.SetSize(16,15, true); // Scaling occurs inside object, no need to do it here
     iconRender.AddToImageList(ilSmall, [$54,$68,$5a,$57,$56,
                                         $6c,$43,$65,$41,$4f,
                                         $42,$44,$6e,$62,$58,
