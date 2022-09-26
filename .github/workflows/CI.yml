@@ -15,21 +15,21 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - os: windows-latest
-            name: Windows 32
-            LAZ_VER: 2.2.0
-            LAZ_OPT: "--os=win32 --cpu=i386"
-            ARTIFACT: "ovoplayer.exe"
-            lazbuild: "c:/lazarus/lazbuild.exe"
-            fpcres: "C:/lazarus/fpc/3.2.2/bin/i386-win32/fpcres.exe"
+    #      - os: windows-latest
+    #        name: Windows 32
+    #        LAZ_VER: 2.2.0
+    #        LAZ_OPT: "--os=win32 --cpu=i386"
+    #        ARTIFACT: "ovoplayer.exe"
+    #        lazbuild: "c:/lazarus/lazbuild.exe"
+    #        fpcres: "C:/lazarus/fpc/3.2.2/bin/i386-win32/fpcres.exe"
 
-          - os: windows-latest
-            name: Windows 64
-            LAZ_VER: 2.2.0
-            LAZ_OPT: "--os=win64 --cpu=x86_64"
-            ARTIFACT: "ovoplayer.exe"
-            lazbuild: "c:/lazarus/lazbuild.exe" 
-            fpcres: "C:/lazarus/fpc/3.2.2/bin/i386-win32/fpcres.exe"
+    #     - os: windows-latest
+    #       name: Windows 64
+    #       LAZ_VER: 2.2.0
+    #       LAZ_OPT: "--os=win64 --cpu=x86_64"
+    #       ARTIFACT: "ovoplayer.exe"
+    #       lazbuild: "c:/lazarus/lazbuild.exe" 
+    #       fpcres: "C:/lazarus/fpc/3.2.2/bin/i386-win32/fpcres.exe"
 
           - os: ubuntu-latest
             name: Linux 64
@@ -37,7 +37,7 @@ jobs:
             LAZ_OPT: "--os=linux --cpu=x86_64"
             ARTIFACT: "ovoplayer"
             lazbuild: "lazbuild"
-            fpcres: "fpcres.exe"
+            fpcres: "fpcres"
 
     steps:
     - uses: actions/checkout@v1
