@@ -102,6 +102,7 @@ jobs:
         sys.exit(int(not main()))
     - name: Build OvoPlayer
       run: |
+         fpcres src/ovoplayerfont.rc -of res -o src/ovoplayerfont.res
          ${{ matrix.config.lazbuild }}  ${{ env.LAZ_OPT }} --build-mode=Release "src/components/mcaselli.lpk"
          ${{ matrix.config.lazbuild }}  ${{ env.LAZ_OPT }} --build-mode=Release "src/ovoplayer.lpi"
      
