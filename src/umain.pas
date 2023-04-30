@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {$I codegen.inc}
 {$I ovoplayer.inc}
 unit uMain;
+
 interface
 
 uses
@@ -49,34 +50,34 @@ type
 
 const
   GroupCount = 4;
-  ArrayGroup: array  [0 .. GroupCount -1] of TSortFields =
+  ArrayGroup: array  [0 .. GroupCount - 1] of TSortFields =
     ((F1: tkAlbumArtist; F2: tkAlbum; F3: tkTrack),
-     (F1: tkArtist;      F2: tkAlbum; F3: tkTrack),
-     (F1: tkYear;        F2: tkAlbum; F3: tkTrack),
-     (F1: tkGenre;       F2: tkAlbum; F3: tkTrack));
+    (F1: tkArtist; F2: tkAlbum; F3: tkTrack),
+    (F1: tkYear; F2: tkAlbum; F3: tkTrack),
+    (F1: tkGenre; F2: tkAlbum; F3: tkTrack));
 
 type
   { TfMainForm }
 
-  TMusicTreeNode = class ( TTreeNode)
-    public
-      ID:      integer;
-      Kind:    TTagKind;
-      EmptyTag: Boolean;
+  TMusicTreeNode = class(TTreeNode)
+  public
+    ID: integer;
+    Kind: TTagKind;
+    EmptyTag: boolean;
   end;
 
-  TFileTreeNode = class ( TTreeNode)
-    public
-      FullPath: string;
-      isDir:    boolean;
+  TFileTreeNode = class(TTreeNode)
+  public
+    FullPath: string;
+    isDir: boolean;
   end;
 
   { TPlayListTreeNode }
 
-  TPlayListTreeNode = class ( TTreeNode)
-    public
-      FullPath: string;
-      Automatic: boolean;
+  TPlayListTreeNode = class(TTreeNode)
+  public
+    FullPath: string;
+    Automatic: boolean;
   end;
 
   TfMainForm = class;
@@ -86,10 +87,10 @@ type
   private
     FForm: TfMainForm;
   protected
-    Procedure InternalSave; override;
+    procedure InternalSave; override;
   public
-    Procedure Load; override;
-    Constructor Create(aOwner:TConfig; Form:TfMainForm); reintroduce;
+    procedure Load; override;
+    constructor Create(aOwner: TConfig; Form: TfMainForm); reintroduce;
   end;
 
   { TMainFormParam }
@@ -109,7 +110,7 @@ type
     procedure SetTop(AValue: integer);
     procedure SetWidth(AValue: integer);
   protected
-    Procedure InternalSave; override;
+    procedure InternalSave; override;
   public
     property Height: integer read FHeight write SetHeight;
     property Width: integer read FWidth write SetWidth;
@@ -117,8 +118,8 @@ type
     property Left: integer read FLeft write SetLeft;
     property LeftPanelVisible: boolean read FLeftPanelVisible write SetLeftPanelVisible;
     property ActivePage: integer read FActivePage write SetActivePage;
-    Procedure Load; override;
-    Constructor Create(aOwner:TConfig; Form:TfMainForm); reintroduce;
+    procedure Load; override;
+    constructor Create(aOwner: TConfig; Form: TfMainForm); reintroduce;
   end;
 
 
@@ -127,26 +128,26 @@ type
   PDWordArray = ^TDWordArray;
   TMovingSelection = (msNone, msUp, msDown);
 
-  TRowsSelection = class (TObject)
-    Private
-      fArray: PDWordArray;
-      fDwordSize: integer;
-      fsize:integer;
-      function GetSelected(Index: integer): boolean;
-      function PreviousSelected(index: Integer=-1): integer;
-      procedure SetSelected(Index: integer; AValue: boolean);
-      Procedure SetSize(Size:Integer);
-    public
-      Constructor Create;
-      Procedure ClearAll;
-      Procedure SelectAll;
-      function FirstSelected : integer;
-      function LastSelected: integer;
-      function NextSelected(index:Integer=-1) : integer;
-      Function isMultiselection:boolean;
-      Procedure SelectRange(Var Anchor: Integer;OldRow, NewRow: integer);
-      Property Size : Integer read FSize write SetSize;
-      property Selected[Index:integer]:boolean read GetSelected write SetSelected; default;
+  TRowsSelection = class(TObject)
+  private
+    fArray: PDWordArray;
+    fDwordSize: integer;
+    fsize: integer;
+    function GetSelected(Index: integer): boolean;
+    function PreviousSelected(index: integer = -1): integer;
+    procedure SetSelected(Index: integer; AValue: boolean);
+    procedure SetSize(Size: integer);
+  public
+    constructor Create;
+    procedure ClearAll;
+    procedure SelectAll;
+    function FirstSelected: integer;
+    function LastSelected: integer;
+    function NextSelected(index: integer = -1): integer;
+    function isMultiselection: boolean;
+    procedure SelectRange(var Anchor: integer; OldRow, NewRow: integer);
+    property Size: integer read FSize write SetSize;
+    property Selected[Index: integer]: boolean read GetSelected write SetSelected; default;
 
   end;
 
@@ -161,9 +162,10 @@ type
     actShowAbout: TAction;
     ActShowPreferences: TAction;
     ActionList: TActionList;
-    Artist:     TLabel;
-    cbGroupBy:  TComboBox;
+    Artist: TLabel;
+    cbGroupBy: TComboBox;
     FilesTree: TTreeView;
+    MainMenu1: TMainMenu;
     MenuItem20: TMenuItem;
     MenuItem38: TMenuItem;
     MenuItem39: TMenuItem;
@@ -211,7 +213,7 @@ type
     edtFilter: TLabeledEdit;
     ePath: TDirectoryEdit;
     gbStats: TGroupBox;
-    lbTime:     TLabel;
+    lbTime: TLabel;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
@@ -249,12 +251,12 @@ type
     MenuItem17: TMenuItem;
     MenuItem18: TMenuItem;
     MenuItem19: TMenuItem;
-    MenuItem4:  TMenuItem;
-    MenuItem5:  TMenuItem;
-    MenuItem6:  TMenuItem;
-    MenuItem7:  TMenuItem;
-    MenuItem8:  TMenuItem;
-    MenuItem9:  TMenuItem;
+    MenuItem4: TMenuItem;
+    MenuItem5: TMenuItem;
+    MenuItem6: TMenuItem;
+    MenuItem7: TMenuItem;
+    MenuItem8: TMenuItem;
+    MenuItem9: TMenuItem;
     pnlTimePos: TPanel;
     pnlLeft: TPanel;
     PlaylistMenu: TPopupMenu;
@@ -298,32 +300,32 @@ type
     ToolButton7: TToolButton;
     ToolButton8: TToolButton;
     ToolButton9: TToolButton;
-    TrayMenu:   TPopupMenu;
-    Splitter1:  TSplitter;
+    TrayMenu: TPopupMenu;
+    Splitter1: TSplitter;
     ToolButton5: TToolButton;
-    imgCover:   TImage;
-    Album:      TLabel;
-    Timer:      TTimer;
-    Title:      TLabel;
-    MainMenu:   TMainMenu;
+    imgCover: TImage;
+    Album: TLabel;
+    Timer: TTimer;
+    Title: TLabel;
+    MainMenu: TMainMenu;
     mnuLoadPlaylist: TMenuItem;
     mnuSavePlaylist: TMenuItem;
-    mnuFile:    TMenuItem;
+    mnuFile: TMenuItem;
     pnlPlayInfo: TPanel;
     pnlPlaylist: TPanel;
-    pcMain:     TPageControl;
+    pcMain: TPageControl;
     pnlCollection: TPanel;
-    pnlMain:    TPanel;
+    pnlMain: TPanel;
     pnlControl: TPanel;
     ProgressBar: TProgressBar;
-    tbMediaControl:   TToolBar;
+    tbMediaControl: TToolBar;
     ToolButton1: TToolButton;
     ToolButton2: TToolButton;
     ToolButton3: TToolButton;
     ToolButton4: TToolButton;
-    TrayIcon:   TTrayIcon;
+    TrayIcon: TTrayIcon;
     tsCollection: TTabSheet;
-    tsDirectory:  TTabSheet;
+    tsDirectory: TTabSheet;
     procedure actShowAboutExecute(Sender: TObject);
     procedure actShowEqualizerExecute(Sender: TObject);
     procedure actShowLeftExecute(Sender: TObject);
@@ -339,18 +341,17 @@ type
     procedure cbGroupByChange(Sender: TObject);
     procedure CollectionTreeDblClick(Sender: TObject);
     procedure edtFilterChange(Sender: TObject);
-    procedure ePathAcceptDirectory(Sender: TObject; var Value: String);
+    procedure ePathAcceptDirectory(Sender: TObject; var Value: string);
     procedure ePathEditingDone(Sender: TObject);
-    procedure FilesTreeCreateNodeClass(Sender: TCustomTreeView;
-      var NodeClass: TTreeNodeClass);
+    procedure FilesTreeCreateNodeClass(Sender: TCustomTreeView; var NodeClass: TTreeNodeClass);
     procedure FilesTreeDblClick(Sender: TObject);
     procedure FilesTreeGetImageIndex(Sender: TObject; Node: TTreeNode);
     procedure FilesTreeGetSelectedIndex(Sender: TObject; Node: TTreeNode);
-    procedure FormActivate(Sender: TObject);
+    procedure FilesTreeKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure FormDropFiles(Sender: TObject; const FileNames: array of String);
+    procedure FormDropFiles(Sender: TObject; const FileNames: array of string);
     procedure FormHide(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -372,44 +373,31 @@ type
     procedure mnuPlayItemsClick(Sender: TObject);
     procedure mnuRemovePlaylistClick(Sender: TObject);
     procedure pcMainChange(Sender: TObject);
-    procedure PlaylistTreeCreateNodeClass(Sender: TCustomTreeView;
-      var NodeClass: TTreeNodeClass);
-//    procedure PlaylistMenuPopup(Sender: TObject);
+    procedure PlaylistTreeCreateNodeClass(Sender: TCustomTreeView; var NodeClass: TTreeNodeClass);
+    //    procedure PlaylistMenuPopup(Sender: TObject);
     procedure pmdirectoriesPopup(Sender: TObject);
     procedure pmPlaylistsPopup(Sender: TObject);
     procedure pnCollectionPopup(Sender: TObject);
     procedure pnHeaderPlaylistPopup(Sender: TObject);
     procedure sgPlayListClick(Sender: TObject);
-    procedure sgPlayListColRowMoved(Sender: TObject; IsColumn: Boolean; sIndex,
-      tIndex: Integer);
-    procedure sgPlayListContextPopup(Sender: TObject; MousePos: TPoint;
-      var Handled: Boolean);
+    procedure sgPlayListColRowMoved(Sender: TObject; IsColumn: boolean; sIndex, tIndex: integer);
+    procedure sgPlayListContextPopup(Sender: TObject; MousePos: TPoint; var Handled: boolean);
     procedure sgPlayListDblClick(Sender: TObject);
-    procedure sgPlayListDragDrop(Sender, Source: TObject; X, Y: Integer);
-    procedure sgPlayListDragOver(Sender, Source: TObject; X, Y: Integer;
-      State: TDragState; var Accept: Boolean);
-    procedure sgPlayListDrawCell(Sender: TObject; aCol, aRow: Integer;
-      aRect: TRect; aState: TGridDrawState);
-    procedure sgPlayListHeaderClick(Sender: TObject; IsColumn: Boolean;
-      Index: Integer);
-    procedure sgPlayListHeaderSized(Sender: TObject; IsColumn: Boolean;
-      Index: Integer);
-    procedure sgPlayListHeaderSizing(sender: TObject; const IsColumn: boolean;
-      const aIndex, aSize: Integer);
-    procedure sgPlayListKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure sgPlayListMouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
+    procedure sgPlayListDragDrop(Sender, Source: TObject; X, Y: integer);
+    procedure sgPlayListDragOver(Sender, Source: TObject; X, Y: integer; State: TDragState; var Accept: boolean);
+    procedure sgPlayListDrawCell(Sender: TObject; aCol, aRow: integer; aRect: TRect; aState: TGridDrawState);
+    procedure sgPlayListHeaderClick(Sender: TObject; IsColumn: boolean; Index: integer);
+    procedure sgPlayListHeaderSized(Sender: TObject; IsColumn: boolean; Index: integer);
+    procedure sgPlayListHeaderSizing(Sender: TObject; const IsColumn: boolean; const aIndex, aSize: integer);
+    procedure sgPlayListKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
+    procedure sgPlayListMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: integer);
     procedure sgPlayListMouseLeave(Sender: TObject);
-    procedure sgPlayListMouseMove(Sender: TObject; Shift: TShiftState; X,
-      Y: Integer);
-    procedure sgPlayListMouseUp(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
-    procedure sgPlayListPrepareCanvas(sender: TObject; aCol, aRow: Integer;
-      aState: TGridDrawState);
+    procedure sgPlayListMouseMove(Sender: TObject; Shift: TShiftState; X, Y: integer);
+    procedure sgPlayListMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: integer);
+    procedure sgPlayListPrepareCanvas(Sender: TObject; aCol, aRow: integer; aState: TGridDrawState);
     procedure sgPlayListResize(Sender: TObject);
     procedure sgStatsClick(Sender: TObject);
-    procedure sgStatsPrepareCanvas(sender: TObject; aCol, aRow: Integer; aState: TGridDrawState);
+    procedure sgStatsPrepareCanvas(Sender: TObject; aCol, aRow: integer; aState: TGridDrawState);
     procedure slVolumeChange(Sender: TObject);
     procedure btnCloseCollectionStatClick(Sender: TObject);
     procedure slVolumeClick(Sender: TObject);
@@ -422,47 +410,45 @@ type
     procedure TrackDblClick(Sender: TObject);
     procedure TrayIconClick(Sender: TObject);
     procedure TrayIconDblClick(Sender: TObject);
-    procedure TrayIconMouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
+    procedure TrayIconMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: integer);
     procedure PlaylistTreeDblClick(Sender: TObject);
     procedure tsDirectoryShow(Sender: TObject);
     procedure tsPlayListShow(Sender: TObject);
-    procedure tvCollectionCreateNodeClass(Sender: TCustomTreeView;
-      var NodeClass: TTreeNodeClass);
+    procedure tvCollectionCreateNodeClass(Sender: TCustomTreeView; var NodeClass: TTreeNodeClass);
     procedure tvCollectionDblClick(Sender: TObject);
     procedure tvCollectionGetImageIndex(Sender: TObject; Node: TTreeNode);
   private
-    SeekIng:      boolean;
-    fSourceIndex, fTargetIndex: Integer;
+    SeekIng: boolean;
+    fSourceIndex, fTargetIndex: integer;
     CurrentCover: string;
-    SortFields:   TSortFields;
-    CurrentPath : string;
-    PathHistory : TstringList;
-    PathIndex : Integer;
+    SortFields: TSortFields;
+    CurrentPath: string;
+    PathHistory: TStringList;
+    PathIndex: integer;
     PlaylistSelected: TRowsSelection;
-    MovingSelection : TMovingSelection;
+    MovingSelection: TMovingSelection;
     FAnchor: integer;
-    fColumnsWidth : array of integer;
-    RatingBack, RatingFront:TBitmap;
+    fColumnsWidth: array of integer;
+    RatingBack, RatingFront: TBitmap;
     Quitting: boolean;
     LoadedPlaylist: boolean;
-    TrayMenuActive:boolean;
+    TrayMenuActive: boolean;
     PlaylistContainer: TPlaylistContainer;
     {$IFDEF MPRIS2}
-    Mpris : TMpris2;
+    Mpris: TMpris2;
     {$ENDIF MPRIS}
     {$IFDEF NOTIFYDBUS}
-    Notifier : TNotificationClient;
+    Notifier: TNotificationClient;
     MyNotification: RNotification;
     {$ENDIF NOTIFYDBUS}
     {$IFDEF TASKBAR_EXTENSION}
     Mytaskbar_ext: TTaskBarExtender;
     {$ENDIF}
     {$IFDEF NETWORK_INTF}
-    MyNetIntf : TNetIntf;
+    MyNetIntf: TNetIntf;
     {$ENDIF}
     {$IFDEF MULTIMEDIA_KEYS}
-    fMultimediaKeys:   TMultimediaKeys;
+    fMultimediaKeys: TMultimediaKeys;
     {$ENDIF}
     {$IFDEF SCREEN_LOCK}
     fscreenlock: TScreenLockHandler;
@@ -472,28 +458,28 @@ type
     FMainFormParam: TMainFormParam;
 
     function AdjustPos(pt: tpoint): Tpoint;
-    Function ColumnSize(aCol: Integer):Integer;
+    function ColumnSize(aCol: integer): integer;
     procedure ClearPanelInfo;
     procedure CollectionHandler(Enqueue: boolean);
     procedure FileSystemHandler(Enqueue: boolean);
     procedure LoadColumnsMenu(BaseItem: TMenuItem);
     procedure OnConfigDone(Sender: TObject; ChangedConf: boolean);
-    procedure PlayListHandler(Enqueue:boolean);
+    procedure PlayListHandler(Enqueue: boolean);
     procedure LoadDir(Path: string);
     procedure LoadTree;
     procedure MediaLibraryScanComplete(Sender: TObject; _Added, _Updated, _Removed, _Failed: integer);
-    procedure MoveSelection(KeyDirection: TMovingSelection; Shift: TShiftState; Row:Integer);
+    procedure MoveSelection(KeyDirection: TMovingSelection; Shift: TShiftState; Row: integer);
     procedure OnLoaded(Sender: TObject);
     procedure OnMenuItemClick(Sender: TObject);
     procedure PlayListChange(Sender: TObject);
     procedure MediaLibraryScanBegin(Sender: TObject);
-    procedure AdaptSize(Recalculate: boolean = true);
+    procedure AdaptSize(Recalculate: boolean = True);
     function PrepareFields: string;
     function PrepareFilter: string;
     function PrepareImportFilter(Node: TMusicTreeNode): string;
     procedure ReloadPlayList;
-    procedure OnEngineCommand(Sender: Tobject; Command : TEngineCommand);
-    procedure OnExternalCommand(Sender: Tobject; Command : RExternalCommand; var Handled:boolean);
+    procedure OnEngineCommand(Sender: TObject; Command: TEngineCommand);
+    procedure OnExternalCommand(Sender: TObject; Command: RExternalCommand; var Handled: boolean);
     procedure SaveConfig(Sender: TObject);
     procedure ReadConfig(Sender: TObject);
     procedure RemoveSelectionFromPlaylist;
@@ -502,7 +488,6 @@ type
     procedure ShowNotification;
     procedure UpdateProperty(Kind: TChangedProperty);
     procedure UpdateTree(Sender: TObject);
-
   public
     { public declarations }
     procedure LoadLastPlaylist;
@@ -516,19 +501,20 @@ var
 implementation
 
 {$R *.lfm}
+
 uses AppConsts, AudioTag, LazLoggerBase, FilesSupport,
-     uConfig, uMiniPlayer, uSongInfo, uAbout, baseTag,
-     Math, udm, lazutf8, GeneralFunc;
+  uConfig, uMiniPlayer, uSongInfo, uAbout, baseTag,
+  Math, udm, lazutf8, GeneralFunc;
 
 type
 
-  THackGrid = Class(TStringGrid)
-    public
-      property Gcache;
+  THackGrid = class(TStringGrid)
+  public
+    property Gcache;
   end;
 
   TSortRow = record
-    Kind:      TTagKind;
+    Kind: TTagKind;
     FieldName: string;
     ImageIndex: integer;
   end;
@@ -542,7 +528,7 @@ const
     (Kind: tkYear; FieldName: 'Year'; ImageIndex: 3),
     (Kind: tkGenre; FieldName: 'Genre'; ImageIndex: 4),
     (Kind: tkTracK; FieldName: '(case track when 0 then coalesce(trackstring,0) else track end)'; ImageIndex: -1)
-//    (Kind: tkRating; FieldName: 'Rating'; ImageIndex: 5)
+    //    (Kind: tkRating; FieldName: 'Rating'; ImageIndex: 5)
     );
 
 { TPlaylistParam }
@@ -554,21 +540,19 @@ var
 begin
   tmpSt := TStringList.Create;
   try
-    for i := 0 to fform.sgPlayList.Columns.Count -1 do
-      begin
-        tmpst.Add(inttostr(fform.sgPlayList.Columns[i].Index) +'='+
-                  fform.sgPlayList.Columns[i].Title.Caption+';'+
-                  IntToStr(fform.sgPlayList.Columns[i].Tag)+';'+
-                  BoolToStr(fform.sgPlayList.Columns[i].Visible,'Y','N')+';'+
-                  IntToStr(fform.sgPlayList.Columns[i].Width)+';'
-                  );
-      end;
+    for i := 0 to fform.sgPlayList.Columns.Count - 1 do
+      tmpst.Add(IntToStr(fform.sgPlayList.Columns[i].Index) + '=' +
+        fform.sgPlayList.Columns[i].Title.Caption + ';' +
+        IntToStr(fform.sgPlayList.Columns[i].Tag) + ';' +
+        BoolToStr(fform.sgPlayList.Columns[i].Visible, 'Y', 'N') + ';' +
+        IntToStr(fform.sgPlayList.Columns[i].Width) + ';'
+        );
     Owner.SaveCustomParams('PlayListGrid', tmpSt);
 
   finally
     tmpSt.Free;
   end;
-  Owner.Dirty:= true;
+  Owner.Dirty := True;
 end;
 
 procedure TPlaylistParam.Load;
@@ -581,287 +565,285 @@ var
   Col: integer;
 begin
   tmpSt := TStringList.Create;
-  info  := TStringList.Create;
+  info := TStringList.Create;
   try
-   Owner.ReadCustomParams(Base, tmpSt);
-   for i := 0 to tmpSt.Count -1 do
-     begin
-       info.Clear;
-       info.StrictDelimiter := true;
-       info.Delimiter := ';';
-       info.DelimitedText := tmpSt[i];
-       Col := StrToint(info[1]);
-       for j := 0 to fform.sgPlayList.Columns.Count -1   do
-         if fform.sgPlayList.Columns[j].Tag = col then
-           begin
-             Col := j;
-             break;
-           end;
-       FForm.sgPlayList.Columns[Col].Index:= StrToint(tmpSt.Names[i]);
-       FForm.sgPlayList.Columns[col].visible := Info[2] = 'Y';
-       FForm.sgPlayList.Columns[Col].Width:= StrToint(info[3]);
-     end;
-  Except
+    Owner.ReadCustomParams(Base, tmpSt);
+    for i := 0 to tmpSt.Count - 1 do
+    begin
+      info.Clear;
+      info.StrictDelimiter := True;
+      info.Delimiter := ';';
+      info.DelimitedText := tmpSt[i];
+      Col := StrToInt(info[1]);
+      for j := 0 to fform.sgPlayList.Columns.Count - 1 do
+        if fform.sgPlayList.Columns[j].Tag = col then
+        begin
+          Col := j;
+          break;
+        end;
+      FForm.sgPlayList.Columns[Col].Index := StrToInt(tmpSt.Names[i]);
+      FForm.sgPlayList.Columns[col].Visible := Info[2] = 'Y';
+      FForm.sgPlayList.Columns[Col].Width := StrToInt(info[3]);
+    end;
+  except
     // if problem loading columns size, remove that info from config
     // needed on 0.5 -> 1.0 upgrade
     Owner.RemoveSection(Base);
   end;
-  tmpSt.free;
-  info.free;
+  tmpSt.Free;
+  info.Free;
 
 end;
 
 constructor TPlaylistParam.Create(aOwner: TConfig; Form: TfMainForm);
 begin
   FForm := Form;
-  Inherited Create(aOwner);
+  inherited Create(aOwner);
 end;
 
 { TMainFormParam }
 
 procedure TMainFormParam.SetActivePage(AValue: integer);
 begin
-  if FActivePage=AValue then Exit;
-  FActivePage:=AValue;
-  Dirty := true;
+  if FActivePage = AValue then Exit;
+  FActivePage := AValue;
+  Dirty := True;
 end;
 
 procedure TMainFormParam.SetHeight(AValue: integer);
 begin
-  if FHeight=AValue then Exit;
-  FHeight:=AValue;
-  Dirty := true;
+  if FHeight = AValue then Exit;
+  FHeight := AValue;
+  Dirty := True;
 end;
 
 procedure TMainFormParam.SetLeft(AValue: integer);
 begin
-  if FLeft=AValue then Exit;
-  FLeft:=AValue;
-  Dirty := true;
+  if FLeft = AValue then Exit;
+  FLeft := AValue;
+  Dirty := True;
 end;
 
 procedure TMainFormParam.SetLeftPanelVisible(AValue: boolean);
 begin
-  if FLeftPanelVisible=AValue then Exit;
-  FLeftPanelVisible:=AValue;
-  Dirty := true;
+  if FLeftPanelVisible = AValue then Exit;
+  FLeftPanelVisible := AValue;
+  Dirty := True;
 end;
 
 procedure TMainFormParam.SetTop(AValue: integer);
 begin
-  if FTop=AValue then Exit;
-  FTop:=AValue;
-  Dirty := true;
+  if FTop = AValue then Exit;
+  FTop := AValue;
+  Dirty := True;
 end;
 
 procedure TMainFormParam.SetWidth(AValue: integer);
 begin
-  if FWidth=AValue then Exit;
-  FWidth:=AValue;
-  Dirty := true;
+  if FWidth = AValue then Exit;
+  FWidth := AValue;
+  Dirty := True;
 end;
 
 procedure TMainFormParam.InternalSave;
 const
   Base = 'MainForm';
 begin
-   Owner.Inifile.WriteInteger(Base,'Height', fHeight);
-   Owner.Inifile.WriteInteger(Base,'Width', fWidth);
-   Owner.Inifile.WriteInteger(Base,'Top', fTop);
-   Owner.Inifile.WriteInteger(Base,'Left', fLeft);
-   Owner.Inifile.WriteInteger(Base,'ActivePage', FActivePage);
-   Owner.Inifile.WriteBool(Base,'LeftPanelVisible', FLeftPanelVisible);
+  Owner.Inifile.WriteInteger(Base, 'Height', fHeight);
+  Owner.Inifile.WriteInteger(Base, 'Width', fWidth);
+  Owner.Inifile.WriteInteger(Base, 'Top', fTop);
+  Owner.Inifile.WriteInteger(Base, 'Left', fLeft);
+  Owner.Inifile.WriteInteger(Base, 'ActivePage', FActivePage);
+  Owner.Inifile.WriteBool(Base, 'LeftPanelVisible', FLeftPanelVisible);
 end;
 
 procedure TMainFormParam.Load;
 const
   Base = 'MainForm';
 begin
-  fHeight           := Owner.Inifile.ReadInteger(Base,'Height', FForm.Height);
-  fWidth            := Owner.Inifile.ReadInteger(Base,'Width', FForm.Width);
-  fTop              := Owner.Inifile.ReadInteger(Base,'Top', FForm.Top);
-  fLeft             := Owner.Inifile.ReadInteger(Base,'Left', FForm.Left);
-  fActivePage       := Owner.Inifile.ReadInteger(Base,'ActivePage', 0);
-  fLeftPanelVisible := Owner.Inifile.ReadBool(Base,'LeftPanelVisible', true);
+  fHeight := Owner.Inifile.ReadInteger(Base, 'Height', FForm.Height);
+  fWidth := Owner.Inifile.ReadInteger(Base, 'Width', FForm.Width);
+  fTop := Owner.Inifile.ReadInteger(Base, 'Top', FForm.Top);
+  fLeft := Owner.Inifile.ReadInteger(Base, 'Left', FForm.Left);
+  fActivePage := Owner.Inifile.ReadInteger(Base, 'ActivePage', 0);
+  fLeftPanelVisible := Owner.Inifile.ReadBool(Base, 'LeftPanelVisible', True);
 
 end;
 
 constructor TMainFormParam.Create(aOwner: TConfig; Form: TfMainForm);
 begin
   FForm := Form;
-  Inherited Create(aOwner);
+  inherited Create(aOwner);
 end;
 
 { TRowsSelection }
 
 function TRowsSelection.GetSelected(Index: integer): boolean;
 var
-  DWordIndex, BitIndex:Integer;
+  DWordIndex, BitIndex: integer;
 begin
   if fDwordSize < 1 then
-     begin
-       result := false;
-       exit;
-     end;
+  begin
+    Result := False;
+    exit;
+  end;
   DivMod(Index, 32, DWordIndex, BitIndex);
-  Result :=  (fArray^[DWordIndex] and DWORD(1 shl (BitIndex))) <> 0;
-//  DebugLn('Get ', inttostr(fArray^[DWordIndex]), ' ', BoolToStr(Result, true), ' ', IntToStr(index) );
+  Result := (fArray^[DWordIndex] and DWORD(1 shl (BitIndex))) <> 0;
+  //  DebugLn('Get ', inttostr(fArray^[DWordIndex]), ' ', BoolToStr(Result, true), ' ', IntToStr(index) );
 end;
 
 procedure TRowsSelection.SetSelected(Index: integer; AValue: boolean);
 var
-  DWordIndex, BitIndex:Integer;
+  DWordIndex, BitIndex: integer;
 begin
-    if fDwordSize < 1 then
-     begin
-       exit;
-     end;
+  if fDwordSize < 1 then
+    exit;
 
-  if (Index > size-1) or (Index < 0) then
-   exit;
+  if (Index > size - 1) or (Index < 0) then
+    exit;
 
   DivMod(Index, 32, DWordIndex, BitIndex);
-  if AValue  then
-     fArray^[DWordIndex] := fArray^[DWordIndex] or DWORD(1 shl (BitIndex))
+  if AValue then
+    fArray^[DWordIndex] := fArray^[DWordIndex] or DWORD(1 shl (BitIndex))
   else
-     fArray^[DWordIndex] := fArray^[DWordIndex] and not DWORD(1 shl (BitIndex));
-//  DebugLn('Set ', inttostr(fArray^[DWordIndex]), ' ', BoolToStr(AValue, true), ' ', IntToStr(index) );
+    fArray^[DWordIndex] := fArray^[DWordIndex] and not DWORD(1 shl (BitIndex));
+  //  DebugLn('Set ', inttostr(fArray^[DWordIndex]), ' ', BoolToStr(AValue, true), ' ', IntToStr(index) );
 end;
 
 constructor TRowsSelection.Create;
 begin
-  fDwordSize:=-1;
-  fArray:=nil;
+  fDwordSize := -1;
+  fArray := nil;
 end;
 
 procedure TRowsSelection.ClearAll;
-var i :integer;
+var
+  i: integer;
 begin
-  for i := 0 to fDwordSize -1 do
+  for i := 0 to fDwordSize - 1 do
     fArray^[i] := DWord($0);
 end;
 
 procedure TRowsSelection.SelectAll;
-var i :integer;
+var
+  i: integer;
 begin
-  for i := 0 to fDwordSize -2 do
+  for i := 0 to fDwordSize - 2 do
     fArray^[i] := DWord(not $0);
 
   if fDwordSize > 0 then
-   // Clean up unused bits so LastSelected work give right result
-     fArray^[fDwordSize-1] := not ( $ffffffff shl (size mod 32)) ;
+    // Clean up unused bits so LastSelected work give right result
+    fArray^[fDwordSize - 1] := not ($ffffffff shl (size mod 32));
 
 end;
 
-procedure TRowsSelection.SetSize(Size: Integer);
+procedure TRowsSelection.SetSize(Size: integer);
 begin
-  fDwordSize:= ceil(Size / 32);
+  fDwordSize := ceil(Size / 32);
   ReAllocMem(fArray, fDwordSize * SizeOf(DWORD));
-  fsize:=Size;
+  fsize := Size;
   ClearAll;
 end;
 
 function TRowsSelection.FirstSelected: integer;
 const
-  fSkippableValue= $00000000;
+  fSkippableValue = $00000000;
 var
-  DWordIndex, BitIndex:Integer;
+  DWordIndex, BitIndex: integer;
   tmpDWord: DWORD;
-
 begin
-  Result   := -1;
+  Result := -1;
   BitIndex := 0;
-  for DWordIndex := 0 to fDwordSize -1 do
+  for DWordIndex := 0 to fDwordSize - 1 do
+  begin
+    if fArray^[DWordIndex] = fSkippableValue then
+      Continue;
+    tmpDWord := fArray^[DWordIndex];
+    BitIndex := 0;
+    while (tmpDWord and 1) = 0 do
     begin
-      if fArray^[DWordIndex] = fSkippableValue then
-         Continue;
-      tmpDWord:= fArray^[DWordIndex];
-      BitIndex := 0;
-      while  (tmpDWord and 1) = 0 do
-        begin
-         tmpDWord:=tmpDWord shr 1;
-         inc(BitIndex);
-        end;
-      Result := DWordIndex * 32 + BitIndex;
-      exit;
+      tmpDWord := tmpDWord shr 1;
+      Inc(BitIndex);
     end;
+    Result := DWordIndex * 32 + BitIndex;
+    exit;
+  end;
 end;
 
 function TRowsSelection.LastSelected: integer;
 const
-  fSkippableValue= $00000000;
+  fSkippableValue = $00000000;
 var
-  DWordIndex, BitIndex:Integer;
+  DWordIndex, BitIndex: integer;
   tmpDWord: DWORD;
-
 begin
-  Result   := -1;
+  Result := -1;
   BitIndex := 31;
-  for DWordIndex := fDwordSize -1 downto 0 do
+  for DWordIndex := fDwordSize - 1 downto 0 do
+  begin
+    if fArray^[DWordIndex] = fSkippableValue then
+      Continue;
+    tmpDWord := fArray^[DWordIndex];
+    BitIndex := 31;
+    while (tmpDWord and $80000000) = 0 do
     begin
-      if fArray^[DWordIndex] = fSkippableValue then
-         Continue;
-      tmpDWord:= fArray^[DWordIndex];
-      BitIndex := 31;
-      while  (tmpDWord and $80000000) = 0 do
-        begin
-         tmpDWord:=tmpDWord shl 1;
-         dec(BitIndex);
-        end;
-      Result := DWordIndex * 32 + BitIndex;
+      tmpDWord := tmpDWord shl 1;
+      Dec(BitIndex);
+    end;
+    Result := DWordIndex * 32 + BitIndex;
+    exit;
+  end;
+
+end;
+
+function TRowsSelection.NextSelected(index: integer = -1): integer;
+var
+  i: integer;
+begin
+  Result := -1;
+  if index = -1 then
+  begin
+    Result := FirstSelected;
+    exit;
+  end;
+
+  for i := (index + 1) to fsize - 1 do
+    if GetSelected(i) then
+    begin
+      Result := i;
       exit;
     end;
-
-
 end;
 
-function TRowsSelection.NextSelected(index:Integer=-1): integer;
-var i:integer;
+function TRowsSelection.PreviousSelected(index: integer = -1): integer;
+var
+  i: integer;
 begin
-   Result := -1;
-   if index = -1 then
-      begin
-         Result := FirstSelected;
-         exit;
-      end;
+  Result := -1;
+  if index = -1 then
+  begin
+    Result := LastSelected;
+    exit;
+  end;
 
-   for i := (index+1) to fsize -1 do
-     if GetSelected(i) then
-        begin
-          Result:= i;
-          exit;
-        end;
-end;
-
-function TRowsSelection.PreviousSelected(index:Integer=-1): integer;
-var i:integer;
-begin
-   Result := -1;
-   if index = -1 then
-      begin
-         Result := LastSelected;
-         exit;
-      end;
-
-   for i := index-1 downto 0 do
-     if GetSelected(i) then
-        begin
-          Result:= i;
-          exit;
-        end;
+  for i := index - 1 downto 0 do
+    if GetSelected(i) then
+    begin
+      Result := i;
+      exit;
+    end;
 end;
 
 function TRowsSelection.isMultiselection: boolean;
 var
-  idx : integer;
+  idx: integer;
 begin
   idx := FirstSelected;
-  result := not(NextSelected(idx) = -1);
+  Result := not (NextSelected(idx) = -1);
 
 end;
 
-procedure TRowsSelection.SelectRange(var Anchor: Integer; OldRow,
-  NewRow: integer);
+procedure TRowsSelection.SelectRange(var Anchor: integer; OldRow, NewRow: integer);
 var
   dir: integer;
   sel: boolean;
@@ -869,136 +851,134 @@ begin
   if OldRow = NewRow then
     exit;
   if Anchor = -1 then
-    Anchor:=OldRow;
-  dir:=Sign(NewRow - OldRow);
+    Anchor := OldRow;
+  dir := Sign(NewRow - OldRow);
   if Sign(Anchor - OldRow) <> Sign(Anchor - NewRow) then
-    while OldRow <> Anchor do begin
-      SetSelected(OldRow,False);
+    while OldRow <> Anchor do
+    begin
+      SetSelected(OldRow, False);
       Inc(OldRow, dir);
     end;
-  sel:=Abs(Anchor - OldRow) < Abs(Anchor - NewRow);
-  while OldRow <> NewRow do begin
+  sel := Abs(Anchor - OldRow) < Abs(Anchor - NewRow);
+  while OldRow <> NewRow do
+  begin
     SetSelected(OldRow, sel);
     Inc(OldRow, dir);
   end;
-  SetSelected(NewRow, true);
+  SetSelected(NewRow, True);
 end;
 
 { TfMainForm }
 procedure TfMainForm.CollectionTreeDblClick(Sender: TObject);
 begin
-  CollectionHandler(true);
+  CollectionHandler(True);
 end;
 
-procedure TfMainForm.CollectionHandler(Enqueue:boolean);
+procedure TfMainForm.CollectionHandler(Enqueue: boolean);
 var
-  Node:     TMusicTreeNode;
-  aSong:    TCustomSong;
-
+  Node: TMusicTreeNode;
+  aSong: TCustomSong;
 begin
   Node := TMusicTreeNode(tvCollection.GetFirstMultiSelected);
   while Node <> nil do
   begin
     if not Enqueue then
-       BackEnd.PlayList.Clear;
+      BackEnd.PlayList.Clear;
 
     case node.Kind of
       tkSong:
-        begin
+      begin
         aSong := TCustomSong.Create(BackEnd.mediaLibrary.FullNameFromID(Node.ID));
         BackEnd.PlayList.Add(ASong);
-        end
+      end
       else
         BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList, PrepareImportFilter(Node), PrepareFields);
-      end;
-   Node:= TMusicTreeNode(node.GetNextMultiSelected);
+    end;
+    Node := TMusicTreeNode(node.GetNextMultiSelected);
   end;
 
   OnLoaded(sgPlayList);
 
   if not Enqueue and (BackEnd.PlayList.Count > 0) then
-     begin
-       BackEnd.PlayList.ItemIndex:=0;
-       BackEnd.Play;
-     end;
+  begin
+    BackEnd.PlayList.ItemIndex := 0;
+    BackEnd.Play;
+  end;
 end;
 
-procedure TfMainForm.FileSystemHandler(Enqueue:boolean);
+procedure TfMainForm.FileSystemHandler(Enqueue: boolean);
 var
-  Node:     TFileTreeNode;
-  aSong:    TCustomSong;
-
+  Node: TFileTreeNode;
+  aSong: TCustomSong;
 begin
   Node := TFileTreeNode(FilesTree.GetFirstMultiSelected);
   while Node <> nil do
   begin
     if not Enqueue then
-       BackEnd.PlayList.Clear;
+      BackEnd.PlayList.Clear;
 
-    if node.isDir  then
-      begin
-        BackEnd.Manager.ImportFromDirectory(Node.FullPath, True, BackEnd.PlayList);
-      end
+    if node.isDir then
+      BackEnd.Manager.ImportFromDirectory(Node.FullPath, True, BackEnd.PlayList)
     else
-      begin
-        aSong := TCustomSong.Create(Node.FullPath);
-        BackEnd.PlayList.Add(ASong);
-      end;
-   Node:= TFileTreeNode(node.GetNextMultiSelected);
+    begin
+      aSong := TCustomSong.Create(Node.FullPath);
+      BackEnd.PlayList.Add(ASong);
+    end;
+    Node := TFileTreeNode(node.GetNextMultiSelected);
   end;
 
   OnLoaded(sgPlayList);
 
   if not Enqueue and (BackEnd.PlayList.Count > 0) then
-     begin
-       BackEnd.PlayList.ItemIndex:=0;
-       BackEnd.Play;
-     end;
+  begin
+    BackEnd.PlayList.ItemIndex := 0;
+    BackEnd.Play;
+  end;
 end;
 
 procedure TfMainForm.PlayListHandler(Enqueue: boolean);
 var
-  playlistbuilder : TPlayListBuilder;
+  playlistbuilder: TPlayListBuilder;
   item: TPlayListTreeNode;
 begin
-  item := TPlayListTreeNode( PlaylistTree.Selected);
+  item := TPlayListTreeNode(PlaylistTree.Selected);
   if item = nil then
-     exit;
+    exit;
   if not Enqueue then
     BackEnd.PlayList.Clear;
   playlistbuilder := TPlayListBuilder.Create;
   try
     playlistbuilder.FromJson(PlaylistContainer.GetByName(item.FullPath));
     BackEnd.Manager.ImportFromMediaLibrary(BackEnd.mediaLibrary, BackEnd.PlayList,
-          PlayListBuilder.Filter, PlayListBuilder.SortClause );
+      PlayListBuilder.Filter, PlayListBuilder.SortClause);
 
   finally
-    playlistbuilder.free;
+    playlistbuilder.Free;
   end;
   ReloadPlayList;
 end;
+
 procedure TfMainForm.edtFilterChange(Sender: TObject);
 begin
   LoadTree;
 end;
 
-procedure TfMainForm.ePathAcceptDirectory(Sender: TObject; var Value: String);
+procedure TfMainForm.ePathAcceptDirectory(Sender: TObject; var Value: string);
 begin
- LoadDir(Value);
+  LoadDir(Value);
 end;
 
 procedure TfMainForm.ePathEditingDone(Sender: TObject);
 begin
-  if (PathIndex+1) < PathHistory.Count then
-     PathHistory.Capacity:= PathIndex;
+  if (PathIndex + 1) < PathHistory.Count then
+    PathHistory.Capacity := PathIndex;
   LoadDir(ePath.Directory);
 
 end;
 
-procedure TfMainForm.FilesTreeCreateNodeClass(Sender: TCustomTreeView;
-  var NodeClass: TTreeNodeClass);
+procedure TfMainForm.FilesTreeCreateNodeClass(Sender: TCustomTreeView; var NodeClass: TTreeNodeClass);
 begin
-  NodeClass:= TFileTreeNode;
+  NodeClass := TFileTreeNode;
 end;
 
 procedure TfMainForm.FilesTreeDblClick(Sender: TObject);
@@ -1007,15 +987,15 @@ var
 begin
   Node := TFileTreeNode(FilesTree.Selected);
   if Node = nil then
-     exit;
+    exit;
 
   if Node.isDir then
-     LoadDir(Node.FullPath)
+    LoadDir(Node.FullPath)
   else
-     begin
-       BackEnd.PlayList.EnqueueFile(Node.FullPath);
-       ReloadPlayList;
-     end;
+  begin
+    BackEnd.PlayList.EnqueueFile(Node.FullPath);
+    ReloadPlayList;
+  end;
 
 end;
 
@@ -1025,7 +1005,7 @@ var
 begin
   myNode := TFileTreeNode(Node);
   if myNode = nil then
-     exit;
+    exit;
 
   if (myNode.isDir) then
     myNode.ImageIndex := 7
@@ -1040,103 +1020,110 @@ var
 begin
   myNode := TFileTreeNode(Node);
   if myNode = nil then
-     exit;
-  myNode.SelectedIndex:=myNode.ImageIndex;
+    exit;
+  myNode.SelectedIndex := myNode.ImageIndex;
 end;
 
-
-procedure TfMainForm.FormActivate(Sender: TObject);
+procedure TfMainForm.FilesTreeKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
+var
+  Node: TTreeNode;
 begin
-//
-
+  if (ssCtrl in Shift) and (UpperCase(char(key)) = 'A' )then
+  begin
+    Node := FilesTree.Items.GetFirstNode;
+    while Assigned(Node) do
+    begin
+      Node.Selected := True;
+      Node := Node.GetNext;
+    end;
+  end;
 end;
 
 procedure TfMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   if (GuiConfigObj.InterfaceParam.MinimizeOnClose) and not Quitting then
-    begin
-      Application.ShowMainForm:=False;
-      {$IFDEF TASKBAR_EXTENSION}
-      if Mytaskbar_ext.Initialized then
-         Mytaskbar_ext.UnInit;
-      {$ENDIF}
-      CloseAction:=caHide;
-    end
+  begin
+    Application.ShowMainForm := False;
+    {$IFDEF TASKBAR_EXTENSION}
+    if Mytaskbar_ext.Initialized then
+      Mytaskbar_ext.UnInit;
+    {$ENDIF}
+    CloseAction := caHide;
+  end
   else
-    begin
-      BackEnd.SaveState;
-      SaveConfig(nil);
-      CloseAction:=caFree;
-    end;
+  begin
+    BackEnd.SaveState;
+    SaveConfig(nil);
+    CloseAction := caFree;
+  end;
 
 end;
 
 procedure TfMainForm.BackEndSongStart(Sender: TObject);
 var
-  Song:    Tsong;
+  Song: Tsong;
   imgName: string;
-  id:integer;
-  f:TTagReader;
-  imgLoaded : boolean;
-//  tmp:Tmemorystream;
-
+  id: integer;
+  f: TTagReader;
+  imgLoaded: boolean;
+  //  tmp:Tmemorystream;
 begin
   Application.ProcessMessages;
-  pnlPlayInfo.visible:=true;
+  pnlPlayInfo.Visible := True;
   song := BackEnd.PlayList.CurrentItem;
-// mcmcmcmc scrollinto
+  // mcmcmcmc scrollinto
   ScrollIntoView;
 
-  Title.Caption     := Song.tags.Title;
-//  track.Caption     := Song.Tags.TrackString;
-  Album.Caption     := Song.Tags.Album;
-  Artist.Caption    := Song.Tags.Artist;
-  TrackBar.Max      := Song.Tags.Duration;
+  Title.Caption := Song.tags.Title;
+  //  track.Caption     := Song.Tags.TrackString;
+  Album.Caption := Song.Tags.Album;
+  Artist.Caption := Song.Tags.Artist;
+  TrackBar.Max := Song.Tags.Duration;
   TrackBar.Position := Lo(BackEnd.Position);
-  TrayIcon.Hint     := Song.tags.Title + LineEnding + Song.Tags.Artist;
-  Caption           := UnicodeString(Song.tags.Title + ' - ' + Song.Tags.Artist);
+  TrayIcon.Hint := Song.tags.Title + LineEnding + Song.Tags.Artist;
+  Caption := unicodestring(Song.tags.Title + ' - ' + Song.Tags.Artist);
 
   if TrayIcon.Hint = LineEnding then
-     begin
-       TrayIcon.Hint := Song.FileName;
-       Caption       := Song.FileName;
-     end;
+  begin
+    TrayIcon.Hint := Song.FileName;
+    Caption := Song.FileName;
+  end;
 
-  imgloaded := false;
+  imgloaded := False;
   if Song.Tags.HasImage then
-     begin
-       CurrentCover := '';
-       f := GetFileTagsObject(Song.Tags.FileName);
-       try
-          f.Tags.Images[0].image.Position:=0;
-          if f.Tags.Images[0].image.size > 0 then
-            begin
-              imgCover.Picture.LoadFromStream(f.Tags.Images[0].image);
-              imgCover.Hint:= rEmbedded;
-              imgloaded:= true;
-           end;
-       Except
-       end;
-       f.Free;
-     end;
+  begin
+    CurrentCover := '';
+    f := GetFileTagsObject(Song.Tags.FileName);
+    try
+      f.Tags.Images[0].image.Position := 0;
+      if f.Tags.Images[0].image.size > 0 then
+      begin
+        imgCover.Picture.LoadFromStream(f.Tags.Images[0].image);
+        imgCover.Hint := rEmbedded;
+        imgloaded := True;
+      end;
+    except
+    end;
+    f.Free;
+  end;
 
   if not imgLoaded then
-     begin
-      imgName := BackEnd.GetImageFromfolder(IncludeTrailingPathDelimiter(Song.FilePath));
-      if (imgName <> '') and (imgName <> CurrentCover) then
-        begin
-          imgCover.Picture.LoadFromFile(imgName);
-          imgCover.Hint:=imgName;
-          CurrentCover := imgName;
-        end;
-     end;
+  begin
+    imgName := BackEnd.GetImageFromfolder(IncludeTrailingPathDelimiter(Song.FilePath));
+    if (imgName <> '') and (imgName <> CurrentCover) then
+    begin
+      imgCover.Picture.LoadFromFile(imgName);
+      imgCover.Hint := imgName;
+      CurrentCover := imgName;
+    end;
+  end;
 
   ShowNotification;
 
 
-  id:= BackEnd.mediaLibrary.IDFromFullName(BackEnd.PlayList.CurrentItem.FullName);
+  id := BackEnd.mediaLibrary.IDFromFullName(BackEnd.PlayList.CurrentItem.FullName);
   if id > -1 then
-     BackEnd.mediaLibrary.SetSongPlayed(ID);
+    BackEnd.mediaLibrary.SetSongPlayed(ID);
 
   ScrollIntoView;
   Application.ProcessMessages;
@@ -1146,8 +1133,7 @@ end;
 procedure TfMainForm.ShowNotification;
 var
   ASong: TSong;
-  tmpstr :string;
-
+  tmpstr: string;
 begin
   ASong := BackEnd.PlayList.CurrentItem;
   if not Assigned(ASong) then
@@ -1157,65 +1143,62 @@ begin
     ShowOSD(ASong, imgCover.Picture);
 
   if GuiConfigObj.NotificationParam.Kind = npkNotifications then
-    begin
-     {$IFDEF NOTIFYDBUS}
-      MyNotification.Summary:=ASong.tags.Title;
+  begin
+    {$IFDEF NOTIFYDBUS}
+    MyNotification.Summary := ASong.tags.Title;
     //  MyNotification.IconName:='audio-x-generic';
-      MyNotification.IconName:=BackEnd.GetCoverURL;
-      MyNotification.Body:=ASong.Tags.Album + LineEnding + ASong.Tags.Artist + LineEnding +  ASong.Tags.TrackString;
-      MyNotification.TimeOut:= NOTIFY_EXPIRES_DEFAULT;
-      MyNotification.Urgency:= NOTIFY_URGENCY_NORMAL;
-      Notifier :=TNotificationClient.Create;
-      try
-        Notifier.init(DisplayAppName);
-        Notifier.ShowNotification(MyNotification);
-        Notifier.UnInit;
-      finally
-        Notifier.free;
-      end;
-     {$ELSE} // Use standard balloon hint on other widgetset
-      TrayIcon.BalloonTimeout := GuiConfigObj.NotificationParam.TimeOut;
-      TrayIcon.BalloonTitle   := ASong.tags.Title;
-      tmpstr  := UTF8Encode(aSong.Tags.Album + LineEnding + ASong.Tags.Artist + LineEnding +
-                      ASong.Tags.TrackString);
-
-      TrayIcon.BalloonHint    := tmpstr;
-      if trim(TrayIcon.BalloonHint) = '' then
-         TrayIcon.BalloonHint := UTF8ToSys(ASong.FileName); ;
-
-      TrayIcon.ShowBalloonHint;
-     {$ENDIF}
-
+    MyNotification.IconName := BackEnd.GetCoverURL;
+    MyNotification.Body := ASong.Tags.Album + LineEnding + ASong.Tags.Artist + LineEnding + ASong.Tags.TrackString;
+    MyNotification.TimeOut := NOTIFY_EXPIRES_DEFAULT;
+    MyNotification.Urgency := NOTIFY_URGENCY_NORMAL;
+    Notifier := TNotificationClient.Create;
+    try
+      Notifier.init(DisplayAppName);
+      Notifier.ShowNotification(MyNotification);
+      Notifier.UnInit;
+    finally
+      Notifier.Free;
     end;
+    {$ELSE}// Use standard balloon hint on other widgetset
+    TrayIcon.BalloonTimeout := GuiConfigObj.NotificationParam.TimeOut;
+    TrayIcon.BalloonTitle := ASong.tags.Title;
+    tmpstr := UTF8Encode(aSong.Tags.Album + LineEnding + ASong.Tags.Artist + LineEnding +
+      ASong.Tags.TrackString);
+
+    TrayIcon.BalloonHint := tmpstr;
+    if trim(TrayIcon.BalloonHint) = '' then
+      TrayIcon.BalloonHint := UTF8ToSys(ASong.FileName);
+    ;
+
+    TrayIcon.ShowBalloonHint;
+    {$ENDIF}
+
+  end;
 
 end;
 
 procedure TfMainForm.UpdateProperty(Kind: TChangedProperty);
 begin
   case kind of
-    cpVolume: begin
-                slVolume.Position:= BackEnd.Volume;
-              end;
+    cpVolume: slVolume.Position := BackEnd.Volume;
     cpMute: begin
-              dm.actmute.checked := backend.muted;
-              if backend.muted then
-                dm.actMute.ImageIndex := 18
-              else
-                dm.actMute.ImageIndex := 19;
-            end;
+      dm.actmute.Checked := backend.muted;
+      if backend.muted then
+        dm.actMute.ImageIndex := 18
+      else
+        dm.actMute.ImageIndex := 19;
+    end;
 
     cpClosing: begin
-                Quitting:= true;
-                LCLIntf.PostMessage(Self.Handle, LM_CLOSEQUERY, 0, 0);
-              end;
+      Quitting := True;
+      LCLIntf.PostMessage(Self.Handle, LM_CLOSEQUERY, 0, 0);
+    end;
     cpPlayPos: begin
-                 if not seeking then
-                   TrackBar.Position := BackEnd.Position;
-                   lbTime.Caption := FormatTimeRange(BackEnd.Position);
-               end;
-    cpLooping: begin
-                 dm.changeRepeatMode(BackEnd.Looping, false);
-               end;
+      if not seeking then
+        TrackBar.Position := BackEnd.Position;
+      lbTime.Caption := FormatTimeRange(BackEnd.Position);
+    end;
+    cpLooping: dm.changeRepeatMode(BackEnd.Looping, False);
   end;
 
 end;
@@ -1227,22 +1210,20 @@ begin
 
   {$IFDEF NETWORK_INTF}
   if GuiConfigObj.NetRemoteParam.Enabled then
+  begin
+    if not Assigned(MyNetIntf) then
     begin
-     if not Assigned(MyNetIntf) then
-       begin
-         MyNetIntf :=  TNetIntf.Create;
-         MyNetIntf.Port := GuiConfigObj.NetRemoteParam.Port;
-         MyNetIntf.Activate(BackEnd);
-       end;
-    end
+      MyNetIntf := TNetIntf.Create;
+      MyNetIntf.Port := GuiConfigObj.NetRemoteParam.Port;
+      MyNetIntf.Activate(BackEnd);
+    end;
+  end
   else
-   if Assigned(MyNetIntf) then
-     begin
-       FreeAndNil(MyNetIntf);
-     end;
+  if Assigned(MyNetIntf) then
+    FreeAndNil(MyNetIntf);
 
   if Assigned(MyNetIntf) then
-     MyNetIntf.Port := GuiConfigObj.NetRemoteParam.Port;
+    MyNetIntf.Port := GuiConfigObj.NetRemoteParam.Port;
   {$ENDIF}
 end;
 
@@ -1258,55 +1239,55 @@ end;
 
 procedure TfMainForm.actShowAboutExecute(Sender: TObject);
 var
-  theForm : TfAbout;
+  theForm: TfAbout;
 begin
-  theForm:= TfAbout.create(application);
+  theForm := TfAbout.Create(application);
   theForm.ShowModal;
 end;
 
 procedure TfMainForm.actShowEqualizerExecute(Sender: TObject);
 var
-  theForm : TfEqualizer;
+  theForm: TfEqualizer;
 begin
-  theForm:= TfEqualizer.create(application);
+  theForm := TfEqualizer.Create(application);
   try
     theForm.ShowModal;
   finally
-    theForm.free;
+    theForm.Free;
   end;
 end;
 
 procedure TfMainForm.actShowLeftExecute(Sender: TObject);
 begin
-  pnlLeft.Visible:= actShowLeft.checked;
-  FMainFormParam.LeftPanelVisible:= actShowLeft.checked;
+  pnlLeft.Visible := actShowLeft.Checked;
+  FMainFormParam.LeftPanelVisible := actShowLeft.Checked;
 end;
 
 procedure TfMainForm.actShowPLMediainfoExecute(Sender: TObject);
 var
-  info : TfSongInfo;
-  Index: Integer;
+  info: TfSongInfo;
+  Index: integer;
   fileList: TStringList;
 begin
-  Index:= PlaylistSelected.FirstSelected;
+  Index := PlaylistSelected.FirstSelected;
   if Index < 0 then
-     exit;
+    exit;
 
   fileList := TStringList.Create;
   try
-     while Index > -1 do
-       begin
-         fileList.Add(BackEnd.PlayList[Index].FullName);
-         Index := PlaylistSelected.NextSelected(Index);
-       end;
+    while Index > -1 do
+    begin
+      fileList.Add(BackEnd.PlayList[Index].FullName);
+      Index := PlaylistSelected.NextSelected(Index);
+    end;
 
     info := TfSongInfo.Create(Application);
     if fileList.Count > 1 then
-       info.InitFromList(FileList)
+      info.InitFromList(FileList)
     else
-       info.InitFromFile(FileList[0]);
+      info.InitFromFile(FileList[0]);
     info.OnUpdate := @UpdateTree;
-    Info.show;
+    Info.Show;
 
   finally
     FreeAndNil(FileList);
@@ -1315,9 +1296,9 @@ end;
 
 procedure TfMainForm.btnBackDirClick(Sender: TObject);
 begin
-  dec(PathIndex);
+  Dec(PathIndex);
   if PathIndex < 0 then
-     PathIndex := 0;
+    PathIndex := 0;
 
   LoadDir(PathHistory[PathIndex]);
 end;
@@ -1329,9 +1310,9 @@ end;
 
 procedure TfMainForm.btnForwardDirClick(Sender: TObject);
 begin
-  inc(PathIndex);
-  if PathIndex > PathHistory.Count -1 then
-     PathIndex := PathHistory.Count -1 ;
+  Inc(PathIndex);
+  if PathIndex > PathHistory.Count - 1 then
+    PathIndex := PathHistory.Count - 1;
 
   LoadDir(PathHistory[PathIndex]);
 
@@ -1344,9 +1325,9 @@ end;
 
 procedure TfMainForm.AfterFullStart(Data: PtrInt);
 begin
-      {$IFDEF TASKBAR_EXTENSION}
-   if not Mytaskbar_ext.Initialized then
-      Mytaskbar_ext.Init;
+  {$IFDEF TASKBAR_EXTENSION}
+  if not Mytaskbar_ext.Initialized then
+    Mytaskbar_ext.Init;
   {$ENDIF}
 end;
 
@@ -1370,16 +1351,13 @@ function TfMainForm.PrepareFilter: string;
 var
   filter: string;
 begin
-  filter:= edtFilter.Text;
+  filter := edtFilter.Text;
   if filter <> '' then
-    Result := format(' %0:s like ''%%%3:s%%'''
-                + ' or %1:s like ''%%%3:s%%'''
-                + ' or %2:s like ''%%%3:s%%'''
-                + ' or Title like ''%%%3:s%%''',
-               [SortArray[SortFields.F1].FieldName,
-                SortArray[SortFields.F2].FieldName,
-                SortArray[SortFields.F3].FieldName,
-                filter])
+    Result := format(' %0:s like ''%%%3:s%%''' + ' or %1:s like ''%%%3:s%%''' + ' or %2:s like ''%%%3:s%%''' + ' or Title like ''%%%3:s%%''',
+      [SortArray[SortFields.F1].FieldName,
+      SortArray[SortFields.F2].FieldName,
+      SortArray[SortFields.F3].FieldName,
+      filter])
   else
     Result := '';
 
@@ -1388,30 +1366,29 @@ end;
 
 function TfMainForm.PrepareImportFilter(Node: TMusicTreeNode): string;
 var
-  wrkNode:  TMusicTreeNode;
+  wrkNode: TMusicTreeNode;
   wrkValue: string;
 begin
-  Result  := '0=0';
+  Result := '0=0';
   wrkNode := Node;
   repeat
     if wrkNode.EmptyTag then
       wrkValue := EmptyStr
     else
       wrkValue := wrkNode.Text;
-    Result   := Result + format(' and %s = %s ', [SortArray[wrkNode.Kind].FieldName,
+    Result := Result + format(' and %s = %s ', [SortArray[wrkNode.Kind].FieldName,
       QuotedStr(wrkValue)]);
-    wrkNode  := TMusicTreeNode(wrkNode.Parent);
-  until (wrkNode = nil) ;
+    wrkNode := TMusicTreeNode(wrkNode.Parent);
+  until (wrkNode = nil);
 
 end;
 
 
 procedure TfMainForm.LoadTree;
 var
-  tags:     TCommonTags;
+  tags: TCommonTags;
   L1Key, L2Key: string;
   L1Item, L2Item, L3Item: TMusicTreeNode;
-
 const
   FakeValue: string = '!"£$%&/()=?=)(/&%$£"!';
 begin
@@ -1424,52 +1401,56 @@ begin
     BackEnd.mediaLibrary.ReadBegin(PrepareFilter, PrepareFields);
 
     while not BackEnd.mediaLibrary.ReadComplete do
+    begin
+      Tags := BackEnd.mediaLibrary.ReadItem;
+      if UpperCase(TagValue(Tags, SortFields.F1)) <> L1Key then
       begin
-        Tags := BackEnd.mediaLibrary.ReadItem;
-        if UpperCase(TagValue(Tags, SortFields.F1)) <> L1Key then
-           begin
-             L1Item   := TMusicTreeNode(TVCollection.Items.Add(nil, TagValue(Tags, SortFields.F1)));
-             L1Key    := UpperCase(TagValue(Tags, SortFields.F1));
-             L1Item.EmptyTag := L1Item.Text = EmptyStr;
-             if L1Item.EmptyTag then L1Item.Text := rEmptyTag;
-             L1Item.Kind := SortFields.F1;
-             L2Key    := FakeValue;
-           end;
-
-        if UpperCase(TagValue(Tags, SortFields.F2)) <> L2Key then
-           begin
-             L2Item   := TMusicTreeNode(TVCollection.Items.AddChild(L1Item, TagValue(Tags, SortFields.F2)));
-             L2Key    := UpperCase(TagValue(Tags, SortFields.F2));
-             L2Item.EmptyTag := L2Item.Text = EmptyStr;
-             if L2Item.EmptyTag then L2Item.Text := rEmptyTag;
-             L2Item.Kind := SortFields.F2;
-           end;
-
-        L3Item   := TMusicTreeNode(TVCollection.Items.AddChild(L2Item, TagValue(Tags, tkSong)));
-        L3Item.Kind := tkSong;
-        L3Item.ID := tags.ID;
-        Finalize(Tags);
-        BackEnd.mediaLibrary.NextItem;
+        L1Item := TMusicTreeNode(TVCollection.Items.Add(nil, TagValue(Tags, SortFields.F1)));
+        L1Key := UpperCase(TagValue(Tags, SortFields.F1));
+        L1Item.EmptyTag := L1Item.Text = EmptyStr;
+        if L1Item.EmptyTag then L1Item.Text := rEmptyTag;
+        L1Item.Kind := SortFields.F1;
+        L2Key := FakeValue;
       end;
 
-    finally
+      if UpperCase(TagValue(Tags, SortFields.F2)) <> L2Key then
+      begin
+        L2Item := TMusicTreeNode(TVCollection.Items.AddChild(L1Item, TagValue(Tags, SortFields.F2)));
+        L2Key := UpperCase(TagValue(Tags, SortFields.F2));
+        L2Item.EmptyTag := L2Item.Text = EmptyStr;
+        if L2Item.EmptyTag then L2Item.Text := rEmptyTag;
+        L2Item.Kind := SortFields.F2;
+      end;
+
+      L3Item := TMusicTreeNode(TVCollection.Items.AddChild(L2Item, TagValue(Tags, tkSong)));
+      L3Item.Kind := tkSong;
+      L3Item.ID := tags.ID;
+      Finalize(Tags);
+      BackEnd.mediaLibrary.NextItem;
+    end;
+
+  finally
     tvCollection.EndUpdate;
   end;
   tvCollection.Repaint;
 
 end;
 
-procedure TfMainForm.MediaLibraryScanComplete(Sender: TObject; _Added, _Updated, _Removed, _Failed : integer);
+procedure TfMainForm.MediaLibraryScanComplete(Sender: TObject; _Added, _Updated, _Removed, _Failed: integer);
 begin
   //debugln(DateTimeToStr(now), ' - ' ,'Stop');
   sgStats.Clean;
   sgStats.RowCount := 4;
-  sgStats.Cells[0,0] := rAddedTrack;   sgStats.Cells[1,0] := IntToStr(_Added);
-  sgStats.Cells[0,1] := rUpdatedTrack; sgStats.Cells[1,1] := IntToStr(_Updated);
-  sgStats.Cells[0,2] := rRemovedTrack; sgStats.Cells[1,2] := IntToStr(_Removed);
-  sgStats.Cells[0,3] := rFailedTrack;  sgStats.Cells[1,3] := IntToStr(_Failed);
+  sgStats.Cells[0, 0] := rAddedTrack;
+  sgStats.Cells[1, 0] := IntToStr(_Added);
+  sgStats.Cells[0, 1] := rUpdatedTrack;
+  sgStats.Cells[1, 1] := IntToStr(_Updated);
+  sgStats.Cells[0, 2] := rRemovedTrack;
+  sgStats.Cells[1, 2] := IntToStr(_Removed);
+  sgStats.Cells[0, 3] := rFailedTrack;
+  sgStats.Cells[1, 3] := IntToStr(_Failed);
 
-  gbStats.Visible := true;
+  gbStats.Visible := True;
   Application.ProcessMessages;
   LoadTree;
 
@@ -1478,7 +1459,7 @@ end;
 procedure TfMainForm.CheckWelcomeMode;
 begin
   if (BackEnd.PlayListCount = 0) and
-     (BackEnd.mediaLibrary.IsEmpty) then
+    (BackEnd.mediaLibrary.IsEmpty) then
     pcCenter.ActivePage := tsWelcome
   else
     pcCenter.ActivePage := tsPlayer;
@@ -1486,26 +1467,25 @@ end;
 
 procedure TfMainForm.FormCreate(Sender: TObject);
 var
-  tmpIcon : TIcon;
-  tmpSize : TSize;
-
+  tmpIcon: TIcon;
+  tmpSize: TSize;
 begin
   GuiConfigObj := TGuiConfig.Create(BackEnd.Config);
 
-  TrayMenuActive:=False;
-  Quitting := false;
+  TrayMenuActive := False;
+  Quitting := False;
   PlaylistSelected := TRowsSelection.Create;
   PlaylistContainer := nil;
   PathHistory := TStringList.Create;
   PathHistory.Duplicates := dupIgnore;
 
-  TrackBar.Position:= 0;
+  TrackBar.Position := 0;
 
   SortFields.F1 := tkAlbumArtist;
   SortFields.F2 := tkAlbum;
   SortFields.F3 := tkSong;
 
-  CurrentPath:=EmptyStr;
+  CurrentPath := EmptyStr;
   ClearPanelInfo;
 
   //Cache bitmap used for rating column painting
@@ -1516,56 +1496,56 @@ begin
 
   BackEnd.OnPlayListChange := @PlayListChange;
   BackEnd.AudioEngine.OnSongStart := @BackEndSongStart;
-  BackEnd.OnSaveInterfaceState:= @SaveConfig;
+  BackEnd.OnSaveInterfaceState := @SaveConfig;
 
-  BackEnd.OnPlayListLoad  := @OnLoaded;
+  BackEnd.OnPlayListLoad := @OnLoaded;
   BackEnd.OnEngineCommand := @OnEngineCommand;
   BackEnd.OnExternalCommand := @OnExternalCommand;
 
   BackEnd.mediaLibrary.OnScanComplete := @MediaLibraryScanComplete;
-  BackEnd.mediaLibrary.OnScanStart:=@MediaLibraryScanBegin;
+  BackEnd.mediaLibrary.OnScanStart := @MediaLibraryScanBegin;
 
   ReadConfig(Self);
 
   CheckWelcomeMode;
 
-  slVolume.Max:= 255;//BackEnd.AudioEngine.MaxVolume;
+  slVolume.Max := 255;//BackEnd.AudioEngine.MaxVolume;
   slVolume.Position := BackEnd.EngineParam.Volume;
 
   case TplRepeat(BackEnd.PlayListParam.RepeatMode) of
-    rptNone : dm.actRepeatNone.Checked := true;
-    rptTrack : dm.actRepeatTrack.Checked := true;
-    rptAlbum : dm.actRepeatAlbum.Checked := true;
-    rptPlayList : dm.actRepeatAll.Checked := true;
+    rptNone: dm.actRepeatNone.Checked := True;
+    rptTrack: dm.actRepeatTrack.Checked := True;
+    rptAlbum: dm.actRepeatAlbum.Checked := True;
+    rptPlayList: dm.actRepeatAll.Checked := True;
   end;
 
   if GuiConfigObj.InterfaceParam.ShowTrayIcon then
-    begin
-       tmpIcon:=TIcon.Create;
-       tmpIcon.LoadFromResourceName(HINSTANCE,'MAINICON');
-       try // on some linux DE/WS combination this could fail
-         tmpSize.cx:=TrayIcon.Canvas.Width;
-         tmpSize.cy:=TrayIcon.Canvas.Height;
-       except //fallback
-         tmpSize.cx:=32;
-         tmpSize.cy:=32;
-       end;
-       tmpIcon.Current:=tmpIcon.GetBestIndexForSize(tmpsize);
-       TrayIcon.Icon.Transparent:=true;
-       TrayIcon.Icon.Assign(tmpIcon);
-       tmpIcon.free;
+  begin
+    tmpIcon := TIcon.Create;
+    tmpIcon.LoadFromResourceName(HINSTANCE, 'MAINICON');
+    try // on some linux DE/WS combination this could fail
+      tmpSize.cx := TrayIcon.Canvas.Width;
+      tmpSize.cy := TrayIcon.Canvas.Height;
+    except //fallback
+      tmpSize.cx := 32;
+      tmpSize.cy := 32;
     end;
+    tmpIcon.Current := tmpIcon.GetBestIndexForSize(tmpsize);
+    TrayIcon.Icon.Transparent := True;
+    TrayIcon.Icon.Assign(tmpIcon);
+    tmpIcon.Free;
+  end;
 
   if GuiConfigObj.InterfaceParam.ShowTrayIcon then
-     begin
-       Application.ShowMainForm := True;
-       TrayIcon.Visible := True;
-     end
+  begin
+    Application.ShowMainForm := True;
+    TrayIcon.Visible := True;
+  end
   else
-     begin
-       Application.ShowMainForm := False;
-       TrayIcon.Visible := false;
-     end;
+  begin
+    Application.ShowMainForm := False;
+    TrayIcon.Visible := False;
+  end;
 
   slVolume.Position := BackEnd.Volume;
   BackEnd.Attach(Self);
@@ -1576,10 +1556,10 @@ begin
 
   {$IFDEF MPRIS2}
   if GuiConfigObj.InterfaceParam.EnableSoundMenu then
-    begin
-      Mpris := TMpris2.Create;
-      Mpris.Activate(BackEnd);
-    end;
+  begin
+    Mpris := TMpris2.Create;
+    Mpris.Activate(BackEnd);
+  end;
   {$ENDIF MPRIS}
 
   {$IFDEF TASKBAR_EXTENSION}
@@ -1588,73 +1568,67 @@ begin
 
   {$IFDEF NETWORK_INTF}
   if GuiConfigObj.NetRemoteParam.Enabled then
-    begin
-      MyNetIntf := TNetIntf.Create;
-      MyNetIntf.Port:=GuiConfigObj.NetRemoteParam.Port;
-      MyNetIntf.Activate(BackEnd);
-    end;
+  begin
+    MyNetIntf := TNetIntf.Create;
+    MyNetIntf.Port := GuiConfigObj.NetRemoteParam.Port;
+    MyNetIntf.Activate(BackEnd);
+  end;
   {$ENDIF}
   {$IFDEF MULTIMEDIA_KEYS}
   if GuiConfigObj.InterfaceParam.CaptureMMKeys then
-    begin
-      fMultimediaKeys := TMultimediaKeys.Create(GuiConfigObj.InterfaceParam.CaptureMMkeysMode, BackEnd);
-    end;
+    fMultimediaKeys := TMultimediaKeys.Create(GuiConfigObj.InterfaceParam.CaptureMMkeysMode, BackEnd);
   {$ENDIF}
 
   {$IFDEF SCREEN_LOCK}
   if GuiConfigObj.InterfaceParam.PauseWhenLocked then
-    begin
-      fscreenlock := TScreenLockHandler.Create(BackEnd);
-      fscreenlock.Init;
-    end;
+  begin
+    fscreenlock := TScreenLockHandler.Create(BackEnd);
+    fscreenlock.Init;
+  end;
   {$ENDIF}
 
   try
-    if Not FileExists(BackEnd.Config.GetPlaylistsPath+'playlist.opl') then
-      begin
-
-      end;
+    if not FileExists(BackEnd.Config.GetPlaylistsPath + 'playlist.opl') then
+    ;
 
   except
-    on e : exception do
-    //
+    on e: Exception do
+
   end;
 
-  LoadedPlaylist:= False;
+  LoadedPlaylist := False;
   BackEnd.AutoSendPosEvents(True);
   OnLoaded(self);
 
-
 end;
 
-Procedure TfMainForm.LoadLastPlaylist;
+procedure TfMainForm.LoadLastPlaylist;
 begin
 
   try
     if FileExistsUTF8(Backend.Config.ConfigDir + LASTPLAYLISTNAME) then
-       BackEnd.Manager.ImportFromXSPF(Backend.Config.ConfigDir + LASTPLAYLISTNAME, BackEnd.PlayList)
+      BackEnd.Manager.ImportFromXSPF(Backend.Config.ConfigDir + LASTPLAYLISTNAME, BackEnd.PlayList)
     else
-       BackEnd.PlayList.clear;
+      BackEnd.PlayList.Clear;
 
     OnLoaded(Self);
 
     if (BackEnd.Manager.SavedTime <> 0) and
-       BackEnd.PlayListParam.Restart and
-       (BackEnd.PlayList.CurrentItem <> nil) then
-      begin
-         Application.ProcessMessages;
-         BackEnd.AudioEngine.Play(BackEnd.PlayList.CurrentItem, BackEnd.Manager.SavedTime);
-         ScrollIntoView;
-         Application.ProcessMessages;
-      end;
+      BackEnd.PlayListParam.Restart and
+      (BackEnd.PlayList.CurrentItem <> nil) then
+    begin
+      Application.ProcessMessages;
+      BackEnd.AudioEngine.Play(BackEnd.PlayList.CurrentItem, BackEnd.Manager.SavedTime);
+      ScrollIntoView;
+      Application.ProcessMessages;
+    end;
   except
-     on e: Exception do
-       begin
-          DebugLn(e.Message);
-          BackEnd.PlayList.clear;
-       end;
+    on e: Exception do
+    begin
+      DebugLn(e.Message);
+      BackEnd.PlayList.Clear;
+    end;
   end;
-
 
 end;
 
@@ -1663,9 +1637,7 @@ begin
 
   {$IFDEF MPRIS2}
   if Assigned(Mpris) then
-     begin
-      Mpris.Deactivate;
-     end;
+    Mpris.Deactivate;
   {$ENDIF MPRIS}
   {$IFDEF TASKBAR_EXTENSION}
   Mytaskbar_ext.UnInit;
@@ -1674,10 +1646,10 @@ begin
 
   {$IFDEF NETWORK_INTF}
   if Assigned(MyNetIntf) then
-    begin
-      MyNetIntf.DeActivate;
-      MyNetIntf.Free;
-    end;
+  begin
+    MyNetIntf.DeActivate;
+    MyNetIntf.Free;
+  end;
   {$ENDIF}
 
   {$IFDEF MULTIMEDIA_KEYS}
@@ -1717,8 +1689,7 @@ begin
 
 end;
 
-procedure TfMainForm.FormDropFiles(Sender: TObject;
-  const FileNames: array of String);
+procedure TfMainForm.FormDropFiles(Sender: TObject; const FileNames: array of string);
 begin
   BackEnd.Manager.ImportFromStringArray(FileNames, BackEnd.PlayList);
   BackEnd.SignalPlayListChange;
@@ -1726,7 +1697,7 @@ end;
 
 procedure TfMainForm.FormHide(Sender: TObject);
 begin
-  Application.ShowMainForm:=False;
+  Application.ShowMainForm := False;
 end;
 
 procedure TfMainForm.FormResize(Sender: TObject);
@@ -1738,20 +1709,20 @@ end;
 
 procedure TfMainForm.FormShow(Sender: TObject);
 begin
-  Application.ShowMainForm:=False;
+  Application.ShowMainForm := False;
   ScrollIntoView;
 
   if (BackEnd.AudioEngine = nil) or (BackEnd.AudioEngine.GetEngineName = 'dummy') then
-     begin
-       ShowMessage(rMissingConfig);
-       ActShowPreferences.Execute;
-     end;
-  if Not LoadedPlaylist then
-    begin
-      LoadedPlaylist:= true;
-      LoadLastPlaylist;
-    end;
-  Application.QueueAsyncCall(@AfterFullStart,0);
+  begin
+    ShowMessage(rMissingConfig);
+    ActShowPreferences.Execute;
+  end;
+  if not LoadedPlaylist then
+  begin
+    LoadedPlaylist := True;
+    LoadLastPlaylist;
+  end;
+  Application.QueueAsyncCall(@AfterFullStart, 0);
 end;
 
 procedure TfMainForm.imgCoverDblClick(Sender: TObject);
@@ -1768,20 +1739,20 @@ end;
 
 procedure TfMainForm.mnuRating0Click(Sender: TObject);
 begin
- BackEnd.PlayList.CurrentItem.Rating := TMenuItem(Sender).tag * 2;
+  BackEnd.PlayList.CurrentItem.Rating := TMenuItem(Sender).tag * 2;
 end;
 
 procedure TfMainForm.mnuRatingClick(Sender: TObject);
 begin
-  if not assigned (BackEnd.PlayList.CurrentItem) then exit;
+  if not assigned(BackEnd.PlayList.CurrentItem) then exit;
   case (BackEnd.PlayList.CurrentItem.Rating div 2) of
-    1: mnuRating1.Checked := true;
-    2: mnuRating2.Checked := true;
-    3: mnuRating3.Checked := true;
-    4: mnuRating4.Checked := true;
-    5: mnuRating5.Checked := true;
-   else
-     mnuRating0.Checked := true;
+    1: mnuRating1.Checked := True;
+    2: mnuRating2.Checked := True;
+    3: mnuRating3.Checked := True;
+    4: mnuRating4.Checked := True;
+    5: mnuRating5.Checked := True;
+    else
+      mnuRating0.Checked := True;
 
   end;
 end;
@@ -1805,15 +1776,15 @@ procedure TfMainForm.mnuDeletePlaylistClick(Sender: TObject);
 var
   item: TPlayListTreeNode;
 begin
-  item := TPlayListTreeNode( PlaylistTree.Selected);
+  item := TPlayListTreeNode(PlaylistTree.Selected);
   if item = nil then
-     exit;
+    exit;
   if MessageDlg(rDeletePlaylistConfirmation, mtWarning, mbYesNo, 0) = mrYes then
-    begin
-     PlaylistContainer.Delete(item.Index);
-     PlaylistContainer.Save;
-     LoadAutomaticPlaylist;
-    end;
+  begin
+    PlaylistContainer.Delete(item.Index);
+    PlaylistContainer.Save;
+    LoadAutomaticPlaylist;
+  end;
 end;
 
 procedure TfMainForm.mnuEnqueuePlaylistClick(Sender: TObject);
@@ -1823,40 +1794,40 @@ end;
 
 procedure TfMainForm.mnuPlayPlaylistClick(Sender: TObject);
 begin
- PlayListHandler(False);
+  PlayListHandler(False);
 end;
 
 procedure TfMainForm.mnuNewPlayListClick(Sender: TObject);
 begin
   with TfCustomPlayList.Create(self) do
-    begin
-      Container := PlaylistContainer;
-      Index := -1;
-      if showmodal = mrOK then
-        LoadAutomaticPlaylist;
+  begin
+    Container := PlaylistContainer;
+    Index := -1;
+    if showmodal = mrOk then
+      LoadAutomaticPlaylist;
 
-    end;
+  end;
 end;
 
 procedure TfMainForm.mnuEditPlaylistClick(Sender: TObject);
 var
   item: TPlayListTreeNode;
 begin
-  item := TPlayListTreeNode( PlaylistTree.Selected);
+  item := TPlayListTreeNode(PlaylistTree.Selected);
   if item = nil then
-     exit;
+    exit;
   with TfCustomPlayList.Create(self) do
+  begin
+    Container := PlaylistContainer;
+    Index := item.Index;
+    if LoadFromJson(PlaylistContainer.GetByName(item.FullPath)) then
     begin
-      Container := PlaylistContainer;
-      Index:= item.Index;
-      if LoadFromJson(PlaylistContainer.GetByName(item.FullPath)) then
-        begin
-         if showmodal = mrOK then
-           LoadAutomaticPlaylist;
-        end
-      else
-        free;
-    end;
+      if showmodal = mrOk then
+        LoadAutomaticPlaylist;
+    end
+    else
+      Free;
+  end;
 end;
 
 procedure TfMainForm.PlayListChange(Sender: TObject);
@@ -1870,24 +1841,24 @@ procedure TfMainForm.MediaLibraryScanBegin(Sender: TObject);
 begin
   sgStats.Clean;
   sgStats.RowCount := 1;
-  sgstats.cells[0,0]:=rBeginCollectionScan;
-  gbStats.Visible:=True;
+  sgstats.cells[0, 0] := rBeginCollectionScan;
+  gbStats.Visible := True;
   Application.ProcessMessages;
   //debugln(DateTimeToStr(now), ' - ' ,'Begin');
 end;
 
 procedure TfMainForm.RemoveSelectionFromPlaylist;
 var
-  Index, PrevIndex: Integer;
+  Index, PrevIndex: integer;
 begin
   // Work in reverse order. Removing an item on playlist shift up remaining ones..
-  index := PlaylistSelected.LastSelected ;
-  While Index > -1 do
-    begin
-      Previndex:= PlaylistSelected.PreviousSelected(index);
-      BackEnd.PlayList.Delete(Index);
-      Index:= Previndex;
-    end;
+  index := PlaylistSelected.LastSelected;
+  while Index > -1 do
+  begin
+    Previndex := PlaylistSelected.PreviousSelected(index);
+    BackEnd.PlayList.Delete(Index);
+    Index := Previndex;
+  end;
 
   OnLoaded(sgPlayList);
   BackEnd.Notify(cpStatus);
@@ -1895,69 +1866,65 @@ end;
 
 procedure TfMainForm.ScrollIntoView;
 var
-  aRow,
-  iTopRow,
-  visRows,
-  lastRow : integer;
+  aRow, iTopRow, visRows, lastRow: integer;
 begin
   // sgplaylist.Row:= BackEnd.PlayList.ItemIndex +1;
   // above code trigger a Click event in grid. This was breaking
   // code for editing Rating columns
 
-  ARow := BackEnd.PlayList.ItemIndex +1;
+  ARow := BackEnd.PlayList.ItemIndex + 1;
   if (ARow > -1) and (ARow < sgplaylist.RowCount) then
-     begin
-       Arow := Arow +1;
-       iTopRow := sgplaylist.TopRow;
-       visRows := sgplaylist.VisibleRowCount;
-       lastRow := iTopRow +visRows -1;
-       if ARow <= iTopRow then
-          sgplaylist.TopRow := ARow  -1
-       else
-         if ARow > lastRow then
-           sgplaylist.TopRow := ARow -visRows;
+  begin
+    Arow := Arow + 1;
+    iTopRow := sgplaylist.TopRow;
+    visRows := sgplaylist.VisibleRowCount;
+    lastRow := iTopRow + visRows - 1;
+    if ARow <= iTopRow then
+      sgplaylist.TopRow := ARow - 1
+    else
+    if ARow > lastRow then
+      sgplaylist.TopRow := ARow - visRows;
   end;
 end;
 
 procedure TfMainForm.LoadAutomaticPlaylist;
 var
-  AutoPlayList:TStringList;
+  AutoPlayList: TStringList;
   i: integer;
   Node, BaseNode: TPlayListTreeNode;
-  plName:string;
-
+  plName: string;
 begin
   PlaylistTree.Items.Clear;
-  BaseNode:= TPlayListTreeNode(PlaylistTree.Items.Add(nil, rAutomaticPlaylist));
-  BaseNode.FullPath:=EmptyStr;
+  BaseNode := TPlayListTreeNode(PlaylistTree.Items.Add(nil, rAutomaticPlaylist));
+  BaseNode.FullPath := EmptyStr;
 
   AutoPlayList := TStringList.Create;
 
   try
-    //
+
     if not Assigned(PlaylistContainer) then
-       begin
-         TPlaylistContainer.CreateDefaultFileIfMissing(BackEnd.Config.GetPlaylistsPath+'playlist.opl');
-         PlaylistContainer:= TPlaylistContainer.Create(BackEnd.Config.GetPlaylistsPath+'playlist.opl');
+    begin
+      TPlaylistContainer.CreateDefaultFileIfMissing(BackEnd.Config.GetPlaylistsPath + 'playlist.opl');
+      PlaylistContainer := TPlaylistContainer.Create(BackEnd.Config.GetPlaylistsPath + 'playlist.opl');
 
-       end;
+    end;
     PlaylistContainer.GetPlaylists(AutoPlayList);
-    //
 
-//    BuildFileList(BackEnd.Config.GetPlaylistsPath+'*'+CustomPlaylistExtension,faAnyFile, AutoPlayList,False);
-    for i := 0 to AutoPlayList.Count -1 do
-      begin
-        plname := DecodeSafeFileName(ExtractFileNameOnly(AutoPlayList[i]));
-        node:= TPlayListTreeNode(PlaylistTree.Items.AddChild(BaseNode, plName));
-        node.FullPath:=AutoPlayList[i];
-        Node.Automatic:=true;
-      end;
+
+    //    BuildFileList(BackEnd.Config.GetPlaylistsPath+'*'+CustomPlaylistExtension,faAnyFile, AutoPlayList,False);
+    for i := 0 to AutoPlayList.Count - 1 do
+    begin
+      plname := DecodeSafeFileName(ExtractFileNameOnly(AutoPlayList[i]));
+      node := TPlayListTreeNode(PlaylistTree.Items.AddChild(BaseNode, plName));
+      node.FullPath := AutoPlayList[i];
+      Node.Automatic := True;
+    end;
 
   finally
     AutoPlayList.Free;
   end;
 
-  BaseNode.Expand(true);
+  BaseNode.Expand(True);
 end;
 
 procedure TfMainForm.SaveConfig(Sender: TObject);
@@ -1975,11 +1942,11 @@ begin
   fMainFormParam := TMainFormParam.Create(BackEnd.Config, self);
 
   Height := fMainFormParam.Height;
-  Width  := fMainFormParam.Width;
-  Top    := fMainFormParam.Top;
-  Left   := fMainFormParam.Left;
+  Width := fMainFormParam.Width;
+  Top := fMainFormParam.Top;
+  Left := fMainFormParam.Left;
 
-  actShowLeft.checked := not fMainFormParam.LeftPanelVisible;
+  actShowLeft.Checked := not fMainFormParam.LeftPanelVisible;
   actShowLeft.Execute;
   pcMain.ActivePageIndex := fMainFormParam.ActivePage;
 
@@ -2001,115 +1968,115 @@ end;
 
 procedure TfMainForm.mnuEnqueueItemsClick(Sender: TObject);
 begin
-    CollectionHandler(true);
+  CollectionHandler(True);
 end;
 
 procedure TfMainForm.mnuFileInfoClick(Sender: TObject);
 var
-  info : TfSongInfo;
+  info: TfSongInfo;
   Node: TFileTreeNode;
   fileList: TStringList;
 begin
   Node := TFileTreeNode(FilesTree.GetFirstMultiSelected);
   if node = nil then
-     exit;
+    exit;
 
   if (not Node.isDir) then
-    begin
-      info := TfSongInfo.Create(Application);
-      info.InitFromFile(Node.FullPath);
-      info.OnUpdate := @UpdateTree;
-      Info.show;
-    end
+  begin
+    info := TfSongInfo.Create(Application);
+    info.InitFromFile(Node.FullPath);
+    info.OnUpdate := @UpdateTree;
+    Info.Show;
+  end
   else
-    begin
-      fileList := TStringList.Create;
-      try
-         Node:= TFileTreeNode(FilesTree.GetFirstMultiSelected);
-         while node <> nil do
-           begin
-             if not Node.isDir then
-                fileList.Add(Node.FullPath);
-             Node:=TFileTreeNode(Node.GetNextMultiSelected);
-           end;
-        info := TfSongInfo.Create(Application);
-        info.InitFromList(FileList);
-        info.OnUpdate := @UpdateTree;
-        Info.show;
-      finally
-        FreeAndNil(FileList);
+  begin
+    fileList := TStringList.Create;
+    try
+      Node := TFileTreeNode(FilesTree.GetFirstMultiSelected);
+      while node <> nil do
+      begin
+        if not Node.isDir then
+          fileList.Add(Node.FullPath);
+        Node := TFileTreeNode(Node.GetNextMultiSelected);
       end;
+      info := TfSongInfo.Create(Application);
+      info.InitFromList(FileList);
+      info.OnUpdate := @UpdateTree;
+      Info.Show;
+    finally
+      FreeAndNil(FileList);
     end;
+  end;
 end;
 
 
 procedure TfMainForm.mnuInfoClick(Sender: TObject);
 var
-  info : TfSongInfo;
+  info: TfSongInfo;
   Node: TMusicTreeNode;
   fileList: TStringList;
 begin
 
-  Node:= TMusicTreeNode(tvCollection.GetFirstMultiSelected);
+  Node := TMusicTreeNode(tvCollection.GetFirstMultiSelected);
   if node = nil then
-     exit;
+    exit;
 
   if tvCollection.SelectionCount = 1 then
-     begin
-      if (Node.Kind = tkSong) then
-      begin
-        info := TfSongInfo.Create(Application);
-        info.InitFromFile(BackEnd.mediaLibrary.FullNameFromID(Node.ID));
-        info.OnUpdate := @UpdateTree;
-        Info.show;
-      end;
-      if (Node.Kind = tkAlbum) then
-      begin
-       fileList := TStringList.Create;
-       try
-          Node:= TMusicTreeNode(Node.GetFirstChild);
-          while node <> nil do
-            begin
-              if (node.Kind = tkSong) then
-                 fileList.Add(BackEnd.mediaLibrary.FullNameFromID(Node.ID));
-              Node:=TMusicTreeNode(Node.GetNextSibling);
-            end;
-         info := TfSongInfo.Create(Application);
-         info.InitFromList(FileList);
-         Info.show;
-         info.OnUpdate := @UpdateTree;
-
-       finally
-         FreeAndNil(FileList);
-       end;
-      end;
-
-     end
-  else
-     begin
-       fileList := TStringList.Create;
-       try
-          Node:= TMusicTreeNode(tvCollection.GetFirstMultiSelected);
-          while node <> nil do
-            begin
-              if (node.Kind = tkSong) then
-                 fileList.Add(BackEnd.mediaLibrary.FullNameFromID(Node.ID));
-              Node:=TMusicTreeNode(Node.GetNextMultiSelected);
-            end;
-         info := TfSongInfo.Create(Application);
-         info.InitFromList(FileList);
-         Info.show;
-
-       finally
-         FreeAndNil(FileList);
-       end;
-
+  begin
+    if (Node.Kind = tkSong) then
+    begin
+      info := TfSongInfo.Create(Application);
+      info.InitFromFile(BackEnd.mediaLibrary.FullNameFromID(Node.ID));
+      info.OnUpdate := @UpdateTree;
+      Info.Show;
     end;
+    if (Node.Kind = tkAlbum) then
+    begin
+      fileList := TStringList.Create;
+      try
+        Node := TMusicTreeNode(Node.GetFirstChild);
+        while node <> nil do
+        begin
+          if (node.Kind = tkSong) then
+            fileList.Add(BackEnd.mediaLibrary.FullNameFromID(Node.ID));
+          Node := TMusicTreeNode(Node.GetNextSibling);
+        end;
+        info := TfSongInfo.Create(Application);
+        info.InitFromList(FileList);
+        Info.Show;
+        info.OnUpdate := @UpdateTree;
+
+      finally
+        FreeAndNil(FileList);
+      end;
+    end;
+
+  end
+  else
+  begin
+    fileList := TStringList.Create;
+    try
+      Node := TMusicTreeNode(tvCollection.GetFirstMultiSelected);
+      while node <> nil do
+      begin
+        if (node.Kind = tkSong) then
+          fileList.Add(BackEnd.mediaLibrary.FullNameFromID(Node.ID));
+        Node := TMusicTreeNode(Node.GetNextMultiSelected);
+      end;
+      info := TfSongInfo.Create(Application);
+      info.InitFromList(FileList);
+      Info.Show;
+
+    finally
+      FreeAndNil(FileList);
+    end;
+
+  end;
 end;
 
 procedure TfMainForm.mnuPlayItemsClick(Sender: TObject);
 begin
-    CollectionHandler(False);
+  CollectionHandler(False);
 end;
 
 procedure TfMainForm.mnuRemovePlaylistClick(Sender: TObject);
@@ -2119,13 +2086,12 @@ end;
 
 procedure TfMainForm.pcMainChange(Sender: TObject);
 begin
-  FMainFormParam.ActivePage:= pcMain.ActivePageIndex;
+  FMainFormParam.ActivePage := pcMain.ActivePageIndex;
 end;
 
-procedure TfMainForm.PlaylistTreeCreateNodeClass(Sender: TCustomTreeView;
-  var NodeClass: TTreeNodeClass);
+procedure TfMainForm.PlaylistTreeCreateNodeClass(Sender: TCustomTreeView; var NodeClass: TTreeNodeClass);
 begin
-  NodeClass:= TPlayListTreeNode;
+  NodeClass := TPlayListTreeNode;
 end;
 
 procedure TfMainForm.pmdirectoriesPopup(Sender: TObject);
@@ -2134,27 +2100,27 @@ var
 begin
   Node := TFileTreeNode(FilesTree.Selected);
   if (Node <> nil) then
-    begin
-       mnuFileInfo.Visible := not Node.isDir;
-       mnuSeparator.Visible := not Node.isDir;
-    end;
+  begin
+    mnuFileInfo.Visible := not Node.isDir;
+    mnuSeparator.Visible := not Node.isDir;
+  end;
 
 end;
 
 procedure TfMainForm.pmPlaylistsPopup(Sender: TObject);
 var
- item: TPlayListTreeNode;
- MasterItem: boolean;
+  item: TPlayListTreeNode;
+  MasterItem: boolean;
 begin
- item := TPlayListTreeNode( PlaylistTree.Selected);
- if item = nil then
-   exit;
- MasterItem:= item.FullPath = EmptyStr;
+  item := TPlayListTreeNode(PlaylistTree.Selected);
+  if item = nil then
+    exit;
+  MasterItem := item.FullPath = EmptyStr;
 
- mnuPlayPlaylist.Visible:= Not MasterItem;
- MenuItem58.Visible:= Not MasterItem;
- mnuEditPlaylist.Visible:= Not MasterItem;
- mnuDeletePlaylist.Visible:= Not MasterItem;
+  mnuPlayPlaylist.Visible := not MasterItem;
+  MenuItem58.Visible := not MasterItem;
+  mnuEditPlaylist.Visible := not MasterItem;
+  mnuDeletePlaylist.Visible := not MasterItem;
 
 end;
 
@@ -2164,12 +2130,12 @@ var
 begin
   Node := TMusicTreeNode(tvCollection.GetFirstMultiSelected);
   if node = nil then
-     exit;
+    exit;
   case Node.Kind of
-       tkSong, tkAlbum : mnuInfo.Visible := true;
-  else
-       mnuInfo.Visible := False;
-   end;
+    tkSong, tkAlbum: mnuInfo.Visible := True;
+    else
+      mnuInfo.Visible := False;
+  end;
 
 end;
 
@@ -2177,7 +2143,7 @@ procedure TfMainForm.OnMenuItemClick(Sender: TObject);
 begin
   with TMenuItem(Sender), sgPlayList.Columns[TMenuItem(Sender).Tag] do
   begin
-    Visible:= not Checked;
+    Visible := not Checked;
     ColumnSize(TMenuItem(Sender).Tag);
   end;
 
@@ -2188,101 +2154,102 @@ begin
 end;
 
 // This function is adapted from Grids.pas
-function TfMainForm.ColumnSize(aCol: Integer):Integer;
+function TfMainForm.ColumnSize(aCol: integer): integer;
 var
-  i,W: Integer;
+  i, W: integer;
   Ts: TSize;
   TmpCanvas: TCanvas;
   C: TGridColumn;
-  ASong:TSong;
-  txt:string;
+  ASong: TSong;
+  txt: string;
   TrueCol: integer;
 begin
 
-      if (aCol<0) or (aCol>sgPlayList.ColCount-1) then
-        Exit;
+  if (aCol < 0) or (aCol > sgPlayList.ColCount - 1) then
+    Exit;
 
-      tmpCanvas := GetWorkingCanvas(sgPlayList.Canvas);
+  tmpCanvas := GetWorkingCanvas(sgPlayList.Canvas);
 
-      C := sgPlayList.Columns[(aCol)];
+  C := sgPlayList.Columns[(aCol)];
 
-      try
-        W:=0;
-        for i := sgPlayList.TopRow to (sgPlayList.TopRow + sgPlayList.VisibleRowCount-2) do begin
+  try
+    W := 0;
+    for i := sgPlayList.TopRow to (sgPlayList.TopRow + sgPlayList.VisibleRowCount - 2) do
+    begin
 
-          if C<>nil then begin
-            if i<sgPlayList.FixedRows then
-              tmpCanvas.Font := C.Title.Font
-            else
-              tmpCanvas.Font := C.Font;
-          end else begin
-            if i<sgPlayList.FixedRows then
-              tmpCanvas.Font := sgPlayList.TitleFont
-            else
-              tmpCanvas.Font := Font;
-          end;
-
-          ASong := BackEnd.PlayList.Songs[i];
-//        if ASong = nil then
-//          DebugLn('nessuno');
-
-         TrueCol := sgPlayList.Columns[aCol].Tag;
-
-          case TrueCol of
-             0: Txt := IntToStr(i);
-             1: Txt := ASong.Tags.Title;
-             2: Txt := ASong.Tags.Album;
-             3: Txt := ASong.Tags.Artist;
-             4: Txt := FormatTimeRange(ASong.Tags.Duration);
-             5: Txt := ASong.Tags.TrackString;
-             6: Txt := ASong.Tags.Genre;
-             7: Txt := ASong.Tags.Year;
-             8: Txt := ASong.Tags.AlbumArtist;
-             9: Txt := ASong.FileName;
-            10: Txt := 'WWWWWW';
-          end;
-          if txt = '' then
-            txt:='.';
-          Ts := TmpCanvas.TextExtent(txt);
-
-          if Ts.Cx>W then
-            W := Ts.Cx;
-        end;
-        if C.Title.Caption <> '' then
-          begin
-            Ts := TmpCanvas.TextExtent(C.Title.Caption);
-            if Ts.Cx > W then
-               W:= Ts.Cx;
-          end;
-      finally
-        if tmpCanvas<>Canvas then
-          FreeWorkingCanvas(tmpCanvas);
-      end;
-
-      if W=0 then
-        W := sgPlayList.DefaultColWidth
+      if C <> nil then
+      begin
+        if i < sgPlayList.FixedRows then
+          tmpCanvas.Font := C.Title.Font
+        else
+          tmpCanvas.Font := C.Font;
+      end
+      else if i < sgPlayList.FixedRows then
+        tmpCanvas.Font := sgPlayList.TitleFont
       else
-        W := W + 8;
+        tmpCanvas.Font := Font;
 
-      Result := W;
+      ASong := BackEnd.PlayList.Songs[i];
+      //        if ASong = nil then
+      //          DebugLn('nessuno');
+
+      TrueCol := sgPlayList.Columns[aCol].Tag;
+
+      case TrueCol of
+        0: Txt := IntToStr(i);
+        1: Txt := ASong.Tags.Title;
+        2: Txt := ASong.Tags.Album;
+        3: Txt := ASong.Tags.Artist;
+        4: Txt := FormatTimeRange(ASong.Tags.Duration);
+        5: Txt := ASong.Tags.TrackString;
+        6: Txt := ASong.Tags.Genre;
+        7: Txt := ASong.Tags.Year;
+        8: Txt := ASong.Tags.AlbumArtist;
+        9: Txt := ASong.FileName;
+        10: Txt := 'WWWWWW';
+      end;
+      if txt = '' then
+        txt := '.';
+      Ts := TmpCanvas.TextExtent(txt);
+
+      if Ts.Cx > W then
+        W := Ts.Cx;
+    end;
+    if C.Title.Caption <> '' then
+    begin
+      Ts := TmpCanvas.TextExtent(C.Title.Caption);
+      if Ts.Cx > W then
+        W := Ts.Cx;
+    end;
+  finally
+    if tmpCanvas <> Canvas then
+      FreeWorkingCanvas(tmpCanvas);
+  end;
+
+  if W = 0 then
+    W := sgPlayList.DefaultColWidth
+  else
+    W := W + 8;
+
+  Result := W;
 
 end;
 
-procedure TfMainForm.LoadColumnsMenu(BaseItem:TMenuItem);
+procedure TfMainForm.LoadColumnsMenu(BaseItem: TMenuItem);
 var
-  col :integer;
-  item : TMenuItem;
+  col: integer;
+  item: TMenuItem;
 begin
   BaseItem.Clear;
   for col := 0 to sgPlayList.Columns.Count - 1 do
-    begin
-      item := TMenuItem.Create(BaseItem);
-      item.Caption:=sgPlayList.Columns[col].Title.Caption;
-      item.Tag := Col;
-      item.Checked := sgPlayList.Columns[col].Visible;
-      item.OnClick := @OnMenuItemClick;
-      BaseItem.Add(item);
-    end;
+  begin
+    item := TMenuItem.Create(BaseItem);
+    item.Caption := sgPlayList.Columns[col].Title.Caption;
+    item.Tag := Col;
+    item.Checked := sgPlayList.Columns[col].Visible;
+    item.OnClick := @OnMenuItemClick;
+    BaseItem.Add(item);
+  end;
 
 end;
 
@@ -2293,49 +2260,46 @@ end;
 
 procedure TfMainForm.sgPlayListClick(Sender: TObject);
 var
-  ACol,ARow: integer;
+  ACol, ARow: integer;
   p: Tpoint;
   Rating: integer;
   r1: Trect;
 begin
-  p:= sgPlayList.ScreenToControl(Mouse.CursorPos);
+  p := sgPlayList.ScreenToControl(Mouse.CursorPos);
   sgPlayList.MouseToCell(p.x, p.y, ACol, ARow);
-  if (ARow > 0) and (aCol = 11) and (BackEnd.PlayList[ARow-1].ID <> -1) then
-     begin
-       R1 := sgPlayList.CellRect(ACol, ARow);
-       Rating := trunc(((p.x - R1.Left) * 10) / RateStars.Width) ;
-       BackEnd.PlayList[ARow-1].Rating:=rating;
-       BackEnd.PlayList[ARow-1].TmpRating:=-1;
-       BackEnd.mediaLibrary.SetRating(BackEnd.PlayList[ARow-1].ID, Rating);
-       sgPlayList.InvalidateCell(ACol, ARow);
-     end;
+  if (ARow > 0) and (aCol = 11) and (BackEnd.PlayList[ARow - 1].ID <> -1) then
+  begin
+    R1 := sgPlayList.CellRect(ACol, ARow);
+    Rating := trunc(((p.x - R1.Left) * 10) / RateStars.Width);
+    BackEnd.PlayList[ARow - 1].Rating := rating;
+    BackEnd.PlayList[ARow - 1].TmpRating := -1;
+    BackEnd.mediaLibrary.SetRating(BackEnd.PlayList[ARow - 1].ID, Rating);
+    sgPlayList.InvalidateCell(ACol, ARow);
+  end;
 end;
 
-procedure TfMainForm.sgPlayListColRowMoved(Sender: TObject; IsColumn: Boolean;
-  sIndex, tIndex: Integer);
+procedure TfMainForm.sgPlayListColRowMoved(Sender: TObject; IsColumn: boolean; sIndex, tIndex: integer);
 begin
   if IsColumn then exit;
 
   BackEnd.PlayList.PushPos;
-  BackEnd.PlayList.Swap(sIndex -1, tIndex -1);
-  sgPlayList.Cells[1, sIndex]:= IntToStr(sIndex);
-  sgPlayList.Cells[1, tIndex]:= IntToStr(tIndex);
+  BackEnd.PlayList.Swap(sIndex - 1, tIndex - 1);
+  sgPlayList.Cells[1, sIndex] := IntToStr(sIndex);
+  sgPlayList.Cells[1, tIndex] := IntToStr(tIndex);
   BackEnd.PlayList.PopPos;
-
 
 end;
 
-procedure TfMainForm.sgPlayListContextPopup(Sender: TObject; MousePos: TPoint;
-  var Handled: Boolean);
+procedure TfMainForm.sgPlayListContextPopup(Sender: TObject; MousePos: TPoint; var Handled: boolean);
 var
   Zone: TGridZone;
-  AbsPos :TPoint;
+  AbsPos: TPoint;
 begin
   Zone := sgPlayList.MouseToGridZone(MousePos.x, MousePos.Y);
-  AbsPos:= sgPlayList.ClientToScreen(MousePos);
+  AbsPos := sgPlayList.ClientToScreen(MousePos);
   case zone of
-     gzFixedCols, gzFixedRows: pnHeaderPlaylist.PopUp(AbsPos.x, AbsPos.Y);
-     gzNormal : PlaylistMenu.PopUp(AbsPos.x, AbsPos.Y);
+    gzFixedCols, gzFixedRows: pnHeaderPlaylist.PopUp(AbsPos.x, AbsPos.Y);
+    gzNormal: PlaylistMenu.PopUp(AbsPos.x, AbsPos.Y);
   end;
 
 end;
@@ -2352,164 +2316,162 @@ begin
 
 end;
 
-procedure TfMainForm.sgPlayListDragDrop(Sender, Source: TObject; X, Y: Integer);
+procedure TfMainForm.sgPlayListDragDrop(Sender, Source: TObject; X, Y: integer);
 begin
-  if source = tvCollection then
-    CollectionHandler(true)
+  if Source = tvCollection then
+    CollectionHandler(True)
   else
-    if source = FilesTree then
-      FileSystemHandler(true);
+  if Source = FilesTree then
+    FileSystemHandler(True);
 
 end;
 
-procedure TfMainForm.sgPlayListDragOver(Sender, Source: TObject; X, Y: Integer;
-  State: TDragState; var Accept: Boolean);
+procedure TfMainForm.sgPlayListDragOver(Sender, Source: TObject; X, Y: integer; State: TDragState; var Accept: boolean);
 begin
-  Accept:=(Source = tvCollection) or (source = FilesTree);
+  Accept := (Source = tvCollection) or (Source = FilesTree);
 end;
 
-procedure TfMainForm.sgPlayListDrawCell(Sender: TObject; aCol, aRow: Integer;
-  aRect: TRect; aState: TGridDrawState);
+procedure TfMainForm.sgPlayListDrawCell(Sender: TObject; aCol, aRow: integer; aRect: TRect; aState: TGridDrawState);
 var
   aBmp: TBitmap;
-  ASong : TCustomSong;
-  Txt: String;
-  r1,R2: Trect;
+  ASong: TCustomSong;
+  Txt: string;
+  r1, R2: Trect;
   ts: TTextStyle;
-  CurrRating : integer;
+  CurrRating: integer;
   TrueCol: integer;
 begin
   if (ACol = 0) and (Arow > 0) and (ARow = BackEnd.PlayList.ItemIndex + 1) then
-    begin
-      aBmp := TBitmap.Create;
-      case BackEnd.AudioEngine.State of
-         ENGINE_PAUSE: dm.ilSmall.GetBitmap(10, aBmp);
-         ENGINE_STOP : dm.ilSmall.GetBitmap(11, aBmp);
-         ENGINE_PLAY : dm.ilSmall.GetBitmap(6, aBmp);
+  begin
+    aBmp := TBitmap.Create;
+    case BackEnd.AudioEngine.State of
+      ENGINE_PAUSE: dm.ilSmall.GetBitmap(10, aBmp);
+      ENGINE_STOP: dm.ilSmall.GetBitmap(11, aBmp);
+      ENGINE_PLAY: dm.ilSmall.GetBitmap(6, aBmp);
       else
-          dm.ilSmall.GetBitmap(12, aBmp)
-      end;
-
-
-      if aBmp = nil then exit;
-      sgPlayList.Canvas.Draw(arect.Left, aRect.Top, aBmp);
-      abmp.free;
-      exit;
+        dm.ilSmall.GetBitmap(12, aBmp)
     end;
 
-    if aRow = 0 then
-      exit;
 
-    ASong := BackEnd.PlayList.Songs[Arow -1];
-    if ASong = nil then exit;
-    ASong.LoadTags;
+    if aBmp = nil then exit;
+    sgPlayList.Canvas.Draw(arect.Left, aRect.Top, aBmp);
+    abmp.Free;
+    exit;
+  end;
 
-    if aCol = 0 then
-       TrueCol := -1
+  if aRow = 0 then
+    exit;
+
+  ASong := BackEnd.PlayList.Songs[Arow - 1];
+  if ASong = nil then exit;
+  ASong.LoadTags;
+
+  if aCol = 0 then
+    TrueCol := -1
+  else
+    TrueCol := sgPlayList.Columns[aCol - 1].Tag;
+
+  case TrueCol of
+    0: Txt := IntToStr(Arow);
+    1: Txt := ASong.Title;
+    2: Txt := ASong.Tags.Album;
+    3: Txt := ASong.Tags.Artist;
+    4: Txt := FormatTimeRange(ASong.Tags.Duration, True);
+    5: Txt := ASong.Tags.TrackString;
+    6: Txt := ASong.Tags.Genre;
+    7: Txt := ASong.Tags.Year;
+    8: Txt := ASong.Tags.AlbumArtist;
+    9: Txt := ASong.FileName;
+    10: Txt := '';
     else
-       TrueCol := sgPlayList.Columns[aCol-1].Tag;
+      txt := '';
+  end;
 
-    case TrueCol of
-         0: Txt := IntToStr(Arow);
-         1: Txt := ASong.Title;
-         2: Txt := ASong.Tags.Album;
-         3: Txt := ASong.Tags.Artist;
-         4: Txt := FormatTimeRange(ASong.Tags.Duration, true);
-         5: Txt := ASong.Tags.TrackString;
-         6: Txt := ASong.Tags.Genre;
-         7: Txt := ASong.Tags.Year;
-         8: Txt := ASong.Tags.AlbumArtist;
-         9: Txt := ASong.FileName;
-        10: Txt := '';
-        else txt := '';
-    end;
+  sgPlayList.Canvas.FillRect(aRect);
+  ts := sgPlayList.Canvas.textStyle;
+  //  if Acol > sgPlayList.FixedCols then
+  //      ts.Alignment:=sgPlayList.Columns[Acol -sgPlayList.FixedCols].Alignment;
+  ts.Clipping := True;
 
-   sgPlayList.Canvas.FillRect(aRect);
-   ts:= sgPlayList.Canvas.textStyle;
- //  if Acol > sgPlayList.FixedCols then
- //      ts.Alignment:=sgPlayList.Columns[Acol -sgPlayList.FixedCols].Alignment;
-   ts.Clipping:= true;
+  //   sgPlayList.Canvas.TextOut(aRect.left, arect.top, txt);;
+  if ts.Alignment = taRightJustify then
+    aRect.Right := aRect.Right - 3;
+  if ts.Alignment = taLeftJustify then
+    aRect.Left := aRect.Left + 3;
 
-//   sgPlayList.Canvas.TextOut(aRect.left, arect.top, txt);;
-   if ts.Alignment = taRightJustify then
-      aRect.Right:= aRect.Right -3;
-   if ts.Alignment = taLeftJustify then
-      aRect.Left:= aRect.Left +3;
-
-   if (TrueCol <> 10) or (ASong.ID = -1)  then
-      sgPlayList.Canvas.TextRect(aRect, aRect.left, arect.top, txt, ts)
-   else
-      begin
-        sgPlayList.Canvas.Draw(arect.left, arect.top, RatingBack);
-        CurrRating := ASong.TmpRating;
-        if CurrRating = -1 then
-           CurrRating := ASong.Rating;
-        ASong.TmpRating := -1;
-        r1:=Rect(0,
-                 0,
-                 trunc(RatingBack.width *(CurrRating /10))-1,
-                 RatingBack.height);
-        r2:=r1;
-        OffsetRect(R2,aRect.Left, aRect.top);
-        sgPlayList.Canvas.CopyRect(r2,RatingFront.Canvas,r1);
-      end;
+  if (TrueCol <> 10) or (ASong.ID = -1) then
+    sgPlayList.Canvas.TextRect(aRect, aRect.left, arect.top, txt, ts)
+  else
+  begin
+    sgPlayList.Canvas.Draw(arect.left, arect.top, RatingBack);
+    CurrRating := ASong.TmpRating;
+    if CurrRating = -1 then
+      CurrRating := ASong.Rating;
+    ASong.TmpRating := -1;
+    r1 := Rect(0,
+      0,
+      trunc(RatingBack.Width * (CurrRating / 10)) - 1,
+      RatingBack.Height);
+    r2 := r1;
+    OffsetRect(R2, aRect.Left, aRect.top);
+    sgPlayList.Canvas.CopyRect(r2, RatingFront.Canvas, r1);
+  end;
 
 end;
 
-procedure TfMainForm.sgPlayListHeaderClick(Sender: TObject; IsColumn: Boolean;
-  Index: Integer);
+procedure TfMainForm.sgPlayListHeaderClick(Sender: TObject; IsColumn: boolean; Index: integer);
 var
   SortField: TplSortField;
   Direction: TplSortDirection;
   i: integer;
-  TrueCol : Integer;
+  TrueCol: integer;
 begin
 
   if not IsColumn then
     exit;
 
   if Index = 0 then
-     TrueCol := -1
+    TrueCol := -1
   else
-     TrueCol := sgPlayList.Columns[Index-1].Tag;
+    TrueCol := sgPlayList.Columns[Index - 1].Tag;
 
-  if TrueCol <1 then exit;
+  if TrueCol < 1 then exit;
 
-  case TrueCol  of
-    1 : SortField := stTitle;
-    2 : SortField := StAlbum;
-    3 : SortField := stArtist;
-    4 : SortField := stDuration;
-    5 : SortField := stTrack;
-    6 : SortField := stGenre ;
-    7 : SortField := stYear;
-    8 : SortField := stAlbumArtist;
-    9 : SortField := stFileName;
-   10 : SortField := stRating;
-  else
-    SortField:= stNone;
+  case TrueCol of
+    1: SortField := stTitle;
+    2: SortField := StAlbum;
+    3: SortField := stArtist;
+    4: SortField := stDuration;
+    5: SortField := stTrack;
+    6: SortField := stGenre;
+    7: SortField := stYear;
+    8: SortField := stAlbumArtist;
+    9: SortField := stFileName;
+    10: SortField := stRating;
+    else
+      SortField := stNone;
   end;
 
   if SortField <> BackEnd.PlayList.SortField then
     Direction := sdplAscending
   else
-    case  BackEnd.PlayList.SortDirection of
+    case BackEnd.PlayList.SortDirection of
       sdplAscending:
         Direction := sdplDiscending;
       sdplDiscending:
         Direction := sdplAscending;
     end;
 
-  for i := 0 to sgPlayList.Columns.Count -1 do
-    if i = (Index -1) then
-       begin
-         if Direction = sdplDiscending then
-           sgPlayList.Columns[i].Title.ImageIndex:= 14
-         else
-           sgPlayList.Columns[i].Title.ImageIndex:= 15;
-       end
+  for i := 0 to sgPlayList.Columns.Count - 1 do
+    if i = (Index - 1) then
+    begin
+      if Direction = sdplDiscending then
+        sgPlayList.Columns[i].Title.ImageIndex := 14
+      else
+        sgPlayList.Columns[i].Title.ImageIndex := 15;
+    end
     else
-       sgPlayList.Columns[i].Title.ImageIndex:= -1;
+      sgPlayList.Columns[i].Title.ImageIndex := -1;
 
 
   BackEnd.PlayList.Sort(SortField, Direction);
@@ -2517,245 +2479,228 @@ begin
 
 end;
 
-procedure TfMainForm.sgPlayListHeaderSized(Sender: TObject; IsColumn: Boolean;
-  Index: Integer);
+procedure TfMainForm.sgPlayListHeaderSized(Sender: TObject; IsColumn: boolean; Index: integer);
 begin
   SetLength(fColumnsWidth, 0);
   sgPlayList.Invalidate;
 end;
 
-procedure TfMainForm.sgPlayListHeaderSizing(sender: TObject;
-  const IsColumn: boolean; const aIndex, aSize: Integer);
+procedure TfMainForm.sgPlayListHeaderSizing(Sender: TObject; const IsColumn: boolean; const aIndex, aSize: integer);
 var
-  i            : integer;
-  diffs        : integer;
-  VisibleCount : integer;
-  Steps        : integer;
-  Remains      : integer;
-  LastVisible  : Integer;
+  i: integer;
+  diffs: integer;
+  VisibleCount: integer;
+  Steps: integer;
+  Remains: integer;
+  LastVisible: integer;
   h: ThackGrid;
-
 begin
   if not IsColumn then
     exit;
 
-  h:= THackGrid(sgPlayList);
+  h := THackGrid(sgPlayList);
 
   if Length(fColumnsWidth) = 0 then
-     begin
-       SetLength(fColumnsWidth, sgPlayList.Columns.Count);
-       for i := 0 to sgPlayList.Columns.Count -1 do
-          fColumnsWidth[i] := sgPlayList.Columns[i].Width;
-     end;
+  begin
+    SetLength(fColumnsWidth, sgPlayList.Columns.Count);
+    for i := 0 to sgPlayList.Columns.Count - 1 do
+      fColumnsWidth[i] := sgPlayList.Columns[i].Width;
+  end;
 
 
   Diffs := (fColumnsWidth[aIndex - sgPlayList.FixedCols] - aSize);
-  IF Diffs = 0 then
+  if Diffs = 0 then
     exit;
 
-  VisibleCount:=0;
+  VisibleCount := 0;
   LastVisible := aIndex - sgPlayList.FixedCols;
-  for i := aindex  to sgPlayList.Columns.Count -1 do
-    if sgPlayList.Columns[i].visible then
-       Begin
-         inc(VisibleCount);
-       end;
+  for i := aindex to sgPlayList.Columns.Count - 1 do
+    if sgPlayList.Columns[i].Visible then
+      Inc(VisibleCount);
 
-  for i := 0  to sgPlayList.Columns.Count -1 do
-    if sgPlayList.Columns[i].visible then
-       Begin
-         LastVisible := I;
-       end;
+  for i := 0 to sgPlayList.Columns.Count - 1 do
+    if sgPlayList.Columns[i].Visible then
+      LastVisible := I;
 
-  dec(VisibleCount);
+  Dec(VisibleCount);
 
-  IF VisibleCount = -1 then
-     begin
-       sgPlayList.BeginUpdate;
+  if VisibleCount = -1 then
+  begin
+    sgPlayList.BeginUpdate;
     //   sgPlayList.Columns[LastVisible].Width := fColumnsWidth[LastVisible];
     sgPlayList.Columns[LastVisible].Width :=
-        sgPlayList.Columns[LastVisible].Width + (h.GCache.ClientWidth- h.GCache.GridWidth);
-       sgPlayList.EndUpdate(true);
-       exit;
-     end;
+      sgPlayList.Columns[LastVisible].Width + (h.GCache.ClientWidth - h.GCache.GridWidth);
+    sgPlayList.EndUpdate(True);
+    exit;
+  end;
 
   sgPlayList.Columns[aIndex - sgPlayList.FixedCols].Width := ASize;
 
   if VisibleCount = 0 then
-     begin
-       sgPlayList.Columns[LastVisible].Width := fColumnsWidth[LastVisible] + Diffs;
-       exit
-     end;
+  begin
+    sgPlayList.Columns[LastVisible].Width := fColumnsWidth[LastVisible] + Diffs;
+    exit;
+  end;
 
   sgPlayList.BeginUpdate;
 
   Steps := diffs div VisibleCount;
   remains := diffs mod VisibleCount;
 
-  for i := aindex +1  to sgPlayList.Columns.Count -1 do
-     if sgPlayList.Columns[i].Visible then
-       begin
-         sgPlayList.Columns[i].Width := fColumnsWidth[i] + Steps;
-       end;
+  for i := aindex + 1 to sgPlayList.Columns.Count - 1 do
+    if sgPlayList.Columns[i].Visible then
+      sgPlayList.Columns[i].Width := fColumnsWidth[i] + Steps;
 
   for i := (aindex + 1) to (aindex + Remains) do
-     if sgPlayList.Columns[i].Visible then
-       begin
-         if diffs > 0 then
-            sgPlayList.Columns[i].Width := sgPlayList.Columns[i].Width + 1
-         else
-            sgPlayList.Columns[i].Width := sgPlayList.Columns[i].Width - 1
-       end;
+    if sgPlayList.Columns[i].Visible then
+      if diffs > 0 then
+        sgPlayList.Columns[i].Width := sgPlayList.Columns[i].Width + 1
+      else
+        sgPlayList.Columns[i].Width := sgPlayList.Columns[i].Width - 1;
 
   if h.GCache.GridWidth < h.GCache.ClientWidth then
-     begin
-       sgPlayList.Columns[LastVisible].Width :=
-           sgPlayList.Columns[LastVisible].Width + (h.GCache.ClientWidth- h.GCache.GridWidth);
-     end;
+    sgPlayList.Columns[LastVisible].Width :=
+      sgPlayList.Columns[LastVisible].Width + (h.GCache.ClientWidth - h.GCache.GridWidth);
 
-  sgPlayList.EndUpdate(true);
+  sgPlayList.EndUpdate(True);
 
 end;
 
-procedure TfMainForm.MoveSelection(KeyDirection:TMovingSelection; Shift:TShiftState; Row:Integer);
+procedure TfMainForm.MoveSelection(KeyDirection: TMovingSelection; Shift: TShiftState; Row: integer);
 var
-  Displacement : Integer;
-
+  Displacement: integer;
 begin
-  Displacement:=0;
+  Displacement := 0;
   if not (ssShift in Shift) then
-     MovingSelection := msNone;
+    MovingSelection := msNone;
 
   case KeyDirection of
-     msUp: Displacement:=1;
-     msDown:Displacement:=-1;
+    msUp: Displacement := 1;
+    msDown: Displacement := -1;
   end;
 
   if (MovingSelection = msNone) and PlaylistSelected.isMultiselection and (Displacement <> 0) then
-     begin
-        PlaylistSelected.ClearAll;
-        PlaylistSelected[row+Displacement] := true;
-     end;
+  begin
+    PlaylistSelected.ClearAll;
+    PlaylistSelected[row + Displacement] := True;
+  end;
 
   if (ssShift in Shift) then
-     begin
-      if MovingSelection = msNone then
-         MovingSelection:= KeyDirection;
+  begin
+    if MovingSelection = msNone then
+      MovingSelection := KeyDirection;
 
-      if MovingSelection = KeyDirection then
-         PlaylistSelected[Row - Displacement] := true
-      else
-        begin
-           PlaylistSelected[Row] := False;
-           if (Row - Displacement) = FAnchor then
-            MovingSelection := msNone
-        end;
-     end
+    if MovingSelection = KeyDirection then
+      PlaylistSelected[Row - Displacement] := True
+    else
+    begin
+      PlaylistSelected[Row] := False;
+      if (Row - Displacement) = FAnchor then
+        MovingSelection := msNone;
+    end;
+  end
   else
-    if not (ssCtrl in Shift) then
-       begin
-         PlaylistSelected.ClearAll;
-         PlaylistSelected[Row - Displacement] := true;
-         MovingSelection:= msNone;
-         FAnchor:= Row -Displacement;
-       end;
-
+  if not (ssCtrl in Shift) then
+  begin
+    PlaylistSelected.ClearAll;
+    PlaylistSelected[Row - Displacement] := True;
+    MovingSelection := msNone;
+    FAnchor := Row - Displacement;
+  end;
 
 end;
 
-procedure TfMainForm.sgPlayListKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TfMainForm.sgPlayListKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
 var
   CurrRow: integer;
   h: THackGrid;
 begin
-  CurrRow := sgPlayList.Row -1;
+  CurrRow := sgPlayList.Row - 1;
 
   case key of
     VK_DELETE:
-       RemoveSelectionFromPlaylist;
+      RemoveSelectionFromPlaylist;
     VK_SPACE:
-       if (ssCtrl in Shift) then
-          PlaylistSelected[CurrRow] := not PlaylistSelected[CurrRow]
-       else
-          BackEnd.Pause;
+      if (ssCtrl in Shift) then
+        PlaylistSelected[CurrRow] := not PlaylistSelected[CurrRow]
+      else
+        BackEnd.Pause;
     VK_A:
-       if (ssCtrl in Shift) then
-          PlaylistSelected.SelectAll;
-    VK_UP :
-       MoveSelection(msUp, Shift, CurrRow);
-    VK_DOWN :
-       MoveSelection(msDown, Shift, CurrRow);
+      if (ssCtrl in Shift) then
+        PlaylistSelected.SelectAll;
+    VK_UP:
+      MoveSelection(msUp, Shift, CurrRow);
+    VK_DOWN:
+      MoveSelection(msDown, Shift, CurrRow);
     VK_PRIOR:
-       if (ssShift in Shift) then
-        begin
-          h:= THackGrid(sgPlayList);
-          CurrRow := h.GCache.FullVisibleGrid.Top -1;
-          PlaylistSelected.ClearAll;
-          PlaylistSelected.SelectRange(FAnchor, FAnchor, CurrRow);
-        end;
-    VK_NEXT :
-       if (ssShift in Shift) then
-        begin
-          h:= THackGrid(sgPlayList);
-          CurrRow := h.GCache.FullVisibleGrid.Bottom +1;
-          PlaylistSelected.ClearAll;
-          PlaylistSelected.SelectRange(FAnchor, FAnchor, CurrRow);
-        end;
+      if (ssShift in Shift) then
+      begin
+        h := THackGrid(sgPlayList);
+        CurrRow := h.GCache.FullVisibleGrid.Top - 1;
+        PlaylistSelected.ClearAll;
+        PlaylistSelected.SelectRange(FAnchor, FAnchor, CurrRow);
+      end;
+    VK_NEXT:
+      if (ssShift in Shift) then
+      begin
+        h := THackGrid(sgPlayList);
+        CurrRow := h.GCache.FullVisibleGrid.Bottom + 1;
+        PlaylistSelected.ClearAll;
+        PlaylistSelected.SelectRange(FAnchor, FAnchor, CurrRow);
+      end;
     VK_HOME:
-       if (ssShift in Shift) then
-        begin
-          CurrRow := 0;
-          PlaylistSelected.ClearAll;
-          PlaylistSelected.SelectRange(FAnchor, FAnchor, CurrRow);
-        end;
-    VK_END :
-       if (ssShift in Shift) then
-        begin
-          CurrRow := PlaylistSelected.size;
-          PlaylistSelected.ClearAll;
-          PlaylistSelected.SelectRange(FAnchor, FAnchor, CurrRow);
-        end;
-     end;
+      if (ssShift in Shift) then
+      begin
+        CurrRow := 0;
+        PlaylistSelected.ClearAll;
+        PlaylistSelected.SelectRange(FAnchor, FAnchor, CurrRow);
+      end;
+    VK_END:
+      if (ssShift in Shift) then
+      begin
+        CurrRow := PlaylistSelected.size;
+        PlaylistSelected.ClearAll;
+        PlaylistSelected.SelectRange(FAnchor, FAnchor, CurrRow);
+      end;
+  end;
 
 
   sgPlaylist.invalidate;
 end;
 
-procedure TfMainForm.sgPlayListMouseDown(Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; X, Y: Integer);
+procedure TfMainForm.sgPlayListMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: integer);
 var
-  ACol, ARow : Integer;
+  ACol, ARow: integer;
 begin
   sgPlayList.MouseToCell(X, Y, ACol, ARow);
   if ACol = 11 then
     exit;
 
   if (button = mbLeft) and (not (ssShift in Shift) and not (ssCtrl in Shift)) then
+  begin
+    MovingSelection := msNone;
+    fSourceIndex := ARow;
+    FAnchor := ARow - 1;
+    PlaylistSelected.ClearAll;
+  end;
+
+  if (Button = mbRight) then
+  begin
+    if not (PlaylistSelected.isMultiselection) then
     begin
-      MovingSelection:= msNone;
-      fSourceIndex := ARow;
-      FAnchor:=ARow - 1;
       PlaylistSelected.ClearAll;
+      PlaylistSelected[ARow - 1] := True;
     end;
-
-  if (Button = mbRight)  then
-     begin
-       if not (PlaylistSelected.isMultiselection) then
-          begin
-             PlaylistSelected.ClearAll;
-             PlaylistSelected[ARow - 1] := true;
-          end;
-     end
+  end
   else
-     if (ARow > 0) then
-        PlaylistSelected[ARow - 1] := not PlaylistSelected[ARow - 1 ];
+  if (ARow > 0) then
+    PlaylistSelected[ARow - 1] := not PlaylistSelected[ARow - 1];
 
-  if (FAnchor <> -1) and  (ssShift in Shift) then
-     begin
-       PlaylistSelected.ClearAll;
-       PlaylistSelected.SelectRange(FAnchor, fAnchor, ARow -1);
-     end;
+  if (FAnchor <> -1) and (ssShift in Shift) then
+  begin
+    PlaylistSelected.ClearAll;
+    PlaylistSelected.SelectRange(FAnchor, fAnchor, ARow - 1);
+  end;
 
   sgPlayList.Invalidate;
 
@@ -2763,32 +2708,29 @@ end;
 
 procedure TfMainForm.sgPlayListMouseLeave(Sender: TObject);
 var
-  i: Integer;
+  i: integer;
 begin
- for i := 0 to BackEnd.PlayList.Count -1 do
-     begin
-       BackEnd.PlayList[i].TmpRating:=-1;
-     end;
-   sgPlayList.invalidate;
+  for i := 0 to BackEnd.PlayList.Count - 1 do
+    BackEnd.PlayList[i].TmpRating := -1;
+  sgPlayList.invalidate;
 end;
 
-procedure TfMainForm.sgPlayListMouseMove(Sender: TObject; Shift: TShiftState;
-  X, Y: Integer);
+procedure TfMainForm.sgPlayListMouseMove(Sender: TObject; Shift: TShiftState; X, Y: integer);
 var
-  ACol, ARow : Integer;
+  ACol, ARow: integer;
   R1: TRect;
-  Rating: Integer;
+  Rating: integer;
 begin
 
   sgPlayList.MouseToCell(x, y, ACol, ARow);
-  if (ARow > 0) and (aCol = 11) and (BackEnd.PlayList[ARow-1].ID <> -1) then
-     begin
-       R1 := sgPlayList.CellRect(ACol, ARow);
-       Rating := trunc(((x - R1.Left) * 10) / RateStars.Width) ;
-       BackEnd.PlayList[ARow-1].TmpRating:=rating;
-//       sgPlayList.InvalidateCell(ACol, ARow);
-       sgPlayList.Invalidate;
-     end;
+  if (ARow > 0) and (aCol = 11) and (BackEnd.PlayList[ARow - 1].ID <> -1) then
+  begin
+    R1 := sgPlayList.CellRect(ACol, ARow);
+    Rating := trunc(((x - R1.Left) * 10) / RateStars.Width);
+    BackEnd.PlayList[ARow - 1].TmpRating := rating;
+    //       sgPlayList.InvalidateCell(ACol, ARow);
+    sgPlayList.Invalidate;
+  end;
 
   if fSourceIndex < 1 then
     exit;
@@ -2797,48 +2739,43 @@ begin
     exit;
 
   if (Arow < 1) or
-     (Arow  = fSourceIndex) then
+    (Arow = fSourceIndex) then
     exit;
-  fTargetIndex:= ARow;
+  fTargetIndex := ARow;
 
-  sgPlayList.MoveColRow(false, fTargetIndex, fSourceIndex);
+  sgPlayList.MoveColRow(False, fTargetIndex, fSourceIndex);
 
- // sgPlayList.Selection := rect(fTargetIndex, 0, fTargetIndex, 1);
+  // sgPlayList.Selection := rect(fTargetIndex, 0, fTargetIndex, 1);
 
   sgPlayList.Repaint;
   fSourceIndex := fTargetIndex;
 
 end;
 
-procedure TfMainForm.sgPlayListMouseUp(Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; X, Y: Integer);
+procedure TfMainForm.sgPlayListMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: integer);
 //var
 //   mycol, myrow : Integer;
-
 begin
   fSourceIndex := -1;
   fTargetIndex := -1;
 
 end;
 
-procedure TfMainForm.sgPlayListPrepareCanvas(sender: TObject; aCol,
-  aRow: Integer; aState: TGridDrawState);
+procedure TfMainForm.sgPlayListPrepareCanvas(Sender: TObject; aCol, aRow: integer; aState: TGridDrawState);
 begin
   if aRow = 0 then exit;
   if ARow = BackEnd.PlayList.ItemIndex + 1 then
-    begin
-      sgPlaylist.Canvas.Font.Style := [fsUnderline];
-    end;
+    sgPlaylist.Canvas.Font.Style := [fsUnderline];
 
 
   sgPlayList.Canvas.Font.Color := clWindowText;  // colore di default
   sgPlayList.Canvas.Brush.Color := clWindow;
 
-   if PlaylistSelected[ARow - 1] then
-     begin        // Will only color selected rows
-       sgPlayList.Canvas.Font.Color :=  clHighlightText;
-       sgPlayList.Canvas.Brush.Color := clHighlight;
-     end;
+  if PlaylistSelected[ARow - 1] then
+  begin        // Will only color selected rows
+    sgPlayList.Canvas.Font.Color := clHighlightText;
+    sgPlayList.Canvas.Brush.Color := clHighlight;
+  end;
 
 end;
 
@@ -2849,50 +2786,48 @@ end;
 
 procedure TfMainForm.sgStatsClick(Sender: TObject);
 var
-  ACol,ARow: integer;
+  ACol, ARow: integer;
   p: Tpoint;
   theform: TfScanResult;
 begin
-  p:= sgStats.ScreenToControl(Mouse.CursorPos);
+  p := sgStats.ScreenToControl(Mouse.CursorPos);
   sgStats.MouseToCell(p.x, p.y, ACol, ARow);
 
   if (aCol = 1) and (sgStats.Cells[aCol, aRow] <> '0') then
-    begin
-      theform := TfScanResult.Create(self);
-      Theform.Load(TScannedStatus(arow));
-      theform.Show;
-    end;
+  begin
+    theform := TfScanResult.Create(self);
+    Theform.Load(TScannedStatus(arow));
+    theform.Show;
+  end;
 
 end;
 
-procedure TfMainForm.sgStatsPrepareCanvas(sender: TObject; aCol, aRow: Integer; aState: TGridDrawState);
+procedure TfMainForm.sgStatsPrepareCanvas(Sender: TObject; aCol, aRow: integer; aState: TGridDrawState);
 begin
   if (aCol = 1) and (sgStats.Cells[aCol, aRow] <> '0') then
-    begin
-     if gdHot in aState then
-       sgStats.Canvas.Font.Style := [fsUnderline,fsBold]
-     else
-       sgStats.Canvas.Font.Style := [fsUnderline]
-    end;
+    if gdHot in aState then
+      sgStats.Canvas.Font.Style := [fsUnderline, fsBold]
+    else
+      sgStats.Canvas.Font.Style := [fsUnderline];
 end;
 
 procedure TfMainForm.slVolumeChange(Sender: TObject);
 begin
-//  DebugLn('TfMainForm.slVolumeChange','->',IntToStr(slVolume.Position));
+  //  DebugLn('TfMainForm.slVolumeChange','->',IntToStr(slVolume.Position));
   BackEnd.SetVolume(slVolume.Position);
-//
+
 end;
 
 procedure TfMainForm.btnCloseCollectionStatClick(Sender: TObject);
 begin
   sgStats.Clean;
   sgStats.RowCount := 1;
-  gbStats.Visible := false;
+  gbStats.Visible := False;
 end;
 
 procedure TfMainForm.slVolumeClick(Sender: TObject);
 begin
-    BackEnd.SetVolume(slVolume.Position);
+  BackEnd.SetVolume(slVolume.Position);
 end;
 
 procedure TfMainForm.TimerTimer(Sender: TObject);
@@ -2902,7 +2837,7 @@ begin
   //  if not seeking then
   //    TrackBar.Position := BackEnd.Position;
   //end;
-  //
+
   //lbTime.Caption := TimeToStr(BackEnd.Position / MSecsPerDay);
 end;
 
@@ -2913,7 +2848,7 @@ end;
 
 procedure TfMainForm.tbRepeatClick(Sender: TObject);
 begin
-  //
+
   RepeatMenu.PopUp;
 end;
 
@@ -2929,7 +2864,7 @@ begin
   exit;
   if ssLeft in Shift then
   begin
-    Seeking     := True;
+    Seeking := True;
     TrackBar.Cursor := crHSplit;
     newPosition := Round(x * TrackBar.Max / TrackBar.ClientWidth);
     TrackBar.Position := newPosition;
@@ -2949,10 +2884,10 @@ end;
 
 procedure TfMainForm.TrackDblClick(Sender: TObject);
 var
-  info : TfSongInfo;
+  info: TfSongInfo;
 begin
   if not assigned(BackEnd.PlayList.CurrentItem) then
-     exit;
+    exit;
 
   info := TfSongInfo.Create(Application);
   info.InitFromFile(BackEnd.PlayList.CurrentItem.FullName);
@@ -2967,13 +2902,13 @@ end;
 procedure TfMainForm.TrayIconDblClick(Sender: TObject);
 begin
   if Visible then
-    begin
-      Hide;
-      {$IFDEF TASKBAR_EXTENSION}
-      if Mytaskbar_ext.Initialized then
-         Mytaskbar_ext.UnInit;
-      {$ENDIF}
-    end
+  begin
+    Hide;
+    {$IFDEF TASKBAR_EXTENSION}
+    if Mytaskbar_ext.Initialized then
+      Mytaskbar_ext.UnInit;
+    {$ENDIF}
+  end
   else
   begin
     Show;
@@ -2987,56 +2922,55 @@ end;
 function TfMainForm.AdjustPos(pt: tpoint): Tpoint;
 begin
 
-  result.x := pt.x;
+  Result.x := pt.x;
 
   if pt.y < Screen.Monitors[0].WorkareaRect.Top then
-     result.y := Screen.Monitors[0].WorkareaRect.Top
+    Result.y := Screen.Monitors[0].WorkareaRect.Top
   else
-     if pt.y > Screen.Monitors[0].WorkareaRect.bottom then
-        result.y := Screen.Monitors[0].WorkareaRect.bottom
-     else
-        result.y := pt.y;
+  if pt.y > Screen.Monitors[0].WorkareaRect.bottom then
+    Result.y := Screen.Monitors[0].WorkareaRect.bottom
+  else
+    Result.y := pt.y;
 
 end;
 
 
-procedure TfMainForm.TrayIconMouseDown(Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; X, Y: Integer);
+procedure TfMainForm.TrayIconMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: integer);
 var
-  pt : Tpoint;
+  pt: Tpoint;
 begin
   if button = mbMiddle then
-    begin
-      if not Assigned(fMiniPlayer) then
-        fMiniPlayer:= TfMiniPlayer.Create(Self);
+  begin
+    if not Assigned(fMiniPlayer) then
+      fMiniPlayer := TfMiniPlayer.Create(Self);
 
-      if fMiniPlayer.Visible then
-         fMiniPlayer.Hide
-      else
-        begin
-          pt:=TrayIcon.GetPosition;
-          fMiniPlayer.ShowAtPos(pt.x,pt.y);
-        end;
-     end;
+    if fMiniPlayer.Visible then
+      fMiniPlayer.Hide
+    else
+    begin
+      pt := TrayIcon.GetPosition;
+      fMiniPlayer.ShowAtPos(pt.x, pt.y);
+    end;
+  end;
 
   {$IFDEF WINDOWS}
-   if Button = mbRight then
-      begin
-        SetForegroundWindow(TrayIcon.Handle);
-        PostMessage(TrayIcon.Handle, 0, 0, 0);
-        TrayMenu.PopUp(x,y);
-      end;
+  if Button = mbRight then
+  begin
+    SetForegroundWindow(TrayIcon.Handle);
+    PostMessage(TrayIcon.Handle, 0, 0, 0);
+    TrayMenu.PopUp(x, y);
+  end;
   {$ENDIF}
   {$IFDEF LINUX}
   if (Button = mbLeft) then
-     if not TrayMenuActive  then
-     begin
-       pt:=AdjustPos(TrayIcon.GetPosition); //Mouse.CursorPos;
-       TrayMenuActive:=true;
-       TrayMenu.PopUp(pt.x,pt.y);
-     end
-     else
-       TrayMenuActive:=False;
+    if not TrayMenuActive then
+    begin
+      pt := AdjustPos(TrayIcon.GetPosition); //Mouse.CursorPos;
+      TrayMenuActive := True;
+      TrayMenu.PopUp(pt.x, pt.y);
+    end
+    else
+      TrayMenuActive := False;
 
   {$ENDIF}
 
@@ -3048,19 +2982,17 @@ var
 begin
   item := TPlayListTreeNode(PlaylistTree.Selected);
   if item = nil then
-     exit;
+    exit;
   if item.FullPath <> EmptyStr then
     if item.Automatic then
-       PlayListHandler(True);
+      PlayListHandler(True);
   ReloadPlayList;
 end;
 
 procedure TfMainForm.tsDirectoryShow(Sender: TObject);
 begin
   if CurrentPath = EmptyStr then
-     begin
-       LoadDir(GetUserDir);
-     end;
+    LoadDir(GetUserDir);
 end;
 
 procedure TfMainForm.tsPlayListShow(Sender: TObject);
@@ -3068,65 +3000,65 @@ begin
   LoadAutomaticPlaylist;
 end;
 
-procedure TfMainForm.tvCollectionCreateNodeClass(Sender: TCustomTreeView;
-  var NodeClass: TTreeNodeClass);
+procedure TfMainForm.tvCollectionCreateNodeClass(Sender: TCustomTreeView; var NodeClass: TTreeNodeClass);
 begin
-  NodeClass:= TMusicTreeNode;
+  NodeClass := TMusicTreeNode;
 end;
 
 procedure TfMainForm.tvCollectionDblClick(Sender: TObject);
 begin
-  CollectionHandler(true);
+  CollectionHandler(True);
 end;
 
-procedure TfMainForm.tvCollectionGetImageIndex(Sender: TObject; Node: TTreeNode
-  );
+procedure TfMainForm.tvCollectionGetImageIndex(Sender: TObject; Node: TTreeNode);
 begin
   node.ImageIndex := SortArray[TMusicTreeNode(Node).Kind].ImageIndex;
-  node.SelectedIndex:= node.ImageIndex;
+  node.SelectedIndex := node.ImageIndex;
 
 end;
 
-procedure TfMainForm.LoadDir(Path:string);
+procedure TfMainForm.LoadDir(Path: string);
 var
-  DirList: TstringList;
-  FileList :TstringList;
+  DirList: TStringList;
+  FileList: TStringList;
   i: integer;
   Node: TFileTreeNode;
 begin
-  DirList:=TStringList.Create;
-  FileList:=TStringList.Create;
-  FileList.OwnsObjects := true;
-  CurrentPath:=IncludeTrailingPathDelimiter(Path);
+  DirList := TStringList.Create;
+  FileList := TStringList.Create;
+  FileList.OwnsObjects := True;
+  CurrentPath := IncludeTrailingPathDelimiter(Path);
   try
     FilesTree.Items.Clear;
     BuildFolderList(CurrentPath, DirList);
     DirList.Sort;
     BuildFileList(IncludeTrailingPathDelimiter(CurrentPath) + AudioTag.SupportedExtension,
-                   faAnyFile, FileList, False);
+      faAnyFile, FileList, False);
     FileList.Sort;
-    for i := 0 to DirList.Count -1 do
-      begin
-        node:=TFileTreeNode(FilesTree.items.AddChild(Nil, ExtractFileName(DirList[i])));
-        node.FullPath:=DirList[i];
-        node.isDir:=True;;
-      end;
+    for i := 0 to DirList.Count - 1 do
+    begin
+      node := TFileTreeNode(FilesTree.items.AddChild(nil, ExtractFileName(DirList[i])));
+      node.FullPath := DirList[i];
+      node.isDir := True;
+      ;
+    end;
 
-    for i := 0 to FileList.Count -1 do
-      begin
-        node:=TFileTreeNode(FilesTree.items.AddChild(nil, ExtractFileName(FileList[i])));
-        node.FullPath:=FileList[i];
-        node.isDir:=False;
-      end;
+    for i := 0 to FileList.Count - 1 do
+    begin
+      node := TFileTreeNode(FilesTree.items.AddChild(nil, ExtractFileName(FileList[i])));
+      node.FullPath := FileList[i];
+      node.isDir := False;
+    end;
 
   finally
-    DirList.Free;;
+    DirList.Free;
+    ;
     FileList.Free;
   end;
   ePath.Directory := Path;
 
   if PathHistory.IndexOf(Path) < 0 then
-     PathIndex := PathHistory.Add(Path);
+    PathIndex := PathHistory.Add(Path);
 
 end;
 
@@ -3143,16 +3075,16 @@ var
   oldtop: integer;
 begin
 
-  oldtop:=sgPlayList.TopRow;
+  oldtop := sgPlayList.TopRow;
   sgPlayList.Clear;
-  sgPlayList.RowCount:=BackEnd.PlayList.Count+1 ;
-  PlaylistSelected.SetSize(sgPlayList.RowCount -1);
+  sgPlayList.RowCount := BackEnd.PlayList.Count + 1;
+  PlaylistSelected.SetSize(sgPlayList.RowCount - 1);
   PlaylistSelected.Clearall;
 
   AdaptSize;
   sgPlayList.TopRow := oldtop;
   sgPlayList.Invalidate;
-//  Application.ProcessMessages;
+  //  Application.ProcessMessages;
 
 end;
 
@@ -3160,12 +3092,12 @@ procedure TfMainForm.ClearPanelInfo;
 var
   lFile: string;
 begin
-  Title.Caption     := rNotPlaying;
-  Album.Caption     := '';
-  Artist.Caption    := '';
-//  Track.Caption     := '';
+  Title.Caption := rNotPlaying;
+  Album.Caption := '';
+  Artist.Caption := '';
+  //  Track.Caption     := '';
   TrackBar.Position := 0;
-  lbTime.caption    := FormatTimeRange(0);
+  lbTime.Caption := FormatTimeRange(0);
   lFile := backend.Config.GetResourcesPath + 'logo.png';
   if not FileExists(lFile) then
     DebugLn('[TfMainForm.ClearPanelInfo] File not found: ' + lFile)
@@ -3174,130 +3106,125 @@ begin
   Caption := DisplayAppName;
 end;
 
-procedure TfMainForm.OnEngineCommand(Sender: Tobject; Command: TEngineCommand);
+procedure TfMainForm.OnEngineCommand(Sender: TObject; Command: TEngineCommand);
 begin
   case Command of
-     ecStop : ClearPanelInfo;
-     ecPause, ecPlay: sgPlayList.InvalidateRow(BackEnd.PlayList.ItemIndex+1);
+    ecStop: ClearPanelInfo;
+    ecPause, ecPlay: sgPlayList.InvalidateRow(BackEnd.PlayList.ItemIndex + 1);
   end;
 end;
 
-procedure TfMainForm.OnExternalCommand(Sender: Tobject; Command: RExternalCommand; Var Handled:boolean);
+procedure TfMainForm.OnExternalCommand(Sender: TObject; Command: RExternalCommand; var Handled: boolean);
 begin
   if Command.Category = CATEGORY_APP then
     case Command.command of
       COMMAND_ACTIVATE:
-        begin
-          //if WindowState = wsMinimized then
-          //   WindowState := wsNormal;
-          // FormStyle := fsNormal;
-           Handled:= true;
-           ShowOnTop;
-           Show;
-        end;
+      begin
+        //if WindowState = wsMinimized then
+        //   WindowState := wsNormal;
+        // FormStyle := fsNormal;
+        Handled := True;
+        ShowOnTop;
+        Show;
+      end;
     end;
 
   if Command.Category = CATEGORY_ACTION then
     case Command.command of
-      COMMAND_SEEK_P :
-              begin
-                dm.actSkipForward.Execute;
-                Handled:=true;
-              end;
-      COMMAND_SEEK_M :
-              begin
-                dm.actSkipBackward.Execute;
-                Handled:=true;
-              end;
+      COMMAND_SEEK_P:
+      begin
+        dm.actSkipForward.Execute;
+        Handled := True;
+      end;
+      COMMAND_SEEK_M:
+      begin
+        dm.actSkipBackward.Execute;
+        Handled := True;
+      end;
     end;
 
 end;
 
-procedure TfMainForm.AdaptSize(Recalculate: boolean =true);
+procedure TfMainForm.AdaptSize(Recalculate: boolean = True);
 var
-  i:integer;
-  ColWidths : array of integer = nil;
-  TotalSize : Integer;
-  diffs     : integer;
-  VisibleCount : integer;
-  HighP, LowP  : integer;
-  Steps        : integer;
-  Remains      : integer;
+  i: integer;
+  ColWidths: array of integer = nil;
+  TotalSize: integer;
+  diffs: integer;
+  VisibleCount: integer;
+  HighP, LowP: integer;
+  Steps: integer;
+  Remains: integer;
   h: ThackGrid;
-  oldTop: Integer;
+  oldTop: integer;
 begin
-  oldtop:= sgPlayList.TopRow;
-  HighP:=0; LowP:=0;
-  TotalSize:= 0;
-  VisibleCount:=0;
+  oldtop := sgPlayList.TopRow;
+  HighP := 0;
+  LowP := 0;
+  TotalSize := 0;
+  VisibleCount := 0;
   SetLength(ColWidths, sgPlayList.Columns.Count);
   if Recalculate then
-     begin
-      for I := 0 to sgPlayList.Columns.Count - 1 do
-         if sgPlayList.Columns[i].Visible then
-           begin
-             ColWidths[i] := ColumnSize(i)+3;
-             inc(VisibleCount);
-             inc(TotalSize, ColWidths[i]);
-             if sgPlayList.Columns[i].SizePriority > 0 then
-               Inc(HighP)
-             else
-               Inc(LowP);
-           end
-         else
-           ColWidths[i] := 0;
-     end
+  begin
+    for I := 0 to sgPlayList.Columns.Count - 1 do
+      if sgPlayList.Columns[i].Visible then
+      begin
+        ColWidths[i] := ColumnSize(i) + 3;
+        Inc(VisibleCount);
+        Inc(TotalSize, ColWidths[i]);
+        if sgPlayList.Columns[i].SizePriority > 0 then
+          Inc(HighP)
+        else
+          Inc(LowP);
+      end
+      else
+        ColWidths[i] := 0;
+  end
   else
-    begin
-      for I := 0 to sgPlayList.Columns.Count - 1 do
-         if sgPlayList.Columns[i].Visible then
-           begin
-             ColWidths[i] :=  sgPlayList.Columns[i].Width;
-             inc(VisibleCount);
-             inc(TotalSize, ColWidths[i]) ;
-             if sgPlayList.Columns[i].SizePriority > 0 then
-               Inc(HighP)
-             else
-               Inc(LowP);
+    for I := 0 to sgPlayList.Columns.Count - 1 do
+      if sgPlayList.Columns[i].Visible then
+      begin
+        ColWidths[i] := sgPlayList.Columns[i].Width;
+        Inc(VisibleCount);
+        Inc(TotalSize, ColWidths[i]);
+        if sgPlayList.Columns[i].SizePriority > 0 then
+          Inc(HighP)
+        else
+          Inc(LowP);
 
-           end
-         else
-           ColWidths[i] := 0;
-    end;
+      end
+      else
+        ColWidths[i] := 0;
 
-  h:= THackGrid(sgPlayList);
+  h := THackGrid(sgPlayList);
 
 
-  Diffs := h.gcache.ClientWidth - h.gcache.FixedWidth  - TotalSize -1;
+  Diffs := h.gcache.ClientWidth - h.gcache.FixedWidth - TotalSize - 1;
 
   Steps := diffs div HighP;// VisibleCount;
   remains := abs(diffs mod HighP);// VisibleCount;
 
   for I := 0 to sgPlayList.Columns.Count - 1 do
-     if sgPlayList.Columns[i].Visible and (sgPlayList.Columns[i].SizePriority > 0) then
-       begin
-         ColWidths[i] := ColWidths[i] + Steps;
-       end;
+    if sgPlayList.Columns[i].Visible and (sgPlayList.Columns[i].SizePriority > 0) then
+      ColWidths[i] := ColWidths[i] + Steps;
 
-  i:=0;
+  i := 0;
   while (i < sgPlayList.Columns.Count) and (remains > 0) do
+  begin
+    if sgPlayList.Columns[i].Visible and not (sgPlayList.Columns[i].SizePriority > 0) then
     begin
-       if sgPlayList.Columns[i].Visible and not (sgPlayList.Columns[i].SizePriority > 0)  then
-         begin
-           if diffs > 0 then
-              ColWidths[i] := ColWidths[i] + 1
-           else
-              ColWidths[i] := ColWidths[i] - 1;
-           Dec(Remains);
-         end;
-       inc(i);
+      if diffs > 0 then
+        ColWidths[i] := ColWidths[i] + 1
+      else
+        ColWidths[i] := ColWidths[i] - 1;
+      Dec(Remains);
     end;
+    Inc(i);
+  end;
 
   for I := 0 to sgPlayList.Columns.Count - 1 do
-     if sgPlayList.Columns[i].Visible then
-       begin
-         sgPlayList.Columns[i].Width := ColWidths[i];
-       end;
+    if sgPlayList.Columns[i].Visible then
+      sgPlayList.Columns[i].Width := ColWidths[i];
   sgPlayList.TopRow := oldtop;
 end;
 

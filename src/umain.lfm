@@ -6,13 +6,12 @@ object fMainForm: TfMainForm
   ActiveControl = pcMain
   AllowDropFiles = True
   Caption = 'OvoPlayer'
-  ClientHeight = 527
+  ClientHeight = 547
   ClientWidth = 765
   Constraints.MinHeight = 202
   Constraints.MinWidth = 505
   Font.Height = -12
   Menu = MainMenu
-  OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -22,7 +21,6 @@ object fMainForm: TfMainForm
   OnShow = FormShow
   Position = poMainFormCenter
   ShowHint = True
-  LCLVersion = '2.3.0.0'
   object pnlleft: TPanel
     Left = 0
     Height = 547
@@ -90,7 +88,6 @@ object fMainForm: TfMainForm
             EditLabel.Height = 15
             EditLabel.Width = 26
             EditLabel.Caption = 'Filter'
-            EditLabel.Color = clDefault
             EditLabel.ParentColor = False
             LabelPosition = lpLeft
             TabOrder = 1
@@ -165,6 +162,7 @@ object fMainForm: TfMainForm
           RowSelect = True
           ScrollBars = ssAutoBoth
           ShowHint = True
+          ShowSeparators = False
           TabOrder = 1
           OnCreateNodeClass = tvCollectionCreateNodeClass
           OnDblClick = tvCollectionDblClick
@@ -236,16 +234,19 @@ object fMainForm: TfMainForm
           HideSelection = False
           Images = DM.ilSmall
           MultiSelect = True
+          MultiSelectStyle = [msControlSelect, msShiftSelect, msSiblingOnly]
           PopupMenu = pmdirectories
           ReadOnly = True
           RightClickSelect = True
           RowSelect = True
           ScrollBars = ssAutoBoth
+          ShowSeparators = False
           TabOrder = 1
           OnCreateNodeClass = FilesTreeCreateNodeClass
           OnDblClick = FilesTreeDblClick
           OnGetImageIndex = FilesTreeGetImageIndex
           OnGetSelectedIndex = FilesTreeGetSelectedIndex
+          OnKeyDown = FilesTreeKeyDown
           Options = [tvoAllowMultiselect, tvoAutoItemHeight, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
         end
       end
@@ -265,6 +266,7 @@ object fMainForm: TfMainForm
           RightClickSelect = True
           RowSelect = True
           ScrollBars = ssAutoBoth
+          ShowSeparators = False
           TabOrder = 0
           OnCreateNodeClass = PlaylistTreeCreateNodeClass
           OnDblClick = PlaylistTreeDblClick
@@ -428,7 +430,6 @@ object fMainForm: TfMainForm
             Anchors = [akTop, akLeft, akRight]
             AutoSize = False
             Caption = 'Title'
-            Color = clDefault
             Font.Height = 18
             Font.Style = [fsBold]
             ParentColor = False
@@ -443,7 +444,6 @@ object fMainForm: TfMainForm
             Anchors = [akTop, akLeft, akRight]
             AutoSize = False
             Caption = 'Album'
-            Color = clDefault
             ParentColor = False
             OnDblClick = TrackDblClick
           end
@@ -455,7 +455,6 @@ object fMainForm: TfMainForm
             Anchors = [akTop, akLeft, akRight]
             AutoSize = False
             Caption = 'Artist'
-            Color = clDefault
             ParentColor = False
             OnDblClick = TrackDblClick
           end
@@ -690,13 +689,13 @@ object fMainForm: TfMainForm
             end
             object ToolButton8: TToolButton
               Left = 87
-              Height = 8
+              Height = 23
               Top = 0
               Style = tbsSeparator
             end
             object ToolButton9: TToolButton
               Left = 53
-              Height = 8
+              Height = 23
               Top = 0
               Style = tbsSeparator
             end
@@ -727,7 +726,7 @@ object fMainForm: TfMainForm
             end
             object ToolButton18: TToolButton
               Left = 199
-              Height = 8
+              Height = 23
               Top = 0
               AutoSize = True
               Enabled = False
@@ -735,7 +734,7 @@ object fMainForm: TfMainForm
             end
             object ToolButton12: TToolButton
               Left = 271
-              Height = 8
+              Height = 23
               Top = 0
               Style = tbsSeparator
             end
@@ -786,7 +785,6 @@ object fMainForm: TfMainForm
               Anchors = [akRight, akBottom]
               AutoSize = False
               Caption = '00:00:00'
-              Color = clDefault
               Font.Height = -19
               ParentColor = False
               ParentFont = False
@@ -1513,5 +1511,9 @@ object fMainForm: TfMainForm
       Caption = 'Delete'
       OnClick = mnuDeletePlaylistClick
     end
+  end
+  object MainMenu1: TMainMenu
+    Left = 100
+    Top = 424
   end
 end
