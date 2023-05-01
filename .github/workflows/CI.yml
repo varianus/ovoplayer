@@ -45,7 +45,7 @@ jobs:
         git submodule update
     - name: Install Dependencies
       if: env.OS == 'ubuntu-latest'
-      run: sudo apt-get update && sudo apt-get install libxml2-utils libdbus-glib-1-dev binutils-mingw-w64-x86-64 && sudo ln -s /usr/bin/x86_64-w64-mingw32-windres /usr/bin/windre
+      run: sudo apt-get update && sudo apt-get install libxml2-utils libdbus-glib-1-dev binutils-mingw-w64-x86-64 && sudo ln -s /usr/bin/x86_64-w64-mingw32-windres /usr/bin/windres
 
     - name: Install Lazarus
       shell: python
