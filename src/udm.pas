@@ -145,7 +145,7 @@ begin
     end;
 end;
 
-{$R ovoplayerfont.rc}
+{$R ovoplayerfont.res}
 
 Procedure TDM.LoadImageList(Sender: TObject);
 var
