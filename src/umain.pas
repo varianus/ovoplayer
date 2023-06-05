@@ -1214,6 +1214,7 @@ begin
     if not Assigned(MyNetIntf) then
     begin
       MyNetIntf := TNetIntf.Create;
+      MyNetIntf.OnlyLAN := GuiConfigObj.NetRemoteParam.OnlyLAN;
       MyNetIntf.Port := GuiConfigObj.NetRemoteParam.Port;
       MyNetIntf.Activate(BackEnd);
     end;

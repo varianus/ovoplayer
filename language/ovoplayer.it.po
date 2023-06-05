@@ -567,6 +567,10 @@ msgstr "Riduci su chiusura"
 msgid "Enable network remote"
 msgstr "Abilita telecomando di rete"
 
+#: tfconfig.cbonlylan.caption
+msgid "Bind only local network"
+msgstr "Collegare solo la rete locale"
+
 #: tfconfig.cbpausewhenlocked.caption
 msgid "Pause player when screen is locked"
 msgstr "Metti in pausa se lo schermo viene bloccato"
@@ -1143,7 +1147,9 @@ msgstr "è"
 msgid "Scan Result"
 msgstr "Risultato Ricerca"
 
-#: tfscanresult.stringgrid1.columns[0].title.caption
+#: tfscanresult.resultgrid.columns[0].title.caption
+#, fuzzy
+msgctxt "tfscanresult.resultgrid.columns[0].title.caption"
 msgid "File name"
 msgstr "Nome file"
 

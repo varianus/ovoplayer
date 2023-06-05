@@ -521,6 +521,10 @@ msgstr ""
 msgid "Enable network remote"
 msgstr ""
 
+#: tfconfig.cbonlylan.caption
+msgid "Bind only local network"
+msgstr ""
+
 #: tfconfig.cbpausewhenlocked.caption
 msgid "Pause player when screen is locked"
 msgstr ""
@@ -1080,7 +1084,8 @@ msgstr ""
 msgid "Scan Result"
 msgstr ""
 
-#: tfscanresult.stringgrid1.columns[0].title.caption
+#: tfscanresult.resultgrid.columns[0].title.caption
+msgctxt "tfscanresult.resultgrid.columns[0].title.caption"
 msgid "File name"
 msgstr ""
 

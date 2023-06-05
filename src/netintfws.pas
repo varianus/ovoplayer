@@ -38,13 +38,16 @@ type
     FActivated: boolean;
     fBackEnd: IBackEnd;
     DaemonThread: TTCPRemoteDaemon;
+    FOnlyLAN: boolean;
     FPort: integer;
+    procedure SetOnlyLAN(AValue: boolean);
     procedure SetPort(AValue: integer);
   public
     function Activate(BackEnd: IBackEnd): boolean;
     procedure DeActivate;
     constructor Create;
     destructor Destroy; override;
+    property OnlyLAN: boolean read FOnlyLAN write SetOnlyLAN;
     property Port: integer read FPort write SetPort;
     property Activated: boolean read FActivated;
   end;
@@ -101,7 +104,7 @@ constructor TTCPRemoteDaemon.Create(net: TNetIntf);
 begin
   inherited Create(False);
   fnet := net;
-  sock := TTcpIpServerSocket.Create('', net.FPort);
+  sock := TTcpIpServerSocket.Create(specialize IfThen<string>(Net.FOnlyLan,'127.0.0.1','') , net.FPort);
   FreeOnTerminate := True;
 end;
 
@@ -275,6 +278,17 @@ begin
     end;
 end;
 
+procedure TNetIntf.SetOnlyLAN(AValue: boolean);
+begin
+  if FOnlyLAN = AValue then Exit;
+  FOnlyLAN := AValue;
+  if Assigned(DaemonThread) then
+    begin
+      DeActivate;
+      Activate(fBackEnd);
+    end;
+end;
+
 function TNetIntf.Activate(BackEnd: IBackEnd): boolean;
 begin
   fBackEnd := BackEnd;
@@ -298,6 +312,7 @@ end;
 constructor TNetIntf.Create;
 begin
   FPort := 6860;
+  FOnlyLAN := true;
   FActivated := False;
   DaemonThread := nil;
 end;

@@ -11,7 +11,6 @@ object fConfig: TfConfig
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '2.1.0.0'
   object GroupBox1: TGroupBox
     Left = 0
     Height = 442
@@ -22,6 +21,7 @@ object fConfig: TfConfig
     ClientHeight = 422
     ClientWidth = 151
     Color = clWindow
+    ParentBackground = False
     ParentColor = False
     TabOrder = 0
     object sbEngine: TSpeedButton
@@ -92,6 +92,7 @@ object fConfig: TfConfig
       ClientHeight = 98
       ClientWidth = 145
       Color = clActiveCaption
+      ParentBackground = False
       ParentColor = False
       TabOrder = 0
       Visible = False
@@ -161,9 +162,9 @@ object fConfig: TfConfig
     Height = 442
     Top = 0
     Width = 547
-    ActivePage = tsEngine
+    ActivePage = tsNetRemote
     Align = alClient
-    TabIndex = 1
+    TabIndex = 4
     TabOrder = 1
     object tsInterface: TTabSheet
       Caption = 'Interfaces'
@@ -174,7 +175,7 @@ object fConfig: TfConfig
         Left = 12
         Height = 19
         Top = 8
-        Width = 118
+        Width = 116
         Caption = 'Minimize on Close'
         Checked = True
         State = cbChecked
@@ -184,7 +185,7 @@ object fConfig: TfConfig
         Left = 12
         Height = 19
         Top = 72
-        Width = 98
+        Width = 96
         Caption = 'Show tray icon'
         Checked = True
         State = cbChecked
@@ -194,7 +195,7 @@ object fConfig: TfConfig
         Left = 12
         Height = 19
         Top = 168
-        Width = 129
+        Width = 127
         Caption = 'Use multimedia keys'
         Checked = True
         OnClick = cbCaptureMMKeysClick
@@ -229,7 +230,7 @@ object fConfig: TfConfig
         Left = 12
         Height = 19
         Top = 136
-        Width = 132
+        Width = 130
         Caption = 'Show in sound menu'
         Checked = True
         State = cbChecked
@@ -239,7 +240,7 @@ object fConfig: TfConfig
         Left = 12
         Height = 19
         Top = 40
-        Width = 152
+        Width = 150
         Caption = 'Restart from last position'
         TabOrder = 1
       end
@@ -247,7 +248,7 @@ object fConfig: TfConfig
         Left = 12
         Height = 19
         Top = 104
-        Width = 204
+        Width = 202
         Caption = 'Pause player when screen is locked'
         Checked = True
         State = cbChecked
@@ -263,7 +264,7 @@ object fConfig: TfConfig
         Left = 12
         Height = 51
         Top = 0
-        Width = 198
+        Width = 196
         AutoFill = True
         AutoSize = True
         Caption = 'Audio Engine'
@@ -276,7 +277,7 @@ object fConfig: TfConfig
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
         ClientHeight = 31
-        ClientWidth = 194
+        ClientWidth = 192
         Items.Strings = (
           'Sample row for builded engine'
         )
@@ -391,7 +392,7 @@ object fConfig: TfConfig
         Left = 12
         Height = 19
         Top = 272
-        Width = 137
+        Width = 135
         Caption = 'Scan on program start'
         TabOrder = 4
       end
@@ -520,7 +521,7 @@ object fConfig: TfConfig
         Left = 12
         Height = 19
         Top = 8
-        Width = 142
+        Width = 140
         Caption = 'Enable network remote'
         OnChange = cbNetRemoteChange
         TabOrder = 0
@@ -537,7 +538,7 @@ object fConfig: TfConfig
         object sePort: TSpinEdit
           Left = 104
           Height = 23
-          Top = 5
+          Top = 34
           Width = 105
           MaxValue = 65536
           OnChange = sePortChange
@@ -547,7 +548,7 @@ object fConfig: TfConfig
         object Label5: TLabel
           Left = 12
           Height = 17
-          Top = 8
+          Top = 37
           Width = 76
           AutoSize = False
           Caption = 'Port'
@@ -559,6 +560,14 @@ object fConfig: TfConfig
           Top = 49
           Width = 1
           ParentColor = False
+        end
+        object cbOnlyLAN: TCheckBox
+          Left = 12
+          Height = 19
+          Top = 3
+          Width = 142
+          Caption = 'Bind only local network'
+          TabOrder = 1
         end
       end
     end
