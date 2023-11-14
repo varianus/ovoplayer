@@ -24,7 +24,7 @@ unit PlayListManager;
 interface
 
 uses
-  Classes, SysUtils, Playlist, AudioTag, MediaLibrary, lazutf8classes;
+  Classes, SysUtils, Playlist, AudioTag, MediaLibrary;
 
 const
   XSPF_VERSION = 'http://ovoplayer.altervista.org/ovoplayer/0/1/';
@@ -487,7 +487,7 @@ var
   Root, Node: TDOMelement;
   TrackNode, PropNode: TDOMelement;
   i: integer;
-  Str: TFileStreamUTF8;
+  Str: TFileStream;
 
 begin
   XMLDoc := TXMLDocument.Create;
@@ -538,7 +538,7 @@ begin
 
   end;
 
-  Str := TFileStreamUTF8.Create(FileName, fmCreate);
+  Str := TFileStream.Create(FileName, fmCreate);
   WriteXMLFile(XMLDoc, Str);
   Str.Free;
   XMLDoc.Free;

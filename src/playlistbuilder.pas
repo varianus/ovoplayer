@@ -24,7 +24,7 @@ unit playlistbuilder;
 interface
 
 uses
- Classes, LazUTF8Classes, SysUtils, FPJSON, jsonparser, fpjsonrtti, Generics.Collections;
+ Classes, SysUtils, FPJSON, jsonparser, fpjsonrtti, Generics.Collections;
 
 type
 
@@ -252,9 +252,9 @@ end;
 procedure TPlaylistContainer.Save;
 var
   Mems: TFPJSStream;  //Workaround for new type on fpjson
-  Stream: TFileStreamUTF8;
+  Stream: TFileStream;
 begin
- Stream:= TFileStreamUTF8.Create(FFileName, fmOpenWrite);
+ Stream:= TFileStream.Create(FFileName, fmOpenWrite);
  Stream.position := 0;
  Stream.Size := 0;
  Mems:= TFPJSStream.Create;
@@ -319,12 +319,12 @@ end;
 class procedure TPlaylistContainer.CreateDefaultFileIfMissing(
   FileName: TFileName);
 var
-  FStream: TFileStreamUTF8;
+  FStream: TFileStream;
   str:string;
 begin
   if not FileExists(FileName) then
     begin
-      fStream:= TFileStreamUTF8.Create(FileNAme, fmOpenWrite + fmCreate);
+      fStream:= TFileStream.Create(FileNAme, fmOpenWrite + fmCreate);
       str := Format(DefaultPlayList, [
                              RS_Name25_Random_songs,
                              RS_NameAllsongs,
@@ -341,10 +341,10 @@ end;
 
 constructor TPlaylistContainer.Create(FileName:TFileName);
 var
-  Stream: TFileStreamUTF8;
+  Stream: TFileStream;
 begin
   FFileName:= FileName;
-  Stream:= TFileStreamUTF8.Create(FFileNAme, fmOpenRead);
+  Stream:= TFileStream.Create(FFileNAme, fmOpenRead);
   JSONArray := TJSONArray(GetJSON(Stream, True));
   Stream.Free;
 end;
@@ -602,7 +602,7 @@ end;
 //  JSONString : string;
 //  JSONOnject : TJSONObject;
 //  JSONArray: TJSONArray;
-//  Stream: TFileStreamUTF8;
+//  Stream: TFileStream;
 //begin
 //  Streamer := TJSONStreamer.Create(nil);
 //  Streamer.Options:= Streamer.Options + [jsoUseFormatString];
@@ -614,7 +614,7 @@ end;
 //
 //  JSONOnject.Add('Filters',JSONArray);
 //
-//  Stream := TFileStreamUTF8.Create(FileName, fmOpenWrite + fmCreate);
+//  Stream := TFileStream.Create(FileName, fmOpenWrite + fmCreate);
 //
 //  JSONOnject.DumpJSON(Stream);
 //  Stream.Free;
@@ -631,10 +631,10 @@ end;
 //  JSONString : string;
 //  JSONOnject : TJSONObject;
 //  JSONArray: TJSONArray;
-//  Stream: TFileStreamUTF8;
+//  Stream: TFileStream;
 //  item: TFieldFilter;
 //begin
-//  Stream:= TFileStreamUTF8.Create(FileName, fmOpenRead);
+//  Stream:= TFileStream.Create(FileName, fmOpenRead);
 //  JSONOnject := TJSONObject(GetJSON(Stream, True));
 //
 //  DeStreamer := TJSONDeStreamer.Create(nil);
@@ -694,7 +694,7 @@ var
   i: integer;
   DeStreamer  : TJSONDeStreamer;
   JSONArray: TJSONArray;
-  Stream: TFileStreamUTF8;
+  Stream: TFileStream;
   item: TFieldFilter;
 begin
   DeStreamer := TJSONDeStreamer.Create(nil);
