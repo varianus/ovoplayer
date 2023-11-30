@@ -159,7 +159,8 @@ begin
   setlocale(1, 'C');
   {$endif}
 
-  Load_libmpv(libmpv.External_library);
+  if not Load_libmpv(External_libraryV2) then
+    Load_libmpv(External_libraryV1);
 
 end;
 
@@ -308,7 +309,7 @@ class function TAudioEngineLibMPV.GetEngineInfo(IsCurrent:boolean): AREnginePara
  begin
    result := inherited GetEngineInfo(IsCurrent);
    if not IsCurrent then
-      Load_libmpv(libmpv.External_library);
+      Load_libmpv(libmpv.External_libraryV1);
    try
      ver := mpv_client_api_version();
    Except
