@@ -27,7 +27,7 @@ uses
 const
   {$IFDEF LINUX}
      External_libraryV1='libmpv.so.1';
-     External_libraryV1='libmpv.so.2';
+     External_libraryV2='libmpv.so.2';
   {$ENDIF LINUX}
   {$IFDEF WINDOWS}
      External_libraryV1='mpv-1.dll';
