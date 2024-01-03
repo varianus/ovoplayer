@@ -39,7 +39,7 @@ uses
   {$IFDEF MULTIMEDIA_KEYS}MultimediaKeys, {$ENDIF}
   {$IFDEF SCREEN_LOCK}screenlock,{$ENDIF}
   ucover, ucustomplaylist, playlistbuilder, netprotocol,
-  GuiConfig, uequalizer, uscanresult, ThemedSlider, LCLType, UITypes;
+  GuiConfig, uequalizer, uscanresult, ThemedSlider, LCLType;
 
 type
   TSortFields = record
@@ -2414,7 +2414,7 @@ begin
       trunc(RatingBack.Width * (CurrRating / 10)) - 1,
       RatingBack.Height);
     r2 := r1;
-    OffsetRect(R2, aRect.Left, aRect.top);
+    Types.OffsetRect(R2, aRect.Left, aRect.top);
     sgPlayList.Canvas.CopyRect(r2, RatingFront.Canvas, r1);
   end;
 

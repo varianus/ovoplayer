@@ -8,6 +8,7 @@ object fEqualizer: TfEqualizer
   ClientHeight = 467
   ClientWidth = 736
   Font.Height = -12
+  LCLVersion = '3.99.0.0'
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   object ButtonPanel1: TButtonPanel
@@ -41,8 +42,8 @@ object fEqualizer: TfEqualizer
       Top = 40
       Width = 117
       Caption = 'Enable equalizer'
-      OnClick = cbEnableEqClick
       TabOrder = 1
+      OnClick = cbEnableEqClick
     end
     object StaticText1: TStaticText
       Left = 8
@@ -59,9 +60,9 @@ object fEqualizer: TfEqualizer
       Top = 8
       Width = 554
       ItemHeight = 0
+      TabOrder = 0
       OnChange = cbPresetChange
       OnKeyPress = cbPresetKeyPress
-      TabOrder = 0
     end
     object bSavePreset: TSpeedButton
       Left = 662
@@ -70,8 +71,8 @@ object fEqualizer: TfEqualizer
       Width = 26
       Caption = '+'
       Font.Height = -21
-      OnClick = bSavePresetClick
       ParentFont = False
+      OnClick = bSavePresetClick
     end
     object bRemovePreset: TSpeedButton
       Left = 696

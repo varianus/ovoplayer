@@ -12,6 +12,9 @@ object fMainForm: TfMainForm
   Constraints.MinWidth = 505
   Font.Height = -12
   Menu = MainMenu
+  Position = poMainFormCenter
+  ShowHint = True
+  LCLVersion = '3.99.0.0'
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -19,8 +22,6 @@ object fMainForm: TfMainForm
   OnHide = FormHide
   OnResize = FormResize
   OnShow = FormShow
-  Position = poMainFormCenter
-  ShowHint = True
   object pnlleft: TPanel
     Left = 0
     Height = 547
@@ -39,11 +40,11 @@ object fMainForm: TfMainForm
       ActivePage = tsCollection
       Align = alClient
       MultiLine = True
+      Options = [nboMultiLine, nboHidePageListPopup]
       TabIndex = 0
       TabOrder = 0
       TabPosition = tpBottom
       OnChange = pcMainChange
-      Options = [nboMultiLine, nboHidePageListPopup]
       object tsCollection: TTabSheet
         Caption = 'Collection'
         ClientHeight = 409
@@ -73,10 +74,10 @@ object fMainForm: TfMainForm
               'Year / Album'
               'Genre / Album'
             )
-            OnChange = cbGroupByChange
             Style = csDropDownList
             TabOrder = 0
             Text = 'AlbumArtist / Album'
+            OnChange = cbGroupByChange
           end
           object edtFilter: TLabeledEdit
             Left = 40
@@ -141,8 +142,8 @@ object fMainForm: TfMainForm
             }
             Images = DM.ilButtons
             ImageIndex = 20
-            OnClick = btnFilterCancelClick
             ShowCaption = False
+            OnClick = btnFilterCancelClick
           end
         end
         object tvCollection: TTreeView
@@ -162,12 +163,11 @@ object fMainForm: TfMainForm
           RowSelect = True
           ScrollBars = ssAutoBoth
           ShowHint = True
-          ShowSeparators = False
           TabOrder = 1
+          Options = [tvoAllowMultiselect, tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
           OnCreateNodeClass = tvCollectionCreateNodeClass
           OnDblClick = tvCollectionDblClick
           OnGetImageIndex = tvCollectionGetImageIndex
-          Options = [tvoAllowMultiselect, tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
         end
       end
       object tsDirectory: TTabSheet
@@ -240,14 +240,13 @@ object fMainForm: TfMainForm
           RightClickSelect = True
           RowSelect = True
           ScrollBars = ssAutoBoth
-          ShowSeparators = False
           TabOrder = 1
+          Options = [tvoAllowMultiselect, tvoAutoItemHeight, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
           OnCreateNodeClass = FilesTreeCreateNodeClass
           OnDblClick = FilesTreeDblClick
           OnGetImageIndex = FilesTreeGetImageIndex
           OnGetSelectedIndex = FilesTreeGetSelectedIndex
           OnKeyDown = FilesTreeKeyDown
-          Options = [tvoAllowMultiselect, tvoAutoItemHeight, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
         end
       end
       object tsPlayList: TTabSheet
@@ -266,16 +265,15 @@ object fMainForm: TfMainForm
           RightClickSelect = True
           RowSelect = True
           ScrollBars = ssAutoBoth
-          ShowSeparators = False
           TabOrder = 0
-          OnCreateNodeClass = PlaylistTreeCreateNodeClass
-          OnDblClick = PlaylistTreeDblClick
           Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoRowSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
           Items.Data = {
             F9FFFFFF020001000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF010000000000
             000001130000004175746F6D6174696320706C61796C69737473FFFFFFFFFFFF
             FFFF63000000FFFFFFFF000000000000000000010000002D
           }
+          OnCreateNodeClass = PlaylistTreeCreateNodeClass
+          OnDblClick = PlaylistTreeDblClick
         end
       end
     end
@@ -338,8 +336,8 @@ object fMainForm: TfMainForm
         }
         Images = DM.ilSmall
         ImageIndex = 16
-        OnClick = btnCloseCollectionStatClick
         ShowCaption = False
+        OnClick = btnCloseCollectionStatClick
       end
       object sgStats: TStringGrid
         Left = 0
@@ -417,10 +415,10 @@ object fMainForm: TfMainForm
             Height = 101
             Top = 4
             Width = 101
-            OnDblClick = imgCoverDblClick
             ParentShowHint = False
             ShowHint = True
             Stretch = True
+            OnDblClick = imgCoverDblClick
           end
           object Title: TLabel
             Left = 110
@@ -689,13 +687,13 @@ object fMainForm: TfMainForm
             end
             object ToolButton8: TToolButton
               Left = 87
-              Height = 23
+              Height = 8
               Top = 0
               Style = tbsSeparator
             end
             object ToolButton9: TToolButton
               Left = 53
-              Height = 23
+              Height = 8
               Top = 0
               Style = tbsSeparator
             end
@@ -711,8 +709,8 @@ object fMainForm: TfMainForm
               DropdownMenu = RepeatMenu
               Grouped = True
               ImageIndex = 10
-              OnClick = tbRepeatClick
               Style = tbsDropDown
+              OnClick = tbRepeatClick
             end
             object ToolButton16: TToolButton
               Left = 305
@@ -726,7 +724,7 @@ object fMainForm: TfMainForm
             end
             object ToolButton18: TToolButton
               Left = 199
-              Height = 23
+              Height = 8
               Top = 0
               AutoSize = True
               Enabled = False
@@ -734,7 +732,7 @@ object fMainForm: TfMainForm
             end
             object ToolButton12: TToolButton
               Left = 271
-              Height = 23
+              Height = 8
               Top = 0
               Style = tbsSeparator
             end
