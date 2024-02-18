@@ -81,9 +81,9 @@ type
   end;
 
   TfMainForm = class;
-  { TPlaylistParam }
+  { TPlaylistGuiParam }
 
-  TPlaylistParam = class(TConfigParam)
+  TPlaylistGuiParam = class(TConfigParam)
   private
     FForm: TfMainForm;
   protected
@@ -454,7 +454,7 @@ type
     fscreenlock: TScreenLockHandler;
     {$ENDIF}
 
-    FPlaylistParam: TPlaylistParam;
+    FPlaylistGuiParam: TPlaylistGuiParam;
     FMainFormParam: TMainFormParam;
 
     function AdjustPos(pt: tpoint): Tpoint;
@@ -531,9 +531,9 @@ const
     //    (Kind: tkRating; FieldName: 'Rating'; ImageIndex: 5)
     );
 
-{ TPlaylistParam }
+{ TPlaylistGuiParam }
 
-procedure TPlaylistParam.InternalSave;
+procedure TPlaylistGuiParam.InternalSave;
 var
   tmpSt: TStringList;
   i: integer;
@@ -555,7 +555,7 @@ begin
   Owner.Dirty := True;
 end;
 
-procedure TPlaylistParam.Load;
+procedure TPlaylistGuiParam.Load;
 const
   Base = 'PlayListGrid';
 var
@@ -595,7 +595,7 @@ begin
 
 end;
 
-constructor TPlaylistParam.Create(aOwner: TConfig; Form: TfMainForm);
+constructor TPlaylistGuiParam.Create(aOwner: TConfig; Form: TfMainForm);
 begin
   FForm := Form;
   inherited Create(aOwner);
@@ -1664,8 +1664,8 @@ begin
   {$ENDIF}
 
 
-  if Assigned(FPlaylistParam) then
-    FreeAndNil(FPlaylistParam);
+  if Assigned(FPlaylistGuiParam) then
+    FreeAndNil(FPlaylistGuiParam);
 
   if Assigned(FMainFormParam) then
     FreeAndNil(FMainFormParam);
@@ -1933,8 +1933,8 @@ begin
   if Assigned(FMainFormParam) then
     FMainFormParam.Save;
 
-  if Assigned(FPlaylistParam) then
-    FPlaylistParam.Save;
+  if Assigned(FPlaylistGuiParam) then
+    FPlaylistGuiParam.Save;
 
 end;
 
@@ -1951,7 +1951,7 @@ begin
   actShowLeft.Execute;
   pcMain.ActivePageIndex := fMainFormParam.ActivePage;
 
-  FPlaylistParam := TPlaylistParam.Create(BackEnd.Config, Self);
+  FPlaylistGuiParam := TPlaylistGuiParam.Create(BackEnd.Config, Self);
 
 end;
 
