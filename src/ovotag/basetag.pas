@@ -325,8 +325,9 @@ end;
 
 constructor TTagReader.Create(FileName: TfileName);
 begin
-//  Create;
-  LoadFromFile(FileName);
+ FFileName := FileName;
+ if FileExists(FileName) then
+   LoadFromFile(FileName);
 end;
 
 constructor TTagReader.Create;

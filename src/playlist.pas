@@ -72,7 +72,7 @@ type
     procedure LoadAllTags;
     procedure Shuffle;
     Procedure Sort(Field: TplSortField; Direction:TplSortDirection); overload;
-    Procedure Sort; overload;
+    procedure Sort(idxFrom, idxTo: Integer); overload;
     procedure PushPos;
     procedure PopPos;
     Property RepeatMode: TplRepeat read FRepeatMode write SetRepeatMode;
@@ -161,13 +161,13 @@ function TPlayList.EnqueueFile(FileName: TFileName): integer;
 var
   Song: TCustomSong;
 begin
-  if FileExists(FileName) then
+//  if FileExists(FileName) then
      begin
       song   := TCustomSong.Create(FileName);
       Result := Add(Song);
      end
-  else
-    Result := -1;
+//  else
+//    Result := -1;
 end;
 
 function TPlayList.Add(ASong: TCustomSong): integer;
@@ -428,11 +428,11 @@ begin
 
 end;
 
-procedure TPlayList.Sort;
+procedure TPlayList.Sort(idxFrom, idxTo:Integer);
 begin
   PushPos;
   if Assigned(self.List) then
-    IntQuickSort(Self.List, 0, count-1, @MyCompare);
+    IntQuickSort(Self.List, idxFrom, idxTo, @MyCompare);
 
   PopPos;
 end;
@@ -456,7 +456,7 @@ procedure TPlayList.Sort(Field: TplSortField; Direction:TplSortDirection);
 begin
   FSortField := Field;
   fSortDirection := Direction;
-  Sort;
+  Sort(0, Count-1);
 end;
 
 end.
