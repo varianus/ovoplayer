@@ -220,7 +220,7 @@ end;
 constructor TAudioEngineMPlayer.Create;
 begin
   inherited Create;
-  fMainVolume := 127;
+  fMainVolume := 50;
   fTimer := TFpTimer.Create(nil);
   fTimer.Enabled:=false;
   fTimer.Interval :=150;
@@ -255,7 +255,12 @@ begin
   if not Running then
      RunAndPlay(Params)
   else
-     SendMPlayerCommand('loadfile "' + Params + '"');
+    begin
+      SendMPlayerCommand('loadfile "' + Params + '"');
+      //Enforce current volume and mute state
+      SendMPlayerCommand('volume ' + IntToStr(fMainVolume) + ' 1');
+      SendMPlayerCommand('mute ' + IfThen(fMuted, '1', '0'));
+    end;
 
   fPlayerState := ENGINE_PLAY;
   FPlayRunningI := True;
@@ -310,9 +315,9 @@ begin
   fPlayerProcess.Parameters.add('-noquiet');
   fPlayerProcess.Parameters.add('-vc');  fPlayerProcess.Parameters.add('null');
   fPlayerProcess.Parameters.add('-vo');  fPlayerProcess.Parameters.add('null');
-  fPlayerProcess.Parameters.add('-volume');  fPlayerProcess.Parameters.add(IntToStr(Self.MainVolume));
+  fPlayerProcess.Parameters.add('-volume');  fPlayerProcess.Parameters.add(IntToStr(fMainVolume));
   fPlayerProcess.Parameters.add('-softvol');
-  fPlayerProcess.Parameters.add('-softvol-max');  fPlayerProcess.Parameters.add('255');
+//  fPlayerProcess.Parameters.add('-softvol-max');  fPlayerProcess.Parameters.add('255');
   fPlayerProcess.Parameters.add('-af-add');  fPlayerProcess.Parameters.add('equalizer=0:0:0:0:0:0:0:0:0:0');
   fPlayerProcess.Parameters.add('-nofontconfig');
 
@@ -336,12 +341,12 @@ begin
      exit;
   if fMuted then
      begin
-        SendMPlayerCommand('mute 1');
-        fMuted:=true;
+        SendMPlayerCommand('mute 0');
+        fMuted:=False;
      end
  else
      begin
-        SendMPlayerCommand('mute 0');
+        SendMPlayerCommand('mute 1');
         fMuted:=true;
      end;
 
