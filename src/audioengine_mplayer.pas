@@ -316,6 +316,7 @@ begin
   fPlayerProcess.Parameters.add('-vc');  fPlayerProcess.Parameters.add('null');
   fPlayerProcess.Parameters.add('-vo');  fPlayerProcess.Parameters.add('null');
   fPlayerProcess.Parameters.add('-volume');  fPlayerProcess.Parameters.add(IntToStr(fMainVolume));
+  fPlayerProcess.Parameters.add('mute ');  fPlayerProcess.Parameters.add(IfThen(fMuted, '1', '0'));
   fPlayerProcess.Parameters.add('-softvol');
 //  fPlayerProcess.Parameters.add('-softvol-max');  fPlayerProcess.Parameters.add('255');
   fPlayerProcess.Parameters.add('-af-add');  fPlayerProcess.Parameters.add('equalizer=0:0:0:0:0:0:0:0:0:0');
