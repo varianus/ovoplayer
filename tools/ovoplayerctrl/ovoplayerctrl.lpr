@@ -82,7 +82,7 @@ type
 
   var
   BaseServerId:string = 'SI_';
-  AppNameServerID :string  = 'ovoplayer_exe';
+  AppNameServerID :string  = {$IFDEF WINDOWS}'ovoplayer_exe'{$ELSE}'ovoplayer'{$ENDIF};
   AppVersion : string = {$I ..\..\src\version.inc};
 
 function TOvoPlayerCtrl.PostCommand(Category:string; Command:string;Parameter:string=''): Boolean;
@@ -299,3 +299,4 @@ begin
   Application.Run;
   Application.Free;
 end.
+
