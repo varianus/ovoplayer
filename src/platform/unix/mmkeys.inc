@@ -308,6 +308,9 @@ begin
     keycodes[4] := XKeysymToKeycode (DISPLAY, XF86XK_AudioPause);
 
     root := gdk_get_default_root_window ();
+    if not Assigned(root) then
+      raise ENotSupportedException.Create('Root window was not found, cannot capture keys');
+
     Display := GDK_WINDOW_XDISPLAY (root);
 
     for j := 0 to Length(keycodes) -1 do

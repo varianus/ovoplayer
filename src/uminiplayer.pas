@@ -116,13 +116,13 @@ begin
  if BackEnd.Status = ENGINE_PLAY then
     begin
       TrackBar.Max := BackEnd.PlayList.CurrentItem.Tags.Duration;
-      TrackBar.Position := BackEnd.AudioEngine.Position;
+      TrackBar.Position := BackEnd.Position;
     end;
 end;
 
 procedure TfMiniPlayer.TrackBarChange(Sender: TObject);
 begin
-  BackEnd.AudioEngine.Position := TrackBar.Position;
+  Backend.Position := TrackBar.Position;
 end;
 
 end.

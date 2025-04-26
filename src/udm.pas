@@ -424,18 +424,12 @@ end;
 
 procedure TDM.actSkipBackwardExecute(Sender: TObject);
 begin
-  BackEnd.AudioEngine.Seek(-10, False);
-  if Assigned(Backend.OnEngineCommand) then
-     Backend.OnEngineCommand(Backend.AudioEngine, ecSeek);
-
+  BackEnd.Seek(-10);
 end;
 
 procedure TDM.actSkipForwardExecute(Sender: TObject);
 begin
-  BackEnd.AudioEngine.Seek(+10, False);
-  if Assigned(Backend.OnEngineCommand) then
-     Backend.OnEngineCommand(Backend.AudioEngine, ecSeek);
-
+  BackEnd.Seek(+10);
 end;
 
 procedure TDM.actStopExecute(Sender: TObject);

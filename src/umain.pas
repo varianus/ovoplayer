@@ -963,8 +963,8 @@ end;
 procedure TfMainForm.UpdateProperty(Kind: TChangedProperty);
 begin
   case kind of
-    cpVolume: slVolume.Position := BackEnd.Volume;
-    cpMute: begin
+    cpVolume, cpMute: begin
+      slVolume.Position := BackEnd.Volume;
       dm.actmute.Checked := backend.muted;
       if backend.muted then
         dm.actMute.ImageIndex := 18
@@ -1314,7 +1314,7 @@ begin
   CheckWelcomeMode;
 
   slVolume.Max := 255;//BackEnd.AudioEngine.MaxVolume;
-  slVolume.Position := BackEnd.EngineParam.Volume;
+  slVolume.Position := BackEnd.Volume;
 
   case TplRepeat(BackEnd.PlayListParam.RepeatMode) of
     rptNone: dm.actRepeatNone.Checked := True;
@@ -2110,15 +2110,10 @@ begin
 end;
 
 procedure TfMainForm.sgPlayListDblClick(Sender: TObject);
-var
-  index: integer;
 begin
-  index := sgPlayList.Row;
-  BackEnd.PlayList.ItemIndex := index - 1;
-  BackEnd.Play(BackEnd.PlayList.ItemIndex);
+  BackEnd.Play(sgPlayList.Row - 1);
   BackEnd.Notify(cpStatus);
   sgPlayList.Invalidate;
-
 end;
 
 procedure TfMainForm.sgPlayListDragDrop(Sender, Source: TObject; X, Y: integer);
@@ -2659,7 +2654,7 @@ end;
 
 procedure TfMainForm.TrackBarChange(Sender: TObject);
 begin
-  BackEnd.Position := TrackBar.Position;
+  Backend.Position := TrackBar.Position;
 end;
 
 procedure TfMainForm.TrackBarMouseMove(Sender: TObject; Shift: TShiftState; X, Y: integer);
@@ -2673,7 +2668,7 @@ begin
     TrackBar.Cursor := crHSplit;
     newPosition := Round(x * TrackBar.Max / TrackBar.ClientWidth);
     TrackBar.Position := newPosition;
-    BackEnd.Position := newPosition;
+	Backend.Position := newPosition;
   end
   else
   begin
