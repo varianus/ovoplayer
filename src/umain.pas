@@ -1348,7 +1348,7 @@ begin
   end
   else
   begin
-    Application.ShowMainForm := False;
+    Application.ShowMainForm := True;
     TrayIcon.Visible := False;
   end;
 
