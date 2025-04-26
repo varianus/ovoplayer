@@ -619,7 +619,7 @@ end;
 
 procedure TBackEnd.Next;
 begin
-  AudioEngine.Play(PlayList.Next);
+  AudioEngine.Play(PlayList.Next(false));
   SignalPlayListChange;
 
   if Assigned(FOnEngineCommand) then
@@ -759,7 +759,13 @@ end;
 
 procedure TBackEnd.AudioEngineSongEnd(Sender: TObject);
 begin
-  Next;
+  AudioEngine.Play(PlayList.Next);
+  SignalPlayListChange;
+
+  if Assigned(FOnEngineCommand) then
+     FOnEngineCommand(AudioEngine, ecNext);
+
+  Notify(cpStatus);
 end;
 
 function TBackEnd.GetMute: boolean;

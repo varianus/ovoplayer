@@ -63,7 +63,7 @@ type
     function Add(ASong: TCustomSong): integer;
     procedure Delete(Index: integer);
     procedure Clear;//  override;
-    function Next: TCustomSong;
+    function Next(AtSongEnd: Boolean = true): TCustomSong;
     function Previous: TCustomSong;
     Function FindByName(FileName: TFileName): integer;
     procedure Swap(Item1, Item2: integer);
@@ -289,11 +289,18 @@ begin
     Result := nil;
 end;
 
-function TPlayList.Next: TCustomSong;
+function TPlayList.Next(AtSongEnd: Boolean): TCustomSong;
 var
   Album: string;
+  AppliedRepeatMode: TplRepeat;
 begin
-  case RepeatMode of
+  AppliedRepeatMode := RepeatMode;
+
+  // make sure manual clicking of "next" does not repeat the track
+  if (AppliedRepeatMode = rptTrack) and not AtSongEnd then
+    AppliedRepeatMode := rptPlayList;
+
+  case AppliedRepeatMode of
   rptTrack:
      begin
        Result := CurrentItem;
@@ -460,3 +467,4 @@ begin
 end;
 
 end.
+
