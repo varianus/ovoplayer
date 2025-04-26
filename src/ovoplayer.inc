@@ -33,7 +33,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   {$DEFINE MPRIS2}        // MPRIS V2 Interface
   {$DEFINE NOTIFYDBUS}    // use DBus notification
   {$DEFINE CATCH_SIGNAL}  // try to close gracefully on linux shutdown signal
-{$ENDIF LINUX}  
+{$ELSE}
+  {$IFDEF UNIX}
+    {$DEFINE NEEDCFGSUBDIR} // Need to add a sub-directory to configuration files directory
+    {$DEFINE ASKMMKEYSMODE} // Ask for multimedia keys capture mode
+    {$DEFINE MPRIS2}        // MPRIS V2 Interface
+    {$DEFINE CATCH_SIGNAL}  // try to close gracefully on linux shutdown signal
+  {$ENDIF UNIX}
+{$ENDIF LINUX}
 
 {$IFDEF WINDOWS}
   {$DEFINE SUPPORT_SHAPING}   // Rounded border of OSD popup, seems to work only on windows
@@ -51,3 +58,4 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
     {.$DEFINE NETWORK_SS} // Activate network interface for remote control (simple socket)
     {$DEFINE NETWORK_WS} // Activate network interface for remote control (web socket)
 {$ENDIF NETWORK_INTF}
+

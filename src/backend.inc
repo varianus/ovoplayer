@@ -48,7 +48,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   {$DEFINE LIBMPV} //
   {$DEFINE OPENSOURCELIB} //
   {.$DEFINE FFMPEG}
-
+{$ELSE}
+  {$IFDEF UNIX}
+    {$DEFINE GSTREAMER} // GStreamer need glib
+    {$DEFINE VLC} //
+    {$DEFINE XINE} //
+    {$DEFINE OPENSOURCELIB} //
+  {$ENDIF UNIX}
 {$ENDIF LINUX}
 
 {$IFDEF WINDOWS}
@@ -77,8 +83,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 {$ENDIF DARWIN}
 
-{$IFDEF LINUX}
+{$IFDEF UNIX}
   {$DEFINE NEEDCFGSUBDIR} // Need to add a sub-directory to configuration files directory
-{$ENDIF LINUX}
-
+{$ENDIF UNIX}
 
