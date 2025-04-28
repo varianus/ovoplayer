@@ -247,6 +247,8 @@ end;
 
 procedure TfConfig.rgOSDKindClick(Sender: TObject);
 begin
+  if not(pcConfig.ActivePage = tsOSD) then Exit;
+
   if rgOSDKind.ItemIndex = 2 then
      begin
    //     if Assigned(fOSD) then
