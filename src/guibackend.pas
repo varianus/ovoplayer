@@ -445,6 +445,7 @@ end;
 
 procedure TBackEnd.SetPosition(AValue: int64);
 begin
+  UnPause;
   AudioEngine.Position := AValue;
   Notify(cpPosition);
 end;
@@ -585,7 +586,6 @@ begin
 
       PlayList.CurrentItem.Tags;
       AudioEngine.Play(PlayList.CurrentItem);
-      AudioEngine.MainVolume:= EngineParam.Volume;
     end;
 
  if Assigned(FOnEngineCommand) then
@@ -611,13 +611,15 @@ end;
 
 procedure TBackEnd.UnPause;
 begin
-  Play;
+  AudioEngine.UnPause;
+  if Assigned(FOnEngineCommand) then
+    FOnEngineCommand(AudioEngine, ecPlay);
   Notify(cpStatus);
 end;
 
 procedure TBackEnd.Next;
 begin
-  AudioEngine.Play(PlayList.Next);
+  AudioEngine.Play(PlayList.Next(false));
   SignalPlayListChange;
 
   if Assigned(FOnEngineCommand) then
@@ -675,7 +677,10 @@ end;
 
 procedure TBackEnd.Seek(AValue: int64);
 begin
+  UnPause;
   AudioEngine.Seek(AValue,False);
+  if Assigned(FOnEngineCommand) then
+    FOnEngineCommand(AudioEngine, ecSeek);
   Notify(cpPosition);
 end;
 
@@ -727,7 +732,6 @@ begin
     Notify(cpPlayPos);
 end;
 
-
 procedure TBackEnd.AutoSendPosEvents(Active: boolean);
 begin
   if Active then
@@ -755,7 +759,13 @@ end;
 
 procedure TBackEnd.AudioEngineSongEnd(Sender: TObject);
 begin
-  Next;
+  AudioEngine.Play(PlayList.Next);
+  SignalPlayListChange;
+
+  if Assigned(FOnEngineCommand) then
+     FOnEngineCommand(AudioEngine, ecNext);
+
+  Notify(cpStatus);
 end;
 
 function TBackEnd.GetMute: boolean;
@@ -875,3 +885,4 @@ end;
 initialization
   fBackEnd := nil;
 end.
+

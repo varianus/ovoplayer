@@ -362,6 +362,7 @@ begin
        exit;
      end;
 
+  UnPause;
   if DoPlay(song, offset) then
      begin
        if Assigned(FOnSongStart) then
@@ -378,3 +379,4 @@ initialization
 Finalization
   setlength(EngineArray, 0);
 end.
+

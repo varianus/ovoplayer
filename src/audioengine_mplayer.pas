@@ -167,7 +167,7 @@ end;
 
 function TAudioEngineMPlayer.GetSongPos: integer;
 begin
-  Result := trunc(fPosition);
+  Result := fPosition;
 end;
 
 procedure TAudioEngineMPlayer.SetMainVolume(const AValue: integer);
@@ -175,6 +175,7 @@ begin
   if AValue = fMainVolume then
     exit;
   fMainVolume := round(AValue * MPLAYERMAXVOLUME /255);
+  fMuted := false;
   SendMPlayerCommand('volume ' + IntToStr(fMainVolume) + ' 1');
 end;
 
@@ -201,6 +202,7 @@ end;
 
 procedure TAudioEngineMPlayer.SetSongPos(const AValue: integer);
 begin
+  fPosition := AValue;
   Seek(AValue, True);
 end;
 
@@ -509,11 +511,11 @@ var
 begin
   if Running then
   begin
-    st := 'seek ' + IntToStr(Seconds div 1000);
-    if SeekAbsolute then
-      st := st + ' 2'
-    else
-      st := st + ' 0';
+    st := 'seek ';
+    if not SeekAbsolute then
+      Seconds := GetSongPos + Seconds * 1000;
+
+    st := 'seek ' + IntToStr(Seconds div 1000) + ' 2';
     SendMPlayerCommand(st);
     Sleep(20);
   end;
@@ -536,3 +538,4 @@ initialization
   RegisterEngineClass(TAudioEngineMPlayer, 10, true, false);
 
 end.
+
