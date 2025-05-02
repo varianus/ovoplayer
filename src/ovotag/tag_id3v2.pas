@@ -434,7 +434,7 @@ begin
   else
      LanguageOffset:= 0;
 
-  fSize := UTF8Length(xValue);
+  fSize := Length(xValue);
   if fSize = 0 then
   begin
     SetLength(Data, 0);
@@ -588,3 +588,4 @@ begin
   Result := True;
 end;
 end.
+
