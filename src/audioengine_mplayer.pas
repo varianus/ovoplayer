@@ -33,7 +33,6 @@ type
   TAudioEngineMPlayer = class(TAudioEngine)
   private
     fMainVolume: integer;
-    FPaused: boolean;
     fPlayerProcess: TProcessUTF8;
     fPlayerState: TEngineState;
     FPlayRunningI: boolean;
@@ -128,7 +127,7 @@ var
         SetLength(Buffer, BytesAvailable);
         BytesRead  := fPlayerProcess.OutPut.Read(Buffer[1], BytesAvailable);
         ProcessStr := copy(Buffer, 1, BytesRead);
-       // DebugLn(ProcessStr);
+        //DebugLn(ProcessStr);
         if AnsiStartsStr(TIMEPOSOUT,ProcessStr) then
           begin
             ProcessStr := trim(Copy(ProcessStr, 3, 7));
@@ -196,7 +195,9 @@ begin
     if FPaused then
        fPlayerState := ENGINE_PAUSE
     else
-       fPlayerState := ENGINE_PLAY
+      begin
+        fPlayerState := ENGINE_PLAY;
+      end;
     end;
 end;
 
@@ -214,6 +215,8 @@ begin
     exit;
   if not Running then
     exit;
+  if (Pos('paus', Lowercase(Cmd)) <> 1) and (Pos('pt_', Lowercase(Cmd)) <> 1) then
+    Cmd := 'pausing_keep_force ' + Cmd;
   if Cmd[length(Cmd)] <> LineEnding then
     Cmd := Cmd + LineEnding;
   fPlayerProcess.Input.Write(Cmd[1], length(Cmd));
@@ -258,10 +261,13 @@ begin
      RunAndPlay(Params)
   else
     begin
-      SendMPlayerCommand('loadfile "' + Params + '"');
+      SendMPlayerCommand('loadfile "' + Params + '" 1');
       //Enforce current volume and mute state
       SendMPlayerCommand('volume ' + IntToStr(fMainVolume) + ' 1');
       SendMPlayerCommand('mute ' + IfThen(fMuted, '1', '0'));
+      SendMPlayerCommand('pt_step 1');
+      if FPaused then
+        FPaused:=false;
     end;
 
   fPlayerState := ENGINE_PLAY;
@@ -316,11 +322,10 @@ begin
   fPlayerProcess.Parameters.add('-nomouseinput');
   fPlayerProcess.Parameters.add('-noquiet');
   fPlayerProcess.Parameters.add('-vc');  fPlayerProcess.Parameters.add('null');
+//  fPlayerProcess.Parameters.add('-pausing');  fPlayerProcess.Parameters.add('2');
   fPlayerProcess.Parameters.add('-vo');  fPlayerProcess.Parameters.add('null');
   fPlayerProcess.Parameters.add('-volume');  fPlayerProcess.Parameters.add(IntToStr(fMainVolume));
-  fPlayerProcess.Parameters.add('mute ');  fPlayerProcess.Parameters.add(IfThen(fMuted, '1', '0'));
   fPlayerProcess.Parameters.add('-softvol');
-//  fPlayerProcess.Parameters.add('-softvol-max');  fPlayerProcess.Parameters.add('255');
   fPlayerProcess.Parameters.add('-af-add');  fPlayerProcess.Parameters.add('equalizer=0:0:0:0:0:0:0:0:0:0');
   fPlayerProcess.Parameters.add('-nofontconfig');
 
@@ -511,11 +516,10 @@ var
 begin
   if Running then
   begin
-    st := 'seek ';
     if not SeekAbsolute then
       Seconds := GetSongPos + Seconds * 1000;
 
-    st := 'seek ' + IntToStr(Seconds div 1000) + ' 2';
+    st := 'pausing_keep seek ' + IntToStr(Seconds div 1000) + ' 2';
     SendMPlayerCommand(st);
     Sleep(20);
   end;

@@ -48,8 +48,8 @@ type
     FInitialized: boolean;
     FOnSongEnd:   TNotifyEvent;
     FOnSongStart: TNotifyEvent;
-    FPaused:      boolean;
   protected
+    FPaused:      boolean;
     function GetMainVolume: integer; virtual; abstract;
     function GetMaxVolume: integer; virtual; abstract;
     procedure SetMainVolume(const AValue: integer); virtual; abstract;
@@ -364,7 +364,7 @@ begin
        exit;
      end;
 
-  UnPause;
+//  UnPause;
   if DoPlay(song, offset) then
      begin
        if Assigned(FOnSongStart) then

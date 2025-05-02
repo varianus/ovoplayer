@@ -446,7 +446,7 @@ end;
 
 procedure TBackEnd.SetPosition(AValue: int64);
 begin
-  UnPause;
+//  UnPause;
   AudioEngine.Position := AValue;
   Notify(cpPosition);
 end;
@@ -571,10 +571,10 @@ end;
 
 procedure TBackEnd.Play(Index:integer=-1);
 begin
-  if (AudioEngine.State = ENGINE_PAUSE) and
-     ((index = -1) or (Index =  PlayList.ItemIndex)) then
-    AudioEngine.UnPause
-  else
+    if (AudioEngine.State = ENGINE_PAUSE) and
+       ((index = -1) or (Index =  PlayList.ItemIndex)) then
+      AudioEngine.UnPause
+    else
     begin
       if PlayList.Count = 0 then
          exit;
@@ -687,7 +687,7 @@ end;
 
 procedure TBackEnd.Seek(AValue: int64);
 begin
-  UnPause;
+//  UnPause;
   AudioEngine.Seek(AValue,False);
   if Assigned(FOnEngineCommand) then
     FOnEngineCommand(AudioEngine, ecSeek);
