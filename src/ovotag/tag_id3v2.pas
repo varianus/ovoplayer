@@ -341,6 +341,13 @@ begin
   header.Flags := 0;
   tmpSize := 0;
 
+  // Remove empty frames
+  for i := Count - 1 downto 0 do
+  begin
+    if Frames[i].Size = 0 then
+      Remove(Frames[i]);
+  end;
+
   for i := 0 to Count - 1 do
   begin
     tmpSize := tmpSize + Frames[i].Size + HeadSize;
@@ -434,7 +441,7 @@ begin
   else
      LanguageOffset:= 0;
 
-  fSize := UTF8Length(xValue);
+  fSize := Length(xValue);
   if fSize = 0 then
   begin
     SetLength(Data, 0);
@@ -588,3 +595,4 @@ begin
   Result := True;
 end;
 end.
+
