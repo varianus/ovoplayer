@@ -5517,7 +5517,7 @@ const
   {$ENDIF}
   
 var
-  libvlc_handle : THandle;
+  libvlc_handle : TLibHandle;
 
 function libvlc_delay(pts : Int64) : Int64;{$IFDEF DELPHI2005_UP}inline;{$ENDIF}
 begin
