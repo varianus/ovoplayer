@@ -2762,7 +2762,7 @@ begin
   end;
   {$ENDIF}
   {$IFDEF LINUX}
-  if (Button = mbLeft) then
+  if (Button = mbRight) then
     if not TrayMenuActive then
     begin
       pt := AdjustPos(TrayIcon.GetPosition); //Mouse.CursorPos;
