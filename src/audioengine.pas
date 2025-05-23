@@ -353,8 +353,10 @@ end;
 
 procedure TAudioEngine.Play(Song: TSong; offset:Integer=0);
 begin
-  if Song = nil then
-     exit;
+  if Song = nil then begin
+    Stop;
+    exit;
+  end;
 
   if not FileExistsUTF8( Song.FullName) then
      begin
