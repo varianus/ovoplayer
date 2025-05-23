@@ -107,6 +107,7 @@ type
     Procedure Play(Index:integer=-1);
     Procedure Stop;
     Procedure Pause;
+    Procedure PlayPause;
     Procedure UnPause;
     Procedure Next;
     Procedure Previous;
@@ -609,6 +610,15 @@ begin
   Notify(cpStatus);
 end;
 
+Procedure TBackEnd.PlayPause;
+begin
+  if Status = ENGINE_PLAY then
+    Pause
+  else
+    Play;
+end;
+
+
 procedure TBackEnd.UnPause;
 begin
   AudioEngine.UnPause;
@@ -826,13 +836,7 @@ begin
                             Handled := true; end;
        COMMAND_STOP     : begin Stop; Handled := true; end;
        COMMAND_PAUSE    : begin Pause; Handled := true; end;
-       COMMAND_PLAYPAUSE: begin
-                            if Status = ENGINE_PLAY then
-                              Pause
-                            else
-                              Play;
-                            Handled := true;
-                          end;
+       COMMAND_PLAYPAUSE: begin PlayPause; Handled := true; end;
        COMMAND_NEXT     : begin Next; Handled := true; end;
        COMMAND_PREVIOUS : begin Previous; Handled := true; end;
        COMMAND_MUTE     : begin Muted:= true; Handled := true; end;
@@ -880,7 +884,6 @@ begin
 
   Result := handled;
 end;
-
 
 initialization
   fBackEnd := nil;

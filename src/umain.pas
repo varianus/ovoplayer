@@ -2424,7 +2424,7 @@ begin
       if (ssCtrl in Shift) then
         PlaylistSelected[CurrRow] := not PlaylistSelected[CurrRow]
       else
-        BackEnd.Pause;
+        BackEnd.PlayPause;
     VK_A:
       if (ssCtrl in Shift) then
         PlaylistSelected.SelectAll;
@@ -3029,3 +3029,4 @@ begin
 end;
 
 end.
+
