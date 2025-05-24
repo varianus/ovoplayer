@@ -1157,11 +1157,11 @@ var
 begin
   filter := edtFilter.Text;
   if filter <> '' then
-    Result := format(' %0:s like ''%%%3:s%%''' + ' or %1:s like ''%%%3:s%%''' + ' or %2:s like ''%%%3:s%%''' + ' or Title like ''%%%3:s%%''',
+    Result := format(' %0:s like %3:s' + ' or %1:s like %3:s' + ' or %2:s like %3:s' + ' or Title like %3:s',
       [SortArray[SortFields.F1].FieldName,
       SortArray[SortFields.F2].FieldName,
       SortArray[SortFields.F3].FieldName,
-      filter])
+      QuotedStr('%' + filter + '%')])
   else
     Result := '';
 
