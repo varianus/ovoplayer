@@ -27,7 +27,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   StdCtrls, ButtonPanel, ComCtrls, Buttons,
   {$IFDEF SUPPORT_LISTBOX_HINT}
-  LCLIntf,
+  types,
   {$ENDIF}
 
   AudioTag, BaseTag, FilesSupport, ExtendedInfo, MediaLibrary, GeneralFunc;
