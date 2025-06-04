@@ -27,7 +27,7 @@ unit file_mp3;
 interface
 
 uses
-  Classes, SysUtils, audiotag, basetag, tag_id3v2;
+  Classes, SysUtils, audiotag, basetag, tag_id3v2, CommonFunctions;
 
 const
   Mp3FileMask: string    = '*.mpa;*.mp1;*.mp2;*.mp3;';
@@ -458,14 +458,22 @@ function TMP3Reader.SaveToFile(AFileName: Tfilename): boolean;
 var
   SourceStream: TFileStream;
   DestStream: TFileStream;
+  fOldSize: integer;
+  wHeader : TID3Header;
 begin
   result:= true;
   inherited SaveToFile(AFilename);
   SourceStream := TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
   DestStream := TFileStream.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
 
+  SourceStream.Read(wheader, SizeOf(wheader));
+  if wheader.Marker = ID3_HEADER_MARKER then
+  begin
+    fOldSize := SyncSafe_Decode(wheader.size);
+  end;
+
   Try
-    SourceStream.Seek(fTags.Size, soFromBeginning);
+    SourceStream.Seek(fOldSize, soFromBeginning);
     fTags.WriteToStream(DestStream);
     DestStream.CopyFrom(SourceStream, SourceStream.Size - SourceStream.Position);
   Except

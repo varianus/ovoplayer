@@ -153,12 +153,12 @@ begin
   if ContentDescription.TitleLength > 0 then
   begin
     SetLength(tmpValue, ContentDescription.TitleLength);
-    AStream.Read(tmpValue[0], ContentDescription.TitleLength);
     if fTags.FramesByID['Title'] = nil then
     begin
       Frame := TWMAFrame.Create('Title');
       Frame.DataType := 0;
-      Frame.AsWideString := trim(WideString(tmpValue));
+      AStream.Read(tmpValue[0], ContentDescription.TitleLength);
+      Frame.CopyBuffer(tmpValue[0], ContentDescription.TitleLength);
       fTags.Add(Frame);
     end;
   end;
@@ -166,12 +166,12 @@ begin
   if ContentDescription.AuthorLength > 0 then
   begin
     SetLength(tmpValue, ContentDescription.AuthorLength);
-    AStream.Read(tmpValue[0], ContentDescription.AuthorLength);
     if fTags.FramesByID['Author'] = nil then
     begin
       Frame := TWMAFrame.Create('Author');
       Frame.DataType := 0;
-      Frame.AsWideString := trim(WideString(tmpValue));
+      AStream.Read(tmpValue[0], ContentDescription.AuthorLength);
+      Frame.CopyBuffer(tmpValue[0], ContentDescription.AuthorLength);
       fTags.Add(Frame);
     end;
   end;
@@ -181,11 +181,20 @@ begin
     SetLength(tmpValue, ContentDescription.CopyrightLength);
     AStream.Read(tmpValue[0], ContentDescription.CopyrightLength);
   end;
+
   if ContentDescription.DescriptionLength > 0 then
   begin
     SetLength(tmpValue, ContentDescription.DescriptionLength);
-    AStream.Read(tmpValue[0], ContentDescription.DescriptionLength);
-  end;
+    if fTags.FramesByID['WM/DESCRIPTION'] = nil then
+      begin
+        Frame := TWMAFrame.Create('WM/DESCRIPTION');
+        Frame.DataType := 0;
+        AStream.Read(tmpValue[0], ContentDescription.DescriptionLength);
+        Frame.CopyBuffer(tmpValue[0], ContentDescription.DescriptionLength);
+        fTags.Add(Frame);
+      end;
+    end;
+
   if ContentDescription.RatingLength > 0 then
   begin
     SetLength(tmpValue, ContentDescription.RatingLength);

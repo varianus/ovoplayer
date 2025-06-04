@@ -341,7 +341,7 @@ begin
   Offset := 0;
   while i < 10 do
     begin
-      if  (Resync[i] = $ff) and  ((Resync[i+1] and $f6) = $f0) then
+      if  (Resync[i] = $ff) and  ((Resync[i+1] and $f0) = $f0) then
         begin
           Result := skADTS;
           Offset := i;
@@ -366,7 +366,7 @@ var
   fStream: TFileStream;
   HaveID3: boolean;
   Offset:integer;
-  Header: TADTSHeader;
+  ADTSHeader: TADTSHeader;
   AtomList: TMP4AtomList;
   moov, trak, mdhd, ilst, CurrAtom: TMp4Atom;
   Data: array of byte;
@@ -377,10 +377,10 @@ var
 
   procedure SkipToNextFrame;
   begin
-    length_ := ((Header.b[4] and $03) shl 11) or ((Header.b[5]) shl 3) or ((Header.b[6]) shr 5);
-    FrameCount := (Header.b[7] and $03) + FrameCount + 1;
+    length_ := ((ADTSHeader.b[4] and $03) shl 11) or ((ADTSHeader.b[5]) shl 3) or ((ADTSHeader.b[6]) shr 5);
+    FrameCount := (ADTSHeader.b[7] and $03) + FrameCount + 1;
     StreamPos := StreamPos + length_;
-    fStream.Seek(length_ - SizeOf(Header), soFromCurrent);
+    fStream.Seek(length_ - SizeOf(ADTSHeader), soFromCurrent);
   end;
 
 begin
@@ -475,24 +475,61 @@ begin
         FrameCount := 0;
         fStream.Seek(StreamPos+ offset, soFromBeginning);
         SSize := fStream.Size;
-        fStream.Read(Header, SizeOf(Header));
-        if (Header.b[1] = $ff) and ((header.b[2] and $f0) = $f0) then // found ADTS Header
+        fStream.Read(ADTSHeader, SizeOf(ADTSHeader));
+        if (ADTSHeader.b[1] = $ff) and ((ADTSHeader.b[2] and $f0) = $f0) then // found ADTS ADTSHeader
           begin
-            unit_ := AACFreq[(Header.b[3] and $3c) shr 2];
+            unit_ := AACFreq[(ADTSHeader.b[3] and $3c) shr 2];
             fMediaProperty.Sampling:=unit_;
-            fMediaProperty.ChannelMode := inttostr( ((Header.b[3] and $01) shl 2) or (Header.b[4] and $c0) shr 6);
+            fMediaProperty.ChannelMode := inttostr( ((ADTSHeader.b[3] and $01) shl 2) or (ADTSHeader.b[4] and $c0) shr 6);
             SkipToNextFrame;
 
-            while not (StreamPos >= SSize - SizeOf(Header)) do // loop all ADTS frames to get accurate duration
+            while not (StreamPos >= SSize - SizeOf(ADTSHeader)) do // loop all ADTS frames to get accurate duration
               begin
-                fStream.Read(Header, SizeOf(Header));
+                fStream.Read(ADTSHeader, SizeOf(ADTSHeader));
                 SkipToNextFrame;
               end;
             fDuration := trunc((FrameCount * 1024) / (unit_ / 1000));
           end;
 
       end;
-      skADIF: ;/// TBD
+      skADIF:       begin
+        if HaveID3 then
+          begin
+            fTagsID3 := TID3Tags.Create;
+            fStream.Seek(0, soFromBeginning);
+            fTagsid3.ReadFromStream(fStream);
+            if fTagsID3.Count = 0 then
+              FreeAndNil(fTagsID3)
+            else
+              Result := True;
+          end;
+
+        if assigned(fTagsID3) then
+          StreamPos := fTagsID3.Size
+        else
+          StreamPos := 0;
+
+        FrameCount := 0;
+        fStream.Seek(StreamPos+ offset, soFromBeginning);
+        SSize := fStream.Size;
+        fStream.Read(ADTSHeader, SizeOf(ADTSHeader));
+
+        if (ADTSHeader.b[1] = $ff) and ((ADTSHeader.b[2] and $f0) = $f0) then // found ADTS ADTSHeader
+          begin
+            unit_ := AACFreq[(ADTSHeader.b[3] and $3c) shr 2];
+            fMediaProperty.Sampling:=unit_;
+            fMediaProperty.ChannelMode := inttostr( ((ADTSHeader.b[3] and $01) shl 2) or (ADTSHeader.b[4] and $c0) shr 6);
+            SkipToNextFrame;
+
+            while not (StreamPos >= SSize - SizeOf(ADTSHeader)) do // loop all ADTS frames to get accurate duration
+              begin
+                fStream.Read(ADTSHeader, SizeOf(ADTSHeader));
+                SkipToNextFrame;
+              end;
+            fDuration := trunc((FrameCount * 1024) / (unit_ / 1000));
+          end;
+
+      end;
 
       skRaw: ;//TBD
 

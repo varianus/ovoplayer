@@ -31,7 +31,7 @@ type
 
   TWMAFrame = class(TFrameElement)
   private
-    fValue: widestring;
+    fValue: array of ansichar;
     fValueInt: QWord;
   public
     DataType: Word;
@@ -40,7 +40,8 @@ type
     procedure SetAsWideString(AValue: Widestring);
     function ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean; override;
     function WriteToStream(AStream: TStream): DWord; override;
-    property AsWideString: WideString write SetAsWideString;
+//    property AsWideString: WideString write SetAsWideString;
+    procedure CopyBuffer(var P; DataSize: integer);
   end;
 
   { TWMATags }
@@ -139,7 +140,7 @@ end;
 function TWMAFrame.GetAsString: string;
 begin
   case DataType of
-    0: Result := Utf16toUtf8(fValue);
+    0: Result := Utf16toUtf8(@fValue[0], (Length(fValue) div sizeof(WideChar)) -1);
     1: Result := '<bytes>';
     2..5: Result := IntToStr(fValueInt);
   else
@@ -149,21 +150,39 @@ begin
 end;
 
 procedure TWMAFrame.SetAsString(const AValue: string);
+var
+  w: unicodestring;
+  l: integer;
 begin
   case DataType of
-    0: fValue := Utf8ToUtf16(AValue);
+    0: begin
+        w:= UTF8ToUTF16(AValue);
+        l:= Length(w);
+        SetLength(fValue, l+2);
+        StrPCopy(@(fValue[0]),w);
+        fValue[l-2]:=#$00;
+        fValue[l-1]:=#$00;
+      end;
     1: raise Exception.Create('Unsupported');
     2..5: fValueInt := StrToInt(AValue);
   else
-    fValue := '';
+    setlength(fValue,0);
   end;
 
 end;
 
 procedure TWMAFrame.SetAsWideString(AValue: Widestring);
+var
+  l: Integer;
 begin
  case DataType of
-   0: fValue := AValue;
+   0: Begin
+      l:=Length(AValue);
+      SetLength(fValue, l+2);
+      Move(AValue[1],fValue[0], l);
+      fValue[l-2]:=#$00;
+      fValue[l-1]:=#$00;
+   end;
    1: raise Exception.Create('Unsupported');
    2..5: fValueInt := StrToInt(Utf16toUtf8(AValue));
  end;
@@ -172,14 +191,13 @@ end;
 function TWMAFrame.ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean;
 var
   DataLength: word;
-  tmpValue: array of char;
+  tmpValue: array of ansichar;
 begin
   DataLength := AStream.ReadWord;
   SetLength(tmpValue, DataLength);
   AStream.Read(tmpValue[0], DataLength);
   DataType := AStream.ReadWord;
-  ID := UTF16ToUTF8(Widestring(tmpValue));
-
+  ID := UTF16ToUTF8(@tmpValue[0], (DataLength div Sizeof(WideChar) -1));   //    get rid of string terminator
   DataLength := AStream.ReadWord;
 
   case DataType of
@@ -189,9 +207,8 @@ begin
     5: fValueInt := AStream.ReadWord;
     else
     begin
-      SetLength(tmpValue, DataLength);
-      AStream.Read(tmpValue[0], DataLength);
-      fValue := Widestring(tmpValue);
+      SetLength(fValue, DataLength);
+      AStream.Read(fValue[0], DataLength);
     end;
 
   end;
@@ -235,15 +252,20 @@ begin
        end;
     else
     begin
-      tmpValue:= fValue + #0;
-      DataLength := Length(tmpValue) * SizeOf(WideChar);
+      DataLength := Length(fValue);
       AStream.WriteWord(DataLength);
       if DataLength <> 0 then
-        AStream.Write(tmpValue[1], DataLength);
-      Result := Result + 2 + DataLength;
+        AStream.Write(fValue[0], DataLength);
+      Result := Result + DataLength;
     end;
  end;
 
+end;
+
+procedure TWMAFrame.CopyBuffer(var P; DataSize: integer);
+begin
+  SetLength(fValue, DataSize);
+  move(p,fValue[0], DataSize);
 end;
 
 end.
