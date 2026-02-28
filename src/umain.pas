@@ -997,7 +997,7 @@ begin
     if not Assigned(MyNetIntf) then
     begin
       MyNetIntf := TNetIntf.Create;
-      MyNetIntf.OnlyLAN := GuiConfigObj.NetRemoteParam.OnlyLAN;
+      MyNetIntf.OnlyLocalhost := GuiConfigObj.NetRemoteParam.OnlyLocalhost;
       MyNetIntf.Port := GuiConfigObj.NetRemoteParam.Port;
       MyNetIntf.Activate(BackEnd);
     end;
@@ -1376,6 +1376,7 @@ begin
   begin
     MyNetIntf := TNetIntf.Create;
     MyNetIntf.Port := GuiConfigObj.NetRemoteParam.Port;
+    MyNetIntf.OnlyLocalhost := GuiConfigObj.NetRemoteParam.OnlyLocalhost;
     MyNetIntf.Activate(BackEnd);
   end;
   {$ENDIF}

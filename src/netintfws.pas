@@ -38,16 +38,16 @@ type
     FActivated: boolean;
     fBackEnd: IBackEnd;
     DaemonThread: TTCPRemoteDaemon;
-    FOnlyLAN: boolean;
+    FOnlyLocalhost: boolean;
     FPort: integer;
-    procedure SetOnlyLAN(AValue: boolean);
+    procedure SetOnlyLocalhost(AValue: boolean);
     procedure SetPort(AValue: integer);
   public
     function Activate(BackEnd: IBackEnd): boolean;
     procedure DeActivate;
     constructor Create;
     destructor Destroy; override;
-    property OnlyLAN: boolean read FOnlyLAN write SetOnlyLAN;
+    property OnlyLocalhost: boolean read FOnlyLocalhost write SetOnlyLocalhost;
     property Port: integer read FPort write SetPort;
     property Activated: boolean read FActivated;
   end;
@@ -104,7 +104,7 @@ constructor TTCPRemoteDaemon.Create(net: TNetIntf);
 begin
   inherited Create(False);
   fnet := net;
-  sock := TTcpIpServerSocket.Create(specialize IfThen<string>(Net.FOnlyLan,'127.0.0.1','') , net.FPort);
+  sock := TTcpIpServerSocket.Create(specialize IfThen<string>(Net.FOnlyLocalhost,'127.0.0.1','0.0.0.0') , net.FPort);
   FreeOnTerminate := True;
 end;
 
@@ -278,10 +278,10 @@ begin
     end;
 end;
 
-procedure TNetIntf.SetOnlyLAN(AValue: boolean);
+procedure TNetIntf.SetOnlyLocalhost(AValue: boolean);
 begin
-  if FOnlyLAN = AValue then Exit;
-  FOnlyLAN := AValue;
+  if FOnlyLocalhost = AValue then Exit;
+  FOnlyLocalhost := AValue;
   if Assigned(DaemonThread) then
     begin
       DeActivate;
@@ -312,7 +312,7 @@ end;
 constructor TNetIntf.Create;
 begin
   FPort := 6860;
-  FOnlyLAN := true;
+  FOnlyLocalhost := true;
   FActivated := False;
   DaemonThread := nil;
 end;

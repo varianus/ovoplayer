@@ -1,34 +1,36 @@
 object fConfig: TfConfig
   Left = 563
-  Height = 498
+  Height = 622
   Top = 191
-  Width = 702
+  Width = 878
   ActiveControl = bRestart
   Caption = 'Config'
-  ClientHeight = 498
-  ClientWidth = 702
-  Font.Height = -12
+  ClientHeight = 622
+  ClientWidth = 878
+  DesignTimePPI = 120
+  Font.Height = -15
+  LCLVersion = '4.99.0.0'
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
   object GroupBox1: TGroupBox
     Left = 0
-    Height = 442
+    Height = 551
     Top = 0
-    Width = 155
+    Width = 194
     Align = alLeft
     Caption = 'Categories'
-    ClientHeight = 422
-    ClientWidth = 151
+    ClientHeight = 526
+    ClientWidth = 190
     Color = clWindow
     ParentBackground = False
     ParentColor = False
     TabOrder = 0
     object sbEngine: TSpeedButton
       Left = 0
-      Height = 49
-      Top = 49
-      Width = 151
+      Height = 61
+      Top = 61
+      Width = 190
       Align = alTop
       Caption = 'Playback'
       Color = clWindow
@@ -40,9 +42,9 @@ object fConfig: TfConfig
     end
     object sbNotification: TSpeedButton
       Left = 0
-      Height = 49
-      Top = 196
-      Width = 151
+      Height = 61
+      Top = 245
+      Width = 190
       Align = alTop
       Caption = 'Notification'
       Color = clWindow
@@ -54,9 +56,9 @@ object fConfig: TfConfig
     end
     object sbLibrary: TSpeedButton
       Left = 0
-      Height = 49
-      Top = 98
-      Width = 151
+      Height = 62
+      Top = 122
+      Width = 190
       Align = alTop
       Caption = 'Media Library'
       Color = clWindow
@@ -68,9 +70,9 @@ object fConfig: TfConfig
     end
     object sbInterface: TSpeedButton
       Left = 0
-      Height = 49
+      Height = 61
       Top = 0
-      Width = 151
+      Width = 190
       Align = alTop
       Caption = 'Behavior'
       Color = clWindow
@@ -83,49 +85,49 @@ object fConfig: TfConfig
     end
     object pnlRestart: TPanel
       Left = 1
-      Height = 102
-      Top = 319
-      Width = 149
+      Height = 127
+      Top = 398
+      Width = 188
       Align = alBottom
       BorderSpacing.Around = 1
       BorderStyle = bsSingle
-      ClientHeight = 98
-      ClientWidth = 145
+      ClientHeight = 123
+      ClientWidth = 184
       Color = clActiveCaption
       ParentBackground = False
       ParentColor = False
       TabOrder = 0
       Visible = False
       object lbRestart: TLabel
-        Left = 4
-        Height = 57
-        Top = 4
-        Width = 137
+        Left = 5
+        Height = 71
+        Top = 5
+        Width = 174
         Align = alTop
         AutoSize = False
-        BorderSpacing.Around = 3
+        BorderSpacing.Around = 4
         Caption = 'A restart is required for this change to take effect.'
         Font.Color = clCaptionText
-        Font.Height = -12
+        Font.Height = -15
         ParentColor = False
         ParentFont = False
         WordWrap = True
       end
       object bRestart: TButton
-        Left = 32
-        Height = 25
-        Top = 68
-        Width = 76
+        Left = 40
+        Height = 31
+        Top = 85
+        Width = 95
         Caption = 'Restart Now'
-        OnClick = bRestartClick
         TabOrder = 0
+        OnClick = bRestartClick
       end
     end
     object sbNetRemote: TSpeedButton
       Left = 0
-      Height = 49
-      Top = 147
-      Width = 151
+      Height = 61
+      Top = 184
+      Width = 190
       Align = alTop
       Caption = 'Network Remote'
       Color = clWindow
@@ -137,11 +139,12 @@ object fConfig: TfConfig
     end
   end
   object ButtonPanel: TButtonPanel
-    Left = 6
-    Height = 44
-    Top = 448
-    Width = 690
+    Left = 8
+    Height = 55
+    Top = 559
+    Width = 862
     AutoSize = False
+    BorderSpacing.Around = 8
     OKButton.Name = 'OKButton'
     OKButton.DefaultCaption = True
     OKButton.OnClick = OKButtonClick
@@ -158,55 +161,55 @@ object fConfig: TfConfig
     ShowButtons = [pbOK, pbCancel]
   end
   object pcConfig: TPageControl
-    Left = 155
-    Height = 442
+    Left = 194
+    Height = 551
     Top = 0
-    Width = 547
+    Width = 684
     ActivePage = tsNetRemote
     Align = alClient
     TabIndex = 4
     TabOrder = 1
     object tsInterface: TTabSheet
       Caption = 'Interfaces'
-      ClientHeight = 414
-      ClientWidth = 539
+      ClientHeight = 518
+      ClientWidth = 676
       OnShow = tsInterfaceShow
       object cbMinimizeOnClose: TCheckBox
-        Left = 12
-        Height = 19
-        Top = 8
-        Width = 116
+        Left = 15
+        Height = 24
+        Top = 10
+        Width = 143
         Caption = 'Minimize on Close'
         Checked = True
         State = cbChecked
         TabOrder = 0
       end
       object cbTrayVisible: TCheckBox
-        Left = 12
-        Height = 19
-        Top = 72
-        Width = 96
+        Left = 15
+        Height = 24
+        Top = 90
+        Width = 118
         Caption = 'Show tray icon'
         Checked = True
         State = cbChecked
         TabOrder = 2
       end
       object cbCaptureMMKeys: TCheckBox
-        Left = 12
-        Height = 19
-        Top = 168
-        Width = 127
+        Left = 15
+        Height = 24
+        Top = 210
+        Width = 157
         Caption = 'Use multimedia keys'
         Checked = True
-        OnClick = cbCaptureMMKeysClick
         State = cbChecked
         TabOrder = 4
+        OnClick = cbCaptureMMKeysClick
       end
       object rgKeyCaptureMode: TRadioGroup
-        Left = 8
-        Height = 82
-        Top = 216
-        Width = 203
+        Left = 10
+        Height = 102
+        Top = 270
+        Width = 254
         AutoFill = True
         Caption = 'Keys Capture Mode'
         ChildSizing.LeftRightSpacing = 6
@@ -217,8 +220,8 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 62
-        ClientWidth = 199
+        ClientHeight = 77
+        ClientWidth = 250
         Items.Strings = (
           'Gnome D-BUS mode'
           'X Events Capture'
@@ -227,28 +230,28 @@ object fConfig: TfConfig
         Visible = False
       end
       object cbEnableSoundMenu: TCheckBox
-        Left = 12
-        Height = 19
-        Top = 136
-        Width = 130
+        Left = 15
+        Height = 24
+        Top = 170
+        Width = 158
         Caption = 'Show in sound menu'
         Checked = True
         State = cbChecked
         TabOrder = 3
       end
       object cbRestart: TCheckBox
-        Left = 12
-        Height = 19
-        Top = 40
-        Width = 150
+        Left = 15
+        Height = 24
+        Top = 50
+        Width = 188
         Caption = 'Restart from last position'
         TabOrder = 1
       end
       object cbPauseWhenLocked: TCheckBox
-        Left = 12
-        Height = 19
-        Top = 104
-        Width = 202
+        Left = 15
+        Height = 24
+        Top = 130
+        Width = 251
         Caption = 'Pause player when screen is locked'
         Checked = True
         State = cbChecked
@@ -257,14 +260,14 @@ object fConfig: TfConfig
     end
     object tsEngine: TTabSheet
       Caption = 'Engine'
-      ClientHeight = 414
-      ClientWidth = 539
+      ClientHeight = 518
+      ClientWidth = 676
       OnShow = tsEngineShow
       object rgAudioEngine: TRadioGroup
-        Left = 12
-        Height = 51
+        Left = 15
+        Height = 61
         Top = 0
-        Width = 196
+        Width = 243
         AutoFill = True
         AutoSize = True
         Caption = 'Audio Engine'
@@ -276,25 +279,24 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 31
-        ClientWidth = 192
+        ClientHeight = 36
+        ClientWidth = 239
         Items.Strings = (
           'Sample row for builded engine'
         )
-        OnClick = rgAudioEngineClick
         TabOrder = 0
+        OnClick = rgAudioEngineClick
       end
       object EngineParamsEditor: TValueListEditor
-        Left = 12
-        Height = 162
-        Top = 259
-        Width = 529
-        DefaultColWidth = 101
-        DefaultRowHeight = 22
-        FixedCols = 0
+        Left = 15
+        Height = 202
+        Top = 324
+        Width = 661
+        DefaultColWidth = 126
+        DefaultRowHeight = 28
         RowCount = 2
         TabOrder = 1
-        TitleFont.Height = -12
+        TitleFont.Height = -15
         TitleStyle = tsNative
         OnButtonClick = EngineParamsEditorButtonClick
         Strings.Strings = (
@@ -305,23 +307,22 @@ object fConfig: TfConfig
           'Value'
         )
         ColWidths = (
-          100
-          425
+          126
+          510
         )
       end
       object EngineInfoView: TValueListEditor
-        Left = 218
-        Height = 206
-        Top = 8
-        Width = 309
+        Left = 272
+        Height = 258
+        Top = 10
+        Width = 389
         Anchors = [akTop, akLeft, akRight, akBottom]
         AutoEdit = False
-        DefaultColWidth = 101
-        DefaultRowHeight = 22
-        FixedCols = 0
+        DefaultColWidth = 126
+        DefaultRowHeight = 28
         RowCount = 1
         TabOrder = 2
-        TitleFont.Height = -12
+        TitleFont.Height = -15
         TitleStyle = tsNative
         OnPrepareCanvas = EngineInfoViewPrepareCanvas
         DisplayOptions = [doAutoColResize, doKeyColFixed]
@@ -334,87 +335,87 @@ object fConfig: TfConfig
           'Value'
         )
         ColWidths = (
-          100
-          205
+          126
+          259
         )
       end
     end
     object tsMediaLibrary: TTabSheet
       Caption = 'Media Library'
-      ClientHeight = 414
-      ClientWidth = 539
+      ClientHeight = 518
+      ClientWidth = 676
       OnShow = tsMediaLibraryShow
       object lbMLPath: TListBox
-        Left = 12
-        Height = 129
-        Top = 34
-        Width = 388
+        Left = 15
+        Height = 162
+        Top = 42
+        Width = 485
         ItemHeight = 0
         ScrollWidth = 386
         TabOrder = 0
       end
       object Label1: TLabel
-        Left = 12
-        Height = 15
-        Top = 9
-        Width = 56
+        Left = 15
+        Height = 20
+        Top = 11
+        Width = 72
         Caption = 'Directories'
         ParentColor = False
       end
       object bAddDir: TButton
-        Left = 412
-        Height = 25
-        Top = 39
-        Width = 76
+        Left = 515
+        Height = 31
+        Top = 49
+        Width = 95
         Caption = 'Add …'
-        OnClick = bAddDirClick
         TabOrder = 1
+        OnClick = bAddDirClick
       end
       object bRemoveDir: TButton
-        Left = 412
-        Height = 25
-        Top = 75
-        Width = 76
+        Left = 515
+        Height = 31
+        Top = 94
+        Width = 95
         Caption = 'Remove'
-        OnClick = bRemoveDirClick
         TabOrder = 2
+        OnClick = bRemoveDirClick
       end
       object bRescanLibrary: TButton
-        Left = 12
-        Height = 25
-        Top = 232
-        Width = 76
+        Left = 15
+        Height = 31
+        Top = 290
+        Width = 95
         Caption = 'Scan Now'
-        OnClick = bRescanLibraryClick
         TabOrder = 3
+        OnClick = bRescanLibraryClick
       end
       object cbScanOnStart: TCheckBox
-        Left = 12
-        Height = 19
-        Top = 272
-        Width = 135
+        Left = 15
+        Height = 24
+        Top = 340
+        Width = 168
         Caption = 'Scan on program start'
         TabOrder = 4
       end
       object lbTotals: TLabel
-        Left = 12
+        Left = 15
         Height = 1
-        Top = 171
+        Top = 214
         Width = 1
         ParentColor = False
       end
     end
     object tsOSD: TTabSheet
       Caption = 'OSD'
-      ClientHeight = 414
-      ClientWidth = 539
+      ClientHeight = 518
+      ClientWidth = 676
       OnHide = tsOSDHide
       OnShow = tsOSDShow
       object rgOSDKind: TRadioGroup
-        Left = 12
-        Height = 106
-        Top = 12
-        Width = 333
+        Left = 15
+        Height = 133
+        Top = 15
+        Width = 416
         AutoFill = True
         Caption = 'Notification Kind'
         ChildSizing.LeftRightSpacing = 6
@@ -425,87 +426,89 @@ object fConfig: TfConfig
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 86
-        ClientWidth = 329
+        ClientHeight = 108
+        ClientWidth = 412
         Items.Strings = (
           'None'
           'System Notification'
           'Pretty OSD'
         )
-        OnClick = rgOSDKindClick
         TabOrder = 0
+        OnClick = rgOSDKindClick
       end
       object pnlOSDParams: TPanel
-        Left = 12
-        Height = 136
-        Top = 128
-        Width = 400
+        Left = 15
+        Height = 170
+        Top = 160
+        Width = 500
         BevelOuter = bvNone
-        ClientHeight = 136
-        ClientWidth = 400
+        ClientHeight = 170
+        ClientWidth = 500
         TabOrder = 1
         object colorBackground: TColorBox
-          Left = 155
-          Height = 22
-          Top = 8
-          Width = 178
+          Left = 194
+          Height = 26
+          Top = 10
+          Width = 222
           DefaultColorColor = 11955992
           NoneColorColor = clGray
           Selected = 11955992
           Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbCustomColor, cbCustomColors]
-          ItemHeight = 16
-          OnChange = colorBackgroundChange
+          ItemHeight = 20
           TabOrder = 0
+          OnChange = colorBackgroundChange
         end
         object Label2: TLabel
           Left = 0
-          Height = 17
-          Top = 14
-          Width = 137
+          Height = 21
+          Top = 18
+          Width = 171
           AutoSize = False
           Caption = 'BackGround color'
           ParentColor = False
         end
         object Label3: TLabel
           Left = 0
-          Height = 18
-          Top = 48
-          Width = 137
+          Height = 22
+          Top = 60
+          Width = 171
           AutoSize = False
           Caption = 'Font color'
           ParentColor = False
         end
         object ColorFont: TColorBox
-          Left = 155
-          Height = 22
-          Top = 43
-          Width = 178
+          Left = 194
+          Height = 26
+          Top = 54
+          Width = 222
           DefaultColorColor = 11955992
           NoneColorColor = clGray
           Style = [cbStandardColors, cbExtendedColors, cbSystemColors, cbCustomColor, cbCustomColors]
-          ItemHeight = 16
-          OnChange = ColorFontChange
+          ItemHeight = 20
           TabOrder = 1
+          OnChange = ColorFontChange
         end
         object tbTransparency: TTrackBar
-          Left = 155
-          Height = 24
-          Top = 80
-          Width = 178
+          Left = 194
+          Height = 30
+          Top = 100
+          Width = 222
           Frequency = 15
           Max = 255
-          OnChange = tbTransparencyChange
           PageSize = 100
           Position = 0
           ScalePos = trRight
           TickStyle = tsNone
+          OnChange = tbTransparencyChange
+          Color = 3487029
+          ParentColor = False
           TabOrder = 2
         end
         object Label4: TLabel
           Left = 0
-          Height = 17
-          Top = 80
-          Width = 137
+          Height = 21
+          Top = 100
+          Width = 171
           AutoSize = False
           Caption = 'Tranparency'
           ParentColor = False
@@ -514,42 +517,42 @@ object fConfig: TfConfig
     end
     object tsNetRemote: TTabSheet
       Caption = 'NetRemote'
-      ClientHeight = 414
-      ClientWidth = 539
+      ClientHeight = 518
+      ClientWidth = 676
       OnShow = tsNetRemoteShow
       object cbNetRemote: TCheckBox
-        Left = 12
-        Height = 19
-        Top = 8
-        Width = 140
+        Left = 15
+        Height = 24
+        Top = 10
+        Width = 175
         Caption = 'Enable network remote'
-        OnChange = cbNetRemoteChange
         TabOrder = 0
+        OnChange = cbNetRemoteChange
       end
       object pnlNetwork: TPanel
-        Left = 8
-        Height = 317
-        Top = 40
-        Width = 525
+        Left = 10
+        Height = 396
+        Top = 50
+        Width = 656
         BevelOuter = bvNone
-        ClientHeight = 317
-        ClientWidth = 525
+        ClientHeight = 396
+        ClientWidth = 656
         TabOrder = 1
         object sePort: TSpinEdit
-          Left = 104
-          Height = 23
-          Top = 34
-          Width = 105
+          Left = 130
+          Height = 28
+          Top = 42
+          Width = 131
           MaxValue = 65536
-          OnChange = sePortChange
           TabOrder = 0
           Value = 6860
+          OnChange = sePortChange
         end
         object Label5: TLabel
-          Left = 12
-          Height = 17
-          Top = 37
-          Width = 76
+          Left = 15
+          Height = 22
+          Top = 46
+          Width = 95
           AutoSize = False
           Caption = 'Port'
           ParentColor = False
@@ -557,16 +560,16 @@ object fConfig: TfConfig
         object lbWarning: TLabel
           Left = 0
           Height = 1
-          Top = 49
+          Top = 61
           Width = 1
           ParentColor = False
         end
-        object cbOnlyLAN: TCheckBox
-          Left = 12
-          Height = 19
-          Top = 3
-          Width = 142
-          Caption = 'Bind only local network'
+        object cbOnlyLocalhost: TCheckBox
+          Left = 15
+          Height = 24
+          Top = 4
+          Width = 151
+          Caption = 'Bind only local host'
           TabOrder = 1
         end
       end
@@ -575,15 +578,15 @@ object fConfig: TfConfig
   object FontDialog1: TFontDialog
     MinFontSize = 0
     MaxFontSize = 0
-    Left = 496
-    Top = 96
+    Left = 620
+    Top = 120
   end
   object OpenDialog1: TOpenDialog
-    Left = 393
-    Top = 116
+    Left = 491
+    Top = 145
   end
   object SelectDirectoryDialog1: TSelectDirectoryDialog
-    Left = 480
-    Top = 123
+    Left = 600
+    Top = 154
   end
 end

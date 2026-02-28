@@ -101,16 +101,16 @@ type
   TNetRemoteParam = Class(TConfigParam)
   private
     FEnabled: boolean;
-    FOnlyLAN: boolean;
+    FOnlyLocalhost: boolean;
     FPort: integer;
     procedure SetEnabled(AValue: boolean);
-    procedure SetOnlyLAN(AValue: boolean);
+    procedure SetOnlyLocalhost(AValue: boolean);
     procedure SetPort(AValue: integer);
   protected
     Procedure InternalSave; override;
   public
     Property Enabled: boolean read FEnabled write SetEnabled;
-    Property OnlyLAN: boolean read FOnlyLAN write SetOnlyLAN;
+    Property OnlyLocalhost: boolean read FOnlyLocalhost write SetOnlyLA;
     Property Port: integer read FPort write SetPort;
     Procedure Load; override;
   end;
@@ -177,10 +177,10 @@ begin
   Dirty := True;
 end;
 
-procedure TNetRemoteParam.SetOnlyLAN(AValue: boolean);
+procedure TNetRemoteParam.SetOnlyLA(AValue: boolean);
 begin
-  if FOnlyLAN = AValue then Exit;
-  FOnlyLAN := AValue;
+  if FOnlyLocalhost = AValue then Exit;
+  FOnlyLocalhost := AValue;
   Dirty := True;
 end;
 
@@ -197,7 +197,7 @@ const
 begin
   owner.IniFile.WriteBool(Base, 'Enabled', Enabled);
   owner.IniFile.WriteInteger(Base, 'Port', Port);
-  owner.IniFile.WriteBool(Base, 'OnlyLAN', OnlyLAN);
+  owner.IniFile.WriteBool(Base, 'OnlyLocalhost', OnlyLocalhost);
 end;
 
 procedure TNetRemoteParam.Load;
@@ -206,7 +206,7 @@ const
 begin
   FEnabled := owner.IniFile.ReadBool(Base , 'Enabled', False);
   FPort    := owner.IniFile.ReadInteger(Base , 'Port', 6860);
-  FOnlyLAN := owner.IniFile.ReadBool(Base , 'OnlyLAN', true);
+  FOnlyLocalhost := owner.IniFile.ReadBool(Base , 'OnlyLocalhost', true);
 end;
 {$EndIf}
 

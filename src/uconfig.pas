@@ -49,7 +49,7 @@ type
     cbTrayVisible: TCheckBox;
     cbNetRemote: TCheckBox;
     cbPauseWhenLocked: TCheckBox;
-    cbOnlyLAN: TCheckBox;
+    cbOnlyLocalhost: TCheckBox;
     colorBackground: TColorBox;
     ColorFont: TColorBox;
     EngineInfoView: TValueListEditor;
@@ -517,7 +517,7 @@ begin
   {$IFDEF NETWORK_INTF}
   GuiConfigObj.NetRemoteParam.Enabled           := cbNetRemote.checked;
   GuiConfigObj.NetRemoteParam.Port              := sePort.Value;
-  GuiConfigObj.NetRemoteParam.OnlyLAN           := cbOnlyLAN.Checked;
+  GuiConfigObj.NetRemoteParam.OnlyLocalhost           := cbOnlyLocalhost.Checked;
   {$ENDIF NETWORK_INTF}
 
   //GENERAL
@@ -567,7 +567,7 @@ begin
   // NETREMOTE
   cbNetRemote.Checked       := GuiConfigObj.NetRemoteParam.Enabled;
   sePort.Value              := GuiConfigObj.NetRemoteParam.Port;
-  cbOnlyLAN.Checked         := GuiConfigObj.NetRemoteParam.OnlyLAN;
+  cbOnlyLocalhost.Checked         := GuiConfigObj.NetRemoteParam.OnlyLocalhost;
   {$ENDIF NETWORK_INTF}
   //GENERAL
   pnlRestart.visible := Backend.Config.NeedRestart;
