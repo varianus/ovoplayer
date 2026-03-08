@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {$I codegen.inc}
 {$I backend.inc}
 unit GUIBackEnd;
+
 interface
 
 uses
@@ -34,10 +35,10 @@ uses
   {$IFDEF MEDIAFOUNDATION} mediafoundation, audioengine_mf,{$ENDIF}
   {$IF defined(OPENSOURCELIB) OR defined(UOS)}  uos_libsndfile, uos_mpg123, uos_portaudio,{$ENDIF}
   {$IFDEF OPENSOURCELIB}audioengine_OpenLib,{$ENDIF}
-  {$IFDEF UOS} UOS,audioengine_UOS,{$ENDIF}
+  {$IFDEF UOS} UOS, audioengine_UOS,{$ENDIF}
   {$IFDEF FFMPEG} ffmpeg, audioengine_FFMPEG,{$ENDIF}
   {$IFDEF LIBMPV} libmpv, audioengine_libmpv,{$ENDIF}
-  extctrls,
+  ExtCtrls,
 
   PlayList, PlayListManager, MediaLibrary, basetag, CustomSong,
   Config, Equalizer, backendconfig, Generics.Collections,
@@ -45,8 +46,8 @@ uses
 
 type
 
-  TOnEngineCommand = procedure(Sender: Tobject; Command : TEngineCommand) of object;
-  TOnExternalCommand = procedure(Sender: Tobject; Command : RExternalCommand; var Handled:boolean) of object;
+  TOnEngineCommand = procedure(Sender: TObject; Command: TEngineCommand) of object;
+  TOnExternalCommand = procedure(Sender: TObject; Command: RExternalCommand; var Handled: boolean) of object;
 
   { TBackEnd }
   TObserverlist = specialize TList<IObserver>;
@@ -57,21 +58,21 @@ type
     FOnEngineCommand: TOnEngineCommand;
     FOnExternalCommand: TOnExternalCommand;
     FOnPlayListChange: TNotifyEvent;
-    FOnPlayListLoad:   TNotifyEvent;
+    FOnPlayListLoad: TNotifyEvent;
 
     FOnSaveInterfaceState: TNotifyEvent;
-    ObserverList : TObserverlist;
+    ObserverList: TObserverlist;
     IntTimer: TTimer;
 
     fEngineParam: TEngineParam;
     fGeneralParam: TGeneralParam;
     FMediaLibraryParam: TMediaLibraryParam;
     fPlayListParam: TPlayListParam;
-    fEqualizerParam :TEqualizerParam;
+    fEqualizerParam: TEqualizerParam;
 
     procedure AudioEngineSongEnd(Sender: TObject);
     function GetMute: boolean;
-    procedure PlaylistOnSongAdd(Sender: Tobject; Index: Integer; ASong: TCustomSong);
+    procedure PlaylistOnSongAdd(Sender: TObject; Index: integer; ASong: TCustomSong);
     procedure SetMute(AValue: boolean);
     procedure SetOnEngineCommand(const AValue: TOnEngineCommand);
     procedure SetOnExternalCommand(const AValue: TOnExternalCommand);
@@ -88,10 +89,10 @@ type
     mediaLibrary: TMediaLibrary;
     Config: TConfig;
 
-    Constructor Create;
-    Destructor Destroy; override;
+    constructor Create;
+    destructor Destroy; override;
 
-  // IBackEnd methods
+    // IBackEnd methods
     function GetLooping: TplRepeat;
     function GetPosition: int64;
     function GetStatus: TEngineState;
@@ -100,74 +101,74 @@ type
     procedure SetPosition(AValue: int64);
     procedure SetStatus(AValue: TEngineState);
     procedure SetVolume(AValue: cardinal);
-    Function GetCoverURL(EncodeToURI:Boolean=True): String;
-    Function GetCover(Width: integer=-1; Height:Integer=-1): String;
+    function GetCoverURL(EncodeToURI: boolean = True): string;
+    function GetCover(Width: integer = -1; Height: integer = -1): string;
 
 
-    Procedure Play(Index:integer=-1);
-    Procedure Stop;
-    Procedure Pause;
-    Procedure PlayPause;
-    Procedure UnPause;
-    Procedure Next;
-    Procedure Previous;
-    Procedure Quit;
-    Function GetMetadata(Index:integer=-1): TCommonTags;
-    Procedure OpenURI(URI: String);
+    procedure Play(Index: integer = -1);
+    procedure Stop;
+    procedure Pause;
+    procedure PlayPause;
+    procedure UnPause;
+    procedure Next;
+    procedure Previous;
+    procedure Quit;
+    function GetMetadata(Index: integer = -1): TCommonTags;
+    procedure OpenURI(URI: string);
     procedure Seek(AValue: int64);
-    Function PlayListCount : integer;
-    Function GetCurrentSongIndex : integer;
-    Procedure AutoSendPosEvents(Active: boolean);
+    function PlayListCount: integer;
+    function GetCurrentSongIndex: integer;
+    procedure AutoSendPosEvents(Active: boolean);
 
-    Procedure Attach(observer: iObserver);
-    Procedure Remove(observer: iObserver);
+    procedure Attach(observer: iObserver);
+    procedure Remove(observer: iObserver);
 
-    Procedure Notify(Kind:  TChangedProperty);
+    procedure Notify(Kind: TChangedProperty);
     procedure HandleCommand(Command: TEngineCommand; Param: integer);
-    function HandleExternalCommand(Command: RExternalCommand):boolean;
+    function HandleExternalCommand(Command: RExternalCommand): boolean;
 
-    function GetImageFromfolder(Path: string; LoadDefault:boolean=true): string;
+    function GetImageFromfolder(Path: string; LoadDefault: boolean = True): string;
     procedure SaveState;
     procedure SignalPlayListChange;
 
     property OnSaveInterfaceState: TNotifyEvent read FOnSaveInterfaceState write SetOnSaveInterfaceState;
     property OnPlayListChange: TNotifyEvent read FOnPlayListChange write SetOnPlayListChange;
     property OnPlayListLoad: TNotifyEvent read FOnPlayListLoad write SetOnPlayListLoad;
-    property OnEngineCommand :TOnEngineCommand read FOnEngineCommand write SetOnEngineCommand;
-    property OnExternalCommand :TOnExternalCommand read FOnExternalCommand write SetOnExternalCommand;
-    Property Status: TengineState read GetStatus write SetStatus;
-    Property Position: int64 read GetPosition write SetPosition;
-    property Looping: TplRepeat read  GetLooping write SetLooping;
-    Property Volume : cardinal read GetVolume write SetVolume;
-    Property Muted : boolean read GetMute write SetMute;
+    property OnEngineCommand: TOnEngineCommand read FOnEngineCommand write SetOnEngineCommand;
+    property OnExternalCommand: TOnExternalCommand read FOnExternalCommand write SetOnExternalCommand;
+    property Status: TengineState read GetStatus write SetStatus;
+    property Position: int64 read GetPosition write SetPosition;
+    property Looping: TplRepeat read GetLooping write SetLooping;
+    property Volume: cardinal read GetVolume write SetVolume;
+    property Muted: boolean read GetMute write SetMute;
 
     property MediaLibraryParam: TMediaLibraryParam read FMediaLibraryParam;
-    property PlayListParam:     TPlayListParam read fPlayListParam;
-    property EngineParam:       TEngineParam read fEngineParam;
-    property GeneralParam:      TGeneralParam read fGeneralParam;
-    property EqualizerParam:    TEqualizerParam read fEqualizerParam;
+    property PlayListParam: TPlayListParam read fPlayListParam;
+    property EngineParam: TEngineParam read fEngineParam;
+    property GeneralParam: TGeneralParam read fGeneralParam;
+    property EqualizerParam: TEqualizerParam read fEqualizerParam;
 
   end;
 
 
 function BackEnd: TBackEnd;
-Procedure FreeBackend;
+procedure FreeBackend;
 
 implementation
 
 uses Graphics, LazLoggerBase, FilesSupport, AudioTag, AppConsts, ExtendedInfo, uriparser,
-     NetProtocol, NetSupport, ImagesSupport;
+  NetProtocol, NetSupport, ImagesSupport;
 
 var
   fBackEnd: TBackEnd;
 
 const
-  RCommandString : array [TEngineCommand] of string =
-                  ('', COMMAND_STOP, COMMAND_PREVIOUS, COMMAND_PLAYPAUSE, COMMAND_NEXT,
-                   COMMAND_PAUSE, COMMAND_SEEK, '');
+  RCommandString: array [TEngineCommand] of string =
+    ('', COMMAND_STOP, COMMAND_PREVIOUS, COMMAND_PLAYPAUSE, COMMAND_NEXT,
+    COMMAND_PAUSE, COMMAND_SEEK, '');
 
 
-{ TBackEnd }
+  { TBackEnd }
 
 function BackEnd: TBackEnd;
 begin
@@ -182,8 +183,8 @@ var
   i: integer;
 begin
   try
-  if Assigned(fBackEnd.ObserverList) then
-     for i := 0 to fBackEnd.ObserverList.Count -1 do
+    if Assigned(fBackEnd.ObserverList) then
+      for i := 0 to fBackEnd.ObserverList.Count - 1 do
         fBackEnd.remove(IObserver(fBackEnd.ObserverList[i]));
   except
     // ignore exception on observer destroy
@@ -196,98 +197,97 @@ end;
 
 constructor TBackEnd.Create;
 var
-  Engine : TAudioEngineClass;
-  Function EngineCreation:boolean;
-   begin
-     try
-       AudioEngine := Engine.Create;
-       if not AudioEngine.Initialize then
-           begin
-             FreeAndNil(AudioEngine);
-             SetEngineFailed(Engine);
-             Engine:= nil;
-             result := False;
-           end
-       else
-         Result:= true;
-     except
-       FreeAndNil(AudioEngine);
-       SetEngineFailed(Engine);
-       Engine:= nil;
-       result := False;
-     end;
-   end;
+  Engine: TAudioEngineClass;
+
+  function EngineCreation: boolean;
+  begin
+    try
+      AudioEngine := Engine.Create;
+      if not AudioEngine.Initialize then
+      begin
+        FreeAndNil(AudioEngine);
+        SetEngineFailed(Engine);
+        Engine := nil;
+        Result := False;
+      end
+      else
+        Result := True;
+    except
+      FreeAndNil(AudioEngine);
+      SetEngineFailed(Engine);
+      Engine := nil;
+      Result := False;
+    end;
+  end;
 
 begin
   IntTimer := nil;
-  Config := TConfig.Create;
+  Config   := TConfig.Create;
   fMediaLibraryParam := TMediaLibraryParam.Create(Config);
-  fPlayListParam     := TPlayListParam.Create(Config);
-  fEngineParam       := TEngineParam.Create(Config);
-  fGeneralParam      := TGeneralParam.Create(Config);
-  fEqualizerParam    := TEqualizerParam.Create(Config);
+  fPlayListParam := TPlayListParam.Create(Config);
+  fEngineParam := TEngineParam.Create(Config);
+  fGeneralParam := TGeneralParam.Create(Config);
+  fEqualizerParam := TEqualizerParam.Create(Config);
 
-  Manager  := TPlayListManager.Create;
+  Manager := TPlayListManager.Create;
   Playlist := TPlayList.Create;
-  PlayList.RepeatMode :=  TplRepeat(PlayListParam.RepeatMode);
+  PlayList.RepeatMode := TplRepeat(PlayListParam.RepeatMode);
   mediaLibrary := TMediaLibrary.Create;
   engine := nil;
   if EngineParam.EngineKind <> '' then
-     begin
-       Engine := GetEngineByName(EngineParam.EngineKind);
-       if Assigned(Engine) then
-          if not Engine.IsAvalaible(EngineParam.EngineSubParams) then
-             engine := nil
-          else
-            EngineCreation;
-     end;
-
-  while not assigned(engine) do
-    begin
-      Engine := GetBestEngine;
-      if Engine = nil then  // no more engine to try ...
-        engine:=TAudioEngineDummy
-      else
-        EngineParam.EngineKind := Engine.getEngineName;
-
+  begin
+    Engine := GetEngineByName(EngineParam.EngineKind);
+    if Assigned(Engine) then
       if not Engine.IsAvalaible(EngineParam.EngineSubParams) then
-         begin
-           SetEngineFailed(Engine);
-           Engine:= nil;
-         end
+        engine := nil
       else
         EngineCreation;
-    end;
+  end;
+
+  while not assigned(engine) do
+  begin
+    Engine := GetBestEngine;
+    if Engine = nil then  // no more engine to try ...
+      engine := TAudioEngineDummy
+    else
+      EngineParam.EngineKind := Engine.getEngineName;
+
+    if not Engine.IsAvalaible(EngineParam.EngineSubParams) then
+    begin
+      SetEngineFailed(Engine);
+      Engine := nil;
+    end
+    else
+      EngineCreation;
+  end;
 
   if AudioEngine.SupportEQ then
-    begin
-      AudioEngine.SetActiveEQ(EngineParam.ActiveEQ);
-      // if equalizer is active, try to load active preset
-      if EngineParam.ActiveEQ then
-        begin
-          if (EngineParam.EQPreset > 0) and (EngineParam.EQPreset < EqualizerParam.Count) then
-            ApplyPreset(AudioEngine, EqualizerParam.Preset[EngineParam.EQPreset])
-          else
-            begin
-              // If something wrong happened loading presets disable equalizer,
-              // better than access violation or playing crap...
-              EngineParam.EQPreset :=0;
-              EngineParam.ActiveEQ := false;
-              AudioEngine.SetActiveEQ(EngineParam.ActiveEQ);
-            end;
-        end;
-    end;
+  begin
+    AudioEngine.SetActiveEQ(EngineParam.ActiveEQ);
+    // if equalizer is active, try to load active preset
+    if EngineParam.ActiveEQ then
+      if (EngineParam.EQPreset > 0) and (EngineParam.EQPreset < EqualizerParam.Count) then
+        ApplyPreset(AudioEngine, EqualizerParam.Preset[EngineParam.EQPreset])
+      else
+      begin
+        // If something wrong happened loading presets disable equalizer,
+        // better than access violation or playing crap...
+        EngineParam.EQPreset := 0;
+        EngineParam.ActiveEQ := False;
+        AudioEngine.SetActiveEQ(EngineParam.ActiveEQ);
+      end;
+  end;
 
-  AudioEngine.OnSongEnd := @AudioEngineSongEnd;
-  AudioEngine.MainVolume:= EngineParam.Volume;
-  PlayList.OnSongAdd:=@PlaylistOnSongAdd;
+  AudioEngine.OnSongEnd  := @AudioEngineSongEnd;
+  AudioEngine.MainVolume := EngineParam.Volume;
+  PlayList.OnSongAdd     := @PlaylistOnSongAdd;
 
 end;
 
 procedure TBackEnd.SaveState;
 begin
   Manager.SaveToXSPF(Config.ConfigDir + 'lastplaylist.xspf', PlayList, AudioEngine.Position);
-  EngineParam.Volume := AudioEngine.MainVolume;
+  EngineParam.Volume   := AudioEngine.MainVolume;
   EngineParam.ActiveEQ := AudioEngine.getActiveEQ;
 
 end;
@@ -295,19 +295,19 @@ end;
 destructor TBackEnd.Destroy;
 begin
   if Assigned(IntTimer) then
-    begin
-   //   IntTimer.StopTimer;
-      IntTimer.Enabled:= false;
-      IntTimer.Free;
-    end;
+  begin
+    //   IntTimer.StopTimer;
+    IntTimer.Enabled := False;
+    IntTimer.Free;
+  end;
   try
     SaveState;
     if Assigned(FOnSaveInterfaceState) then
-       FOnSaveInterfaceState(Self);
+      FOnSaveInterfaceState(Self);
   except
   end;
 
-  EqualizerParam.Dirty := true;
+  EqualizerParam.Dirty := True;
 
   Manager.Free;
   PlayList.Free;
@@ -321,58 +321,57 @@ begin
   fEqualizerParam.Free;
   Config.Free;
 
-  Inherited Destroy;
+  inherited Destroy;
 end;
 
 
 
-function TBackEnd.GetImageFromfolder(Path: string; LoadDefault:boolean): string;
+function TBackEnd.GetImageFromfolder(Path: string; LoadDefault: boolean): string;
 const
   CountName = 6;
-  CoverName : array [0..CountName - 1] of string =
-     ('cover', 'front','folder', 'cd', 'cov', 'art');
+  CoverName: array [0..CountName - 1] of string =
+    ('cover', 'front', 'folder', 'cd', 'cov', 'art');
 
   CountExt = 4;
-  CoverExt : array [0..CountExt - 1] of string =
-     ('png', 'jpg', 'jpeg', 'gif');
-
+  CoverExt: array [0..CountExt - 1] of string =
+    ('png', 'jpg', 'jpeg', 'gif');
 var
   FileList: TStringList;
-  N, E :Integer;
-  AllExt:string;
+  N, E: integer;
+  AllExt: string;
 begin
   Result := '';
-  E:=0;
-  while (E <= CountExt - 1) and (result = EmptyStr) do
-   begin
-     n:=0;
-     while (N <= CountName - 1) and (result = EmptyStr) do
-       begin
-         if FileExists(Path + CoverName[N] + '.' + CoverExt[E]) then
-           Result:=path + CoverName[N] + '.' + CoverExt[E];
-         inc(N);
-       end;
-     inc(E);
+  E      := 0;
+  while (E <= CountExt - 1) and (Result = EmptyStr) do
+  begin
+    n := 0;
+    while (N <= CountName - 1) and (Result = EmptyStr) do
+    begin
+      if FileExists(Path + CoverName[N] + '.' + CoverExt[E]) then
+        Result := path + CoverName[N] + '.' + CoverExt[E];
+      Inc(N);
     end;
+    Inc(E);
+  end;
 
   if Result = '' then
-     begin
-       FileList := TStringList.Create;
-       FileList.OwnsObjects := true;
-       AllExt:='';
-       for E := 0 to CountExt -1 do
-         AllExt:= AllExt + '*.' + CoverExt[E]+';';
+  begin
+    FileList := TStringList.Create;
+    FileList.OwnsObjects := True;
+    AllExt   := '';
+    for E := 0 to CountExt - 1 do
+      AllExt := AllExt + '*.' + CoverExt[E] + ';';
 
-       try
-       BuildFileList(IncludeTrailingPathDelimiter(Path) + AllExt,
-         faAnyFile, FileList, false);
-       FileList.Sort;
-       if FileList.Count > 0 then
-         Result := FileList[0];
-       finally
-         FileList.Free;
-       end;
-     end;
+    try
+      BuildFileList(IncludeTrailingPathDelimiter(Path) + AllExt,
+        faAnyFile, FileList, False);
+      FileList.Sort;
+      if FileList.Count > 0 then
+        Result := FileList[0];
+    finally
+      FileList.Free;
+    end;
+  end;
 
   if (Result = '') and LoadDefault then
     Result := Config.GetResourcesPath + 'nocover.png';
@@ -381,14 +380,14 @@ end;
 
 procedure TBackEnd.SetOnEngineCommand(const AValue: TOnEngineCommand);
 begin
-  if FOnEngineCommand=AValue then exit;
-  FOnEngineCommand:=AValue;
+  if FOnEngineCommand = AValue then exit;
+  FOnEngineCommand := AValue;
 end;
 
 procedure TBackEnd.SetOnExternalCommand(const AValue: TOnExternalCommand);
 begin
-  if FOnExternalCommand=AValue then exit;
-  FOnExternalCommand:=AValue;
+  if FOnExternalCommand = AValue then exit;
+  FOnExternalCommand := AValue;
 end;
 
 procedure TBackEnd.SetOnPlayListChange(const AValue: TNotifyEvent);
@@ -407,8 +406,8 @@ end;
 
 procedure TBackEnd.SetOnSaveInterfaceState(AValue: TNotifyEvent);
 begin
-  if FOnSaveInterfaceState=AValue then Exit;
-  FOnSaveInterfaceState:=AValue;
+  if FOnSaveInterfaceState = AValue then Exit;
+  FOnSaveInterfaceState := AValue;
 end;
 
 function TBackEnd.GetLooping: TplRepeat;
@@ -427,26 +426,26 @@ end;
 function TBackEnd.GetStatus: TEngineState;
 begin
   if Assigned(AudioEngine) then
-     Result := AudioEngine.State
+    Result := AudioEngine.State
   else
-     Result := ENGINE_OFF_LINE;
+    Result := ENGINE_OFF_LINE;
 
 end;
 
 function TBackEnd.GetVolume: cardinal;
 begin
-  Result:= AudioEngine.MainVolume;
+  Result := AudioEngine.MainVolume;
 end;
 
 procedure TBackEnd.SetLooping(AValue: TplRepeat);
 begin
- PlayList.RepeatMode:= AValue;
- Notify(cpLooping);
+  PlayList.RepeatMode := AValue;
+  Notify(cpLooping);
 end;
 
 procedure TBackEnd.SetPosition(AValue: int64);
 begin
-//  UnPause;
+  //  UnPause;
   AudioEngine.Position := AValue;
   Notify(cpPosition);
 end;
@@ -458,93 +457,90 @@ end;
 
 procedure TBackEnd.SetVolume(AValue: cardinal);
 begin
-//  DebugLn('TBackend.setvolume','->',IntToStr(AValue));
+  //  DebugLn('TBackend.setvolume','->',IntToStr(AValue));
   AudioEngine.MainVolume := AValue;
   Notify(cpVolume);
 end;
 
-function TBackEnd.GetCoverURL(EncodeToURI:boolean=True): String;
+function TBackEnd.GetCoverURL(EncodeToURI: boolean = True): string;
 var
   Picture: TPicture;
-  imgLoaded : boolean;
+  imgLoaded: boolean;
   Song: TCustomSong;
   f: TTagReader;
 begin
-  result := '';
-  Song :=  PlayList.CurrentItem;
+  Result := '';
+  Song   := PlayList.CurrentItem;
   if not assigned(song) then exit;
 
-  imgloaded := false;
+  imgloaded := False;
   if Song.Tags.HasImage then
-     begin
-       f := GetFileTagsObject(Song.Tags.FileName);
-       f.Tags.Images[0].image.Position:=0;
-       Picture:= tpicture.Create;
-       try
-         Picture.LoadFromStream(f.Tags.Images[0].image);
-         result :=GetTempDir(true)+'ovoplayer-tmp-cover'+'.png';
-         Picture.SaveToFile(result);
-         imgLoaded:= true;
-       except
-       end;
-       Picture.free;
-       f.Free;
-     end;
+  begin
+    f := GetFileTagsObject(Song.Tags.FileName);
+    f.Tags.Images[0].image.Position := 0;
+    Picture := tpicture.Create;
+    try
+      Picture.LoadFromStream(f.Tags.Images[0].image);
+      Result := GetTempDir(True) + 'ovoplayer-tmp-cover' + '.png';
+      Picture.SaveToFile(Result);
+      imgLoaded := True;
+    except
+    end;
+    Picture.Free;
+    f.Free;
+  end;
 
   if not imgLoaded then
-     begin
-      result := BackEnd.GetImageFromfolder(IncludeTrailingPathDelimiter(Song.FilePath));
-     end;
+    Result := BackEnd.GetImageFromfolder(IncludeTrailingPathDelimiter(Song.FilePath));
 
   if (Result <> '') and EncodeToURI then
-     result := FilenameToURI(result);
+    Result := FilenameToURI(Result);
 
 end;
 
-function TBackEnd.GetCover(Width: integer=-1; Height:Integer=-1): String;
+function TBackEnd.GetCover(Width: integer = -1; Height: integer = -1): string;
 var
-  imgLoaded : boolean;
+  imgLoaded: boolean;
   Song: TCustomSong;
   img: TPicture;
   tmpStream: TMemoryStream;
 
   f: TTagReader;
   FileName: string;
-
 begin
-  result := '';
-  Song :=  PlayList.CurrentItem;
+  Result := '';
+  Song   := PlayList.CurrentItem;
   if not assigned(song) then exit;
 
   img := TPicture.Create;
 
-  imgLoaded := false;
+  imgLoaded := False;
   if Song.Tags.HasImage then
-     begin
-       f := GetFileTagsObject(Song.Tags.FileName);
-       try
-         img.LoadFromStream(f.Tags.Images[0].image);
-         imgLoaded:= true;
-       except
-       end;
-       f.free;
-     end;
-
-  if not imgLoaded then
-     begin
-      FileName := BackEnd.GetImageFromfolder(IncludeTrailingPathDelimiter(Song.FilePath), false);
-      if FileName <> '' then
-        begin
-          Img.LoadFromFile(FileName);
-          imgLoaded := true;
-        end;
-     end;
-
-  if not imgLoaded then
-    begin
-      img.free;
-      exit
+  begin
+    f := GetFileTagsObject(Song.Tags.FileName);
+    try
+      img.LoadFromStream(f.Tags.Images[0].image);
+      imgLoaded := True;
+    except
     end;
+    f.Free;
+  end;
+
+  if not imgLoaded then
+  begin
+    FileName := BackEnd.GetImageFromfolder(IncludeTrailingPathDelimiter(Song.FilePath), False);
+    if FileName <> '' then
+    begin
+      Img.LoadFromFile(FileName);
+      imgLoaded := True;
+    end;
+  end;
+
+  if not imgLoaded then
+  begin
+    img.Free;
+    exit;
+  end;
 
   try
     if (Width <> -1) and (Height <> -1) then
@@ -552,53 +548,53 @@ begin
 
     tmpStream := TMemoryStream.Create;
     try
-//      img.SaveToStreamWithFileExt(tmpStream, '.jpg');
+      //      img.SaveToStreamWithFileExt(tmpStream, '.jpg');
       img.SaveToStream(tmpStream);
-    //  DebugLn('STSize: '+IntToStr(tmpStream.Size));
-      Result := 'data:'+img.Graphic.MimeType+';base64, '+ EncodeStream(tmpStream);
-    //  DebugLn('IMGSize: '+inttostr(length(result)));
+      //  DebugLn('STSize: '+IntToStr(tmpStream.Size));
+      Result := 'data:' + img.Graphic.MimeType + ';base64, ' + EncodeStream(tmpStream);
+      //  DebugLn('IMGSize: '+inttostr(length(result)));
 
     finally
-      img.free;
+      img.Free;
       tmpStream.Free;
     end;
 
 
-  Except
+  except
   end;
 
 end;
 
-procedure TBackEnd.Play(Index:integer=-1);
+procedure TBackEnd.Play(Index: integer = -1);
 begin
-    if (AudioEngine.State = ENGINE_PAUSE) and
-       ((index = -1) or (Index =  PlayList.ItemIndex)) then
-      AudioEngine.UnPause
-    else
-    begin
-      if PlayList.Count = 0 then
-         exit;
+  if (AudioEngine.State = ENGINE_PAUSE) and
+    ((index = -1) or (Index = PlayList.ItemIndex)) then
+    AudioEngine.UnPause
+  else
+  begin
+    if PlayList.Count = 0 then
+      exit;
 
-      if Index <> -1 then
-        PlayList.ItemIndex:= index;
+    if Index <> -1 then
+      PlayList.ItemIndex := index;
 
-      if PlayList.ItemIndex = -1 then
-        PlayList.ItemIndex := 0;
+    if PlayList.ItemIndex = -1 then
+      PlayList.ItemIndex := 0;
 
-      PlayList.CurrentItem.Tags;
-      AudioEngine.Play(PlayList.CurrentItem);
-    end;
+    PlayList.CurrentItem.Tags;
+    AudioEngine.Play(PlayList.CurrentItem);
+  end;
 
- if Assigned(FOnEngineCommand) then
-     FOnEngineCommand(AudioEngine, ecPlay);
- Notify(cpStatus);
+  if Assigned(FOnEngineCommand) then
+    FOnEngineCommand(AudioEngine, ecPlay);
+  Notify(cpStatus);
 end;
 
 procedure TBackEnd.Stop;
 begin
   AudioEngine.Stop;
   if Assigned(FOnEngineCommand) then
-     FOnEngineCommand(AudioEngine, ecStop);
+    FOnEngineCommand(AudioEngine, ecStop);
   Notify(cpStatus);
 end;
 
@@ -606,11 +602,11 @@ procedure TBackEnd.Pause;
 begin
   AudioEngine.Pause;
   if Assigned(FOnEngineCommand) then
-      FOnEngineCommand(AudioEngine, ecPause);
+    FOnEngineCommand(AudioEngine, ecPause);
   Notify(cpStatus);
 end;
 
-Procedure TBackEnd.PlayPause;
+procedure TBackEnd.PlayPause;
 begin
   if Status = ENGINE_PLAY then
     Pause
@@ -629,11 +625,11 @@ end;
 
 procedure TBackEnd.Next;
 begin
-  AudioEngine.Play(PlayList.Next(false));
+  AudioEngine.Play(PlayList.Next(False));
   SignalPlayListChange;
 
   if Assigned(FOnEngineCommand) then
-     FOnEngineCommand(AudioEngine, ecNext);
+    FOnEngineCommand(AudioEngine, ecNext);
 
   Notify(cpStatus);
 end;
@@ -652,43 +648,43 @@ procedure TBackEnd.Quit;
 begin
   SaveState;
   if Assigned(FOnSaveInterfaceState) then
-     FOnSaveInterfaceState(Self);
+    FOnSaveInterfaceState(Self);
 
   Notify(cpClosing);
 
 end;
 
-procedure TBackEnd.OpenURI(URI: String);
+procedure TBackEnd.OpenURI(URI: string);
 var
-  idx:Integer;
+  idx: integer;
 begin
   PlayList.Clear;
   SignalPlayListChange;
   idx := PlayList.EnqueueFile(URI);
-  PlayList.ItemIndex:=idx;
+  PlayList.ItemIndex := idx;
   AudioEngine.Play(PlayList.CurrentItem);
 
 end;
 
-function TBackEnd.GetMetadata(Index:integer=-1): TCommonTags;
+function TBackEnd.GetMetadata(Index: integer = -1): TCommonTags;
 begin
   Result := Default(TCommonTags);
 
-  If (index<1) then
-    begin
-      if Assigned(PlayList.CurrentItem) then
-         Result:=PlayList.CurrentItem.Tags
-    end
+  if (index < 1) then
+  begin
+    if Assigned(PlayList.CurrentItem) then
+      Result := PlayList.CurrentItem.Tags;
+  end
   else
-    if (Index <= PlayList.Count) and (PlayList.Count > 0) then
-       Result:= TCustomSong(PlayList.Items[Index-1]).Tags;
-  result.Index := Index;
+  if (Index <= PlayList.Count) and (PlayList.Count > 0) then
+    Result     := TCustomSong(PlayList.Items[Index - 1]).Tags;
+  Result.Index := Index;
 end;
 
 procedure TBackEnd.Seek(AValue: int64);
 begin
-//  UnPause;
-  AudioEngine.Seek(AValue,False);
+  //  UnPause;
+  AudioEngine.Seek(AValue, False);
   if Assigned(FOnEngineCommand) then
     FOnEngineCommand(AudioEngine, ecSeek);
   Notify(cpPosition);
@@ -696,7 +692,7 @@ end;
 
 function TBackEnd.PlayListCount: integer;
 begin
-  Result:=PlayList.Count;
+  Result := PlayList.Count;
 end;
 
 function TBackEnd.GetCurrentSongIndex: integer;
@@ -707,7 +703,7 @@ end;
 procedure TBackEnd.Attach(observer: iObserver);
 begin
   if not Assigned(ObserverList) then
-     ObserverList := TObserverlist.create;
+    ObserverList := TObserverlist.Create;
   ObserverList.Add(observer);
 
 end;
@@ -722,11 +718,11 @@ end;
 
 procedure TBackEnd.Notify(Kind: TChangedProperty);
 var
-  i:integer;
+  i: integer;
 begin
   if Assigned(ObserverList) then
-     for i := 0 to ObserverList.Count -1 do
-       IObserver(ObserverList[i]).UpdateProperty(Kind);
+    for i := 0 to ObserverList.Count - 1 do
+      IObserver(ObserverList[i]).UpdateProperty(Kind);
 end;
 
 procedure TBackEnd.SignalPlayListChange;
@@ -745,25 +741,21 @@ end;
 procedure TBackEnd.AutoSendPosEvents(Active: boolean);
 begin
   if Active then
+  begin
+    if not Assigned(IntTimer) then
     begin
-      if not Assigned(IntTimer) then
-        begin
-          IntTimer := TTimer.Create(nil);
-          IntTimer.Interval:= 500;
-          IntTimer.OnTimer:=@TimerEvent;
-          IntTimer.Enabled:=true;
-        end;
-//      IntTimer.StartTimer;
-        IntTimer.Enabled:=true;
-    end
-  Else
-    begin
-      if Assigned(IntTimer) then
-        begin
-//          IntTimer.StopTimer;
-            IntTimer.Enabled:=False;
-        end;
+      IntTimer := TTimer.Create(nil);
+      IntTimer.Interval := 500;
+      IntTimer.OnTimer := @TimerEvent;
+      IntTimer.Enabled := True;
     end;
+    //      IntTimer.StartTimer;
+    IntTimer.Enabled := True;
+  end
+  else
+  if Assigned(IntTimer) then
+    IntTimer.Enabled := False//          IntTimer.StopTimer;
+  ;
 
 end;
 
@@ -773,7 +765,7 @@ begin
   SignalPlayListChange;
 
   if Assigned(FOnEngineCommand) then
-     FOnEngineCommand(AudioEngine, ecNext);
+    FOnEngineCommand(AudioEngine, ecNext);
 
   Notify(cpStatus);
 end;
@@ -783,21 +775,32 @@ begin
   Result := AudioEngine.Muted;
 end;
 
-procedure TBackEnd.PlaylistOnSongAdd(Sender: Tobject; Index: Integer;
+procedure TBackEnd.PlaylistOnSongAdd(Sender: TObject; Index: integer;
   ASong: TCustomSong);
 var
-  ID: Integer;
-//  ExtendedInfo: TExtendedInfo;
+  ID: integer;
+  DbInfo: TFileInfo;
+  FileInfo: TFileInfo;
+  Tags: TCommonTags;
 begin
   ID := mediaLibrary.IDFromFullName(ASong.FullName);
   if ID = -1 then
-     exit;
-  mediaLibrary.AddInfoToSong(Id, ASong);
+    exit;
 
-//
-//  if ID = -1 then
-//    exit;
-//  ExtendedInfo := mediaLibrary.InfoFromID(ID);
+  DbInfo   := mediaLibrary.FileInfoFromID(ID);
+  FileInfo := mediaLibrary.FileInfoFromFullName(ASong.FullName);
+
+  // if file have not changed then use tags from library,
+  // else load new tags from file and update library
+  if DbInfo = FileInfo then
+    ASong.SetTags(mediaLibrary.TagsFromID(ID))
+  else
+  begin
+    Tags := ASong.Tags;
+    mediaLibrary.Update(ID, Tags, FileInfo);
+  end;
+
+  mediaLibrary.AddInfoToSong(Id, ASong);
 
 end;
 
@@ -805,82 +808,107 @@ procedure TBackEnd.SetMute(AValue: boolean);
 begin
   if AValue = AudioEngine.Muted then
     exit;
-  AudioEngine.Muted:= AValue;
+  AudioEngine.Muted := AValue;
   Notify(cpMute);
 end;
 
 procedure TBackEnd.HandleCommand(Command: TEngineCommand; Param: integer);
 var
-  tmpCommand: RExternalCommand ;
+  tmpCommand: RExternalCommand;
 begin
 
   tmpCommand.Category := CATEGORY_ACTION;
-  tmpCommand.Command := RCommandString[Command];
-  tmpCommand.Param := inttostr(Param);
+  tmpCommand.Command  := RCommandString[Command];
+  tmpCommand.Param    := IntToStr(Param);
   HandleExternalCommand(tmpCommand);
 
 end;
 
-function TBackEnd.HandleExternalCommand(Command: RExternalCommand):boolean;
+function TBackEnd.HandleExternalCommand(Command: RExternalCommand): boolean;
 var
   Handled: boolean;
   idx: integer;
 begin
-  Handled:=false;
+  Handled := False;
 
   if Command.Category = CATEGORY_ACTION then
     case Command.Command of
-       COMMAND_PLAY     : begin
+      COMMAND_PLAY: begin
 
-                            Play(StrToIntDef(Command.Param, -1));
-                            Handled := true; end;
-       COMMAND_STOP     : begin Stop; Handled := true; end;
-       COMMAND_PAUSE    : begin Pause; Handled := true; end;
-       COMMAND_PLAYPAUSE: begin PlayPause; Handled := true; end;
-       COMMAND_NEXT     : begin Next; Handled := true; end;
-       COMMAND_PREVIOUS : begin Previous; Handled := true; end;
-       COMMAND_MUTE     : begin Muted:= true; Handled := true; end;
-       COMMAND_UNMUTE   : begin Muted:= false; Handled := true; end;
-       COMMAND_SETVOL   : begin
-                              Volume :=StrToIntDef(Command.Param, Volume);
-                              Handled := true;
-                          end;
-       COMMAND_SEEK     : position := (StrToIntDef(Command.Param, Position));
+        Play(StrToIntDef(Command.Param, -1));
+        Handled := True;
+      end;
+      COMMAND_STOP: begin
+        Stop;
+        Handled := True;
+      end;
+      COMMAND_PAUSE: begin
+        Pause;
+        Handled := True;
+      end;
+      COMMAND_PLAYPAUSE: begin
+        PlayPause;
+        Handled := True;
+      end;
+      COMMAND_NEXT: begin
+        Next;
+        Handled := True;
+      end;
+      COMMAND_PREVIOUS: begin
+        Previous;
+        Handled := True;
+      end;
+      COMMAND_MUTE: begin
+        Muted   := True;
+        Handled := True;
+      end;
+      COMMAND_UNMUTE: begin
+        Muted   := False;
+        Handled := True;
+      end;
+      COMMAND_SETVOL: begin
+        Volume  := StrToIntDef(Command.Param, Volume);
+        Handled := True;
+      end;
+      COMMAND_SEEK: position := (StrToIntDef(Command.Param, Position));
 
-       COMMAND_LOOPING  : Looping := TplRepeat(StrToIntDef(Command.Param, ord(Looping)));
+      COMMAND_LOOPING: Looping := TplRepeat(StrToIntDef(Command.Param, Ord(Looping)));
 
     end;
 
   if Command.Category = CATEGORY_APP then
     case Command.Command of
-       COMMAND_QUIT     : begin Quit; Handled := true; end;
+      COMMAND_QUIT: begin
+        Quit;
+        Handled := True;
+      end;
     end;
 
   if Command.Category = CATEGORY_FILE then
-     case command.Command of
-       COMMAND_ENQUEUE :
-                  begin
-                    idx := PlayList.EnqueueFile(Command.Param);
-                    Handled:=true;
-                    SignalPlayListChange;
-                  end;
-       COMMAND_CLEAR_AND_PLAY :
-                  begin
-                    OpenUri(Command.Param);
-                    Handled:=true;
-                  end;
-       COMMAND_ENQUEUE_AND_PLAY :
-                  begin
-                    idx := PlayList.EnqueueFile(Command.Param);
-                    PlayList.ItemIndex:=idx;
-                    AudioEngine.Play(PlayList.CurrentItem);
-                    Handled:=true;
-                    SignalPlayListChange;
-                  end;
-     end;
+    case command.Command of
+      COMMAND_ENQUEUE:
+      begin
+        idx     := PlayList.EnqueueFile(Command.Param);
+        Handled := True;
+        SignalPlayListChange;
+      end;
+      COMMAND_CLEAR_AND_PLAY:
+      begin
+        OpenUri(Command.Param);
+        Handled := True;
+      end;
+      COMMAND_ENQUEUE_AND_PLAY:
+      begin
+        idx := PlayList.EnqueueFile(Command.Param);
+        PlayList.ItemIndex := idx;
+        AudioEngine.Play(PlayList.CurrentItem);
+        Handled := True;
+        SignalPlayListChange;
+      end;
+    end;
   // in not handled by backend, forward event
   if not Handled and Assigned(FOnExternalCommand) then
-     FOnExternalCommand(Self, Command, Handled);
+    FOnExternalCommand(Self, Command, Handled);
 
   Result := handled;
 end;
@@ -888,4 +916,3 @@ end;
 initialization
   fBackEnd := nil;
 end.
-

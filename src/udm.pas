@@ -254,6 +254,7 @@ begin
     begin
     Backend.PlayList.clear;
     Backend.Manager.LoadPlayList(OpenDialogPlaylist.FileName, Backend.PlayList);
+
     Backend.PlayList.LoadAllTags;
     if Assigned(Backend.OnPlayListLoad) then
       Backend.OnPlayListLoad(self);

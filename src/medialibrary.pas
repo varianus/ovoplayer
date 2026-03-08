@@ -243,8 +243,7 @@ begin
 //  DebugLn('Scan '+CurrSong+' T '+floattostr(info.ModifyDate)+'<>'+ floattostr(CurrInfo.info.ModifyDate)) ;
 
   if not MediaLibrary.fFullScan and
-    (info.Size = CurrInfo.info.Size ) and
-    (CompareDateTime(info.ModifyDate, CurrInfo.info.ModifyDate) =0) then
+    (info = CurrInfo.info) then
     begin
      Medialibrary.fDB.ExecuteDirect('update songs set elabflag = null where FileName = '+QuotedStr(CurrSong));
 //     DebugLn('Skipping ',CurrSong);

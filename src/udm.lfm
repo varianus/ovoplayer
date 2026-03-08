@@ -18,8 +18,8 @@ object DM: TDM
       DisableIfNoHandler = False
       Hint = 'Load a Playlist'
       ImageIndex = 12
-      OnExecute = actPlaylistLoadExecute
       ShortCut = 16463
+      OnExecute = actPlaylistLoadExecute
     end
     object actPlaylistSave: TAction
       Category = 'PlayList'
@@ -27,8 +27,8 @@ object DM: TDM
       DisableIfNoHandler = False
       Hint = 'Save current playlist'
       ImageIndex = 13
-      OnExecute = actPlaylistSaveExecute
       ShortCut = 16467
+      OnExecute = actPlaylistSaveExecute
     end
     object actPlay: TAction
       Category = 'Controls'
@@ -120,8 +120,8 @@ object DM: TDM
       Category = 'Interface'
       Caption = 'Quit'
       DisableIfNoHandler = False
-      OnExecute = actExitExecute
       ShortCut = 16465
+      OnExecute = actExitExecute
     end
     object actRepeatTrack: TAction
       Category = 'PlayList'

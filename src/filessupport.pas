@@ -23,12 +23,15 @@ unit FilesSupport;
 
 interface
 
-uses Classes;
+uses Classes, DateUtils;
 type
+
+ { TFileInfo }
+
  TFileInfo = record
    Size: int64;
-//   CreationDate: TDatetime;
    ModifyDate: TDateTime;
+   class operator = (const lhs, rhs: TFileInfo): Boolean;
  end;
 
  TFileInfoObject = class
@@ -445,6 +448,13 @@ begin
    while (DirStart>1) and (Ldir[DirStart]<>PathDelim) do
          dec(DirStart);
    Result:=AppendPathDelim(Copy(dir,1,DirStart));
+end;
+
+{ TFileInfo }
+
+class operator TFileInfo.= (const lhs, rhs: TFileInfo): Boolean;
+begin
+  Result := (lhs.Size = rhs.Size) and SameDateTime(lhs.ModifyDate, rhs.ModifyDate);
 end;
 
 end.
