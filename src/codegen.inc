@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 // compiler and interface mode
 {$mode objfpc}{$H+}
+{$modeswitch advancedrecords}
 {$interfaces corba}
 
 //if release is defined, try to be quiet and efficient...
