@@ -51,11 +51,13 @@ type
 
 const
   GroupCount = 4;
-  ArrayGroup: array  [0 .. GroupCount - 1] of TSortFields =
-    ((F1: tkAlbumArtist; F2: tkAlbum; F3: tkTrack),
+  ArrayGroup: array  [0..GroupCount - 1] of TSortFields =
+   (
+    (F1: tkAlbumArtist; F2: tkAlbum; F3: tkTrack),
     (F1: tkArtist; F2: tkAlbum; F3: tkTrack),
     (F1: tkYear; F2: tkAlbum; F3: tkTrack),
-    (F1: tkGenre; F2: tkAlbum; F3: tkTrack));
+    (F1: tkGenre; F2: tkAlbum; F3: tkTrack)
+   );
 
 type
   { TfMainForm }
@@ -878,12 +880,15 @@ begin
     CurrentCover := '';
     f := GetFileTagsObject(Song.Tags.FileName);
     try
-      f.Tags.Images[0].image.Position := 0;
-      if f.Tags.Images[0].image.size > 0 then
+      if f.Tags.ImageCount > 0 then
       begin
-        imgCover.Picture.LoadFromStream(f.Tags.Images[0].image);
-        imgCover.Hint := rEmbedded;
-        imgloaded := True;
+        f.Tags.Images[0].image.Position := 0;
+        if f.Tags.Images[0].image.size > 0 then
+        begin
+          imgCover.Picture.LoadFromStream(f.Tags.Images[0].image);
+          imgCover.Hint := rEmbedded;
+          imgloaded := True;
+        end;
       end;
     except
     end;
