@@ -521,8 +521,8 @@ msgstr ""
 msgid "Enable network remote"
 msgstr ""
 
-#: tfconfig.cbonlylan.caption
-msgid "Bind only local network"
+#: tfconfig.cbonlylocalhost.caption
+msgid "Bind only local host"
 msgstr ""
 
 #: tfconfig.cbpausewhenlocked.caption
@@ -1084,8 +1084,8 @@ msgstr ""
 msgid "Scan Result"
 msgstr ""
 
-#: tfscanresult.resultgrid.columns[0].title.caption
-msgctxt "tfscanresult.resultgrid.columns[0].title.caption"
+#: tfscanresult.stringgrid1.columns[0].title.caption
+msgctxt "tfscanresult.stringgrid1.columns[0].title.caption"
 msgid "File name"
 msgstr ""
 
