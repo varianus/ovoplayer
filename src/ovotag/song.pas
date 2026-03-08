@@ -133,6 +133,7 @@ end;
 procedure TSong.SetTags(const AValue: TCommonTags);
 begin
   FTags := AValue;
+  FTagLoaded := True;
 end;
 
 function TSong.LoadTags: boolean;

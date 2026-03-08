@@ -127,7 +127,7 @@ end;
 
 function TMonkeyReader.LoadFromFile(AFileName: Tfilename): boolean;
 var
-  fStream: TFileStream;
+  fStream: TBaseStreamReader;
   tempTags: TTags;
   HaveID3V2: boolean;
   BlocksPerFrame: Integer;
@@ -139,7 +139,7 @@ var
 
 begin
   Result := inherited LoadFromFile(AFileName);
-  fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
+  fStream := TBaseStreamReader.Create(fileName, fmOpenRead or fmShareDenyNone);
   try
     tempTags := TID3Tags.Create;
     HaveID3V2 := tempTags.ReadFromStream(fStream);
@@ -221,16 +221,16 @@ end;
 
 function TMonkeyReader.SaveToFile(AFileName: Tfilename): boolean;
 var
-  SourceStream: TFileStream;
-  DestStream: TFileStream;
+  SourceStream: TBaseStreamReader;
+  DestStream: TBaseStreamReader;
   v1rec: TID3V1Record;
   offset: cardinal;
   header: TAPEHeader;
 begin
   Result := inherited SaveToFile(AFileName);
 
-  SourceStream := TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
-  DestStream := TFileStream.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
+  SourceStream := TBaseStreamReader.Create(FileName, fmOpenRead or fmShareDenyNone);
+  DestStream := TBaseStreamReader.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
 
   try
     SourceStream.Seek(SourceStream.Size - SizeOf(TID3V1Record), soFromBeginning);

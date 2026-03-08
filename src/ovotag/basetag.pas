@@ -149,6 +149,8 @@ type
 
   end;
 
+  TBaseStreamReader = TFileStream;
+
   { TTagReader }
   TTagReaderClass = class of TTagReader;
 

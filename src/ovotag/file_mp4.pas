@@ -87,7 +87,7 @@ type
     fDuration: int64;
     fMediaProperty: TMediaProperty;
     function DetectKind(AStream: TStream; Out HaveID3: boolean; out Offset:integer): StreamKind;
-    //function FindAtom(Stream: TFileStream; AtomName: string; var Atom: RAtomHeader): boolean;
+    //function FindAtom(Stream: TBaseStreamReader; AtomName: string; var Atom: RAtomHeader): boolean;
   protected
     function GetDuration: int64; override;
     function GetTags: TTags; override;
@@ -363,7 +363,7 @@ end;
 
 function TMp4Reader.LoadFromFile(AFileName: Tfilename): boolean;
 var
-  fStream: TFileStream;
+  fStream: TBaseStreamReader;
   HaveID3: boolean;
   Offset:integer;
   ADTSHeader: TADTSHeader;
@@ -387,7 +387,7 @@ begin
   Result := inherited LoadFromFile(AFileName);
   fTags := nil;
   fDuration := 0;
-  fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
+  fStream := TBaseStreamReader.Create(fileName, fmOpenRead or fmShareDenyNone);
   try
     case DetectKind(fStream, HaveID3, offset) of
       skMp4:

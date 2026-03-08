@@ -78,9 +78,11 @@ type
 
   TID3Tags = class(TTags)
   private
+    fPadding: Integer;
     fTotalSize: DWORD;
     procedure DecodeFrameToImage(Frame: TID3Frame; Image: TImageElement);
     function GetBestMatch(Index1, Index2: integer; NewFrame: boolean): string;
+    function GetRealSize: DWord;
     function ImportFromID3V1(AStream: TStream): boolean;
     function IsValid(ID: string): boolean;
     function ReadTagHeader(AStream: TStream; out ID: string; out DataSize,
@@ -90,6 +92,8 @@ type
     FromV1: boolean;
   public
     property Size: DWORD read fTotalSize;
+    property RealSize: DWord read GetRealSize;
+    property Padding: Integer read fPadding write fPadding;
     function GetCommonTags: TCommonTags; override;
     procedure SetCommonTags(CommonTags: TCommonTags); override;
     function ReadFromStream(AStream: TStream; ExtInfo: pointer = nil): boolean; override;
@@ -163,6 +167,20 @@ begin
   if Result = '' then
     Result := GetFrameValue(ID3V2_KNOWNFRAME[Index2, NewFrame]);
 
+end;
+
+function TID3Tags.GetRealSize: DWord;
+var
+  HeadSize, i: Integer;
+begin
+  if Version >= TAG_VERSION_2_3 then
+    HeadSize := 10
+  else
+    HeadSize := 6;
+
+  Result := 0;
+  for i := 0 to Count -1 do
+    Result := Result + Frames[i].Size + HeadSize;
 end;
 
 function TID3Tags.ImportFromID3V1(AStream: TStream): boolean;
@@ -403,6 +421,7 @@ var
   tmpSize: DWORD;
   i: integer;
   HeadSize: integer;
+  tmpbuf:array of byte;
   //  CurrPos: int64;
 begin
   //  CurrPos := AStream.Position;
@@ -420,7 +439,10 @@ begin
     tmpSize := tmpSize + Frames[i].Size + HeadSize;
   end;
 
-  header.size := SyncSafe_Encode(TmpSize);// - HeadSize);
+  if fPadding > 0 then
+    inc(tmpSize, fPadding);
+
+  header.size := SyncSafe_Encode(TmpSize);
   Astream.Write(header, SizeOf(header));
 
   for i := 0 to Count - 1 do
@@ -428,6 +450,13 @@ begin
     Frames[i].WriteToStream(AStream);
   end;
   Result := tmpSize;
+
+  if Padding > 0 then
+    begin
+      SetLength(tmpbuf, fPadding);
+      FillByte(tmpbuf[0], fPadding, $00);
+      AStream.Write(tmpbuf[0], fPadding);
+    end;
 end;
 
 function TID3Tags.ReadFromStream(AStream: TStream; ExtInfo: pointer = nil): boolean;
@@ -452,6 +481,7 @@ begin
 
   Version := header.Version;
   fTotalSize := SyncSafe_Decode(header.size);
+  fPadding := fTotalSize;
   Stop := False;
   if (Version in [TAG_VERSION_2_2..TAG_VERSION_2_4]) and (fTotalSize > 0) then
     while (AStream.Position < (fTotalSize + SizeOf(header))) and not stop do
@@ -482,7 +512,10 @@ begin
         FreeAndNil(Frame);
         Stop := True;
       end;
+      if not stop then
+        Dec(fPadding, Frame.Size);
     end;
+
   Result := Count > 0;
   if Result then
     fTotalSize := fTotalSize + SizeOf(header);
@@ -533,7 +566,7 @@ begin
   end
   else
   begin
-    Offset := (Offset * 2) + 6 + WSize;
+    Offset := Offset + 6 + WSize;
     Result := ExtractString(Encoding, pbyte(@Data[Offset]), size - Offset + 1);
   end;
 

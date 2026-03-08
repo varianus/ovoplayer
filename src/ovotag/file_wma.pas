@@ -205,7 +205,7 @@ end;
 
 function TWMAReader.LoadFromFile(AFileName: Tfilename): boolean;
 var
-  fStream: TFileStream;
+  fStream: TBaseStreamReader;
   Header: TWMaHeader;
   SubObjHeader: TObjectHeader;
   FileProperty: TWMAFileProperty;
@@ -218,7 +218,7 @@ begin
   Result := inherited LoadFromFile(AFileName);
 
   try
-    fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
+    fStream := TBaseStreamReader.Create(fileName, fmOpenRead or fmShareDenyNone);
 
     fStream.ReadBuffer(Header, SizeOf(Header));
     fTags := TWMATags.Create;
@@ -277,8 +277,8 @@ end;
 
 function TWMAReader.SaveToFile(AFileName: Tfilename): boolean;
 var
-  SourceStream: TFileStream;
-  DestStream: TFileStream;
+  SourceStream: TBaseStreamReader;
+  DestStream: TBaseStreamReader;
   MemoryStream : TmemoryStream;
 
   Header: TWMaHeader;
@@ -293,8 +293,8 @@ begin
   Result := inherited SaveToFile(AFileName);
 
   try
-    SourceStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
-    DestStream := TFileStream.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
+    SourceStream := TBaseStreamReader.Create(fileName, fmOpenRead or fmShareDenyNone);
+    DestStream := TBaseStreamReader.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
 
     SourceStream.ReadBuffer(Header, SizeOf(Header));
     fOrigCount := Header.ObjectCount;

@@ -103,7 +103,7 @@ end;
 
 function TFlacReader.LoadFromFile(AFileName: Tfilename): boolean;
 var
-  fStream: TFileStream;
+  fStream: TBaseStreamReader;
   Header: TFlacHeader;
   BlockHeader: TMetaDataBlockHeader;
   BlockLength: integer;
@@ -112,7 +112,7 @@ var
 begin
   Result := inherited LoadFromFile(AFileName);
   try
-    fStream := TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
+    fStream := TBaseStreamReader.Create(FileName, fmOpenRead or fmShareDenyNone);
     fStream.Read(Header, sizeof(Header));
     if Header.Marker <> FLAC_IDENTIFIER then
       exit;
@@ -162,8 +162,8 @@ end;
 
 function TFlacReader.SaveToFile(AFileName: Tfilename): boolean;
 var
-  SourceStream: TFileStream;
-  DestStream: TFileStream;
+  SourceStream: TBaseStreamReader;
+  DestStream: TBaseStreamReader;
   Header: TFlacHeader;
   BlockHeader: TMetaDataBlockHeader;
   BlockLength: integer;
@@ -173,8 +173,8 @@ var
 
 begin
   inherited SaveToFile(AFilename);
-  SourceStream := TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
-  DestStream := TFileStream.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
+  SourceStream := TBaseStreamReader.Create(FileName, fmOpenRead or fmShareDenyNone);
+  DestStream := TBaseStreamReader.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
   Result :=false;
   SourceStream.Read(Header, sizeof(Header));
   if Header.Marker <> FLAC_IDENTIFIER then

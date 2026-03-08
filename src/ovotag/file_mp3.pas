@@ -418,13 +418,13 @@ function TMP3Reader.LoadFromFile(AFileName: Tfilename): boolean;
 const
   SizeOfData = MAX_MPEG_FRAME_LENGTH * 2;
 var
-  fStream: TFileStream;
+  fStream: TBaseStreamReader;
   Data: array [1..SizeOfData] of byte;
   Transferred: DWord;
 
 begin
   Result := inherited LoadFromFile(AFileName);
-  fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
+  fStream := TBaseStreamReader.Create(fileName, fmOpenRead or fmShareDenyNone);
   try
     ftags := TID3Tags.Create;
     fTags.ReadFromStream(fStream);
@@ -456,15 +456,15 @@ end;
 
 function TMP3Reader.SaveToFile(AFileName: Tfilename): boolean;
 var
-  SourceStream: TFileStream;
-  DestStream: TFileStream;
+  SourceStream: TBaseStreamReader;
+  DestStream: TBaseStreamReader;
   fOldSize: integer;
   wHeader : TID3Header;
 begin
   result:= true;
   inherited SaveToFile(AFilename);
-  SourceStream := TFileStream.Create(FileName, fmOpenRead or fmShareDenyNone);
-  DestStream := TFileStream.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
+  SourceStream := TBaseStreamReader.Create(FileName, fmOpenRead or fmShareDenyNone);
+  DestStream := TBaseStreamReader.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
 
   SourceStream.Read(wheader, SizeOf(wheader));
   if wheader.Marker = ID3_HEADER_MARKER then

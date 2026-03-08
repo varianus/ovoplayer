@@ -40,7 +40,7 @@ type
     fBitRate: integer;
     FSamples: int64;
     function FGetChannelMode: string;
-    function GetSamples(const Source: TFileStream): integer;
+    function GetSamples(const Source: TBaseStreamReader): integer;
   protected
     function GetDuration: int64; override;
     function GetTags: TTags; override;
@@ -214,8 +214,8 @@ end;
 
 function TOGGReader.SaveToFile(AFileName: Tfilename): boolean;
 var
-  SourceStream: TFileStream;
-  DestStream: TFileStream;
+  SourceStream: TBaseStreamReader;
+  DestStream: TBaseStreamReader;
   MemoryStream: TmemoryStream;
   Header: TOggHeader;
   Start: byte;
@@ -260,8 +260,8 @@ var
 
 begin
   Result := inherited SaveToFile(AFileName);
-  SourceStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
-  DestStream := TFileStream.Create(AFileName, fmCreate or fmOpenReadWrite or
+  SourceStream := TBaseStreamReader.Create(fileName, fmOpenRead or fmShareDenyNone);
+  DestStream := TBaseStreamReader.Create(AFileName, fmCreate or fmOpenReadWrite or
     fmShareDenyNone);
   try
     SourceStream.Read(Header, sizeof(Header));
@@ -348,7 +348,7 @@ begin
 
 end;
 
-function TOGGReader.GetSamples(const Source: TFileStream): integer;
+function TOGGReader.GetSamples(const Source: TBaseStreamReader): integer;
 var
   Index, DataIndex, Iterator: integer;
   Data:   array [0..250] of char;
@@ -374,7 +374,7 @@ begin
 end;
 function TOGGReader.LoadFromFile(AFileName: Tfilename): boolean;
 var
-  fStream: TFileStream;
+  fStream: TBaseStreamReader;
   Header: TOggHeader;
   //Start: byte;
   BlockHeader: VorbisHeader;
@@ -385,7 +385,7 @@ var
 
 begin
   Result := inherited LoadFromFile(AFileName);
-  fStream := TFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
+  fStream := TBaseStreamReader.Create(fileName, fmOpenRead or fmShareDenyNone);
   try
     fStream.Read(Header, sizeof(Header));
     if string(Header.Marker) <> OGG_IDENTIFIER then
