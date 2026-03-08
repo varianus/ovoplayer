@@ -110,7 +110,7 @@ type
     Procedure InternalSave; override;
   public
     Property Enabled: boolean read FEnabled write SetEnabled;
-    Property OnlyLocalhost: boolean read FOnlyLocalhost write SetOnlyLA;
+    Property OnlyLocalhost: boolean read FOnlyLocalhost write SetOnlyLocalhost;
     Property Port: integer read FPort write SetPort;
     Procedure Load; override;
   end;
@@ -177,7 +177,7 @@ begin
   Dirty := True;
 end;
 
-procedure TNetRemoteParam.SetOnlyLA(AValue: boolean);
+procedure TNetRemoteParam.SetOnlyLocalhost(AValue: boolean);
 begin
   if FOnlyLocalhost = AValue then Exit;
   FOnlyLocalhost := AValue;
