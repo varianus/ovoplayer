@@ -26,8 +26,7 @@ uses
   cthreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, uremote, netprotocol
-  { you can add units after this };
+  Forms, uremote, netprotocol, ClientThread;
 
 {$R *.res}
 

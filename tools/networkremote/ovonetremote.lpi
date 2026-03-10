@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="10"/>
+    <Version Value="12"/>
     <General>
+      <Flags>
+        <CompatibilityMode Value="True"/>
+      </Flags>
       <SessionStorage Value="InProjectDir"/>
-      <MainUnit Value="0"/>
       <Title Value="ovonetremote"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
@@ -63,15 +65,23 @@
     </PublishOptions>
     <RunParams>
       <local>
-        <FormatVersion Value="1"/>
+        <CommandLineParams Value="ws://172.26.208.79:6860"/>
       </local>
+      <FormatVersion Value="2"/>
+      <Modes Count="1">
+        <Mode0 Name="default">
+          <local>
+            <CommandLineParams Value="ws://172.26.208.79:6860"/>
+          </local>
+        </Mode0>
+      </Modes>
     </RunParams>
     <RequiredPackages Count="1">
       <Item1>
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="3">
+    <Units Count="4">
       <Unit0>
         <Filename Value="ovonetremote.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -87,6 +97,11 @@
         <Filename Value="../../src/netprotocol.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit2>
+      <Unit3>
+        <Filename Value="clientthread.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ClientThread"/>
+      </Unit3>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

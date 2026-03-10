@@ -7,7 +7,9 @@ object Form1: TForm1
   Caption = 'Test ovoplayer remote control over network'
   ClientHeight = 730
   ClientWidth = 1020
+  LCLVersion = '4.99.0.0'
   OnClose = FormClose
+  OnCreate = FormCreate
   object memoReceived: TMemo
     Left = 0
     Height = 122
@@ -25,7 +27,7 @@ object Form1: TForm1
     Width = 1020
     Align = alTop
     Caption = 'Common Tags'
-    ClientHeight = 341
+    ClientHeight = 340
     ClientWidth = 1016
     TabOrder = 1
     object Label1: TLabel
@@ -37,13 +39,13 @@ object Form1: TForm1
       AutoSize = False
       Caption = 'Artist'
       Font.Height = 18
+      OptimalFill = True
       ParentColor = False
       ParentFont = False
-      OptimalFill = True
     end
     object edArtist: TEdit
       Left = 98
-      Height = 27
+      Height = 23
       Top = 41
       Width = 384
       TabOrder = 0
@@ -57,13 +59,13 @@ object Form1: TForm1
       AutoSize = False
       Caption = 'Album'
       Font.Height = 18
+      OptimalFill = True
       ParentColor = False
       ParentFont = False
-      OptimalFill = True
     end
     object edAlbum: TEdit
       Left = 98
-      Height = 27
+      Height = 23
       Top = 72
       Width = 384
       TabOrder = 1
@@ -77,13 +79,13 @@ object Form1: TForm1
       AutoSize = False
       Caption = 'Title'
       Font.Height = 18
+      OptimalFill = True
       ParentColor = False
       ParentFont = False
-      OptimalFill = True
     end
     object edTitle: TEdit
       Left = 98
-      Height = 27
+      Height = 23
       Top = 7
       Width = 384
       TabOrder = 2
@@ -97,13 +99,13 @@ object Form1: TForm1
       AutoSize = False
       Caption = 'Album Artist'
       Font.Height = 18
+      OptimalFill = True
       ParentColor = False
       ParentFont = False
-      OptimalFill = True
     end
     object edAlbumArtist: TEdit
       Left = 98
-      Height = 27
+      Height = 23
       Top = 105
       Width = 384
       TabOrder = 3
@@ -117,13 +119,13 @@ object Form1: TForm1
       AutoSize = False
       Caption = 'Genre'
       Font.Height = 18
+      OptimalFill = True
       ParentColor = False
       ParentFont = False
-      OptimalFill = True
     end
     object edGenre: TEdit
       Left = 98
-      Height = 27
+      Height = 23
       Top = 137
       Width = 384
       TabOrder = 4
@@ -144,13 +146,13 @@ object Form1: TForm1
       AutoSize = False
       Caption = 'Comment'
       Font.Height = 18
+      OptimalFill = True
       ParentColor = False
       ParentFont = False
-      OptimalFill = True
     end
     object seYear: TSpinEdit
       Left = 98
-      Height = 27
+      Height = 23
       Top = 169
       Width = 101
       MaxValue = 9999
@@ -165,9 +167,9 @@ object Form1: TForm1
       AutoSize = False
       Caption = 'Year'
       Font.Height = 18
+      OptimalFill = True
       ParentColor = False
       ParentFont = False
-      OptimalFill = True
     end
     object Label8: TLabel
       Left = 231
@@ -179,13 +181,13 @@ object Form1: TForm1
       Caption = 'Track'
       Enabled = False
       Font.Height = 18
+      OptimalFill = True
       ParentColor = False
       ParentFont = False
-      OptimalFill = True
     end
     object seTrack: TSpinEdit
       Left = 329
-      Height = 27
+      Height = 23
       Top = 169
       Width = 101
       MaxValue = 9999
@@ -200,11 +202,11 @@ object Form1: TForm1
     end
     object ComboBox1: TComboBox
       Left = 696
-      Height = 25
+      Height = 23
       Top = 0
       Width = 132
       Enabled = False
-      ItemHeight = 0
+      ItemHeight = 15
       Items.Strings = (
         'ENGINE_STOP   '
         'ENGINE_PLAY   '
@@ -224,7 +226,14 @@ object Form1: TForm1
       ItemHeight = 0
       ScrollWidth = 278
       TabOrder = 9
-      TopIndex = -1
+    end
+    object cbEcho: TCheckBox
+      Left = 16
+      Height = 19
+      Top = 296
+      Width = 98
+      Caption = 'Echo messages'
+      TabOrder = 10
     end
   end
   object GroupBox1: TGroupBox
@@ -234,7 +243,7 @@ object Form1: TForm1
     Width = 1020
     Align = alTop
     Caption = 'Controls'
-    ClientHeight = 149
+    ClientHeight = 148
     ClientWidth = 1016
     TabOrder = 2
     object Button1: TButton
@@ -243,28 +252,28 @@ object Form1: TForm1
       Top = 104
       Width = 75
       Caption = 'Send'
-      OnClick = Button1Click
       TabOrder = 0
+      OnClick = Button1Click
     end
     object Edit1: TEdit
       Left = 64
-      Height = 27
+      Height = 23
       Top = 106
       Width = 247
       TabOrder = 1
     end
     object Label9: TLabel
       Left = 16
-      Height = 17
+      Height = 15
       Top = 113
-      Width = 43
+      Width = 42
       Caption = 'Custom'
       ParentColor = False
     end
     object Panel1: TPanel
       Left = 81
       Height = 26
-      Top = 31
+      Top = 58
       Width = 800
       ChildSizing.HorizontalSpacing = 2
       ChildSizing.EnlargeHorizontal = crsScaleChilds
@@ -274,93 +283,76 @@ object Form1: TForm1
       ClientWidth = 800
       TabOrder = 2
       object Button2: TButton
-        Left = 0
-        Height = 27
-        Top = 0
-        Width = 143
+        Left = 1
+        Height = 25
+        Top = 1
+        Width = 135
         Caption = 'previous'
-        OnClick = Button8Click
         TabOrder = 0
+        OnClick = Button8Click
       end
       object Button3: TButton
-        Left = 145
-        Height = 27
-        Top = 0
-        Width = 82
+        Left = 138
+        Height = 25
+        Top = 1
+        Width = 91
         Caption = 'play'
-        OnClick = Button8Click
         TabOrder = 1
+        OnClick = Button8Click
       end
       object Button4: TButton
-        Left = 229
-        Height = 27
-        Top = 0
+        Left = 231
+        Height = 25
+        Top = 1
         Width = 108
         Caption = 'pause'
-        OnClick = Button8Click
         TabOrder = 2
+        OnClick = Button8Click
       end
       object Button5: TButton
-        Left = 339
-        Height = 27
-        Top = 0
-        Width = 166
+        Left = 341
+        Height = 25
+        Top = 1
+        Width = 150
         Caption = 'playpause'
-        OnClick = Button8Click
         TabOrder = 3
+        OnClick = Button8Click
       end
       object Button6: TButton
-        Left = 507
-        Height = 27
-        Top = 0
-        Width = 84
+        Left = 493
+        Height = 25
+        Top = 1
+        Width = 91
         Caption = 'next'
-        OnClick = Button8Click
         TabOrder = 4
+        OnClick = Button8Click
       end
       object Button7: TButton
-        Left = 593
-        Height = 27
-        Top = 0
-        Width = 106
+        Left = 586
+        Height = 25
+        Top = 1
+        Width = 108
         Caption = 'seek+'
-        OnClick = Button8Click
         TabOrder = 5
+        OnClick = Button8Click
       end
       object Button8: TButton
-        Left = 701
-        Height = 27
-        Top = 0
-        Width = 99
+        Left = 696
+        Height = 25
+        Top = 1
+        Width = 103
         Caption = 'seek-'
-        OnClick = Button8Click
         TabOrder = 6
+        OnClick = Button8Click
       end
     end
     object Label10: TLabel
       Left = 26
-      Height = 17
-      Top = 36
+      Height = 15
+      Top = 63
       Width = 35
       Caption = 'Action'
       ParentColor = False
-    end
-    object Label11: TLabel
-      Left = 26
-      Height = 17
-      Top = 64
-      Width = 45
-      Caption = 'Request'
-      ParentColor = False
-    end
-    object tbConn1: TToggleBox
-      Left = 16
-      Height = 23
-      Top = 0
-      Width = 116
-      Caption = 'Connect and keep'
-      OnChange = tbConnChange
-      TabOrder = 3
     end
     object Button9: TButton
       Left = 440
@@ -368,7 +360,7 @@ object Form1: TForm1
       Top = 104
       Width = 75
       Caption = 'Simple Send'
-      TabOrder = 4
+      TabOrder = 3
     end
     object Button10: TButton
       Left = 552
@@ -376,7 +368,31 @@ object Form1: TForm1
       Top = 106
       Width = 75
       Caption = 'Simple Send'
+      TabOrder = 4
+    end
+    object edtServer: TEdit
+      Left = 8
+      Height = 23
+      Top = 3
+      Width = 200
       TabOrder = 5
+      Text = 'ws://127.0.0.1:6860'
+    end
+    object tbConn1: TButton
+      Left = 216
+      Height = 25
+      Top = 1
+      Width = 72
+      Caption = 'Connect'
+      TabOrder = 6
+      OnClick = tbConn1Click
+    end
+    object Status: TShape
+      Left = 328
+      Height = 25
+      Top = 0
+      Width = 25
+      Shape = stCircle
     end
   end
   object memoSent: TMemo
@@ -392,7 +408,7 @@ object Form1: TForm1
   object Timer1: TTimer
     Enabled = False
     OnTimer = Timer1Timer
-    left = 792
-    top = 192
+    Left = 792
+    Top = 192
   end
 end

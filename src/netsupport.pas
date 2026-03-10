@@ -43,7 +43,9 @@ Procedure DecodeImageSize(Size:string; Out Width, Height: integer);
 Function EncodeString(S:String; ConnectionCfg: RConnectionCfg): string;
 Function EncodeStream(inStream:TStream):string;
 
-function BuildCommand(Category: string; Command: string; Param:string=''; IPCSeparator:boolean=false):string;
+function BuildCommand(Category: string; Command: string; Param:string=''; IPCSeparator:boolean=false):string; overload;
+function BuildCommand(Command: RExternalCommand):string; overload;
+
 Function SplitCommand(ACommand:string): RExternalCommand;
 
 Function EncodeMetaData(Tags:TCommonTags; ConnectionCfg: RConnectionCfg): String;
@@ -126,6 +128,11 @@ begin
                Param;
   if IPCSeparator then
      Result := Result + IPC_SEPARATOR;
+end;
+
+function BuildCommand(Command: RExternalCommand): string;
+begin
+  Result := BuildCommand(Command.Category, Command.Command, Command.Param);
 end;
 
 function SplitCommand(ACommand: string): RExternalCommand;

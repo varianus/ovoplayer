@@ -96,6 +96,7 @@ begin
     FOnGetSocketHandler(self, fHandler);
 
   FSocket := TInetSocketEx.Create(AHost, APort, fHandler);
+//  FSocket.Connect;
 end;
 
 constructor TTcpIpClientSocket.Create(const ASocket: LongInt);

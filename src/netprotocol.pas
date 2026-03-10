@@ -53,6 +53,7 @@ Const
   CATEGORY_APP = 'app';  // client --> server
     COMMAND_ACTIVATE = 'activate';
     COMMAND_QUIT = 'quit';
+    COMMAND_RESTART = 'restart';
     COMMAND_CLOSE = 'close';
 
   CATEGORY_INFORMATION = 'inf'; // server --> client
