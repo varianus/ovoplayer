@@ -34,7 +34,6 @@ type
 
   TForm1 = class(TForm)
     Button1: TButton;
-    Button10: TButton;
     Button2: TButton;
     Button3: TButton;
     Button4: TButton;
@@ -42,7 +41,6 @@ type
     Button6: TButton;
     Button7: TButton;
     Button8: TButton;
-    Button9: TButton;
     cbEcho: TCheckBox;
     ComboBox1: TComboBox;
     edAlbum: TEdit;
