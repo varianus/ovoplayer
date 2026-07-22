@@ -100,6 +100,12 @@ jobs:
                 return False
             return install_lazarus_version(os.environ.get('LAZ_VER'))
         sys.exit(int(not main()))
+    - name: Get packages from GitHub
+      run: |
+         git clone https://github.com/zamtmn/metadarkstyle.git dependency/metadarkstyle
+    - name: Register packages in lazbuild
+      run: |
+         ${{ matrix.config.lazbuild }}  --add-package-link dependency/metadarkstyle/metadarkstyle.lpk        
     - name: Build OvoPlayer
       run: |
          ${{ matrix.config.lazbuild }}  ${{ env.LAZ_OPT }} --build-mode=Release "src/components/mcaselli.lpk"
