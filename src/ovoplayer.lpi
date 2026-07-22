@@ -234,6 +234,9 @@ if TargetOS = &apos;linux&apos; then
     </RunParams>
     <RequiredPackages>
       <Item>
+        <PackageName Value="MetaDarkStyle"/>
+      </Item>
+      <Item>
         <PackageName Value="mcaselli"/>
       </Item>
       <Item>

@@ -38,7 +38,13 @@ uses
   LazLogger,
 {$ENDIF}
 
-  Forms, singleinstance,
+  Forms,
+ {$IFDEF DARKSTYLE}
+ uDarkStyleParams,
+ uDarkStyleSchemes,
+ uMetaDarkStyle,
+ {$ENDIF}
+  singleinstance,
   // general functions
   AppConsts, GeneralFunc, decoupler, FilesSupport,
   CommonFunctions,
@@ -89,7 +95,7 @@ uses
   DefaultTranslator,  LCLVersion,
   ucustomplaylist, ufrfield, playlistbuilder, netprotocol,
   ImagesSupport, netsupport, guiconfig, SimpleSingleInstance, mcaselli, 
-  equalizerband, uequalizer, equalizer, backendconfig, iconloader, uscanresult;
+  equalizerband, uequalizer, equalizer, backendconfig, iconloader, uscanresult, MetaDarkStyle;
 
 
 {$R *.res}
@@ -102,6 +108,11 @@ begin
   Application.Initialize;
 
   Application.Scaled := True;
+  {$IFDEF DARKSTYLE}
+  PreferredAppMode   := pamDefault;
+  uMetaDarkStyle.ApplyMetaDarkStyle(DefaultDark);
+  {$ENDIF}
+
   {$IFDEF WINDOWS}
   Application.MainFormOnTaskBar := True;
   {$ENDIF WINDOWS}

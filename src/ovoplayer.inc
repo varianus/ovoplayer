@@ -45,7 +45,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 {$IFDEF WINDOWS}
   {$DEFINE SUPPORT_SHAPING}   // Rounded border of OSD popup, seems to work only on windows
   {$DEFINE TASKBAR_EXTENSION} // Add buttons to taskbar preview window, Win7 and higher only
-  {$DEFINE SCREEN_LOCK} // Pause player when screen is locked
+  {$DEFINE SCREEN_LOCK}       // Pause player when screen is locked
+  {$DEFINE DARKSTYLE}         // Enable dark mode on Windows
+                              // Need MetaDarkStyle package from OPM or https://github.com/zamtmn/metadarkstyle
 {$ENDIF WINDOWS}
 
 {$IFDEF LCLWin32}

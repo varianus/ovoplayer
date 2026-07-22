@@ -5,7 +5,7 @@ unit FontImageList;
 interface
 
 uses
-  Classes, SysUtils, ImgList, Controls, Graphics, iconrender, types, lcltype;
+  Classes, SysUtils, ImgList, Controls, Graphics, iconrender, types, lcltype, LCLIntf;
 
 type
   TFontSource = (fsrcFileName, fsrcResource);
@@ -278,7 +278,10 @@ begin
 
     for item in FGlyphs do
     begin
-      IconRenderer.Color := Item.Color;
+      if IsSysColor(Item.Color) then
+       IconRenderer.Color := GetSysColor(SysColorToSysColorIndex(Item.Color))
+      else
+        IconRenderer.Color := Item.Color;
       Bmp := TBitmap.Create;
       IconRenderer.getGlyph(Item.GliphIndex, bmp); //;then
       Add(bmp, nil);
