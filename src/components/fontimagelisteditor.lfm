@@ -1,0 +1,184 @@
+object FontImageListDialog: TFontImageListDialog
+  Left = 300
+  Height = 555
+  Top = 250
+  Width = 821
+  ClientHeight = 555
+  ClientWidth = 821
+  LCLVersion = '4.99.0.0'
+  object grdFont: TDrawGrid
+    Left = 386
+    Height = 509
+    Top = 0
+    Width = 435
+    Align = alClient
+    ColCount = 8
+    DefaultColWidth = 48
+    DefaultRowHeight = 48
+    FixedCols = 0
+    FixedRows = 0
+    RowCount = 8
+    TabOrder = 0
+    OnDblClick = grdFontDblClick
+    OnDrawCell = grdFontDrawCell
+  end
+  object ButtonPanel1: TButtonPanel
+    Left = 6
+    Height = 34
+    Top = 515
+    Width = 809
+    OKButton.Name = 'OKButton'
+    OKButton.DefaultCaption = True
+    HelpButton.Name = 'HelpButton'
+    HelpButton.DefaultCaption = True
+    CloseButton.Name = 'CloseButton'
+    CloseButton.DefaultCaption = True
+    CancelButton.Name = 'CancelButton'
+    CancelButton.DefaultCaption = True
+    TabOrder = 1
+    ShowGlyphs = []
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 509
+    Top = 0
+    Width = 216
+    Align = alLeft
+    ClientHeight = 509
+    ClientWidth = 216
+    TabOrder = 2
+    object grdGlyphs: TDrawGrid
+      Left = 1
+      Height = 452
+      Top = 56
+      Width = 200
+      Align = alLeft
+      AutoFillColumns = True
+      ColCount = 3
+      Columns = <      
+        item
+          SizePriority = 0
+          Title.Caption = 'Title'
+          Width = 48
+        end      
+        item
+          SizePriority = 0
+          Title.Caption = 'Title'
+          Width = 48
+        end      
+        item
+          Title.Caption = 'Title'
+          Width = 104
+        end>
+      DefaultColWidth = 48
+      DefaultRowHeight = 48
+      FixedCols = 0
+      FixedRows = 0
+      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowMoving, goRowSelect, goSmoothScroll]
+      RowCount = 1
+      TabOrder = 0
+      OnDblClick = grdGlyphsDblClick
+      OnDrawCell = grdGlyphsDrawCell
+      OnSelectEditor = grdGlyphsSelectEditor
+      OnSelection = grdGlyphsSelection
+      ColWidths = (
+        48
+        48
+        104
+      )
+    end
+    object ToolBar1: TToolBar
+      Left = 1
+      Height = 55
+      Top = 1
+      Width = 214
+      ButtonHeight = 48
+      ButtonWidth = 48
+      Caption = 'ToolBar1'
+      Flat = False
+      ShowCaptions = True
+      TabOrder = 1
+      object btnAdd: TToolButton
+        Left = 1
+        Top = 2
+        Caption = 'Add'
+        OnClick = btnAddClick
+      end
+      object btnDelete: TToolButton
+        Left = 49
+        Top = 2
+        Caption = 'Delete'
+        OnClick = btnDeleteClick
+      end
+      object btnUp: TToolButton
+        Left = 97
+        Top = 2
+        Caption = 'Up'
+        OnClick = btnUpClick
+      end
+      object btnDown: TToolButton
+        Left = 145
+        Top = 2
+        Caption = 'Down'
+        OnClick = btnDownClick
+      end
+    end
+    object ColorBox1: TColorBox
+      Left = 47
+      Height = 22
+      Top = 128
+      Width = 100
+      ColorDialog = ColorDialog1
+      ItemHeight = 16
+      TabOrder = 2
+      Visible = False
+      OnChange = ColorBox1Change
+      OnExit = ColorBox1Exit
+    end
+  end
+  object Panel2: TPanel
+    Left = 216
+    Height = 509
+    Top = 0
+    Width = 170
+    Align = alLeft
+    ClientHeight = 509
+    ClientWidth = 170
+    TabOrder = 3
+    object pbTesting: TPaintBox
+      Left = 1
+      Height = 507
+      Top = 1
+      Width = 168
+      Align = alClient
+      OnPaint = pbTestingPaint
+    end
+  end
+  object ColorDialog1: TColorDialog
+    Color = clBlack
+    CustomColors.Strings = (
+      'ColorA=000000'
+      'ColorB=000080'
+      'ColorC=008000'
+      'ColorD=008080'
+      'ColorE=800000'
+      'ColorF=800080'
+      'ColorG=808000'
+      'ColorH=808080'
+      'ColorI=C0C0C0'
+      'ColorJ=0000FF'
+      'ColorK=00FF00'
+      'ColorL=00FFFF'
+      'ColorM=FF0000'
+      'ColorN=FF00FF'
+      'ColorO=FFFF00'
+      'ColorP=FFFFFF'
+      'ColorQ=C0DCC0'
+      'ColorR=F0CAA6'
+      'ColorS=F0FBFF'
+      'ColorT=A4A0A0'
+    )
+    Left = 328
+    Top = 214
+  end
+end

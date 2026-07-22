@@ -2,21 +2,21 @@
   This source is only used to compile and install the package.
  }
 
-unit mcaselli; 
+unit mcaselli;
 
+{$warn 5023 off : no warning about unused units}
 interface
 
 uses
-  ThemedSlider, ImageTrack, LazarusPackageIntf;
+  ThemedSlider, ImageTrack, FontImageList, iconrender, fontimagelisteditor, registerMCaselli, LazarusPackageIntf;
 
 implementation
 
-procedure Register; 
+procedure Register;
 begin
-  RegisterUnit('ThemedSlider', @ThemedSlider.Register); 
-  RegisterUnit('ImageTrack', @ImageTrack.Register); 
-end; 
+  RegisterUnit('registerMCaselli', @registerMCaselli.Register);
+end;
 
 initialization
-  RegisterPackage('mcaselli', @Register); 
+  RegisterPackage('mcaselli', @Register);
 end.
