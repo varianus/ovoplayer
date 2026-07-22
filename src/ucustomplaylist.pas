@@ -25,7 +25,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   ButtonPanel, Buttons, StdCtrls, Spin, ufrfield, PlaylistBuilder,
-  GUIBackEnd, MediaLibrary, AppConsts, GeneralFunc, fpjson, Generics.Collections;
+  GUIBackEnd, MediaLibrary, AppConsts, GeneralFunc, uDM, fpjson, Generics.Collections;
 
 type
 

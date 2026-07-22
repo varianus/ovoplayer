@@ -25,7 +25,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ButtonPanel,
-  ExtCtrls, StdCtrls, Buttons, equalizerband, AudioEngine, Equalizer,  Generics.Collections;
+  ExtCtrls, StdCtrls, Buttons, equalizerband, AudioEngine, Equalizer, uDM,  Generics.Collections;
 
 type
 

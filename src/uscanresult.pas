@@ -24,7 +24,7 @@ unit uscanresult;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Grids, ButtonPanel, GUIBackEnd, MediaLibrary;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Grids, ButtonPanel, GUIBackEnd, MediaLibrary, uDM;
 
 type
 

@@ -20,12 +20,12 @@ object fScanResult: TfScanResult
     Columns = <    
       item
         Title.Caption = 'File name'
-        Width = 767
+        Width = 771
       end>
     FixedCols = 0
     TabOrder = 0
     ColWidths = (
-      767
+      771
     )
   end
   object ButtonPanel1: TButtonPanel
