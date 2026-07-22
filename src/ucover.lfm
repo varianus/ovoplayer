@@ -83,7 +83,7 @@ object fCover: TfCover
       Width = 53
       AutoSize = True
       Images = DM.ilButtons
-      ImageIndex = 24
+      ImageIndex = 23
       TabOrder = 2
       OnClick = btnZoomResetClick
     end
@@ -107,7 +107,7 @@ object fCover: TfCover
       Width = 53
       AutoSize = True
       Images = DM.ilButtons
-      ImageIndex = 23
+      ImageIndex = 24
       TabOrder = 3
       OnClick = btnFitToScreenClick
     end
