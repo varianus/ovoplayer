@@ -7,6 +7,8 @@ object fScanResult: TfScanResult
   ClientHeight = 368
   ClientWidth = 771
   Position = poMainFormCenter
+  LCLVersion = '4.99.0.0'
+  OnCreate = FormCreate
   object ResultGrid: TStringGrid
     Left = 0
     Height = 322

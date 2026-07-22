@@ -11,12 +11,12 @@ object fMiniPlayer: TfMiniPlayer
   Font.Height = -12
   FormStyle = fsSystemStayOnTop
   KeyPreview = True
+  LCLVersion = '4.99.0.0'
   OnClose = FormClose
   OnCreate = FormCreate
   OnHide = FormHide
   OnMouseLeave = FormMouseLeave
   OnShow = FormShow
-  LCLVersion = '2.1.0.0'
   object Panel1: TPanel
     Left = 0
     Height = 57
@@ -50,32 +50,32 @@ object fMiniPlayer: TfMiniPlayer
         Action = DM.actPrevious
       end
       object ToolButton2: TToolButton
-        Left = 53
+        Left = 55
         Top = 0
         Action = DM.actPlay
       end
       object ToolButton3: TToolButton
-        Left = 105
+        Left = 109
         Top = 0
         Action = DM.actStop
       end
       object ToolButton4: TToolButton
-        Left = 157
+        Left = 163
         Top = 0
         Action = DM.actNext
       end
       object ToolButton5: TToolButton
-        Left = 79
+        Left = 82
         Top = 0
         Action = DM.actPause
       end
       object ToolButton6: TToolButton
-        Left = 27
+        Left = 28
         Top = 0
         Action = DM.actSkipBackward
       end
       object ToolButton7: TToolButton
-        Left = 131
+        Left = 136
         Top = 0
         Action = DM.actSkipForward
       end

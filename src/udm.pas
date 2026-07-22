@@ -25,7 +25,7 @@ interface
 
 uses
   Classes, SysUtils, LazFileUtils, ActnList, Controls, Dialogs, Forms, LResources,
-  singleinstance, strutils, Graphics, types,
+  singleinstance, strutils, Graphics, FontImageList, types,
   BaseTypes, CoreInterfaces,
   AudioEngine, LazUTF8,  LazLogger,
   PlayListManager, MediaLibrary, FilesSupport, netprotocol,   IconLoader;
@@ -61,8 +61,8 @@ type
     actPlaylistLoad: TAction;
     ActionList:  TActionList;
     ApplicationProperties: TApplicationProperties;
-    ilButtons:   TImageList;
-    ilSmall:     TImageList;
+    ilButtons: TFontImageList;
+    ilSmall: TFontImageList;
     ilNone: TImageList;
     OpenDialogPlaylist: TOpenDialog;
     OpenDialogFiles: TOpenDialog;
@@ -97,6 +97,7 @@ type
     procedure ApplicationPropertiesIdle(Sender: TObject; var Done: Boolean);
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
+    procedure ilButtonsInitialize(Sender: TObject);
     procedure SaveDialogPlaylistTypeChange(Sender: TObject);
     procedure ServerReceivedParams(Sender: TBaseSingleInstance; aParams: TStringList );
     // -- --
@@ -145,47 +146,54 @@ begin
     end;
 end;
 
-{$R ovoplayerfont.res}
-
 Procedure TDM.LoadImageList(Sender: TObject);
 var
   s: TStream;
   iconRender: TIconRenderer;
+  bmp : TBITMAP;
 begin
-
+  {
     S := TResourceStream.Create(HInstance, 'OVOFONT', RT_RCDATA);
-    ilButtons.BeginUpdate;
-    ilButtons.Clear;
-    ilButtons.Height := MulDiv(23, Screen.PixelsPerInch, 96);
-    ilButtons.Width := ilButtons.Height;
+    ilButtonsXX.BeginUpdate;
+    ilButtonsXX.Clear;
+    ilButtonsXX.Height := MulDiv(23, Screen.PixelsPerInch, 96);
+    ilButtonsXX.Width := ilButtonsXX.Height;
 
     iconRender:= TIconRenderer.Create(S);
-    iconRender.Color := GetSysColor(COLOR_BTNTEXT);
+    iconRender.Color := clwhite;// GetSysColor(COLOR_BTNTEXT);
     iconRender.SetSize(23, 21, true); // Scaling occurs inside object, no need to do it here
 
-    iconRender.AddToImageList (ilButtons, [$41,$42,$43,$44,$40,
+    iconRender.AddToImageList (ilButtonsXX, [$41,$42,$43,$44,$40,
                                            $4A,$47,$48,$45,$4b,
                                            $4c,$65,$64,$55,$53,
                                            $52,$51,$4f,$4d,$4e,
                                            $62]);
+    //bmp:= Tbitmap.create;
+    //ilButtonsXX.GetFullBitmap(Bmp);
+    //bmp.SaveToFile('c:\temp\ovo_ilButtons.bmp');
+    //bmp.free;
 
-    ilButtons.EndUpdate;
+    ilButtonsXX.EndUpdate;
 
-    ilSmall.BeginUpdate;
-    ilSmall.Clear;
-    ilSmall.Height := MulDiv(16, Screen.PixelsPerInch, 96);
-    ilSmall.Width := ilSmall.Height;
+    ilSmallXX.BeginUpdate;
+    ilSmallXX.Clear;
+    ilSmallXX.Height := MulDiv(16, Screen.PixelsPerInch, 96);
+    ilSmallXX.Width := ilSmallXX.Height;
 
     iconRender.SetSize(16,15, true); // Scaling occurs inside object, no need to do it here
-    iconRender.AddToImageList(ilSmall, [$54,$68,$5a,$57,$56,
+    iconRender.AddToImageList(ilSmallXX, [$54,$68,$5a,$57,$56,
                                         $6c,$43,$65,$41,$4f,
                                         $42,$44,$6e,$62,$58,
                                         $59,$67]);
+    //bmp:= Tbitmap.create;
+    //ilSmallXX.GetFullBitmap(Bmp);
+    //bmp.SaveToFile('c:\temp\ovo_ilSmall.bmp');
+    //bmp.free;
 
-    ilSmall.EndUpdate;
+    ilSmallXX.EndUpdate;
 
     iconRender.free;
-    //S.Free;
+    //S.Free;     }
 end;
 
 procedure TDM.DataModuleCreate(Sender: TObject);
@@ -213,6 +221,16 @@ end;
 procedure TDM.DataModuleDestroy(Sender: TObject);
 begin
   Application.SingleInstance.OnServerReceivedParams:= nil;
+end;
+
+procedure TDM.ilButtonsInitialize(Sender: TObject);
+begin
+   With (Sender as TFontImageList) do
+    begin
+      FontSource := fsrcResource;
+      FontName := 'OVOFONT';
+    end;
+
 end;
 
 Procedure TDM.CustomRender(Imgl: TIMageList; Const Size: Tsize; const CodeList: array of cardinal);

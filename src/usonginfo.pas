@@ -30,7 +30,7 @@ uses
   types,
   {$ENDIF}
 
-  AudioTag, BaseTag, FilesSupport, ExtendedInfo, MediaLibrary, GeneralFunc;
+  AudioTag, BaseTag, FilesSupport, ExtendedInfo, MediaLibrary, GeneralFunc, uDM;
 
 type
 
@@ -175,6 +175,13 @@ begin
   for i := 0 to ID3_MaxGenreExtended do
     edGenre.Items.Add(v1Genres[i]);
   edGenre.Items.EndUpdate;
+
+  ButtonPanel1.OKButton.Images := DM.ilButtons;
+  ButtonPanel1.CancelButton.Images := DM.ilButtons;
+
+  ButtonPanel1.OKButton.ImageIndex := 25;
+  ButtonPanel1.CancelButton.ImageIndex := 26;
+
 end;
 
 procedure TfSongInfo.FormDestroy(Sender: TObject);

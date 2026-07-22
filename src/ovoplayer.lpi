@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="12"/>
+    <Version Value="13"/>
     <PathDelim Value="\"/>
     <General>
       <Flags>
@@ -19,6 +19,9 @@
         <TextDesc Value="A free multiplatform media player"/>
       </XPManifest>
       <Icon Value="0"/>
+      <Resources Count="1">
+        <Resource_0 FileName="ovoplayer.ttf" Type="RCDATA" ResourceName="OVOFONT"/>
+      </Resources>
     </General>
     <i18n>
       <EnableI18N Value="True"/>

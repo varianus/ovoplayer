@@ -380,6 +380,13 @@ begin
          TRadioButton(rgAudioEngine.Controls[i]).Enabled := EngineArray[j].Engine.IsAvalaible(nil);
       end;
 
+  ButtonPanel.OKButton.Images := DM.ilButtons;
+  ButtonPanel.CancelButton.Images := DM.ilButtons;
+
+  ButtonPanel.OKButton.ImageIndex := 25;
+  ButtonPanel.CancelButton.ImageIndex := 26;
+
+
 end;
 
 

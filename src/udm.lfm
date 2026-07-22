@@ -184,10 +184,6 @@ object DM: TDM
       OnExecute = actFastScanExecute
     end
   end
-  object ilSmall: TImageList
-    Left = 210
-    Top = 24
-  end
   object OpenDialogPlaylist: TOpenDialog
     Title = 'Open Playlist'
     Filter = 'All Known Playlist|*.xspf;*.m3u;*.m3u8;*.bsp;*.wpl;*.asx;*.wax;*.pls|XSPF (XML Shareable Playlist Format) Playlist|*.xspf|M3U Playlist|*.m3u;*.m3u8|BSPlayer Playlist|*.bsp|Windows Media Player Playlist|*.wpl|Windows Media ASX Playlist|*.asx;*.wax|PLS Playlist|*.pls|All Files|*.*'
@@ -208,12 +204,6 @@ object DM: TDM
     Left = 67
     Top = 144
   end
-  object ilButtons: TImageList
-    Height = 22
-    Width = 22
-    Left = 359
-    Top = 21
-  end
   object OpenDialogFiles: TOpenDialog
     Title = 'Open Playlist'
     Filter = 'All Known Files|*.xspf;*,m3u;*.bsp;*.mpc;*.asx;*.pls'
@@ -232,5 +222,41 @@ object DM: TDM
   object ilNone: TImageList
     Left = 64
     Top = 224
+  end
+  object ilButtons: TFontImageList
+    FontName = 'C:\source\ovoplayer\src\ovoplayer.ttf'
+    FontSource = fsrcFileName
+    OnInitialize = ilButtonsInitialize
+    Height = 23
+    Width = 23
+    Left = 360
+    Top = 21
+    Bitmap = {
+    }
+    GlyphsData = {
+      1D00000002000000120000800300000008000080040000000800008005000000
+      0800008000000000080000800B00000008000080080000000800008009000000
+      0800008006000000080000800C000000080000800D000000080000801B000000
+      0800008033000000080000801600000008000080140000000800008013000000
+      08000080120000000800008010000000080000800E000000080000800F000000
+      080000803100000008000080270000000800008028000000080000802F000000
+      080000802E0000000800008001000000008000001D000000FF00000025000000
+      080000802600000008000080
+    }
+  end
+  object ilSmall: TFontImageList
+    FontName = 'C:\source\ovoplayer\src\ovoplayer.ttf'
+    FontSource = fsrcFileName
+    Left = 210
+    Top = 21
+    Bitmap = {
+    }
+    GlyphsData = {
+      1100000015000000080000801E000000080000802B0000000800008018000000
+      080000801700000008000080220000000800008004000000080000801B000000
+      0800008002000000080000800300000008000080030000000800008024000000
+      080000802400000008000080310000000800008019000000080000801A000000
+      080000801D00000008000080
+    }
   end
 end

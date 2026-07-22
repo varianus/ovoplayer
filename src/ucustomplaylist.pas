@@ -123,6 +123,13 @@ begin
   Editors := TEditorsContainer.Create(true);
   AddField;
   seLimits.AnchorToNeighbour(akLeft, 10, ckLimit);
+
+  ButtonPanel1.OKButton.Images := DM.ilButtons;
+  ButtonPanel1.CancelButton.Images := DM.ilButtons;
+
+  ButtonPanel1.OKButton.ImageIndex := 25;
+  ButtonPanel1.CancelButton.ImageIndex := 26;
+
 end;
 
 procedure TfCustomPlayList.FormDestroy(Sender: TObject);

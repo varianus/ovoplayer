@@ -100,6 +100,12 @@ begin
   cbEnableEq.Checked:= BackEnd.EngineParam.ActiveEQ;
   cbPreset.ItemIndex:= BackEnd.EngineParam.EQPreset;
 
+  ButtonPanel1.OKButton.Images := DM.ilButtons;
+  ButtonPanel1.CancelButton.Images := DM.ilButtons;
+  ButtonPanel1.OKButton.ImageIndex := 25;
+  ButtonPanel1.CancelButton.ImageIndex := 26;
+
+
 end;
 
 procedure TfEqualizer.FormDestroy(Sender: TObject);
