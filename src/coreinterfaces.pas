@@ -92,8 +92,32 @@ type
     Property Muted : boolean read GetMute write SetMute;
   end;
 
+  TNoRefCountObject =  class(TObject, IInterface)
+  protected
+    function QueryInterface({$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF} iid : tguid;out obj) : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};inline;
+    function _AddRef : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};inline;
+    function _Release : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};inline;
+  end;
 
 implementation
+
+function TNoRefCountObject.QueryInterface( {$IFDEF FPC_HAS_CONSTREF}constref{$ELSE}const{$ENDIF} iid : tguid;out obj) : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};inline;
+begin
+   if getinterface(iid,obj) then
+     result:=S_OK
+   else
+     result:=longint(E_NOINTERFACE);
+end;
+
+function TNoRefCountObject._AddRef : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+begin
+   Result:=-1;
+end;
+
+function TNoRefCountObject._Release : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+begin
+  Result:=-1;
+end;
 
 end.
 

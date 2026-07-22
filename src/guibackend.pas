@@ -52,7 +52,7 @@ type
   { TBackEnd }
   TObserverlist = specialize TList<IObserver>;
 
-  TBackEnd = class(TObject, IBackEnd)
+  TBackEnd = class(TNoRefCountObject, IBackEnd)
   private
     { private declarations }
     FOnEngineCommand: TOnEngineCommand;

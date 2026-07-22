@@ -35,7 +35,7 @@ type
 
     { TTaskBarExtender }
 
-    TTaskBarExtender = class (TObject, IObserver)
+    TTaskBarExtender = class (TNoRefCountObject, IObserver)
     private
       FInitialized: boolean;
       TaskbarList : ITaskBarList;

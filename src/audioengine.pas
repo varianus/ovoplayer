@@ -24,7 +24,7 @@ unit AudioEngine;
 interface
 
 uses
-  Classes, SysUtils, Song, BaseTypes, equalizer;
+  Classes, SysUtils, Song, BaseTypes, equalizer, coreinterfaces;
 
 const
   EQUALIZER_BANDS = 10;
@@ -43,7 +43,7 @@ type
 
 
   { TAudioEngine }
-  TAudioEngine = class (TObject, IEqualizer)
+  TAudioEngine = class (TNoRefCountObject, IEqualizer)
   private
     FInitialized: boolean;
     FOnSongEnd:   TNotifyEvent;
