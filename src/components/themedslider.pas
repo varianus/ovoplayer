@@ -62,15 +62,7 @@ type
 
   end;
 
-procedure Register;
-
 implementation
-
-procedure Register;
-begin
-  {$I skinnedslider_icon.lrs}
-  RegisterComponents('MCaselli',[TThemedSlider]);
-end;
 
 { TThemedSlider }
 

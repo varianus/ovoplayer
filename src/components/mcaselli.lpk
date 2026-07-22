@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
-  <Package Version="5">
+  <Package Version="6">
     <PathDelim Value="\"/>
     <Name Value="mcaselli"/>
     <Type Value="RunAndDesignTime"/>
@@ -15,48 +15,45 @@
     </CompilerOptions>
     <Description Value="Custon controls used in Ovoplayer Application"/>
     <Version Major="1"/>
-    <Files Count="6">
-      <Item1>
+    <Files>
+      <Item>
         <Filename Value="themedslider.pas"/>
-        <HasRegisterProc Value="True"/>
         <UnitName Value="ThemedSlider"/>
-      </Item1>
-      <Item2>
+      </Item>
+      <Item>
         <Filename Value="imagetrack.pas"/>
-        <HasRegisterProc Value="True"/>
         <UnitName Value="ImageTrack"/>
-      </Item2>
-      <Item3>
+      </Item>
+      <Item>
         <Filename Value="fontimagelist.pas"/>
         <UnitName Value="FontImageList"/>
-      </Item3>
-      <Item4>
-        <Filename Value="myfontimagelistregister.pas"/>
-        <HasRegisterProc Value="True"/>
-        <UnitName Value="MyFontImageListRegister"/>
-      </Item4>
-      <Item5>
+      </Item>
+      <Item>
         <Filename Value="iconrender.pas"/>
         <UnitName Value="iconrender"/>
-      </Item5>
-      <Item6>
+      </Item>
+      <Item>
         <Filename Value="fontimagelisteditor.pas"/>
         <UnitName Value="fontimagelisteditor"/>
-      </Item6>
+      </Item>
+      <Item>
+        <Filename Value="registermcaselli.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="registerMCaselli"/>
+      </Item>
     </Files>
-    <CompatibilityMode Value="True"/>
-    <RequiredPkgs Count="3">
-      <Item1>
+    <RequiredPkgs>
+      <Item>
         <PackageName Value="IDEIntf"/>
-      </Item1>
-      <Item2>
+      </Item>
+      <Item>
         <PackageName Value="LCLBase"/>
         <MinVersion Major="1" Release="1" Valid="True"/>
-      </Item2>
-      <Item3>
+      </Item>
+      <Item>
         <PackageName Value="FCL"/>
         <MinVersion Major="1" Release="1" Valid="True"/>
-      </Item3>
+      </Item>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>

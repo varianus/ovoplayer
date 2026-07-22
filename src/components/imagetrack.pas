@@ -61,14 +61,7 @@ type
     Property ForeGroundImage :TPicture read FForeGroundImage write SetForeGroundImage;
   end;
 
-procedure Register;
-
 implementation
-
-procedure Register;
-begin
-  RegisterComponents('MCaselli',[TImageTrack]);
-end;
 
 { TImageTrack }
 
