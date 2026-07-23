@@ -240,7 +240,7 @@ var
 begin
   S := TResourceStream.Create(HInstance, 'OVOFONT', RT_RCDATA);
   iconRender:= TIconRenderer.Create(S);
-  iconRender.Color := GetSysColor(COLOR_BTNTEXT);
+  iconRender.Color := GetSysColor(COLOR_WINDOWTEXT);
   iconRender.SetSize(size.cx, Size.cy);
   iconRender.AddToImageList(Imgl, CodeList);
   iconRender.Free;
