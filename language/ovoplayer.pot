@@ -669,14 +669,6 @@ msgstr ""
 msgid "Sort by"
 msgstr ""
 
-#: tfequalizer.bremovepreset.caption
-msgid "-"
-msgstr ""
-
-#: tfequalizer.bsavepreset.caption
-msgid "+"
-msgstr ""
-
 #: tfequalizer.caption
 msgctxt "tfequalizer.caption"
 msgid "Equalizer"
@@ -1084,8 +1076,8 @@ msgstr ""
 msgid "Scan Result"
 msgstr ""
 
-#: tfscanresult.stringgrid1.columns[0].title.caption
-msgctxt "tfscanresult.stringgrid1.columns[0].title.caption"
+#: tfscanresult.resultgrid.columns[0].title.caption
+msgctxt "tfscanresult.resultgrid.columns[0].title.caption"
 msgid "File name"
 msgstr ""
 
