@@ -350,7 +350,7 @@ object fMainForm: TfMainForm
             OnDblClick = imgCoverDblClick
           end
           object Title: TLabel
-            Left = 110
+            Left = 112
             Height = 24
             Top = 4
             Width = 389
@@ -1233,6 +1233,7 @@ object fMainForm: TfMainForm
     end
   end
   object pmdirectories: TPopupMenu
+    Images = DM.ilButtons
     OnPopup = pmdirectoriesPopup
     Left = 152
     Top = 184
@@ -1253,6 +1254,7 @@ object fMainForm: TfMainForm
     end
   end
   object pnCollection: TPopupMenu
+    Images = DM.ilButtons
     OnPopup = pnCollectionPopup
     Left = 59
     Top = 248
@@ -1387,6 +1389,7 @@ object fMainForm: TfMainForm
     }
   end
   object pmPlaylists: TPopupMenu
+    Images = DM.ilButtons
     OnPopup = pmPlaylistsPopup
     Left = 128
     Top = 336
@@ -1421,6 +1424,7 @@ object fMainForm: TfMainForm
     end
   end
   object MainMenu1: TMainMenu
+    Images = DM.ilButtons
     Left = 100
     Top = 424
   end
