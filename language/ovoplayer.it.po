@@ -72,7 +72,7 @@ msgstr "Fallite:"
 #: appconsts.rlibrarytotals
 #, object-pascal-format
 msgid "Library contains %0:d tracks (total time %1:s, total size %2:s)"
-msgstr "La Libreria contiene %0:d tracce (tempo toale %1:s, dimensione totale %2:s)"
+msgstr "La Libreria contiene %0:d tracce (tempo totale %1:s, dimensione totale %2:s)"
 
 #: appconsts.rlowportwarning
 msgid ""
@@ -85,7 +85,7 @@ msgstr ""
 #: appconsts.rmatchingitems
 #, object-pascal-format
 msgid "%0:d tracks matching current filter (total time %1:s, total size %2:s)"
-msgstr "Il filtro corrente estrae %0:d tracce (Tempo totale %1:s, Dim. Totale%2:s)"
+msgstr "Il filtro corrente estrae %0:d tracce (Tempo totale %1:s, Dim. Totale %2:s)"
 
 #: appconsts.rmissing
 msgid "<missing>"
@@ -463,12 +463,12 @@ msgstr "Riavvia"
 #: tdm.actskipbackward.caption
 msgctxt "tdm.actskipbackward.caption"
 msgid "Skip Backward"
-msgstr "Salta Avanti"
+msgstr "Salta Indietro"
 
 #: tdm.actskipforward.caption
 msgctxt "tdm.actskipforward.caption"
 msgid "Skip Forward"
-msgstr "Salta indietro"
+msgstr "Salta Avanti"
 
 #: tdm.actstop.caption
 msgctxt "tdm.actstop.caption"
@@ -569,7 +569,7 @@ msgstr "Abilita telecomando di rete"
 
 #: tfconfig.cbonlylocalhost.caption
 msgid "Bind only local host"
-msgstr ""
+msgstr "Associa solo a localhost"
 
 #: tfconfig.cbpausewhenlocked.caption
 msgid "Pause player when screen is locked"
@@ -601,7 +601,7 @@ msgstr "Colore di sfondo"
 
 #: tfconfig.label3.caption
 msgid "Font color"
-msgstr "colore testo"
+msgstr "Colore testo"
 
 #: tfconfig.label4.caption
 msgid "Tranparency"
@@ -997,263 +997,3 @@ msgstr "Ripristina"
 #: tfmainform.sgplaylist.columns[0].title.caption
 msgid "#"
 msgstr "#"
-
-#: tfmainform.sgplaylist.columns[10].title.caption
-msgctxt "tfmainform.sgplaylist.columns[10].title.caption"
-msgid "Rating"
-msgstr "Valutazione"
-
-#: tfmainform.sgplaylist.columns[1].title.caption
-msgctxt "tfmainform.sgplaylist.columns[1].title.caption"
-msgid "Title"
-msgstr "Titolo"
-
-#: tfmainform.sgplaylist.columns[2].title.caption
-msgctxt "tfmainform.sgplaylist.columns[2].title.caption"
-msgid "Album"
-msgstr "Album"
-
-#: tfmainform.sgplaylist.columns[3].title.caption
-msgctxt "tfmainform.sgplaylist.columns[3].title.caption"
-msgid "Artist"
-msgstr "Artista"
-
-#: tfmainform.sgplaylist.columns[4].title.caption
-msgid "Time"
-msgstr "Tempo"
-
-#: tfmainform.sgplaylist.columns[5].title.caption
-msgctxt "tfmainform.sgplaylist.columns[5].title.caption"
-msgid "Track"
-msgstr "Traccia"
-
-#: tfmainform.sgplaylist.columns[6].title.caption
-msgctxt "tfmainform.sgplaylist.columns[6].title.caption"
-msgid "Genre"
-msgstr "Genere"
-
-#: tfmainform.sgplaylist.columns[7].title.caption
-msgctxt "tfmainform.sgplaylist.columns[7].title.caption"
-msgid "Year"
-msgstr "Anno"
-
-#: tfmainform.sgplaylist.columns[8].title.caption
-msgctxt "tfmainform.sgplaylist.columns[8].title.caption"
-msgid "Album Artist"
-msgstr "Artista Album"
-
-#: tfmainform.sgplaylist.columns[9].title.caption
-msgid "FileName"
-msgstr "NomeFile"
-
-#: tfmainform.sgstats.columns[0].title.caption
-msgctxt "tfmainform.sgstats.columns[0].title.caption"
-msgid "Title"
-msgstr "Titolo"
-
-#: tfmainform.sgstats.columns[1].title.caption
-msgctxt "tfmainform.sgstats.columns[1].title.caption"
-msgid "Title"
-msgstr "Titolo"
-
-#: tfmainform.statictext1.caption
-msgid "Welcome to OvoPlayer"
-msgstr "Benvenuto in OvoPlayer"
-
-#: tfmainform.statictext2.caption
-msgid "Add one or more songs"
-msgstr "Aggiungi una o più canzoni"
-
-#: tfmainform.statictext3.caption
-msgid "Add all songs in a folder"
-msgstr "Aggiungi tutte le canzoni un una cartella"
-
-#: tfmainform.statictext4.caption
-msgid "Find some music to play"
-msgstr "Trova un po' di musica da ascoltare"
-
-#: tfmainform.statictext5.caption
-msgid "Add songs to your music collection"
-msgstr "Aggiungi canzoni alla tua collezione"
-
-#: tfmainform.statictext6.caption
-msgid "Import an existing playlist"
-msgstr "importa una playlist esistente"
-
-#: tfmainform.tbrepeat.caption
-msgid "     "
-msgstr "     "
-
-#: tfmainform.title.caption
-msgctxt "TFMAINFORM.TITLE.CAPTION"
-msgid "Title"
-msgstr "Titolo"
-
-#: tfmainform.tscollection.caption
-msgctxt "TFMAINFORM.TSCOLLECTION.CAPTION"
-msgid "Collection"
-msgstr "Collezione"
-
-#: tfmainform.tsdirectory.caption
-msgid "Directory"
-msgstr "Cartella"
-
-#: tfmainform.tsplaylist.caption
-msgctxt "tfmainform.tsplaylist.caption"
-msgid "PlayList"
-msgstr "Scaletta"
-
-#: tfminiplayer.caption
-msgid "MiniPlayer"
-msgstr "MiniPlayer"
-
-#: tfrequalizer.lbband.caption
-msgid "Band"
-msgstr "Banda"
-
-#: tfrequalizer.lbvalue.caption
-msgid "Value"
-msgstr "Valore"
-
-#: tfrfield.testdate.text
-msgctxt "tfrfield.testdate.text"
-msgid "equal to"
-msgstr "uguale a"
-
-#: tfrfield.testnumber.text
-msgctxt "tfrfield.testnumber.text"
-msgid "equal to"
-msgstr "uguale a"
-
-#: tfrfield.testrating.text
-msgctxt "tfrfield.testrating.text"
-msgid "equal to"
-msgstr "uguale a"
-
-#: tfrfield.testtext.text
-msgctxt "tfrfield.testtext.text"
-msgid "is"
-msgstr "è"
-
-#: tfscanresult.caption
-msgid "Scan Result"
-msgstr "Risultato Ricerca"
-
-#: tfscanresult.resultgrid.columns[0].title.caption
-msgctxt "tfscanresult.resultgrid.columns[0].title.caption"
-msgid "File name"
-msgstr ""
-
-#: tfsonginfo.bnext.caption
-msgctxt "TFSONGINFO.BNEXT.CAPTION"
-msgid "Next"
-msgstr "Prossimo"
-
-#: tfsonginfo.bprevious.caption
-msgctxt "TFSONGINFO.BPREVIOUS.CAPTION"
-msgid "Previous"
-msgstr "Precedente"
-
-#: tfsonginfo.buttonpanel1.cancelbutton.caption
-msgid "Discard"
-msgstr "Abbandona"
-
-#: tfsonginfo.buttonpanel1.okbutton.caption
-msgid "Save"
-msgstr "Salva"
-
-#: tfsonginfo.caption
-msgid "Song Information"
-msgstr "Informazioni brano"
-
-#: tfsonginfo.groupbox1.caption
-msgid "Library"
-msgstr "Libreria"
-
-#: tfsonginfo.laalbum.caption
-msgctxt "TFSONGINFO.LAALBUM.CAPTION"
-msgid "Album"
-msgstr "Album"
-
-#: tfsonginfo.laalbumartist.caption
-msgctxt "TFSONGINFO.LAALBUMARTIST.CAPTION"
-msgid "Album Artist"
-msgstr "Artista Album"
-
-#: tfsonginfo.laartist.caption
-msgctxt "TFSONGINFO.LAARTIST.CAPTION"
-msgid "Artist"
-msgstr "Artista"
-
-#: tfsonginfo.label11.caption
-msgid "BitRate"
-msgstr "BitRate"
-
-#: tfsonginfo.label12.caption
-msgid "Sampling"
-msgstr "Campionamento"
-
-#: tfsonginfo.label13.caption
-msgid "Channels"
-msgstr "Canali"
-
-#: tfsonginfo.label14.caption
-msgctxt "TFSONGINFO.LABEL14.CAPTION"
-msgid "File Name"
-msgstr "Nome File"
-
-#: tfsonginfo.label15.caption
-msgid "Size"
-msgstr "Dimens."
-
-#: tfsonginfo.label16.caption
-msgid "Play Count"
-msgstr "Conteggio Esecuzioni"
-
-#: tfsonginfo.label17.caption
-msgid "Added to collection"
-msgstr "Aggiunti a collezione"
-
-#: tfsonginfo.label18.caption
-msgid "Last Played"
-msgstr "Ultima riproduzione"
-
-#: tfsonginfo.label9.caption
-msgctxt "TFSONGINFO.LABEL9.CAPTION"
-msgid "Duration"
-msgstr "Durata"
-
-#: tfsonginfo.lacomment.caption
-msgctxt "TFSONGINFO.LACOMMENT.CAPTION"
-msgid "Comment"
-msgstr "Commento"
-
-#: tfsonginfo.lagenre.caption
-msgctxt "TFSONGINFO.LAGENRE.CAPTION"
-msgid "Genre"
-msgstr "Genere"
-
-#: tfsonginfo.latitle.caption
-msgctxt "TFSONGINFO.LATITLE.CAPTION"
-msgid "Title"
-msgstr "Titolo"
-
-#: tfsonginfo.latrack.caption
-msgctxt "TFSONGINFO.LATRACK.CAPTION"
-msgid "Track"
-msgstr "Traccia"
-
-#: tfsonginfo.layear.caption
-msgctxt "TFSONGINFO.LAYEAR.CAPTION"
-msgid "Year"
-msgstr "Anno"
-
-#: tfsonginfo.tsmediaproperty.caption
-msgctxt "TFSONGINFO.TSMEDIAPROPERTY.CAPTION"
-msgid "Media Property"
-msgstr "Proprietà Media"
-
-#: tfsonginfo.tstags.caption
-msgid "Tags"
-msgstr "Etichette"
-
