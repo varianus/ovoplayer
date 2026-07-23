@@ -151,13 +151,16 @@ begin
     begin
       exit;
     end;
+
+  x:= GetSystemMetrics(SM_CXICON);
+  y:=GetSystemMetrics(SM_CyICON) ;
+
+  Imgl:= TImageList.CreateSize(x,y);
+  Dm.CustomRender(ImgL, TSize.Create(x,y), [$E808, $E803, $E805, $E805]);
+
   TaskbarList := CreateComObject(CLSID_TaskbarList) as ITaskbarList;
   res:=TaskbarList.HrInit;
   TaskbarList._AddRef;
-  x:= GetSystemMetrics(SM_CXICON);
-  y:=GetSystemMetrics(SM_CyICON) ;
-  Imgl:= TImageList.CreateSize(x,y);
-  Dm.CustomRender(ImgL, TSize.Create(x,y), [$48, $43, $42, $45]);
   res:=ord(Supports(TaskbarList, IID_ITaskbarList3, TaskbarList3));
   Handler:=self;
 
