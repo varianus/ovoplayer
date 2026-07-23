@@ -477,16 +477,19 @@ begin
   if Song.Tags.HasImage then
   begin
     f := GetFileTagsObject(Song.Tags.FileName);
-    f.Tags.Images[0].image.Position := 0;
-    Picture := tpicture.Create;
-    try
-      Picture.LoadFromStream(f.Tags.Images[0].image);
-      Result := GetTempDir(True) + 'ovoplayer-tmp-cover' + '.png';
-      Picture.SaveToFile(Result);
-      imgLoaded := True;
-    except
+    if Assigned(f.Tags) and (f.Tags.ImageCount > 0) then
+    begin
+      f.Tags.Images[0].image.Position := 0;
+      Picture := tpicture.Create;
+      try
+        Picture.LoadFromStream(f.Tags.Images[0].image);
+        Result := GetTempDir(True) + 'ovoplayer-tmp-cover' + '.png';
+        Picture.SaveToFile(Result);
+        imgLoaded := True;
+      except
+      end;
+      Picture.Free;
     end;
-    Picture.Free;
     f.Free;
   end;
 

@@ -26,11 +26,11 @@ uses
   Classes, SysUtils, contnrs;
 
 type
-  TMediaProperty = Record
-    BitRate : Integer;
-    BPM : Integer;
-    Sampling : Integer;
-    ChannelMode : string;
+  TMediaProperty = record
+    BitRate: integer;
+    BPM: integer;
+    Sampling: integer;
+    ChannelMode: string;
   end;
 
   TIDFields = (idAlbum, idAlbumArtist, idArtist, idComment, idGenre,
@@ -46,18 +46,18 @@ type
     AlbumArtist: string;
     Artist: string;
     Comment: string;
-    Duration: Int64;
+    Duration: int64;
     Genre: string;
     Title: string;
     Track: Dword;
     TrackString: string;
     Year: string;
-    HasImage:boolean;
+    HasImage: boolean;
   end;
 
-  ACommonTags = Array of TCommonTags;
+  ACommonTags = array of TCommonTags;
 
-  operator = (t1 : TCommonTags; t2 : TCommonTags) b : boolean;
+operator =(t1: TCommonTags; t2: TCommonTags) b: boolean;
 
 type
 
@@ -66,51 +66,51 @@ type
   TTags = class;
 
   TFrameElement = class
-  Private
-    fId:String;
-  Protected
+  private
+    fId: string;
+  protected
     function GetSize: DWord; virtual;
     function GetID: string; virtual;
     procedure SetID(AValue: string);
     function GetAsString: string; virtual; abstract;
     procedure SetAsString(const AValue: string); virtual; abstract;
   public
-    Tagger : TTags;
-    constructor Create; virtual; Overload;
-    constructor Create(ID:String); virtual; Overload;
+    Tagger: TTags;
+    constructor Create; virtual; overload;
+    constructor Create(ID: string); virtual; overload;
     destructor Destroy; override;
-    function ReadFromStream(AStream:TStream;ExtInfo:pointer=nil):boolean; virtual; abstract;
-    function WriteToStream(AStream:TStream):DWord; virtual; abstract;
+    function ReadFromStream(AStream: TStream; ExtInfo: pointer = nil): boolean; virtual; abstract;
+    function WriteToStream(AStream: TStream): DWord; virtual; abstract;
 
   public
-    Property Size: DWord read GetSize;
-    property ID: string read GetID Write SetID;
+    property Size: DWord read GetSize;
+    property ID: string read GetID write SetID;
     property AsString: string read GetAsString write SetAsString;
 
   end;
 
   { TImageElement }
 
-  TImageElement = class (TFrameElement)
+  TImageElement = class(TFrameElement)
   private
     FFrameRef: TFrameElement;
     FImage: TStream;
     procedure SetFrameRef(AValue: TFrameElement);
     procedure SetImage(AValue: TStream);
   protected
-    function GetAsString: string;  override;
+    function GetAsString: string; override;
     procedure SetAsString(const AValue: string); override;
-  Public
-    Description: String;
-    MIMEType: String;
-    PictureType: Integer;
+  public
+    Description: string;
+    MIMEType: string;
+    PictureType: integer;
 
     constructor Create; override;
     destructor Destroy; override;
-    function ReadFromStream(AStream:TStream; ExtInfo:pointer=nil):boolean; override;
-    function WriteToStream(AStream:TStream):DWord; override;
-    Property FrameRef: TFrameElement read FFrameRef write SetFrameRef;
-    Property Image: TStream read FImage write SetImage;
+    function ReadFromStream(AStream: TStream; ExtInfo: pointer = nil): boolean; override;
+    function WriteToStream(AStream: TStream): DWord; override;
+    property FrameRef: TFrameElement read FFrameRef write SetFrameRef;
+    property Image: TStream read FImage write SetImage;
   end;
 
   { TTags }
@@ -126,24 +126,24 @@ type
     function GetImageByIndex(Index: integer): TImageElement;
     function GetImageCount: integer;
   protected
-    Function GetCommonTags: TCommonTags; virtual;
-    Procedure SetCommonTags(CommonTags :TCommonTags); virtual;
+    function GetCommonTags: TCommonTags; virtual;
+    procedure SetCommonTags(CommonTags: TCommonTags); virtual;
   public
     constructor Create; virtual;
     destructor Destroy; override;
-    function ReadFromStream(AStream:TStream; ExtInfo:pointer=nil):boolean; virtual; abstract;
-    function WriteToStream(AStream:TStream):DWord; virtual; abstract;
-    Procedure Add(Frame: TFrameElement);
-    Procedure Remove(Frame: TFrameElement);
-    Procedure AddImage(Image: TImageElement);
-    Procedure Clear;
-    function GetFrameValue(ID: String): String;
-    procedure SetFrameValue(const ID:String;const Value:String; FrameClass: TFrameElementClass);
+    function ReadFromStream(AStream: TStream; ExtInfo: pointer = nil): boolean; virtual; abstract;
+    function WriteToStream(AStream: TStream): DWord; virtual; abstract;
+    procedure Add(Frame: TFrameElement);
+    procedure Remove(Frame: TFrameElement);
+    procedure AddImage(Image: TImageElement);
+    procedure Clear;
+    function GetFrameValue(ID: string): string;
+    procedure SetFrameValue(const ID: string; const Value: string; FrameClass: TFrameElementClass);
   public
     property Count: integer read GetCount;
     property ImageCount: integer read GetImageCount;
     property Frames[Index: integer]: TFrameElement read GetFrameByIndex;
-    property FramesByID[ID: string]: TFrameElement read GetFrameByID;  default;
+    property FramesByID[ID: string]: TFrameElement read GetFrameByID; default;
     property Images[Index: integer]: TImageElement read GetImageByIndex;
     property ImagesByID[ID: string]: TImageElement read GetImageByID;
 
@@ -156,51 +156,52 @@ type
 
   TTagReader = class
   private
-      FFileName: String;
-  Protected
+    FFileName: string;
+  protected
     function GetTags: TTags; virtual; abstract;
-    function GetDuration: Int64; virtual;
-    Function DumpInfo: TMediaProperty; virtual;
+    function GetDuration: int64; virtual;
+    function DumpInfo: TMediaProperty; virtual;
   public
-    Constructor Create(FileName: TfileName); overload;
-    Constructor Create; overload;
+    constructor Create(FileName: TfileName); overload;
+    constructor Create; overload;
     destructor Destroy; override;
-    Function GetCommonTags: TCommonTags;
-    Procedure SetCommonTags(CommonTags: TCommonTags);
+    function GetCommonTags: TCommonTags;
+    procedure SetCommonTags(CommonTags: TCommonTags);
     function LoadFromFile(AFileName: Tfilename): boolean; virtual;
     function SaveToFile(AFileName: Tfilename): boolean; virtual;
     function UpdateFile: boolean; virtual;
     function isUpdateable: boolean; virtual;
   public
-    Property FileName : string Read FFileName;
+    property FileName: string read FFileName;
     property Tags: TTags read GetTags;
-    Property Duration:int64 read GetDuration;
-    Property MediaProperty: TMediaProperty read DumpInfo;
+    property Duration: int64 read GetDuration;
+    property MediaProperty: TMediaProperty read DumpInfo;
   end;
 
 //Procedure ClearTags(var Tags:TcommonTags); inline;
-function GetTagByID(Tags:TcommonTags; Field: TIDFields):string; inline;
-Procedure SetTagByID(var Tags:TcommonTags; Field: TIDFields; Value :string); inline;
-Function ExportToJson(const Tags: TcommonTags):string;
+function GetTagByID(Tags: TcommonTags; Field: TIDFields): string; inline;
+procedure SetTagByID(var Tags: TcommonTags; Field: TIDFields; Value: string); inline;
+function ExportToJson(const Tags: TcommonTags): string;
 
 
 implementation
+
 uses fpjson;
 
-operator = (t1 : TCommonTags; t2 : TCommonTags) b : boolean;
+operator =(t1: TCommonTags; t2: TCommonTags) b: boolean;
 begin
- result := (t1.ID          = t2.ID ) and
-           (t1.FileName    = t2.FileName) and
-           (t1.TrackString = t2.TrackString) and
-           (t1.Track       = t2.Track) and
-           (t1.Title       = t2.Title) and
-           (t1.Album       = t2.Album) and
-           (t1.Comment     = t2.Comment) and
-           (t1.AlbumArtist = t2.AlbumArtist) and
-           (t1.Artist      = t2.Artist) and
-           (t1.Genre       = t2.Genre) and
-           (t1.Year        = t2.Year) and
-           (t1.Duration    = t2.Duration);
+  Result := (t1.ID = t2.ID) and
+    (t1.FileName = t2.FileName) and
+    (t1.TrackString = t2.TrackString) and
+    (t1.Track = t2.Track) and
+    (t1.Title = t2.Title) and
+    (t1.Album = t2.Album) and
+    (t1.Comment = t2.Comment) and
+    (t1.AlbumArtist = t2.AlbumArtist) and
+    (t1.Artist = t2.Artist) and
+    (t1.Genre = t2.Genre) and
+    (t1.Year = t2.Year) and
+    (t1.Duration = t2.Duration);
 end;
 
 //procedure ClearTags(var Tags:TcommonTags);
@@ -218,56 +219,56 @@ end;
 //  Tags.Year         := '';
 //  Tags.Duration     := 0;
 //  Tags.HasImage     := False;
-//
+
 //end;
 
-function GetTagByID(Tags:TcommonTags; Field: TIDFields):string;
+function GetTagByID(Tags: TcommonTags; Field: TIDFields): string;
 begin
   case Field of
-    idAlbum       : Result := Tags.Album;
-    idAlbumArtist : Result := Tags.AlbumArtist;
-    idArtist      : Result := Tags.Artist;
-    idComment     : Result := Tags.Comment;
-    idGenre       : Result := Tags.Genre;
-    idTitle       : Result := Tags.Title;
-    idTrack       : Result := Tags.TrackString;
-    idYear        : Result := Tags.Year;
-  else
-    Result := '';
+    idAlbum: Result   := Tags.Album;
+    idAlbumArtist: Result := Tags.AlbumArtist;
+    idArtist: Result  := Tags.Artist;
+    idComment: Result := Tags.Comment;
+    idGenre: Result   := Tags.Genre;
+    idTitle: Result   := Tags.Title;
+    idTrack: Result   := Tags.TrackString;
+    idYear: Result    := Tags.Year;
+    else
+      Result := '';
   end;
 end;
 
-Procedure SetTagByID(var Tags:TcommonTags; Field: TIDFields; Value :string);
+procedure SetTagByID(var Tags: TcommonTags; Field: TIDFields; Value: string);
 begin
-    case Field of
-    idAlbum       : Tags.Album := Value;
-    idAlbumArtist : Tags.AlbumArtist := Value;
-    idArtist      : Tags.Artist := Value;
-    idComment     : Tags.Comment := Value;
-    idGenre       : Tags.Genre := Value;
-    idTitle       : Tags.Title := Value;
-    idTrack       : Tags.TrackString := Value;
-    idYear        : Tags.Year := Value;
+  case Field of
+    idAlbum: Tags.Album := Value;
+    idAlbumArtist: Tags.AlbumArtist := Value;
+    idArtist: Tags.Artist := Value;
+    idComment: Tags.Comment := Value;
+    idGenre: Tags.Genre := Value;
+    idTitle: Tags.Title := Value;
+    idTrack: Tags.TrackString := Value;
+    idYear: Tags.Year := Value;
   end;
 
 end;
 
-Function ExportToJson(const Tags: TcommonTags):string;
+function ExportToJson(const Tags: TcommonTags): string;
 var
-  FsongObj : TJSONObject;
+  FsongObj: TJSONObject;
 begin
-  FsongObj:= TJSONObject.Create;
+  FsongObj := TJSONObject.Create;
   try
-    FSongObj.Add('Title',Tags.Title);
-    FSongObj.Add('Album',Tags.Album);
-    FSongObj.Add('AlbumArtist',Tags.AlbumArtist);
-    FSongObj.Add('Artist',Tags.Artist);
-    FSongObj.Add('Comment',Tags.Comment);
-    FSongObj.Add('Duration',Tags.Duration);
-    FSongObj.Add('Genre',Tags.Genre);
-    FSongObj.Add('TrackString',Tags.TrackString);
-    FSongObj.Add('Year',Tags.Year);
-    Result:= FsongObj.AsJSON;
+    FSongObj.Add('Title', Tags.Title);
+    FSongObj.Add('Album', Tags.Album);
+    FSongObj.Add('AlbumArtist', Tags.AlbumArtist);
+    FSongObj.Add('Artist', Tags.Artist);
+    FSongObj.Add('Comment', Tags.Comment);
+    FSongObj.Add('Duration', Tags.Duration);
+    FSongObj.Add('Genre', Tags.Genre);
+    FSongObj.Add('TrackString', Tags.TrackString);
+    FSongObj.Add('Year', Tags.Year);
+    Result := FsongObj.AsJSON;
   finally
     FsongObj.Free;
   end;
@@ -278,33 +279,33 @@ end;
 
 procedure TImageElement.SetFrameRef(AValue: TFrameElement);
 begin
-  if FFrameRef=AValue then Exit;
-  FFrameRef:=AValue;
+  if FFrameRef = AValue then Exit;
+  FFrameRef := AValue;
 end;
 
 procedure TImageElement.SetImage(AValue: TStream);
 begin
-  if FImage=AValue then Exit;
-  FImage:=AValue;
+  if FImage = AValue then Exit;
+  FImage := AValue;
 end;
 
 function TImageElement.GetAsString: string;
 begin
-  Result:= '';
+  Result := '';
 end;
 
 procedure TImageElement.SetAsString(const AValue: string);
 begin
 end;
 
-function TImageElement.ReadFromStream(AStream: TStream;ExtInfo:pointer=nil): boolean;
+function TImageElement.ReadFromStream(AStream: TStream; ExtInfo: pointer = nil): boolean;
 begin
-  Result:=False;
+  Result := False;
 end;
 
 function TImageElement.WriteToStream(AStream: TStream): DWord;
 begin
-  result := 0;
+  Result := 0;
 end;
 
 constructor TImageElement.Create;
@@ -321,30 +322,30 @@ end;
 
 { TTagReader }
 
-function TTagReader.GetDuration: Int64;
+function TTagReader.GetDuration: int64;
 begin
-  Result:=0;
+  Result := 0;
 end;
 
 constructor TTagReader.Create(FileName: TfileName);
 begin
- FFileName := FileName;
- if FileExists(FileName) then
-  LoadFromFile(FileName);
+  FFileName := FileName;
+  if FileExists(FileName) then
+    LoadFromFile(FileName);
 end;
 
 constructor TTagReader.Create;
 begin
-//
+
 end;
 
 destructor TTagReader.Destroy;
 var
-   tmptags: TTags;
+  tmptags: TTags;
 begin
   tmptags := GetTags;
   if Assigned(tmptags) then
-     tmptags.Free;
+    tmptags.Free;
 
   inherited Destroy;
 end;
@@ -352,26 +353,26 @@ end;
 function TTagReader.DumpInfo: TMediaProperty;
 begin
   with Result do
-   begin
-     BitRate :=0;
-     BPM := 0;
-     Sampling := 0;
-     ChannelMode := '';
-   end;
+  begin
+    BitRate  := 0;
+    BPM      := 0;
+    Sampling := 0;
+    ChannelMode := '';
+  end;
 
 end;
 
 function TTagReader.GetCommonTags: TCommonTags;
 begin
   if Assigned(Tags) then
-     Result := Tags.GetCommonTags
+    Result := Tags.GetCommonTags
   else
-     Result := Default(TCommonTags);
+    Result := Default(TCommonTags);
 
   Result.FileName := FFileName;
-  Result.Duration:= GetDuration;
+  Result.Duration := GetDuration;
   if Result.Title = '' then
-     Result.Title := ChangeFileExt(ExtractFileName(FFileName) ,'');
+    Result.Title := ChangeFileExt(ExtractFileName(FFileName), '');
 end;
 
 procedure TTagReader.SetCommonTags(CommonTags: TCommonTags);
@@ -381,62 +382,63 @@ end;
 
 function TTagReader.LoadFromFile(AFileName: Tfilename): boolean;
 begin
-  FFileName:=AFileName;
-  Result:=false;
+  FFileName := AFileName;
+  Result    := False;
 end;
 
 function TTagReader.SaveToFile(AFileName: Tfilename): boolean;
 begin
-  Result := false;
+  Result := False;
 end;
 
 function TTagReader.UpdateFile: boolean;
 var
-  SaveFile : string;
+  SaveFile: string;
 begin
-//  SaveFile:=  ExtractFileNameOnly(FileName) + '.~.'+ ExtractFileExt(FileName);
-  SaveFile:=  ChangeFileExt(FileName, '.~.'+ ExtractFileExt(FileName));
+  //  SaveFile:=  ExtractFileNameOnly(FileName) + '.~.'+ ExtractFileExt(FileName);
+  SaveFile := ChangeFileExt(FileName, '.~.' + ExtractFileExt(FileName));
 
-  result := SaveToFile(SaveFile);
+  Result := SaveToFile(SaveFile);
 
   if Result then
-    begin
-      result := DeleteFile(FileName);
-      result := RenameFile( SaveFile, FileName);
-    end;
+  begin
+    Result := DeleteFile(FileName);
+    Result := RenameFile(SaveFile, FileName);
+  end;
 
 end;
 
 function TTagReader.isUpdateable: boolean;
 begin
-  Result := false;
+  Result := False;
 end;
 
 { TTags }
 
 function TTags.GetFrameByID(ID: string): TFrameElement;
 var
-  i:Integer;
+  i: integer;
   fid: integer;
 begin
-  fid:= -1;
-  for i:=0 to FramesList.Count -1 do
+  fid := -1;
+  for i := 0 to FramesList.Count - 1 do
+    if AnsiCompareText(TFrameElement(FramesList[i]).id, id) = 0 then
     begin
-      if AnsiCompareText(TFrameElement(FramesList[i]).id, id) = 0 then
-         begin
-           fid:=i;
-           break;
-         end;
+      fid := i;
+      break;
     end;
   if fid <> -1 then
-     result := GetFrameByIndex(fid)
+    Result := GetFrameByIndex(fid)
   else
-     result := nil;
+    Result := nil;
 end;
 
 function TTags.GetImageCount: integer;
 begin
-  Result := ImagesList.Count;
+  if Assigned(ImagesList) then
+    Result := ImagesList.Count
+  else
+    Result := 0;
 end;
 
 function TTags.GetCount: integer;
@@ -451,27 +453,25 @@ end;
 
 function TTags.GetImageByID(ID: string): TImageElement;
 var
-  i:Integer;
-  fid: Integer;
+  i: integer;
+  fid: integer;
 begin
-  fid:= -1;
-  for i:=0 to FramesList.Count -1 do
+  fid := -1;
+  for i := 0 to FramesList.Count - 1 do
+    if UpperCase(TImageElement(FramesList[i]).ID) = UpperCase(id) then
     begin
-      if UpperCase(TImageElement(FramesList[i]).ID) = UpperCase(id) then
-         begin
-           fid:=i;
-           break;
-         end;
+      fid := i;
+      break;
     end;
   if fid <> -1 then
-     result := GetImageByIndex(fid)
+    Result := GetImageByIndex(fid)
   else
-     result := nil;
+    Result := nil;
 end;
 
 function TTags.GetImageByIndex(Index: integer): TImageElement;
 begin
-   Result := TImageElement(ImagesList[Index]);
+  Result := TImageElement(ImagesList[Index]);
 end;
 
 constructor TTags.Create;
@@ -514,54 +514,54 @@ end;
 
 function TTags.GetCommonTags: TCommonTags;
 begin
-  with result do
-    begin
-      ID:=-1;
-      FileName:='';
-      Album := '';
-      AlbumArtist:= '';
-      Artist:= '';
-      Comment:= '';
-      Duration:= 0;
-      Genre:= '';
-      Title:= '';
-      Track:= 0;
-      TrackString:= '';
-      Year:= '';
-      HasImage:=False;
-    end;
+  with Result do
+  begin
+    ID      := -1;
+    FileName := '';
+    Album   := '';
+    AlbumArtist := '';
+    Artist  := '';
+    Comment := '';
+    Duration := 0;
+    Genre   := '';
+    Title   := '';
+    Track   := 0;
+    TrackString := '';
+    Year    := '';
+    HasImage := False;
+  end;
 end;
 
 procedure TTags.SetCommonTags(CommonTags: TCommonTags);
 begin
-  //
+
 end;
 
-procedure TTags.SetFrameValue(const ID:String;const Value:String; FrameClass: TFrameElementClass);
+procedure TTags.SetFrameValue(const ID: string; const Value: string; FrameClass: TFrameElementClass);
 var
-  Element : TFrameElement;
+  Element: TFrameElement;
 begin
   Element := FramesByID[ID];
   if (Element = nil) and (Value <> '') then
-     begin
-       Element := FrameClass.Create(ID);
-       Element.Tagger:=self;
-       Add(Element);
-     end;
+  begin
+    Element := FrameClass.Create(ID);
+    Element.Tagger := self;
+    Add(Element);
+  end;
   if Assigned(Element) then
     Element.AsString := Value;
 end;
 
 
-function TTags.GetFrameValue(ID:String):String;
+function TTags.GetFrameValue(ID: string): string;
 var
-  Element : TFrameElement;
+  Element: TFrameElement;
 begin
   Element := FramesByID[ID];
   if Element = nil then
-     result := ''
+    Result := ''
   else
-     Result := Element.AsString;
+    Result := Element.AsString;
 end;
 
 { TFrameElement }
@@ -569,7 +569,7 @@ end;
 procedure TFrameElement.SetID(AValue: string);
 begin
   if fId <> AValue then
-     fId:= AValue;
+    fId := AValue;
 end;
 
 function TFrameElement.GetSize: DWord;
@@ -579,23 +579,22 @@ end;
 
 function TFrameElement.GetID: string;
 begin
-  Result:=fId;
+  Result := fId;
 end;
 
 constructor TFrameElement.Create;
 begin
- //
+
 end;
 
-constructor TFrameElement.Create(ID: String);
+constructor TFrameElement.Create(ID: string);
 begin
   fId := ID;
 end;
 
 destructor TFrameElement.Destroy;
 begin
-  //
+
 end;
 
 end.
-
