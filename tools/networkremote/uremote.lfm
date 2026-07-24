@@ -247,33 +247,35 @@ object Form1: TForm1
     ClientWidth = 1016
     TabOrder = 2
     object Button1: TButton
-      Left = 329
+      Left = 392
       Height = 25
-      Top = 104
+      Top = 105
       Width = 75
       Caption = 'Send'
       TabOrder = 0
       OnClick = Button1Click
     end
     object Edit1: TEdit
-      Left = 64
+      Left = 98
       Height = 23
-      Top = 106
+      Top = 107
       Width = 247
       TabOrder = 1
     end
     object Label9: TLabel
-      Left = 16
+      Left = 0
       Height = 15
-      Top = 113
-      Width = 42
+      Top = 110
+      Width = 93
+      Alignment = taRightJustify
+      AutoSize = False
       Caption = 'Custom'
       ParentColor = False
     end
     object Panel1: TPanel
-      Left = 81
+      Left = 96
       Height = 26
-      Top = 58
+      Top = 59
       Width = 800
       ChildSizing.HorizontalSpacing = 2
       ChildSizing.EnlargeHorizontal = crsScaleChilds
@@ -347,10 +349,12 @@ object Form1: TForm1
       end
     end
     object Label10: TLabel
-      Left = 26
+      Left = 8
       Height = 15
-      Top = 63
-      Width = 35
+      Top = 64
+      Width = 85
+      Alignment = taRightJustify
+      AutoSize = False
       Caption = 'Action'
       ParentColor = False
     end
@@ -378,6 +382,32 @@ object Form1: TForm1
       Width = 25
       Shape = stCircle
     end
+    object RadioGroup1: TRadioGroup
+      Left = 528
+      Height = 48
+      Top = 96
+      Width = 313
+      AutoFill = True
+      Caption = 'Position Mode'
+      ChildSizing.LeftRightSpacing = 6
+      ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+      ChildSizing.EnlargeVertical = crsHomogenousChildResize
+      ChildSizing.ShrinkHorizontal = crsScaleChilds
+      ChildSizing.ShrinkVertical = crsScaleChilds
+      ChildSizing.Layout = cclLeftToRightThenTopToBottom
+      ChildSizing.ControlsPerLine = 3
+      ClientHeight = 28
+      ClientWidth = 309
+      Columns = 3
+      ItemIndex = 0
+      Items.Strings = (
+        'None'
+        'Client'
+        'Server'
+      )
+      TabOrder = 5
+      OnClick = RadioGroup1Click
+    end
   end
   object memoSent: TMemo
     Left = 0
@@ -392,7 +422,7 @@ object Form1: TForm1
   object Timer1: TTimer
     Enabled = False
     OnTimer = Timer1Timer
-    Left = 792
-    Top = 192
+    Left = 568
+    Top = 16
   end
 end

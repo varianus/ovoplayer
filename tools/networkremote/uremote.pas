@@ -25,7 +25,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, Spin, ComCtrls, Buttons, tcpipwebsocket,  ClientThread,
+  ExtCtrls, Spin, ComCtrls, Buttons, tcpipwebsocket, ClientThread,
   netprotocol, netsupport, BaseTypes, basetag, uriparser;
 
 type
@@ -68,6 +68,7 @@ type
     memoReceived: TMemo;
     memoSent: TMemo;
     Panel1: TPanel;
+    RadioGroup1: TRadioGroup;
     seTrack: TSpinEdit;
     seYear: TSpinEdit;
     Status: TShape;
@@ -77,6 +78,7 @@ type
     procedure Button8Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
+    procedure RadioGroup1Click(Sender: TObject);
     procedure tbConn1Click(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure TrackBar1Change(Sender: TObject);
@@ -173,9 +175,8 @@ begin
 end;
 
 procedure TForm1.SetConnected(AValue: boolean);
-
 var
-  s: String;
+  s: string;
 begin
   if FConnected = AValue then Exit;
   FConnected := AValue;
@@ -320,11 +321,11 @@ begin
 
       INFO_ENGINE_STATE: begin
         ComboBox1.ItemIndex := StrToIntDef(r.Param, -1);
-        case TEngineState(StrToInt(r.Param)) of
+   {     case TEngineState(StrToInt(r.Param)) of
           ENGINE_PLAY: Timer1.Enabled := True;
           else
             Timer1.Enabled := False;
-        end;
+        end;           }
       end;
 
       INFO_FULLPLAYLIST: DecodePlaylist(r.Param);
@@ -365,6 +366,34 @@ begin
   if ParamCount > 0 then
     if ParamStr(1).StartsWith('ws', True) then
       edtServer.Text := ParamStr(1);
+end;
+
+procedure TForm1.RadioGroup1Click(Sender: TObject);
+var
+  s: String;
+begin
+  if not RadioGroup1.Enabled then
+   exit;
+  case RadioGroup1.ItemIndex of
+    0: begin
+      Timer1.Enabled := false;
+      s := EncodeString(BuildCommand(CATEGORY_CONFIG, COMMAND_WANTPOS, '0'), OutCfg);
+      echo(True, s);
+      FClient.WriteString(s);
+    end;
+    1: begin
+      Timer1.Enabled := true;
+      s := EncodeString(BuildCommand(CATEGORY_CONFIG, COMMAND_WANTPOS, '0'), OutCfg);
+      echo(True, s);
+      FClient.WriteString(s);
+    end;
+    2: begin
+      Timer1.Enabled := false;
+      s := EncodeString(BuildCommand(CATEGORY_CONFIG, COMMAND_WANTPOS, '1'), OutCfg);
+      echo(True, s);
+      FClient.WriteString(s);
+    end;
+  end;
 end;
 
 procedure TForm1.tbConn1Click(Sender: TObject);
