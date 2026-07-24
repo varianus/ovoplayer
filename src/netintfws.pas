@@ -208,6 +208,8 @@ begin
                                 end;
             INFO_LOOPING : sock.WriteString(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_LOOPING, inttostr(ord(fnet.fBackEnd.GetLooping()))),ConnectionCfg));
             INFO_MUTE : sock.WriteString(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_MUTE, inttostr(ord(fnet.fBackEnd.GetMute()))),ConnectionCfg));
+          else
+             sock.WriteString(EncodeString(BuildCommand(CATEGORY_ERROR, INFO_MESSAGE, format('UNKNOWN COMMAND %s %s',[Command.Category, Command.Command] ,ConnectionCfg));
           end;
         end;
     end;

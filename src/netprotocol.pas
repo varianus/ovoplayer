@@ -74,6 +74,9 @@ Const
   CATEGORY_HEART = 'hrt';
     COMMAND_BEAT = 'beat';
 
+  CATEGORY_ERROR = 'err';
+    INFO_MESSAGE = 'msg';
+
   CATEGORY_NONE = '';
     COMMAND_NONE = '';
 
