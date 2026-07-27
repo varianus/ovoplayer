@@ -3,7 +3,7 @@ unit iconrender;
 interface
 
 uses
-  Classes, SysUtils, Graphics, fpimage, LCLType, IntfGraphics, GraphType, EasyLazFreeType, LazFreeTypeIntfDrawer;
+  Classes, SysUtils, Graphics, fpimage, LCLType, IntfGraphics, GraphType, EasyLazFreeType, LazFreeTypeIntfDrawer, Forms;
 
 type
 
@@ -97,8 +97,8 @@ procedure TIconRenderer.SetSize(const AImageSize: integer; const FontSize: integ
 var
   DPI : integer;
 begin
-  DPI := 96;
-///  FFontData.DPI := Screen.PixelsPerInch;
+//  DPI := 96;
+  DPI := Screen.PixelsPerInch;
   FFontData.DPI := DPI;
 
   if AutoScale then

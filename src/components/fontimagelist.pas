@@ -58,6 +58,7 @@ type
     property OnInitialize: TNotifyEvent read FOnInitialize write SetOnInitialize;
     property Height write SetHeight;
     property Width write SetWidth;
+    property Scaled;
 
   end;
 
@@ -274,7 +275,7 @@ begin
 
   try
     IconRenderer := TIconRenderer.Create(FStream);
-    IconRenderer.SetSize(Height, Width, True); // Scaling occurs inside object, no need to do it here
+    IconRenderer.SetSize(Height, Width, Scaled); // Scaling occurs inside object, no need to do it here
 
     for item in FGlyphs do
     begin
