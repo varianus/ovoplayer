@@ -227,11 +227,14 @@ object DM: TDM
     FontName = 'C:\source\ovoplayer\src\ovoplayer.ttf'
     FontSource = fsrcFileName
     OnInitialize = ilButtonsInitialize
-    Height = 23
-    Width = 23
+    Height = 24
+    Width = 22
+    Scaled = True
     Left = 360
     Top = 21
     Bitmap = {
+    }
+    BitmapAdv = {
     }
     GlyphsData = {
       1D00000002000000120000800300000008000080040000000800008005000000
@@ -247,9 +250,13 @@ object DM: TDM
   object ilSmall: TFontImageList
     FontName = 'C:\source\ovoplayer\src\ovoplayer.ttf'
     FontSource = fsrcFileName
+    Height = 18
+    Scaled = True
     Left = 210
     Top = 21
     Bitmap = {
+    }
+    BitmapAdv = {
     }
     GlyphsData = {
       1100000015000000080000801E000000080000802B0000000800008018000000
