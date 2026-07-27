@@ -156,7 +156,7 @@ begin
   y:=GetSystemMetrics(SM_CyICON) ;
 
   Imgl:= TImageList.CreateSize(x,y);
-  Dm.CustomRender(ImgL, TSize.Create(x,y), [$E808, $E803, $E805, $E805]);
+  Dm.CustomRender(ImgL, TSize.Create(x,y), [$E808, $E802, $E803, $E805]);
 
   TaskbarList := CreateComObject(CLSID_TaskbarList) as ITaskbarList;
   res:=TaskbarList.HrInit;
