@@ -33,8 +33,8 @@ uses
   {$IFDEF NOTIFYDBUS} notification,{$ENDIF}
   {$IFDEF TASKBAR_EXTENSION}taskbar_ext,{$ENDIF}
   {$IFDEF NETWORK_INTF}
-      {$ifdef Network_ss} netinf,{$ENDIF}
-      {$ifdef Network_Ws} netintfws,{$ENDIF}
+    {$ifdef Network_ss} netinf,{$ENDIF}
+    {$ifdef Network_Ws} netintfws,{$ENDIF}
   {$ENDIF}
   {$IFDEF MULTIMEDIA_KEYS}MultimediaKeys, {$ENDIF}
   {$IFDEF SCREEN_LOCK}screenlock,{$ENDIF}
@@ -507,7 +507,7 @@ const
     //    (Kind: tkRating; FieldName: 'Rating'; ImageIndex: 5)
     );
 
-{ TPlaylistGuiParam }
+  { TPlaylistGuiParam }
 
 procedure TPlaylistGuiParam.InternalSave;
 var
@@ -541,7 +541,7 @@ var
   Col: integer;
 begin
   tmpSt := TStringList.Create;
-  info := TStringList.Create;
+  info  := TStringList.Create;
   try
     Owner.ReadCustomParams(Base, tmpSt);
     for i := 0 to tmpSt.Count - 1 do
@@ -557,9 +557,9 @@ begin
           Col := j;
           break;
         end;
-      FForm.sgPlayList.Columns[Col].Index := StrToInt(tmpSt.Names[i]);
+      FForm.sgPlayList.Columns[Col].Index   := StrToInt(tmpSt.Names[i]);
       FForm.sgPlayList.Columns[col].Visible := Info[2] = 'Y';
-      FForm.sgPlayList.Columns[Col].Width := StrToInt(info[3]);
+      FForm.sgPlayList.Columns[Col].Width   := StrToInt(info[3]);
     end;
   except
     // if problem loading columns size, remove that info from config
@@ -590,7 +590,7 @@ procedure TMainFormParam.SetHeight(AValue: integer);
 begin
   if FHeight = AValue then Exit;
   FHeight := AValue;
-  Dirty := True;
+  Dirty   := True;
 end;
 
 procedure TMainFormParam.SetLeft(AValue: integer);
@@ -610,7 +610,7 @@ end;
 procedure TMainFormParam.SetTop(AValue: integer);
 begin
   if FTop = AValue then Exit;
-  FTop := AValue;
+  FTop  := AValue;
   Dirty := True;
 end;
 
@@ -618,7 +618,7 @@ procedure TMainFormParam.SetWidth(AValue: integer);
 begin
   if FWidth = AValue then Exit;
   FWidth := AValue;
-  Dirty := True;
+  Dirty  := True;
 end;
 
 procedure TMainFormParam.InternalSave;
@@ -638,9 +638,9 @@ const
   Base = 'MainForm';
 begin
   fHeight := Owner.Inifile.ReadInteger(Base, 'Height', FForm.Height);
-  fWidth := Owner.Inifile.ReadInteger(Base, 'Width', FForm.Width);
-  fTop := Owner.Inifile.ReadInteger(Base, 'Top', FForm.Top);
-  fLeft := Owner.Inifile.ReadInteger(Base, 'Left', FForm.Left);
+  fWidth  := Owner.Inifile.ReadInteger(Base, 'Width', FForm.Width);
+  fTop    := Owner.Inifile.ReadInteger(Base, 'Top', FForm.Top);
+  fLeft   := Owner.Inifile.ReadInteger(Base, 'Left', FForm.Left);
   fActivePage := Owner.Inifile.ReadInteger(Base, 'ActivePage', 0);
   fLeftPanelVisible := Owner.Inifile.ReadBool(Base, 'LeftPanelVisible', True);
 
@@ -813,7 +813,7 @@ procedure TfMainForm.FilesTreeKeyDown(Sender: TObject; var Key: word; Shift: TSh
 var
   Node: TTreeNode;
 begin
-  if (ssCtrl in Shift) and (UpperCase(char(key)) = 'A' )then
+  if (ssCtrl in Shift) and (UpperCase(char(key)) = 'A') then
   begin
     Node := FilesTree.Items.GetFirstNode;
     while Assigned(Node) do
@@ -887,7 +887,7 @@ begin
         begin
           imgCover.Picture.LoadFromStream(f.Tags.Images[0].image);
           imgCover.Hint := rEmbedded;
-          imgloaded := True;
+          imgloaded     := True;
         end;
       end;
     except
@@ -898,12 +898,20 @@ begin
   if not imgLoaded then
   begin
     imgName := BackEnd.GetImageFromfolder(IncludeTrailingPathDelimiter(Song.FilePath));
-    if (imgName <> '') and (imgName <> CurrentCover) then
-    begin
-      imgCover.Picture.LoadFromFile(imgName);
-      imgCover.Hint := imgName;
-      CurrentCover := imgName;
-    end;
+    if imgName <> CurrentCover then
+      if (imgName <> '') then
+      begin
+        imgCover.Picture.LoadFromFile(imgName);
+        imgCover.Hint := imgName;
+        CurrentCover  := imgName;
+      end
+      else
+      begin
+        imgCover.Picture.LoadFromResourceName(HINSTANCE, 'NOCOVER');
+        imgCover.Hint := '';
+        CurrentCover  := '';
+      end;
+
   end;
 
   ShowNotification;
@@ -969,7 +977,7 @@ procedure TfMainForm.UpdateProperty(Kind: TChangedProperty);
 begin
   case kind of
     cpVolume, cpMute: begin
-      slVolume.Position := BackEnd.Volume;
+      slVolume.Position  := BackEnd.Volume;
       dm.actmute.Checked := backend.muted;
       if backend.muted then
         dm.actMute.ImageIndex := 18
@@ -984,7 +992,7 @@ begin
     cpPlayPos: begin
       if not seeking then
         TrackBar.Position := BackEnd.Position;
-      lbTime.Caption := FormatTimeRange(BackEnd.Position);
+      lbTime.Caption      := FormatTimeRange(BackEnd.Position);
     end;
     cpLooping: dm.changeRepeatMode(BackEnd.Looping, False);
   end;
@@ -1001,7 +1009,7 @@ begin
   begin
     if not Assigned(MyNetIntf) then
     begin
-      MyNetIntf := TNetIntf.Create;
+      MyNetIntf      := TNetIntf.Create;
       MyNetIntf.OnlyLocalhost := GuiConfigObj.NetRemoteParam.OnlyLocalhost;
       MyNetIntf.Port := GuiConfigObj.NetRemoteParam.Port;
       MyNetIntf.Activate(BackEnd);
@@ -1028,7 +1036,7 @@ end;
 
 procedure TfMainForm.actSortTrackExecute(Sender: TObject);
 begin
-  case TAction(sender).ActionComponent.Tag of
+  case TAction(Sender).ActionComponent.Tag of
     1: BackEnd.PlayList.SortField := stTitle;
     2: BackEnd.PlayList.SortField := stTrack;
     3: BackEnd.PlayList.SortField := stDuration;
@@ -1037,13 +1045,9 @@ begin
   BackEnd.PlayList.SortDirection := sdplAscending;
 
   if PlaylistSelected.isMultiselection then
-    begin
-      BackEnd.PlayList.Sort(PlaylistSelected.FirstSelected, PlaylistSelected.LastSelected);
-    end
+    BackEnd.PlayList.Sort(PlaylistSelected.FirstSelected, PlaylistSelected.LastSelected)
   else
-    begin
-      BackEnd.PlayList.Sort(0, BackEnd.PlayList.Count -1);
-    end;
+    BackEnd.PlayList.Sort(0, BackEnd.PlayList.Count - 1);
 end;
 
 procedure TfMainForm.actShowAboutExecute(Sender: TObject);
@@ -1178,7 +1182,7 @@ var
   wrkNode: TMusicTreeNode;
   wrkValue: string;
 begin
-  Result := '0=0';
+  Result  := '0=0';
   wrkNode := Node;
   repeat
     if wrkNode.EmptyTag then
@@ -1215,7 +1219,7 @@ begin
       if UpperCase(TagValue(Tags, SortFields.F1)) <> L1Key then
       begin
         L1Item := TMusicTreeNode(TVCollection.Items.Add(nil, TagValue(Tags, SortFields.F1)));
-        L1Key := UpperCase(TagValue(Tags, SortFields.F1));
+        L1Key  := UpperCase(TagValue(Tags, SortFields.F1));
         L1Item.EmptyTag := L1Item.Text = EmptyStr;
         if L1Item.EmptyTag then L1Item.Text := rEmptyTag;
         L1Item.Kind := SortFields.F1;
@@ -1225,15 +1229,15 @@ begin
       if UpperCase(TagValue(Tags, SortFields.F2)) <> L2Key then
       begin
         L2Item := TMusicTreeNode(TVCollection.Items.AddChild(L1Item, TagValue(Tags, SortFields.F2)));
-        L2Key := UpperCase(TagValue(Tags, SortFields.F2));
+        L2Key  := UpperCase(TagValue(Tags, SortFields.F2));
         L2Item.EmptyTag := L2Item.Text = EmptyStr;
         if L2Item.EmptyTag then L2Item.Text := rEmptyTag;
         L2Item.Kind := SortFields.F2;
       end;
 
-      L3Item := TMusicTreeNode(TVCollection.Items.AddChild(L2Item, TagValue(Tags, tkSong)));
+      L3Item      := TMusicTreeNode(TVCollection.Items.AddChild(L2Item, TagValue(Tags, tkSong)));
       L3Item.Kind := tkSong;
-      L3Item.ID := tags.ID;
+      L3Item.ID   := tags.ID;
       Finalize(Tags);
       BackEnd.mediaLibrary.NextItem;
     end;
@@ -1249,7 +1253,7 @@ procedure TfMainForm.MediaLibraryScanComplete(Sender: TObject; _Added, _Updated,
 begin
   //debugln(DateTimeToStr(now), ' - ' ,'Stop');
   sgStats.Clean;
-  sgStats.RowCount := 4;
+  sgStats.RowCount    := 4;
   sgStats.Cells[0, 0] := rAddedTrack;
   sgStats.Cells[1, 0] := IntToStr(_Added);
   sgStats.Cells[0, 1] := rUpdatedTrack;
@@ -1282,7 +1286,7 @@ begin
   GuiConfigObj := TGuiConfig.Create(BackEnd.Config);
 
   TrayMenuActive := False;
-  Quitting := False;
+  Quitting    := False;
   PlaylistSelected := TRowsSelection.Create;
   PlaylistContainer := nil;
   PathHistory := TStringList.Create;
@@ -1298,33 +1302,33 @@ begin
   ClearPanelInfo;
 
   //Cache bitmap used for rating column painting
-  RatingBack := TBitmap.Create;
+  RatingBack  := TBitmap.Create;
   RatingFront := TBitmap.Create;
   RateStars.GetBitmap(1, RatingBack);
   RateStars.GetBitmap(0, RatingFront);
 
-  BackEnd.OnPlayListChange := @PlayListChange;
+  BackEnd.OnPlayListChange     := @PlayListChange;
   BackEnd.AudioEngine.OnSongStart := @BackEndSongStart;
   BackEnd.OnSaveInterfaceState := @SaveConfig;
 
-  BackEnd.OnPlayListLoad := @OnLoaded;
-  BackEnd.OnEngineCommand := @OnEngineCommand;
+  BackEnd.OnPlayListLoad    := @OnLoaded;
+  BackEnd.OnEngineCommand   := @OnEngineCommand;
   BackEnd.OnExternalCommand := @OnExternalCommand;
 
   BackEnd.mediaLibrary.OnScanComplete := @MediaLibraryScanComplete;
-  BackEnd.mediaLibrary.OnScanStart := @MediaLibraryScanBegin;
+  BackEnd.mediaLibrary.OnScanStart    := @MediaLibraryScanBegin;
 
   ReadConfig(Self);
 
   CheckWelcomeMode;
 
-  slVolume.Max := 255;//BackEnd.AudioEngine.MaxVolume;
+  slVolume.Max      := 255;//BackEnd.AudioEngine.MaxVolume;
   slVolume.Position := BackEnd.Volume;
 
   case TplRepeat(BackEnd.PlayListParam.RepeatMode) of
-    rptNone: dm.actRepeatNone.Checked := True;
-    rptTrack: dm.actRepeatTrack.Checked := True;
-    rptAlbum: dm.actRepeatAlbum.Checked := True;
+    rptNone: dm.actRepeatNone.Checked    := True;
+    rptTrack: dm.actRepeatTrack.Checked  := True;
+    rptAlbum: dm.actRepeatAlbum.Checked  := True;
     rptPlayList: dm.actRepeatAll.Checked := True;
   end;
 
@@ -1379,7 +1383,7 @@ begin
   {$IFDEF NETWORK_INTF}
   if GuiConfigObj.NetRemoteParam.Enabled then
   begin
-    MyNetIntf := TNetIntf.Create;
+    MyNetIntf      := TNetIntf.Create;
     MyNetIntf.Port := GuiConfigObj.NetRemoteParam.Port;
     MyNetIntf.OnlyLocalhost := GuiConfigObj.NetRemoteParam.OnlyLocalhost;
     MyNetIntf.Activate(BackEnd);
@@ -1488,7 +1492,7 @@ begin
 
   PathHistory.Free;
   PlaylistSelected.ClearAll;
-  PlaylistSelected.Size:=0;
+  PlaylistSelected.Size := 0;
   PlaylistSelected.Free;
   RatingBack.Free;
   RatingFront.Free;
@@ -1514,7 +1518,7 @@ end;
 procedure TfMainForm.FormResize(Sender: TObject);
 begin
   //AdaptSize;
-  FMainFormParam.Width := Width;
+  FMainFormParam.Width  := Width;
   FMainFormParam.Height := Height;
 end;
 
@@ -1613,7 +1617,7 @@ begin
   with TfCustomPlayList.Create(self) do
   begin
     Container := PlaylistContainer;
-    Index := -1;
+    Index     := -1;
     if showmodal = mrOk then
       LoadAutomaticPlaylist;
 
@@ -1630,7 +1634,7 @@ begin
   with TfCustomPlayList.Create(self) do
   begin
     Container := PlaylistContainer;
-    Index := item.Index;
+    Index     := item.Index;
     if LoadFromJson(PlaylistContainer.GetByName(item.FullPath)) then
     begin
       if showmodal = mrOk then
@@ -1651,9 +1655,9 @@ end;
 procedure TfMainForm.MediaLibraryScanBegin(Sender: TObject);
 begin
   sgStats.Clean;
-  sgStats.RowCount := 1;
+  sgStats.RowCount    := 1;
   sgstats.cells[0, 0] := rBeginCollectionScan;
-  gbStats.Visible := True;
+  gbStats.Visible     := True;
   Application.ProcessMessages;
   //debugln(DateTimeToStr(now), ' - ' ,'Begin');
 end;
@@ -1686,7 +1690,7 @@ begin
   ARow := BackEnd.PlayList.ItemIndex + 1;
   if (ARow > -1) and (ARow < sgplaylist.RowCount) then
   begin
-    Arow := Arow + 1;
+    Arow    := Arow + 1;
     iTopRow := sgplaylist.TopRow;
     visRows := sgplaylist.VisibleRowCount;
     lastRow := iTopRow + visRows - 1;
@@ -1726,7 +1730,7 @@ begin
     for i := 0 to AutoPlayList.Count - 1 do
     begin
       plname := DecodeSafeFileName(ExtractFileNameOnly(AutoPlayList[i]));
-      node := TPlayListTreeNode(PlaylistTree.Items.AddChild(BaseNode, plName));
+      node   := TPlayListTreeNode(PlaylistTree.Items.AddChild(BaseNode, plName));
       node.FullPath := AutoPlayList[i];
       Node.Automatic := True;
     end;
@@ -1753,9 +1757,9 @@ begin
   fMainFormParam := TMainFormParam.Create(BackEnd.Config, self);
 
   Height := fMainFormParam.Height;
-  Width := fMainFormParam.Width;
-  Top := fMainFormParam.Top;
-  Left := fMainFormParam.Left;
+  Width  := fMainFormParam.Width;
+  Top    := fMainFormParam.Top;
+  Left   := fMainFormParam.Left;
 
   actShowLeft.Checked := not fMainFormParam.LeftPanelVisible;
   actShowLeft.Execute;
@@ -1912,7 +1916,7 @@ begin
   Node := TFileTreeNode(FilesTree.Selected);
   if (Node <> nil) then
   begin
-    mnuFileInfo.Visible := not Node.isDir;
+    mnuFileInfo.Visible  := not Node.isDir;
     mnuSeparator.Visible := not Node.isDir;
   end;
 
@@ -1929,7 +1933,7 @@ begin
   MasterItem := item.FullPath = EmptyStr;
 
   mnuPlayPlaylist.Visible := not MasterItem;
-  MenuItem58.Visible := not MasterItem;
+  MenuItem58.Visible      := not MasterItem;
   mnuEditPlaylist.Visible := not MasterItem;
   mnuDeletePlaylist.Visible := not MasterItem;
 
@@ -2007,21 +2011,21 @@ begin
       TrueCol := sgPlayList.Columns[aCol].Tag;
 
       case TrueCol of
-        0: Txt := IntToStr(i);
-        1: Txt := ASong.Tags.Title;
-        2: Txt := ASong.Tags.Album;
-        3: Txt := ASong.Tags.Artist;
-        4: Txt := FormatTimeRange(ASong.Tags.Duration);
-        5: Txt := ASong.Tags.TrackString;
-        6: Txt := ASong.Tags.Genre;
-        7: Txt := ASong.Tags.Year;
-        8: Txt := ASong.Tags.AlbumArtist;
-        9: Txt := ASong.FileName;
+        0: Txt  := IntToStr(i);
+        1: Txt  := ASong.Tags.Title;
+        2: Txt  := ASong.Tags.Album;
+        3: Txt  := ASong.Tags.Artist;
+        4: Txt  := FormatTimeRange(ASong.Tags.Duration);
+        5: Txt  := ASong.Tags.TrackString;
+        6: Txt  := ASong.Tags.Genre;
+        7: Txt  := ASong.Tags.Year;
+        8: Txt  := ASong.Tags.AlbumArtist;
+        9: Txt  := ASong.FileName;
         10: Txt := 'WWWWWW';
       end;
       if txt = '' then
         txt := '.';
-      Ts := TmpCanvas.TextExtent(txt);
+      Ts    := TmpCanvas.TextExtent(txt);
 
       if Ts.Cx > W then
         W := Ts.Cx;
@@ -2054,7 +2058,7 @@ begin
   BaseItem.Clear;
   for col := 0 to sgPlayList.Columns.Count - 1 do
   begin
-    item := TMenuItem.Create(BaseItem);
+    item     := TMenuItem.Create(BaseItem);
     item.Caption := sgPlayList.Columns[col].Title.Caption;
     item.Tag := Col;
     item.Checked := sgPlayList.Columns[col].Visible;
@@ -2080,7 +2084,7 @@ begin
   sgPlayList.MouseToCell(p.x, p.y, ACol, ARow);
   if (ARow > 0) and (aCol = 11) and (BackEnd.PlayList[ARow - 1].ID <> -1) then
   begin
-    R1 := sgPlayList.CellRect(ACol, ARow);
+    R1     := sgPlayList.CellRect(ACol, ARow);
     Rating := trunc(((p.x - R1.Left) * 10) / RateStars.Width);
     BackEnd.PlayList[ARow - 1].Rating := rating;
     BackEnd.PlayList[ARow - 1].TmpRating := -1;
@@ -2106,7 +2110,7 @@ var
   Zone: TGridZone;
   AbsPos: TPoint;
 begin
-  Zone := sgPlayList.MouseToGridZone(MousePos.x, MousePos.Y);
+  Zone   := sgPlayList.MouseToGridZone(MousePos.x, MousePos.Y);
   AbsPos := sgPlayList.ClientToScreen(MousePos);
   case zone of
     gzFixedCols, gzFixedRows: pnHeaderPlaylist.PopUp(AbsPos.x, AbsPos.Y);
@@ -2178,16 +2182,16 @@ begin
     TrueCol := sgPlayList.Columns[aCol - 1].Tag;
 
   case TrueCol of
-    0: Txt := IntToStr(Arow);
-    1: Txt := ASong.Title;
-    2: Txt := ASong.Tags.Album;
-    3: Txt := ASong.Tags.Artist;
-    4: Txt := FormatTimeRange(ASong.Tags.Duration, True);
-    5: Txt := ASong.Tags.TrackString;
-    6: Txt := ASong.Tags.Genre;
-    7: Txt := ASong.Tags.Year;
-    8: Txt := ASong.Tags.AlbumArtist;
-    9: Txt := ASong.FileName;
+    0: Txt  := IntToStr(Arow);
+    1: Txt  := ASong.Title;
+    2: Txt  := ASong.Tags.Album;
+    3: Txt  := ASong.Tags.Artist;
+    4: Txt  := FormatTimeRange(ASong.Tags.Duration, True);
+    5: Txt  := ASong.Tags.TrackString;
+    6: Txt  := ASong.Tags.Genre;
+    7: Txt  := ASong.Tags.Year;
+    8: Txt  := ASong.Tags.AlbumArtist;
+    9: Txt  := ASong.FileName;
     10: Txt := '';
     else
       txt := '';
@@ -2244,15 +2248,15 @@ begin
   if TrueCol < 1 then exit;
 
   case TrueCol of
-    1: SortField := stTitle;
-    2: SortField := StAlbum;
-    3: SortField := stArtist;
-    4: SortField := stDuration;
-    5: SortField := stTrack;
-    6: SortField := stGenre;
-    7: SortField := stYear;
-    8: SortField := stAlbumArtist;
-    9: SortField := stFileName;
+    1: SortField  := stTitle;
+    2: SortField  := StAlbum;
+    3: SortField  := stArtist;
+    4: SortField  := stDuration;
+    5: SortField  := stTrack;
+    6: SortField  := stGenre;
+    7: SortField  := stYear;
+    8: SortField  := stAlbumArtist;
+    9: SortField  := stFileName;
     10: SortField := stRating;
     else
       SortField := stNone;
@@ -2319,7 +2323,7 @@ begin
     exit;
 
   VisibleCount := 0;
-  LastVisible := aIndex - sgPlayList.FixedCols;
+  LastVisible  := aIndex - sgPlayList.FixedCols;
   for i := aindex to sgPlayList.Columns.Count - 1 do
     if sgPlayList.Columns[i].Visible then
       Inc(VisibleCount);
@@ -2350,7 +2354,7 @@ begin
 
   sgPlayList.BeginUpdate;
 
-  Steps := diffs div VisibleCount;
+  Steps   := diffs div VisibleCount;
   remains := diffs mod VisibleCount;
 
   for i := aindex + 1 to sgPlayList.Columns.Count - 1 do
@@ -2381,7 +2385,7 @@ begin
     MovingSelection := msNone;
 
   case KeyDirection of
-    msUp: Displacement := 1;
+    msUp: Displacement   := 1;
     msDown: Displacement := -1;
   end;
 
@@ -2531,7 +2535,7 @@ begin
   sgPlayList.MouseToCell(x, y, ACol, ARow);
   if (ARow > 0) and (aCol = 11) and (BackEnd.PlayList[ARow - 1].ID <> -1) then
   begin
-    R1 := sgPlayList.CellRect(ACol, ARow);
+    R1     := sgPlayList.CellRect(ACol, ARow);
     Rating := trunc(((x - R1.Left) * 10) / RateStars.Width);
     BackEnd.PlayList[ARow - 1].TmpRating := rating;
     //       sgPlayList.InvalidateCell(ACol, ARow);
@@ -2574,12 +2578,12 @@ begin
     sgPlaylist.Canvas.Font.Style := [fsUnderline];
 
 
-  sgPlayList.Canvas.Font.Color := clWindowText;  // colore di default
+  sgPlayList.Canvas.Font.Color  := clWindowText;  // colore di default
   sgPlayList.Canvas.Brush.Color := clWindow;
 
   if PlaylistSelected[ARow - 1] then
   begin        // Will only color selected rows
-    sgPlayList.Canvas.Font.Color := clHighlightText;
+    sgPlayList.Canvas.Font.Color  := clHighlightText;
     sgPlayList.Canvas.Brush.Color := clHighlight;
   end;
 
@@ -2628,7 +2632,7 @@ procedure TfMainForm.btnCloseCollectionStatClick(Sender: TObject);
 begin
   sgStats.Clean;
   sgStats.RowCount := 1;
-  gbStats.Visible := False;
+  gbStats.Visible  := False;
 end;
 
 procedure TfMainForm.slVolumeClick(Sender: TObject);
@@ -2670,11 +2674,11 @@ begin
   exit;
   if ssLeft in Shift then
   begin
-    Seeking := True;
+    Seeking     := True;
     TrackBar.Cursor := crHSplit;
     newPosition := Round(x * TrackBar.Max / TrackBar.ClientWidth);
     TrackBar.Position := newPosition;
-	Backend.Position := newPosition;
+    Backend.Position := newPosition;
   end
   else
   begin
@@ -2818,7 +2822,7 @@ end;
 
 procedure TfMainForm.tvCollectionGetImageIndex(Sender: TObject; Node: TTreeNode);
 begin
-  node.ImageIndex := SortArray[TMusicTreeNode(Node).Kind].ImageIndex;
+  node.ImageIndex    := SortArray[TMusicTreeNode(Node).Kind].ImageIndex;
   node.SelectedIndex := node.ImageIndex;
 
 end;
@@ -2830,8 +2834,8 @@ var
   i: integer;
   Node: TFileTreeNode;
 begin
-  DirList := TStringList.Create;
-  FileList := TStringList.Create;
+  DirList     := TStringList.Create;
+  FileList    := TStringList.Create;
   FileList.OwnsObjects := True;
   CurrentPath := IncludeTrailingPathDelimiter(Path);
   try
@@ -2883,7 +2887,7 @@ begin
 
   oldtop := sgPlayList.TopRow;
   sgPlayList.Clear;
-  sgPlayList.RowCount := BackEnd.PlayList.Count + 1;
+  sgPlayList.RowCount   := BackEnd.PlayList.Count + 1;
   PlaylistSelected.Size := sgPlayList.RowCount - 1;
   PlaylistSelected.Clearall;
 
@@ -2895,8 +2899,8 @@ begin
 end;
 
 procedure TfMainForm.ClearPanelInfo;
-var
-  lFile: string;
+//var
+//  lFile: string;
 begin
   Title.Caption := rNotPlaying;
   Album.Caption := '';
@@ -2904,11 +2908,12 @@ begin
   //  Track.Caption     := '';
   TrackBar.Position := 0;
   lbTime.Caption := FormatTimeRange(0);
-  lFile := backend.Config.GetResourcesPath + 'logo.png';
-  if not FileExists(lFile) then
-    DebugLn('[TfMainForm.ClearPanelInfo] File not found: ' + lFile)
-  else
-    imgCover.Picture.LoadFromFile(lFile);
+  //lFile := backend.Config.GetResourcesPath + 'logo.png';
+  //if not FileExists(lFile) then
+  //  DebugLn('[TfMainForm.ClearPanelInfo] File not found: ' + lFile)
+  //else
+  //  imgCover.Picture.LoadFromFile(lFile);
+  imgCover.Picture.LoadFromResourceName(HINSTANCE, 'NOCOVER');
   Caption := DisplayAppName;
 end;
 
@@ -2964,9 +2969,9 @@ var
   h: ThackGrid;
   oldTop: integer;
 begin
-  oldtop := sgPlayList.TopRow;
-  HighP := 0;
-  LowP := 0;
+  oldtop    := sgPlayList.TopRow;
+  HighP     := 0;
+  LowP      := 0;
   TotalSize := 0;
   VisibleCount := 0;
   SetLength(ColWidths, sgPlayList.Columns.Count);
@@ -3007,7 +3012,7 @@ begin
 
   Diffs := h.gcache.ClientWidth - h.gcache.FixedWidth - TotalSize - 1;
 
-  Steps := diffs div HighP;// VisibleCount;
+  Steps   := diffs div HighP;// VisibleCount;
   remains := abs(diffs mod HighP);// VisibleCount;
 
   for I := 0 to sgPlayList.Columns.Count - 1 do
@@ -3035,4 +3040,3 @@ begin
 end;
 
 end.
-

@@ -16,8 +16,10 @@
         <TextDesc Value="A free multiplatform media player"/>
       </XPManifest>
       <Icon Value="0"/>
-      <Resources Count="1">
+      <Resources Count="3">
         <Resource_0 FileName="ovoplayer.ttf" Type="RCDATA" ResourceName="OVOFONT"/>
+        <Resource_1 FileName="..\images\nocover.png" Type="RCDATA" ResourceName="NOCOVER"/>
+        <Resource_2 FileName="..\images\logo.png" Type="RCDATA" ResourceName="LOGO"/>
       </Resources>
     </General>
     <i18n>

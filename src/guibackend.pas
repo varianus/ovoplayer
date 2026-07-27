@@ -373,8 +373,8 @@ begin
     end;
   end;
 
-  if (Result = '') and LoadDefault then
-    Result := Config.GetResourcesPath + 'nocover.png';
+  //  if (Result = '') and LoadDefault then
+  //    Result := Config.GetResourcesPath + 'nocover.png';
 end;
 
 
@@ -536,7 +536,13 @@ begin
     begin
       Img.LoadFromFile(FileName);
       imgLoaded := True;
+    end
+    else
+    begin
+      Img.LoadFromResourceName(HINSTANCE, 'NOCOVER');
+      imgLoaded := True;
     end;
+
   end;
 
   if not imgLoaded then

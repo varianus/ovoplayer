@@ -42,7 +42,7 @@ type
       Shift: TShiftState; X, Y: integer);
     procedure FormShow(Sender: TObject);
     procedure bCloseClick(Sender: TObject);
-    procedure ShowAtPos(x: Integer; y: Integer);
+    procedure ShowAtPos(x: integer; y: integer);
     procedure timShowTimer(Sender: TObject);
     procedure timPaintTimer(Sender: TObject);
     procedure TitleClick(Sender: TObject);
@@ -51,10 +51,10 @@ type
     MovePoint: TPoint;
     imgCover: TPicture;
 
-    fTitle : string;
-    ftrack : string;
-    fAlbum : string;
-    fArtist : string;
+    fTitle: string;
+    ftrack: string;
+    fAlbum: string;
+    fArtist: string;
 
     procedure LoadFromConfig;
     procedure InternalPaint;
@@ -62,20 +62,20 @@ type
     procedure ShapeControl(AControl: TWinControl);
     {$ENDIF SUPPORT_SHAPING}
   protected
-    procedure WMNCHitTest(var Message: TLMessage);  message LM_NCHITTEST;
+    procedure WMNCHitTest(var Message: TLMessage); message LM_NCHITTEST;
   public
-    _top, _left:Integer;
+    _top, _left: integer;
     ConfigMode: boolean;
 
     timShow: TTimer;
     timPaint: TTimer;
 
     BackGroundColor: TColor;
-    FontColor : TColor;
+    FontColor: TColor;
     procedure UpdateAspect;
     procedure Paint; override;
-    Constructor Create(AOwner: Tcomponent); override;
-    Destructor Destroy; override;
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
     procedure SetBounds(ALeft, ATop, AWidth, AHeight: integer); override;
   end;
 
@@ -88,46 +88,44 @@ procedure ShowOSDConfig;
 
 implementation
 
-uses AppConsts, LazLoggerBase, Math, graphutil, GuiConfig;
+uses AppConsts, LazLoggerBase, Math, GraphUtil, GuiConfig;
 
 procedure ShowOSD(Song: TSong; Image: TPicture);
 var
   imgName: string;
 begin
   if fOSD = nil then
-//    fOSD := TfOSD.Create(nil);
+    //    fOSD := TfOSD.Create(nil);
     Application.CreateForm(TfOSD, fOSD);
 
- {$IFDEF SUPPORT_SHAPING}
+  {$IFDEF SUPPORT_SHAPING}
   fOSD.ShapeControl(fOSD);
- {$ENDIF SUPPORT_SHAPING}
+  {$ENDIF SUPPORT_SHAPING}
 
 
-  fOSD.fTitle := Song.tags.Title;
-  fOSD.ftrack := Song.Tags.TrackString;
-  fOSD.fAlbum := Song.Tags.Album;
+  fOSD.fTitle  := Song.tags.Title;
+  fOSD.ftrack  := Song.Tags.TrackString;
+  fOSD.fAlbum  := Song.Tags.Album;
   fOSD.fArtist := Song.Tags.Artist;
 
   fOSD.AlphaBlend := True;
 
   if Image <> nil then
-    begin
-      fosd.imgCover.Assign(Image);
-    end
-
+    fosd.imgCover.Assign(Image)
   else
-
   begin
     imgName := BackEnd.GetImageFromfolder(IncludeTrailingPathDelimiter(Song.FilePath));
     if imgName <> '' then
-      fOSD.imgCover.LoadFromFile(imgName);
+      fOSD.imgCover.LoadFromFile(imgName)
+    else
+      fOSD.imgCover.LoadFromResourceName(HINSTANCE, 'NOCOVER');
   end;
 
   fOSD.timPaint.Enabled := False;
-  fOSD.timShow.Enabled := True;
+  fOSD.timShow.Enabled  := True;
   fOSD.LoadFromConfig;
   fOSD.UpdateAspect;
-  fOSD.Enabled:=false;
+  fOSD.Enabled := False;
   fOSD.InternalPaint;
   fOSD.Show;
 end;
@@ -141,15 +139,15 @@ begin
   if fOSD = nil then
     fOSD := TfOSD.Create(application);
 
-  fOSD.fTitle := DisplayAppName;
-  fOSD.fAlbum := rDragToChangePosition;
-  fOSD.ftrack := '';
+  fOSD.fTitle  := DisplayAppName;
+  fOSD.fAlbum  := rDragToChangePosition;
+  fOSD.ftrack  := '';
   fOSD.fArtist := '';
 
-  imgName := BackEnd.Config.GetResourcesPath + 'nocover.png';
-
-  if imgName <> '' then
-    fOSD.imgCover.LoadFromFile(imgName);
+  //  imgName := BackEnd.Config.GetResourcesPath + 'nocover.png';
+  //  if imgName <> '' then
+  //    fOSD.imgCover.LoadFromFile(imgName);
+  fOSD.imgCover.LoadFromResourceName(HINSTANCE, 'NOCOVER');
 
   fOSD.AlphaBlendValue := 200;
 
@@ -159,18 +157,18 @@ begin
   fOSD.InternalPaint;
 
   fOSD.AlphaBlend := True;
-  fOSD.Enabled:=true;
+  fOSD.Enabled    := True;
   fOSD.Show;
 
 end;
 
 { TfOSD }
 
-procedure TfOSD.ShowAtPos(x: Integer; y: Integer);
+procedure TfOSD.ShowAtPos(x: integer; y: integer);
 begin
   if x + Width > Screen.DeskTopWidth then
   begin
-    left := x - Width -1;
+    left := x - Width - 1;
     if Left < 0 then Left := 0;
   end
   else
@@ -178,7 +176,7 @@ begin
 
   if y + Height > Screen.DeskTopHeight then
   begin
-    top := y - Height -1;
+    top := y - Height - 1;
     if top < 0 then top := 0;
   end
   else
@@ -186,6 +184,7 @@ begin
 
   Show;
 end;
+
 procedure TfOSD.timShowtimer(Sender: TObject);
 begin
   timShow.Enabled := False;
@@ -202,8 +201,8 @@ begin
     timPaint.Enabled := False;
     Close;
   end;
-  timPaint.Interval:=40;
-  AlphaBlendValue := AlphaBlendValue - 8;
+  timPaint.Interval := 40;
+  AlphaBlendValue   := AlphaBlendValue - 8;
   Application.ProcessMessages;
 end;
 
@@ -222,7 +221,7 @@ begin
   begin
     p.x := x;
     p.y := y;
-    p := fOSD.ScreenToClient(tcontrol(Sender).ClientToScreen(p));
+    p   := fOSD.ScreenToClient(tcontrol(Sender).ClientToScreen(p));
     MovePoint.X := p.X;
     MovePoint.Y := p.Y;
     fosd.Cursor := crdrag;
@@ -248,7 +247,7 @@ end;
 procedure TfOSD.ShapeControl(AControl: TWinControl);
 var
   ABitmap: TBitmap;
-//  ARect: TRect;
+  //  ARect: TRect;
 begin
   ABitmap := TBitmap.Create;
   ABitmap.Monochrome := True;
@@ -256,11 +255,11 @@ begin
   ABitmap.Height := AControl.clientHeight;
   with ABitmap.Canvas do
   begin
-    Pen.Color := clFuchsia; // mask color
+    Pen.Color   := clFuchsia; // mask color
     Brush.Color := clBlack; // transparent color
     FillRect(0, 0, ABitmap.Width, ABitmap.Height);
     Brush.Color := clWhite; // mask color
-    Pen.Color := clWhite; // mask color
+    Pen.Color   := clWhite; // mask color
     RoundRect(2, 2, ABitmap.Width, ABitmap.Height, 15, 15);
     FloodFill(60, 60, clWhite, fsBorder);
     ABitmap.Mask(clWhite);
@@ -276,17 +275,17 @@ var
   i: integer;
 begin
   timShow.Interval := GuiConfigObj.NotificationParam.TimeOut;
-  timPaint.Interval:=40;
-  Top := GuiConfigObj.NotificationParam.Y;
-  Left := GuiConfigObj.NotificationParam.X;
-  Width:=430;
-  Height:=103;
-  Color := GuiConfigObj.NotificationParam.BackColor;
+  timPaint.Interval := 40;
+  Top    := GuiConfigObj.NotificationParam.Y;
+  Left   := GuiConfigObj.NotificationParam.X;
+  Width  := 430;
+  Height := 103;
+  Color  := GuiConfigObj.NotificationParam.BackColor;
   AlphaBlendValue := GuiConfigObj.NotificationParam.Transparency;
   for i := 0 to ComponentCount - 1 do
     if Components[i] is TStaticText then
     begin
-      TStaticText(Components[i]).color := color;
+      TStaticText(Components[i]).color      := color;
       TStaticText(Components[i]).Font.color :=
         GuiConfigObj.NotificationParam.FontColor;
     end;
@@ -303,61 +302,61 @@ end;
 
 procedure TfOSD.InternalPaint;
 var
-  ARect : TRect;
-  leftPos : integer;
+  ARect: TRect;
+  leftPos: integer;
 begin
   fBitmap.SetSize(Width, Height);
   fBitmap.Canvas.Brush.Style := bsSolid;
   fBitmap.Canvas.Brush.Color := BackGroundColor;
-  ARect := Rect(0,0,fBitmap.width,fBitmap.height);
+  ARect := Rect(0, 0, fBitmap.Width, fBitmap.Height);
   fBitmap.Canvas.Frame3D(ARect, GetShadowColor(BackGroundColor), GetHighLightColor(BackGroundColor), 2);
-  DrawGradientWindow(fBitmap.Canvas, ARect, height, BackGroundColor);
+  DrawGradientWindow(fBitmap.Canvas, ARect, Height, BackGroundColor);
 
   if Assigned(imgCover) then
-     fBitmap.Canvas.StretchDraw(Rect(11,8,113, 97), imgCover.Graphic);
+    fBitmap.Canvas.StretchDraw(Rect(11, 8, 113, 97), imgCover.Graphic);
 
   LeftPos := 123;
 
   fBitmap.Canvas.Font.Assign(Font);
-  fBitmap.Canvas.Font.Color:= FontColor;
-  fBitmap.Canvas.Font.Style := [fsBold];
-  fBitmap.Canvas.Brush.Style:=bsClear;
+  fBitmap.Canvas.Font.Color  := FontColor;
+  fBitmap.Canvas.Font.Style  := [fsBold];
+  fBitmap.Canvas.Brush.Style := bsClear;
   fBitmap.Canvas.Font.Height := 20;
-  fBitmap.Canvas.TextOut(leftPos,8, fTitle);
+  fBitmap.Canvas.TextOut(leftPos, 8, fTitle);
 
   fBitmap.Canvas.Font.Height := 16;
-  fBitmap.Canvas.Font.Style := [];
-  fBitmap.Canvas.TextOut(leftPos,33, fAlbum);
-  fBitmap.Canvas.TextOut(leftPos,57, fArtist);
-  fBitmap.Canvas.TextOut(leftPos,81, ftrack);
+  fBitmap.Canvas.Font.Style  := [];
+  fBitmap.Canvas.TextOut(leftPos, 33, fAlbum);
+  fBitmap.Canvas.TextOut(leftPos, 57, fArtist);
+  fBitmap.Canvas.TextOut(leftPos, 81, ftrack);
 
   Repaint;
 
 end;
 
-constructor TfOSD.Create(AOwner: Tcomponent);
+constructor TfOSD.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  timPaint:= TTimer.Create(nil);
-  timPaint.Enabled:=false;
-  timPaint.OnTimer:=@timPaintTimer;
-  timPaint.Interval:=40;
-  timShow:= TTimer.Create(nil);
-  timShow.Enabled:=false;
-  timShow.OnTimer:=@timShowTimer;
+  timPaint := TTimer.Create(nil);
+  timPaint.Enabled := False;
+  timPaint.OnTimer := @timPaintTimer;
+  timPaint.Interval := 40;
+  timShow  := TTimer.Create(nil);
+  timShow.Enabled := False;
+  timShow.OnTimer := @timShowTimer;
 
-  imgCover:= TPicture.Create;
-  BorderWidth:=1;
-  fBitmap := TBitmap.Create;
+  imgCover    := TPicture.Create;
+  BorderWidth := 1;
+  fBitmap     := TBitmap.Create;
   fBitmap.SetSize(Width, Height);
 
   {$IFDEF SUPPORT_SHAPING}
-    ShapeControl(Self);
+  ShapeControl(Self);
   {$ENDIF SUPPORT_SHAPING}
 
-  OnMouseDown := @FormMouseDown;
-  OnMouseMove := @FormMouseMove;
-  OnMouseUp := @FormMouseUp;
+  OnMouseDown  := @FormMouseDown;
+  OnMouseMove  := @FormMouseMove;
+  OnMouseUp    := @FormMouseUp;
   OnMouseEnter := @FormMouseEnter;
   OnMouseLeave := @FormMouseLeave;
 
@@ -365,31 +364,31 @@ end;
 
 procedure TfOSD.Paint;
 begin
-   self.Canvas.CopyRect(rect(0,0, Width, Height), fBitmap.Canvas, rect(0,0, fBitmap.Width, fBitmap.Height));
+  self.Canvas.CopyRect(rect(0, 0, Width, Height), fBitmap.Canvas, rect(0, 0, fBitmap.Width, fBitmap.Height));
 end;
 
 destructor TfOSD.Destroy;
 begin
-  timPaint.free;
-  timShow.free;
-  imgCover.free;
-  fBitmap.free;
+  timPaint.Free;
+  timShow.Free;
+  imgCover.Free;
+  fBitmap.Free;
   inherited Destroy;
 end;
 
 procedure TfOSD.SetBounds(ALeft, ATop, AWidth, AHeight: integer);
 begin
   if (ALeft + AWidth) > Screen.DesktopWidth then
-      ALeft := Screen.DesktopWidth - ( AWidth +1);
+    ALeft := Screen.DesktopWidth - (AWidth + 1);
 
   if (ATop + AHeight) > Screen.DesktopHeight then
-      ATop := Screen.DesktopHeight - ( AHeight +1);
+    ATop := Screen.DesktopHeight - (AHeight + 1);
 
   if ALeft < 1 then
-     ALeft:= 1;
+    ALeft := 1;
 
   if ATop < 1 then
-     ATop:= 1;
+    ATop := 1;
 
   inherited SetBounds(ALeft, ATop, AWidth, AHeight);
 end;
@@ -397,9 +396,9 @@ end;
 procedure TfOSD.WMNCHitTest(var Message: TLMessage);
 begin
   if ConfigMode then
-     Message.Result := HTCLIENT
+    Message.Result := HTCLIENT
   else
-     Message.Result := htNowhere;//HTTRANSPARENT;
+    Message.Result := htNowhere;//HTTRANSPARENT;
 end;
 
 
@@ -410,7 +409,7 @@ begin
   if ConfigMode then
     if (Tag = 1) then
     begin
-      punto := mouse.CursorPos;
+      punto   := mouse.CursorPos;
       punto.X := max(punto.X - MovePoint.X, 0);
       punto.Y := max(punto.Y - MovePoint.Y, 0);
       SetBounds(punto.x, punto.y, Width, Height);
@@ -443,4 +442,3 @@ end;
 initialization
   fOSD := nil;
 end.
-
