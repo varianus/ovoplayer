@@ -184,7 +184,7 @@ var
 begin
   try
     if Assigned(fBackEnd.ObserverList) then
-      for i := 0 to fBackEnd.ObserverList.Count - 1 do
+      for i := fBackEnd.ObserverList.Count - 1 downto 0 do
         fBackEnd.remove(IObserver(fBackEnd.ObserverList[i]));
   except
     // ignore exception on observer destroy
