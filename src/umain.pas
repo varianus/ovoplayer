@@ -837,7 +837,7 @@ begin
   end
   else
   begin
-    BackEnd.SaveState;
+//    BackEnd.SaveState;
     SaveConfig(nil);
     CloseAction := caFree;
   end;
