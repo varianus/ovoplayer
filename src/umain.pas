@@ -888,6 +888,7 @@ begin
           imgCover.Picture.LoadFromStream(f.Tags.Images[0].image);
           imgCover.Hint := rEmbedded;
           imgloaded     := True;
+          CurrentCover  := Song.Tags.FileName;
         end;
       end;
     except

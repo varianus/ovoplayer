@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 }
 {$I ovotag.inc}
+{$modeswitch advancedrecords}
 unit basetag;
 
 interface
@@ -53,6 +54,7 @@ type
     TrackString: string;
     Year: string;
     HasImage: boolean;
+    class operator initialize(var value:TCommonTags);
   end;
 
   ACommonTags = array of TCommonTags;
@@ -411,6 +413,25 @@ end;
 function TTagReader.isUpdateable: boolean;
 begin
   Result := False;
+end;
+
+{ TCommonTags }
+
+class operator TCommonTags.initialize(var value: TCommonTags);
+begin
+    Value.ID           := 0;
+    Value.FileName     := '';
+    Value.TrackString  := '';
+    Value.Track        := 0;
+    Value.Title        := '';
+    Value.Album        := '';
+    Value.AlbumArtist  := '';
+    Value.Artist       := '';
+    Value.Genre        := '';
+    Value.Comment      := '';
+    Value.Year         := '';
+    Value.Duration     := 0;
+    Value.HasImage     := False;
 end;
 
 { TTags }
