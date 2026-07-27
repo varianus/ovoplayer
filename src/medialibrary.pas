@@ -24,7 +24,7 @@ unit MediaLibrary;
 interface
 
 uses
-  Classes, SysUtils, DB,  sqlite3dyn, sqlite3conn, sqldb, LazLoggerBase, basetag,
+  Classes, SysUtils, DB, sqlite3dyn, sqlite3conn, sqldb, LazLoggerBase, basetag,
   Customsong, extendedinfo, FilesSupport, Generics.Collections;
 
 type
@@ -36,7 +36,7 @@ type
 
   TDirectoryScanner = class(TThread)
   private
-    tags:     TCommonTags;
+    tags: TCommonTags;
     FileList: TStringList;
     Medialibrary: TMediaLibrary;
     CurrentPaths: TStringList;
@@ -48,13 +48,13 @@ type
     procedure Execute; override;
   public
     constructor CreateScanner(Paths: TStrings; Owner: TmediaLibrary);
-    destructor Destroy;  override;
+    destructor Destroy; override;
   end;
 
   RFilterInfo = record
     Count: integer;
-    TotalSize : int64;
-    TotalTime : int64;
+    TotalSize: int64;
+    TotalTime: int64;
   end;
 
   TScannedStatus = (ssAdded, ssUpdated, ssRemoved, ssFailed, ssUnModified);
@@ -66,14 +66,14 @@ type
 
   TScanResult = specialize TList<RScannedItem>;
 
-  TScanComplete = procedure(Sender: TObject; Added, Updated, Removed, Failed : integer) of object;
+  TScanComplete = procedure(Sender: TObject; Added, Updated, Removed, Failed: integer) of object;
 
   TMediaLibrary = class
   private
-    fDB:    TSQLite3Connection;
+    fDB: TSQLite3Connection;
     FOnScanComplete: TScanComplete;
     FOnScanStart: TNotifyEvent;
-    fTR:    TSQLTransaction;
+    fTR: TSQLTransaction;
     fSong: TSQLQuery;
     fInsertSong: TSQLQuery;
     fUpdateSong: TSQLQuery;
@@ -84,41 +84,41 @@ type
     procedure AfterScan;
     procedure BeforeScan;
     procedure EndScan(AObject: TObject);
-    function GetDbVersion: Integer;
+    function GetDbVersion: integer;
     procedure SetOnScanComplete(const AValue: TScanComplete);
     procedure SetOnScanStart(const AValue: TNotifyEvent);
     procedure SetupDBConnection;
     procedure CheckDBStructure;
     function TagsFromTable(Table: TSQLQuery): TCommonTags;
-    procedure UpgradeDBStructure(LoadedDBVersion: Integer);
+    procedure UpgradeDBStructure(LoadedDBVersion: integer);
   public
     fAdded, fUpdated, fRemoved, fFailed: integer;
     ScanResult: TScanResult;
 
     constructor Create;
     destructor Destroy; override;
-    procedure Add(Tags: TCommonTags;FileInfo:TFileInfo);
-    procedure Scan(paths: TStrings; FullScan :boolean=true);
-    Procedure RemoveMissing;
+    procedure Add(Tags: TCommonTags; FileInfo: TFileInfo);
+    procedure Scan(paths: TStrings; FullScan: boolean = True);
+    procedure RemoveMissing;
 
     procedure ReadBegin(Filter: string; Order: string);
     function IsEmpty: boolean;
     function ReadItem: TCommonTags;
     function NextItem: boolean;
     function ReadComplete: boolean;
-    function FilterInfo(Filter:string): RFilterInfo;
+    function FilterInfo(Filter: string): RFilterInfo;
     procedure ReadEnd;
     function FullNameFromID(ID: integer): string;
     function IDFromFullName(FileName: TFileName): integer;
     function FileInfoFromFullName(FileName: TFileName): TFileInfo;
     function FileInfoFromID(ID: integer): TFileInfo;
     function SetSongPlayed(ID: integer): string;
-    Procedure SetRating(ID: integer; Rating: Integer);
+    procedure SetRating(ID: integer; Rating: integer);
     function TagsFromID(ID: integer): TCommonTags;
     function InfoFromID(ID: integer): TExtendedInfo;
     procedure SetFileInfo(ID: integer; Info: TFileInfo);
-    procedure AddInfoToSong(ID: Integer; ASong:TCustomSong);
-    procedure Update(ID: Integer; Tags: TCommonTags; FileInfo:TFileInfo);
+    procedure AddInfoToSong(ID: integer; ASong: TCustomSong);
+    procedure Update(ID: integer; Tags: TCommonTags; FileInfo: TFileInfo);
 
     property OnScanComplete: TScanComplete read FOnScanComplete write SetOnScanComplete;
     property OnScanStart: TNotifyEvent read FOnScanStart write SetOnScanStart;
@@ -133,87 +133,87 @@ const
   CURRENTDBVERSION = 4;
 
   CREATESONGTABLE = 'CREATE TABLE songs ('
-                 + ' "ID" INTEGER primary key,'
-                 + ' "Filename" VARCHAR COLLATE NOCASE,'
-                 + ' "TrackString" VARCHAR COLLATE NOCASE,'
-                 + ' "Track" INTEGER COLLATE NOCASE,'
-                 + ' "Title" VARCHAR COLLATE NOCASE,'
-                 + ' "Album" VARCHAR COLLATE NOCASE,'
-                 + ' "Artist" VARCHAR COLLATE NOCASE,'
-                 + ' "AlbumArtist" VARCHAR COLLATE NOCASE,'
-                 + ' "Genre" VARCHAR COLLATE NOCASE,'
-                 + ' "year" VARCHAR COLLATE NOCASE,'
-                 + ' "Duration" INTEGER default 0,'
-                 + ' "Comment" VARCHAR COLLATE NOCASE,'
-                 + ' "Playcount" INTEGER,'
-                 + ' "Rating" INTEGER ,'
-                 + ' "LastPlay" DATETIME,'
-                 + ' "Added" DATETIME,'
-                 + ' "FileSize" INTEGER,'
-                 + ' "FileDate" DATETIME,'
-                 + ' "elabflag" CHAR(1) COLLATE NOCASE);';
+    + ' "ID" INTEGER primary key,'
+    + ' "Filename" VARCHAR COLLATE NOCASE,'
+    + ' "TrackString" VARCHAR COLLATE NOCASE,'
+    + ' "Track" INTEGER COLLATE NOCASE,'
+    + ' "Title" VARCHAR COLLATE NOCASE,'
+    + ' "Album" VARCHAR COLLATE NOCASE,'
+    + ' "Artist" VARCHAR COLLATE NOCASE,'
+    + ' "AlbumArtist" VARCHAR COLLATE NOCASE,'
+    + ' "Genre" VARCHAR COLLATE NOCASE,'
+    + ' "year" VARCHAR COLLATE NOCASE,'
+    + ' "Duration" INTEGER default 0,'
+    + ' "Comment" VARCHAR COLLATE NOCASE,'
+    + ' "Playcount" INTEGER,'
+    + ' "Rating" INTEGER ,'
+    + ' "LastPlay" DATETIME,'
+    + ' "Added" DATETIME,'
+    + ' "FileSize" INTEGER,'
+    + ' "FileDate" DATETIME,'
+    + ' "elabflag" CHAR(1) COLLATE NOCASE);';
 
   CREATESONGINDEX1 = 'CREATE INDEX "idx_artist" on songs (Artist ASC);';
   CREATESONGINDEX2 = 'CREATE UNIQUE INDEX "idx_filename" on songs (Filename ASC);';
 
   CREATESTATUSTABLE1 = 'CREATE TABLE status ('
-                 +    '"Version" INTEGER COLLATE NOCASE'
-                 +    ');';
+    + '"Version" INTEGER COLLATE NOCASE'
+    + ');';
   CREATESTATUSTABLE2 = ' INSERT INTO status (Version) VALUES(1);';
 
   UPDATESTATUS = 'UPDATE status SET Version = %d;';
 
   PRAGMAS_COUNT = 3;
-  PRAGMAS : array [1..PRAGMAS_COUNT] of string =
-            (
-//            'PRAGMA locking_mode = EXCLUSIVE;',
-            'PRAGMA temp_store = MEMORY;',
-            'PRAGMA count_changes = 0;',
-            'PRAGMA encoding = "UTF-8";'
-            );
+  PRAGMAS: array [1..PRAGMAS_COUNT] of string =
+    (
+    //            'PRAGMA locking_mode = EXCLUSIVE;',
+    'PRAGMA temp_store = MEMORY;',
+    'PRAGMA count_changes = 0;',
+    'PRAGMA encoding = "UTF-8";'
+    );
 
   INSERTINTOSONG = 'INSERT INTO songs ('
-                 + ' Filename, TrackString, Track, Title, Album, Artist,'
-                 + ' AlbumArtist, Genre, year, elabflag, Duration,'
-                 + ' Playcount, Rating, LastPlay, Added, '
-                 + ' FileSize, FileDate, Comment'
-                 + ' )'
-                 + ' VALUES ('
-                 + ' :Filename, :TrackString, :Track, :Title, :Album, :Artist,'
-                 + ' :AlbumArtist, :Genre, :year, :elabflag, :Duration,'
-                 + ' :Playcount, :Rating, :LastPlay, :added, '
-                 + ' :FileSize, :FileDate, :Comment'
-                 + ' )';
+    + ' Filename, TrackString, Track, Title, Album, Artist,'
+    + ' AlbumArtist, Genre, year, elabflag, Duration,'
+    + ' Playcount, Rating, LastPlay, Added, '
+    + ' FileSize, FileDate, Comment'
+    + ' )'
+    + ' VALUES ('
+    + ' :Filename, :TrackString, :Track, :Title, :Album, :Artist,'
+    + ' :AlbumArtist, :Genre, :year, :elabflag, :Duration,'
+    + ' :Playcount, :Rating, :LastPlay, :added, '
+    + ' :FileSize, :FileDate, :Comment'
+    + ' )';
 
-  UPDATESONG     =  'update songs'
-                 + ' set Filename = :Filename'
-                 + ' ,Track = :Track'
-                 + ' ,TrackString = :TrackString'
-                 + ' ,Title = :Title'
-                 + ' ,Album = :Album'
-                 + ' ,Artist = :Artist'
-                 + ' ,AlbumArtist = :AlbumArtist'
-                 + ' ,Genre = :Genre'
-                 + ' ,year  = :year'
-                 + ' ,elabflag = :elabflag'
-                 + ' ,Duration = :Duration'
-                 + ' ,FileSize = :FileSize'
-                 + ' ,FileDate = :FileDate'
-                 + ' ,Comment = :Comment'
-                 + ' where ID = :ID';
+  UPDATESONG = 'update songs'
+    + ' set Filename = :Filename'
+    + ' ,Track = :Track'
+    + ' ,TrackString = :TrackString'
+    + ' ,Title = :Title'
+    + ' ,Album = :Album'
+    + ' ,Artist = :Artist'
+    + ' ,AlbumArtist = :AlbumArtist'
+    + ' ,Genre = :Genre'
+    + ' ,year  = :year'
+    + ' ,elabflag = :elabflag'
+    + ' ,Duration = :Duration'
+    + ' ,FileSize = :FileSize'
+    + ' ,FileDate = :FileDate'
+    + ' ,Comment = :Comment'
+    + ' where ID = :ID';
 
-  UPDATEFILEINFO =  'update songs'
-                 + ' set '
-                 + ' FileSize = :FileSize'
-                 + ' ,FileDate = :FileDate'
-                 + ' where ID = :ID';
+  UPDATEFILEINFO = 'update songs'
+    + ' set '
+    + ' FileSize = :FileSize'
+    + ' ,FileDate = :FileDate'
+    + ' where ID = :ID';
 
 
-{ TDirectoryScanner }
+  { TDirectoryScanner }
 
-function MakeScanResult(const AStatus: TScannedStatus; Const AFileName: string): RScannedItem; inline;
+function MakeScanResult(const AStatus: TScannedStatus; const AFileName: string): RScannedItem; inline;
 begin
-  Result.Status := AStatus;
+  Result.Status   := AStatus;
   Result.FileName := AFileName;
 end;
 
@@ -222,7 +222,7 @@ begin
   inherited Create(True);
   Priority     := tpIdle;
   Medialibrary := Owner;
-  CurrentPaths := TStringList.create;
+  CurrentPaths := TStringList.Create;
   CurrentPaths.Assign(Paths);
   FreeOnTerminate := True;
 
@@ -232,59 +232,54 @@ destructor TDirectoryScanner.Destroy;
 begin
 
   CurrentPaths.Free;
-  Inherited Destroy;
+  inherited Destroy;
 end;
 
 procedure TDirectoryScanner.CallBack;
 var
- Info : TFileInfo;
+  Info: TFileInfo;
 begin
   Info := Medialibrary.FileInfoFromFullName(CurrSong);
-//  DebugLn('Scan '+CurrSong+' T '+floattostr(info.ModifyDate)+'<>'+ floattostr(CurrInfo.info.ModifyDate)) ;
+  //  DebugLn('Scan '+CurrSong+' T '+floattostr(info.ModifyDate)+'<>'+ floattostr(CurrInfo.info.ModifyDate)) ;
 
   if not MediaLibrary.fFullScan and
     (info = CurrInfo.info) then
-    begin
-     Medialibrary.fDB.ExecuteDirect('update songs set elabflag = null where FileName = '+QuotedStr(CurrSong));
-//     DebugLn('Skipping ',CurrSong);
-     exit;
-    end;
+  begin
+    Medialibrary.fDB.ExecuteDirect('update songs set elabflag = null where FileName = ' + QuotedStr(CurrSong));
+    //     DebugLn('Skipping ',CurrSong);
+    exit;
+  end;
   try
     tags := AudioTag.ExtractTags(CurrSong);
     if trim(tags.Title) = '' then
       tags.Title := ChangeFileExt(ExtractFileName(CurrSong), '');
 
-     Medialibrary.Add(Tags, CurrInfo.info);
+    Medialibrary.Add(Tags, CurrInfo.info);
   except
-     Medialibrary.ScanResult.Add(MakeScanResult(ssFailed, CurrSong));
+    Medialibrary.ScanResult.Add(MakeScanResult(ssFailed, CurrSong));
   end;
 end;
 
 procedure TDirectoryScanner.Execute;
 var
   i: integer;
-
 begin
   FileList := TStringList.Create;
-  FileList.OwnsObjects := true;
+  FileList.OwnsObjects := True;
 
-  for i:= 0 to CurrentPaths.Count -1 do
-    begin
-      BuildFileList(IncludeTrailingPathDelimiter(CurrentPaths[i]) + AudioTag.SupportedExtension,
-                    faAnyFile, FileList, True);
-    end;
+  for i := 0 to CurrentPaths.Count - 1 do
+    BuildFileList(IncludeTrailingPathDelimiter(CurrentPaths[i]) + AudioTag.SupportedExtension,
+      faAnyFile, FileList, True);
 
   for I := 0 to FileList.Count - 1 do
-    begin
-      try
-      CurrSong := FileList[i];
-      CurrInfo := TFileInfoObject(FileList.Objects[i]);
-      Synchronize(@Callback);
-      Except
-        DebugLn('Error reading ', FileList[i]);
-      end;
-    end;
-  FileList.free;
+  try
+    CurrSong := FileList[i];
+    CurrInfo := TFileInfoObject(FileList.Objects[i]);
+    Synchronize(@Callback);
+  except
+    DebugLn('Error reading ', FileList[i]);
+  end;
+  FileList.Free;
 end;
 
 { TMediaLibrary }
@@ -307,31 +302,31 @@ begin
 
 end;
 
-function TMediaLibrary.GetDbVersion: Integer;
+function TMediaLibrary.GetDbVersion: integer;
 var
   TableList: TStringList;
-  tmpQuery : TSQLQuery;
+  tmpQuery: TSQLQuery;
 begin
   TableList := TStringList.Create;
   try
     fDB.GetTableNames(TableList, False);
     if TableList.IndexOf('status') < 0 then
-        begin
-           Result :=1;
-           fDB.ExecuteDirect(CREATESTATUSTABLE1);
-           fDB.ExecuteDirect(CREATESTATUSTABLE2);
-           ftr.CommitRetaining;
-        end
+    begin
+      Result := 1;
+      fDB.ExecuteDirect(CREATESTATUSTABLE1);
+      fDB.ExecuteDirect(CREATESTATUSTABLE2);
+      ftr.CommitRetaining;
+    end
     else
-       begin
-         tmpQuery := TSQLQuery.Create(fDB);
-         tmpQuery.DataBase := fDB;
-         tmpQuery.Transaction := fTR;
-         tmpQuery.SQL.Text := 'SELECT Version FROM status';
-         tmpQuery.Open;
-         Result := tmpQuery.Fields[0].AsInteger;
-         tmpQuery.Free;
-       end;
+    begin
+      tmpQuery := TSQLQuery.Create(fDB);
+      tmpQuery.DataBase := fDB;
+      tmpQuery.Transaction := fTR;
+      tmpQuery.SQL.Text := 'SELECT Version FROM status';
+      tmpQuery.Open;
+      Result := tmpQuery.Fields[0].AsInteger;
+      tmpQuery.Free;
+    end;
   finally
     TableList.Free;
   end;
@@ -341,104 +336,102 @@ end;
 procedure TMediaLibrary.CheckDBStructure;
 var
   TableList: TStringList;
-  LoadedDBVersion : Integer;
+  LoadedDBVersion: integer;
 begin
   TableList := TStringList.Create;
-    try
+  try
     fDB.GetTableNames(TableList, False);
     if TableList.IndexOf('songs') < 0 then
-      begin
-        fDB.ExecuteDirect(CREATESONGTABLE);
-        fDB.ExecuteDirect(CREATESONGINDEX1);
-        fDB.ExecuteDirect(CREATESONGINDEX2);
-        fDB.ExecuteDirect(CREATESTATUSTABLE1);
-        fDB.ExecuteDirect(CREATESTATUSTABLE2);
-        fDB.ExecuteDirect(format(UPDATESTATUS,[CURRENTDBVERSION]));
-        ftr.CommitRetaining;
-      end;
-
-    finally
-      TableList.Free;
+    begin
+      fDB.ExecuteDirect(CREATESONGTABLE);
+      fDB.ExecuteDirect(CREATESONGINDEX1);
+      fDB.ExecuteDirect(CREATESONGINDEX2);
+      fDB.ExecuteDirect(CREATESTATUSTABLE1);
+      fDB.ExecuteDirect(CREATESTATUSTABLE2);
+      fDB.ExecuteDirect(format(UPDATESTATUS, [CURRENTDBVERSION]));
+      ftr.CommitRetaining;
     end;
 
-   LoadedDBVersion := GetDbVersion;
-    if LoadedDBVersion < CURRENTDBVERSION then
-       UpgradeDBStructure(LoadedDBVersion);
+  finally
+    TableList.Free;
+  end;
 
+  LoadedDBVersion := GetDbVersion;
+  if LoadedDBVersion < CURRENTDBVERSION then
+    UpgradeDBStructure(LoadedDBVersion);
 
 end;
 
-procedure TMediaLibrary.UpgradeDBStructure(LoadedDBVersion:Integer);
-Var
+procedure TMediaLibrary.UpgradeDBStructure(LoadedDBVersion: integer);
+var
   MustUpdate: boolean;
-  OffSet : integer;
+  OffSet: integer;
   tmp: string;
 const
-// Carefully test every upgrade statement!!!
-// Exception in this function can give unpredictable results in DB !!!
-//
+  // Carefully test every upgrade statement!!!
+  // Exception in this function can give unpredictable results in DB !!!
+
   ToV2_1 = 'ALTER TABLE songs ADD COLUMN FileSize INTEGER;';
-  ToV2_2 = 'ALTER TABLE songs ADD COLUMN FileDate DATETIME;' ;
+  ToV2_2 = 'ALTER TABLE songs ADD COLUMN FileDate DATETIME;';
   ToV3_1 = 'update songs set added = Julianday(added) + (%0:s) ;';
   ToV3_2 = 'update songs set LastPlay = julianday(LastPlay) + (%0:s) where lastplay is not null;';
-  ToV4_1 = 'ALTER TABLE songs ADD COLUMN Comment VARCHAR COLLATE NOCASE;' ;
+  ToV4_1 = 'ALTER TABLE songs ADD COLUMN Comment VARCHAR COLLATE NOCASE;';
 
-  FORCE_FULL_SCAN = 'update songs set filesize = 0;' ;
+  FORCE_FULL_SCAN = 'update songs set filesize = 0;';
 begin
 
-  MustUpdate := false;
+  MustUpdate := False;
   try
-  if LoadedDBVersion < 2 then
-     begin
-        Fdb.ExecuteDirect(Tov2_1);
-        Fdb.ExecuteDirect(Tov2_2);
-        MustUpdate := true;
-      end;
+    if LoadedDBVersion < 2 then
+    begin
+      Fdb.ExecuteDirect(Tov2_1);
+      Fdb.ExecuteDirect(Tov2_2);
+      MustUpdate := True;
+    end;
 
-   if LoadedDBVersion < 3 then
+    if LoadedDBVersion < 3 then
+    begin
+      OffSet := GetLocalTimeOffset;
+      if OffSet <> 0 then
       begin
-        OffSet:= GetLocalTimeOffset;
-        if OffSet <> 0 then
-           begin
-             tmp := Format(ToV3_1,[FloatToStr(-OffSet /(60 *24)  + JulianEpoch,DefaultSQLFormatSettings)]) ;
-             DebugLn(tmp);
-             Fdb.ExecuteDirect(tmp) ;
-             tmp := Format(ToV3_2,[FloatToStr(-OffSet /(60 *24)  + JulianEpoch,DefaultSQLFormatSettings)]) ;
-             DebugLn(tmp);
-             Fdb.ExecuteDirect(tmp) ;
+        tmp := Format(ToV3_1, [FloatToStr(-OffSet / (60 * 24) + JulianEpoch, DefaultSQLFormatSettings)]);
+        DebugLn(tmp);
+        Fdb.ExecuteDirect(tmp);
+        tmp := Format(ToV3_2, [FloatToStr(-OffSet / (60 * 24) + JulianEpoch, DefaultSQLFormatSettings)]);
+        DebugLn(tmp);
+        Fdb.ExecuteDirect(tmp);
 
-           end;
-        MustUpdate := true;
       end;
+      MustUpdate := True;
+    end;
 
 
-   if LoadedDBVersion < 4 then
-      begin
-        Fdb.ExecuteDirect(Tov4_1);
-        Fdb.ExecuteDirect(FORCE_FULL_SCAN); // next update will need a full scan
-        MustUpdate := true;
-      end;
+    if LoadedDBVersion < 4 then
+    begin
+      Fdb.ExecuteDirect(Tov4_1);
+      Fdb.ExecuteDirect(FORCE_FULL_SCAN); // next update will need a full scan
+      MustUpdate := True;
+    end;
 
-//   if LoadedDBVersion < 5 then
-//      begin
-//         sql for upgrade to version 5
-//      end;
+    //   if LoadedDBVersion < 5 then
+    //      begin
+    //         sql for upgrade to version 5
+    //      end;
 
 
     if MustUpdate then
-       fDB.ExecuteDirect(format(UPDATESTATUS,[CURRENTDBVERSION]));
+      fDB.ExecuteDirect(format(UPDATESTATUS, [CURRENTDBVERSION]));
 
   except
     on e: Exception do
-       DebugLn(e.Message);
+      DebugLn(e.Message);
   end;
-
 
 end;
 
 constructor TMediaLibrary.Create;
 begin
-  fScanning := true;
+  fScanning := True;
   SetupDBConnection;
   CheckDBStructure;
 
@@ -446,22 +439,22 @@ begin
   fInsertSong := TSQLQuery.Create(fDB);
   fUpdateSong := TSQLQuery.Create(fDB);
 
-  fSong.DataBase := fDB;
+  fSong.DataBase    := fDB;
   fSong.Transaction := fTR;
 
-  fInsertSong.DataBase := fDB;
+  fInsertSong.DataBase    := fDB;
   fInsertSong.Transaction := fTR;
 
-  fUpdateSong.DataBase := fDB;
+  fUpdateSong.DataBase    := fDB;
   fUpdateSong.Transaction := fTR;
 
   fSong.SQL.Text := 'Select * from songs';
 
-  fInsertSong.ParseSQL:=true;
+  fInsertSong.ParseSQL := True;
   fInsertSong.SQL.Text := INSERTINTOSONG;
 
 
-  fInsertSong.ParseSQL:=true;
+  fInsertSong.ParseSQL := True;
   fUpdateSong.SQL.Text := UPDATESONG;
 
   fSong.Open;
@@ -476,7 +469,7 @@ begin
 
   fLoadTable := nil;
 
-  fScanning := False;
+  fScanning  := False;
   ScanResult := nil;
 
 end;
@@ -497,88 +490,87 @@ begin
   inherited Destroy;
 end;
 
-procedure TMediaLibrary.Update(ID:Integer; Tags: TCommonTags; FileInfo:TFileInfo);
+procedure TMediaLibrary.Update(ID: integer; Tags: TCommonTags; FileInfo: TFileInfo);
 begin
 
-  fUpdateSong.Params.ParamByName('ID').AsInteger         := ID;
-  fUpdateSong.Params.ParamByName('Filename').AsString    := (Tags.FileName);
+  fUpdateSong.Params.ParamByName('ID').AsInteger      := ID;
+  fUpdateSong.Params.ParamByName('Filename').AsString := (Tags.FileName);
   fUpdateSong.Params.ParamByName('TrackString').AsString := Tags.TrackString;
-  fUpdateSong.Params.ParamByName('Track').AsInteger      := Tags.Track;
-  fUpdateSong.Params.ParamByName('Title').AsString       := (Tags.Title);
-  fUpdateSong.Params.ParamByName('Album').AsString       := (Tags.Album);
-  fUpdateSong.Params.ParamByName('Artist').AsString      := (Tags.Artist);
+  fUpdateSong.Params.ParamByName('Track').AsInteger   := Tags.Track;
+  fUpdateSong.Params.ParamByName('Title').AsString    := (Tags.Title);
+  fUpdateSong.Params.ParamByName('Album').AsString    := (Tags.Album);
+  fUpdateSong.Params.ParamByName('Artist').AsString   := (Tags.Artist);
   fUpdateSong.Params.ParamByName('AlbumArtist').AsString := (Tags.AlbumArtist);
-  fUpdateSong.Params.ParamByName('Genre').AsString       := Tags.Genre;
-  fUpdateSong.Params.ParamByName('year').AsString        := Tags.Year;
-  fUpdateSong.Params.ParamByName('Duration').AsInteger   := Tags.Duration;
-  fUpdateSong.Params.ParamByName('FileDate').Asfloat     := FileInfo.ModifyDate;
-  fUpdateSong.Params.ParamByName('FileSize').AsLargeint  := FileInfo.Size;
-  fUpdateSong.Params.ParamByName('Comment').AsString     := Tags.Comment;
+  fUpdateSong.Params.ParamByName('Genre').AsString    := Tags.Genre;
+  fUpdateSong.Params.ParamByName('year').AsString     := Tags.Year;
+  fUpdateSong.Params.ParamByName('Duration').AsInteger := Tags.Duration;
+  fUpdateSong.Params.ParamByName('FileDate').AsFloat  := FileInfo.ModifyDate;
+  fUpdateSong.Params.ParamByName('FileSize').AsLargeint := FileInfo.Size;
+  fUpdateSong.Params.ParamByName('Comment').AsString  := Tags.Comment;
 
   fUpdateSong.Params.ParamByName('elabflag').Clear;
   fUpdateSong.ExecSQL;
   fTR.CommitRetaining;
 end;
 
-procedure TMediaLibrary.Add(Tags: TCommonTags; FileInfo:TFileInfo);
+procedure TMediaLibrary.Add(Tags: TCommonTags; FileInfo: TFileInfo);
 var
-  wrkSong : TSQLQuery;
-  ID:Integer;
+  wrkSong: TSQLQuery;
+  ID: integer;
   tmpTags: TCommonTags;
-//  info: TfileInfo;
-
+  //  info: TfileInfo;
 begin
   ID := IDFromFullName(Tags.FileName);
-  if ID  <> -1 then
+  if ID <> -1 then
+  begin
+    tmpTags := TagsFromID(ID);
+    Tags.ID := ID;
+    if Tags = tmpTags then
     begin
-      tmpTags := TagsFromID(ID);
-      Tags.ID := ID;
-      if Tags = tmpTags then
-         begin
-       //    info := FileInfoFromID(ID);
-       //    if info.size < 1 then
-         //     begin
-                SetFileInfo(Id, FileInfo);
-         //     end;
-           fDB.ExecuteDirect('update songs set elabflag = null where id = '+IntToStr(ID));
-           exit;
+      //    info := FileInfoFromID(ID);
+      //    if info.size < 1 then
+      //     begin
+      SetFileInfo(Id, FileInfo);
+      //     end;
+      fDB.ExecuteDirect('update songs set elabflag = null where id = ' + IntToStr(ID));
+      exit;
 
-         end;
-      wrkSong := fUpdateSong;
-      wrkSong.Params.ParamByName('ID').AsInteger := Id;
-      DebugLn('UP ', Tags.FileName);
-      ScanResult.Add(MakeScanResult(ssUpdated, Tags.FileName));
-      inc(fUpdated)
-    end
-  else
-    begin
-       wrkSong := fInsertSong;
-       wrkSong.Params.ParamByName('PlayCount').AsInteger:= 0;
-       wrkSong.Params.ParamByName('added').AsFloat := Now;
-       ScanResult.Add(MakeScanResult(ssAdded, Tags.FileName));
-       inc(fAdded)
     end;
+    wrkSong := fUpdateSong;
+    wrkSong.Params.ParamByName('ID').AsInteger := Id;
+    DebugLn('UP ', Tags.FileName);
+    ScanResult.Add(MakeScanResult(ssUpdated, Tags.FileName));
+    Inc(fUpdated);
+  end
+  else
+  begin
+    wrkSong := fInsertSong;
+    wrkSong.Params.ParamByName('PlayCount').AsInteger := 0;
+    wrkSong.Params.ParamByName('added').AsFloat := Now;
+    ScanResult.Add(MakeScanResult(ssAdded, Tags.FileName));
+    Inc(fAdded);
+  end;
 
-  wrkSong.Params.ParamByName('Filename').AsString    := (Tags.FileName);
+  wrkSong.Params.ParamByName('Filename').AsString  := (Tags.FileName);
   wrkSong.Params.ParamByName('TrackString').AsString := (Tags.TrackString);
-  wrkSong.Params.ParamByName('Track').AsInteger      := Tags.Track;
-  wrkSong.Params.ParamByName('Title').AsString       := (Tags.Title);
-  wrkSong.Params.ParamByName('Album').AsString       := (Tags.Album);
-  wrkSong.Params.ParamByName('Artist').AsString      := (Tags.Artist);
+  wrkSong.Params.ParamByName('Track').AsInteger    := Tags.Track;
+  wrkSong.Params.ParamByName('Title').AsString     := (Tags.Title);
+  wrkSong.Params.ParamByName('Album').AsString     := (Tags.Album);
+  wrkSong.Params.ParamByName('Artist').AsString    := (Tags.Artist);
   wrkSong.Params.ParamByName('AlbumArtist').AsString := (Tags.AlbumArtist);
-  wrkSong.Params.ParamByName('Genre').AsString       := (Tags.Genre);
-  wrkSong.Params.ParamByName('year').AsString        := (Tags.Year);
-  wrkSong.Params.ParamByName('Duration').AsInteger   := Tags.Duration;
-  wrkSong.Params.ParamByName('FileDate').AsFloat     := FileInfo.ModifyDate;
-  wrkSong.Params.ParamByName('FileSize').AsLargeint  := FileInfo.Size;
-  wrkSong.Params.ParamByName('Comment').AsString     := Tags.Comment;
+  wrkSong.Params.ParamByName('Genre').AsString     := (Tags.Genre);
+  wrkSong.Params.ParamByName('year').AsString      := (Tags.Year);
+  wrkSong.Params.ParamByName('Duration').AsInteger := Tags.Duration;
+  wrkSong.Params.ParamByName('FileDate').AsFloat   := FileInfo.ModifyDate;
+  wrkSong.Params.ParamByName('FileSize').AsLargeint := FileInfo.Size;
+  wrkSong.Params.ParamByName('Comment').AsString   := Tags.Comment;
 
   wrkSong.Params.ParamByName('elabflag').Clear;
   try
     wrkSong.ExecSQL;
 
   except
-    on e:exception do
+    on e: Exception do
       DebugLn(e.Message);
   end;
 
@@ -592,7 +584,7 @@ begin
   if Assigned(FOnScanComplete) then
     FOnScanComplete(Self, fAdded, fUpdated, fRemoved, fFailed);
 
-  fScanning:= false;
+  fScanning := False;
 end;
 
 procedure TMediaLibrary.SetOnScanComplete(const AValue: TScanComplete);
@@ -612,32 +604,32 @@ end;
 procedure TMediaLibrary.BeforeScan;
 begin
   fDB.ExecuteDirect('update songs set elabflag = ''S''');
-  If not Assigned(ScanResult) then
+  if not Assigned(ScanResult) then
     ScanResult := TScanResult.Create;
   ScanResult.Clear;
 end;
 
 procedure TMediaLibrary.AfterScan;
 var
-  qtmp : TSQLQuery;
+  qtmp: TSQLQuery;
 begin
-  fRemoved:=0;
-  qtmp:=TSQLQuery.Create(fDB);
+  fRemoved := 0;
+  qtmp     := TSQLQuery.Create(fDB);
   try
     qtmp.DataBase := fDB;
     qtmp.SQL.Text := 'SELECT FILENAME from songs where elabflag = ''S''';
-    qtmp.open;
-    while not qtmp.eof do
-      begin
-        ScanResult.Add(MakeScanResult(ssRemoved, qtmp.Fields[0].AsString));
-        qtmp.next;
-      end;
+    qtmp.Open;
+    while not qtmp.EOF do
+    begin
+      ScanResult.Add(MakeScanResult(ssRemoved, qtmp.Fields[0].AsString));
+      qtmp.Next;
+    end;
 
-    qtmp.close;
+    qtmp.Close;
     qtmp.SQL.Text := 'DELETE from songs where elabflag = ''S''';
     qtmp.ExecSQL;
 
-    fRemoved:=qtmp.RowsAffected;
+    fRemoved := qtmp.RowsAffected;
   finally
     qtmp.Free;
     fTR.CommitRetaining;
@@ -645,21 +637,21 @@ begin
 
 end;
 
-procedure TMediaLibrary.Scan(paths: TStrings; FullScan:boolean = true);
+procedure TMediaLibrary.Scan(paths: TStrings; FullScan: boolean = True);
 var
   Scanner: TDirectoryScanner;
 begin
   if fScanning then
-     exit;
+    exit;
 
-  fScanning := true;
+  fScanning := True;
   fFullScan := FullScan;
 
   fAdded   := 0;
   fFailed  := 0;
   fUpdated := 0;
   if Assigned(FOnScanStart) then
-     FOnScanStart(self);
+    FOnScanStart(self);
   BeforeScan;
   Scanner := TDirectoryScanner.CreateScanner(Paths, self);
   Scanner.OnTerminate := @EndScan;
@@ -668,38 +660,38 @@ end;
 
 procedure TMediaLibrary.RemoveMissing;
 var
-  qtmp : TSQLQuery;
-  Tags:TcommonTags;
+  qtmp: TSQLQuery;
+  Tags: TcommonTags;
 begin
   fAdded   := 0;
   fFailed  := 0;
   fUpdated := 0;
 
-  qtmp:=TSQLQuery.Create(fDB);
+  qtmp := TSQLQuery.Create(fDB);
   try
     if Assigned(FOnScanStart) then
-       FOnScanStart(self);
+      FOnScanStart(self);
 
-    ReadBegin('','');
+    ReadBegin('', '');
 
-    qtmp.DataBase:=fDB;
+    qtmp.DataBase := fDB;
     qtmp.SQL.Add('update songs set elabflag = ''S'' where id = :id');
 
     while not ReadComplete do
+    begin
+      Tags := ReadItem;
+      if not FileExistsUTF8(Tags.Filename) then
       begin
-        Tags:=ReadItem;
-        if Not FileExistsUTF8(Tags.Filename) then
-          begin
-             qtmp.Params.Items[0].AsInteger:=Tags.ID;
-             qtmp.ExecSQL;
-          end;
-        NextItem;
+        qtmp.Params.Items[0].AsInteger := Tags.ID;
+        qtmp.ExecSQL;
       end;
+      NextItem;
+    end;
     ReadEnd;
     AfterScan;
 
   finally
-    qtmp.free;
+    qtmp.Free;
   end;
   fTR.CommitRetaining;
   if Assigned(FOnScanComplete) then
@@ -740,23 +732,23 @@ end;
 
 function TMediaLibrary.ReadItem: TCommonTags;
 begin
-  Result:= TagsFromTable(fLoadTable);
+  Result := TagsFromTable(fLoadTable);
 end;
 
-function TMediaLibrary.TagsFromTable(Table:TSQLQuery): TCommonTags;
+function TMediaLibrary.TagsFromTable(Table: TSQLQuery): TCommonTags;
 begin
-  Result.ID          := Table.FieldByName('ID').AsInteger;
-  Result.FileName    := (Table.FieldByName('Filename').AsString);
-  Result.Track       := Table.FieldByName('Track').AsInteger;
+  Result.ID      := Table.FieldByName('ID').AsInteger;
+  Result.FileName := (Table.FieldByName('Filename').AsString);
+  Result.Track   := Table.FieldByName('Track').AsInteger;
   Result.TrackString := (Table.FieldByName('TrackString').AsString);
-  Result.Title       := (Table.FieldByName('Title').AsString);
-  Result.Album       := (Table.FieldByName('Album').AsString);
+  Result.Title   := (Table.FieldByName('Title').AsString);
+  Result.Album   := (Table.FieldByName('Album').AsString);
   Result.AlbumArtist := (Table.FieldByName('AlbumArtist').AsString);
-  Result.Artist      := (Table.FieldByName('Artist').AsString);
-  Result.Genre       := (Table.FieldByName('Genre').AsString);
-  Result.Year        := (Table.FieldByName('year').AsString);
-  Result.Duration    := Table.FieldByName('Duration').AsInteger;
-  Result.Comment     := (Table.FieldByName('Comment').AsString);
+  Result.Artist  := (Table.FieldByName('Artist').AsString);
+  Result.Genre   := (Table.FieldByName('Genre').AsString);
+  Result.Year    := (Table.FieldByName('year').AsString);
+  Result.Duration := Table.FieldByName('Duration').AsInteger;
+  Result.Comment := (Table.FieldByName('Comment').AsString);
 
 end;
 
@@ -780,21 +772,21 @@ begin
   fWorkQuery.Close;
   fWorkQuery.SQL.Text := 'SELECT count(*), Sum(FileSize), Sum(Duration) FROM songs';
   if Filter <> EmptyStr then
-     fWorkQuery.SQL.Add(' where ' +Filter);
- fWorkQuery.Open;
- Result.Count := (fWorkQuery.Fields[0].AsInteger);
- if Result.Count > 0 then
-   begin
-     Result.TotalSize := (fWorkQuery.Fields[1].AsLargeInt);
-     Result.TotalTime := (fWorkQuery.Fields[2].AsLargeInt);
-   end
- else
-   begin
-     Result.TotalSize := 0;
-     Result.TotalTime := 0;
-   end;
+    fWorkQuery.SQL.Add(' where ' + Filter);
+  fWorkQuery.Open;
+  Result.Count := (fWorkQuery.Fields[0].AsInteger);
+  if Result.Count > 0 then
+  begin
+    Result.TotalSize := (fWorkQuery.Fields[1].AsLargeInt);
+    Result.TotalTime := (fWorkQuery.Fields[2].AsLargeInt);
+  end
+  else
+  begin
+    Result.TotalSize := 0;
+    Result.TotalTime := 0;
+  end;
 
- fWorkQuery.Close;
+  fWorkQuery.Close;
 
 end;
 
@@ -808,11 +800,11 @@ begin
   fWorkQuery.Close;
   fWorkQuery.SQL.Text := 'select filename from songs where id =' + IntToStr(ID);
   fWorkQuery.Open;
-  if fWorkQuery.eof then
-     Result:=''
+  if fWorkQuery.EOF then
+    Result := ''
   else
-     Result := (fWorkQuery.Fields[0].AsString);
- fWorkQuery.Close;
+    Result := (fWorkQuery.Fields[0].AsString);
+  fWorkQuery.Close;
 end;
 
 function TMediaLibrary.IDFromFullName(FileName: TFileName): integer;
@@ -821,9 +813,9 @@ begin
   fWorkQuery.SQL.Text := 'select ID from songs where filename =' + quotedstr((FileName));
   fWorkQuery.Open;
   if fWorkQuery.RecordCount > 0 then
-     Result := fWorkQuery.Fields[0].AsInteger
+    Result := fWorkQuery.Fields[0].AsInteger
   else
-     Result := -1;
+    Result := -1;
   fWorkQuery.Close;
 
 end;
@@ -834,12 +826,12 @@ begin
   fWorkQuery.SQL.Text := 'select ID, FileSize, FileDate  from songs where filename =' + quotedstr((FileName));
   fWorkQuery.Open;
   if fWorkQuery.RecordCount > 0 then
-     begin
-       Result.Size := fWorkQuery.Fields[1].AsLargeInt;
-       Result.ModifyDate := fWorkQuery.Fields[2].Asfloat;
-     end
+  begin
+    Result.Size := fWorkQuery.Fields[1].AsLargeInt;
+    Result.ModifyDate := fWorkQuery.Fields[2].AsFloat;
+  end
   else
-     Result.Size := -1;
+    Result.Size := -1;
   fWorkQuery.Close;
 
 end;
@@ -847,15 +839,15 @@ end;
 function TMediaLibrary.FileInfoFromID(ID: integer): TFileInfo;
 begin
   fWorkQuery.Close;
-  fWorkQuery.SQL.Text := 'select FileSize, FileDate  from songs where id =' + inttostr(id);
+  fWorkQuery.SQL.Text := 'select FileSize, FileDate  from songs where id =' + IntToStr(id);
   fWorkQuery.Open;
   if fWorkQuery.RecordCount > 0 then
-     begin
-       Result.Size := fWorkQuery.Fields[0].AsLargeInt;
-       Result.ModifyDate := fWorkQuery.Fields[1].Asfloat;
-     end
+  begin
+    Result.Size := fWorkQuery.Fields[0].AsLargeInt;
+    Result.ModifyDate := fWorkQuery.Fields[1].AsFloat;
+  end
   else
-     Result.Size := -1;
+    Result.Size := -1;
   fWorkQuery.Close;
 
 end;
@@ -865,24 +857,24 @@ begin
   fWorkQuery.Close;
 
   fWorkQuery.SQL.Text := 'update songs set '
-                       + '  Playcount = Playcount + 1'
-                       + ' ,lastplay = ' + FloatToStr(now, DefaultSQLFormatSettings)
-                       + ' where id =' + IntToStr(ID);
+    + '  Playcount = Playcount + 1'
+    + ' ,lastplay = ' + FloatToStr(now, DefaultSQLFormatSettings)
+    + ' where id =' + IntToStr(ID);
   fWorkQuery.ExecSQL;
   Result := '';
   fWorkQuery.Close;
   fTR.CommitRetaining;
 end;
 
-procedure TMediaLibrary.SetRating(ID: integer; Rating: Integer);
+procedure TMediaLibrary.SetRating(ID: integer; Rating: integer);
 begin
   if id = -1 then
     exit;
   fWorkQuery.Close;
 
   fWorkQuery.SQL.Text := 'update songs set '
-                       + ' Rating = ' + IntToStr(rating)
-                       + ' where id =' + IntToStr(ID);
+    + ' Rating = ' + IntToStr(rating)
+    + ' where id =' + IntToStr(ID);
   fWorkQuery.ExecSQL;
   fWorkQuery.Close;
   fTR.CommitRetaining;
@@ -895,9 +887,9 @@ begin
   fWorkQuery.SQL.Text := 'select * from songs where id =' + IntToStr(ID);
   fWorkQuery.Open;
   if fWorkQuery.RecordCount = 0 then
-      Result.ID := -1
+    Result.ID := -1
   else
-       Result:=TagsFromTable(fWorkQuery);
+    Result    := TagsFromTable(fWorkQuery);
 
   fWorkQuery.Close;
 end;
@@ -906,24 +898,24 @@ function TMediaLibrary.InfoFromID(ID: integer): TExtendedInfo;
 begin
   fWorkQuery.Close;
   fWorkQuery.SQL.Text := 'select PlayCount, Added, LastPlay, Rating' +
-                         ' from songs where id =' + IntToStr(ID);
+    ' from songs where id =' + IntToStr(ID);
   fWorkQuery.Open;
 
   Result := TExtendedInfo.Create;
 
   if fWorkQuery.RecordCount = 0 then
-     begin
-       Result.Id := -1;
-       result.PlayCount:= -1
-     end
+  begin
+    Result.Id := -1;
+    Result.PlayCount := -1;
+  end
   else
-     begin
-       Result.Id:= ID;
-       Result.PlayCount:=fWorkQuery.Fields[0].AsInteger;
-       Result.Added:=fWorkQuery.Fields[1].AsFloat;
-       Result.LastPlay:=fWorkQuery.Fields[2].AsFloat;
-       Result.Rating:=fWorkQuery.Fields[3].AsInteger;
-     end;
+  begin
+    Result.Id     := ID;
+    Result.PlayCount := fWorkQuery.Fields[0].AsInteger;
+    Result.Added  := fWorkQuery.Fields[1].AsFloat;
+    Result.LastPlay := fWorkQuery.Fields[2].AsFloat;
+    Result.Rating := fWorkQuery.Fields[3].AsInteger;
+  end;
 
   fWorkQuery.Close;
 
@@ -934,30 +926,30 @@ begin
 
   fWorkQuery.Close;
   fWorkQuery.SQL.Text := UPDATEFILEINFO;
-  fWorkQuery.Params.ParamByName('ID').AsInteger  := ID;
-  fWorkQuery.Params.ParamByName('FileDate').AsFloat  := Info.ModifyDate;
-  fWorkQuery.Params.ParamByName('FileSize').AsLargeint  := Info.Size;
+  fWorkQuery.Params.ParamByName('ID').AsInteger := ID;
+  fWorkQuery.Params.ParamByName('FileDate').AsFloat := Info.ModifyDate;
+  fWorkQuery.Params.ParamByName('FileSize').AsLargeint := Info.Size;
   fWorkQuery.ExecSQL;
 
 end;
 
-procedure TMediaLibrary.AddInfoToSong(ID: Integer; ASong:TCustomSong);
-Var
- extendedinfo : TExtendedInfo;
+procedure TMediaLibrary.AddInfoToSong(ID: integer; ASong: TCustomSong);
+var
+  extendedinfo: TExtendedInfo;
 begin
-   extendedinfo := InfoFromID(Id);
-   try
-     ASong.Id:=ExtendedInfo.Id;
-     ASong.Added:=ExtendedInfo.Added;
-     ASong.LastPlay:=ExtendedInfo.LastPlay;
-     ASong.Rating:=ExtendedInfo.Rating;
-   finally
-     ExtendedInfo.free;
-   end;
+  extendedinfo := InfoFromID(Id);
+  try
+    ASong.Id     := ExtendedInfo.Id;
+    ASong.Added  := ExtendedInfo.Added;
+    ASong.LastPlay := ExtendedInfo.LastPlay;
+    ASong.Rating := ExtendedInfo.Rating;
+  finally
+    ExtendedInfo.Free;
+  end;
 end;
 
 initialization
- {$IFDEF LINUX}
-   sqlite3dyn.SQLiteDefaultLibrary :='libsqlite3.so.0';
- {$ENDIF}
+  {$IFDEF LINUX}
+  sqlite3dyn.SQLiteDefaultLibrary := 'libsqlite3.so.0';
+  {$ENDIF}
 end.
