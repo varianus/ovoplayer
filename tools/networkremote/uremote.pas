@@ -427,7 +427,7 @@ begin
     //   FThread.WaitFor;
     try
       FClient.Close;
-      FClient.Free;
+//      FClient.Free;
     except
     end;
     Connected := False;
@@ -488,7 +488,13 @@ var
   DecodedStream: TMemoryStream;
   EncodedStream: TStringStream;
   Decoder: TBase64DecodingStream;
+  DataStart: SizeInt;
 begin
+  try
+  DataStart := Pos(';base64,', s);
+  if DataStart > 0 then
+    Delete(s,1,DataStart+8);
+
   EncodedStream := TStringStream.Create(S);
   DecodedStream := TMemoryStream.Create;
   Decoder := TBase64DecodingStream.Create(EncodedStream);
@@ -499,6 +505,9 @@ begin
   DecodedStream.Free;
   EncodedStream.Free;
   Decoder.Free;
+
+  except
+  end;
 end;
 
 end.
