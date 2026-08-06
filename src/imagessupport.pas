@@ -21,50 +21,47 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 unit ImagesSupport;
 
 interface
-uses graphics,
-    Classes, SysUtils, LCLType;
 
-procedure ResizeBitmap(Bitmap: TBitmap; Width, Height: Integer; ForcePF32:boolean=false);
+uses Graphics,
+  Classes, SysUtils, Math, LCLType;
+
+procedure ResizeBitmap(Bitmap: TBitmap; Width, Height: integer; ForcePF32: boolean = False);
 
 implementation
 
-procedure ResizeBitmap(Bitmap: TBitmap; Width, Height: Integer; ForcePF32:boolean=false );
+procedure ResizeBitmap(Bitmap: TBitmap; Width, Height: integer; ForcePF32: boolean = False);
 var
-  R: TRect;
-  B: TBitmap;
-
-  WNew, HNew: integer;
+  SrcWidth, SrcHeight: integer;
+  DestWidth, DestHeight: integer;
+  OffsetX, OffsetY: integer;
+  DestImage: TBitmap;
+  Scale: double;
 begin
-  if assigned(Bitmap) then begin
-    B:= TBitmap.Create;
+  if assigned(Bitmap) then
+  begin
+    DestImage := TBitmap.Create;
     try
-      WNew := (Bitmap.Width * Height) div Bitmap.Height;
-      HNew := (Width * Bitmap.Height) div Bitmap.Width;
-      if (Width < WNew) then
-      begin
-        R.Right := Width;
-        R.Bottom := HNew;
-      end else
-      begin
-        R.Right := WNew;
-        R.Bottom := Height;
-      end;
-  //    Writeln(format('Desired x:%d Y:%d  Source x:%d Y:%d  Result x:%d Y:%d',[Width, Height, Bitmap.Width, Bitmap.Height, R.Right, R.Bottom]));
-      R.Left:= 0;
-      R.Top:= 0;
-      B.PixelFormat:= Bitmap.PixelFormat;
-      B.Width:= R.Right;
-      B.Height:= R.Bottom;
-      B.Canvas.StretchDraw(R, Bitmap);
-      Bitmap.Width:= R.Right;
-      Bitmap.Height:= R.Bottom;
+      SrcWidth   := Bitmap.Width;
+      SrcHeight  := Bitmap.Height;
+      Scale      := Min(Width / SrcWidth, Height / SrcHeight);
+      DestWidth  := Round(SrcWidth * Scale);
+      DestHeight := Round(SrcHeight * Scale);
+      OffsetX    := (Width - DestWidth) div 2;
+      OffsetY    := (Height - DestHeight) div 2;
+
       if ForcePF32 then
-        Bitmap.PixelFormat:= pf32bit;
-      Bitmap.Canvas.Draw(0, 0, B);
+        DestImage.PixelFormat := pf32bit
+      else
+        DestImage.PixelFormat := Bitmap.PixelFormat;
+      DestImage.SetSize(Width, Height);
+      DestImage.Canvas.Brush.Color := clBlack;
+      DestImage.Canvas.FillRect(Rect(0, 0, Width, Height));
+      DestImage.Canvas.StretchDraw(Rect(OffsetX, OffsetY, OffsetX + DestWidth, OffsetY + DestHeight), Bitmap);
     finally
-      B.Free;
+      Bitmap.Assign(DestImage);
+      DestImage.Free;
     end;
   end;
 end;
-end.
 
+end.

@@ -70,6 +70,8 @@ var
 { TTaskBarExtender }
 
 function WndCallback(Ahwnd: HWND; uMsg: UINT; wParam: WParam; lParam: LParam):LRESULT; stdcall;
+var
+  FileName: string;
 begin
   if uMsg=WM_COMMAND then
   begin
@@ -88,7 +90,11 @@ begin
       if not Assigned(handler.BM) then
         begin
           handler.BM := TPicture.create;
-          handler.bm.LoadFromFile(Handler.FBackEnd.GetCoverURL(false));
+          FileName := Handler.FBackEnd.GetCoverURL(false);
+          if not FileName.IsEmpty then
+             handler.bm.LoadFromFile(FileName)
+          else
+             Handler.bm.LoadFromResourceName(HINSTANCE, 'NOCOVER');
           ResizeBitmap(Handler.bm.Bitmap, HIWORD(lParam), LOWORD(lParam), true);
         end;
       Result := DwmSetIconicThumbnail(handler.FApplication, Handler.bm.Bitmap.Handle,0);
