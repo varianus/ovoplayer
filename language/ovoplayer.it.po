@@ -1,17 +1,16 @@
-# varianus <marcocas@gmail.com>, 2016, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: Ovoplayer 1.4\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2017-04-25 18:06+0200\n"
+"PO-Revision-Date: 2026-08-06 12:14+0000\n"
 "Last-Translator: varianus <marcocas@gmail.com>\n"
-"Language-Team: Marco Caselli\n"
+"Language-Team: varianus <marcocas@gmail.com>\n"
 "Language: it\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
 
 #: appconsts.raddedtrack
 msgid "Added:"
@@ -23,7 +22,6 @@ msgid "Save equalizer preset"
 msgstr "Salva impostazione equalizzatore"
 
 #: appconsts.rallfiles
-#, object-pascal-format
 msgid "All Files(%0:s)|%0:s"
 msgstr "Tutti i files (%0:s)|%0:s"
 
@@ -36,12 +34,10 @@ msgid "Scanning Collection"
 msgstr "Scansione Collezione"
 
 #: appconsts.rbuildenv
-#, object-pascal-format
 msgid "Build environment: Lazarus %0:s  FPC %1:s"
 msgstr "Ambiente di sviluppo: Lazarus %0:s  FPC %1:s"
 
 #: appconsts.rcurrentengine
-#, object-pascal-format
 msgid "Current audio engine: %s"
 msgstr "Motore di riproduzione attuale: %s"
 
@@ -70,9 +66,9 @@ msgid "Failed:"
 msgstr "Fallite:"
 
 #: appconsts.rlibrarytotals
-#, object-pascal-format
 msgid "Library contains %0:d tracks (total time %1:s, total size %2:s)"
-msgstr "La Libreria contiene %0:d tracce (tempo totale %1:s, dimensione totale %2:s)"
+msgstr ""
+"La Libreria contiene %0:d tracce (tempo totale %1:s, dimensione totale %2:s)"
 
 #: appconsts.rlowportwarning
 msgid ""
@@ -83,9 +79,9 @@ msgstr ""
 "richiedere i diritti di amministratore in alcuni S.O. (ad es. Linux).\n"
 
 #: appconsts.rmatchingitems
-#, object-pascal-format
 msgid "%0:d tracks matching current filter (total time %1:s, total size %2:s)"
-msgstr "Il filtro corrente estrae %0:d tracce (Tempo totale %1:s, Dim. Totale %2:s)"
+msgstr ""
+"Il filtro corrente estrae %0:d tracce (Tempo totale %1:s, Dim. Totale %2:s)"
 
 #: appconsts.rmissing
 msgid "<missing>"
@@ -124,7 +120,6 @@ msgid "Updated:"
 msgstr "Aggiornate:"
 
 #: appconsts.rversionstring
-#, object-pascal-format
 msgid "Version: %0:s (Date %2:s)"
 msgstr "Versione: %0:s (Data %2:s)"
 
@@ -316,8 +311,10 @@ msgid "Year"
 msgstr "Anno"
 
 #: simplesingleinstance.serrsetsingleinstanceglobalstarted
-msgid "You cannot change the single instance global property when it's been started."
-msgstr "Non puoi cambiare la proprietà globale dell'istanza singola quando è avviata"
+msgid ""
+"You cannot change the single instance global property when it's been started."
+msgstr ""
+"Non puoi cambiare la proprietà globale dell'istanza singola quando è avviata"
 
 #: simplesingleinstance.serrsetsingleinstanceidstarted
 msgid "You cannot change the single instance ID when it's been started."
@@ -997,3 +994,285 @@ msgstr "Ripristina"
 #: tfmainform.sgplaylist.columns[0].title.caption
 msgid "#"
 msgstr "#"
+
+#: tfmainform.sgplaylist.columns[10].title.caption
+#, fuzzy
+msgctxt "tfmainform.sgplaylist.columns[10].title.caption"
+msgid "Rating"
+msgstr "Valutazione"
+
+#: tfmainform.sgplaylist.columns[1].title.caption
+#, fuzzy
+msgctxt "tfmainform.sgplaylist.columns[1].title.caption"
+msgid "Title"
+msgstr "Titolo"
+
+#: tfmainform.sgplaylist.columns[2].title.caption
+#, fuzzy
+msgctxt "tfmainform.sgplaylist.columns[2].title.caption"
+msgid "Album"
+msgstr "Album"
+
+#: tfmainform.sgplaylist.columns[3].title.caption
+#, fuzzy
+msgctxt "tfmainform.sgplaylist.columns[3].title.caption"
+msgid "Artist"
+msgstr "Artista"
+
+#: tfmainform.sgplaylist.columns[4].title.caption
+msgid "Time"
+msgstr "Tempo"
+
+#: tfmainform.sgplaylist.columns[5].title.caption
+#, fuzzy
+msgctxt "tfmainform.sgplaylist.columns[5].title.caption"
+msgid "Track"
+msgstr "Traccia"
+
+#: tfmainform.sgplaylist.columns[6].title.caption
+#, fuzzy
+msgctxt "tfmainform.sgplaylist.columns[6].title.caption"
+msgid "Genre"
+msgstr "Genere"
+
+#: tfmainform.sgplaylist.columns[7].title.caption
+#, fuzzy
+msgctxt "tfmainform.sgplaylist.columns[7].title.caption"
+msgid "Year"
+msgstr "Anno"
+
+#: tfmainform.sgplaylist.columns[8].title.caption
+#, fuzzy
+msgctxt "tfmainform.sgplaylist.columns[8].title.caption"
+msgid "Album Artist"
+msgstr "Artista Album"
+
+#: tfmainform.sgplaylist.columns[9].title.caption
+msgid "FileName"
+msgstr "NomeFile"
+
+#: tfmainform.sgstats.columns[0].title.caption
+#, fuzzy
+msgctxt "tfmainform.sgstats.columns[0].title.caption"
+msgid "Title"
+msgstr "Titolo"
+
+#: tfmainform.sgstats.columns[1].title.caption
+#, fuzzy
+msgctxt "tfmainform.sgstats.columns[1].title.caption"
+msgid "Title"
+msgstr "Titolo"
+
+#: tfmainform.statictext1.caption
+msgid "Welcome to OvoPlayer"
+msgstr "Benvenuto in OvoPlayer"
+
+#: tfmainform.statictext2.caption
+msgid "Add one or more songs"
+msgstr "Aggiungi una o più canzoni"
+
+#: tfmainform.statictext3.caption
+msgid "Add all songs in a folder"
+msgstr "Aggiungi tutte le canzoni nella cartella"
+
+#: tfmainform.statictext4.caption
+msgid "Find some music to play"
+msgstr "Cerca un po' di musica da suonare"
+
+#: tfmainform.statictext5.caption
+msgid "Add songs to your music collection"
+msgstr "Aggiungi canzoni alla tua collezione musicale"
+
+#: tfmainform.statictext6.caption
+msgid "Import an existing playlist"
+msgstr "Importa una playlist esistente"
+
+#: tfmainform.tbrepeat.caption
+msgid "     "
+msgstr ""
+
+#: tfmainform.title.caption
+#, fuzzy
+msgctxt "tfmainform.title.caption"
+msgid "Title"
+msgstr "Titolo"
+
+#: tfmainform.tscollection.caption
+#, fuzzy
+msgctxt "tfmainform.tscollection.caption"
+msgid "Collection"
+msgstr "Collezione"
+
+#: tfmainform.tsdirectory.caption
+msgid "Directory"
+msgstr "Cartella"
+
+#: tfmainform.tsplaylist.caption
+msgid "PlayList"
+msgstr "PlayList"
+
+#: tfminiplayer.caption
+msgid "MiniPlayer"
+msgstr "MiniPlayer"
+
+#: tfrequalizer.lbband.caption
+msgid "Band"
+msgstr "Banda"
+
+#: tfrequalizer.lbvalue.caption
+msgid "Value"
+msgstr "Valore"
+
+#: tfrfield.testdate.text
+#, fuzzy
+msgctxt "tfrfield.testdate.text"
+msgid "equal to"
+msgstr "uguale a"
+
+#: tfrfield.testnumber.text
+#, fuzzy
+msgctxt "tfrfield.testnumber.text"
+msgid "equal to"
+msgstr "uguale a"
+
+#: tfrfield.testrating.text
+#, fuzzy
+msgctxt "tfrfield.testrating.text"
+msgid "equal to"
+msgstr "uguale a"
+
+#: tfrfield.testtext.text
+#, fuzzy
+msgctxt "tfrfield.testtext.text"
+msgid "is"
+msgstr "è"
+
+#: tfscanresult.caption
+msgid "Scan Result"
+msgstr "Risultato Scansione"
+
+#: tfscanresult.resultgrid.columns[0].title.caption
+msgid "File name"
+msgstr "Nome file"
+
+#: tfsonginfo.bnext.caption
+#, fuzzy
+msgctxt "tfsonginfo.bnext.caption"
+msgid "Next"
+msgstr "Prossimo"
+
+#: tfsonginfo.bprevious.caption
+#, fuzzy
+msgctxt "tfsonginfo.bprevious.caption"
+msgid "Previous"
+msgstr "Precedente"
+
+#: tfsonginfo.buttonpanel1.cancelbutton.caption
+msgid "Discard"
+msgstr "Ignora"
+
+#: tfsonginfo.buttonpanel1.okbutton.caption
+msgid "Save"
+msgstr "Salva"
+
+#: tfsonginfo.caption
+msgid "Song Information"
+msgstr "Informazioni Canzone"
+
+#: tfsonginfo.groupbox1.caption
+msgid "Library"
+msgstr "Libreria"
+
+#: tfsonginfo.laalbum.caption
+#, fuzzy
+msgctxt "tfsonginfo.laalbum.caption"
+msgid "Album"
+msgstr "Album"
+
+#: tfsonginfo.laalbumartist.caption
+#, fuzzy
+msgctxt "tfsonginfo.laalbumartist.caption"
+msgid "Album Artist"
+msgstr "Artista Album"
+
+#: tfsonginfo.laartist.caption
+#, fuzzy
+msgctxt "tfsonginfo.laartist.caption"
+msgid "Artist"
+msgstr "Artista"
+
+#: tfsonginfo.label11.caption
+msgid "BitRate"
+msgstr "BitRate"
+
+#: tfsonginfo.label12.caption
+msgid "Sampling"
+msgstr "Campionamento"
+
+#: tfsonginfo.label13.caption
+msgid "Channels"
+msgstr "Canali"
+
+#: tfsonginfo.label14.caption
+#, fuzzy
+msgctxt "tfsonginfo.label14.caption"
+msgid "File Name"
+msgstr "Nome File"
+
+#: tfsonginfo.label15.caption
+msgid "Size"
+msgstr "Dimensione"
+
+#: tfsonginfo.label16.caption
+msgid "Play Count"
+msgstr "Conteggio esecuzioni"
+
+#: tfsonginfo.label17.caption
+msgid "Added to collection"
+msgstr "Aggiunti alla collezione"
+
+#: tfsonginfo.label18.caption
+msgid "Last Played"
+msgstr "Ultima riproduzione"
+
+#: tfsonginfo.label9.caption
+#, fuzzy
+msgctxt "tfsonginfo.label9.caption"
+msgid "Duration"
+msgstr "Durata"
+
+#: tfsonginfo.lacomment.caption
+msgid "Comment"
+msgstr "Commento"
+
+#: tfsonginfo.lagenre.caption
+#, fuzzy
+msgctxt "tfsonginfo.lagenre.caption"
+msgid "Genre"
+msgstr "Genere"
+
+#: tfsonginfo.latitle.caption
+#, fuzzy
+msgctxt "tfsonginfo.latitle.caption"
+msgid "Title"
+msgstr "Titolo"
+
+#: tfsonginfo.latrack.caption
+#, fuzzy
+msgctxt "tfsonginfo.latrack.caption"
+msgid "Track"
+msgstr "Traccia"
+
+#: tfsonginfo.layear.caption
+#, fuzzy
+msgctxt "tfsonginfo.layear.caption"
+msgid "Year"
+msgstr "Anno"
+
+#: tfsonginfo.tsmediaproperty.caption
+msgid "Media Property"
+msgstr "Proprietà Media"
+
+#: tfsonginfo.tstags.caption
+msgid "Tags"
+msgstr "Etichette"
