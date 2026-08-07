@@ -103,14 +103,17 @@ type
     FEnabled: boolean;
     FOnlyLocalhost: boolean;
     FPort: integer;
+    FUseSSL: boolean;
     procedure SetEnabled(AValue: boolean);
     procedure SetOnlyLocalhost(AValue: boolean);
     procedure SetPort(AValue: integer);
+    procedure SetUseSSL(AValue: boolean);
   protected
     Procedure InternalSave; override;
   public
     Property Enabled: boolean read FEnabled write SetEnabled;
     Property OnlyLocalhost: boolean read FOnlyLocalhost write SetOnlyLocalhost;
+    property UseSSL: boolean read FUseSSL write SetUseSSL;
     Property Port: integer read FPort write SetPort;
     Procedure Load; override;
   end;
@@ -191,6 +194,12 @@ begin
   Dirty := True;
 end;
 
+procedure TNetRemoteParam.SetUseSSL(AValue: boolean);
+begin
+  if FUseSSL = AValue then Exit;
+  FUseSSL := AValue;
+end;
+
 procedure TNetRemoteParam.InternalSave;
 const
   Base = 'NetRemote';
@@ -198,6 +207,7 @@ begin
   owner.IniFile.WriteBool(Base, 'Enabled', Enabled);
   owner.IniFile.WriteInteger(Base, 'Port', Port);
   owner.IniFile.WriteBool(Base, 'OnlyLocalhost', OnlyLocalhost);
+  owner.IniFile.WriteBool(Base, 'UseSSL', OnlyLocalhost);
 end;
 
 procedure TNetRemoteParam.Load;
@@ -207,6 +217,7 @@ begin
   FEnabled := owner.IniFile.ReadBool(Base , 'Enabled', False);
   FPort    := owner.IniFile.ReadInteger(Base , 'Port', 6860);
   FOnlyLocalhost := owner.IniFile.ReadBool(Base , 'OnlyLocalhost', true);
+  FUseSSL := owner.IniFile.ReadBool(Base , 'UseSSL', False);
 end;
 {$EndIf}
 

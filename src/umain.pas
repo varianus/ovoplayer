@@ -1013,6 +1013,7 @@ begin
       MyNetIntf      := TNetIntf.Create;
       MyNetIntf.OnlyLocalhost := GuiConfigObj.NetRemoteParam.OnlyLocalhost;
       MyNetIntf.Port := GuiConfigObj.NetRemoteParam.Port;
+      MyNetIntf.UseSSL:= GuiConfigObj.NetRemoteParam.UseSSL;;
       MyNetIntf.Activate(BackEnd);
     end;
   end
