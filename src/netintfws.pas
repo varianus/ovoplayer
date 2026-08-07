@@ -23,23 +23,23 @@ unit NetIntfws;
 interface
 
 uses
-  Classes, SysUtils, BaseTypes, coreinterfaces, TcpIpServer, TcpIpWebSocket, sockets,
-  netprotocol,netsupport, LazLoggerBase;
+  Classes, SysUtils, BaseTypes, coreinterfaces, netprotocol, netsupport, opensslsockets, sslbase, sslsockets, ssockets,
+  LazLoggerBase, fpcustwsserver, fpwebsocketserver, fpwebsocket;
 
 type
 
-  { TWebIntf }
-  TTCPRemoteDaemon = class;
+  TRemoteHandler = class;
 
   { TNetIntf }
-
   TNetIntf = class
   private
     FActivated: boolean;
     fBackEnd: IBackEnd;
-    DaemonThread: TTCPRemoteDaemon;
+    WebSocketServer: TWebSocketServer;
+    Handler: TRemoteHandler;
     FOnlyLocalhost: boolean;
     FPort: integer;
+    procedure GetSocketHandler(Sender: TObject; const UseSSL: Boolean; out AHandler: TSocketHandler);
     procedure SetOnlyLocalhost(AValue: boolean);
     procedure SetPort(AValue: integer);
   public
@@ -54,37 +54,21 @@ type
 
   { TTCPRemoteDaemon }
 
-  TTCPRemoteDaemon = class(TThread)
-  private
-    Sock: TTcpIpServerSocket;
-    fnet: TNetIntf;
-  protected
-
-  public
-    constructor Create(net: TNetIntf);
-    destructor Destroy; override;
-    procedure Execute; override;
-    procedure Terminate;
-  end;
-
   { TRemoteHandler }
 
   TRemoteHandler = class(IObserver)
   private
     FKeepOpen: boolean;
-    Sock: TTcpIpWebSocket;
-    CSock: TSocket;
     fnet: TNetIntf;
     Data: string;
-    DataSize: integer;
     ConnectionCfg: RConnectionCfg;
     procedure SetKeepOpen(AValue: boolean);
-    procedure MessageHandler(ws: TTcpIpWebSocket; const Message: String);
+    procedure DoMessageReceived(Sender: TObject; const aMessage: TWSMessage);
   private
     property KeepOpen: boolean read FKeepOpen write SetKeepOpen;
   public
     procedure UpdateProperty(Kind: TChangedProperty);
-    constructor Create(hsock: TSocket; net: TNetIntf);
+    constructor Create(Net: TNetIntf);
     Destructor Destroy; override;
   end;
 
@@ -92,74 +76,23 @@ implementation
 
 { TEchoDaemon }
 
-procedure TTCPRemoteDaemon.Terminate;
-begin
-  Sock.Socket.StopAccepting(False);
-  Sock.Free;
-  inherited Terminate;
-
-end;
-
-constructor TTCPRemoteDaemon.Create(net: TNetIntf);
-begin
-  inherited Create(False);
-  fnet := net;
-  sock := TTcpIpServerSocket.Create(specialize IfThen<string>(Net.FOnlyLocalhost,'127.0.0.1','0.0.0.0') , net.FPort);
-  FreeOnTerminate := True;
-end;
-
-destructor TTCPRemoteDaemon.Destroy;
-begin
-  Inherited Destroy();
-end;
-
-procedure TTCPRemoteDaemon.Execute;
-var
-  ClientSock: TSocket;
-  ws: TRemoteHandler;
-begin
-  sock.bind;
-  sock.listen;
-  repeat
-    ClientSock := sock.accept;
-    if (not Terminated) and (Sock.lastError = 0) then
-      begin
-        try
-         ws:= TRemoteHandler.Create(ClientSock, fnet);
-        except
-        end;
-
-
-      end;
-  until terminated;
-
-end;
-
-{ TEchoThrd }
-
 procedure TRemoteHandler.SetKeepOpen(AValue: boolean);
 begin
-  if FKeepOpen=AValue then Exit;
-
-  //if AValue then
-  //  fnet.fBackEnd.Attach(self)
-  //else
-  //  fnet.fBackEnd.Remove(self);
-
-  FKeepOpen:=AValue;
 
 end;
 
-procedure TRemoteHandler.MessageHandler(ws: TTcpIpWebSocket; const Message:String);
+procedure TRemoteHandler.DoMessageReceived(Sender: TObject; const aMessage: TWSMessage);
 var
   Command : RExternalCommand;
+  Connection: TWSConnection;
   Item: integer;
   i: integer;
   fPlaylist: String;
   H, W: integer;
 
 begin
-  Data:= copy(message, 5, Length(Message));
+  Connection := Sender as TWSConnection;
+  Data:= copy(aMessage.AsString, 5, Length(aMessage.AsString));
   Command := SplitCommand(data);
   if Command.Category = CATEGORY_CONFIG then
     begin
@@ -186,30 +119,30 @@ begin
       if Command.Category = CATEGORY_REQUEST then
         begin
           case Command.Command of
-            INFO_ENGINE_STATE: sock.WriteString(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_ENGINE_STATE, IntToStr(ord(fnet.fBackEnd.Status))),ConnectionCfg));
+            INFO_ENGINE_STATE: Connection.Send(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_ENGINE_STATE, IntToStr(ord(fnet.fBackEnd.Status))),ConnectionCfg));
             INFO_METADATA: begin
                              item := StrToInt64Def(Command.Param, -1);
-                             sock.WriteString(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata(item),ConnectionCfg)),ConnectionCfg));
+                             Connection.Send(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata(item),ConnectionCfg)),ConnectionCfg));
                            end;
-            INFO_POSITION : sock.WriteString(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.Position)),ConnectionCfg));
-            INFO_VOLUME: sock.WriteString(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.Volume)),ConnectionCfg));
-            INFO_PLAYLISTCOUNT: sock.WriteString(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_PLAYLISTCOUNT, IntToStr(fnet.fBackEnd.PlayListCount)),ConnectionCfg));
-            INFO_COVERURL : sock.WriteString(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_COVERURL, fnet.fBackEnd.GetCoverURL),ConnectionCfg));
+            INFO_POSITION : Connection.Send(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_POSITION, IntToStr(fnet.fBackEnd.Position)),ConnectionCfg));
+            INFO_VOLUME: Connection.Send(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.Volume)),ConnectionCfg));
+            INFO_PLAYLISTCOUNT: Connection.Send(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_PLAYLISTCOUNT, IntToStr(fnet.fBackEnd.PlayListCount)),ConnectionCfg));
+            INFO_COVERURL : Connection.Send(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_COVERURL, fnet.fBackEnd.GetCoverURL),ConnectionCfg));
             INFO_COVERIMG :  begin
                                 DecodeImageSize(Command.Param, W, H);
-                                sock.WriteString(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_COVERIMG, fnet.fBackEnd.GetCover(W,H)),ConnectionCfg));
+                                Connection.Send(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_COVERIMG, fnet.fBackEnd.GetCover(W,H)),ConnectionCfg));
                              end;
-            INFO_PLAYLISTINDEX : sock.WriteString(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_PLAYLISTINDEX, IntToStr(fnet.fBackEnd.GetCurrentSongIndex)),ConnectionCfg));
+            INFO_PLAYLISTINDEX : Connection.Send(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_PLAYLISTINDEX, IntToStr(fnet.fBackEnd.GetCurrentSongIndex)),ConnectionCfg));
             INFO_FULLPLAYLIST : begin
                                  fPlaylist:=EncodeString(IntToStr(fnet.fBackEnd.PlayListCount),ConnectionCfg);
                                  for i := 1 to fnet.fBackEnd.PlayListCount  do
                                     fPlaylist:= fPlaylist+EncodeMetaData(fnet.fBackEnd.GetMetadata(i),ConnectionCfg);
-                                 sock.WriteString(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_FULLPLAYLIST, fPlaylist),ConnectionCfg));
+                                 Connection.Send(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_FULLPLAYLIST, fPlaylist),ConnectionCfg));
                                 end;
-            INFO_LOOPING : sock.WriteString(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_LOOPING, inttostr(ord(fnet.fBackEnd.GetLooping()))),ConnectionCfg));
-            INFO_MUTE : sock.WriteString(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_MUTE, inttostr(ord(fnet.fBackEnd.GetMute()))),ConnectionCfg));
+            INFO_LOOPING : Connection.Send(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_LOOPING, inttostr(ord(fnet.fBackEnd.GetLooping()))),ConnectionCfg));
+            INFO_MUTE : Connection.Send(EncodeString(BuildCommand(CATEGORY_INFORMATION, INFO_MUTE, inttostr(ord(fnet.fBackEnd.GetMute()))),ConnectionCfg));
           else
-             sock.WriteString(EncodeString(BuildCommand(CATEGORY_ERROR, INFO_MESSAGE, format('UNKNOWN COMMAND %s %s',[Command.Category, Command.Command])) ,ConnectionCfg));
+             Connection.Send(EncodeString(BuildCommand(CATEGORY_ERROR, INFO_MESSAGE, format('UNKNOWN COMMAND %s %s',[Command.Category, Command.Command])) ,ConnectionCfg));
           end;
         end;
     end;
@@ -225,10 +158,10 @@ begin
         if fnet.fBackEnd.Status = ENGINE_PLAY then
           begin
             tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_METADATA, EncodeMetaData(fnet.fBackEnd.GetMetadata(),ConnectionCfg));
-            sock.WriteString(EncodeString(tmpstr,ConnectionCfg));
+            fnet.WebSocketServer.BroadcastMessage(EncodeString(tmpstr,ConnectionCfg));
           end;
         tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_ENGINE_STATE, IntToStr(ord(fnet.fBackEnd.Status)));
-        sock.WriteString(EncodeString(tmpstr,ConnectionCfg));
+        fnet.WebSocketServer.BroadcastMessage(EncodeString(tmpstr,ConnectionCfg));
         tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_PLAYLISTINDEX, IntToStr(fnet.fBackEnd.GetCurrentSongIndex));
       end;
     cpVolume: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_VOLUME, IntToStr(fnet.fBackEnd.Volume));
@@ -240,29 +173,20 @@ begin
     cpLooping: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_LOOPING, inttostr(ord(fnet.fBackEnd.GetLooping())));
     cpMute: tmpstr:= BuildCommand(CATEGORY_INFORMATION, INFO_MUTE, inttostr(ord(fnet.fBackEnd.GetMute())));
     end;
-  sock.WriteString(EncodeString(tmpstr,ConnectionCfg));
+  fnet.WebSocketServer.BroadcastMessage(EncodeString(tmpstr,ConnectionCfg));
 end;
 
-constructor TRemoteHandler.Create(hsock: TSocket; net: TNetIntf);
+constructor TRemoteHandler.Create(Net: TNetIntf);
 begin
   inherited Create;
   fnet := net;
-  Csock := Hsock;
-  Sock:= TTcpIpWebSocket.Create(CSock);
-  sock.OnText:=@MessageHandler;
   ConnectionCfg.SizeMode:=smByte;
-
-  if sock.Listen then
-    fnet.fBackEnd.Attach(self)
-  else
-    raise exception.create('Cannot listen on WS');
-
+  fnet.fBackEnd.Attach(self);
 end;
 
 
 destructor TRemoteHandler.Destroy;
 begin
-  Sock.Free;
   fnet.fBackEnd.Remove(Self);
   inherited Destroy;
 end;
@@ -273,7 +197,7 @@ procedure TNetIntf.SetPort(AValue: integer);
 begin
   if FPort=AValue then Exit;
   FPort:=AValue;
-  if Assigned(DaemonThread) then
+  if Assigned(WebSocketServer) then
     begin
       DeActivate;
       Activate(fBackEnd);
@@ -284,29 +208,61 @@ procedure TNetIntf.SetOnlyLocalhost(AValue: boolean);
 begin
   if FOnlyLocalhost = AValue then Exit;
   FOnlyLocalhost := AValue;
-  if Assigned(DaemonThread) then
+  if Assigned(WebSocketServer) then
     begin
       DeActivate;
       Activate(fBackEnd);
     end;
 end;
 
+procedure TNetIntf.GetSocketHandler(Sender : TObject; Const UseSSL : Boolean; Out AHandler : TSocketHandler);
+Var
+  S : TSSLSocketHandler;
+  CK : TCertAndKey;
+begin
+  If UseSSL then
+     begin
+     AHandler:=TSSLSocketHandler.GetDefaultHandler;
+     with TSSLSocketHandler(AHandler) do
+       begin
+         CertGenerator.HostName := 'localhost';
+       //   SSLType := stTLSv1_2;
+       end;
+     end
+   else
+     AHandler:=TSocketHandler.Create;
+end;
+
 function TNetIntf.Activate(BackEnd: IBackEnd): boolean;
 begin
   fBackEnd := BackEnd;
+  Handler := TRemoteHandler.Create(self);
 
-  DaemonThread := TTCPRemoteDaemon.Create(self);
+  WebSocketServer := TWebSocketServer.Create(Nil);
+  WebSocketServer.Port := FPort;
+  WebSocketServer.Host := specialize IfThen<string>(FOnlyLocalhost,'127.0.0.1','0.0.0.0');
+  WebSocketServer.UseSSL := true;
+
+//  WebSocketServer.CertificateData.HostName:='ovoplayer';
+//  WebSocketServer.CertificateData.PrivateKey.FileName := 'C:\source\ovoplayer\bin\cert\ovoplayer.key';
+ // WebSocketServer.CertificateData.Certificate.FileName := 'C:\source\ovoplayer\bin\cert\ovoplayer.crt';
+  WebSocketServer.OnGetSocketHandler := @GetSocketHandler;
+  WebSocketServer.OnMessageReceived:=@Handler.DoMessageReceived;
+//  WebSocketServer.OnControlReceived:=@FChat.DoControlReceived;
+//  WebSocketServer.OnDisconnect:=@FChat.DoDisconnect;
+  WebSocketServer.ThreadedAccept := true;
+  WebSocketServer.ThreadMode := wtmThread;
   Result := Assigned(fBackEnd);
   FActivated:= Result;
+  WebSocketServer.Active := true;
 
 end;
 
 procedure TNetIntf.DeActivate;
 begin
-  if Assigned(DaemonThread) then
+  if Assigned(WebSocketServer) then
     begin
-      DaemonThread.Terminate;
-//      DaemonThread.Free;
+      WebSocketServer.Free;
       FActivated:=false;
     end;
 end;
@@ -316,7 +272,7 @@ begin
   FPort := 6860;
   FOnlyLocalhost := true;
   FActivated := False;
-  DaemonThread := nil;
+  WebSocketServer := nil;
 end;
 
 destructor TNetIntf.Destroy;
