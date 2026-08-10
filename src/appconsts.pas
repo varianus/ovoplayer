@@ -52,16 +52,16 @@ const
 
   CustomPlaylistExtension ='.opl';
 
-  MimeTypes : array [0..8] of string =(
-    'application/x-ogg',
-    'application/ogg',
-    'audio/x-vorbis+ogg',
-    'audio/x-scpls',
-    'audio/x-mp3',
-    'audio/x-mpeg',
+  MAX_MIMETYPE = 7;
+  MimeTypes : array [0..MAX_MIMETYPE-1] of string =(
+    'audio/ogg',
     'audio/mpeg',
-    'audio/x-mpegurl',
-    'audio/x-flac');
+    'audio/vorbis',
+    'audio/mp4'
+    'audio/flac',
+    'audio/aac',
+    'audio/opus'
+    );
 
 
 Resourcestring
