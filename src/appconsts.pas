@@ -57,7 +57,7 @@ const
     'audio/ogg',
     'audio/mpeg',
     'audio/vorbis',
-    'audio/mp4'
+    'audio/mp4',
     'audio/flac',
     'audio/aac',
     'audio/opus'
