@@ -103,6 +103,8 @@ type
     FHeight: integer;
     FLeft: integer;
     FLeftPanelVisible: boolean;
+    FLeftPanelWidth: Integer;
+    FPlayInfoHeight: Integer;
     FTop: integer;
     FWidth: integer;
     FForm: TfMainForm;
@@ -110,6 +112,8 @@ type
     procedure SetHeight(AValue: integer);
     procedure SetLeft(AValue: integer);
     procedure SetLeftPanelVisible(AValue: boolean);
+    procedure SetLeftPanelWidth(AValue: Integer);
+    procedure SetPlayInfoHeight(AValue: Integer);
     procedure SetTop(AValue: integer);
     procedure SetWidth(AValue: integer);
   protected
@@ -121,6 +125,8 @@ type
     property Left: integer read FLeft write SetLeft;
     property LeftPanelVisible: boolean read FLeftPanelVisible write SetLeftPanelVisible;
     property ActivePage: integer read FActivePage write SetActivePage;
+    property LeftPanelWidth: Integer read FLeftPanelWidth write SetLeftPanelWidth;
+    property PlayInfoHeight: Integer read FPlayInfoHeight write SetPlayInfoHeight;
     procedure Load; override;
     constructor Create(aOwner: TConfig; Form: TfMainForm); reintroduce;
   end;
@@ -248,6 +254,7 @@ type
     SpeedButton2: TSpeedButton;
     SpeedButton3: TSpeedButton;
     SpeedButton4: TSpeedButton;
+    TopSplitter: TSplitter;
     StaticText1: TStaticText;
     StaticText2: TStaticText;
     StaticText3: TStaticText;
@@ -276,7 +283,7 @@ type
     ToolButton8: TToolButton;
     ToolButton9: TToolButton;
     TrayMenu: TPopupMenu;
-    Splitter1: TSplitter;
+    LeftSplitter: TSplitter;
     ToolButton5: TToolButton;
     imgCover: TImage;
     Album: TLabel;
@@ -355,6 +362,8 @@ type
     procedure pmPlaylistsPopup(Sender: TObject);
     procedure pnCollectionPopup(Sender: TObject);
     procedure pnHeaderPlaylistPopup(Sender: TObject);
+    procedure pnlleftResize(Sender: TObject);
+    procedure pnlPlayInfoResize(Sender: TObject);
     procedure sgPlayListClick(Sender: TObject);
     procedure sgPlayListColRowMoved(Sender: TObject; IsColumn: boolean; sIndex, tIndex: integer);
     procedure sgPlayListContextPopup(Sender: TObject; MousePos: TPoint; var Handled: boolean);
@@ -607,6 +616,20 @@ begin
   Dirty := True;
 end;
 
+procedure TMainFormParam.SetLeftPanelWidth(AValue: Integer);
+begin
+  if FLeftPanelWidth = AValue then Exit;
+  FLeftPanelWidth := AValue;
+  Dirty := True;
+end;
+
+procedure TMainFormParam.SetPlayInfoHeight(AValue: Integer);
+begin
+  if FPlayInfoHeight = AValue then Exit;
+  FPlayInfoHeight := AValue;
+  Dirty := True;
+end;
+
 procedure TMainFormParam.SetTop(AValue: integer);
 begin
   if FTop = AValue then Exit;
@@ -630,6 +653,8 @@ begin
   Owner.Inifile.WriteInteger(Base, 'Top', fTop);
   Owner.Inifile.WriteInteger(Base, 'Left', fLeft);
   Owner.Inifile.WriteInteger(Base, 'ActivePage', FActivePage);
+  Owner.Inifile.WriteInteger(Base, 'PlayInfoHeight', FPlayInfoHeight);
+  Owner.Inifile.WriteInteger(Base, 'LeftPanelWidth', FLeftPanelWidth);
   Owner.Inifile.WriteBool(Base, 'LeftPanelVisible', FLeftPanelVisible);
 end;
 
@@ -641,6 +666,8 @@ begin
   fWidth  := Owner.Inifile.ReadInteger(Base, 'Width', FForm.Width);
   fTop    := Owner.Inifile.ReadInteger(Base, 'Top', FForm.Top);
   fLeft   := Owner.Inifile.ReadInteger(Base, 'Left', FForm.Left);
+  FLeftPanelWidth   := Owner.Inifile.ReadInteger(Base, 'LeftPanelWidth', FForm.pnlLeft.Width);
+  FPlayInfoHeight   := Owner.Inifile.ReadInteger(Base, 'PlayInfoHeight', FForm.pnlPlayInfo.Height);
   fActivePage := Owner.Inifile.ReadInteger(Base, 'ActivePage', 0);
   fLeftPanelVisible := Owner.Inifile.ReadBool(Base, 'LeftPanelVisible', True);
 
@@ -1761,6 +1788,8 @@ begin
   Width  := fMainFormParam.Width;
   Top    := fMainFormParam.Top;
   Left   := fMainFormParam.Left;
+  pnlLeft.Width := FMainFormParam.LeftPanelWidth;
+  pnlPlayInfo.Height := FMainFormParam.PlayInfoHeight;
 
   actShowLeft.Checked := not fMainFormParam.LeftPanelVisible;
   actShowLeft.Execute;
@@ -2072,6 +2101,26 @@ end;
 procedure TfMainForm.pnHeaderPlaylistPopup(Sender: TObject);
 begin
   LoadColumnsMenu(pnHeaderPlaylist.Items);
+end;
+
+procedure TfMainForm.pnlleftResize(Sender: TObject);
+begin
+  FMainFormParam.LeftPanelWidth := pnlLeft.Width;
+end;
+
+procedure TfMainForm.pnlPlayInfoResize(Sender: TObject);
+var
+  ScaleFactor: Extended;
+  i: Integer;
+begin
+  imgCover.Width := imgCover.Height;
+  ScaleFactor := ScaleFormTo96(imgCover.Height) / 100 * (PixelsPerInch / 96);
+  for i := 0 to pnlPlayInfo.ControlCount - 1 do
+  begin
+    pnlPlayInfo.Controls[i].Font.Size := Round(pnlPlayInfo.Controls[i].tag * ScaleFactor);
+  end;
+  FMainFormParam.PlayInfoHeight := pnlPlayInfo.Height;
+
 end;
 
 procedure TfMainForm.sgPlayListClick(Sender: TObject);

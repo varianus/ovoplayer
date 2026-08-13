@@ -32,6 +32,7 @@ object fMainForm: TfMainForm
     ClientHeight = 547
     ClientWidth = 246
     TabOrder = 0
+    OnResize = pnlleftResize
     object pcMain: TPageControl
       Left = 0
       Height = 437
@@ -331,31 +332,41 @@ object fMainForm: TfMainForm
         ClientWidth = 507
         object pnlPlayInfo: TPanel
           Left = 0
-          Height = 106
+          Height = 118
           Top = 0
           Width = 507
           Align = alTop
-          ClientHeight = 106
+          ClientHeight = 118
           ClientWidth = 507
           TabOrder = 0
+          OnResize = pnlPlayInfoResize
           object imgCover: TImage
+            AnchorSideLeft.Control = pnlPlayInfo
+            AnchorSideTop.Control = pnlPlayInfo
+            AnchorSideBottom.Control = pnlPlayInfo
+            AnchorSideBottom.Side = asrBottom
             Cursor = crHandPoint
-            Left = 0
-            Height = 101
-            Top = 4
-            Width = 101
+            Left = 9
+            Height = 100
+            Top = 9
+            Width = 100
+            Anchors = [akTop, akLeft, akBottom]
+            BorderSpacing.Around = 8
             ParentShowHint = False
             ShowHint = True
             Stretch = True
             OnDblClick = imgCoverDblClick
           end
           object Title: TLabel
-            Left = 112
-            Height = 24
+            Tag = 18
+            AnchorSideLeft.Control = imgCover
+            AnchorSideLeft.Side = asrBottom
+            Left = 117
+            Height = 17
             Top = 4
-            Width = 389
+            Width = 384
             Anchors = [akTop, akLeft, akRight]
-            AutoSize = False
+            BorderSpacing.Around = 8
             Caption = 'Title'
             Font.Height = 18
             Font.Style = [fsBold]
@@ -364,23 +375,33 @@ object fMainForm: TfMainForm
             OnDblClick = TrackDblClick
           end
           object Album: TLabel
-            Left = 109
-            Height = 21
-            Top = 36
-            Width = 390
+            Tag = -12
+            AnchorSideLeft.Control = imgCover
+            AnchorSideLeft.Side = asrBottom
+            AnchorSideTop.Control = Title
+            AnchorSideTop.Side = asrBottom
+            Left = 117
+            Height = 15
+            Top = 29
+            Width = 382
             Anchors = [akTop, akLeft, akRight]
-            AutoSize = False
+            BorderSpacing.Around = 8
             Caption = 'Album'
             ParentColor = False
             OnDblClick = TrackDblClick
           end
           object Artist: TLabel
-            Left = 110
-            Height = 21
-            Top = 66
-            Width = 389
+            Tag = -12
+            AnchorSideLeft.Control = imgCover
+            AnchorSideLeft.Side = asrBottom
+            AnchorSideTop.Control = Album
+            AnchorSideTop.Side = asrBottom
+            Left = 117
+            Height = 15
+            Top = 52
+            Width = 382
             Anchors = [akTop, akLeft, akRight]
-            AutoSize = False
+            BorderSpacing.Around = 8
             Caption = 'Artist'
             ParentColor = False
             OnDblClick = TrackDblClick
@@ -388,17 +409,17 @@ object fMainForm: TfMainForm
         end
         object pnlPlaylist: TPanel
           Left = 0
-          Height = 379
-          Top = 106
+          Height = 362
+          Top = 123
           Width = 507
           Align = alClient
-          ClientHeight = 379
+          ClientHeight = 362
           ClientWidth = 507
           Constraints.MinWidth = 499
           TabOrder = 1
           object sgPlayList: TStringGrid
             Left = 1
-            Height = 377
+            Height = 360
             Top = 1
             Width = 505
             Align = alClient
@@ -720,6 +741,15 @@ object fMainForm: TfMainForm
             end
           end
         end
+        object TopSplitter: TSplitter
+          Cursor = crVSplit
+          Left = 0
+          Height = 5
+          Top = 118
+          Width = 507
+          Align = alTop
+          ResizeAnchor = akTop
+        end
       end
       object tsWelcome: TTabSheet
         ClientHeight = 539
@@ -841,7 +871,7 @@ object fMainForm: TfMainForm
       end
     end
   end
-  object Splitter1: TSplitter
+  object LeftSplitter: TSplitter
     Left = 246
     Height = 547
     Top = 0
