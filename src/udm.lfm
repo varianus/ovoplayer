@@ -250,6 +250,7 @@ object DM: TDM
   object ilSmall: TFontImageList
     FontName = 'C:\source\ovoplayer\src\ovoplayer.ttf'
     FontSource = fsrcFileName
+    OnInitialize = ilButtonsInitialize
     Height = 18
     Scaled = True
     Left = 210
