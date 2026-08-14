@@ -57,7 +57,7 @@ type
 
 implementation
 
-uses LazLoggerBase, AppConsts, BaseTag, uMain, URIParser, DbusExtension;
+uses LazLoggerBase, AppConsts, BaseTag, uMain, URIParser, DbusExtension, netprotocol;
 
 const
   MyTrue: dword = 1;
@@ -326,7 +326,7 @@ begin
         if (dbus_message_get_args(message_, @error, DBUS_TYPE_STRING, [@s_val, DBUS_TYPE_INVALID])) > 0 then
         begin
           if (strlen(s_val) > 0) then
-            BackEnd.HandleExternalCommand(BuildCommand(CATEGORY_APP,COMMAND_ENQUEUE, StrPas(s_val)));
+            BackEnd.HandleExternalCommand(MakeCommand(CATEGORY_APP,COMMAND_ENQUEUE, StrPas(s_val)));
         end
         else
           dbus_error_free(@error);

@@ -45,6 +45,7 @@ Function EncodeStream(inStream:TStream):string;
 
 function BuildCommand(Category: string; Command: string; Param:string=''; IPCSeparator:boolean=false):string; overload;
 function BuildCommand(Command: RExternalCommand):string; overload;
+function MakeCommand(Category: string; Command: string; Param: string): RExternalCommand;
 
 Function SplitCommand(ACommand:string): RExternalCommand;
 
@@ -115,6 +116,14 @@ begin
   end;
 end;
 
+function MakeCommand(Category: string; Command: string; Param: string): RExternalCommand;
+begin
+  Result.Category := Category;
+  Result.Command:= Command;
+  Result.Param:=Param;
+end;
+
+
 function BuildCommand(Category: string; Command: string; Param: string;
   IPCSeparator: boolean): string;
 begin
@@ -132,7 +141,7 @@ end;
 
 function BuildCommand(Command: RExternalCommand): string;
 begin
-  Result := BuildCommand(Command.Category, Command.Command, Command.Param);
+  Result := BuildCommand(Command.Category, Command.Command, Command.Param, false);
 end;
 
 function SplitCommand(ACommand: string): RExternalCommand;
