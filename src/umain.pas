@@ -2114,7 +2114,7 @@ var
   i: Integer;
 begin
   imgCover.Width := imgCover.Height;
-  ScaleFactor := ScaleFormTo96(imgCover.Height) / 100 * (PixelsPerInch / 96);
+  ScaleFactor := ScaleFormTo96(imgCover.Height) / 100;
   for i := 0 to pnlPlayInfo.ControlCount - 1 do
   begin
     pnlPlayInfo.Controls[i].Font.Size := Round(pnlPlayInfo.Controls[i].tag * ScaleFactor);

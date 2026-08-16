@@ -358,12 +358,13 @@ object fMainForm: TfMainForm
             OnDblClick = imgCoverDblClick
           end
           object Title: TLabel
-            Tag = 18
+            Tag = -14
             AnchorSideLeft.Control = imgCover
             AnchorSideLeft.Side = asrBottom
+            AnchorSideTop.Control = imgCover
             Left = 117
             Height = 17
-            Top = 4
+            Top = 17
             Width = 384
             Anchors = [akTop, akLeft, akRight]
             BorderSpacing.Around = 8
@@ -375,14 +376,14 @@ object fMainForm: TfMainForm
             OnDblClick = TrackDblClick
           end
           object Album: TLabel
-            Tag = -12
+            Tag = 9
             AnchorSideLeft.Control = imgCover
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = Title
             AnchorSideTop.Side = asrBottom
             Left = 117
             Height = 15
-            Top = 29
+            Top = 42
             Width = 382
             Anchors = [akTop, akLeft, akRight]
             BorderSpacing.Around = 8
@@ -391,14 +392,14 @@ object fMainForm: TfMainForm
             OnDblClick = TrackDblClick
           end
           object Artist: TLabel
-            Tag = -12
+            Tag = 9
             AnchorSideLeft.Control = imgCover
             AnchorSideLeft.Side = asrBottom
             AnchorSideTop.Control = Album
             AnchorSideTop.Side = asrBottom
             Left = 117
             Height = 15
-            Top = 52
+            Top = 65
             Width = 382
             Anchors = [akTop, akLeft, akRight]
             BorderSpacing.Around = 8
