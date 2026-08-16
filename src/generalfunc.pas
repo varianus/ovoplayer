@@ -130,7 +130,8 @@ begin
   finally
     NewProc.Free;
   end;
-  Application.Terminate;
+  if Assigned(Application) then
+    Application.Terminate;
   result := true;
 end;
 
