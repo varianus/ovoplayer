@@ -227,6 +227,9 @@ function TThemedSlider.DoMouseWheel(Shift: TShiftState; WheelDelta: Integer;
   MousePos: TPoint): Boolean;
 begin
 
+  if not IsEnabled then
+    exit;
+
   if WheelDelta > 0 then
      Position:= Position + FStep
   else
@@ -277,7 +280,8 @@ end;
 
 procedure TThemedSlider.MouseMove(Shift: TShiftState; X, Y: Integer);
 begin
-  if ssLeft in Shift then
+
+  if (ssLeft in Shift) and IsEnabled  then
     begin
       fseeking := true;
       case FOrientation of
@@ -300,7 +304,7 @@ end;
 procedure TThemedSlider.MouseDown(Button: TMouseButton; Shift: TShiftState; X,
   Y: Integer);
 begin
-  if Button = mbLeft then
+  if (Button = mbLeft) and IsEnabled then
      fSeeking:=true;
   RedrawControl;
   inherited MouseDown(Button, Shift, X, Y);
@@ -318,6 +322,9 @@ procedure TThemedSlider.Click;
 var
   p: Tpoint;
 begin
+  if not IsEnabled then
+    exit;
+
   p := Mouse.CursorPos;
   P:= ScreenToClient(p);
   fSeeking:=true;
