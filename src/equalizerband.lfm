@@ -6,14 +6,19 @@ object frEqualizer: TfrEqualizer
   ClientHeight = 213
   ClientWidth = 70
   Font.Height = -12
+  LCLVersion = '4.99.0.0'
+  ParentBackground = False
   ParentFont = False
   TabOrder = 0
   DesignLeft = -4
   DesignTop = -4
   object slValue: TThemedSlider
+    AnchorSideTop.Control = lbBand
+    AnchorSideTop.Side = asrBottom
+    AnchorSideBottom.Control = lbValue
     Left = 26
-    Height = 179
-    Top = 15
+    Height = 171
+    Top = 21
     Width = 13
     Anchors = [akTop, akBottom]
     BorderWidth = 1
