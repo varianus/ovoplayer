@@ -54,7 +54,7 @@ type
     function InternalSelect(AWriteFds, AReadFds: PFDSet;
       const ATimeOut: Integer): Boolean;
   public
-    constructor Create(const AHost: string; const APort: Word); overload;
+    constructor Create(const AHost: string; const APort: Word); override;
     constructor Create(const ASocket: LongInt); overload;
     destructor Destroy; override;
     function IsConnected: Boolean; override;

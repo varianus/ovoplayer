@@ -2109,7 +2109,10 @@ var
 begin
   Result := SysUtils.EncodeTime(0, 0, 0, 0);
   if (isAssigned = True) then
-    tmp := InputLengthSeconds(InputIndex);
+    tmp := InputLengthSeconds(InputIndex)
+  else
+    tmp := 0;
+
   ms := trunc(frac(tmp) * 1000);
   h := trunc(tmp / 3600);
   m := trunc(tmp / 60 - h * 60);

@@ -213,9 +213,8 @@ begin
       Continue;
     URIToFilename(Unescape(fname), RealName);
     Playlist.EnqueueFile(RealName);
+    Inc(result);
   end;
-
-  Result := i;
 
   Root := FindNode(XMLDoc.DocumentElement, 'extension');
   for i := 0 to Root.ChildNodes.Count - 1 do
@@ -326,9 +325,8 @@ begin
       Continue;
     URIToFilename(Unescape(fname), fname);
     Playlist.EnqueueFile(fName);
+    Inc(Result);
   end;
-
-  Result := i;
 
   XMLDoc.Free;
 end;

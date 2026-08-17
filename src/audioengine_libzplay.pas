@@ -87,6 +87,7 @@ function libzplayEvent(objptr: Pointer; user_data: pointer; msg: cardinal; param
 var
   player: TAudioEnginelibzplay;
 begin
+  Result := 0;
   if (user_data = nil) then
     exit;
   player := TAudioEnginelibzplay(user_data);

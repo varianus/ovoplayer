@@ -24,27 +24,29 @@ unit FilesSupport;
 interface
 
 uses Classes, DateUtils;
+
 type
 
- { TFileInfo }
+  { TFileInfo }
 
- TFileInfo = record
-   Size: int64;
-   ModifyDate: TDateTime;
-   class operator = (const lhs, rhs: TFileInfo): Boolean;
- end;
+  TFileInfo = record
+    Size: int64;
+    ModifyDate: TDateTime;
+    class operator =(const lhs, rhs: TFileInfo): boolean;
+  end;
 
- TFileInfoObject = class
-   public info: TFileInfo;
- end;
+  TFileInfoObject = class
+  public
+    info: TFileInfo;
+  end;
 
 
-Function GetFileInfo(FileName: String): TFileInfo;
+function GetFileInfo(FileName: string): TFileInfo;
 function BuildFileList(const Path: string; const Attr: integer; const List: TStrings; Recurring: boolean): boolean;
 function BuildFolderList(const Path: string; const List: TStrings): boolean;
-Function UpperDirectory(const dir:string):string;
+function UpperDirectory(const dir: string): string;
 function GetConfigDir: string;
-function strByteSize(Value: Int64): String;
+function strByteSize(Value: int64): string;
 function EncodeSafeFileName(const s: string): string;
 function DecodeSafeFileName(const s: string): string;
 
@@ -54,17 +56,17 @@ uses
   SysUtils, LazUTF8, LazFileUtils;
 
 const
-{ common computer sizes }
-KBYTE = Sizeof(Byte) shl 10;
-MBYTE = KBYTE shl 10;
-GBYTE = MBYTE shl 10;
+  { common computer sizes }
+  KBYTE = Sizeof(byte) shl 10;
+  MBYTE = KBYTE shl 10;
+  GBYTE = MBYTE shl 10;
 
-BlackListedChar = ['<','>',':','"','/','\','|','?','*','%'];
+  BlackListedChar = ['<', '>', ':', '"', '/', '\', '|', '?', '*', '%'];
 
 function EncodeSafeFileName(const s: string): string;
 var
-i, L: integer;
-P: PChar;
+  i, L: integer;
+  P: pchar;
 begin
   L := Length(s);
   for i := 1 to Length(s) do
@@ -91,14 +93,14 @@ begin
       P^ := s[i];
     Inc(P);
   end;
-  if L > (MAX_PATH -4) then
-    Result := Copy(Result,1, MAX_PATH -4);
+  if L > (MAX_PATH - 4) then
+    Result := Copy(Result, 1, MAX_PATH - 4);
 end;
 
 function DecodeSafeFileName(const s: string): string;
 var
   i, RealLength: integer;
-  P: PChar;
+  P: pchar;
 
   function HexValue(c: char): integer; inline;
   begin
@@ -133,33 +135,33 @@ begin
   SetLength(Result, RealLength);
 end;
 
-function strByteSize(Value: int64): String;
+function strByteSize(Value: int64): string;
 
- function FltToStr(F: Extended): String;
- begin
-   Result:=FloatToStrF(F,ffNumber,6,2);
- end;
+  function FltToStr(F: extended): string;
+  begin
+    Result := FloatToStrF(F, ffNumber, 6, 2);
+  end;
 
 begin
- if Value > GBYTE then
-    Result:=FltTostr(Value / GBYTE)+' GB'
- else
-   if Value > MBYTE then
-     Result:=FltToStr(Value / MBYTE)+' MB'
-   else
-     if Value > KBYTE then
-        Result:=FltTostr(Value / KBYTE)+' KB'
-     else
-        Result:=FltTostr(Value) +' Bytes';
+  if Value > GBYTE then
+    Result := FltTostr(Value / GBYTE) + ' GB'
+  else
+  if Value > MBYTE then
+    Result := FltToStr(Value / MBYTE) + ' MB'
+  else
+  if Value > KBYTE then
+    Result := FltTostr(Value / KBYTE) + ' KB'
+  else
+    Result := FltTostr(Value) + ' Bytes';
 end;
 
 // Derived from "Like" by Michael Winter
 function StrMatches(const Substr, S: string; const Index: SizeInt = 1): boolean;
 var
-  StringPtr:  PChar;
-  PatternPtr: PChar;
-  StringRes:  PChar;
-  PatternRes: PChar;
+  StringPtr: pchar;
+  PatternPtr: pchar;
+  StringRes: pchar;
+  PatternRes: pchar;
 begin
   Result := SubStr = '*';
 
@@ -175,7 +177,7 @@ begin
     repeat
       case PatternPtr^ of
         #0:
-          begin
+        begin
           Result := StringPtr^ = #0;
           if Result or (StringRes = nil) or (PatternRes = nil) then
             Exit;
@@ -183,62 +185,62 @@ begin
           StringPtr  := StringRes;
           PatternPtr := PatternRes;
           Break;
-          end;
+        end;
         '*':
-          begin
+        begin
           Inc(PatternPtr);
           PatternRes := PatternPtr;
           Break;
-          end;
+        end;
         '?':
-          begin
+        begin
           if StringPtr^ = #0 then
             Exit;
           Inc(StringPtr);
           Inc(PatternPtr);
-          end;
+        end;
         else
-          begin
+        begin
           if StringPtr^ = #0 then
             Exit;
           if StringPtr^ <> PatternPtr^ then
-            begin
+          begin
             if (StringRes = nil) or (PatternRes = nil) then
               Exit;
             StringPtr  := StringRes;
             PatternPtr := PatternRes;
             Break;
-            end
+          end
           else
-            begin
+          begin
             Inc(StringPtr);
             Inc(PatternPtr);
-            end;
           end;
         end;
+      end;
     until False;
 
     repeat
       case PatternPtr^ of
         #0:
-          begin
+        begin
           Result := True;
           Exit;
-          end;
+        end;
         '*':
-          begin
+        begin
           Inc(PatternPtr);
           PatternRes := PatternPtr;
-          end;
+        end;
         '?':
-          begin
+        begin
           if StringPtr^ = #0 then
             Exit;
           Inc(StringPtr);
           Inc(PatternPtr);
-          end;
+        end;
         else
-          begin
+        begin
           repeat
             if StringPtr^ = #0 then
               Exit;
@@ -250,8 +252,8 @@ begin
           StringRes := StringPtr;
           Inc(PatternPtr);
           Break;
-          end;
         end;
+      end;
     until False;
   until False;
 end;
@@ -283,59 +285,61 @@ var
 begin
   Assert(List <> nil);
   List.BeginUpdate;
-    try
+  try
     List.Clear;
     L := Length(Sep);
     I := Pos(Sep, S);
     while I > 0 do
-      begin
+    begin
       Left := LeftStr(S, I - 1);
       if (Left <> '') or AllowEmptyString then
         List.Add(Left);
       Delete(S, 1, I + L - 1);
       I := Pos(Sep, S);
-      end;
+    end;
     if S <> '' then
       List.Add(S);
-    finally
+  finally
     List.EndUpdate;
-    end;
+  end;
 end;
 
-function GetFileInfo(FileName: String): TFileInfo;
+function GetFileInfo(FileName: string): TFileInfo;
 var
   sr: TSearchRec;
 begin
 
   if FindFirstUTF8(FileName, faanyfile, sr) = 0 then
-     begin
-       Result.Size:= sr.Size;
-       result.ModifyDate:= FileDateToDateTime(sr.Time);
-       FindCloseUTF8(sr);
-     end;
+  begin
+    Result.Size := sr.Size;
+    Result.ModifyDate := sr.TimeStamp;
+    FindCloseUTF8(sr);
+  end
+  else
+    Result := Default(TFileInfo);
 end;
 
 function BuildFileList(const Path: string; const Attr: integer; const List: TStrings; Recurring: boolean): boolean;
 var
   SearchRec: TSearchRec;
   IndexMask: integer;
-  MaskList:  TStringList;
+  MaskList: TStringList;
   Masks, Directory: string;
-  info :TFileInfoObject;
+  info: TFileInfoObject;
 begin
   Assert(List <> nil);
   MaskList := TStringList.Create;
-    try
+  try
     {* extract the Directory *}
     Directory := ExtractFileDir(Path);
 
     {* files can be searched in the current directory *}
     if Directory <> '' then
-      begin
+    begin
       Directory := IncludeTrailingPathDelimiter(Directory);
       {* extract the FileMasks portion out of Path *}
       Masks     := copy(Path, Length(Directory) + 1, Length(Path));
-      end
+    end
     else
       Masks := Path;
 
@@ -346,9 +350,9 @@ begin
     Result := FindFirstUTF8(Directory + AllFilesMask, faAnyFile, SearchRec) = 0;
 
     List.BeginUpdate;
-      try
+    try
       while Result do
-        begin
+      begin
         {* if the filename matches any mask then it is added to the list *}
         if Recurring and ((searchrec.Attr and faDirectory) <> 0) and (SearchRec.Name <> '.') and
           (SearchRec.Name <> '..') then
@@ -359,13 +363,13 @@ begin
           if (SearchRec.Name <> '.') and (SearchRec.Name <> '..') and
             ((SearchRec.Attr and Attr) = (SearchRec.Attr and faAnyFile)) and
             IsFileNameMatch(SearchRec.Name, MaskList.Strings[IndexMask], False) then
-            begin
-              info := TFileInfoObject.Create;
-              info.info.Size:= SearchRec.Size;
-              info.info.ModifyDate:= FileDateToDateTime(SearchRec.Time);
-              List.AddObject(SysToUTF8(Directory + SearchRec.Name), info);
-              Break;
-            end;
+          begin
+            info := TFileInfoObject.Create;
+            info.info.Size := SearchRec.Size;
+            info.info.ModifyDate := SearchRec.TimeStamp;
+            List.AddObject(SysToUTF8(Directory + SearchRec.Name), info);
+            Break;
+          end;
 
         case FindNextUTF8(SearchRec) of
           0: ;
@@ -373,15 +377,15 @@ begin
             Break;
           else
             Result := False;
-          end;
         end;
-      finally
-      FindCloseUTF8(SearchRec);
-      List.EndUpdate;
       end;
     finally
-    MaskList.Free;
+      FindCloseUTF8(SearchRec);
+      List.EndUpdate;
     end;
+  finally
+    MaskList.Free;
+  end;
 end;
 
 function BuildFolderList(const Path: string; const List: TStrings): boolean;
@@ -395,9 +399,7 @@ begin
 
   {* files can be searched in the current directory *}
   if Directory <> '' then
-    begin
-       Directory := IncludeTrailingPathDelimiter(Directory);
-    end;
+    Directory := IncludeTrailingPathDelimiter(Directory);
 
   {* search all files in the directory *}
   Result := FindFirstUTF8(Directory + AllFilesMask, faDirectory, SearchRec) = 0;
@@ -405,13 +407,11 @@ begin
   List.BeginUpdate;
   try
     while Result do
-      begin
-        if (SearchRec.Name <> '.') and
-           (SearchRec.Name <> '..') and
-           ((SearchRec.Attr and faDirectory) = faDirectory)  then
-          begin
-          List.Add(Directory + SearchRec.Name);
-          end;
+    begin
+      if (SearchRec.Name <> '.') and
+        (SearchRec.Name <> '..') and
+        ((SearchRec.Attr and faDirectory) = faDirectory) then
+        List.Add(Directory + SearchRec.Name);
 
       case FindNextUTF8(SearchRec) of
         0: ;
@@ -419,8 +419,8 @@ begin
           Break;
         else
           Result := False;
-        end;
       end;
+    end;
   finally
     FindCloseUTF8(SearchRec);
     List.EndUpdate;
@@ -440,19 +440,19 @@ end;
 
 function UpperDirectory(const dir: string): string;
 var
-  DirStart:Integer;
-  lDir:String;
+  DirStart: integer;
+  lDir: string;
 begin
-   ldir:=ChompPathDelim(Dir);
-   DirStart:=Length(ldir);
-   while (DirStart>1) and (Ldir[DirStart]<>PathDelim) do
-         dec(DirStart);
-   Result:=AppendPathDelim(Copy(dir,1,DirStart));
+  ldir     := ChompPathDelim(Dir);
+  DirStart := Length(ldir);
+  while (DirStart > 1) and (Ldir[DirStart] <> PathDelim) do
+    Dec(DirStart);
+  Result := AppendPathDelim(Copy(dir, 1, DirStart));
 end;
 
 { TFileInfo }
 
-class operator TFileInfo.= (const lhs, rhs: TFileInfo): Boolean;
+class operator TFileInfo.=(const lhs, rhs: TFileInfo): boolean;
 begin
   Result := (lhs.Size = rhs.Size) and SameDateTime(lhs.ModifyDate, rhs.ModifyDate);
 end;

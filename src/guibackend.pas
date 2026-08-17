@@ -39,7 +39,6 @@ uses
   {$IFDEF FFMPEG} ffmpeg, audioengine_FFMPEG,{$ENDIF}
   {$IFDEF LIBMPV} libmpv, audioengine_libmpv,{$ENDIF}
   ExtCtrls,
-
   PlayList, PlayListManager, MediaLibrary, basetag, CustomSong,
   Config, Equalizer, backendconfig, Generics.Collections,
   FpTimer;

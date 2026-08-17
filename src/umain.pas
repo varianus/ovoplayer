@@ -893,7 +893,7 @@ begin
   TrackBar.Max := Song.Tags.Duration;
   TrackBar.Position := Lo(BackEnd.Position);
   TrayIcon.Hint := Song.tags.Title + LineEnding + Song.Tags.Artist;
-  Caption := unicodestring(Song.tags.Title + ' - ' + Song.Tags.Artist);
+  Caption := (Song.tags.Title + ' - ' + Song.Tags.Artist);
 
   if TrayIcon.Hint = LineEnding then
   begin
@@ -2311,7 +2311,7 @@ begin
     else
       SortField := stNone;
   end;
-
+  Direction := sdplAscending;
   if SortField <> BackEnd.PlayList.SortField then
     Direction := sdplAscending
   else
