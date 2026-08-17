@@ -48,7 +48,7 @@ object fEqualizer: TfEqualizer
       TabOrder = 1
       OnClick = cbEnableEqClick
     end
-    object StaticText1: TStaticText
+    object stPreset: TStaticText
       AnchorSideLeft.Control = cbEnableEq
       AnchorSideTop.Control = cbEnableEq
       AnchorSideTop.Side = asrBottom
@@ -63,9 +63,9 @@ object fEqualizer: TfEqualizer
       TabOrder = 2
     end
     object cbPreset: TComboBox
-      AnchorSideLeft.Control = StaticText1
+      AnchorSideLeft.Control = stPreset
       AnchorSideLeft.Side = asrBottom
-      AnchorSideTop.Control = StaticText1
+      AnchorSideTop.Control = stPreset
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = bSavePreset
       Left = 57
@@ -80,7 +80,7 @@ object fEqualizer: TfEqualizer
       OnKeyPress = cbPresetKeyPress
     end
     object bSavePreset: TSpeedButton
-      AnchorSideTop.Control = StaticText1
+      AnchorSideTop.Control = stPreset
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = bRemovePreset
       Left = 667
@@ -96,7 +96,7 @@ object fEqualizer: TfEqualizer
       OnClick = bSavePresetClick
     end
     object bRemovePreset: TSpeedButton
-      AnchorSideTop.Control = StaticText1
+      AnchorSideTop.Control = stPreset
       AnchorSideTop.Side = asrCenter
       AnchorSideRight.Control = pnlHeader
       AnchorSideRight.Side = asrBottom

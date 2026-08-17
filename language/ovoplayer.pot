@@ -678,7 +678,8 @@ msgstr ""
 msgid "Enable equalizer"
 msgstr ""
 
-#: tfequalizer.statictext1.caption
+#: tfequalizer.stpreset.caption
+msgctxt "tfequalizer.stpreset.caption"
 msgid "Preset"
 msgstr ""
 

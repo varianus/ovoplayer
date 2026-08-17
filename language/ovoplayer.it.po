@@ -22,6 +22,7 @@ msgid "Save equalizer preset"
 msgstr "Salva impostazione equalizzatore"
 
 #: appconsts.rallfiles
+#, object-pascal-format
 msgid "All Files(%0:s)|%0:s"
 msgstr "Tutti i files (%0:s)|%0:s"
 
@@ -34,10 +35,12 @@ msgid "Scanning Collection"
 msgstr "Scansione Collezione"
 
 #: appconsts.rbuildenv
+#, object-pascal-format
 msgid "Build environment: Lazarus %0:s  FPC %1:s"
 msgstr "Ambiente di sviluppo: Lazarus %0:s  FPC %1:s"
 
 #: appconsts.rcurrentengine
+#, object-pascal-format
 msgid "Current audio engine: %s"
 msgstr "Motore di riproduzione attuale: %s"
 
@@ -66,9 +69,9 @@ msgid "Failed:"
 msgstr "Fallite:"
 
 #: appconsts.rlibrarytotals
+#, object-pascal-format
 msgid "Library contains %0:d tracks (total time %1:s, total size %2:s)"
-msgstr ""
-"La Libreria contiene %0:d tracce (tempo totale %1:s, dimensione totale %2:s)"
+msgstr "La Libreria contiene %0:d tracce (tempo totale %1:s, dimensione totale %2:s)"
 
 #: appconsts.rlowportwarning
 msgid ""
@@ -79,9 +82,9 @@ msgstr ""
 "richiedere i diritti di amministratore in alcuni S.O. (ad es. Linux).\n"
 
 #: appconsts.rmatchingitems
+#, object-pascal-format
 msgid "%0:d tracks matching current filter (total time %1:s, total size %2:s)"
-msgstr ""
-"Il filtro corrente estrae %0:d tracce (Tempo totale %1:s, Dim. Totale %2:s)"
+msgstr "Il filtro corrente estrae %0:d tracce (Tempo totale %1:s, Dim. Totale %2:s)"
 
 #: appconsts.rmissing
 msgid "<missing>"
@@ -120,6 +123,7 @@ msgid "Updated:"
 msgstr "Aggiornate:"
 
 #: appconsts.rversionstring
+#, object-pascal-format
 msgid "Version: %0:s (Date %2:s)"
 msgstr "Versione: %0:s (Data %2:s)"
 
@@ -311,10 +315,8 @@ msgid "Year"
 msgstr "Anno"
 
 #: simplesingleinstance.serrsetsingleinstanceglobalstarted
-msgid ""
-"You cannot change the single instance global property when it's been started."
-msgstr ""
-"Non puoi cambiare la proprietà globale dell'istanza singola quando è avviata"
+msgid "You cannot change the single instance global property when it's been started."
+msgstr "Non puoi cambiare la proprietà globale dell'istanza singola quando è avviata"
 
 #: simplesingleinstance.serrsetsingleinstanceidstarted
 msgid "You cannot change the single instance ID when it's been started."
@@ -728,7 +730,9 @@ msgstr "Equalizzatore"
 msgid "Enable equalizer"
 msgstr "Attiva Equalizzatore"
 
-#: tfequalizer.statictext1.caption
+#: tfequalizer.stpreset.caption
+#, fuzzy
+msgctxt "tfequalizer.stpreset.caption"
 msgid "Preset"
 msgstr "Preimpostazione"
 
@@ -1276,3 +1280,4 @@ msgstr "Proprietà Media"
 #: tfsonginfo.tstags.caption
 msgid "Tags"
 msgstr "Etichette"
+
