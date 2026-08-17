@@ -19,11 +19,11 @@ object fSongInfo: TfSongInfo
     Height = 353
     Top = 0
     Width = 595
-    ActivePage = tsMediaProperty
+    ActivePage = tsTags
     Align = alClient
     Font.Height = -12
     ParentFont = False
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 1
     object tsTags: TTabSheet
       Caption = 'Tags'
@@ -362,7 +362,6 @@ object fSongInfo: TfSongInfo
         Width = 457
         AutoSize = False
         BorderStyle = bsNone
-        Color = clNone
         ReadOnly = True
         TabOrder = 1
       end
