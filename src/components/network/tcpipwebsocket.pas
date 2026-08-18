@@ -227,8 +227,8 @@ type
   TState = (stStart, stNext, stPayload16, stPayload64, stMask, stData);
 var
   b, opcode: byte;
-  L16:word;
-  L64: int64;
+  L16: word;
+  L64: qword;
   closecode: word;
   state: TState;
   fin, havemask: boolean;
@@ -284,7 +284,7 @@ begin
         end;
       if (payloadLength = 127) then
         begin
-          if (FWebSocket.IntSocket.Read(L64, 2) <> 2) then
+          if (FWebSocket.IntSocket.Read(L64, 8) <> 8) then
              break;
           payloadLength:=BEtoN(L64);
         end;
@@ -565,7 +565,6 @@ end;
 
 procedure TTcpIpWebSocket.Output(b: byte; const Data; len: int64; Mask: boolean = False);
 var
-  lenarray: array[0..7] of byte absolute len;
   d: cardinal;
   p: Pointer;
   g: TGUID;
@@ -589,21 +588,13 @@ begin
   begin
     b := 126 or bitMask;
     Intsocket.Write(b, 1);
-    Intsocket.Write(lenarray[1], 1);
-    Intsocket.Write(lenarray[0], 1);
+    intsocket.Write(NtoBE(Word(len)),2);
   end
   else
   begin
     b := 127 or bitMask;
     Intsocket.Write(b, 1);
-    Intsocket.Write(lenarray[7], 1);
-    Intsocket.Write(lenarray[6], 1);
-    Intsocket.Write(lenarray[5], 1);
-    Intsocket.Write(lenarray[4], 1);
-    Intsocket.Write(lenarray[3], 1);
-    Intsocket.Write(lenarray[2], 1);
-    Intsocket.Write(lenarray[1], 1);
-    Intsocket.Write(lenarray[0], 1);
+    intsocket.Write(NtoBE(len),8);
   end;
 
   if Mask then
