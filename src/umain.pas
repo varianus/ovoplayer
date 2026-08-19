@@ -331,6 +331,7 @@ type
     procedure FilesTreeGetImageIndex(Sender: TObject; Node: TTreeNode);
     procedure FilesTreeGetSelectedIndex(Sender: TObject; Node: TTreeNode);
     procedure FilesTreeKeyDown(Sender: TObject; var Key: word; Shift: TShiftState);
+    procedure FormChangeBounds(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -648,13 +649,13 @@ procedure TMainFormParam.InternalSave;
 const
   Base = 'MainForm';
 begin
-  Owner.Inifile.WriteInteger(Base, 'Height', fHeight);
-  Owner.Inifile.WriteInteger(Base, 'Width', fWidth);
-  Owner.Inifile.WriteInteger(Base, 'Top', fTop);
-  Owner.Inifile.WriteInteger(Base, 'Left', fLeft);
+  Owner.Inifile.WriteInteger(Base, 'Height', FForm.ScaleFormTo96(fHeight));
+  Owner.Inifile.WriteInteger(Base, 'Width', FForm.ScaleFormTo96(fWidth));
+  Owner.Inifile.WriteInteger(Base, 'Top', FForm.ScaleFormTo96(fTop));
+  Owner.Inifile.WriteInteger(Base, 'Left', FForm.ScaleFormTo96(fLeft));
   Owner.Inifile.WriteInteger(Base, 'ActivePage', FActivePage);
-  Owner.Inifile.WriteInteger(Base, 'PlayInfoHeight', FPlayInfoHeight);
-  Owner.Inifile.WriteInteger(Base, 'LeftPanelWidth', FLeftPanelWidth);
+  Owner.Inifile.WriteInteger(Base, 'PlayInfoHeight', FForm.ScaleFormTo96(FPlayInfoHeight));
+  Owner.Inifile.WriteInteger(Base, 'LeftPanelWidth', FForm.ScaleFormTo96(FLeftPanelWidth));
   Owner.Inifile.WriteBool(Base, 'LeftPanelVisible', FLeftPanelVisible);
 end;
 
@@ -662,12 +663,12 @@ procedure TMainFormParam.Load;
 const
   Base = 'MainForm';
 begin
-  fHeight := Owner.Inifile.ReadInteger(Base, 'Height', FForm.Height);
-  fWidth  := Owner.Inifile.ReadInteger(Base, 'Width', FForm.Width);
-  fTop    := Owner.Inifile.ReadInteger(Base, 'Top', FForm.Top);
-  fLeft   := Owner.Inifile.ReadInteger(Base, 'Left', FForm.Left);
-  FLeftPanelWidth   := Owner.Inifile.ReadInteger(Base, 'LeftPanelWidth', FForm.pnlLeft.Width);
-  FPlayInfoHeight   := Owner.Inifile.ReadInteger(Base, 'PlayInfoHeight', FForm.pnlPlayInfo.Height);
+  fHeight := FForm.Scale96ToForm(Owner.Inifile.ReadInteger(Base, 'Height', FForm.ScaleFormTo96(FForm.Height)));
+  fWidth  := FForm.Scale96ToForm(Owner.Inifile.ReadInteger(Base, 'Width', FForm.ScaleFormTo96(FForm.Width)));
+  fTop    := FForm.Scale96ToForm(Owner.Inifile.ReadInteger(Base, 'Top', FForm.ScaleFormTo96(FForm.Top)));
+  fLeft   := FForm.Scale96ToForm(Owner.Inifile.ReadInteger(Base, 'Left', FForm.ScaleFormTo96(FForm.Left)));
+  FLeftPanelWidth   := FForm.Scale96ToForm(Owner.Inifile.ReadInteger(Base, 'LeftPanelWidth', FForm.ScaleFormTo96(FForm.pnlLeft.Width)));
+  FPlayInfoHeight   := FForm.Scale96ToForm(Owner.Inifile.ReadInteger(Base, 'PlayInfoHeight', FForm.ScaleFormTo96(FForm.pnlPlayInfo.Height)));
   fActivePage := Owner.Inifile.ReadInteger(Base, 'ActivePage', 0);
   fLeftPanelVisible := Owner.Inifile.ReadBool(Base, 'LeftPanelVisible', True);
 
@@ -851,6 +852,14 @@ begin
   end;
 end;
 
+procedure TfMainForm.FormChangeBounds(Sender: TObject);
+begin
+  FMainFormParam.Width  := Width;
+  FMainFormParam.Height := Height;
+  FMainFormParam.Top := Top;
+  FMainFormParam.Left := Left;
+end;
+
 procedure TfMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   if (GuiConfigObj.InterfaceParam.MinimizeOnClose) and not Quitting then
@@ -992,7 +1001,6 @@ begin
     TrayIcon.BalloonHint := tmpstr;
     if trim(TrayIcon.BalloonHint) = '' then
       TrayIcon.BalloonHint := UTF8ToSys(ASong.FileName);
-    ;
 
     TrayIcon.ShowBalloonHint;
     {$ENDIF}

@@ -10,11 +10,13 @@ object fMainForm: TfMainForm
   ClientWidth = 765
   Constraints.MinHeight = 202
   Constraints.MinWidth = 505
+  DefaultMonitor = dmDesktop
   Font.Height = -12
   Menu = MainMenu
   Position = poMainFormCenter
   ShowHint = True
   LCLVersion = '4.99.0.0'
+  OnChangeBounds = FormChangeBounds
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
