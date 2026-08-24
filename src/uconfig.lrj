@@ -32,5 +32,8 @@
 {"hash":160199269,"name":"tfconfig.tsnetremote.caption","sourcebytes":[78,101,116,82,101,109,111,116,101],"value":"NetRemote"},
 {"hash":213677429,"name":"tfconfig.cbnetremote.caption","sourcebytes":[69,110,97,98,108,101,32,110,101,116,119,111,114,107,32,114,101,109,111,116,101],"value":"Enable network remote"},
 {"hash":358036,"name":"tfconfig.label5.caption","sourcebytes":[80,111,114,116],"value":"Port"},
-{"hash":68653524,"name":"tfconfig.cbonlylocalhost.caption","sourcebytes":[66,105,110,100,32,111,110,108,121,32,108,111,99,97,108,32,104,111,115,116],"value":"Bind only local host"}
+{"hash":68653524,"name":"tfconfig.cbonlylocalhost.caption","sourcebytes":[66,105,110,100,32,111,110,108,121,32,108,111,99,97,108,32,104,111,115,116],"value":"Bind only local host"},
+{"hash":203980670,"name":"tfconfig.cbusessl.caption","sourcebytes":[85,115,101,32,83,83,76,32,101,110,99,114,121,112,116,105,111,110],"value":"Use SSL encryption"},
+{"hash":260460805,"name":"tfconfig.label6.caption","sourcebytes":[67,101,114,116,105,102,105,99,97,116,101],"value":"Certificate"},
+{"hash":150012169,"name":"tfconfig.label7.caption","sourcebytes":[80,114,105,118,97,116,101,32,107,101,121],"value":"Private key"}
 ]}

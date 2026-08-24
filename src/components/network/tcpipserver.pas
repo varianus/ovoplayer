@@ -42,10 +42,11 @@ type
   TTcpIpServerSocket = class(TTcpIpBaseSocket)
   private
     FSocket: TInetServerEx;
+    Fhandler: TSocketHandler;
   protected
     function GetLastError: Integer; override;
   public
-    constructor Create(const AHost: string; const APort: Word); override;
+    constructor Create(const AHost: string; const APort: Word; Ahandler: TSocketHandler=nil); overload;
     constructor Create(const APort: Word); overload;
     destructor Destroy; override;
     function Accept: LongInt;
@@ -92,10 +93,11 @@ end;
 
 { TTcpIpServerSocket }
 
-constructor TTcpIpServerSocket.Create(const AHost: string; const APort: Word);
+constructor TTcpIpServerSocket.Create(const AHost: string; const APort: Word; Ahandler: TSocketHandler);
 begin
   inherited Create(AHost, APort);
-  FSocket := TInetServerEx.Create(AHost, APort);
+  Fhandler := Ahandler;
+  FSocket := TInetServerEx.Create(AHost, APort, Ahandler);
 end;
 
 constructor TTcpIpServerSocket.Create(const APort: Word);
@@ -111,6 +113,9 @@ end;
 
 function TTcpIpServerSocket.Accept: LongInt;
 begin
+  if Assigned(Fhandler) then
+    Result := integer(Fhandler.Accept)
+  else
   Result := FSocket.Accept;
 end;
 

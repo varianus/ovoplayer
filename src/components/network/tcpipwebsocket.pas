@@ -78,8 +78,8 @@ type
     function WriteString(const AString: string): longint;
     function WriteSTream(const AStream: TStream; ACount: longint): longint;
     procedure Close;
-    constructor Create(const URL: string; origin: string);
-    constructor Create(const ASocket: longint);
+    constructor Create(const URL: string; origin: string; OnGetSocketHandler: TOnGetSocketHandler = nil);
+    constructor Create(const ASocket: longint; OnGetSocketHandler: TOnGetSocketHandler = nil);
     destructor Destroy; override;
   end;
 
@@ -647,7 +647,19 @@ begin
     if ReadHandShake then
       SendSwitchHeader
     else
-      exit;
+      begin
+        if uppercase(fResourceName) = '/TEST' then
+          begin
+            IntSocket.WriteStr('HTTP/1.1 200 OK'
+            +#13#10
+            +'Content-Length: 16'
+            +#13#10
+            +#13#10
+            +'Socket is active');
+          end;
+        exit;
+
+      end;
   end;
   result:= true;
   FReadyState := rsOpen;
@@ -657,6 +669,7 @@ end;
 
 function TTcpIpWebSocket.Connect: boolean;
 begin
+
   result:= false;
   FReadyState := rsConnecting;
   if not FHandShakeDone then
@@ -682,7 +695,7 @@ begin
   Self.Free;
 end;
 
-constructor TTcpIpWebSocket.Create(const URL: string; origin: string);
+constructor TTcpIpWebSocket.Create(const URL: string; origin: string; OnGetSocketHandler: TOnGetSocketHandler = nil);
 begin
   fURI := URIParser.ParseURI(URL);
   if fUri.protocol = 'ws' then
@@ -699,12 +712,12 @@ begin
       fUri.port := 443;
   end;
   fOrigin := origin;
-  IntSocket :=TTcpIpClientSocket.Create(fURI.Host, fUri.Port);
+  IntSocket :=TTcpIpClientSocket.Create(fURI.Host, fUri.Port, OnGetSocketHandler);
 end;
 
-constructor TTcpIpWebSocket.Create(const ASocket: longint);
+constructor TTcpIpWebSocket.Create(const ASocket: longint;  OnGetSocketHandler: TOnGetSocketHandler = nil);
 begin
-  IntSocket := TTcpIpClientSocket.Create(ASocket);
+  IntSocket := TTcpIpClientSocket.Create(ASocket, OnGetSocketHandler);
 end;
 
 destructor TTcpIpWebSocket.Destroy;

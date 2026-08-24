@@ -26,7 +26,7 @@ interface
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, Spin, ComCtrls, Buttons, tcpipwebsocket, ClientThread,
-  netprotocol, netsupport, BaseTypes, basetag, uriparser;
+  netprotocol, netsupport, BaseTypes, basetag, uriparser, ssockets, sslsockets, opensslsockets;
 
 type
 
@@ -42,6 +42,7 @@ type
     Button7: TButton;
     Button8: TButton;
     cbEcho: TCheckBox;
+    CheckBox1: TCheckBox;
     ComboBox1: TComboBox;
     edAlbum: TEdit;
     edAlbumArtist: TEdit;
@@ -100,6 +101,7 @@ type
     procedure DecodeImage(s: string);
     procedure Echo(Sent: boolean; const Message: string);
     procedure EndGrab;
+    procedure GetSocketHandler(Sender: TObject; out AHandler: TSocketHandler);
     procedure HandleCommand(Command: TEngineCommand; Param: integer);
     procedure SetConnected(AValue: boolean);
     procedure TagsToMap(Tags: TCommonTags);
@@ -283,14 +285,12 @@ procedure TForm1.TrackBar1MouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: integer);
 begin
   Seeking := True;
-  Timer1.Enabled := False;
 end;
 
 procedure TForm1.TrackBar1MouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: integer);
 begin
-  Seeking := True;
-  Timer1.Enabled := True;
+  Seeking := False;
 end;
 
 procedure TForm1.DoClientReceive(Sender: ttcpipwebsocket; const AData: string);
@@ -310,7 +310,7 @@ begin
         TagsToMap(tags);
       end;
       INFO_POSITION: ;//if not seeking then
-      //  TrackBar1.Position:=StrToInt(r.Param);
+      //        TrackBar1.Position:=StrToInt(r.Param);
 
 
       INFO_COVERURL: if URIToFilename(r.param, s) then
@@ -321,11 +321,11 @@ begin
 
       INFO_ENGINE_STATE: begin
         ComboBox1.ItemIndex := StrToIntDef(r.Param, -1);
-   {     case TEngineState(StrToInt(r.Param)) of
+        case TEngineState(StrToInt(r.Param)) of
           ENGINE_PLAY: Timer1.Enabled := True;
           else
             Timer1.Enabled := False;
-        end;           }
+        end;
       end;
 
       INFO_FULLPLAYLIST: DecodePlaylist(r.Param);
@@ -370,30 +370,43 @@ end;
 
 procedure TForm1.RadioGroup1Click(Sender: TObject);
 var
-  s: String;
+  s: string;
 begin
   if not RadioGroup1.Enabled then
-   exit;
+    exit;
   case RadioGroup1.ItemIndex of
     0: begin
-      Timer1.Enabled := false;
+      Timer1.Enabled := False;
       s := EncodeString(BuildCommand(CATEGORY_CONFIG, COMMAND_WANTPOS, '0'), OutCfg);
       echo(True, s);
       FClient.WriteString(s);
     end;
     1: begin
-      Timer1.Enabled := true;
+      Timer1.Enabled := True;
       s := EncodeString(BuildCommand(CATEGORY_CONFIG, COMMAND_WANTPOS, '0'), OutCfg);
       echo(True, s);
       FClient.WriteString(s);
     end;
     2: begin
-      Timer1.Enabled := false;
+      Timer1.Enabled := False;
       s := EncodeString(BuildCommand(CATEGORY_CONFIG, COMMAND_WANTPOS, '1'), OutCfg);
       echo(True, s);
       FClient.WriteString(s);
     end;
   end;
+end;
+
+procedure TForm1.GetSocketHandler(Sender: TObject; out AHandler: TSocketHandler);
+var
+  S: TSSLSocketHandler;
+begin
+  if CheckBox1.Checked then
+  begin
+    S := TSSLSocketHandler.GetDefaultHandler;
+    AHandler := s;
+  end
+  else
+    AHandler := TSocketHandler.Create;
 end;
 
 procedure TForm1.tbConn1Click(Sender: TObject);
@@ -404,7 +417,7 @@ begin
   begin
     //       FClient := TTcpIpWebSocket.Create('127.0.0.1', 6860);
     try
-      FClient := TTcpIpWebSocket.Create(edtServer.Text, 'ovonetremote');
+      FClient := TTcpIpWebSocket.Create(edtServer.Text, 'ovonetremote', @GetSocketHandler);
       FClient.OnText := @DoClientReceive;
       if not FClient.Connect then
       begin
@@ -427,7 +440,7 @@ begin
     //   FThread.WaitFor;
     try
       FClient.Close;
-//      FClient.Free;
+      //      FClient.Free;
     except
     end;
     Connected := False;
@@ -457,7 +470,7 @@ begin
 
   seTrack.Value := i;
 
-  //TrackBar1.Max:= Tags.Duration;
+  //  TrackBar1.Max:= Tags.Duration;
 end;
 
 procedure TForm1.DecodePlaylist(s: string);
@@ -491,20 +504,20 @@ var
   DataStart: SizeInt;
 begin
   try
-  DataStart := Pos(';base64,', s);
-  if DataStart > 0 then
-    Delete(s,1,DataStart+8);
+    DataStart := Pos(';base64,', s);
+    if DataStart > 0 then
+      Delete(s, 1, DataStart + 8);
 
-  EncodedStream := TStringStream.Create(S);
-  DecodedStream := TMemoryStream.Create;
-  Decoder := TBase64DecodingStream.Create(EncodedStream);
-  DecodedStream.CopyFrom(Decoder, Decoder.Size);
-  DecodedStream.Position := 0;
-  Image1.Picture.LoadFromStream(DecodedStream);
+    EncodedStream := TStringStream.Create(S);
+    DecodedStream := TMemoryStream.Create;
+    Decoder := TBase64DecodingStream.Create(EncodedStream);
+    DecodedStream.CopyFrom(Decoder, Decoder.Size);
+    DecodedStream.Position := 0;
+    Image1.Picture.LoadFromStream(DecodedStream);
 
-  DecodedStream.Free;
-  EncodedStream.Free;
-  Decoder.Free;
+    DecodedStream.Free;
+    EncodedStream.Free;
+    Decoder.Free;
 
   except
   end;
