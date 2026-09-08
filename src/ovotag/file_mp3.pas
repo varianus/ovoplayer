@@ -27,7 +27,7 @@ unit file_mp3;
 interface
 
 uses
-  Classes, SysUtils, audiotag, basetag, tag_id3v2, CommonFunctions;
+  Classes, SysUtils, audiotag, basetag, tag_id3v2, CommonFunctions, bufstream;
 
 const
   Mp3FileMask: string    = '*.mpa;*.mp1;*.mp2;*.mp3;';
@@ -78,6 +78,7 @@ type
     function GetDuration: int64; override;
     Function DumpInfo: TMediaProperty; override;
   public
+    function UpdateFile: boolean; Override;
     function isUpdateable: boolean; override;
     function LoadFromFile(AFileName: Tfilename): boolean; override;
     function SaveToFile(AFileName: Tfilename): boolean; override;
@@ -154,6 +155,7 @@ const
 
   { VBR header ID for Xing/FhG }
   VBR_ID_XING = 'Xing';                                         { Xing VBR ID }
+  VBR_ID_INFO = 'Info';                                         { Xing CBR ID }
   VBR_ID_FHG = 'VBRI';                                           { FhG VBR ID }
 
 
@@ -313,14 +315,17 @@ end;
 { --------------------------------------------------------------------------- }
 
 function FindVBR(const Index: word; Data: array of byte): VBRData;
+var
+  HeaderKind: array[1..4] of ansichar;
 begin
   { Check for VBR header at given position }
   FillChar(Result, SizeOf(Result), 0);
-  if Chr(Data[Index]) + Chr(Data[Index + 1]) + Chr(Data[Index + 2]) +
-  Chr(Data[Index + 3]) = VBR_ID_XING then
-    Result := GetXingInfo(Index, Data);
-  if Chr(Data[Index]) + Chr(Data[Index + 1]) + Chr(Data[Index + 2]) +
-  Chr(Data[Index + 3]) = VBR_ID_FHG then
+  Move(Data[Index], HeaderKind[1], 4);
+
+  if (HeaderKind = VBR_ID_XING) or (HeaderKind = VBR_ID_INFO) then
+    Result := GetXingInfo(Index, Data)
+  else
+  if HeaderKind = VBR_ID_FHG then
     Result := GetFhGInfo(Index, Data);
 end;
 
@@ -409,6 +414,22 @@ begin
   Result := fMediaProperty;
 end;
 
+function TMP3Reader.UpdateFile: boolean;
+var
+  SaveFile: String;
+begin
+  SaveFile:=  ChangeFileExt(FileName, '.~.'+ ExtractFileExt(FileName));
+
+  result := SaveToFile(SaveFile);
+
+  // renaming is needed only when file has been rebuilt
+  if Result and (fTags.Padding < 1) then
+    begin
+      result := DeleteFile(FileName);
+      result := RenameFile(SaveFile, FileName);
+    end;
+end;
+
 function TMP3Reader.isUpdateable: boolean;
 begin
   Result:=true;
@@ -418,13 +439,12 @@ function TMP3Reader.LoadFromFile(AFileName: Tfilename): boolean;
 const
   SizeOfData = MAX_MPEG_FRAME_LENGTH * 2;
 var
-  fStream: TBaseStreamReader;
+  fStream: TBufferedFileStream;
   Data: array [1..SizeOfData] of byte;
   Transferred: DWord;
-
 begin
   Result := inherited LoadFromFile(AFileName);
-  fStream := TBaseStreamReader.Create(fileName, fmOpenRead or fmShareDenyNone);
+  fStream := TBufferedFileStream.Create(fileName, fmOpenRead or fmShareDenyNone);
   try
     ftags := TID3Tags.Create;
     fTags.ReadFromStream(fStream);
@@ -451,37 +471,47 @@ begin
     fStream.Free;
   end;
 
-
 end;
 
 function TMP3Reader.SaveToFile(AFileName: Tfilename): boolean;
 var
-  SourceStream: TBaseStreamReader;
-  DestStream: TBaseStreamReader;
+  SourceStream: TBufferedFileStream;
+  DestStream: TBufferedFileStream;
   fOldSize: integer;
   wHeader : TID3Header;
+  RealSize: DWord;
 begin
   result:= true;
   inherited SaveToFile(AFilename);
-  SourceStream := TBaseStreamReader.Create(FileName, fmOpenRead or fmShareDenyNone);
-  DestStream := TBaseStreamReader.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyNone);
+  SourceStream := TBufferedFileStream.Create(FileName, fmOpenReadWrite or fmShareDenyNone);
 
   SourceStream.Read(wheader, SizeOf(wheader));
   if wheader.Marker = ID3_HEADER_MARKER then
-  begin
     fOldSize := SyncSafe_Decode(wheader.size);
-  end;
 
+  RealSize := fTags.RealSize;
+
+  if fOldSize >= RealSize then
+    begin
+      // enough padding, rewrite only header sand clear padding
+      fTags.Padding := fOldSize - RealSize;
+      SourceStream.Seek(0, soFromBeginning);
+      fTags.WriteToStream(SourceStream);
+    end
+  else
   Try
+      // Not enough padding, rebuild the file
+      DestStream := TBufferedFileStream.Create(AFileName, fmCreate or fmOpenReadWrite or fmShareDenyWrite);
+      fTags.Padding := -1;
     SourceStream.Seek(fOldSize, soFromBeginning);
     fTags.WriteToStream(DestStream);
     DestStream.CopyFrom(SourceStream, SourceStream.Size - SourceStream.Position);
+      DestStream.Free;
   Except
     Result:=false;
   end;
 
   SourceStream.Free;
-  DestStream.Free;
 
 end;
 

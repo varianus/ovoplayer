@@ -63,7 +63,10 @@ type
   private
     fLanguageID: string;
     fDescription: string;
+    procedure SetLanguageID(AValue: string);
   public
+    property LanguageID: string read FLanguageID write SetLanguageID;
+    property Description: string read fDescription write fDescription;
     function GetAsString: string; override;
     procedure SetAsString(const AValue: string); override;
     constructor Create(AID: string); override; overload;
@@ -260,7 +263,6 @@ begin
 
   end
   else
-  begin
     if trim(V1Rec.Comment + V1Rec.stopper + char(V1Rec.track)) <> '' then
     begin
       Frame := TID3Frame.Create('COMM');
@@ -269,7 +271,6 @@ begin
       Frame.AsString := trim(V1Rec.Comment + V1Rec.stopper + char(V1Rec.track));
       Add(Frame);
     end;
-  end;
   Result := True;
 
 end;
@@ -435,9 +436,7 @@ begin
   tmpSize := 0;
 
   for i := 0 to Count - 1 do
-  begin
     tmpSize := tmpSize + Frames[i].Size + HeadSize;
-  end;
 
   if fPadding > 0 then
     inc(tmpSize, fPadding);
@@ -446,9 +445,7 @@ begin
   Astream.Write(header, SizeOf(header));
 
   for i := 0 to Count - 1 do
-  begin
     Frames[i].WriteToStream(AStream);
-  end;
   Result := tmpSize;
 
   if Padding > 0 then
@@ -525,51 +522,90 @@ end;
 
 { TID3Frame }
 
+procedure TID3FrameComment.SetLanguageID(AValue: string);
+begin
+  if FLanguageID = AValue then Exit;
+  if Length(AValue) < 3 then
+    fLanguageID := 'xxx'
+  else
+    fLanguageID := Copy(AValue, 1, 3);
+end;
+
 function TID3FrameComment.GetAsString: string;
 var
-  Encoding: byte;
-  l: cardinal;
-  Offset: integer;
-  WSize: integer;
-  p: PByteArray;
+  EncodingByte: byte;
+  I: integer;
+  SeparatorIdx: integer;
+  DescBytes, CommentBytes: rawbytestring;
+  HasBOM: boolean;
 begin
   Result      := '';
-  Encoding    := byte(Data[1]);
+  EncodingByte := byte(Data[1]);
   fLanguageID := copy(Data, 2, 3);
 
-  case Encoding of
-    00, 03:
-      Offset := 0;
-    01, 02:
-      Offset := 1;
+  SeparatorIdx := -1;
+  if (EncodingByte = $01) or (EncodingByte = $02) then
+    begin
+    I := 5;
+    while I < (size - 1) do
+    begin
+      if (Data[I] = #00) and (Data[I + 1] = #00) then
+      begin
+        SeparatorIdx := I;
+        Break;
+    end;
+      Inc(I, 2);
+  end;
+
+    if SeparatorIdx <> -1 then
+    begin
+      DescBytes    := Copy(Data, 5, SeparatorIdx - 5);
+      CommentBytes := Copy(Data, SeparatorIdx + 2, (size - SeparatorIdx + 2));
+    end
     else
     begin
-      fLanguageID := '   ';
-      fDescription := '';
-      Result := '<unknown>';
-      exit;
+      DescBytes := Copy(Data, 5, Size - 5);
+      SetLength(CommentBytes, 0);
     end;
-  end;
-  p := PByteArray(@Data[5]);
+  end
+  else
 
-  WSize := 0;
-  while (WSize < (Size - 5)) and
-    not ((p^[WSize] = 00) and
-      (p^[WSize + offset] = 00)) do
-    Inc(WSize);
-
-  fDescription := ExtractString(Encoding, pbyte(p), Wsize + Offset);
-  if WSize >= (size - 5) then // if there is only a string use it as the real comment
   begin
-    Result := fDescription;
-    fDescription := '';
+    for I := 4 to (size - 1) do
+      if Data[I] = #00 then
+      begin
+        SeparatorIdx := I;
+        Break;
+  end;
+
+    if SeparatorIdx <> -1 then
+  begin
+      DescBytes    := Copy(Data, 5, SeparatorIdx - 5);
+      CommentBytes := Copy(Data, SeparatorIdx + 1, (size - SeparatorIdx + 1));
   end
   else
   begin
-    Offset := Offset + 6 + WSize;
-    Result := ExtractString(Encoding, pbyte(@Data[Offset]), size - Offset + 1);
+      DescBytes := Copy(Data, 5, Size - 5);
+      SetLength(CommentBytes, 0);
+    end;
   end;
 
+  if Length(DescBytes) > 0 then
+    fDescription := ExtractString(EncodingByte, pbyte(@DescBytes[1]), Length(DescBytes))
+  else
+    fDescription := '';
+
+  if Length(CommentBytes) > 0 then
+    Result := ExtractString(EncodingByte, pbyte(@CommentBytes[1]), Length(CommentBytes))
+  else
+    Result := '';
+
+  if (EncodingByte = $01) and (Length(Result) > 0) then
+  begin
+    HasBOM := (Result[1] = widechar($FEFF)) or (Result[1] = widechar($FFFE));
+    if HasBOM then
+      Delete(Result, 1, 1);
+  end;
 end;
 
 procedure TID3FrameComment.SetAsString(const AValue: string);
