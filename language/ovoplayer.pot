@@ -541,6 +541,10 @@ msgstr ""
 msgid "Show tray icon"
 msgstr ""
 
+#: tfconfig.cbusessl.caption
+msgid "Use SSL encryption"
+msgstr ""
+
 #: tfconfig.groupbox1.caption
 msgid "Categories"
 msgstr ""
@@ -563,6 +567,14 @@ msgstr ""
 
 #: tfconfig.label5.caption
 msgid "Port"
+msgstr ""
+
+#: tfconfig.label6.caption
+msgid "Certificate"
+msgstr ""
+
+#: tfconfig.label7.caption
+msgid "Private key"
 msgstr ""
 
 #: tfconfig.lbrestart.caption

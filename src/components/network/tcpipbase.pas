@@ -22,7 +22,6 @@ uses
 type
 
   { TTcpIpBaseSocket }
-
   TTcpIpBaseSocket = class
   private
     FPort: Word;

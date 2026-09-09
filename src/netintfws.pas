@@ -24,7 +24,7 @@ interface
 
 uses
   Classes, SysUtils, BaseTypes, coreinterfaces, TcpIpServer, TcpIpWebSocket, sockets,
-  netprotocol, netsupport, LazLoggerBase;
+  netprotocol,netsupport, ssockets, sslsockets, LazLoggerBase, opensslsockets;
 
 type
 
@@ -38,17 +38,28 @@ type
     FActivated: boolean;
     fBackEnd: IBackEnd;
     DaemonThread: TTCPRemoteDaemon;
+    FCertificate: TFileName;
     FOnlyLocalhost: boolean;
     FPort: integer;
+    FPrivateKey: TFileName;
+    FUseSSL: boolean;
+    procedure RestartIfActive;
+    procedure SetCertificate(AValue: TFileName);
     procedure SetOnlyLocalhost(AValue: boolean);
     procedure SetPort(AValue: integer);
+    procedure SetPrivateKey(AValue: TFileName);
+    procedure SetUseSSL(AValue: boolean);
   public
     function Activate(BackEnd: IBackEnd): boolean;
     procedure DeActivate;
     constructor Create;
     destructor Destroy; override;
+    procedure GetSocketHandler(Sender: TObject; out AHandler: TSocketHandler);
     property OnlyLocalhost: boolean read FOnlyLocalhost write SetOnlyLocalhost;
     property Port: integer read FPort write SetPort;
+    property UseSSL:boolean read FUseSSL write SetUseSSL;
+    property Certificate: TFileName read FCertificate write SetCertificate;
+    property PrivateKey: TFileName read FPrivateKey write SetPrivateKey;
     property Activated: boolean read FActivated;
   end;
 
@@ -239,14 +250,12 @@ begin
   inherited Create;
   fnet  := net;
   Csock := Hsock;
-  Sock  := TTcpIpWebSocket.Create(CSock);
+  Sock:= TTcpIpWebSocket.Create(CSock, @(net.getsockethandler));
   sock.OnText := @MessageHandler;
   ConnectionCfg.SizeMode := smByte;
 
   if sock.Listen then
-    fnet.fBackEnd.Attach(self)
-  else
-    raise Exception.Create('Cannot listen on WS');
+    fnet.fBackEnd.Attach(self);
 
 end;
 
@@ -260,15 +269,35 @@ end;
 
 { TWebIntf }
 
-procedure TNetIntf.SetPort(AValue: integer);
+procedure TNetIntf.RestartIfActive;
 begin
-  if FPort = AValue then Exit;
-  FPort := AValue;
   if Assigned(DaemonThread) then
   begin
     DeActivate;
     Activate(fBackEnd);
   end;
+
+end;
+
+procedure TNetIntf.SetPort(AValue: integer);
+begin
+  if FPort = AValue then Exit;
+  FPort := AValue;
+  RestartIfActive;
+end;
+
+procedure TNetIntf.SetPrivateKey(AValue: TFileName);
+begin
+  if FPrivateKey = AValue then Exit;
+  FPrivateKey := AValue;
+  RestartIfActive;
+end;
+
+procedure TNetIntf.SetUseSSL(AValue: boolean);
+begin
+  if FUseSSL = AValue then Exit;
+  FUseSSL := AValue;
+  RestartIfActive;
 end;
 
 procedure TNetIntf.SetOnlyLocalhost(AValue: boolean);
@@ -276,10 +305,14 @@ begin
   if FOnlyLocalhost = AValue then Exit;
   FOnlyLocalhost := AValue;
   if Assigned(DaemonThread) then
-  begin
-    DeActivate;
-    Activate(fBackEnd);
-  end;
+  RestartIfActive;
+end;
+
+procedure TNetIntf.SetCertificate(AValue: TFileName);
+begin
+  if FCertificate = AValue then Exit;
+  FCertificate := AValue;
+  RestartIfActive;
 end;
 
 function TNetIntf.Activate(BackEnd: IBackEnd): boolean;
@@ -300,6 +333,22 @@ begin
     //      DaemonThread.Free;
     FActivated := False;
   end;
+end;
+
+procedure TNetIntf.GetSocketHandler(Sender: TObject; out AHandler: TSocketHandler);
+var
+  S: TSSLSocketHandler;
+begin
+  if FUseSSL then
+  begin
+    S := TSSLSocketHandler.GetDefaultHandler;
+//    s.CertificateData := WebSocketServer.CertificateData;
+    s.CertificateData.PrivateKey.FileName := FPrivateKey;
+    s.CertificateData.Certificate.FileName := FCertificate;
+    AHandler := s;
+  end
+  else
+    AHandler := TSocketHandler.Create;
 end;
 
 constructor TNetIntf.Create;

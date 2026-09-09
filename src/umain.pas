@@ -1048,15 +1048,15 @@ begin
       MyNetIntf      := TNetIntf.Create;
       MyNetIntf.OnlyLocalhost := GuiConfigObj.NetRemoteParam.OnlyLocalhost;
       MyNetIntf.Port := GuiConfigObj.NetRemoteParam.Port;
+      MyNetIntf.UseSSL := GuiConfigObj.NetRemoteParam.UseSSL;
+      MyNetIntf.Certificate := GuiConfigObj.NetRemoteParam.Certificate;
+      MyNetIntf.PrivateKey := GuiConfigObj.NetRemoteParam.PrivateKey;
       MyNetIntf.Activate(BackEnd);
     end;
   end
   else
   if Assigned(MyNetIntf) then
     FreeAndNil(MyNetIntf);
-
-  if Assigned(MyNetIntf) then
-    MyNetIntf.Port := GuiConfigObj.NetRemoteParam.Port;
   {$ENDIF}
 end;
 
@@ -1422,7 +1422,11 @@ begin
     MyNetIntf      := TNetIntf.Create;
     MyNetIntf.Port := GuiConfigObj.NetRemoteParam.Port;
     MyNetIntf.OnlyLocalhost := GuiConfigObj.NetRemoteParam.OnlyLocalhost;
+    MyNetIntf.UseSSL := GuiConfigObj.NetRemoteParam.UseSSL;
+    MyNetIntf.Certificate := GuiConfigObj.NetRemoteParam.Certificate;
+    MyNetIntf.PrivateKey := GuiConfigObj.NetRemoteParam.PrivateKey;
     MyNetIntf.Activate(BackEnd);
+
   end;
   {$ENDIF}
   {$IFDEF MULTIMEDIA_KEYS}

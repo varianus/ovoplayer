@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="12"/>
+    <Version Value="13"/>
     <General>
-      <Flags>
-        <CompatibilityMode Value="True"/>
-      </Flags>
       <SessionStorage Value="InProjectDir"/>
       <Title Value="ovonetremote"/>
       <ResourceType Value="res"/>
@@ -21,9 +18,9 @@
     <VersionInfo>
       <StringTable ProductVersion="0.0.0.0"/>
     </VersionInfo>
-    <BuildModes Count="2">
-      <Item1 Name="Debug" Default="True"/>
-      <Item2 Name="Release">
+    <BuildModes>
+      <Item Name="Debug" Default="True"/>
+      <Item Name="Release">
         <CompilerOptions>
           <Version Value="11"/>
           <Target>
@@ -43,6 +40,7 @@
           <Linking>
             <Debugging>
               <GenerateDebugInfo Value="False"/>
+              <DebugInfoType Value="dsDwarf3"/>
             </Debugging>
             <LinkSmart Value="True"/>
             <Options>
@@ -55,7 +53,7 @@
             <CustomOptions Value="-FcUTF8"/>
           </Other>
         </CompilerOptions>
-      </Item2>
+      </Item>
       <SharedMatrixOptions Count="1">
         <Item1 ID="994975638340" Value="-dEnableUTF8RTL"/>
       </SharedMatrixOptions>
@@ -65,43 +63,43 @@
     </PublishOptions>
     <RunParams>
       <local>
-        <CommandLineParams Value="ws://172.26.208.79:6860"/>
+        <CommandLineParams Value="wss://127.0.0.1:6860"/>
       </local>
       <FormatVersion Value="2"/>
-      <Modes Count="1">
-        <Mode0 Name="default">
+      <Modes>
+        <Mode Name="default">
           <local>
-            <CommandLineParams Value="ws://172.26.208.79:6860"/>
+            <CommandLineParams Value="wss://127.0.0.1:6860"/>
           </local>
-        </Mode0>
+        </Mode>
       </Modes>
     </RunParams>
-    <RequiredPackages Count="1">
-      <Item1>
+    <RequiredPackages>
+      <Item>
         <PackageName Value="LCL"/>
-      </Item1>
+      </Item>
     </RequiredPackages>
-    <Units Count="4">
-      <Unit0>
+    <Units>
+      <Unit>
         <Filename Value="ovonetremote.lpr"/>
         <IsPartOfProject Value="True"/>
-      </Unit0>
-      <Unit1>
+      </Unit>
+      <Unit>
         <Filename Value="uremote.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-      </Unit1>
-      <Unit2>
+      </Unit>
+      <Unit>
         <Filename Value="../../src/netprotocol.pas"/>
         <IsPartOfProject Value="True"/>
-      </Unit2>
-      <Unit3>
+      </Unit>
+      <Unit>
         <Filename Value="clientthread.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ClientThread"/>
-      </Unit3>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -142,22 +140,22 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="5">
-      <Item1>
+    <Exceptions>
+      <Item>
         <Name Value="EAbort"/>
-      </Item1>
-      <Item2>
+      </Item>
+      <Item>
         <Name Value="ECodetoolError"/>
-      </Item2>
-      <Item3>
+      </Item>
+      <Item>
         <Name Value="EFOpenError"/>
-      </Item3>
-      <Item4>
+      </Item>
+      <Item>
         <Name Value="EBase64DecodingException"/>
-      </Item4>
-      <Item5>
+      </Item>
+      <Item>
         <Name Value="EStreamError"/>
-      </Item5>
+      </Item>
     </Exceptions>
   </Debugging>
 </CONFIG>

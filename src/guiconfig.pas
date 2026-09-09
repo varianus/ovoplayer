@@ -34,7 +34,7 @@ type
 
   { TNotificationParam }
 
-  TNotificationParam = Class(TConfigParam)
+  TNotificationParam = class(TConfigParam)
   private
     FBackColor: TColor;
     FFontColor: TColor;
@@ -51,92 +51,101 @@ type
     procedure SetX(AValue: integer);
     procedure SetY(AValue: integer);
   protected
-    Procedure InternalSave; override;
+    procedure InternalSave; override;
   public
-    Property Kind: integer read FKind write SetKind;
-    Property X: integer read FX write SetX;
-    Property Y: integer read FY write SetY;
-    Property BackColor: TColor read FBackColor write SetBackColor;
-    Property FontColor: TColor read FFontColor write SetFontColor;
-    Property Transparency: integer read FTransparency write SetTransparency;
-    Property TimeOut: integer read FTimeOut write SetTimeOut;
-    Procedure Load; override;
+    property Kind: integer read FKind write SetKind;
+    property X: integer read FX write SetX;
+    property Y: integer read FY write SetY;
+    property BackColor: TColor read FBackColor write SetBackColor;
+    property FontColor: TColor read FFontColor write SetFontColor;
+    property Transparency: integer read FTransparency write SetTransparency;
+    property TimeOut: integer read FTimeOut write SetTimeOut;
+    procedure Load; override;
   end;
 
   { TInterfaceParam }
 
-  TInterfaceParam = Class(TConfigParam)
+  TInterfaceParam = class(TConfigParam)
   private
     FCaptureMMKeys: boolean;
-    FCaptureMMkeysMode: Integer;
+    FCaptureMMkeysMode: integer;
     FEnableSoundMenu: boolean;
-    FGroupBy: Integer;
+    FGroupBy: integer;
     FMinimizeOnClose: boolean;
     FPauseWhenLocked: boolean;
     FShowTrayIcon: boolean;
     procedure SetCaptureMMKeys(AValue: boolean);
-    procedure SetCaptureMMkeysMode(AValue: Integer);
+    procedure SetCaptureMMkeysMode(AValue: integer);
     procedure SetEnableSoundMenu(AValue: boolean);
-    procedure SetGroupBy(AValue: Integer);
+    procedure SetGroupBy(AValue: integer);
     procedure SetMinimizeOnClose(AValue: boolean);
     procedure SetPauseWhenLocked(AValue: boolean);
     procedure SetShowTrayIcon(AValue: boolean);
   protected
-    Procedure InternalSave; override;
+    procedure InternalSave; override;
   public
-    Property ShowTrayIcon: boolean read FShowTrayIcon write SetShowTrayIcon;
-    Property MinimizeOnClose: boolean read FMinimizeOnClose write SetMinimizeOnClose;
-    Property GroupBy: Integer read FGroupBy write SetGroupBy;
-    Property CaptureMMKeys: boolean read FCaptureMMKeys write SetCaptureMMKeys;
-    Property CaptureMMkeysMode: Integer read FCaptureMMkeysMode write SetCaptureMMkeysMode;
-    Property EnableSoundMenu: boolean read FEnableSoundMenu write SetEnableSoundMenu;
-    Property PauseWhenLocked: boolean read FPauseWhenLocked write SetPauseWhenLocked;
-    Procedure Load; override;
+    property ShowTrayIcon: boolean read FShowTrayIcon write SetShowTrayIcon;
+    property MinimizeOnClose: boolean read FMinimizeOnClose write SetMinimizeOnClose;
+    property GroupBy: integer read FGroupBy write SetGroupBy;
+    property CaptureMMKeys: boolean read FCaptureMMKeys write SetCaptureMMKeys;
+    property CaptureMMkeysMode: integer read FCaptureMMkeysMode write SetCaptureMMkeysMode;
+    property EnableSoundMenu: boolean read FEnableSoundMenu write SetEnableSoundMenu;
+    property PauseWhenLocked: boolean read FPauseWhenLocked write SetPauseWhenLocked;
+    procedure Load; override;
 
   end;
 
 
- {$IFDEF NETWORK_INTF}
+  {$IFDEF NETWORK_INTF}
   { TNetRemoteParam }
-  TNetRemoteParam = Class(TConfigParam)
+  TNetRemoteParam = class(TConfigParam)
   private
+    FCertificate: TFileName;
     FEnabled: boolean;
     FOnlyLocalhost: boolean;
     FPort: integer;
+    FPrivateKey: TFileName;
+    FUseSSL: boolean;
+    procedure SetCertificate(AValue: TFileName);
     procedure SetEnabled(AValue: boolean);
     procedure SetOnlyLocalhost(AValue: boolean);
     procedure SetPort(AValue: integer);
+    procedure SetPrivateKey(AValue: TFileName);
+    procedure SetUseSSL(AValue: boolean);
   protected
-    Procedure InternalSave; override;
+    procedure InternalSave; override;
   public
-    Property Enabled: boolean read FEnabled write SetEnabled;
-    Property OnlyLocalhost: boolean read FOnlyLocalhost write SetOnlyLocalhost;
-    Property Port: integer read FPort write SetPort;
-    Procedure Load; override;
+    property Enabled: boolean read FEnabled write SetEnabled;
+    property OnlyLocalhost: boolean read FOnlyLocalhost write SetOnlyLocalhost;
+    property Port: integer read FPort write SetPort;
+    property UseSSL: boolean read FUseSSL write SetUseSSL;
+    property Certificate: TFileName read FCertificate write SetCertificate;
+    property PrivateKey: TFileName read FPrivateKey write SetPrivateKey;
+    procedure Load; override;
   end;
- {$EndIf}
+  {$EndIf}
 
- { TGuiConfig }
+  { TGuiConfig }
 
- TGuiConfig = class
- private
-   fNotificationParam: TNotificationParam;
-   FInterfaceParam: TInterfaceParam;
-   {$IFDEF NETWORK_INTF}
-   fNetRemoteParam: TNetRemoteParam;
-   {$ENDIF}
- public
-   property NotificationParam: TNotificationParam read FNotificationParam;
-   property InterfaceParam: TInterfaceParam read FInterfaceParam;
-   {$IFDEF NETWORK_INTF}
-   property NetRemoteParam: TNetRemoteParam read FNetRemoteParam;
-   {$ENDIF}
-   constructor Create(Config: TConfig);
-   Destructor Destroy; override;
- end;
+  TGuiConfig = class
+  private
+    fNotificationParam: TNotificationParam;
+    FInterfaceParam: TInterfaceParam;
+    {$IFDEF NETWORK_INTF}
+    fNetRemoteParam: TNetRemoteParam;
+    {$ENDIF}
+  public
+    property NotificationParam: TNotificationParam read FNotificationParam;
+    property InterfaceParam: TInterfaceParam read FInterfaceParam;
+    {$IFDEF NETWORK_INTF}
+    property NetRemoteParam: TNetRemoteParam read FNetRemoteParam;
+    {$ENDIF}
+    constructor Create(Config: TConfig);
+    destructor Destroy; override;
+  end;
 
 var
- GuiConfigObj :TGuiConfig;
+  GuiConfigObj: TGuiConfig;
 
 implementation
 
@@ -145,10 +154,10 @@ implementation
 
 constructor TGuiConfig.Create(Config: TConfig);
 begin
-  fNotificationParam:= TNotificationParam.Create(Config);
-  FInterfaceParam:= TInterfaceParam.Create(Config);
+  fNotificationParam := TNotificationParam.Create(Config);
+  FInterfaceParam    := TInterfaceParam.Create(Config);
   {$IFDEF NETWORK_INTF}
-  fNetRemoteParam:= TNetRemoteParam.Create(Config);
+  fNetRemoteParam    := TNetRemoteParam.Create(Config);
   {$ENDIF}
 
 end;
@@ -172,9 +181,17 @@ end;
 
 procedure TNetRemoteParam.SetEnabled(AValue: boolean);
 begin
-  if FEnabled=AValue then Exit;
-  FEnabled:=AValue;
+  if FEnabled = AValue then Exit;
+  FEnabled := AValue;
+  Dirty    := True;
+end;
+
+procedure TNetRemoteParam.SetCertificate(AValue: TFileName);
+begin
+  if FCertificate = AValue then Exit;
+  FCertificate := AValue;
   Dirty := True;
+
 end;
 
 procedure TNetRemoteParam.SetOnlyLocalhost(AValue: boolean);
@@ -186,9 +203,23 @@ end;
 
 procedure TNetRemoteParam.SetPort(AValue: integer);
 begin
-  if FPort=AValue then Exit;
-  FPort:=AValue;
+  if FPort = AValue then Exit;
+  FPort := AValue;
   Dirty := True;
+end;
+
+procedure TNetRemoteParam.SetPrivateKey(AValue: TFileName);
+begin
+  if FPrivateKey = AValue then Exit;
+  FPrivateKey := AValue;
+  Dirty := True;
+end;
+
+procedure TNetRemoteParam.SetUseSSL(AValue: boolean);
+begin
+  if FUseSSL = AValue then Exit;
+  FUseSSL := AValue;
+  Dirty   := True;
 end;
 
 procedure TNetRemoteParam.InternalSave;
@@ -198,15 +229,22 @@ begin
   owner.IniFile.WriteBool(Base, 'Enabled', Enabled);
   owner.IniFile.WriteInteger(Base, 'Port', Port);
   owner.IniFile.WriteBool(Base, 'OnlyLocalhost', OnlyLocalhost);
+  owner.IniFile.WriteBool(Base, 'UseSSL', UseSSL);
+  owner.IniFile.WriteString(Base, 'CertificateFile', Certificate);
+  owner.IniFile.WriteString(Base, 'PrivateKeyFIle', PrivateKey);
+
 end;
 
 procedure TNetRemoteParam.Load;
 const
   Base = 'NetRemote';
 begin
-  FEnabled := owner.IniFile.ReadBool(Base , 'Enabled', False);
-  FPort    := owner.IniFile.ReadInteger(Base , 'Port', 6860);
-  FOnlyLocalhost := owner.IniFile.ReadBool(Base , 'OnlyLocalhost', true);
+  FEnabled := owner.IniFile.ReadBool(Base, 'Enabled', False);
+  FPort    := owner.IniFile.ReadInteger(Base, 'Port', 6860);
+  FOnlyLocalhost := owner.IniFile.ReadBool(Base, 'OnlyLocalhost', True);
+  FUseSSL  := Owner.Inifile.ReadBool(Base, 'UseSSL', False);
+  FCertificate := Owner.Inifile.ReadString(Base, 'CertificateFile', '');
+  FPrivateKey := Owner.Inifile.ReadString(Base, 'PrivateKeyFIle', '');
 end;
 {$EndIf}
 
@@ -214,36 +252,36 @@ end;
 
 procedure TInterfaceParam.SetCaptureMMKeys(AValue: boolean);
 begin
-  if FCaptureMMKeys=AValue then Exit;
-  FCaptureMMKeys:=AValue;
+  if FCaptureMMKeys = AValue then Exit;
+  FCaptureMMKeys := AValue;
   Dirty := True;
 end;
 
-procedure TInterfaceParam.SetCaptureMMkeysMode(AValue: Integer);
+procedure TInterfaceParam.SetCaptureMMkeysMode(AValue: integer);
 begin
-  if FCaptureMMkeysMode=AValue then Exit;
-  FCaptureMMkeysMode:=AValue;
+  if FCaptureMMkeysMode = AValue then Exit;
+  FCaptureMMkeysMode := AValue;
   Dirty := True;
 end;
 
 procedure TInterfaceParam.SetEnableSoundMenu(AValue: boolean);
 begin
-  if FEnableSoundMenu=AValue then Exit;
-  FEnableSoundMenu:=AValue;
+  if FEnableSoundMenu = AValue then Exit;
+  FEnableSoundMenu := AValue;
   Dirty := True;
 end;
 
-procedure TInterfaceParam.SetGroupBy(AValue: Integer);
+procedure TInterfaceParam.SetGroupBy(AValue: integer);
 begin
-  if FGroupBy=AValue then Exit;
-  FGroupBy:=AValue;
-  Dirty := True;
+  if FGroupBy = AValue then Exit;
+  FGroupBy := AValue;
+  Dirty    := True;
 end;
 
 procedure TInterfaceParam.SetMinimizeOnClose(AValue: boolean);
 begin
-  if FMinimizeOnClose=AValue then Exit;
-  FMinimizeOnClose:=AValue;
+  if FMinimizeOnClose = AValue then Exit;
+  FMinimizeOnClose := AValue;
   Dirty := True;
 end;
 
@@ -256,8 +294,8 @@ end;
 
 procedure TInterfaceParam.SetShowTrayIcon(AValue: boolean);
 begin
-  if FShowTrayIcon=AValue then Exit;
-  FShowTrayIcon:=AValue;
+  if FShowTrayIcon = AValue then Exit;
+  FShowTrayIcon := AValue;
   Dirty := True;
 end;
 
@@ -279,13 +317,13 @@ procedure TInterfaceParam.Load;
 const
   Base = 'Interface';
 begin
-  fMinimizeOnClose   := owner.IniFile.ReadBool(Base , 'MinimizeOnClose', True);
-  fShowTrayIcon      := owner.IniFile.ReadBool(Base , 'ShowTrayIcon', True);
-  fEnableSoundMenu   := owner.IniFile.ReadBool(Base , 'EnableSoundMenu', True);
-  fCaptureMMKeys     := owner.IniFile.ReadBool(Base , 'CaptureMMKeys', False);
-  fCaptureMMkeysMode := owner.IniFile.ReadInteger(Base , 'CaptureMMkeysMode', 0);
-  fGroupBy           := owner.IniFile.ReadInteger(Base , 'GroupBy', 0);
-  FPauseWhenLocked   := owner.IniFile.ReadBool(Base , 'PauseWhenLocked', False);
+  fMinimizeOnClose := owner.IniFile.ReadBool(Base, 'MinimizeOnClose', True);
+  fShowTrayIcon := owner.IniFile.ReadBool(Base, 'ShowTrayIcon', True);
+  fEnableSoundMenu := owner.IniFile.ReadBool(Base, 'EnableSoundMenu', True);
+  fCaptureMMKeys := owner.IniFile.ReadBool(Base, 'CaptureMMKeys', False);
+  fCaptureMMkeysMode := owner.IniFile.ReadInteger(Base, 'CaptureMMkeysMode', 0);
+  fGroupBy := owner.IniFile.ReadInteger(Base, 'GroupBy', 0);
+  FPauseWhenLocked := owner.IniFile.ReadBool(Base, 'PauseWhenLocked', False);
 
 end;
 
@@ -293,50 +331,50 @@ end;
 
 procedure TNotificationParam.SetBackColor(AValue: TColor);
 begin
-  if FBackColor=AValue then Exit;
-  FBackColor:=AValue;
-  Dirty := True;
+  if FBackColor = AValue then Exit;
+  FBackColor := AValue;
+  Dirty      := True;
 end;
 
 procedure TNotificationParam.SetFontColor(AValue: TColor);
 begin
-  if FFontColor=AValue then Exit;
-  FFontColor:=AValue;
-  Dirty := True;
+  if FFontColor = AValue then Exit;
+  FFontColor := AValue;
+  Dirty      := True;
 end;
 
 procedure TNotificationParam.SetKind(AValue: integer);
 begin
-  if FKind=AValue then Exit;
-  FKind:=AValue;
+  if FKind = AValue then Exit;
+  FKind := AValue;
   Dirty := True;
 end;
 
 procedure TNotificationParam.SetTimeOut(AValue: integer);
 begin
-  if FTimeOut=AValue then Exit;
-  FTimeOut:=AValue;
-  Dirty := True;
+  if FTimeOut = AValue then Exit;
+  FTimeOut := AValue;
+  Dirty    := True;
 end;
 
 procedure TNotificationParam.SetTransparency(AValue: integer);
 begin
-  if FTransparency=AValue then Exit;
-  FTransparency:=AValue;
+  if FTransparency = AValue then Exit;
+  FTransparency := AValue;
   Dirty := True;
 end;
 
 procedure TNotificationParam.SetX(AValue: integer);
 begin
-  if FX=AValue then Exit;
-  FX:=AValue;
+  if FX = AValue then Exit;
+  FX    := AValue;
   Dirty := True;
 end;
 
 procedure TNotificationParam.SetY(AValue: integer);
 begin
-  if FY=AValue then Exit;
-  FY:=AValue;
+  if FY = AValue then Exit;
+  FY    := AValue;
   Dirty := True;
 end;
 
@@ -357,13 +395,13 @@ procedure TNotificationParam.Load;
 const
   Base = 'Notification';
 begin
-  fKind         := owner.IniFile.ReadInteger(Base , 'Kind', 2);
-  fBackColor    := StringToColorDef(owner.IniFile.ReadString(Base,'BackColor',''), $00B66F18);
-  fFontColor    := StringToColorDef(owner.IniFile.ReadString(Base,'FontColor',''), $00000000);
-  fTimeOut      := owner.IniFile.ReadInteger(Base , 'TimeOut', 3000);
-  fX            := owner.IniFile.ReadInteger(Base , 'X', 100);
-  fY            := owner.IniFile.ReadInteger(Base , 'Y', 100);
-  fTransparency := owner.IniFile.ReadInteger(Base , 'Transparency', 230);
+  fKind := owner.IniFile.ReadInteger(Base, 'Kind', 2);
+  fBackColor := StringToColorDef(owner.IniFile.ReadString(Base, 'BackColor', ''), $00B66F18);
+  fFontColor := StringToColorDef(owner.IniFile.ReadString(Base, 'FontColor', ''), $00000000);
+  fTimeOut := owner.IniFile.ReadInteger(Base, 'TimeOut', 3000);
+  fX := owner.IniFile.ReadInteger(Base, 'X', 100);
+  fY := owner.IniFile.ReadInteger(Base, 'Y', 100);
+  fTransparency := owner.IniFile.ReadInteger(Base, 'Transparency', 230);
 end;
 
 end.
