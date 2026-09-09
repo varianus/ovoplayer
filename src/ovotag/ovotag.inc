@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //if release is defined, try to be quiet and efficient...
 {$mode objfpc}{$H+}
 {$interfaces corba}
+{$modeswitch advancedrecords}
 
 {$IFDEF RELEASE}
   {$HINTS OFF}
