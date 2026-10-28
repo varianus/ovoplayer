@@ -15,7 +15,7 @@ object fMainForm: TfMainForm
   Menu = MainMenu
   Position = poMainFormCenter
   ShowHint = True
-  LCLVersion = '4.99.0.0'
+  LCLVersion = '5.99.0.0'
   OnChangeBounds = FormChangeBounds
   OnClose = FormClose
   OnCreate = FormCreate
@@ -120,7 +120,7 @@ object fMainForm: TfMainForm
           Width = 238
           Align = alClient
           DragMode = dmAutomatic
-          Images = DM.ilSmall
+          Images = DM.ilButtons
           Indent = 20
           MultiSelect = True
           ParentShowHint = False
@@ -157,21 +157,21 @@ object fMainForm: TfMainForm
             OnClick = btnBackDirClick
           end
           object btnForwardDir: TToolButton
-            Left = 27
+            Left = 24
             Top = 2
             Caption = 'Forward'
             ImageIndex = 15
             OnClick = btnForwardDirClick
           end
           object btnUpDir: TToolButton
-            Left = 53
+            Left = 47
             Top = 2
             Caption = 'Up'
             ImageIndex = 17
             OnClick = btnUpDirClick
           end
           object btnHomeDir: TToolButton
-            Left = 79
+            Left = 70
             Top = 2
             Caption = 'Home'
             ImageIndex = 14
@@ -199,7 +199,7 @@ object fMainForm: TfMainForm
           Align = alClient
           DragMode = dmAutomatic
           HideSelection = False
-          Images = DM.ilSmall
+          Images = DM.ilButtons
           MultiSelect = True
           MultiSelectStyle = [msControlSelect, msShiftSelect, msSiblingOnly]
           PopupMenu = pmdirectories
@@ -227,7 +227,7 @@ object fMainForm: TfMainForm
           Top = 0
           Width = 238
           Align = alClient
-          Images = DM.ilSmall
+          Images = DM.ilButtons
           PopupMenu = pmPlaylists
           ReadOnly = True
           RightClickSelect = True
@@ -266,7 +266,6 @@ object fMainForm: TfMainForm
         Constraints.MaxWidth = 22
         Caption = 'Close'
         Flat = True
-        Images = DM.ilSmall
         ImageIndex = 16
         ShowCaption = False
         OnClick = btnCloseCollectionStatClick
@@ -301,6 +300,7 @@ object fMainForm: TfMainForm
         ScrollBars = ssAutoVertical
         TabOrder = 0
         TitleFont.Height = -12
+        TitleImageList = DM.ilButtons
         TitleStyle = tsNative
         OnClick = sgStatsClick
         OnPrepareCanvas = sgStatsPrepareCanvas
@@ -539,7 +539,6 @@ object fMainForm: TfMainForm
             ShowHint = True
             TabOrder = 0
             TitleFont.Height = -12
-            TitleImageList = DM.ilSmall
             TitleStyle = tsNative
             UseXORFeatures = True
             OnClick = sgPlayListClick
@@ -579,13 +578,14 @@ object fMainForm: TfMainForm
             Width = 507
             Align = alClient
             BorderSpacing.Top = 1
-            ButtonHeight = 23
-            ButtonWidth = 23
+            ButtonHeight = 25
+            ButtonWidth = 25
             Constraints.MaxHeight = 25
             EdgeBorders = []
             EdgeInner = esNone
             EdgeOuter = esNone
             Images = DM.ilButtons
+            ImagesWidth = 24
             TabOrder = 0
             Transparent = True
             Wrapable = False
@@ -595,54 +595,54 @@ object fMainForm: TfMainForm
               Action = DM.actPrevious
             end
             object ToolButton2: TToolButton
-              Left = 61
+              Left = 65
               Top = 0
               Action = DM.actPlay
             end
             object ToolButton3: TToolButton
-              Left = 121
+              Left = 129
               Top = 0
               Action = DM.actStop
             end
             object ToolButton4: TToolButton
-              Left = 173
+              Left = 185
               Top = 0
               Action = DM.actNext
             end
             object ToolButton5: TToolButton
-              Left = 95
+              Left = 101
               Top = 0
               Action = DM.actPause
             end
             object ToolButton6: TToolButton
-              Left = 27
+              Left = 29
               Top = 0
               Action = DM.actSkipBackward
             end
             object ToolButton7: TToolButton
-              Left = 147
+              Left = 157
               Top = 0
               Action = DM.actSkipForward
             end
             object ToolButton8: TToolButton
-              Left = 87
-              Height = 8
+              Left = 93
+              Height = 25
               Top = 0
               Style = tbsSeparator
             end
             object ToolButton9: TToolButton
-              Left = 53
-              Height = 8
+              Left = 57
+              Height = 25
               Top = 0
               Style = tbsSeparator
             end
             object ToolButton10: TToolButton
-              Left = 245
+              Left = 261
               Top = 0
               Action = DM.actPlayListShuffle
             end
             object tbRepeat: TToolButton
-              Left = 207
+              Left = 221
               Top = 0
               Caption = '     '
               DropdownMenu = RepeatMenu
@@ -652,43 +652,43 @@ object fMainForm: TfMainForm
               OnClick = tbRepeatClick
             end
             object ToolButton16: TToolButton
-              Left = 305
+              Left = 325
               Top = 0
               Action = DM.actPlaylistLoad
             end
             object ToolButton17: TToolButton
-              Left = 279
+              Left = 297
               Top = 0
               Action = DM.actPlaylistSave
             end
             object ToolButton18: TToolButton
-              Left = 199
-              Height = 8
+              Left = 213
+              Height = 25
               Top = 0
               AutoSize = True
               Enabled = False
               Style = tbsSeparator
             end
             object ToolButton12: TToolButton
-              Left = 271
-              Height = 8
+              Left = 289
+              Height = 25
               Top = 0
               Style = tbsSeparator
             end
             object ToolButton13: TToolButton
-              Left = 331
+              Left = 353
               Top = 0
               Enabled = False
               ShowCaption = False
             end
             object bMute: TToolButton
-              Left = 354
+              Left = 378
               Top = 0
               Action = DM.actMute
             end
             object slVolume: TThemedSlider
-              Left = 380
-              Height = 23
+              Left = 406
+              Height = 25
               Top = 0
               Width = 101
               BorderWidth = 6
@@ -1277,6 +1277,7 @@ object fMainForm: TfMainForm
     end
     object MenuItem60: TMenuItem
       Caption = 'Play'
+      ImageIndex = 2
       OnClick = MenuItem60Click
     end
     object mnuSeparator: TMenuItem

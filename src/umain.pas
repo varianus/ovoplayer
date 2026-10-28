@@ -507,12 +507,12 @@ type
 
 const
   SortArray: array [tkAlbum..tkTracK] of TSortRow =
-    ((Kind: tkAlbum; FieldName: 'Album'; ImageIndex: 1),
-    (Kind: tkAlbumArtist; FieldName: 'AlbumArtist'; ImageIndex: 0),
-    (Kind: tkArtist; FieldName: 'Artist'; ImageIndex: 0),
-    (Kind: tkSong; FieldName: 'Title'; ImageIndex: 2),
-    (Kind: tkYear; FieldName: 'Year'; ImageIndex: 3),
-    (Kind: tkGenre; FieldName: 'Genre'; ImageIndex: 4),
+    ((Kind: tkAlbum; FieldName: 'Album'; ImageIndex: 30),
+    (Kind: tkAlbumArtist; FieldName: 'AlbumArtist'; ImageIndex: 29),
+    (Kind: tkArtist; FieldName: 'Artist'; ImageIndex: 29),
+    (Kind: tkSong; FieldName: 'Title'; ImageIndex: 31),
+    (Kind: tkYear; FieldName: 'Year'; ImageIndex: 32),
+    (Kind: tkGenre; FieldName: 'Genre'; ImageIndex: 33),
     (Kind: tkTracK; FieldName: '(case track when 0 then coalesce(trackstring,0) else track end)'; ImageIndex: -1)
     //    (Kind: tkRating; FieldName: 'Rating'; ImageIndex: 5)
     );
@@ -823,7 +823,7 @@ begin
   if (myNode.isDir) then
     myNode.ImageIndex := 7
   else
-    myNode.ImageIndex := 2;
+    myNode.ImageIndex := 11;
 
 end;
 
@@ -2217,11 +2217,11 @@ begin
   begin
     aBmp := TBitmap.Create;
     case BackEnd.AudioEngine.State of
-      ENGINE_PAUSE: dm.ilSmall.GetBitmap(10, aBmp);
-      ENGINE_STOP: dm.ilSmall.GetBitmap(11, aBmp);
-      ENGINE_PLAY: dm.ilSmall.GetBitmap(6, aBmp);
+      ENGINE_PAUSE: dm.ilButtons.GetBitmap(1, aBmp);
+      ENGINE_STOP: dm.ilButtons.GetBitmap(3, aBmp);
+      ENGINE_PLAY: dm.ilButtons.GetBitmap(2, aBmp);
       else
-        dm.ilSmall.GetBitmap(12, aBmp)
+        dm.ilButtons.GetBitmap(26, aBmp)
     end;
 
 

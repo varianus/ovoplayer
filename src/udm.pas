@@ -28,7 +28,7 @@ uses
   singleinstance, strutils, Graphics, FontImageList, types,
   BaseTypes, CoreInterfaces,
   AudioEngine, LazUTF8,  LazLogger,
-  PlayListManager, MediaLibrary, FilesSupport, netprotocol,   IconLoader;
+  PlayListManager, MediaLibrary, FilesSupport, netprotocol;
 
 type
 
@@ -62,7 +62,6 @@ type
     ActionList:  TActionList;
     ApplicationProperties: TApplicationProperties;
     ilButtons: TFontImageList;
-    ilSmall: TFontImageList;
     ilNone: TImageList;
     OpenDialogPlaylist: TOpenDialog;
     OpenDialogFiles: TOpenDialog;
@@ -97,7 +96,6 @@ type
     procedure ApplicationPropertiesIdle(Sender: TObject; var Done: Boolean);
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
-    procedure ilButtonsInitialize(Sender: TObject);
     procedure SaveDialogPlaylistTypeChange(Sender: TObject);
     procedure ServerReceivedParams(Sender: TBaseSingleInstance; aParams: TStringList );
     // -- --
@@ -118,11 +116,11 @@ implementation
 uses  AudioTag, AppConsts, GeneralFunc, GUIBackEnd,
   netsupport, LCLIntf, lclType, Themes ;
 
-{ TDM }
 // for traceback porpouse
 var
   f: text;
 
+{ TDM }
 procedure TDM.ServerReceivedParams(Sender: TBaseSingleInstance;
   aParams: TStringList);
 var
@@ -146,61 +144,15 @@ begin
     end;
 end;
 
-Procedure TDM.LoadImageList(Sender: TObject);
-var
-  s: TStream;
-  iconRender: TIconRenderer;
-  bmp : TBITMAP;
+procedure TDM.LoadImageList(Sender: TObject);
 begin
-  {
-    S := TResourceStream.Create(HInstance, 'OVOFONT', RT_RCDATA);
-    ilButtonsXX.BeginUpdate;
-    ilButtonsXX.Clear;
-    ilButtonsXX.Height := MulDiv(23, Screen.PixelsPerInch, 96);
-    ilButtonsXX.Width := ilButtonsXX.Height;
-
-    iconRender:= TIconRenderer.Create(S);
-    iconRender.Color := clwhite;// GetSysColor(COLOR_BTNTEXT);
-    iconRender.SetSize(23, 21, true); // Scaling occurs inside object, no need to do it here
-
-    iconRender.AddToImageList (ilButtonsXX, [$41,$42,$43,$44,$40,
-                                           $4A,$47,$48,$45,$4b,
-                                           $4c,$65,$64,$55,$53,
-                                           $52,$51,$4f,$4d,$4e,
-                                           $62]);
-    //bmp:= Tbitmap.create;
-    //ilButtonsXX.GetFullBitmap(Bmp);
-    //bmp.SaveToFile('c:\temp\ovo_ilButtons.bmp');
-    //bmp.free;
-
-    ilButtonsXX.EndUpdate;
-
-    ilSmallXX.BeginUpdate;
-    ilSmallXX.Clear;
-    ilSmallXX.Height := MulDiv(16, Screen.PixelsPerInch, 96);
-    ilSmallXX.Width := ilSmallXX.Height;
-
-    iconRender.SetSize(16,15, true); // Scaling occurs inside object, no need to do it here
-    iconRender.AddToImageList(ilSmallXX, [$54,$68,$5a,$57,$56,
-                                        $6c,$43,$65,$41,$4f,
-                                        $42,$44,$6e,$62,$58,
-                                        $59,$67]);
-    //bmp:= Tbitmap.create;
-    //ilSmallXX.GetFullBitmap(Bmp);
-    //bmp.SaveToFile('c:\temp\ovo_ilSmall.bmp');
-    //bmp.free;
-
-    ilSmallXX.EndUpdate;
-
-    iconRender.free;
-    //S.Free;     }
+  ilButtons.RegenerateImages;
 end;
 
 procedure TDM.DataModuleCreate(Sender: TObject);
 var
   ParamList: TStringList;
   i: Integer;
-
 begin
 
   ThemeServices.OnThemeChange := @LoadImageList ;
@@ -223,29 +175,9 @@ begin
   Application.SingleInstance.OnServerReceivedParams:= nil;
 end;
 
-procedure TDM.ilButtonsInitialize(Sender: TObject);
-begin
-   With (Sender as TFontImageList) do
-    begin
-      FontSource := fsrcResource;
-      FontName := 'OVOFONT';
-    end;
-
-end;
-
 Procedure TDM.CustomRender(Imgl: TIMageList; Const Size: Tsize; const CodeList: array of cardinal);
-var
-    s: TStream;
-  iconRender: TIconRenderer ;
 begin
-  S := TResourceStream.Create(HInstance, 'OVOFONT', RT_RCDATA);
-  iconRender:= TIconRenderer.Create(S);
-  iconRender.Color := GetSysColor(COLOR_WINDOWTEXT);
-  iconRender.SetSize(size.cx, Size.cy);
-  iconRender.AddToImageList(Imgl, CodeList);
-  iconRender.Free;
-//  S.Free;
-
+  ilButtons.CustomRender(Imgl, GetSysColor(COLOR_WINDOWTEXT), Size, CodeList);
 end;
 
 procedure TDM.SaveDialogPlaylistTypeChange(Sender: TObject);

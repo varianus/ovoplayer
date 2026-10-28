@@ -16,10 +16,9 @@
         <TextDesc Value="A free multiplatform media player"/>
       </XPManifest>
       <Icon Value="0"/>
-      <Resources Count="3">
-        <Resource_0 FileName="ovoplayer.ttf" Type="RCDATA" ResourceName="OVOFONT"/>
-        <Resource_1 FileName="..\images\nocover.png" Type="RCDATA" ResourceName="NOCOVER"/>
-        <Resource_2 FileName="..\images\logo.png" Type="RCDATA" ResourceName="LOGO"/>
+      <Resources Count="2">
+        <Resource_0 FileName="..\images\nocover.png" Type="RCDATA" ResourceName="NOCOVER"/>
+        <Resource_1 FileName="..\images\logo.png" Type="RCDATA" ResourceName="LOGO"/>
       </Resources>
     </General>
     <i18n>
@@ -236,10 +235,10 @@ if TargetOS = &apos;linux&apos; then
     </RunParams>
     <RequiredPackages>
       <Item>
-        <PackageName Value="MetaDarkStyle"/>
+        <PackageName Value="ovocomponents"/>
       </Item>
       <Item>
-        <PackageName Value="mcaselli"/>
+        <PackageName Value="MetaDarkStyle"/>
       </Item>
       <Item>
         <PackageName Value="FCL"/>
@@ -706,14 +705,6 @@ if TargetOS = &apos;linux&apos; then
       </Unit>
       <Unit>
         <Filename Value="platform\win\bufferedfilereader.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
-        <Filename Value="iconloader.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit>
-      <Unit>
-        <Filename Value="ovoplayerfont.rc"/>
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>

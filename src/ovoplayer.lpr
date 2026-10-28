@@ -94,8 +94,8 @@ uses
   Udm, uMain, uAbout, ulicense, uConfig, uOSD, uMiniPlayer, uSongInfo, uCover,
   DefaultTranslator,  LCLVersion,
   ucustomplaylist, ufrfield, playlistbuilder, netprotocol,
-  ImagesSupport, netsupport, guiconfig, SimpleSingleInstance, mcaselli, 
-  equalizerband, uequalizer, equalizer, backendconfig, iconloader, uscanresult, MetaDarkStyle;
+  ImagesSupport, netsupport, guiconfig, SimpleSingleInstance,
+  equalizerband, uequalizer, equalizer, backendconfig, uscanresult, ovocomponents, MetaDarkStyle;
 
 
 {$R *.res}
