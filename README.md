@@ -30,7 +30,11 @@ Ovoplayer can use DirectShow, MediaFoundation VLC, XINE, BASS, Mplayer, GStreame
 To build Ovoplayer from sources you will need:
 
 *  [Free Pascal 3.2.2 ](http://www.freepascal.org)(last stable fixes branch) or above
-*  [Lazarus 3.0](http://www.lazarus.freepascal.org) (current release candidate) or above
+*  [Lazarus 4.8](http://www.lazarus.freepascal.org) (current release) or above
+
+It also require the following Lazarus packages
+*  MetaDarkStyle packages (from OPM inside Lazarus or [https://github.com/zamtmn/metadarkstyle](https://github.com/zamtmn/metadarkstyle)
+*  ovocomponents package (from [https://github.com/varianus/ovocomponents](https://github.com/varianus/ovocomponents)
 
 ### Screenshot
 ![Screenshot](http://ovoplayer.altervista.org/images/OVOPlayer_scrn1.png)
