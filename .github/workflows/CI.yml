@@ -107,7 +107,7 @@ jobs:
     - name: Register packages in lazbuild
       run: |
          ${{ matrix.config.lazbuild }}  --add-package-link dependency/metadarkstyle/metadarkstyle.lpk        
-         ${{ matrix.config.lazbuild }}  --add-package-link dependency/metadarkstyle/ovocomponents.lpk            
+         ${{ matrix.config.lazbuild }}  --add-package-link dependency/ovocomponents/ovocomponents.lpk            
     - name: Build OvoPlayer
       run: |
          ${{ matrix.config.lazbuild }}  ${{ env.LAZ_OPT }} --build-mode=Release "src/ovoplayer.lpi"
