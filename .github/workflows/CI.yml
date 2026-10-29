@@ -82,7 +82,7 @@ jobs:
                  process_file = lambda f: (not f.endswith('.exe')) or os.system('%s /VERYSILENT /DIR="C:\Lazarus"' % (f)) == 0
             elif OS_NAME == 'Linux':
                 # Install dependencies
-                if os.system('%s install libgtk2.0-dev' % (OS_PMAN)) != 0:
+                if os.system('%s install libgtk3.0-dev' % (OS_PMAN)) != 0:
                     return False
                 # Install all .deb files
                 process_file = lambda f: (not f.endswith('.deb')) or os.system('sudo dpkg --force-overwrite -i %s' % (f)) == 0
