@@ -33,8 +33,8 @@ uses
   {$IFDEF NOTIFYDBUS} notification,{$ENDIF}
   {$IFDEF TASKBAR_EXTENSION}taskbar_ext,{$ENDIF}
   {$IFDEF NETWORK_INTF}
-    {$ifdef Network_ss} netinf,{$ENDIF}
-    {$ifdef Network_Ws} netintfws,{$ENDIF}
+  {$ifdef Network_ss} netinf,{$ENDIF}
+  {$ifdef Network_Ws} netintfws,{$ENDIF}
   {$ENDIF}
   {$IFDEF MULTIMEDIA_KEYS}MultimediaKeys, {$ENDIF}
   {$IFDEF SCREEN_LOCK}screenlock,{$ENDIF}
@@ -103,8 +103,8 @@ type
     FHeight: integer;
     FLeft: integer;
     FLeftPanelVisible: boolean;
-    FLeftPanelWidth: Integer;
-    FPlayInfoHeight: Integer;
+    FLeftPanelWidth: integer;
+    FPlayInfoHeight: integer;
     FTop: integer;
     FWidth: integer;
     FForm: TfMainForm;
@@ -112,8 +112,8 @@ type
     procedure SetHeight(AValue: integer);
     procedure SetLeft(AValue: integer);
     procedure SetLeftPanelVisible(AValue: boolean);
-    procedure SetLeftPanelWidth(AValue: Integer);
-    procedure SetPlayInfoHeight(AValue: Integer);
+    procedure SetLeftPanelWidth(AValue: integer);
+    procedure SetPlayInfoHeight(AValue: integer);
     procedure SetTop(AValue: integer);
     procedure SetWidth(AValue: integer);
   protected
@@ -125,8 +125,8 @@ type
     property Left: integer read FLeft write SetLeft;
     property LeftPanelVisible: boolean read FLeftPanelVisible write SetLeftPanelVisible;
     property ActivePage: integer read FActivePage write SetActivePage;
-    property LeftPanelWidth: Integer read FLeftPanelWidth write SetLeftPanelWidth;
-    property PlayInfoHeight: Integer read FPlayInfoHeight write SetPlayInfoHeight;
+    property LeftPanelWidth: integer read FLeftPanelWidth write SetLeftPanelWidth;
+    property PlayInfoHeight: integer read FPlayInfoHeight write SetPlayInfoHeight;
     procedure Load; override;
     constructor Create(aOwner: TConfig; Form: TfMainForm); reintroduce;
   end;
@@ -146,7 +146,6 @@ type
     Artist: TLabel;
     cbGroupBy: TComboBox;
     FilesTree: TTreeView;
-    MainMenu1: TMainMenu;
     MenuItem20: TMenuItem;
     MenuItem38: TMenuItem;
     MenuItem39: TMenuItem;
@@ -287,7 +286,6 @@ type
     ToolButton5: TToolButton;
     imgCover: TImage;
     Album: TLabel;
-    Timer: TTimer;
     Title: TLabel;
     MainMenu: TMainMenu;
     mnuLoadPlaylist: TMenuItem;
@@ -394,7 +392,6 @@ type
     procedure TrackBarMouseMove(Sender: TObject; Shift: TShiftState; X, Y: integer);
     procedure TrackBarMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: integer);
     procedure TrackDblClick(Sender: TObject);
-    procedure TrayIconClick(Sender: TObject);
     procedure TrayIconDblClick(Sender: TObject);
     procedure TrayIconMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: integer);
     procedure PlaylistTreeDblClick(Sender: TObject);
@@ -511,7 +508,7 @@ const
     (Kind: tkAlbumArtist; FieldName: 'AlbumArtist'; ImageIndex: 29),
     (Kind: tkArtist; FieldName: 'Artist'; ImageIndex: 29),
     (Kind: tkSong; FieldName: 'Title'; ImageIndex: 31),
-    (Kind: tkYear; FieldName: 'Year'; ImageIndex: 32),
+    (Kind: tkYear; FieldName: 'Year'; ImageIndex: 37),
     (Kind: tkGenre; FieldName: 'Genre'; ImageIndex: 33),
     (Kind: tkTracK; FieldName: '(case track when 0 then coalesce(trackstring,0) else track end)'; ImageIndex: -1)
     //    (Kind: tkRating; FieldName: 'Rating'; ImageIndex: 5)
@@ -617,14 +614,14 @@ begin
   Dirty := True;
 end;
 
-procedure TMainFormParam.SetLeftPanelWidth(AValue: Integer);
+procedure TMainFormParam.SetLeftPanelWidth(AValue: integer);
 begin
   if FLeftPanelWidth = AValue then Exit;
   FLeftPanelWidth := AValue;
   Dirty := True;
 end;
 
-procedure TMainFormParam.SetPlayInfoHeight(AValue: Integer);
+procedure TMainFormParam.SetPlayInfoHeight(AValue: integer);
 begin
   if FPlayInfoHeight = AValue then Exit;
   FPlayInfoHeight := AValue;
@@ -667,8 +664,8 @@ begin
   fWidth  := FForm.Scale96ToForm(Owner.Inifile.ReadInteger(Base, 'Width', FForm.ScaleFormTo96(FForm.Width)));
   fTop    := FForm.Scale96ToForm(Owner.Inifile.ReadInteger(Base, 'Top', FForm.ScaleFormTo96(FForm.Top)));
   fLeft   := FForm.Scale96ToForm(Owner.Inifile.ReadInteger(Base, 'Left', FForm.ScaleFormTo96(FForm.Left)));
-  FLeftPanelWidth   := FForm.Scale96ToForm(Owner.Inifile.ReadInteger(Base, 'LeftPanelWidth', FForm.ScaleFormTo96(FForm.pnlLeft.Width)));
-  FPlayInfoHeight   := FForm.Scale96ToForm(Owner.Inifile.ReadInteger(Base, 'PlayInfoHeight', FForm.ScaleFormTo96(FForm.pnlPlayInfo.Height)));
+  FLeftPanelWidth := FForm.Scale96ToForm(Owner.Inifile.ReadInteger(Base, 'LeftPanelWidth', FForm.ScaleFormTo96(FForm.pnlLeft.Width)));
+  FPlayInfoHeight := FForm.Scale96ToForm(Owner.Inifile.ReadInteger(Base, 'PlayInfoHeight', FForm.ScaleFormTo96(FForm.pnlPlayInfo.Height)));
   fActivePage := Owner.Inifile.ReadInteger(Base, 'ActivePage', 0);
   fLeftPanelVisible := Owner.Inifile.ReadBool(Base, 'LeftPanelVisible', True);
 
@@ -821,9 +818,9 @@ begin
     exit;
 
   if (myNode.isDir) then
-    myNode.ImageIndex := 7
+    myNode.ImageIndex := 11
   else
-    myNode.ImageIndex := 11;
+    myNode.ImageIndex := 31;
 
 end;
 
@@ -856,8 +853,8 @@ procedure TfMainForm.FormChangeBounds(Sender: TObject);
 begin
   FMainFormParam.Width  := Width;
   FMainFormParam.Height := Height;
-  FMainFormParam.Top := Top;
-  FMainFormParam.Left := Left;
+  FMainFormParam.Top    := Top;
+  FMainFormParam.Left   := Left;
 end;
 
 procedure TfMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -873,7 +870,7 @@ begin
   end
   else
   begin
-//    BackEnd.SaveState;
+    //    BackEnd.SaveState;
     SaveConfig(nil);
     CloseAction := caFree;
   end;
@@ -928,6 +925,7 @@ begin
         end;
       end;
     except
+      // ignore exception on image loading
     end;
     f.Free;
   end;
@@ -1338,10 +1336,12 @@ begin
   ClearPanelInfo;
 
   //Cache bitmap used for rating column painting
+  tmpSize.cx  := sgPlayList.DefaultRowHeight;
+  tmpSize.cy  := sgPlayList.DefaultRowHeight;
   RatingBack  := TBitmap.Create;
   RatingFront := TBitmap.Create;
-  RateStars.GetBitmap(1, RatingBack);
-  RateStars.GetBitmap(0, RatingFront);
+  DM.ilButtons.RenderString(RatingBack, clWindowText, tmpSize, StringOfChar(#$E820, 5));
+  DM.ilButtons.RenderString(RatingFront, clWindowText, tmpSize, StringOfChar(#$E81E, 5));
 
   BackEnd.OnPlayListChange     := @PlayListChange;
   BackEnd.AudioEngine.OnSongStart := @BackEndSongStart;
@@ -2122,15 +2122,13 @@ end;
 
 procedure TfMainForm.pnlPlayInfoResize(Sender: TObject);
 var
-  ScaleFactor: Extended;
-  i: Integer;
+  ScaleFactor: extended;
+  i: integer;
 begin
   imgCover.Width := imgCover.Height;
-  ScaleFactor := ScaleFormTo96(imgCover.Height) / 100;
+  ScaleFactor    := ScaleFormTo96(imgCover.Height) / 100;
   for i := 0 to pnlPlayInfo.ControlCount - 1 do
-  begin
     pnlPlayInfo.Controls[i].Font.Size := Round(pnlPlayInfo.Controls[i].tag * ScaleFactor);
-  end;
   FMainFormParam.PlayInfoHeight := pnlPlayInfo.Height;
 
 end;
@@ -2702,17 +2700,6 @@ begin
   BackEnd.SetVolume(slVolume.Position);
 end;
 
-procedure TfMainForm.TimerTimer(Sender: TObject);
-begin
-  //if (BackEnd.AudioEngine.State = ENGINE_PLAY)  then
-  //begin
-  //  if not seeking then
-  //    TrackBar.Position := BackEnd.Position;
-  //end;
-
-  //lbTime.Caption := TimeToStr(BackEnd.Position / MSecsPerDay);
-end;
-
 procedure TfMainForm.btnUpDirClick(Sender: TObject);
 begin
   LoadDir(UpperDirectory(CurrentPath));
@@ -2764,11 +2751,6 @@ begin
   info := TfSongInfo.Create(Application);
   info.InitFromFile(BackEnd.PlayList.CurrentItem.FullName);
   info.Show;
-end;
-
-procedure TfMainForm.TrayIconClick(Sender: TObject);
-begin
-  //  ShowNotification;
 end;
 
 procedure TfMainForm.TrayIconDblClick(Sender: TObject);
@@ -2961,20 +2943,12 @@ begin
 end;
 
 procedure TfMainForm.ClearPanelInfo;
-//var
-//  lFile: string;
 begin
-  Title.Caption := rNotPlaying;
-  Album.Caption := '';
-  Artist.Caption := '';
-  //  Track.Caption     := '';
+  Title.Caption     := rNotPlaying;
+  Album.Caption     := '';
+  Artist.Caption    := '';
   TrackBar.Position := 0;
-  lbTime.Caption := FormatTimeRange(0);
-  //lFile := backend.Config.GetResourcesPath + 'logo.png';
-  //if not FileExists(lFile) then
-  //  DebugLn('[TfMainForm.ClearPanelInfo] File not found: ' + lFile)
-  //else
-  //  imgCover.Picture.LoadFromFile(lFile);
+  lbTime.Caption    := FormatTimeRange(0);
   imgCover.Picture.LoadFromResourceName(HINSTANCE, 'NOCOVER');
   Caption := DisplayAppName;
 end;
