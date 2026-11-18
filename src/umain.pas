@@ -171,7 +171,6 @@ type
     pcCenter: TPageControl;
     Panel1: TPanel;
     pmPlaylists: TPopupMenu;
-    RateStars: TImageList;
     MenuItem21: TMenuItem;
     MenuItem40: TMenuItem;
     MenuItem41: TMenuItem;
@@ -385,7 +384,6 @@ type
     procedure slVolumeChange(Sender: TObject);
     procedure btnCloseCollectionStatClick(Sender: TObject);
     procedure slVolumeClick(Sender: TObject);
-    procedure TimerTimer(Sender: TObject);
     procedure btnUpDirClick(Sender: TObject);
     procedure tbRepeatClick(Sender: TObject);
     procedure TrackBarChange(Sender: TObject);
@@ -2145,7 +2143,7 @@ begin
   if (ARow > 0) and (aCol = 11) and (BackEnd.PlayList[ARow - 1].ID <> -1) then
   begin
     R1     := sgPlayList.CellRect(ACol, ARow);
-    Rating := trunc(((p.x - R1.Left) * 10) / RateStars.Width);
+    Rating := trunc(((p.x - R1.Left) * 10) / sgPlayList.DefaultRowHeight);
     BackEnd.PlayList[ARow - 1].Rating := rating;
     BackEnd.PlayList[ARow - 1].TmpRating := -1;
     BackEnd.mediaLibrary.SetRating(BackEnd.PlayList[ARow - 1].ID, Rating);
@@ -2596,7 +2594,7 @@ begin
   if (ARow > 0) and (aCol = 11) and (BackEnd.PlayList[ARow - 1].ID <> -1) then
   begin
     R1     := sgPlayList.CellRect(ACol, ARow);
-    Rating := trunc(((x - R1.Left) * 10) / RateStars.Width);
+    Rating := trunc(((x - R1.Left) * 10) / sgPlayList.DefaultRowHeight);
     BackEnd.PlayList[ARow - 1].TmpRating := rating;
     //       sgPlayList.InvalidateCell(ACol, ARow);
     sgPlayList.Invalidate;
