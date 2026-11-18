@@ -25,7 +25,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, Spin, ComCtrls, Buttons, tcpipwebsocket, ClientThread,
+  ExtCtrls, Spin, ComCtrls, Buttons, Grids, tcpipwebsocket, ClientThread,
   netprotocol, netsupport, BaseTypes, basetag, uriparser, ssockets, sslsockets, opensslsockets;
 
 type
@@ -68,11 +68,15 @@ type
     meComment: TMemo;
     memoReceived: TMemo;
     memoSent: TMemo;
+    PageControl1: TPageControl;
     Panel1: TPanel;
     RadioGroup1: TRadioGroup;
     seTrack: TSpinEdit;
     seYear: TSpinEdit;
     Status: TShape;
+    StringGrid1: TStringGrid;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
     tbConn1: TButton;
     Timer1: TTimer;
     procedure Button1Click(Sender: TObject);
@@ -473,6 +477,14 @@ begin
   //  TrackBar1.Max:= Tags.Duration;
 end;
 
+
+function MSecToTime(MSec: int64): double;
+const
+  transform = 1 / (24 * 60 * 60);
+begin
+  Result := (MSec * transform) / 1000;
+end;
+
 procedure TForm1.DecodePlaylist(s: string);
 var
   tmp: string;
@@ -481,13 +493,26 @@ var
   tags: TCommonTags;
 begin
   tmp := ExtractField(s, InCfg);
-  // delete(s,1,4);
   cnt := StrToInt(tmp);
   ListBox1.Clear;
+  StringGrid1.Clean;
+  StringGrid1.RowCount := cnt;
   try
     for i := 0 to cnt - 1 do
     begin
       tags := DecodeMetaData(s, incfg);
+      StringGrid1.Cells[ 1,i] := IntToStr(tags.Index);
+      StringGrid1.Cells[ 2,i] := IntToStr(tags.ID);
+      StringGrid1.Cells[ 3,i] := tags.FileName;
+      StringGrid1.Cells[ 4,i] := tags.Album;
+      StringGrid1.Cells[ 5,i] := tags.AlbumArtist;
+      StringGrid1.Cells[ 6,i] := tags.Artist;
+      StringGrid1.Cells[ 7,i] := tags.Comment;
+      StringGrid1.Cells[ 8,i] := TimeToStr(MSecToTime( tags.Duration));
+      StringGrid1.Cells[ 9,i] := tags.Genre;
+      StringGrid1.Cells[10,i] := tags.Title;
+      StringGrid1.Cells[11,i] := tags.TrackString;
+      StringGrid1.Cells[12,i] := tags.Year;
       ListBox1.Items.Add(IntToStr(i) + '=' + Tags.Title);
     end;
 
